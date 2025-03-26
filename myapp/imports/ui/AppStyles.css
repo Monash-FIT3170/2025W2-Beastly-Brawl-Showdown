@@ -1,0 +1,50 @@
+.task-form {
+    display: flex;
+    margin: 16px;
+    }
+    
+    .task-form > input {
+        flex-grow: 1;
+        box-sizing: border-box;
+        padding: 10px 6px;
+        background: transparent;
+        border: 1px solid #aaa;
+        width: 100%;
+        font-size: 1em;
+        margin-right: 16px;
+        height: 50px;
+    }
+    
+    .task-form > input:focus {
+        outline: 0;
+    }
+    
+    h1 {
+        color: #315481;
+    }
+    
+    .task-form > button {
+        min-width: 100px;
+        height: 50px;
+        background-color: #315481;
+    }
+    
+    .tasks {
+        list-style-type: none;
+        padding-inline-start: 0;
+        padding-left: 16px;
+        padding-right: 16px;
+        margin-block-start: 0;
+        margin-block-end: 0;
+    }
+    
+    .tasks > li {
+        display: flex;
+        padding: 16px;
+        border-bottom: #eee solid 1px;
+        align-items: center;
+    }
+    
+    .tasks > li > span {
+        flex-grow: 1;
+    }
