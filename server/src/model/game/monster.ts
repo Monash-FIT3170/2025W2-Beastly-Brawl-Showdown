@@ -24,7 +24,8 @@ class monster {
     action: boolean,
     enemy_action: boolean,
     enemy: monster,
-    enemy_roll: number
+    enemy_roll: number,
+    crit_num: number
   ): void {
     /**
      * Inputs
@@ -32,6 +33,7 @@ class monster {
      * enemy_action: boolean, Represents enemy Action,  true means attack, false defence
      * enemy: monster, Pointer to the enemy monster class
      * enemy_roll: number, Number rolled by enemy
+     * crit_num: number, Represents the number for hitting a crit
      */
     var AC: number = this.ac; //Establish AC as current allowing for flexibility with defence action
     if (!action) {
@@ -44,7 +46,7 @@ class monster {
       if (enemy_roll + enemy.attack_bonus > AC) {
         //Checks to see if enemy hits
         var damage: number = 5;
-        if (enemy_roll == 20) {
+        if (enemy_roll >= crit_num) {
           //Critical damage
           damage = 10;
         }
