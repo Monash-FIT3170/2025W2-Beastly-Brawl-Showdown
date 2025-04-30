@@ -1,6 +1,6 @@
 import { Action } from './action';
 
-export class AttackAction extends Action{
+export class LeapAbilityAction extends Action implements iAbility {
 
     constructor() {
         super();
