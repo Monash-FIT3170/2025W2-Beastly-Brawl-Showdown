@@ -20,7 +20,27 @@ class monster {
     this.defence = defence;
     this.attack_bonus = bonus;
   }
-  attackAction(enemy: monster): void {}
+  attackAction(
+    action: boolean,
+    enemy_action: boolean,
+    enemy: monster,
+    enemy_roll: number
+  ): void {
+    var AC: number = this.ac;
+    if (!action) {
+      AC += 2;
+      this.defence -= 1;
+    }
+    if (enemy_action) {
+      if (enemy_roll + enemy.attack_bonus > AC) {
+        var damage: number = 5;
+        if (enemy_roll == 20) {
+          damage = 10;
+        }
+        this.hp -= damage;
+      }
+    }
+  }
 }
 
 class monsterX extends monster {
