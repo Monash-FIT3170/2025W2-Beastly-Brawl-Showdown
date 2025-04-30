@@ -4,6 +4,7 @@ class monster {
   attack: number;
   ac: number;
   defence: number;
+  attack_bonus: number;
   constructor(
     type: string,
     hp: number,
@@ -17,13 +18,13 @@ class monster {
     this.attack = attack;
     this.ac = defend;
     this.defence = defence;
-    this.bonus = bonus;
+    this.attack_bonus = bonus;
   }
   attackAction(enemy: monster): void {}
 }
 
 class monsterX extends monster {
   constructor() {
-    super("MonterX", 10, 10, 10);
+    super("MonterX", 10, 10, 10, 10, 10);
   }
 }
