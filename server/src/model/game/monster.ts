@@ -20,12 +20,19 @@ class monster {
     this.defence = defence;
     this.attack_bonus = bonus;
   }
-  attackAction(
+  Action(
     action: boolean,
     enemy_action: boolean,
     enemy: monster,
     enemy_roll: number
   ): void {
+    /**
+     * Inputs
+     * action: boolean - Represents this characters action, true means attack, false defence
+     * enemy_action: boolean, Represents enemy Action,  true means attack, false defence
+     * enemy: monster, Pointer to the enemy monster class
+     * enemy_roll: number, Number rolled by enemy
+     */
     var AC: number = this.ac;
     if (!action) {
       AC += 2;
