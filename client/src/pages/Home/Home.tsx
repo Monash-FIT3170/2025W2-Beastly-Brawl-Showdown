@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import DicerollPopup from '../../components/popups/DicerollModal';
+import React, { useState } from 'react';
+import DicerollModal from '../../components/popups/DicerollModal'; // Correct name
 
 export const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -9,21 +9,19 @@ export const Home: React.FC = () => {
     setShowModal(true);
   };
 
-
   return (
     <div>
       <h1>Welcome to Meteor!</h1>
 
-      <button onClick={handleRollDice} className="btn btn-primary">
+      <button onClick={handleRollDice}>
         Roll Dice
       </button>
 
-      <DicerollPopup
+      <DicerollModal
         show={showModal}
         onClose={() => setShowModal(false)}
         onRolled={(value) => setFinalRoll(value)}
       />
     </div>
   );
-
 };

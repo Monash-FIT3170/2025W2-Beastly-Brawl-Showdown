@@ -46,21 +46,13 @@ const DicerollModal: React.FC<DicerollModalProps> = ({show, onClose, onRolled}) 
       }, 2000);
     }, [show]);
     
-
     return (
-      <div className="modal show d-block" tabIndex={-1}>
-      <div className="modal-dialog modal-sm modal-dialog-centered">
-        <div className="modal-content text-center p-3">
-          {finalValue !== null && (
-            <h5 className="mb-2">You rolled a {finalValue}!</h5>
-          )}
-          <div
-            className="border border-dark rounded p-4 display-3"
-            style={{ width: '100px', margin: '0 auto' }}
-          >
-            {rollingValue}
-          </div>
-        </div>
+    <div className="dice-modal-overlay">
+      <div className="dice-modal-content">
+        {finalValue !== null && (
+          <h5 className="dice-result-text">You rolled a {finalValue}!</h5>
+        )}
+        <div className="dice-face">{rollingValue}</div>
       </div>
     </div>
   );
