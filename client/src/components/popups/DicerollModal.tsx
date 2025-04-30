@@ -43,10 +43,18 @@ const DicerollModal: React.FC<DicerollModalProps> = ({show, onClose, onRolled}) 
         setTimeout(() => {
           onClose();
         }, 1500);
+        
+
       }, 2000);
     }, [show]);
     
+    // Hides the dice after roll
+    if (!show) {
+      return null;
+    }
+
     return (
+
     <div className="dice-modal-overlay">
       <div className="dice-modal-content">
         {finalValue !== null && (
