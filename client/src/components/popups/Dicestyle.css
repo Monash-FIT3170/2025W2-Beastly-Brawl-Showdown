@@ -1,0 +1,9 @@
+.dice-box {
+    font-size: 48px;
+    font-weight: bold;
+    border: 2px solid #343a40;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    background-color: #f8f9fa;
+  }
