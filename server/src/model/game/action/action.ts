@@ -3,6 +3,13 @@ import { Defend } from "./defend";
 import { Attack } from "./attack";
 
 class Action {
+  /**
+   * Inputs
+   * monster1: monster, Pointer to the enemy monster class
+   * monster2: monster, Pointer to the enemy monster class
+   * move1: boolean, true represents attack false represents defence action
+   * move2: boolean, true represents attack false represents defence action
+   */
   monster1: Monster;
   monster2: Monster;
   move1: boolean;
@@ -22,6 +29,9 @@ class Action {
   }
 
   Setup() {
+    /**
+     * Sets up the game logic based on the constructor values
+     */
     if (!this.move1) {
       const defend = new Defend(this.monster1);
     }
