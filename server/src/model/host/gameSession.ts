@@ -15,7 +15,6 @@ export default class GameSession{
     /*
     Function takes a player object as an argument, and then the queue is run through by serving each item until it has looped through the entire queue. If a served item is not the same as the player given in the argument, then it is pushed back into the queue, but if it is the same, then it is not pushed back into the queue  
     */
-   //test
     public removePlayer(player: Player) {
         // Loop to check through each item in the queue
         for (let i = 0; i < this.players.size(); i++) {
