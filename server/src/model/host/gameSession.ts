@@ -6,6 +6,7 @@ export default class GameSession{
     hostUID: string;
     players: Queue<Player>; //need to setup queue
     private gameCode : Number;
+    //To create: player max queue length setup
 
 
     constructor(hostID: string, presetGameCode?: number) {
