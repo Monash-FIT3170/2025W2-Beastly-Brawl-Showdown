@@ -1,6 +1,6 @@
 import { Monster } from "../monster";
 
-class Attack {
+export class Defend {
   monster: Monster;
 
   constructor(monster: Monster) {

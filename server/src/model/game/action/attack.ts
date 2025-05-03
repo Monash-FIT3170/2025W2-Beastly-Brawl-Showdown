@@ -1,6 +1,6 @@
 import { Monster } from "../monster";
 
-class Attack {
+export class Attack {
   attacker: Monster;
   defender: Monster;
   roll: number;

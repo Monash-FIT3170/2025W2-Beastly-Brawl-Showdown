@@ -1,3 +1,7 @@
+import { Monster } from "../monster";
+import { Defend } from "./defend";
+import { Attack } from "./attack";
+
 class Action {
   monster1: Monster;
   monster2: Monster;
@@ -14,10 +18,24 @@ class Action {
     this.monster2 = monster2;
     this.move1 = move1;
     this.move2 = move2;
+    this.Setup();
   }
 
   Setup() {
     if (!this.move1) {
+      const defend = new Defend(this.monster1);
+    }
+    if (!this.move2) {
+      const defend = new Defend(this.monster2);
+    }
+
+    if (this.move1) {
+      const roll = 2; //ADD ROLL MECHANICS HERE
+      const attack = new Attack(this.monster1, this.monster2, roll);
+    }
+    if (this.move2) {
+      const roll = 2; //ADD ROLL MECHANICS HERE
+      const attack = new Attack(this.monster2, this.monster1, roll);
     }
   }
 }
