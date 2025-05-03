@@ -8,13 +8,20 @@ export default class GameSession{
     private gameCode : Number;
 
 
-    constructor(hostID: string){
-        //constructor that generates six digit gameCode upon startup
+    constructor(hostID: string, presetGameCode?: number) {
         this.hostUID = hostID;
         this.players = new Queue<Player>(8);
-
-        const generatedSixDigitCode = (): Number => parseInt(Math.floor(Math.random() * 1000000).toString().padStart(6, '0'), 10);
-        this.gameCode = generatedSixDigitCode();
+    
+        
+        // Constructor that generates six digit gameCode upon startup or uses preset code
+        if (presetGameCode !== undefined) {
+            // Use preset game code if provided
+            this.gameCode = presetGameCode;
+        } else {
+            // Generate random six digit code if no preset code is provided
+            const generateSixDigitCode = (): number => parseInt(Math.floor(Math.random() * 1000000).toString().padStart(6, '0'), 10);
+            this.gameCode = generateSixDigitCode();
+        }
     }
 
     public addPlayer(player: Player){
