@@ -1,12 +1,18 @@
 import { Mongo } from 'meteor/mongo';
 
 export class Monster {
-    name: String;
-    image: String;
+    name: string;
+    image: string;
+    health: number;
+    attack: number;
+    armourClass: number;
 
-    constructor(name: String, image: String){
+    constructor(name: string, image: string, health: number, attack: number, armourClass: number){
         this.name = name;
         this.image = image
+        this.health = health;
+        this.attack = attack;
+        this.armourClass = armourClass;
     }
 }
 
