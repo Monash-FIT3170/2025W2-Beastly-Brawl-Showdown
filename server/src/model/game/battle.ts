@@ -13,5 +13,4 @@ class Battle {
         this.player2 = player2;
         this.id = crypto.randomUUID();
     }
-
 }

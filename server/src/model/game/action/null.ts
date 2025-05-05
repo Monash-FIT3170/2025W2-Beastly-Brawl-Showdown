@@ -1,12 +1,10 @@
-import { Action } from './action';
+import { Action } from "./action";
+import { Player } from "../player";
 
-export class NullAction extends Action{
+export class NullAction extends Action {
+  constructor() {
+    super("Null", "No action");
+  }
 
-    constructor() {
-        super();
-    }
-
-    execute(): void {
-
-    }
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {}
 }

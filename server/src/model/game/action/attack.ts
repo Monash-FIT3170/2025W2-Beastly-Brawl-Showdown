@@ -1,12 +1,13 @@
-import { Action } from './action';
+import { Action } from "./action";
+import { Player } from "../player";
 
-export class AttackAction extends Action{
+export class AttackAction extends Action {
+  private attackPower: number;
 
-    constructor() {
-        super();
-    }
+  constructor(attackPower: number = 10) {
+    super("Attack", "Attack an enemy");
+    this.attackPower = attackPower;
+  }
 
-    execute(): void {
-
-    }
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {}
 }
