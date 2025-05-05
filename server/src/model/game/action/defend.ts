@@ -2,11 +2,15 @@ import { Action } from "./action";
 import { Player } from "../player";
 
 export class DefendAction extends Action {
-  private defensePower: number;
+  private armourBonus: number;
 
-  constructor(defensePower: number = 10) {
+  constructor(armourBonus: number) {
     super("Defend", "Defend against an attack");
-    this.defensePower = defensePower;
+    this.armourBonus = armourBonus;
+  }
+
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+    actingPlayer.incArmourClassStat(this.armourBonus);
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {}

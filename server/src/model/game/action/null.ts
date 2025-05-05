@@ -6,5 +6,7 @@ export class NullAction extends Action {
     super("Null", "No action");
   }
 
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {}
 }

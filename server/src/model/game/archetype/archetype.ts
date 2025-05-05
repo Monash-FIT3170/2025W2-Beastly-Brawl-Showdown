@@ -1,11 +1,11 @@
-import { iAbility } from "../action/ability/iAbility";
+import { Action } from "../action/action";
 
 export abstract class Archetype {
   private name: string;
 
-  private ability: iAbility;
+  private ability: Action;
 
-  constructor(name: string, ability: iAbility) {
+  constructor(name: string, ability: Action) {
     this.ability = ability;
     this.name = name;
   }
@@ -14,7 +14,7 @@ export abstract class Archetype {
     return this.name;
   }
 
-  public getAbility(): iAbility {
+  public getAbility(): Action {
     return this.ability;
   }
 }

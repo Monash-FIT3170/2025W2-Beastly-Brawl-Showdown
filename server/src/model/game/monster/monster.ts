@@ -1,6 +1,7 @@
 import { Archetype } from "../archetype/archetype";
-import { iAbility } from "../action/ability/iAbility";
 import { Action } from "../action/action";
+import { AttackAction } from "../action/attack";
+import { DefendAction } from "../action/defend";
 
 export abstract class Monster {
   private name: string;
@@ -9,53 +10,58 @@ export abstract class Monster {
 
   private archetype: Archetype;
 
-  private abilities: iAbility[] = [];
+  private possibleActions: Action[] = [];
 
   private maxHealth: number;
-
-  private attackAction: Action;
-  private defenseAction: Action;
+  private attackBonus: number;
+  private armourClass: number;
 
   constructor(
     name: string,
     description: string,
     archetype: Archetype,
-    ability: iAbility,
+    ability: Action,
     maxHealth: number,
-    attackAction: Action,
-    defenseAction: Action
+    attackBonus: number,
+    armourClass: number
   ) {
     this.name = name;
     this.description = description;
     this.archetype = archetype;
-    this.abilities.push(archetype.getAbility());
-    this.abilities.push(ability);
     this.maxHealth = maxHealth;
-    this.attackAction = attackAction;
-    this.defenseAction = defenseAction;
+    this.attackBonus = attackBonus;
+    this.armourClass = armourClass;
+    this.possibleActions.push(new AttackAction(attackBonus));
+    this.possibleActions.push(new DefendAction(armourClass));
+    this.possibleActions.push(ability);
+    this.possibleActions.push(archetype.getAbility());
   }
 
   public getName(): string {
     return this.name;
   }
 
+  public getDescription(): string {
+    return this.description;
+  }
+
   public getArchetype(): Archetype {
     return this.archetype;
   }
 
-  public getAbilities(): iAbility[] {
-    return this.abilities;
+  public getPossibleActions(): Action[] {
+    return this.possibleActions;
   }
 
   public getMaxHealth(): number {
     return this.maxHealth;
   }
 
-  public getAttackAction(): Action {
-    return this.attackAction;
+  public getAttackBonus(): number {
+    return this.attackBonus;
   }
 
-  public getDefenseAction(): Action {
-    return this.defenseAction;
+  public getArmourClass(): number {
+    return this.armourClass;
   }
 }

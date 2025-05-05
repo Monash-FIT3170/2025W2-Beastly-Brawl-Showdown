@@ -2,12 +2,24 @@ import { Action } from "./action";
 import { Player } from "../player";
 
 export class AttackAction extends Action {
-  private attackPower: number;
+  private attackBonus: number;
 
-  constructor(attackPower: number = 10) {
+  constructor(attackBonus: number) {
     super("Attack", "Attack an enemy");
-    this.attackPower = attackPower;
+    this.attackBonus = attackBonus;
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {}
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    // roll a d20
+    var d20 = 0;
+
+    var damage = d20 + this.attackBonus;
+
+    if (damage >= affectedPlayer.getArmourClassStat()) {
+      // hit
+      affectedPlayer.incHealth(-5);
+    }
+  }
 }
