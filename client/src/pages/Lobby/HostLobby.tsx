@@ -24,6 +24,11 @@ export const HostLobby = () => {
       setCode(newCode)
     }
 
+    const kickPlayer = (playerID: string) => {
+      removePlayer(playerID)
+      // backend player removal call
+    };
+
     const startGame = () => {
  
     }
@@ -31,12 +36,13 @@ export const HostLobby = () => {
     return (
       <div>
         <p>Beastly Brawl</p>
-        <p>Join the game at: {code}</p>
+        <p>Hosting at address at: {window.location.origin}</p>
+        <p>Join the game with: {code}</p>
         <p>Currently there are {playerCount}/8 players in the lobby.</p>
         {players.map((player) => (
-          <div key={player.userID} className="card">
-            <p>{player.name}</p>
-            <button onClick={() => removePlayer(player.userID)}>Remove</button>
+          <div key={player.userID}>
+            <p>{player.name}</p> 
+            <button onClick={() => kickPlayer(player.userID)}>Remove</button>
           </div>
         ))}
         <button onClick={startGame} disabled={playerCount < 2}>Start Game</button>
