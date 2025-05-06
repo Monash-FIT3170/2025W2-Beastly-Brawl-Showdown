@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
+import Player from '../../types/player' 
 
 export const HostLobby = () => {
     const [playerCount, setPlayerCount] = useState(3);
     const [code, setCode] = useState(468923);
-    const [players, setPlayers] = useState<string[]>(['Player 1', 'Player 2', 'Player 3']);
+    const [players, setPlayers] = useState<Player[]>([
+      new Player("0", "Player 1"), 
+      new Player("1", "Player 2"), 
+      new Player("2", "Player 3")
+    ]);
 
-    const addPlayer = (name: string) => {
-      setPlayers(players.concat(name))
+    const addPlayer = (playerName: string, playerID: string) => {
+      setPlayers(players.concat(new Player(playerID, playerName)))
       setPlayerCount(playerCount + 1);
     }
 
-    const removePlayer = (name: string) => {
-      setPlayers(players.filter(searchedName => searchedName !== name));
+    const removePlayer = (playerID: string) => {
+      setPlayers(players.filter((Player) => Player.userID !== playerID));
       setPlayerCount(playerCount - 1);
     };
 
-    const enterCode = ( newCode: number) => {
+    const enterCode = (newCode: number) => {
       setCode(newCode)
     }
 
@@ -28,10 +33,10 @@ export const HostLobby = () => {
         <p>Beastly Brawl</p>
         <p>Join the game at: {code}</p>
         <p>Currently there are {playerCount}/8 players in the lobby.</p>
-        {players.map((name, index) => (
-          <div key={index} className="card">
-            <p>{name}</p>
-            <button onClick={() => removePlayer(name)}>Remove</button>
+        {players.map((player) => (
+          <div key={player.userID} className="card">
+            <p>{player.name}</p>
+            <button onClick={() => removePlayer(player.userID)}>Remove</button>
           </div>
         ))}
         <button onClick={startGame} disabled={playerCount < 2}>Start Game</button>
