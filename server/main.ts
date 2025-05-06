@@ -1,6 +1,9 @@
-import { Meteor } from 'meteor/meteor';
+import { Meteor } from "meteor/meteor";
+import { Monster, MonstersCollection } from "/types/monster";
 
-
-Meteor.startup(async () => {
-  
+//This can be removed it was for testing
+Meteor.publish("tasks", function () {
+  return MonstersCollection.find();
 });
+
+Meteor.startup(async () => {});
