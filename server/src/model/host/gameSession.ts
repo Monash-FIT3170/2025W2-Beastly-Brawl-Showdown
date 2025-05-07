@@ -15,11 +15,11 @@ export default class GameSession{
     /*
     Function takes a player object as an argument, and then the queue is run through by serving each item until it has looped through the entire queue. If a served item is not the same as the player given in the argument, then it is pushed back into the queue, but if it is the same, then it is not pushed back into the queue  
     */
-    public removePlayer(player: Player) {
+    public removePlayer(removingPlayerID: String) {
         // Loop to check through each item in the queue
         for (let i = 0; i < this.players.size(); i++) {
             const playerIndexed = this.players.dequeue(); // Serves the current player at the front
-            if (playerIndexed != undefined && playerIndexed != player) {
+            if (playerIndexed != undefined && playerIndexed.userID != removingPlayerID) {
                 this.players.enqueue(playerIndexed); // If the player is not the argument one, then put them back in the queue
             }
         }
