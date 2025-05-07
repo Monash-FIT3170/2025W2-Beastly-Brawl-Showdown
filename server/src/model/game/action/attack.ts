@@ -12,14 +12,17 @@ export class AttackAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    // TODO: implement the dice logic here
     // roll a d20
-    var d20 = 0;
+    // var d20 = 0;
 
-    var damage = d20 + this.attackBonus;
+    // var damage = d20 + this.attackBonus;
 
-    if (damage >= affectedPlayer.getArmourClassStat()) {
-      // hit
-      affectedPlayer.incHealth(-5);
-    }
+    // if (damage >= affectedPlayer.getArmourClassStat()) {
+    //   // hit
+    //   affectedPlayer.incHealth(-5);
+    // }
+    console.log("AttackAction executed");
+    affectedPlayer.incHealth(-5);
   }
 }

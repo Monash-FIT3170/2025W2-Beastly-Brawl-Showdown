@@ -37,6 +37,12 @@ export abstract class Monster {
     this.possibleActions.push(archetype.getAbility());
   }
 
+  public getAction(actionName: string): Action | undefined {
+    return this.possibleActions.find(
+      (action) => action.getName() === actionName
+    );
+  }
+
   public getName(): string {
     return this.name;
   }

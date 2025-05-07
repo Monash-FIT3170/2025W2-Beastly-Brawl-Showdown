@@ -3,7 +3,7 @@ import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 
 export class Player {
-  private id: UUID;
+  private id: string;
   private name: string;
   private monster: Monster;
 
@@ -13,9 +13,9 @@ export class Player {
 
   private actions: Action[] = [];
 
-  constructor(name: string, monster: Monster) {
+  constructor(id: string, name: string, monster: Monster) {
     this.name = name;
-    this.id = crypto.randomUUID();
+    this.id = id;
     this.monster = monster;
     this.currentHealth = monster.getMaxHealth();
     this.currentAttackStat = monster.getAttackBonus();
@@ -26,7 +26,7 @@ export class Player {
     return this.name;
   }
 
-  public getId(): UUID {
+  public getId(): string {
     return this.id;
   }
 
@@ -73,5 +73,20 @@ export class Player {
 
   public incArmourClassStat(number: number): void {
     this.currentArmourClassStat += number;
+  }
+
+  public getActions(): Action[] {
+    return this.actions;
+  }
+
+  public addAction(action: Action): void {
+    this.actions.push(action);
+  }
+
+  public removeAction(action: Action): void {
+    this.actions = this.actions.filter((a) => a.getName() !== action.getName());
+  }
+  public clearActions(): void {
+    this.actions = [];
   }
 }
