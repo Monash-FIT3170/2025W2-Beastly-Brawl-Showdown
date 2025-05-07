@@ -1,11 +1,10 @@
 
 /* 
-When called, creates a small popup in the center of the screen with a dice that rolls for 2 seconds. 
-Once dice finishes rolling, a text will display the result of the dice. We we will return the result of the dice. 
-Popup will close shortly after the result is displayed. 
+Requires 2 main props to passed through
+- show, which should be passed in as True to show the dice roll. The dice handles the closing of it itself.
+- onRolled, which should be a useState hook that can be set to an int. This basically returns the result of the dice. 
 
-The animation of the rolling dice will be just a square with a number in the center that rapidly changes to 
-simulate the rolling of the dice. 
+Timing - Result is returned after the rolling animation. 
 */
 import React, { useEffect, useState } from 'react';
 

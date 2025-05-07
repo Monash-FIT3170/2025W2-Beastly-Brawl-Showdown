@@ -23,6 +23,7 @@ export const Home: React.FC = () => {
         onRolled={(value) => setFinalRoll(value)}
       />
 
+      {/* // debug only part  */}
       {finalRoll !== null && (
         <div className="dice-result">
           <h5>You rolled a {finalRoll}!</h5>
