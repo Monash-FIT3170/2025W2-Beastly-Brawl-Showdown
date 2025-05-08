@@ -35,7 +35,7 @@ export const HostLobby = () => {
   
     return (
       <div>
-        <p>Beastly Brawl Showdown</p>
+        <p>Beastly Brawl Showdown test</p>
         <p>Hosting at address at: {window.location.origin}</p>
         <p>Join the game with: {code}</p>
         <p>Currently there are {playerCount}/8 players in the lobby.</p>
