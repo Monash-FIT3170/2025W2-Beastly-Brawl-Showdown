@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { battles } from "../../../main";
-import { ActionState } from "/types/types";
+import { ActionState } from "/types/single/actionState";
 
 export const actionSelectedHandler = (io: Server, socket: Socket) => {
   // Listen for the 'action_selected' event from the client

@@ -1,6 +1,7 @@
 import { UUID } from "crypto";
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
+import { PlayerState } from "/types/single/playerState";
 
 export class Player {
   private id: string;
@@ -20,6 +21,11 @@ export class Player {
     this.currentHealth = monster.getMaxHealth();
     this.currentAttackStat = monster.getAttackBonus();
     this.currentArmourClassStat = monster.getArmourClass();
+  }
+
+  public resetStats(): void {
+    this.currentAttackStat = this.monster.getAttackBonus();
+    this.currentArmourClassStat = this.monster.getArmourClass();
   }
 
   public getName(): string {
@@ -86,7 +92,19 @@ export class Player {
   public removeAction(action: Action): void {
     this.actions = this.actions.filter((a) => a.getName() !== action.getName());
   }
+
   public clearActions(): void {
     this.actions = [];
+  }
+
+  public getPlayerState(): PlayerState {
+    return {
+      id: this.id,
+      name: this.name,
+
+      currentHealth: this.currentHealth,
+      currentAttackStat: this.currentAttackStat,
+      currentArmourClassStat: this.currentArmourClassStat,
+    };
   }
 }

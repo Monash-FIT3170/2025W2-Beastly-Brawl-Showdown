@@ -1,6 +1,6 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier } from "/types/types";
+import { ActionIdentifier } from "/types/single/actionState";
 
 export class DefendAction extends Action {
   private armourBonus: number;

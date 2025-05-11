@@ -1,9 +1,12 @@
 import { Player } from "./player"; // Adjust the path based on the actual location of the Player definition
 import { UUID } from "crypto";
+import { BattleState } from "/types/composite/battleState"; // Adjust the path based on the actual location of the BattleState definition
 
 export class Battle {
   private id: UUID;
   private players: Map<string, Player> = new Map();
+
+  private turn: number = 0;
 
   constructor(id: UUID, player1: Player, player2: Player) {
     this.id = id;
@@ -21,5 +24,33 @@ export class Battle {
 
   public getId(): UUID {
     return this.id;
+  }
+
+  public getTurn(): number {
+    return this.turn;
+  }
+
+  public incTurn(): void {
+    this.turn++;
+  }
+
+  // Battle state is different for each player
+  public getBattleState(currentPlayerId: string): BattleState {
+    const currentPlayer = this.getPlayer(currentPlayerId);
+
+    const opponentPlayer = this.getPlayers().find(
+      (player) => player.getId() !== currentPlayerId
+    );
+
+    // Since there is no way for a player to be "removed" from the battle, it is same to assume that they must exist - so we can use !
+    return {
+      id: this.id,
+      turn: this.turn,
+      yourPlayer: currentPlayer!.getPlayerState(),
+      yourPlayerMonster: currentPlayer!.getMonster().getMonsterState(),
+
+      opponentPlayer: opponentPlayer!.getPlayerState(),
+      opponentPlayerMonster: opponentPlayer!.getMonster().getMonsterState(),
+    };
   }
 }

@@ -2,9 +2,8 @@ import { Archetype } from "../archetype/archetype";
 import { Action } from "../action/action";
 import { AttackAction } from "../action/attack";
 import { DefendAction } from "../action/defend";
-import { MonsterIdentifier } from "/types/types";
-import { ActionIdentifier } from "/types/types";
-import { ActionState } from "/types/types";
+import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
+import { ActionIdentifier, ActionState } from "/types/single/actionState";
 
 export abstract class Monster {
   private id: MonsterIdentifier;
@@ -83,5 +82,17 @@ export abstract class Monster {
 
   public getArmourClass(): number {
     return this.armourClass;
+  }
+
+  public getMonsterState(): MonsterState {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+
+      maxHealth: this.maxHealth,
+      attackBonus: this.attackBonus,
+      armourClass: this.armourClass,
+    };
   }
 }

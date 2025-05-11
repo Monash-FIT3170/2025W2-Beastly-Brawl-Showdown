@@ -1,6 +1,5 @@
 import { Player } from "../player";
-import { ActionIdentifier } from "/types/types";
-import { ActionState } from "/types/types";
+import { ActionIdentifier, ActionState } from "/types/single/actionState";
 
 export abstract class Action {
   private id: ActionIdentifier;

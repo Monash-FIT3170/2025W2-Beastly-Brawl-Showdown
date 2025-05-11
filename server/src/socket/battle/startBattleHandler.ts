@@ -22,9 +22,16 @@ export const startBattleHandler = (io: Server, socket: Socket) => {
 
       // TODO: separate below logic into a separate function, so that it can be reused every turn
 
+      battle.incTurn();
+
       let playersInBattle = battle.getPlayers();
 
       playersInBattle.forEach((player) => {
+        io.to(player.getId()).emit(
+          "battle_state",
+          battle.getBattleState(player.getId())
+        ); // Emit the battle state to each player
+
         let actions = player.getMonster().getPossibleActionStates();
         io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
       });
@@ -70,9 +77,18 @@ export const startBattleHandler = (io: Server, socket: Socket) => {
 
           console.log("P2: ", player2);
 
-          // TODO: emit the results of the actions back to the client
+          // Emite the result of the battle state after the turn is complete
+          playersInBattle.forEach((player) => {
+            io.to(player.getId()).emit(
+              "battle_state",
+              battle.getBattleState(player.getId())
+            );
+          });
 
-          // TODO: After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
+          // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
+          playersInBattle.forEach((player) => {
+            player.resetStats();
+          });
         }
       }, 1000); // Emit every second
     } else {

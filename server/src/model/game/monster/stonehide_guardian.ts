@@ -1,7 +1,7 @@
 import { Monster } from "./monster";
 import { Tank } from "../archetype/tank";
 import { GroundSlamAbilityAction } from "../action/ability/ground_slam";
-import { MonsterIdentifier } from "/types/types";
+import { MonsterIdentifier } from "/types/single/monsterState";
 
 // Random monser for now
 export class StonehideGuardian extends Monster {
