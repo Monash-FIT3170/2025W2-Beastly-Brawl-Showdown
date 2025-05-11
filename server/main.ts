@@ -4,7 +4,7 @@ import { actionSelectedHandler } from "./src/socket/battle/actionSelectedHandler
 import http from "node:http";
 import { Server } from "socket.io";
 import { Player } from "./src/model/game/player";
-import { StonehideGuardian } from "./src/model/game/monster/stonehide_guardian";
+import { StonehideGuardian } from "./src/model/game/monster/stonehideGuardian";
 import { Battle } from "./src/model/game/battle";
 
 export const players = new Map<string, Player>();

@@ -1,6 +1,6 @@
 import { Monster } from "./monster";
 import { Tank } from "../archetype/tank";
-import { GroundSlamAbilityAction } from "../action/ability/ground_slam";
+import { GroundSlamAbilityAction } from "../action/ability/groundSlam";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
 // Random monser for now
