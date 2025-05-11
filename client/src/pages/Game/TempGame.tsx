@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import socket from "../../socket";
 import CountDownTimer from "../../components/temp/CountdownTimer";
+import { ActionState } from "/types/types";
 
 interface TempGameProps {
   battleId: string | null; // Add battleId as a prop
 }
 
 const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
-  const [possibleActions, setPossibleActions] = useState<string[]>([]);
+  const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const [timer, setTimer] = useState<number>(10);
 
   useEffect(() => {
-    socket.on("possible_actions", (actions: string[]) => {
+    socket.on("possible_actions", (actions: ActionState[]) => {
       setPossibleActions(actions);
     });
 
@@ -27,7 +28,7 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
     };
   }, []);
 
-  const handleActionClick = (action: string) => {
+  const handleActionClick = (action: ActionState) => {
     console.log(`Action selected: ${action}`);
     // You can emit the selected action to the server here if needed
     socket.emit("action_selected", { action, battleId, playerId: socket.id });
@@ -42,7 +43,7 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
         {timer > 0 ? (
           possibleActions.map((action, index) => (
             <button key={index} onClick={() => handleActionClick(action)}>
-              {action}
+              {action.name}
             </button>
           ))
         ) : (

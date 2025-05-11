@@ -2,8 +2,12 @@ import { Archetype } from "../archetype/archetype";
 import { Action } from "../action/action";
 import { AttackAction } from "../action/attack";
 import { DefendAction } from "../action/defend";
+import { MonsterIdentifier } from "/types/types";
+import { ActionIdentifier } from "/types/types";
+import { ActionState } from "/types/types";
 
 export abstract class Monster {
+  private id: MonsterIdentifier;
   private name: string;
 
   private description: string;
@@ -17,6 +21,7 @@ export abstract class Monster {
   private armourClass: number;
 
   constructor(
+    id: MonsterIdentifier,
     name: string,
     description: string,
     archetype: Archetype,
@@ -25,6 +30,7 @@ export abstract class Monster {
     attackBonus: number,
     armourClass: number
   ) {
+    this.id = id;
     this.name = name;
     this.description = description;
     this.archetype = archetype;
@@ -37,10 +43,14 @@ export abstract class Monster {
     this.possibleActions.push(archetype.getAbility());
   }
 
-  public getAction(actionName: string): Action | undefined {
+  public getAction(actionIdentifier: ActionIdentifier): Action | undefined {
     return this.possibleActions.find(
-      (action) => action.getName() === actionName
+      (action) => action.getId() === actionIdentifier
     );
+  }
+
+  public getId(): MonsterIdentifier {
+    return this.id;
   }
 
   public getName(): string {
@@ -57,6 +67,10 @@ export abstract class Monster {
 
   public getPossibleActions(): Action[] {
     return this.possibleActions;
+  }
+
+  public getPossibleActionStates(): ActionState[] {
+    return this.possibleActions.map((action) => action.getActionState());
   }
 
   public getMaxHealth(): number {

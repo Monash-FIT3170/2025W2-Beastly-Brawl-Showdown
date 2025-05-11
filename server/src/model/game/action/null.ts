@@ -1,9 +1,10 @@
 import { Action } from "./action";
 import { Player } from "../player";
+import { ActionIdentifier } from "/types/types";
 
 export class NullAction extends Action {
   constructor() {
-    super("Null", "No action");
+    super(ActionIdentifier.NULL, "Null", "No action");
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
