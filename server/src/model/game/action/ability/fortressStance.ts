@@ -5,7 +5,7 @@ import { ActionIdentifier } from "/types/single/actionState";
 export class FortressStanceAbilityAction extends Action {
   constructor() {
     super(
-      ActionIdentifier.ATTACK,
+      ActionIdentifier.FORTRESS_STANCE,
       "Fortress Stance",
       "Increases AC for one round."
     );
