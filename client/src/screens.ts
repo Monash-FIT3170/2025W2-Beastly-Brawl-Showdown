@@ -1,0 +1,5 @@
+export enum Screens {
+  HOME_SCREEN = "HOME_SCREEN",
+  LOBBY_SCREEN = "LOBBY_SCREEN",
+  GAME_SCREEN = "GAME_SCREEN",
+}

@@ -5,4 +5,6 @@ export interface PlayerState {
   currentHealth: number;
   currentAttackStat: number;
   currentArmourClassStat: number;
+
+  logs: string[];
 }

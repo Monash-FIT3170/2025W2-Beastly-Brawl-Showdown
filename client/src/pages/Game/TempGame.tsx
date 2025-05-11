@@ -64,6 +64,13 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
               <p>Armour: {battleState.opponentPlayer.currentArmourClassStat}</p>
               <p>Monster: {battleState.opponentPlayerMonster.name}</p>
             </div>
+
+            <div>
+              <h3>Logs:</h3>
+              {battleState.yourPlayer.logs.map((log, index) => (
+                <p key={index}>{log}</p>
+              ))}
+            </div>
           </div>
         )}
       </div>

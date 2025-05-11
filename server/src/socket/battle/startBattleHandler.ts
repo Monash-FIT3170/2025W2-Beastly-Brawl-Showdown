@@ -21,7 +21,7 @@ export const startBattleHandler = (io: Server, socket: Socket) => {
       io.to(battleId).emit("battle_started", battleId);
 
       // TODO: separate below logic into a separate function, so that it can be reused every turn
-
+      battle.clearBattleLogs();
       battle.incTurn();
 
       let playersInBattle = battle.getPlayers();

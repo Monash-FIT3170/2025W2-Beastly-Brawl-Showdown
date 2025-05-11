@@ -34,6 +34,12 @@ export class Battle {
     this.turn++;
   }
 
+  public clearBattleLogs(): void {
+    this.players.forEach((player) => {
+      player.clearLogs();
+    });
+  }
+
   // Battle state is different for each player
   public getBattleState(currentPlayerId: string): BattleState {
     const currentPlayer = this.getPlayer(currentPlayerId);

@@ -9,5 +9,8 @@ export class NullAction extends Action {
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {}
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    actingPlayer.addLog("You did nothing.");
+    affectedPlayer.addLog(`${actingPlayer.getName()} did nothing.`);
+  }
 }

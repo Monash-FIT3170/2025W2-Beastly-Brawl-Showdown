@@ -1,4 +1,3 @@
-import { UUID } from "crypto";
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
@@ -14,6 +13,8 @@ export class Player {
 
   private actions: Action[] = [];
 
+  private logs: string[] = [];
+
   constructor(id: string, name: string, monster: Monster) {
     this.name = name;
     this.id = id;
@@ -21,6 +22,18 @@ export class Player {
     this.currentHealth = monster.getMaxHealth();
     this.currentAttackStat = monster.getAttackBonus();
     this.currentArmourClassStat = monster.getArmourClass();
+  }
+
+  public getLogs(): string[] {
+    return this.logs;
+  }
+
+  public addLog(log: string): void {
+    this.logs.push(log);
+  }
+
+  public clearLogs(): void {
+    this.logs = [];
   }
 
   public resetStats(): void {
@@ -105,6 +118,8 @@ export class Player {
       currentHealth: this.currentHealth,
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
+
+      logs: this.logs,
     };
   }
 }

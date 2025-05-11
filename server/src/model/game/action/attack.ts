@@ -23,7 +23,12 @@ export class AttackAction extends Action {
     //   // hit
     //   affectedPlayer.incHealth(-5);
     // }
-    console.log("AttackAction executed");
     affectedPlayer.incHealth(-5);
+    actingPlayer.addLog(
+      `You attacked ${affectedPlayer.getName()} and dealt 5 damage.`
+    );
+    affectedPlayer.addLog(
+      `${actingPlayer.getName()} attacked you and dealt 5 damage.`
+    );
   }
 }
