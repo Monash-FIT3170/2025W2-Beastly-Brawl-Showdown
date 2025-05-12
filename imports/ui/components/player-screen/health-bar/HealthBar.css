@@ -7,8 +7,23 @@
     padding: 4px;
   }
   
-  .health-bar-fill {
+.health-bar-fill {
     height: 24px;
     border-radius: 8px;
     transition: width 0.2s ease;
+  }
+
+.health-bar-text {
+  padding-left: 0.5rem;
+  color: white;
+  font-weight: bold;
+  width: 100%;
+  display: block;
+  line-height: 20px;
+  font-size: 0.85rem;
+  text-shadow:
+    -1px -1px 0 black,
+     1px -1px 0 black,
+    -1px  1px 0 black,
+     1px  1px 0 black;
   }

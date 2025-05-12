@@ -1,4 +1,5 @@
 import React from 'react';
+import './BattleControls.css';
 
 export const BattleControls = () => {
     return (

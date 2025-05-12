@@ -18,7 +18,9 @@ export const HealthBar = ( {current, max}: HealthBarProps ) => {
       <div
         className="health-bar-fill"
         style={{ width: `${percent}%`, backgroundColor: fillColor }}
-      ></div>
+      >
+        <span className="health-bar-text">{current}/{max}</span>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,7 @@
 .battle-controls {
   background-color: #fce49c;
+  position: fixed;
+  bottom: 0;
   padding: 1rem;
   border-top: 3px solid #333;
   display: flex;
