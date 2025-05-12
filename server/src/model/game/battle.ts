@@ -59,4 +59,13 @@ export class Battle {
       opponentPlayerMonster: opponentPlayer!.getMonster().getMonsterState(),
     };
   }
+  public isBattleOver(): boolean {
+    return Array.from(this.players.values()).some(
+      (player) => player.getHealth() == 0 
+    )
+  }
+  public getWinner(): string| null {
+    const alive_players = Array.from(this.players.values()).filter((player) => player.getHealth() > 0)
+    return alive_players.length === 1? alive_players[0].getName(): null;
+  }
 }

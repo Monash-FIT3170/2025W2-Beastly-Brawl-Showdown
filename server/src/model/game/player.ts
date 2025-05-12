@@ -41,6 +41,10 @@ export class Player {
     this.currentArmourClassStat = this.monster.getArmourClass();
   }
 
+  public resetActions(): void {
+    this.actions = []
+  }
+
   public getName(): string {
     return this.name;
   }
