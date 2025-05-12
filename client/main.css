@@ -1,6 +1,221 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
 body {
   padding: 10px;
   font-family: sans-serif;
+}
+
+.btnBlue{
+  @apply 
+  text-[#F6F1E5]
+  bg-[#55A9ED]
+  outline-[#403245]
+  outline-4
+  outline-offset-0
+  hover:bg-[#1F7BD0]
+  focus:outline-[#403245]
+  focus:ring-5
+  focus:ring-[#403245]
+  font-[jua]
+  font-medium 
+  font-medium 
+  rounded-lg 
+  text-sm 
+  me-2 
+  mb-2 
+  dark:bg-blue-600 
+  dark:hover:bg-blue-600 
+  dark:focus:ring-blue-800
+}
+
+.btnDarkYellow{
+  @apply 
+  text-[#F6F1E5]
+  bg-[#EDAF55]
+  outline-[#403245]
+  outline-4
+  outline-offset-0
+  hover:bg-[#FF9E2F]
+  focus:outline-[#403245]
+  focus:ring-5
+  focus:ring-[#403245]
+  font-[jua]
+  font-medium 
+  font-medium 
+  rounded-lg 
+  text-sm 
+  me-2 
+  mb-2 
+  dark:bg-blue-600 
+  dark:hover:bg-blue-600 
+  dark:focus:ring-blue-800
+}
+
+.btnRed{
+  @apply 
+  text-[#F6F1E5] 
+  bg-[#ED5A55]
+  outline-[#403245]
+  outline-4
+  outline-offset-0
+  hover:bg-[#C23033]
+  focus:outline-[#403245]
+  focus:ring-5
+  focus:ring-[#403245]
+  font-[jua] 
+  font-medium 
+  rounded-lg  
+  me-2 
+  mb-2 
+  dark:bg-red-600 
+  dark:hover:bg-red-700 
+  dark:focus:ring-red-800
+}
+
+
+/* 
+This is for the Action Buttons in the game (battle) session.
+ */
+.btnAction {
+  @apply 
+  max-w-[250px]
+  h-[76px]
+  px-6
+  py-3
+  text-[35px]
+}
+
+
+/* 
+This is for more generic buttons with smaller sizes (cancel, select, exit lobby, etc.)
+ */
+.btnGeneric {
+  @apply
+  max-w-[300px]
+  h-[60px]
+  px-6
+  py-3
+  text-[25px]
+}
+
+/* 
+Small-sized buttons for menu, info, exit, etc.
+*/
+.btnUtility {
+  @apply
+  max-w-[130px]
+  h-[51px]
+  text-[15px]
+  px-6
+  py-3
+}
+
+.backgroundCardBeige{
+  @apply
+  w-[90%] 
+  sm:w-[450px] 
+  md:w-[500px] 
+  lg:w-[530px]
+  mx-auto 
+  bg-[#FBD773] 
+  p-6 
+  rounded-2xl 
+  border-4 
+  border-[#403245]
+}
+
+.backgroundCardLightBeige{
+  @apply
+  w-[90%] 
+  sm:w-[450px] 
+  md:w-[500px] 
+  lg:w-[530px]
+  mx-auto 
+  bg-[#FFE8B0] 
+  p-6 
+  rounded-2xl 
+  border-4 
+  border-[#403245]
+}
+
+.backgroundCardBlue{
+  @apply
+  w-[90%] 
+  sm:w-[450px] 
+  md:w-[500px] 
+  lg:w-[530px]
+  mx-auto 
+  bg-[#55A9ED]
+  p-6 
+  rounded-2xl 
+  border-4 
+  border-[#403245]
+}
+
+.backgroundCardPurple{
+  @apply
+  w-[90%] 
+  sm:w-[450px] 
+  md:w-[500px] 
+  lg:w-[530px]
+  mx-auto 
+  bg-[#BD55ED]
+  p-6 
+  rounded-2xl 
+  border-4 
+  border-[#403245]
+}
+
+/* 
+Size is large (35px) in reference to Figma
+*/
+.infoTextLarge{
+  @apply
+  text-[35px]
+  text-[#FFFFFF]
+  font-[jua] 
+}
+
+/* 
+Size is medium (25px) in reference to Figma
+*/
+.infoTextMedium{
+  @apply
+  text-[25px]
+  text-[#FFFFFF]
+  font-[jua] 
+}
+
+
+/* 
+Size is small (15px) in reference to Figma
+*/
+.infoTextSmall{
+  @apply
+  text-[15px]
+  text-[#FFFFFF]
+  font-[jua] 
+}
+
+/* 
+For texts like "Please Enter Room Code" etc. 
+Size is medium (25px) in reference to Figma
+*/
+.descriptionTextLarge{
+  @apply
+  text-[25px]
+  text-[#403245]
+  font-[jua] 
+}
+
+/* 
+For texts like monster description etc. 
+Size is small (15px) in reference to Figma
+*/
+.descriptionText{
+  @apply
+  text-[15px]
+  text-[#403245]
+  font-[jua] 
 }
