@@ -1,0 +1,14 @@
+.health-bar-container {
+    width: 100%;
+    max-width: 300px;
+    background-color: #ccc;
+    border: 3px solid black;
+    border-radius: 12px;
+    padding: 4px;
+  }
+  
+  .health-bar-fill {
+    height: 24px;
+    border-radius: 8px;
+    transition: width 0.2s ease;
+  }
