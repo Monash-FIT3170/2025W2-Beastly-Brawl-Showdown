@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ButtonProps {
-  text: string;       // Accept the text prop
+  text: string; // Accept the text prop
   onClick: () => void; // Accept the onClick prop
 }
 
