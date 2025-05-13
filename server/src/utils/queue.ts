@@ -15,6 +15,12 @@ export default class Queue<T> implements IQueue<T> {
     }
     this.storage.push(item);
   }
+  enqueuefront(item: T): void {
+    if (this.size() === this.capacity) {
+      throw Error("Queue has reached max capacity, you cannot add more items");
+    }
+    this.storage.unshift(item);
+  }
   dequeue(): T | undefined {
     return this.storage.shift();
   }
