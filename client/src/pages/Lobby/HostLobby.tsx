@@ -7,7 +7,9 @@ export const HostLobby = () => {
     const [players, setPlayers] = useState<Player[]>([
       new Player("0", "Player 1"), 
       new Player("1", "Player 2"), 
-      new Player("2", "Player 3")
+      new Player("2", "Player 3"),
+      new Player("3", "Player 4"),
+      new Player("4", "Player 5")
     ]);
 
     const addPlayer = (playerName: string, playerID: string) => {
