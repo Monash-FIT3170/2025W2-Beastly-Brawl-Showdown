@@ -12,8 +12,12 @@
   --color-lightgrey: #DAD9D7;
   --color-maybeyellow: #FBD474;
   --color-whiteish: #F6F1E5;
-
+  --color-neongreen: #7EED55;
+  --color-cream: #FFE8B1;
+  --color-sharpred: #ED5A55;
+  --color-plainyellow: #FFD900;
 }
+
 
 body {
   padding: 10px;
