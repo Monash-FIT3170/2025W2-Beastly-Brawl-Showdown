@@ -18,22 +18,48 @@ export default class GameSession{
     public createMatches() {
         // Prepare the battles with the players in them
         const cyclesCount = Math.floor(this.players.size()/2); 
+
+        // Randomising the players into a temporary player queue
+        const tempPlayerQueue = new Queue<Player>(this.players.size());
+        const previousPosition = 1;
+        for (let i = 0; i < this.players.size(); i++) {
+            const playerIndexed = this.players.dequeue();
+
+            const currentPosition = Math.random();
+
+            if (playerIndexed != undefined && previousPosition < currentPosition) {
+                tempPlayerQueue.enqueuefront(playerIndexed);
+                const previousPosition = currentPosition;
+            } else if (playerIndexed != undefined) {
+                tempPlayerQueue.enqueue(playerIndexed);
+                const previousPosition = currentPosition;
+            }
+
+        }
+
         for (let i = 0; i < cyclesCount; i++) {
-            // Get the two people that will be battling in the current match
-            const player1Indexed = this.players.dequeue();
-            const player2Indexed = this.players.dequeue();
+            // Get the two people that will be battling in the current match by taking them from the queue that randomised their order
+            const player1Indexed = tempPlayerQueue.dequeue();
+            const player2Indexed = tempPlayerQueue.dequeue();
 
             // Create a battle and add it to the queue of battles
             const battle = new Battle(player1Indexed,player2Indexed);
             this.battles.enqueue(battle);
 
-            // IDEA TO CONSIDER: Putting the players back into the queue of players
+            // IDEA TO CONSIDER: Putting the players back into the queue of players after they have been added to their battle
             // if (player1Indexed != undefined && player2Indexed != undefined) {
             //     this.players.enqueue(player1Indexed);
             //     this.players.enqueue(player2Indexed);
             // }
-
             }
+
+        // Taking into account the case where there's an odd number of players. The odd one out automatically wins and is added back to the queue, as they cannot be put into a battle
+        if (tempPlayerQueue.size() != 0) {
+            const autoWinPlayer = tempPlayerQueue.dequeue();
+            if (autoWinPlayer != undefined) {
+                this.players.enqueue(autoWinPlayer);
+            }
+        }
     }
 
 }
