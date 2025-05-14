@@ -12,7 +12,7 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
   const [battleState, setBattleState] = useState<BattleState | null>(null);
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const [timer, setTimer] = useState<number>(10);
-  const [winner, setWinner] = useState<string|null>(null);
+  const [winner, setWinner] = useState<string | null>(null);
 
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
@@ -29,9 +29,9 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
     });
 
     socket.on("battle_end", (winner: string) => {
-      console.log(`Winner ${winner}`)
-      setWinner(winner)
-    })
+      console.log(`Winner ${winner}`);
+      setWinner(winner);
+    });
 
     return () => {
       socket.off("possible_actions");
@@ -50,7 +50,6 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
     <div>
       <h1>GAME</h1>
 
-
       {/* Winner display if battle is over */}
       {winner ? (
         <div>
@@ -61,12 +60,10 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
         <>
           <CountDownTimer timer={timer} />
 
-
           {battleState && (
             <div>
               <h2>Battle</h2>
               <p>Turn: {battleState.turn}</p>
-
 
               <div>
                 <h3>You: {battleState.yourPlayer.name}</h3>
@@ -76,15 +73,15 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
                 <p>Monster: {battleState.yourPlayerMonster.name}</p>
               </div>
 
-
               <div>
                 <h3>Opponent: {battleState.opponentPlayer.name}</h3>
                 <p>Health: {battleState.opponentPlayer.currentHealth}</p>
                 <p>Attack: {battleState.opponentPlayer.currentAttackStat}</p>
-                <p>Armour: {battleState.opponentPlayer.currentArmourClassStat}</p>
+                <p>
+                  Armour: {battleState.opponentPlayer.currentArmourClassStat}
+                </p>
                 <p>Monster: {battleState.opponentPlayerMonster.name}</p>
               </div>
-
 
               <div>
                 <h3>Logs:</h3>
@@ -95,12 +92,11 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
             </div>
           )}
 
-
           <div>
             {timer > 0 ? (
               possibleActions.map((action, index) => (
                 <button key={index} onClick={() => handleActionClick(action)}>
-                  {action.name}
+                  {action.name} {action.currentUse}/{action.maxUse}
                 </button>
               ))
             ) : (

@@ -14,4 +14,6 @@ export interface ActionState {
   id: ActionIdentifier;
   name: string;
   description: string;
+  currentUse: number;
+  maxUse: number;
 }

@@ -4,7 +4,7 @@ import { ActionIdentifier } from "/types/single/actionState";
 
 export class NullAction extends Action {
   constructor() {
-    super(ActionIdentifier.NULL, "Null", "No action");
+    super(ActionIdentifier.NULL, "Null", "No action", Infinity);
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
