@@ -5,21 +5,28 @@ import { players, battles } from "../../../main";
 
 export const startBattleHandler = (io: Server, socket: Socket) => {
   socket.on("start_battle", () => {
-    if (players.size == 2) {
+    if (players.size % 2 == 0) { // We need an even number of players so that everyone can battle
       let playersList = Array.from(players.values());
 
-      let battleId = crypto.randomUUID();
+      // Loop over pairs of players
+      for (let i = 0; i < playersList.length; i += 2) {
+        let player1 = playersList[i];
+        let player2 = playersList[i + 1];
 
-      let battle = new Battle(battleId, playersList[0], playersList[1]);
+        // Create a new battle instance
+        let battleId = crypto.randomUUID();
+        let battle = new Battle(battleId, player1, player2);
+        battles.set(battleId, battle);
 
-      battles.set(battleId, battle);
+        // Gets a pair of players to join a room
+        io.sockets.sockets.get(player1.getId())?.join(battleId);
+        io.sockets.sockets.get(player2.getId())?.join(battleId);
+        console.log(`Player ${player1.getName()} and Player ${player2.getName()} joined battle ${battleId}`);
 
-      playersList.forEach((player) => {
-        io.sockets.sockets.get(player.getId())?.join(battleId);
-      });
-
-      io.to(battleId).emit("battle_started", battleId);
-      proceedBattleTurn(io, battle);
+        // Emit the battle_started to the pair of players + start battle turns
+        io.to(battleId).emit("battle_started", battleId);
+        proceedBattleTurn(io, battle);
+      }
     }
   });
 };
