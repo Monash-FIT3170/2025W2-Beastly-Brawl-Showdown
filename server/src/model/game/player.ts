@@ -37,8 +37,10 @@ export class Player {
   }
 
   public resetStats(): void {
-    this.currentAttackStat = this.monster.getAttackBonus();
-    this.currentArmourClassStat = this.monster.getArmourClass();
+    if (this.monster) {
+      this.currentAttackStat = this.monster.getAttackBonus();
+      this.currentArmourClassStat = this.monster.getArmourClass();
+    }
   }
 
   public resetActions(): void {
@@ -53,7 +55,7 @@ export class Player {
     return this.id;
   }
 
-  public getMonster(): Monster {
+  public getMonster(): Monster | null {
     return this.monster;
   }
 
@@ -76,7 +78,10 @@ export class Player {
     this.currentHealth += number;
     if (this.currentHealth < 0) {
       this.currentHealth = 0;
-    } else if (this.currentHealth > this.monster.getMaxHealth()) {
+    } else if (
+      this.monster &&
+      this.currentHealth > this.monster.getMaxHealth()
+    ) {
       this.currentHealth = this.monster.getMaxHealth();
     }
   }
