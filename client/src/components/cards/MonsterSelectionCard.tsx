@@ -25,8 +25,7 @@ export const MonsterSelectionCard = ({name, description, image, type}: MonsterSe
                 break;
                 
         }
-
-    },[type])
+    },[color])
     
 
     return(
