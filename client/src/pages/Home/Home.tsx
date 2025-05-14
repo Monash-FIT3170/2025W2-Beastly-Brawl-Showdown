@@ -6,6 +6,7 @@ import { BlueButton } from '../../components/buttons/BlueButton';
 import { RedButton } from '../../components/buttons/RedButton';
 import { PurpleHeaderCard } from '../../components/cards/PurpleHeaderCard';
 import { MonsterSelectionCard } from '../../components/cards/MonsterSelectionCard';
+import { IconTest } from '../../components/icons/IconTest';
 
 export const Home = () => (
   <>
@@ -18,5 +19,6 @@ export const Home = () => (
     <ButtonDemo/>
     <InputBox />
     <CardDemo />
+    <IconTest />
   </>
 );
