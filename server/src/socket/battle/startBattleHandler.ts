@@ -106,7 +106,7 @@ function proceedBattleTurn(io: Server, battle: Battle) {
       setTimeout(() => {
         // TODO: Set a property in the battle instance to object it is in the battle result stage (for the host match summary page)
         proceedBattleTurn(io, battle);
-      }, 2000);
+      }, 5000);
     }
   }, 1000); // Emit every second
 }

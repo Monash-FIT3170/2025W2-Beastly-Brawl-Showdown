@@ -42,7 +42,7 @@ export class Player {
   }
 
   public resetActions(): void {
-    this.actions = []
+    this.actions = [];
   }
 
   public getName(): string {
@@ -102,6 +102,7 @@ export class Player {
     return this.actions;
   }
 
+  // TODO: Remove the other action and push the new one? How do we want to handle this?
   public addAction(action: Action): void {
     this.actions.push(action);
   }
