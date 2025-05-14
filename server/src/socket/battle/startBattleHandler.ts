@@ -52,7 +52,7 @@ function proceedBattleTurn(io: Server, battle: Battle) {
   let player1 = playersInBattle[0];
   let player2 = playersInBattle[1];
 
-  let timer = 10; // Set the initial timer value (e.g., 60 seconds)
+  let timer = 5; // Set the initial timer value (e.g., 60 seconds)
   const interval = setInterval(() => {
     if (timer >= 0) {
       io.to(battle.getId()).emit("timer", timer);
@@ -104,6 +104,7 @@ function proceedBattleTurn(io: Server, battle: Battle) {
         player.resetActions();
       });
 
+      // When battle over, emit battle_end and pass winner to the 2 client's UI
       if (battle.isBattleOver()) {
         io.to(battle.getId()).emit("battle_end", battle.getWinner());
       }

@@ -3,6 +3,8 @@ import socket from "../../socket";
 import CountDownTimer from "../../components/temp/CountdownTimer";
 import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
+import LoserScreen from "./LoserScreen";
+import WinnerScreen from "./WinnerScreen";
 
 interface TempGameProps {
   battleId: string | null; // Add battleId as a prop
@@ -46,6 +48,7 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
     socket.emit("action_selected", { action, battleId, playerId: socket.id });
   };
 
+  // TODO: Need to make this more modular so that we can insert different types of screens rather than using if statements within css
   return (
     <div>
       <h1>GAME</h1>
@@ -53,10 +56,11 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
 
       {/* Winner display if battle is over */}
       {winner ? (
-        <div>
-          <h2>Battle Ended</h2>
-          <p>Winner: {winner}</p>
-        </div>
+        battleState?.yourPlayer.name === winner ? (
+          <WinnerScreen />
+        ) : (
+          <LoserScreen />
+        )
       ) : (
         <>
           <CountDownTimer timer={timer} />
