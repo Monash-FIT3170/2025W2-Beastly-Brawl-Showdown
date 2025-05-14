@@ -244,20 +244,3 @@ Size is small (15px) in reference to Figma
   text-[#403245]
   font-[jua] 
 }
-
-.backgroundHeaderPurple {
-  @apply w-[90%]
-  sm:w-[450px]
-  md:w-[500px]
-  lg:w-[530px]
-  mx-auto
-  bg-[#BD55ED]
-  p-6
-  border-4
-  border-t-[#BD55ED]
-  border-b-[#403245]
-  border-l-[#403245]
-  border-r-[#403245]
-  rounded-bl-xl
-  rounded-br-xl;
-}
