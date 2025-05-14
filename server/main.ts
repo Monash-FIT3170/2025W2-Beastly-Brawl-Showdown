@@ -25,8 +25,7 @@ Meteor.startup(async () => {
 
   io.on("connection", (socket) => {
     socket.on("create_player", (name) => {
-      let monster = new StonehideGuardian();
-      let player = new Player(socket.id, name, monster);
+      let player = new Player(socket.id, name);
 
       players.set(socket.id, player);
     });

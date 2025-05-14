@@ -5,7 +5,7 @@ import { PlayerState } from "/types/single/playerState";
 export class Player {
   private id: string;
   private name: string;
-  private monster: Monster;
+  private monster: Monster | null;
 
   private currentHealth: number;
   private currentAttackStat: number;
@@ -15,13 +15,13 @@ export class Player {
 
   private logs: string[] = [];
 
-  constructor(id: string, name: string, monster: Monster) {
+  constructor(id: string, name: string) {
     this.name = name;
     this.id = id;
-    this.monster = monster;
-    this.currentHealth = monster.getMaxHealth();
-    this.currentAttackStat = monster.getAttackBonus();
-    this.currentArmourClassStat = monster.getArmourClass();
+    this.monster = null;
+    this.currentHealth = 0;
+    this.currentAttackStat = 0;
+    this.currentArmourClassStat = 0;
   }
 
   public getLogs(): string[] {
@@ -59,6 +59,9 @@ export class Player {
 
   public setMonster(monster: Monster) {
     this.monster = monster;
+    this.currentHealth = monster.getMaxHealth();
+    this.currentAttackStat = monster.getAttackBonus();
+    this.currentArmourClassStat = monster.getArmourClass();
   }
 
   public getHealth(): number {
