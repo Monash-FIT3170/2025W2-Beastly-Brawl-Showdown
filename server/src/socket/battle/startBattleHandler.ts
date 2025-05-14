@@ -18,8 +18,7 @@ export const startBattleHandler = (io: Server, socket: Socket) => {
         io.sockets.sockets.get(player.getId())?.join(battleId);
       });
 
-      io.to(battleId).emit("battle_started", battleId);
-      proceedBattleTurn(io, battle);
+      io.to(battleId).emit("go_to_character_select", { battleId }); // Emit to both players to navigate to character select screen
     }
   });
 };

@@ -1,72 +1,105 @@
 import React, { useState, useEffect } from "react";
 import socket from "../../socket";
-import { Monster } from "../../../../server/src/model/game/monster/monster"; // Assuming you have a base Monster class
+import "./CharacterSelect.css"; // We'll define styles here
 
-import { BattleState } from "/types/composite/battleState";
+export interface FrontendMonster {
+  id: string;
+  name: string;
+  type: string;
+  hp: number;
+  attack: number;
+  description: string;
+  armourClass: number;
+}
+
+export const monsterList: FrontendMonster[] = [
+  {
+    id: "stonehide",
+    name: "Stonehide Guardian",
+    type: "Earth",
+    hp: 120,
+    attack: 10,
+    armourClass: 18,
+    description: "A sturdy tank with powerful defense.",
+  },
+  {
+    id: "shadowfang",
+    name: "Shadowfang Predator",
+    type: "Dark",
+    hp: 90,
+    attack: 15,
+    armourClass: 14,
+    description: "A stealthy striker with high damage.",
+  },
+  {
+    id: "mysticwyvern",
+    name: "Mystic Wyvern",
+    type: "Air",
+    hp: 100,
+    attack: 12,
+    armourClass: 16,
+    description: "A balanced attacker with magical prowess.",
+  },
+  // Add more here as needed
+];
 
 interface CharacterSelectProps {
   battleId: string | null;
 }
 
 const CharacterSelect: React.FC<CharacterSelectProps> = ({ battleId }) => {
-  const [monsters, setMonsters] = useState<Monster[]>([]);
-  const [selectedMonster, setSelectedMonster] = useState<Monster | null>(null);
+  const [monsters, setMonsters] = useState<FrontendMonster[]>([]);
+  const [selectedMonster, setSelectedMonster] =
+    useState<FrontendMonster | null>(null);
 
   useEffect(() => {
-    // Initialize monster instances using your classes
-    const availableMonsters: Monster[] = [
-      //new StonehideGuardian(),
-      // new ShadowfangPredator(),
-      // new MysticWyvern(),
-    ];
-
-    setMonsters(availableMonsters); // Set available monsters
+    setMonsters(monsterList);
   }, []);
 
-  const handleSelectMonster = (monster: Monster) => {
+  const handleSelectMonster = (monster: FrontendMonster) => {
     setSelectedMonster(monster);
   };
 
   const handleConfirmSelection = () => {
     if (battleId && selectedMonster) {
-      // Emit the monster selection event with selected monster details
       socket.emit("monster_selected", {
         battleId,
-        monsterState: selectedMonster, // Pass the monster state
+        monsterState: selectedMonster,
       });
 
-      // Navigate to the next screen or update the UI
-      console.log(`Monster ${selectedMonster.getName()} selected for player`);
+      console.log(`Monster ${selectedMonster.name} selected for player`);
     }
   };
 
   return (
-    <div>
-      <h1>Select Your Character</h1>
+    <div className="character-select-container">
+      <h1 className="title">Choose Your Monster</h1>
 
-      <div className="monster-selection">
+      <div className="monster-grid">
         {monsters.map((monster) => (
           <div
-            key={monster.getId()}
-            className={`monster-card ${
-              selectedMonster?.getId() === monster.getId() ? "selected" : ""
+            key={monster.id}
+            className={`monster-square ${
+              selectedMonster?.id === monster.id ? "selected" : ""
             }`}
             onClick={() => handleSelectMonster(monster)}
           >
-            <h2>{monster.getName()}</h2>
-            <p>{monster.getDescription()}</p>
-            <p>Health: {monster.getMaxHealth()}</p>
-            <p>Attack Bonus: {monster.getAttackBonus()}</p>
-            <p>Armor Class: {monster.getArmourClass()}</p>
+            <h3>{monster.name}</h3>
+            <p>{monster.type}</p>
           </div>
         ))}
       </div>
 
-      <div>
-        <button onClick={handleConfirmSelection} disabled={!selectedMonster}>
-          Confirm Selection
-        </button>
-      </div>
+      {selectedMonster && (
+        <div className="monster-details">
+          <h2>{selectedMonster.name}</h2>
+          <p>{selectedMonster.description}</p>
+          <p>HP: {selectedMonster.hp}</p>
+          <p>Attack: {selectedMonster.attack}</p>
+          <p>Armor Class: {selectedMonster.armourClass}</p>
+          <button onClick={handleConfirmSelection}>Confirm</button>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,0 +1,53 @@
+.character-select-container {
+  text-align: center;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.monster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-items: center;
+}
+
+.monster-square {
+  width: 150px;
+  height: 150px;
+  background-color: #222;
+  color: white;
+  border: 3px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s, border 0.2s;
+}
+
+.monster-square:hover {
+  transform: scale(1.05);
+  border-color: #888;
+}
+
+.monster-square.selected {
+  border-color: gold;
+  background-color: #333;
+}
+
+.monster-details {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 2px solid #ccc;
+  display: inline-block;
+  background: #111;
+  color: #fff;
+  border-radius: 8px;
+}

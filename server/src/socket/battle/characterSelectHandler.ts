@@ -1,6 +1,12 @@
 import { Server, Socket } from "socket.io";
 import { battles } from "../../../main";
 import { MonsterState } from "types/single/monsterState";
+import { StonehideGuardian } from "../../model/game/monster/stonehideGuardian";
+
+const monsterMap = {
+  "Stonehide Guardian": () => new StonehideGuardian(),
+  // Add more mappings here
+};
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
   socket.on(
