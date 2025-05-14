@@ -8,7 +8,7 @@ interface ButtonProps{
 export const RedButton = ({text, onClick}: ButtonProps) => {
     return(
     <button 
-    className=  "bg-sharpred text-[50px] text-white font-[Jua] font-outline-1 py-5 px-10 rounded-[15px] border border-[4px] border-darkpurple"
+    className=  "bg-sharpred text-large text-white font-[Jua] w-normalButtonWidth h-normalButtonHeight rounded-[15px] border border-[4px] border-darkpurple"
     onClick={onClick}
     >
   {text}

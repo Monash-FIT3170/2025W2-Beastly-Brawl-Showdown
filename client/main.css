@@ -16,6 +16,13 @@
   --color-cream: #FFE8B1;
   --color-sharpred: #ED5A55;
   --color-plainyellow: #FFD900;
+  --text-tiny: 15pt;
+  --text-medium: 25pt;
+  --text-large: 35pt;
+  --spacing-normalButtonWidth: 180px;
+  --spacing-normalButtonHeight: 90px;
+  --spacing-normalPhoneWidth: 369px;
+
 }
 
 
