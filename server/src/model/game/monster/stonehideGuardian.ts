@@ -18,3 +18,33 @@ export class StonehideGuardian extends Monster {
     );
   }
 }
+
+export class test1 extends Monster {
+  constructor() {
+    super(
+      MonsterIdentifier.STONEHIDE_GUARDIAN,
+      "test Guardian",
+      "test1",
+      new Tank(),
+      new GroundSlamAbilityAction(),
+      30,
+      1,
+      16
+    );
+  }
+}
+
+export class test2 extends Monster {
+  constructor() {
+    super(
+      MonsterIdentifier.STONEHIDE_GUARDIAN,
+      "test gwbuosjlzm 2",
+      "2",
+      new Tank(),
+      new GroundSlamAbilityAction(),
+      30,
+      1,
+      16
+    );
+  }
+}

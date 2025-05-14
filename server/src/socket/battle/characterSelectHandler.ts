@@ -4,7 +4,11 @@ import { Battle } from "../../model/game/battle";
 import { MonsterState } from "types/single/monsterState";
 import { NullAction } from "../../model/game/action/null";
 
-import { StonehideGuardian } from "../../model/game/monster/stonehideGuardian";
+import {
+  StonehideGuardian,
+  test1,
+  test2,
+} from "../../model/game/monster/stonehideGuardian";
 import { Monster } from "../../model/game/monster/monster";
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
@@ -59,6 +63,11 @@ export function createMonsterByName(name: string): Monster | null {
   switch (name) {
     case "Stonehide Guardian":
       return new StonehideGuardian();
+    case "Shadowfang Predator":
+      return new test1();
+    case "Mystic Wyvern":
+      return new test2();
+
     default:
       return null;
   }
