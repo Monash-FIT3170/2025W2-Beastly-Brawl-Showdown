@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import TempLobby from "../Lobby/TempLobby";
 import TempGame from "../Game/TempGame";
-import socket from "../../socket"; // Ensure you import the socket instance
+import socket from "../../socket";
 import { Screens } from "../../screens";
+import CharacterSelect from "../Game/CharacterSelect";
 
 export const Home = () => {
-  const [screen, setScreen] = useState<Screens>(Screens.LOBBY_SCREEN); // State to track the current screen
-  const [battleId, setBattleId] = useState<string | null>(null); // State to track the battle ID
+  const [screen, setScreen] = useState<Screens>(Screens.LOBBY_SCREEN);
+  const [battleId, setBattleId] = useState<string | null>(null);
 
   useEffect(() => {
     socket.on("battle_started", (battleId: string) => {
@@ -20,10 +21,35 @@ export const Home = () => {
     };
   }, []);
 
+  useEffect(() => {
+    socket.on("go_to_character_select", ({ battleId }) => {
+      console.log("Switching to CHARACTER_SELECT_SCREEN");
+      setBattleId(battleId);
+      setScreen(Screens.CHARACTER_SELECT_SCREEN); // Navigate to the character select screen
+    });
+
+    return () => {
+      socket.off("go_to_character_select");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("battle_state_updated", (battleState) => {
+      console.log("Battle state updated:", battleState);
+      // Handle any updates from the server here (e.g., showing new monster selection state)
+    });
+
+    return () => {
+      socket.off("battle_state_updated");
+    };
+  }, []);
+
   const renderScreen = () => {
     switch (screen) {
       case Screens.LOBBY_SCREEN:
         return <TempLobby />;
+      case Screens.CHARACTER_SELECT_SCREEN:
+        return <CharacterSelect battleId={battleId} />;
       case Screens.GAME_SCREEN:
         return <TempGame battleId={battleId} />;
       default:

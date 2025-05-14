@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import socket from "../../socket";
 import { Monster } from "../../../../server/src/model/game/monster/monster"; // Assuming you have a base Monster class
-import { StonehideGuardian } from "../../../../server/src/model/game/monster/stonehideGuardian"; // Your specific monster class
+
 import { BattleState } from "/types/composite/battleState";
 
 interface CharacterSelectProps {
@@ -15,7 +15,7 @@ const CharacterSelect: React.FC<CharacterSelectProps> = ({ battleId }) => {
   useEffect(() => {
     // Initialize monster instances using your classes
     const availableMonsters: Monster[] = [
-      new StonehideGuardian(),
+      //new StonehideGuardian(),
       // new ShadowfangPredator(),
       // new MysticWyvern(),
     ];
@@ -32,8 +32,7 @@ const CharacterSelect: React.FC<CharacterSelectProps> = ({ battleId }) => {
       // Emit the monster selection event with selected monster details
       socket.emit("monster_selected", {
         battleId,
-        playerId: socket.id,
-        monsterId: selectedMonster.getId(), // Pass the monster ID
+        monsterState: selectedMonster, // Pass the monster state
       });
 
       // Navigate to the next screen or update the UI
