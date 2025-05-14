@@ -15,6 +15,8 @@ export class GroundSlamAbilityAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    affectedPlayer.stun() 
+
     actingPlayer.addLog(
       `You did nothing. Unimplemented action ${this.getName()}`
     );

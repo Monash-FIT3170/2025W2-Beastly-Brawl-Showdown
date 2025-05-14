@@ -6,13 +6,12 @@ export class Player {
   private id: string;
   private name: string;
   private monster: Monster;
-
   private currentHealth: number;
   private currentAttackStat: number;
   private currentArmourClassStat: number;
 
   private actions: Action[] = [];
-
+  private stunned = false;
   private logs: string[] = [];
 
   constructor(id: string, name: string, monster: Monster) {
@@ -52,7 +51,9 @@ export class Player {
   public getId(): string {
     return this.id;
   }
-
+  public stun(): void{
+    this.stunned = true; 
+  }
   public getMonster(): Monster {
     return this.monster;
   }

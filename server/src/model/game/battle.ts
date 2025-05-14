@@ -5,7 +5,6 @@ import { BattleState } from "/types/composite/battleState"; // Adjust the path b
 export class Battle {
   private id: UUID;
   private players: Map<string, Player> = new Map();
-
   private turn: number = 0;
 
   constructor(id: UUID, player1: Player, player2: Player) {
