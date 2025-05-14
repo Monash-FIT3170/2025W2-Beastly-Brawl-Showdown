@@ -64,7 +64,7 @@ const CharacterSelect: React.FC<CharacterSelectProps> = ({ battleId }) => {
     if (battleId && selectedMonster) {
       socket.emit("monster_selected", {
         battleId,
-        monsterState: selectedMonster,
+        monsterName: selectedMonster.name,
       });
 
       console.log(`Monster ${selectedMonster.name} selected for player`);

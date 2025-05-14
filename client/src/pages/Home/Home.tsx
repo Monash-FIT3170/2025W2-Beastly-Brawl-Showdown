@@ -33,17 +33,6 @@ export const Home = () => {
     };
   }, []);
 
-  useEffect(() => {
-    socket.on("battle_state_updated", (battleState) => {
-      console.log("Battle state updated:", battleState);
-      // Handle any updates from the server here (e.g., showing new monster selection state)
-    });
-
-    return () => {
-      socket.off("battle_state_updated");
-    };
-  }, []);
-
   const renderScreen = () => {
     switch (screen) {
       case Screens.LOBBY_SCREEN:

@@ -42,7 +42,7 @@ export class Player {
   }
 
   public resetActions(): void {
-    this.actions = []
+    this.actions = [];
   }
 
   public getName(): string {
@@ -55,6 +55,10 @@ export class Player {
 
   public getMonster(): Monster {
     return this.monster;
+  }
+
+  public setMonster(monster: Monster) {
+    this.monster = monster;
   }
 
   public getHealth(): number {
