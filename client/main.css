@@ -12,8 +12,19 @@
   --color-lightgrey: #DAD9D7;
   --color-maybeyellow: #FBD474;
   --color-whiteish: #F6F1E5;
+  --color-neongreen: #7EED55;
+  --color-cream: #FFE8B1;
+  --color-sharpred: #ED5A55;
+  --color-plainyellow: #FFD900;
+  --text-tiny: 15pt;
+  --text-medium: 25pt;
+  --text-large: 35pt;
+  --spacing-normalButtonWidth: 180px;
+  --spacing-normalButtonHeight: 90px;
+  --spacing-normalPhoneWidth: 369px;
 
 }
+
 
 body {
   padding: 10px;
@@ -232,21 +243,4 @@ Size is small (15px) in reference to Figma
   text-[15px]
   text-[#403245]
   font-[jua] 
-}
-
-.backgroundHeaderPurple {
-  @apply w-[90%]
-  sm:w-[450px]
-  md:w-[500px]
-  lg:w-[530px]
-  mx-auto
-  bg-[#BD55ED]
-  p-6
-  border-4
-  border-t-[#BD55ED]
-  border-b-[#403245]
-  border-l-[#403245]
-  border-r-[#403245]
-  rounded-bl-xl
-  rounded-br-xl;
 }
