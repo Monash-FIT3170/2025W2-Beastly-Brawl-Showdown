@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { MonsterImage } from "../player-screen/monsters/MonsterImage";
+import { MonsterImage2 } from "../player-screen/monsters/MonsterImage2";
 
 interface MonsterSelectionProps{
     name: string;
@@ -11,30 +13,37 @@ export const MonsterSelectionCard = ({name, description, image, type}: MonsterSe
     
 
     const [color, setColor] = useState('blue');
-    useEffect(()=>{
 
+    useEffect(()=>{
         switch(type){
             case 'attacker':
-                setColor('sharpred');
+                setColor('bg-sharpred');
                 break;
             case 'defender':
-                setColor('neongreen');
+                setColor('bg-neongreen');
                 break;
             case 'balanced':
-                setColor('customblue');
+                setColor('bg-customblue');
                 break;
                 
         }
-    },[color])
+    },[type])
     
 
     return(
 
-        <div className={`bg-${color} border border-[4px] border-darkpurple rounded-[15px]`} >
-            {name}
-            {description}
-            {image}
-            {type}
-        </div>
+        <button 
+            className=
+                {`${color} 
+                border border-[4px] border-darkpurple 
+                rounded-[15px]`}>
+            <div>
+                <MonsterImage2 name = {name}/>
+            </div>
+            <div>
+                <p className=" text-large text-white font-[Jua]">{name}</p>
+                <p className=" text-medium text-black font-[Jua]">{description}</p>
+            </div>
+        </button>
     );
 }
