@@ -260,25 +260,30 @@ body {
 
 /* Pop Up Box*/
 
+
+
 .popupLayout{
   @apply
     items-center
     justify-center
     box-border
+    bg-white/30
     fixed
     /*
     width: 100%;
     height: 100%;*/
     left-0
     right-0
-    top-[20%]
     bottom-0
+    top-0
     flex
-    flex-col;
+    flex-col
+    backdrop-blur-md;
     }
 
 .popup {
   @apply
+    top-[20%]
     py-[1rem]
     px-[1rem]
     bg-[#FFE8B1]
