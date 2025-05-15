@@ -23,6 +23,8 @@ export const CardDemo = () => {
 			<InfoTextDemo />
 			<DescriptionTextDemo />
 		</div>
+
+
         </>
     );
 };

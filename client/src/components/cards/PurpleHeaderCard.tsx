@@ -1,7 +1,8 @@
-import React from "react";
+import React, { ReactElement } from "react";
 
 interface HeaderProps{
     text: string;
+    children: ReactElement
 }
 
 export const PurpleHeaderCard = ({text}: HeaderProps) => {
