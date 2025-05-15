@@ -10,6 +10,7 @@ import { IconTest } from '../../components/icons/IconTest';
 import { DefendButton } from '../../components/buttons/DefendButton';
 import {DefendButtonTemp} from "../../components/buttons/DefendButtonTemp"
 import { MonsterImage } from '../../components/player-screen/monsters/MonsterImage';
+import { Popup } from '../../components/popups/Popup';
 
 export const Home = () => (
   <>
@@ -20,6 +21,7 @@ export const Home = () => (
     <MonsterSelectionCard name = 'Mystic Wyvern' description='flavourtext' image = 'MysticWyvern.png' type = 'defender'/>
     <BlueButton text = 'DEFEND' onClick={() => (console.log("hey"))}/>
     <RedButton text = 'ATTACK' onClick = {() => console.log("attack")}></RedButton>
+    <Popup text = "This is a pop up screen! This is a pop up screen! This is a pop up screen! This is a pop up screen! You don't need to add line breaks, just type in here!" />
     <ButtonDemo/>
     <InputBox />
     <CardDemo />
