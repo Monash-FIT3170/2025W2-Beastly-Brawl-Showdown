@@ -9,7 +9,7 @@ export const InputBox = () => {
   return (
     <div>
       <input
-        className='bg-whiteish text=[24px] text-darkpurple font-[Jua] p-1 pl-4 rounded-[15px] border border-[2px] border-darkpurple'
+        className='bg-whiteish text=[24px] text-darkpurple font-[Jua] p-1 pl-4 rounded-[15px] border-[2px] border-darkpurple'
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
