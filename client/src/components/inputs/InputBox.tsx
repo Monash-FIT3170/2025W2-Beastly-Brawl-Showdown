@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-interface InputBoxProps {
-}
-
 export const InputBox = () => {
   const [text, setText] = useState('');
 
