@@ -31,6 +31,9 @@ body {
   font-family: sans-serif;
 }
 
+.btn{
+}
+
 .btnBlue {
   @apply
     text-[#F6F1E5]
