@@ -3,6 +3,8 @@ import React from "react";
 interface BarProps {
     colour: string;
     text: string;
+    textPosition: string;
+    radius: string;
     fillPercentage: number;
 }
 
@@ -42,15 +44,21 @@ const BarColoursDefinitions = () => (
   </div>
 );
 
-export const Bar = ({colour, text, fillPercentage}: BarProps) => {
-    let hidden = "";
-    let margins = "mx-[-2px] my-[-2px] border-2 rounded-lg";
+export const Bar = ({colour, text, textPosition, radius, fillPercentage}: BarProps) => {
+    let backgroundColour = "bg-" + colour + " border-darkpurple";
+    let margins = "mx-[-2px] my-[-2px] border-2 rounded-" + radius;
     if (fillPercentage <= 0) {
-        hidden = "hidden";
+        backgroundColour = "bg-lightergrey border-lightergrey";
     } else if (fillPercentage >= 100) {
         margins = "rounded-sm";
         fillPercentage = 97;
     }
+
+    let sidePadding = "pr-[3%]";
+    if (textPosition == "left") {
+      sidePadding = "pl-[4%]";
+    }
+    textPosition = "text-" + textPosition;
 
     return (
         <div className={`
@@ -60,22 +68,20 @@ export const Bar = ({colour, text, fillPercentage}: BarProps) => {
             bg-lightergrey
             border-darkpurple
             border-2
-            rounded-lg
+            rounded-${radius}
             overflow-hidden
         `}>
             <div className={`
                 absolute
                 w-[${fillPercentage + 3}%]
                 h-7.5
-                bg-${colour}
-                border-darkpurple
                 font-[Jua]
                 text-white
-                text-right
                 pt-[1%]
-                pr-[3%]
+                ${textPosition}
+                ${sidePadding}
                 ${margins}
-                ${hidden}
+                ${backgroundColour}
             `}>{text}</div>
             <BarFillPercentagesDefinitions />
             <BarColoursDefinitions />

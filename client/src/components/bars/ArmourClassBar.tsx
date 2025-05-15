@@ -1,13 +1,13 @@
 import React from "react";
 import { Bar } from "./Bar";
 
-interface ArmourClassProps {
+interface ArmourClassBarProps {
     armourClass: number;
     highestArmourClass: number;
 }
 
-export const ArmourClassBar = ({armourClass, highestArmourClass}: ArmourClassProps) => {
+export const ArmourClassBar = ({armourClass, highestArmourClass}: ArmourClassBarProps) => {
     return (
-        <Bar colour="customblue" text={String(armourClass)} fillPercentage={Math.floor(armourClass / highestArmourClass * 100)} />
+        <Bar colour="customblue" text={String(armourClass)} textPosition="right" radius="lg" fillPercentage={Math.floor(armourClass / highestArmourClass * 100)} />
     );
 }

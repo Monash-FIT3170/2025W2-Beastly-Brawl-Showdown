@@ -1,12 +1,12 @@
 import React from "react";
 import { Bar } from "./Bar";
 
-interface HealthBarProps {
+interface BattleHealthBarProps {
     currentHealth: number;
     maxHealth: number;
 }
 
-export const HealthBar = ({currentHealth, maxHealth}: HealthBarProps) => {
+export const BattleHealthBar = ({currentHealth, maxHealth}: BattleHealthBarProps) => {
     let colour;
     let healthPercentage = Math.floor(currentHealth / maxHealth * 100);
     if (healthPercentage > 70) {
@@ -17,6 +17,6 @@ export const HealthBar = ({currentHealth, maxHealth}: HealthBarProps) => {
         colour = "sharpred";
     }
     return (
-        <Bar colour={colour} text={String(currentHealth)} fillPercentage={healthPercentage} />
+        <Bar colour={colour} text={String(currentHealth) + "/" + String(maxHealth)} textPosition="left" radius="2xl" fillPercentage={healthPercentage} />
     );
 }

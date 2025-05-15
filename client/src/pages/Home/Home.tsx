@@ -12,9 +12,10 @@ import {DefendButtonTemp} from "../../components/buttons/DefendButtonTemp"
 import { MonsterImage } from '../../components/player-screen/monsters/MonsterImage';
 import { ButtonGeneric } from '../../components/buttons/ButtonGeneric';
 import { Popup } from '../../components/popups/Popup';
-import { HealthBar } from '../../components/bars/HealthBar';
+import { BattleHealthBar } from '../../components/bars/BattleHealthBar';
 import { ArmourClassBar } from '../../components/bars/ArmourClassBar';
 import { AttackBonusBar } from '../../components/bars/AttackBonusBar';
+import { TotalHealthBar } from '../../components/bars/TotalHealthBar';
 
 export const Home = () => (
   <>
@@ -39,19 +40,21 @@ export const Home = () => (
     <IconTest />
     <DefendButtonTemp label = 'DEFEND' initialCount = {3}/>
     <br /><br />
-    Health Bar (Full):
-    <HealthBar currentHealth={35} maxHealth={35} />
-    Health Bar (High):
-    <HealthBar currentHealth={30} maxHealth={35} />
-    Health Bar (Medium):
-    <HealthBar currentHealth={15} maxHealth={35} />
-    Health Bar (Low):
-    <HealthBar currentHealth={5} maxHealth={35} />
-    Health Bar (Zero):
-    <HealthBar currentHealth={0} maxHealth={35} />
-    Armour Class Bar:
+    Battle Health Bar (Full):
+    <BattleHealthBar currentHealth={20} maxHealth={20} />
+    Battle Health Bar (High):
+    <BattleHealthBar currentHealth={15} maxHealth={20} />
+    Battle Health Bar (Medium):
+    <BattleHealthBar currentHealth={10} maxHealth={20} />
+    Battle Health Bar (Low):
+    <BattleHealthBar currentHealth={5} maxHealth={20} />
+    Battle Health Bar (Zero):
+    <BattleHealthBar currentHealth={0} maxHealth={20} />
+    Total Health Bar (Stat Screen):
+    <TotalHealthBar totalHealth={30} highestHealth={35} />
+    Armour Class Bar (Stat Screen):
     <ArmourClassBar armourClass={16} highestArmourClass={20} />
-    Attack Bonus Bar:
+    Attack Bonus Bar (Stat Screen):
     <AttackBonusBar attackBonus={1} highestAttackBonus={5} />
   </>
 );

@@ -8,6 +8,6 @@ interface AttackBonusBarProps {
 
 export const AttackBonusBar = ({attackBonus, highestAttackBonus}: AttackBonusBarProps) => {
     return (
-        <Bar colour="plainyellow" text={"+" + String(attackBonus)} fillPercentage={Math.floor(attackBonus / highestAttackBonus * 100)} />
+        <Bar colour="plainyellow" text={"+" + String(attackBonus)} textPosition="right" radius="lg" fillPercentage={Math.floor(attackBonus / highestAttackBonus * 100)} />
     );
 }
