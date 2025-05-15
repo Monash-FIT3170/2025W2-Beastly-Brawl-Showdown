@@ -38,6 +38,7 @@ export const Home = () => (
     <CardDemo />
     <IconTest />
     <DefendButtonTemp label = 'DEFEND' initialCount = {3}/>
+    <br /><br />
     Health Bar (Full):
     <HealthBar currentHealth={35} maxHealth={35} />
     Health Bar (High):
