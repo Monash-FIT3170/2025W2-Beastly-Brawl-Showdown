@@ -15,9 +15,7 @@ export const Home = () => (
         <p></p>
       </PurpleHeaderCard>
     <h1>Welcome to Meteor!</h1>
-
-    <MonsterSelectionCard name = 'Dragon' description='flavourtext' image = 'path' type = 'defener'/>
-    <MonsterImage name = 'monster1'/>
+    <MonsterSelectionCard name = 'Mystic Wyvern' description='flavourtext' image = 'MysticWyvern.png' type = 'defender'/>
     <BlueButton text = 'DEFEND' onClick={() => (console.log("hey"))}/>
     <RedButton text = 'ATTACK' onClick = {() => console.log("attack")}></RedButton>
 
