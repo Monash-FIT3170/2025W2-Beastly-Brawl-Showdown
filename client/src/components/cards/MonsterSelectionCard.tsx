@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MonsterImage } from "../player-screen/monsters/MonsterImage";
-import { MonsterImage2 } from "../player-screen/monsters/MonsterImage2";
+import { MonsterImageResizable } from "../player-screen/monsters/MonsterImageResizable";
 
 interface MonsterSelectionProps{
     name: string;
@@ -9,7 +8,7 @@ interface MonsterSelectionProps{
     type: string;
 }
 
-export const MonsterSelectionCard = ({name, description, image, type}: MonsterSelectionProps) =>{
+export const MonsterSelectionCard = ({name, description, type}: MonsterSelectionProps) =>{
     
 
     const [color, setColor] = useState('blue');
@@ -36,9 +35,10 @@ export const MonsterSelectionCard = ({name, description, image, type}: MonsterSe
             className=
                 {`${color} 
                 border border-[4px] border-darkpurple 
-                rounded-[15px]`}>
+                rounded-[15px]
+                flex flex-row`}>
             <div>
-                <MonsterImage2 name = {name}/>
+                <MonsterImageResizable name = {name} height={10} width={10}/>
             </div>
             <div>
                 <p className=" text-large text-white font-[Jua]">{name}</p>
