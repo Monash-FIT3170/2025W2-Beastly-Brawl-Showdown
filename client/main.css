@@ -32,216 +32,224 @@ body, html {
   font-family: sans-serif;
 }
 
-.btnBlue{
-  @apply 
-  text-[#F6F1E5]
-  bg-[#55A9ED]
-  outline-[#403245]
-  outline-4
-  outline-offset-0
-  hover:bg-[#1F7BD0]
-  focus:outline-[#403245]
-  focus:ring-5
-  focus:ring-[#403245]
-  font-[jua]
-  font-medium 
-  font-medium 
-  rounded-lg 
-  text-sm 
-  me-2 
-  mb-2 
-  dark:bg-blue-600 
-  dark:hover:bg-blue-600 
-  dark:focus:ring-blue-800
-}
-
-.btnDarkYellow{
-  @apply 
-  text-[#F6F1E5]
-  bg-[#EDAF55]
-  outline-[#403245]
-  outline-4
-  outline-offset-0
-  hover:bg-[#FF9E2F]
-  focus:outline-[#403245]
-  focus:ring-5
-  focus:ring-[#403245]
-  font-[jua]
-  font-medium 
-  font-medium 
-  rounded-lg 
-  text-sm 
-  me-2 
-  mb-2 
-  dark:bg-blue-600 
-  dark:hover:bg-blue-600 
-  dark:focus:ring-blue-800
-}
-
-.btnRed{
-  @apply 
-  text-[#F6F1E5] 
-  bg-[#ED5A55]
-  outline-[#403245]
-  outline-4
-  outline-offset-0
-  hover:bg-[#C23033]
-  focus:outline-[#403245]
-  focus:ring-5
-  focus:ring-[#403245]
-  font-[jua] 
-  font-medium 
-  rounded-lg  
-  me-2 
-  mb-2 
-  dark:bg-red-600 
-  dark:hover:bg-red-700 
-  dark:focus:ring-red-800
+.btnBlue {
+  @apply
+    text-[#F6F1E5]
+    bg-[#55A9ED]
+    outline-[#403245]
+    outline-[0.25rem]        /* 4px */
+    outline-offset-0
+    hover:bg-[#1F7BD0]
+    focus:outline-[#403245]
+    focus:ring-[0.3125rem]   /* 5px */
+    focus:ring-[#403245]
+    font-[jua]
+    font-medium
+    rounded-[0.5rem]         /* 8px */
+    text-[0.875rem]          /* 14px (text-sm) */
+    me-[0.5rem]              /* 8px (margin-inline-end) */
+    mb-[0.5rem]              /* 8px */
+    dark:bg-blue-600
+    dark:hover:bg-blue-600
+    dark:focus:ring-blue-800;
 }
 
 
-/* 
-This is for the Action Buttons in the game (battle) session.
- */
+.btnDarkYellow {
+  @apply
+    text-[#F6F1E5]
+    bg-[#EDAF55]
+    outline-[#403245]
+    outline-[0.25rem]
+    outline-offset-0
+    hover:bg-[#FF9E2F]
+    focus:outline-[#403245]
+    focus:ring-[0.3125rem]
+    focus:ring-[#403245]
+    font-[jua]
+    font-medium
+    rounded-[0.5rem]
+    text-[0.875rem]
+    me-[0.5rem]
+    mb-[0.5rem]
+    dark:bg-blue-600
+    dark:hover:bg-blue-600
+    dark:focus:ring-blue-800;
+}
+
+
+
+
+.btnRed {
+  @apply
+    text-[#F6F1E5]
+    bg-[#ED5A55]
+    outline-[#403245]
+    outline-[0.25rem]
+    outline-offset-0
+    hover:bg-[#C23033]
+    focus:outline-[#403245]
+    focus:ring-[0.3125rem]
+    focus:ring-[#403245]
+    font-[jua]
+    font-medium
+    rounded-[0.5rem]
+    me-[0.5rem]
+    mb-[0.5rem]
+    dark:bg-red-600
+    dark:hover:bg-red-700
+    dark:focus:ring-red-800;
+}
+
+
+
+
+/* Action Buttons */
 .btnAction {
-  @apply 
-  max-w-[250px]
-  h-[76px]
-  px-6
-  py-3
-  text-[35px]
+  @apply
+    max-w-[15.625rem]     /* 250px */
+    h-[4.75rem]           /* 76px */
+    px-[1.5rem]           /* 24px */
+    py-[0.75rem]          /* 12px */
+    text-[2.1875rem];     /* 35px */
 }
 
 
-/* 
-This is for more generic buttons with smaller sizes (cancel, select, exit lobby, etc.)
- */
+
+
+/* Generic Buttons */
 .btnGeneric {
   @apply
-  max-w-[300px]
-  h-[60px]
-  px-6
-  py-3
-  text-[25px]
+    max-w-[18.75rem]      /* 300px */
+    h-[3.75rem]           /* 60px */
+    px-[1.5rem]
+    py-[0.75rem]
+    text-[1.5625rem];     /* 25px */
 }
 
-/* 
-Small-sized buttons for menu, info, exit, etc.
-*/
+
+
+
+/* Utility Buttons */
 .btnUtility {
   @apply
-  max-w-[130px]
-  h-[51px]
-  text-[15px]
-  px-6
-  py-3
+    max-w-[8.125rem]      /* 130px */
+    h-[3.1875rem]         /* 51px */
+    text-[0.9375rem]      /* 15px */
+    px-[1.5rem]
+    py-[0.75rem];
 }
 
-.backgroundCardBeige{
+
+
+
+/* Background Cards */
+.backgroundCardBeige {
   @apply
-  w-[90%] 
-  sm:w-[450px] 
-  md:w-[500px] 
-  lg:w-[530px]
-  mx-auto 
-  bg-[#FBD773] 
-  p-6 
-  rounded-2xl 
-  border-4 
-  border-[#403245]
+    w-[90%]
+    sm:w-[28.125rem]      /* 450px */
+    md:w-[31.25rem]       /* 500px */
+    lg:w-[33.125rem]      /* 530px */
+    mx-auto
+    bg-[#FBD773]
+    p-[1.5rem]
+    rounded-[1rem]
+    border-[0.25rem]
+    border-[#403245];
 }
 
-.backgroundCardLightBeige{
+
+.backgroundCardLightBeige {
   @apply
-  w-[90%] 
-  sm:w-[450px] 
-  md:w-[500px] 
-  lg:w-[530px]
-  mx-auto 
-  bg-[#FFE8B0] 
-  p-6 
-  rounded-2xl 
-  border-4 
-  border-[#403245]
+    w-[90%]
+    sm:w-[28.125rem]
+    md:w-[31.25rem]
+    lg:w-[33.125rem]
+    mx-auto
+    bg-[#FFE8B0]
+    p-[1.5rem]
+    rounded-[1rem]
+    border-[0.25rem]
+    border-[#403245];
 }
 
-.backgroundCardBlue{
+
+.backgroundCardBlue {
   @apply
-  w-[90%] 
-  sm:w-[450px] 
-  md:w-[500px] 
-  lg:w-[530px]
-  mx-auto 
-  bg-[#55A9ED]
-  p-6 
-  rounded-2xl 
-  border-4 
-  border-[#403245]
+    w-[90%]
+    sm:w-[28.125rem]
+    md:w-[31.25rem]
+    lg:w-[33.125rem]
+    mx-auto
+    bg-[#55A9ED]
+    p-[1.5rem]
+    rounded-[1rem]
+    border-[0.25rem]
+    border-[#403245];
 }
 
-.backgroundCardPurple{
+
+.backgroundCardPurple {
   @apply
-  w-[90%] 
-  sm:w-[450px] 
-  md:w-[500px] 
-  lg:w-[530px]
-  mx-auto 
-  bg-[#BD55ED]
-  p-6 
-  rounded-2xl 
-  border-4 
-  border-[#403245]
+    w-[90%]
+    sm:w-[28.125rem]
+    md:w-[31.25rem]
+    lg:w-[33.125rem]
+    mx-auto
+    bg-[#BD55ED]
+    p-[1.5rem]
+    rounded-[1rem]
+    border-[0.25rem]
+    border-[#403245];
 }
 
-/* 
-Size is large (35px) in reference to Figma
-*/
-.infoTextLarge{
+
+
+
+/* Typography */
+.infoTextLarge {
   @apply
-  text-[35px]
-  text-[#FFFFFF]
-  font-[jua] 
+    text-[2.1875rem]      /* 35px */
+    text-[#FFFFFF]
+    font-[jua];
 }
 
-/* 
-Size is medium (25px) in reference to Figma
-*/
-.infoTextMedium{
+
+.infoTextMedium {
   @apply
-  text-[25px]
-  text-[#FFFFFF]
-  font-[jua] 
+    text-[1.5625rem]      /* 25px */
+    text-[#FFFFFF]
+    font-[jua];
 }
 
 
-/* 
-Size is small (15px) in reference to Figma
-*/
-.infoTextSmall{
+.infoTextSmall {
   @apply
-  text-[15px]
-  text-[#FFFFFF]
-  font-[jua] 
+    text-[0.9375rem]      /* 15px */
+    text-[#FFFFFF]
+    font-[jua];
 }
 
-/* 
-For texts like "Please Enter Room Code" etc. 
-Size is medium (25px) in reference to Figma
-*/
-.descriptionTextLarge{
+
+
+
+/* Descriptions */
+.descriptionTextLarge {
   @apply
-  text-[25px]
-  text-[#403245]
-  font-[jua] 
+    text-[1.5625rem]      /* 25px */
+    text-[#403245]
+    font-[jua];
 }
 
-/* 
-For texts like monster description etc. 
-Size is small (15px) in reference to Figma
-*/
-.descriptionText{
+
+.descriptionText {
   @apply
-  text-[15px]
-  text-[#403245]
-  font-[jua] 
+    text-[0.9375rem]      /* 15px */
+    text-[#403245]
+    font-[jua];
 }
+
+
+
+
+
