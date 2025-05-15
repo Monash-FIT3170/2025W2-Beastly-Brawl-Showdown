@@ -5,13 +5,7 @@ interface MonsterImageProps {
 }
 
 export const MonsterImage = ({ name }: MonsterImageProps) => {
-  const monsterToPath: { [key: string]: string } = {
-    monster1: 'MysticWyvern.png',
-    monster2: 'ShadowFangPredator.png',
-    monster3: 'StonehideGuardian.png',
-  };
-
   return (
-    <img src={monsterToPath[name]} alt={`${name} image`} />
+    <img src={`${name}.png`} alt={`${name} image`} />
   );
 };
