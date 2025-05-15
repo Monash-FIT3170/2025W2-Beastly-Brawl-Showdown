@@ -1,12 +1,13 @@
-import React from 'react';
-import { Hello } from './Hello';
-import { Info } from './Info';
-import { TaskFormComponent } from './TaskFormComponent';
-import { TaskComponent } from './TaskComponent';
-import { Task } from '../api/tasks';
-import { useTracker, useSubscribe } from 'meteor/react-meteor-data'; 
-import { TasksCollection } from '../api/tasks';
-import './AppStyles.css';
+import React from "react";
+import { Hello } from "./Hello";
+import { Info } from "./Info";
+import { TaskFormComponent } from "./TaskFormComponent";
+import { TaskComponent } from "./TaskComponent";
+import { Task } from "../api/tasks";
+import { useTracker, useSubscribe } from "meteor/react-meteor-data";
+import { TasksCollection } from "../api/tasks";
+import "./AppStyles.css";
+import { Chat } from "./Chat";
 
 export const App = () => {
   const isLoading = useSubscribe("tasks");
@@ -27,10 +28,11 @@ export const App = () => {
           ))}
         </ul>
       </div>
-      
+
       {/* <Hello />
       <Info /> */}
+
+      <Chat />
     </div>
   );
-}
-
+};
