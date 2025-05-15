@@ -7,7 +7,7 @@ interface MonsterImageProps {
 
 export const LogoResizable = ({ width, height }: MonsterImageProps) => {
    
-    let path: string = 'logo.png';
+    let path: string = 'logo-transparent.png';
 
     return (
         <img 

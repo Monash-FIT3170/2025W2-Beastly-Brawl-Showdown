@@ -8,7 +8,6 @@ const FlexBoxEmpty: React.FC = () => {
       <div className="flex w-full items-start px-10">
         <p className="items-start font-jua text-darkpurple">Buttons</p>
       </div>
-    
       <div className="flex w-full items-start px-10">
         <div className="flex flex-col justify-evenly w-full my-8 px-4">
           <DemoButtonOrange /> 
