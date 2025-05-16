@@ -5,7 +5,7 @@ interface HeaderProps{
     color: 'blue' | 'purple' | 'lightYellow' | 'green' | 'red';
 }
 
-export const PurpleHeaderCard = ({text, color}: HeaderProps) => {
+export const Header = ({text, color}: HeaderProps) => {
 
     const colorToDisplay = {
         'blue': 'bg-[#55A9ED]',
