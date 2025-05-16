@@ -59,6 +59,7 @@ export const Bar = ({colour, text, textPosition, radius, fillPercentage}: BarPro
       sidePadding = "pl-[4%]";
     }
     textPosition = "text-" + textPosition;
+    radius = "rounded-" + radius;
 
     return (
         <div className={`
@@ -68,7 +69,7 @@ export const Bar = ({colour, text, textPosition, radius, fillPercentage}: BarPro
             bg-lightergrey
             border-darkpurple
             border-2
-            rounded-${radius}
+            ${radius}
             overflow-hidden
         `}>
             <div className={`
