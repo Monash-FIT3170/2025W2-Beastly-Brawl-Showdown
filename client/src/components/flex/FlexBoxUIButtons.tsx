@@ -1,6 +1,5 @@
 import React from "react";
-import DemoButtonOrange from "../buttons/DemoButtonOrange"
-import DemoButtonRed from "../../components/buttons/DemoButtonRed"
+import { ButtonGeneric } from "../buttons/ButtonGeneric";
 
 const FlexBoxButtons: React.FC = () => {
   return (
@@ -9,17 +8,23 @@ const FlexBoxButtons: React.FC = () => {
         <p className="items-start font-jua text-darkpurple text-tiny">Buttons</p>
       </div>
       <div className="flex w-full items-start px-10">
-        <div className="flex flex-col justify-evenly w-full my-8 px-4">
-          <DemoButtonOrange /> 
-          <DemoButtonOrange />
-          <DemoButtonOrange />
-          <DemoButtonOrange />
+        <div className="flex flex-col w-full my-8 px-2 space-y-2">
+          <ButtonGeneric text='Button' color='lightorange' size='small' /> 
+          <ButtonGeneric text='Button' color='lightorange' size='small' /> 
+          <ButtonGeneric text='Button' color='lightorange' size='small' /> 
+          <ButtonGeneric text='Button' color='lightorange' size='small' /> 
         </div>
-        <div className="flex flex-col justify-evenly w-full my-8 px-4">
-          <DemoButtonRed /> 
-          <DemoButtonRed /> 
-          <DemoButtonRed /> 
-          <DemoButtonRed /> 
+        <div className="flex flex-col w-full my-8 px-2 space-y-2">
+          <ButtonGeneric text='Button' color='red' size='small' /> 
+          <ButtonGeneric text='Button' color='red' size='small' /> 
+          <ButtonGeneric text='Button' color='red' size='small' /> 
+          <ButtonGeneric text='Button' color='red' size='small' /> 
+        </div>
+        <div className="flex flex-col w-full my-8 px-2 space-y-2">
+          <ButtonGeneric text='Button' color='blue' size='small' /> 
+          <ButtonGeneric text='Button' color='blue' size='small' /> 
+          <ButtonGeneric text='Button' color='blue' size='small' /> 
+          <ButtonGeneric text='Button' color='blue' size='small' /> 
         </div>
       </div>
     
