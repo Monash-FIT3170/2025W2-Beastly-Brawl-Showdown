@@ -1,4 +1,5 @@
 import React from "react";
+import { OutlineText } from "../texts/OutlineText";
 
 interface BarProps {
     colour: string;
@@ -84,14 +85,13 @@ export const Bar = ({colour, text, textPosition, radius, fillPercentage}: BarPro
                 absolute
                 w-[${fillPercentage + 3}%]
                 h-7.5
-                font-[Jua]
+                leading-7.5
                 text-white
-                pt-[1%]
                 ${textPosition}
                 ${sidePadding}
                 ${margins}
                 ${backgroundColour}
-            `}>{text}</div>
+            `}><OutlineText text={text} size="medium" /></div>
             <BarFillPercentagesDefinitions />
             <BarColoursDefinitions />
         </div>
