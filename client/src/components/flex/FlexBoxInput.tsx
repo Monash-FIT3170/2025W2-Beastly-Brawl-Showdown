@@ -8,11 +8,11 @@ const FlexBoxInput: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row justify-between items-center bg-lightorange w-1/3 h-72 m-1 rounded-2xl">
       <div className="flex flex-col mx-10">
-        <p className="items-start font-jua text-darkpurple">Input</p>
+        <p className="items-start font-jua text-darkpurple text-tiny">Input</p>
         <div className="flex w-full m-4 gap-4">
           <InputBox />
         </div>
-        <p className="items-start font-jua text-darkpurple">Cards</p>
+        <p className="items-start font-jua text-darkpurple text-tiny">Cards</p>
         <div className="flex flex-col w-full justify-center m-4 gap-4">
           <NameCardPurple name='Player 1' />
           <NameCardRed name='Player 2' />

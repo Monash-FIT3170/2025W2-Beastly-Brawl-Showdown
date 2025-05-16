@@ -15,7 +15,7 @@ const FlexBoxLogoIcons: React.FC = () => {
       <div className="flex w-full items-center mx-20 space-x-40">
         <LogoResizable height={16} width={16}/>
         <div className="flex flex-col justify-around h-full">
-          <p className="font-jua text-darkpurple">Icons</p>
+          <p className="font-jua text-darkpurple text-tiny">Icons</p>
           <div className="flex w-full justify-center m-4 gap-8 mx-8">
             <IconArrowLeft />
             <IconArrowRight />
