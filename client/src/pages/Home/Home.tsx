@@ -10,20 +10,12 @@ import { IconTest } from '../../components/icons/IconTest';
 import { DefendButton } from '../../components/buttons/DefendButton';
 import {DefendButtonTemp} from "../../components/buttons/DefendButtonTemp"
 import { MonsterImage } from '../../components/player-screen/monsters/MonsterImage';
+import { BaseCard } from '../../components/cards/BaseCard';
+import { OutlineText } from '../../components/texts/OutlineText';
+import { BlackText } from '../../components/texts/BlackText';
 
 export const Home = () => (
   <>
-    <PurpleHeaderCard text = "SELECT YOUR MONSTER">
-        <p></p>
-      </PurpleHeaderCard>
     <h1>Welcome to Meteor!</h1>
-    <MonsterSelectionCard name = 'Mystic Wyvern' description='flavourtext' image = 'MysticWyvern.png' type = 'defender'/>
-    <BlueButton text = 'DEFEND' onClick={() => (console.log("hey"))}/>
-    <RedButton text = 'ATTACK' onClick = {() => console.log("attack")}></RedButton>
-    <ButtonDemo/>
-    <InputBox />
-    <CardDemo />
-    <IconTest />
-    <DefendButtonTemp label = 'DEFEND' initialCount = {3}/>
   </>
 );
