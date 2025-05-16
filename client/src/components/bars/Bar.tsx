@@ -54,12 +54,20 @@ export const Bar = ({colour, text, textPosition, radius, fillPercentage}: BarPro
         fillPercentage = 97;
     }
 
-    let sidePadding = "pr-[3%]";
+    let sidePadding;
     if (textPosition == "left") {
       sidePadding = "pl-[4%]";
+      textPosition = "text-left";
+    } else if (textPosition == "right") {
+      sidePadding = "pr-[3%]";
+      textPosition = "text-right";
     }
-    textPosition = "text-" + textPosition;
-    radius = "rounded-" + radius;
+  
+    if (radius == "lg") {
+      radius = "rounded-lg";  // Had to manually define this string since the app doesn't detect this
+    } else {
+      radius = "rounded-" + radius;
+    }
 
     return (
         <div className={`
