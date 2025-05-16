@@ -4,7 +4,7 @@ import { NameCardPurple } from "../cards/NameCards/NameCardPurple";
 import { NameCardRed } from "../cards/NameCards/NameCardRed";
 import { NameCardYellow } from "../cards/NameCards/NameCardYellow";
 
-const FlexBoxEmpty: React.FC = () => {
+const FlexBoxInput: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row justify-between items-center bg-lightorange w-1/3 h-72 m-1 rounded-2xl">
       <div className="flex flex-col mx-10">
@@ -24,4 +24,4 @@ const FlexBoxEmpty: React.FC = () => {
   );
 };
 
-export default FlexBoxEmpty;
+export default FlexBoxInput;

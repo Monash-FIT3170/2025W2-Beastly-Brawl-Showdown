@@ -1,6 +1,6 @@
 import React from "react";
 
-const FlexBoxEmpty: React.FC = () => {
+const FlexBoxTheme: React.FC = () => {
   return (
     <div className="flex flex-col justify-around items-center bg-whiteish w-1/3 h-72 m-1 rounded-2xl">
       
@@ -44,4 +44,4 @@ const FlexBoxEmpty: React.FC = () => {
   );
 };
 
-export default FlexBoxEmpty;
+export default FlexBoxTheme;

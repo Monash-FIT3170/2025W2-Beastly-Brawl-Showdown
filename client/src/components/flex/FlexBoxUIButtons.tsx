@@ -2,7 +2,7 @@ import React from "react";
 import DemoButtonOrange from "../buttons/DemoButtonOrange"
 import DemoButtonRed from "../../components/buttons/DemoButtonRed"
 
-const FlexBoxEmpty: React.FC = () => {
+const FlexBoxButtons: React.FC = () => {
   return (
     <div className="flex flex-col justify-around items-center bg-maybeyellow w-1/3 h-72 m-1 rounded-2xl">
       <div className="flex w-full items-start px-10">
@@ -27,4 +27,4 @@ const FlexBoxEmpty: React.FC = () => {
   );
 };
 
-export default FlexBoxEmpty;
+export default FlexBoxButtons;
