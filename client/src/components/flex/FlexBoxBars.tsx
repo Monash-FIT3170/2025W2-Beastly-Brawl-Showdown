@@ -16,7 +16,7 @@ const FlexBoxBars: React.FC = () => {
         </div>
         <p className="items-start font-jua text-whiteish text-tiny">Attribute Bars</p>
         <div className="flex flex-col space-y-2 mx-4">
-          <TotalHealthBar totalHealth={30} highestHealth={40}/>
+          <TotalHealthBar totalHealth={30} highestTotalHealth={40}/>
           <ArmourClassBar armourClass={16} highestArmourClass={20}/>
           <AttackBonusBar attackBonus={1} highestAttackBonus={10}/>
         </div>
