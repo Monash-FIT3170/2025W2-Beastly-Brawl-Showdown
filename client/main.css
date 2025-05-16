@@ -241,7 +241,45 @@ body {
     font-[jua];
 }
 
+/*Footer*/
 
+.footerLayout{
+  @apply
+    items-center
+    justify-center
+    fixed
+    flex
+    w-full
+    bottom-0
+    inset-x-0;
+
+}
+
+.footer{
+  @apply
+    pointer-events-auto
+    items-center
+    justify-center
+    bg-[#FBD474] 
+    text-[large]
+    text-white
+    font-[jua] 
+    h-[normalPhoneHeight] 
+    rounded-tl-xl
+    rounded-tr-xl
+    border-4
+    border-[#403245] 
+    border-b-0 
+    space-x-4
+    text-center
+    whitespace-normal
+    flex
+    flex-col
+    w-[60%]
+    py-4
+    px-[1%];
+
+}
 
 
 /* Descriptions */
@@ -262,9 +300,6 @@ body {
 
 
 /* Pop Up Box*/
-
-
-
 .popupLayout{
   @apply
     items-center
@@ -301,7 +336,7 @@ body {
     flex
     flex-col
     text-[#403245]
-    font-mono
+    font-[jua]
     break-words;
     }
   
