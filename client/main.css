@@ -10,6 +10,7 @@
   --color-orange: #E28454;
   --color-brightpurple: #BD55ED;
   --color-lightgrey: #DAD9D7;
+  --color-lightergrey: #DADADA;
   --color-maybeyellow: #FBD474;
   --color-whiteish: #F6F1E5;
   --color-neongreen: #7EED55;
@@ -56,6 +57,7 @@ body {
     dark:bg-blue-600
     dark:hover:bg-blue-600
     dark:focus:ring-blue-800;
+    cursor: pointer;
 }
 
 
@@ -79,6 +81,7 @@ body {
     dark:bg-blue-600
     dark:hover:bg-blue-600
     dark:focus:ring-blue-800;
+    cursor: pointer;
 }
 
 
@@ -103,6 +106,7 @@ body {
     dark:bg-red-600
     dark:hover:bg-red-700
     dark:focus:ring-red-800;
+    cursor: pointer;
 }
 
 
@@ -116,6 +120,7 @@ body {
     px-[1.5rem]           /* 24px */
     py-[0.75rem]          /* 12px */
     text-[2.1875rem];     /* 35px */
+    cursor: pointer;
 }
 
 
@@ -129,6 +134,7 @@ body {
     px-[1.5rem]
     py-[0.75rem]
     text-[1.5625rem];     /* 25px */
+    cursor: pointer;
 }
 
 
@@ -142,6 +148,7 @@ body {
     text-[0.9375rem]      /* 15px */
     px-[1.5rem]
     py-[0.75rem];
+    cursor: pointer;
 }
 
 
@@ -254,6 +261,53 @@ body {
 }
 
 
+/* Pop Up Box*/
 
 
+
+.popupLayout{
+  @apply
+    items-center
+    justify-center
+    box-border
+    bg-white/30
+    fixed
+    /*
+    width: 100%;
+    height: 100%;*/
+    left-0
+    right-0
+    bottom-0
+    top-0
+    flex
+    flex-col
+    backdrop-blur-md;
+    }
+
+.popup {
+  @apply
+    top-[20%]
+    py-[1rem]
+    px-[1rem]
+    bg-[#FFE8B1]
+    border-[3px]
+    border-[#403245]
+    rounded-[20px]
+    text-[15px]
+    text-center
+    w-[60%]
+    items-stretch
+    box-border 
+    flex
+    flex-col
+    text-[#403245]
+    font-mono
+    break-words;
+    }
+  
+.popupText{
+  @apply
+  py-[5rem]
+  px-[3rem]
+}
 
