@@ -23,7 +23,6 @@
   --spacing-normalButtonWidth: 11.25rem;
   --spacing-normalButtonHeight: 5.625rem;
   --spacing-normalPhoneWidth: 23.0625rem;
-
 }
 
 
@@ -32,7 +31,10 @@ body {
   font-family: sans-serif;
 }
 
-.btn{
+.text-outline{
+  -webkit-text-fill-color: var(--color-whiteish);
+  -webkit-text-stroke: 0.0625rem;
+  -webkit-text-stroke-color: var(--color-darkpurple)
 }
 
 .btnBlue {
