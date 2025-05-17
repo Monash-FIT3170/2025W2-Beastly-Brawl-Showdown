@@ -9,14 +9,14 @@ export const AttackButton = ({onClick}: AttackButtonProp) => {
     
     const image =
 		`
-		ml-2 
-        w-[100%]
-        h-[100%]
+		ml-auto
+        w-[25%]
+        h-[auto%]
         object-contain
 		`;
 
     return(
-        <ButtonGeneric color='red' size='medium' isDisabled={false} >
+        <ButtonGeneric color='red' size='large' isDisabled={false} >
             Attack 
             <img className = {`${image}`} src={`AttackButtonImage.png`} alt={`AttackButtonImage image`}/>
         </ButtonGeneric>

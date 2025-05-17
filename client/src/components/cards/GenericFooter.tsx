@@ -30,7 +30,10 @@ export const GenericFooter = ({children }: FooterProps) => {
         border-darkpurple
         border-b-0
         space-x-0
-        flex flex-col items-center justify-center
+        flex 
+        flex-col 
+        items-center 
+        justify-center
         text-wrap
         pl-[1%]
         pr-[1%]
