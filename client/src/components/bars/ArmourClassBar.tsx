@@ -10,7 +10,9 @@ interface ArmourClassBarProps {
 export const ArmourClassBar = ({armourClass, highestArmourClass}: ArmourClassBarProps) => {
     return (
         <Bar colour="blue" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(armourClass / highestArmourClass * 100) as BarFillPercentage}>
-            <OutlineText text={`${armourClass}`} size="medium" />
+            <OutlineText size="medium">
+                {`${armourClass}`}
+            </OutlineText>
         </Bar>
     );
 };
