@@ -1,11 +1,11 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface OutlineTextProps{
-    text?: string
     size: string
+    children?: ReactNode;
 }
 
-export const OutlineText = ({text, size}: OutlineTextProps) => {
+export const OutlineText = ({children, size}: OutlineTextProps) => {
     
     const sizeLoader: Record<string, string> = {
         'tiny':'text-tiny',
@@ -15,7 +15,7 @@ export const OutlineText = ({text, size}: OutlineTextProps) => {
 
     return(
     <p className={`${sizeLoader[size]} font-[Jua] text-outline leading-[0rem] pt-[0.25rem]`}>
-        {text}
+        {children}
     </p>
     );
 }
