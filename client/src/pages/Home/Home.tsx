@@ -13,8 +13,9 @@ import { BaseCard } from '../../components/cards/BaseCard';
 import { OutlineText } from '../../components/texts/OutlineText';
 import { BlackText } from '../../components/texts/BlackText';
 import { GenericFooter } from '../../components/cards/GenericFooter';
-import { BaseFooter } from '../../components/cards/BaseFooter';
+
 import { GenericHeader } from '../../components/cards/GenericHeader';
+import { LobbyStatsFooter } from '../../components/cards/LobbyStatsFooter';
 
 
 
@@ -23,4 +24,5 @@ export const Home = () => (
   <>
     <h1>Welcome to Meteor!</h1>
   </>
+
 );

@@ -1,11 +1,11 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 
 interface HeaderProps{
-    text: string;
+    children: ReactNode;
     color: 'blue' | 'purple' | 'lightYellow' | 'green' | 'red';
 }
 
-export const GenericHeader = ({text, color}: HeaderProps) => {
+export const GenericHeader = ({children, color}: HeaderProps) => {
 
     const colorToDisplay = {
         'blue': 'bg-[#55A9ED]',
@@ -40,7 +40,7 @@ export const GenericHeader = ({text, color}: HeaderProps) => {
 
     return(
     <div className={`${header}`}>
-        {text}
+        {children}
     </div>
     );
 }
