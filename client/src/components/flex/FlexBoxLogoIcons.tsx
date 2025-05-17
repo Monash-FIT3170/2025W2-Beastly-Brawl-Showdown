@@ -1,6 +1,6 @@
 import React from "react";
 import { LogoResizable } from "../logos/LogoResizable";
-import { IconArrowLeft } from "../icons/IconArrowLeft";
+import { GenericIcon } from "../icons/GenericIcon";
 import { IconArrowRight } from "../icons/IconArrowRight";
 import { IconArrowUp } from "../icons/IconArrowUp";
 import { IconArrowDown } from "../icons/IconArrowDown";
@@ -17,7 +17,7 @@ const FlexBoxLogoIcons: React.FC = () => {
         <div className="flex flex-col justify-around h-full">
           <p className="font-jua text-darkpurple text-tiny">Icons</p>
           <div className="flex w-full justify-center m-4 gap-8 mx-8">
-            <IconArrowLeft />
+            <GenericIcon />
             <IconArrowRight />
             <IconArrowUp />
             <IconArrowDown />
