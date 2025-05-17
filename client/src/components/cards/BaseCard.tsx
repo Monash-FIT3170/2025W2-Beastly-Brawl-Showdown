@@ -14,7 +14,10 @@ export const BaseCard = ({color, children}: BaseCardProps) =>{
         'orange': 'bg-orange',
         'maybeyellow': 'bg-maybeyellow',
         'cream': 'bg-cream',
-        'plainyellow': 'bg-plainyellow'
+        'plainyellow': 'bg-plainyellow',
+        'guardian': 'bg-guardianblue',
+        'predator': 'bg-predatorpurple',
+        'wyvern': 'bg-wyvernred'
     }
 
     return(

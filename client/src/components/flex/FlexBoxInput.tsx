@@ -1,6 +1,6 @@
 import React from "react";
 import { InputBox } from "../inputs/InputBox";
-import { NameCardPurple } from "../cards/NameCards/NameCardPurple";
+import { NameCard } from "../cards/NameCard";
 import { NameCardRed } from "../cards/NameCards/NameCardRed";
 import { NameCardYellow } from "../cards/NameCards/NameCardYellow";
 
@@ -14,7 +14,7 @@ const FlexBoxInput: React.FC = () => {
         </div>
         <p className="items-start font-jua text-darkpurple text-tiny">Cards</p>
         <div className="flex flex-col w-full justify-center m-4 gap-4">
-          <NameCardPurple name='Player 1' />
+          <NameCard name='Player 1' />
           <NameCardRed name='Player 2' />
           <NameCardYellow name='Player 3' />
         </div>
