@@ -8,10 +8,17 @@ interface BaseCardProps{
 export const BaseCard = ({color, children}: BaseCardProps) =>{
     
     
-    let cardColor = 'bg-'+color;
+    const colorLoader: Record<string, string> = {
+        'customblue':'bg-customblue',
+        'lightorange': 'bg-lightorange',
+        'orange': 'bg-orange',
+        'maybeyellow': 'bg-maybeyellow',
+        'cream': 'bg-cream',
+        'plainyellow': 'bg-plainyellow'
+    }
 
     return(
-        <div className={`${cardColor}`}>
+        <div className={`${colorLoader[color]} border border-[4px] border-darkpurple w-fit rounded-xl`}>
             {children}
         </div>
 
