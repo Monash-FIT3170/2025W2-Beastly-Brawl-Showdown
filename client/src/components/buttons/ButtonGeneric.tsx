@@ -1,14 +1,13 @@
-import React from "react";
-import { OutlineText } from "../texts/OutlineText";
+import React, { ReactNode } from "react";
 
 interface ButtonGenericProps{
-	text: string;
     color: 'lightorange' | 'blue' | 'red';
-	size: 'tiny' | 'medium' | 'large';
+	size: 'tiny' | 'medium' | 'large' | 'square';
 	isDisabled?: boolean;
+	children?: ReactNode
 }
 
-export const ButtonGeneric = ({text,color,size,isDisabled}: ButtonGenericProps) => {
+export const ButtonGeneric = ({color,size,isDisabled,children}: ButtonGenericProps) => {
 
 	const colorToDisplay = {
 		'lightorange': 'bg-lightorange',
@@ -19,7 +18,8 @@ export const ButtonGeneric = ({text,color,size,isDisabled}: ButtonGenericProps) 
 	const sizeToDisplay = {
 		'large': 'max-w-[15.625rem] h-[4.75rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]',
 		'medium': 'max-w-[18.75rem] h-[3.75rem] px-[1.5rem] py-[0.75rem] text-[1.5625rem]',
-		'tiny': 'max-w-[8.125rem] h-[2.5rem] px-[1.5rem] py-[0.75rem] text-[0.9375rem]'
+		'tiny': 'max-w-[8.125rem] h-[2.5rem] px-[1.5rem] py-[0.75rem] text-[0.9375rem]',
+		'square': 'w-[2rem] h-[2rem]'
 	}
 
 	const baseButton =
@@ -63,8 +63,8 @@ export const ButtonGeneric = ({text,color,size,isDisabled}: ButtonGenericProps) 
 			${baseButton} 
 			${isDisabled ? disabledButton : enabledButton}
 			${sizeToDisplay[size]}
-		`}>
-			<OutlineText text={text} size="medium" />
+		`}> 
+			{children}
 		</button>
   	);
 };

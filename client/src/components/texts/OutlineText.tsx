@@ -1,7 +1,7 @@
 import React from "react";
 
 interface OutlineTextProps{
-    text: string
+    text?: string
     size: string
 }
 

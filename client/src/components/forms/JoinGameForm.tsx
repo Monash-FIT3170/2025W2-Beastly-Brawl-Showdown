@@ -2,6 +2,7 @@ import React from "react";
 import { InputBox } from "../inputs/InputBox";
 import { ButtonGeneric } from "../buttons/ButtonGeneric";
 import { BlackText } from "../texts/BlackText";
+import { OutlineText } from "../texts/OutlineText";
 
 const JoinGameForm = () => {
 
@@ -15,7 +16,9 @@ const JoinGameForm = () => {
                 <BlackText text='Your Name:' size='Medium' />
             </div>
             <InputBox />
-            <ButtonGeneric text='Join' color='lightorange' size='medium'/>
+            <ButtonGeneric color='lightorange' size='medium' >
+                <OutlineText text='Join' size="medium" />
+            </ButtonGeneric>
         </div>
     );
 };
