@@ -1,99 +1,90 @@
-import React from "react";
-import { OutlineText } from "../texts/OutlineText";
+import React, { ReactNode } from "react";
 
 interface BarProps {
-    colour: string;
-    text: string;
-    textPosition: string;
-    radius: string;
-    fillPercentage: number;
+    colour: BarColour;
+    cornerRadius: BarCornerRadius;
+    textPosition: BarTextPosition;
+    fillPercentage: BarFillPercentage;
+    children?: ReactNode;
 }
 
-/*
- * TailwindCSS requires that using percentages for setting widths
- * need to be explicity defined in the code. That means something
- * dynamic like "w-%{percentageFill}" on its own won't work. Thus,
- * we need to define percentages manually.
- */
-const BarFillPercentagesDefinitions = () => (
-  <div className="hidden">
-    <div className="
-      w-[0%] w-[1%] w-[2%] w-[3%] w-[4%] w-[5%] w-[6%] w-[7%] w-[8%] w-[9%]
-      w-[10%] w-[11%] w-[12%] w-[13%] w-[14%] w-[15%] w-[16%] w-[17%] w-[18%] w-[19%]
-      w-[20%] w-[21%] w-[22%] w-[23%] w-[24%] w-[25%] w-[26%] w-[27%] w-[28%] w-[29%]
-      w-[30%] w-[31%] w-[32%] w-[33%] w-[34%] w-[35%] w-[36%] w-[37%] w-[38%] w-[39%]
-      w-[40%] w-[41%] w-[42%] w-[43%] w-[44%] w-[45%] w-[46%] w-[47%] w-[48%] w-[49%]
-      w-[50%] w-[51%] w-[52%] w-[53%] w-[54%] w-[55%] w-[56%] w-[57%] w-[58%] w-[59%]
-      w-[60%] w-[61%] w-[62%] w-[63%] w-[64%] w-[65%] w-[66%] w-[67%] w-[68%] w-[69%]
-      w-[70%] w-[71%] w-[72%] w-[73%] w-[74%] w-[75%] w-[76%] w-[77%] w-[78%] w-[79%]
-      w-[80%] w-[81%] w-[82%] w-[83%] w-[84%] w-[85%] w-[86%] w-[87%] w-[88%] w-[89%]
-      w-[90%] w-[91%] w-[92%] w-[93%] w-[94%] w-[95%] w-[96%] w-[97%] w-[98%] w-[99%]
-      w-[100%]
-    " />
-  </div>
-);
+export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, children}: BarProps) => {
+    const colourToDisplay: Record<string, string> = {
+        "green": "bg-neongreen",
+        "yellow": "bg-plainyellow",
+        "red": "bg-sharpred",
+        "blue": "bg-customblue"
+    };
 
-// TODO: Need to find a better way to do this
-const BarColoursDefinitions = () => (
-  <div className="hidden">
-    <div className="
-      bg-neongreen
-      bg-plainyellow
-      bg-sharpred
-      bg-customblue
-    " />
-  </div>
-);
+    const cornerRadiusToDisplay: Record<string, string> = {
+        "light": "rounded-[0.5rem]",
+        "heavy": "rounded-[1rem]"
+    };
 
-export const Bar = ({colour, text, textPosition, radius, fillPercentage}: BarProps) => {
-    let backgroundColour = "bg-" + colour + " border-darkpurple";
-    let margins = "mx-[-2px] my-[-2px] border-2 rounded-" + radius;
-    if (fillPercentage <= 0) {
-        backgroundColour = "bg-lightergrey border-lightergrey";
-    } else if (fillPercentage >= 100) {
-        margins = "rounded-sm";
-        fillPercentage = 97;
-    }
+    const textPositionToDisplay: Record<string, string> = {
+        "left": "justify-start pl-[3%]",
+        "right": "justify-end pr-[3%]"
+    };
 
-    let sidePadding;
-    if (textPosition == "left") {
-      sidePadding = "pl-[4%]";
-      textPosition = "text-left";
-    } else if (textPosition == "right") {
-      sidePadding = "pr-[3%]";
-      textPosition = "text-right";
-    }
-  
-    if (radius == "lg") {
-      radius = "rounded-lg";  // Had to manually define this string since the app doesn't detect this
+    const fillPercentageToDisplay: Record<number, string> = {
+        0: "w-[0%]", 1: "w-[1%]", 2: "w-[2%]", 3: "w-[3%]", 4: "w-[4%]", 5: "w-[5%]", 6: "w-[6%]", 7: "w-[7%]", 8: "w-[8%]", 9: "w-[9%]",
+        10: "w-[10%]", 11: "w-[11%]", 12: "w-[12%]", 13: "w-[13%]", 14: "w-[14%]", 15: "w-[15%]", 16: "w-[16%]", 17: "w-[17%]", 18: "w-[18%]", 19: "w-[19%]",
+        20: "w-[20%]", 21: "w-[21%]", 22: "w-[22%]", 23: "w-[23%]", 24: "w-[24%]", 25: "w-[25%]", 26: "w-[26%]", 27: "w-[27%]", 28: "w-[28%]", 29: "w-[29%]",
+        30: "w-[30%]", 31: "w-[31%]", 32: "w-[32%]", 33: "w-[33%]", 34: "w-[34%]", 35: "w-[35%]", 36: "w-[36%]", 37: "w-[37%]", 38: "w-[38%]", 39: "w-[39%]",
+        40: "w-[40%]", 41: "w-[41%]", 42: "w-[42%]", 43: "w-[43%]", 44: "w-[44%]", 45: "w-[45%]", 46: "w-[46%]", 47: "w-[47%]", 48: "w-[48%]", 49: "w-[49%]",
+        50: "w-[50%]", 51: "w-[51%]", 52: "w-[52%]", 53: "w-[53%]", 54: "w-[54%]", 55: "w-[55%]", 56: "w-[56%]", 57: "w-[57%]", 58: "w-[58%]", 59: "w-[59%]",
+        60: "w-[60%]", 61: "w-[61%]", 62: "w-[62%]", 63: "w-[63%]", 64: "w-[64%]", 65: "w-[65%]", 66: "w-[66%]", 67: "w-[67%]", 68: "w-[68%]", 69: "w-[69%]",
+        70: "w-[70%]", 71: "w-[71%]", 72: "w-[72%]", 73: "w-[73%]", 74: "w-[74%]", 75: "w-[75%]", 76: "w-[76%]", 77: "w-[77%]", 78: "w-[78%]", 79: "w-[79%]",
+        80: "w-[80%]", 81: "w-[81%]", 82: "w-[82%]", 83: "w-[83%]", 84: "w-[84%]", 85: "w-[85%]", 86: "w-[86%]", 87: "w-[87%]", 88: "w-[88%]", 89: "w-[89%]",
+        90: "w-[90%]", 91: "w-[91%]", 92: "w-[92%]", 93: "w-[93%]", 94: "w-[94%]", 95: "w-[95%]", 96: "w-[96%]", 97: "w-[97%]", 98: "w-[98%]", 99: "w-[99%]",
+        100: "w-[100%]"
+    };
+
+    const baseBackBarProperties = `
+        absolute
+        top-0
+        left-0
+        z-0
+        w-full
+        h-full
+        border-3
+        border-darkpurple
+        bg-lightergrey
+    `;
+
+    let baseFrontBarProperties = `
+        absolute
+        top-0
+        left-0
+        z-10
+        h-full
+        border-3
+        flex
+        items-center
+        justify-center
+    `;
+
+    // Make the coloured portion of the bar completely disappear if its fill percentage is zero
+    if (fillPercentage == 0) {
+        baseFrontBarProperties += `border-transparent`
     } else {
-      radius = "rounded-" + radius;
+        baseFrontBarProperties += `border-darkpurple ${colourToDisplay[colour]}`;
     }
 
     return (
-        <div className={`
-            relative
-            w-50
-            h-7.5
-            bg-lightergrey
-            border-darkpurple
-            border-2
-            ${radius}
-            overflow-hidden
-        `}>
+        <div className="relative w-48 h-8">
             <div className={`
-                absolute
-                w-[${fillPercentage + 3}%]
-                h-7.5
-                leading-7.5
-                text-white
-                ${textPosition}
-                ${sidePadding}
-                ${margins}
-                ${backgroundColour}
-            `}><OutlineText text={text} size="medium" /></div>
-            <BarFillPercentagesDefinitions />
-            <BarColoursDefinitions />
+                ${baseBackBarProperties}
+                ${cornerRadiusToDisplay[cornerRadius]}
+            `} />
+            <div className={`
+                ${baseFrontBarProperties}
+                ${cornerRadiusToDisplay[cornerRadius]}
+                ${textPositionToDisplay[textPosition]}
+                ${fillPercentageToDisplay[fillPercentage]}
+            `}>
+                {children}
+            </div>
         </div>
     );
-}
+};

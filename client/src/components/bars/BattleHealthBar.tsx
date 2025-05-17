@@ -1,5 +1,6 @@
 import React from "react";
 import { Bar } from "./Bar";
+import { OutlineText } from "../texts/OutlineText";
 
 interface BattleHealthBarProps {
     currentHealth: number;
@@ -7,16 +8,19 @@ interface BattleHealthBarProps {
 }
 
 export const BattleHealthBar = ({currentHealth, maxHealth}: BattleHealthBarProps) => {
-    let colour;
+    let colour: BarColour;
     let healthPercentage = Math.floor(currentHealth / maxHealth * 100);
     if (healthPercentage > 70) {
-        colour = "neongreen";
+        colour = "green";
     } else if (healthPercentage > 30) {
-        colour = "plainyellow";
+        colour = "yellow";
     } else {
-        colour = "sharpred";
+        colour = "red";
     }
+
     return (
-        <Bar colour={colour} text={String(currentHealth) + "/" + String(maxHealth)} textPosition="left" radius="2xl" fillPercentage={healthPercentage} />
+        <Bar colour={colour} cornerRadius="heavy" textPosition="left" fillPercentage={healthPercentage as BarFillPercentage}>
+            <OutlineText text={`${currentHealth}/${maxHealth}`} size="medium" />
+        </Bar>
     );
-}
+};

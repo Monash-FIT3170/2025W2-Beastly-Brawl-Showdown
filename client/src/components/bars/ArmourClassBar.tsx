@@ -1,5 +1,6 @@
 import React from "react";
 import { Bar } from "./Bar";
+import { OutlineText } from "../texts/OutlineText";
 
 interface ArmourClassBarProps {
     armourClass: number;
@@ -8,6 +9,8 @@ interface ArmourClassBarProps {
 
 export const ArmourClassBar = ({armourClass, highestArmourClass}: ArmourClassBarProps) => {
     return (
-        <Bar colour="customblue" text={String(armourClass)} textPosition="right" radius="lg" fillPercentage={Math.floor(armourClass / highestArmourClass * 100)} />
+        <Bar colour="blue" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(armourClass / highestArmourClass * 100) as BarFillPercentage}>
+            <OutlineText text={`${armourClass}`} size="medium" />
+        </Bar>
     );
-}
+};

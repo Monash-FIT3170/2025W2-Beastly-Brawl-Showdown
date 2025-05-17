@@ -1,5 +1,6 @@
 import React from "react";
 import { Bar } from "./Bar";
+import { OutlineText } from "../texts/OutlineText";
 
 interface TotalHealthBarProps {
     totalHealth: number;
@@ -8,6 +9,8 @@ interface TotalHealthBarProps {
 
 export const TotalHealthBar = ({totalHealth, highestTotalHealth}: TotalHealthBarProps) => {
     return (
-        <Bar colour="neongreen" text={String(totalHealth)} textPosition="right" radius="lg" fillPercentage={Math.floor(totalHealth / highestTotalHealth * 100)} />
+        <Bar colour="green" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(totalHealth / highestTotalHealth * 100) as BarFillPercentage}>
+            <OutlineText text={`${totalHealth}`} size="medium" />
+        </Bar>
     );
-}
+};
