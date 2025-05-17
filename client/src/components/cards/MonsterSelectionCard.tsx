@@ -1,48 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { MonsterImageResizable } from "../player-screen/monsters/MonsterImageResizable";
+import { OutlineText } from "../texts/OutlineText";
+import { BlackText } from "../texts/BlackText";
 
 interface MonsterSelectionProps{
     name: string;
     description: string;
-    image: string;
     type: string;
 }
 
 export const MonsterSelectionCard = ({name, description, type}: MonsterSelectionProps) =>{
+
+    const colorLoader: Record<string, string> = {
+        'attacker': 'bg-sharpred',
+        'defender': 'bg-neongreen',
+        'balanced': 'bg-customblue'
+    }
     
-
-    const [color, setColor] = useState('blue');
-
-    useEffect(()=>{
-        switch(type){
-            case 'attacker':
-                setColor('bg-sharpred');
-                break;
-            case 'defender':
-                setColor('bg-neongreen');
-                break;
-            case 'balanced':
-                setColor('bg-customblue');
-                break;
-                
-        }
-    },[type])
-    
-
     return(
-
         <button 
             className=
-                {`${color} 
+                {`${colorLoader[type]} 
                 border border-[4px] border-darkpurple 
-                rounded-[15px]
+                rounded-xl
+                w-[40rem]
                 flex flex-row`}>
-            <div>
+            <div className="flex flex-col shrink-0 justify-center">
                 <MonsterImageResizable name = {name} height={10} width={10}/>
             </div>
-            <div>
-                <p className=" text-large text-white font-[Jua]">{name}</p>
-                <p className=" text-medium text-black font-[Jua]">{description}</p>
+            <div className="flex flex-col text-center grow">
+                <OutlineText size = 'large'>
+                    {name}
+                </OutlineText>
+                <BlackText size = 'medium'>
+                    {description}
+                </BlackText>
             </div>
         </button>
     );

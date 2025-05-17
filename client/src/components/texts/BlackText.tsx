@@ -1,11 +1,11 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface BlackTextProps{
-    text: string
     size: string
+    children?: ReactNode;
 }
 
-export const BlackText = ({text, size}: BlackTextProps) => {
+export const BlackText = ({children, size}: BlackTextProps) => {
     
     const sizeLoader: Record<string, string> = {
         'tiny':'text-tiny',
@@ -15,7 +15,7 @@ export const BlackText = ({text, size}: BlackTextProps) => {
 
     return(
     <p className={`${sizeLoader[size]} font-[Jua] text-darkpurple`}> 
-        {text}
+        {children}
     </p>
     );
 }

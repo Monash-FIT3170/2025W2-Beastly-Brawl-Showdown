@@ -5,7 +5,7 @@ interface FooterProps{
     children: React.ReactNode;
 }
 
-export const Footer = ({ text, children }: FooterProps) => {
+export const GenericFooter = ({ text, children }: FooterProps) => {
 
     return(
     <div className = "footerLayout">
