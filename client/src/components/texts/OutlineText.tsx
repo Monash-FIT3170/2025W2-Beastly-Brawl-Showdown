@@ -14,7 +14,7 @@ export const OutlineText = ({text, size}: OutlineTextProps) => {
     }
 
     return(
-    <p className={`${sizeLoader[size]} font-[Jua] text-outline`}> 
+    <p className={`${sizeLoader[size]} font-[Jua] text-outline leading-[0rem] pt-[0.25rem]`}>
         {text}
     </p>
     );
