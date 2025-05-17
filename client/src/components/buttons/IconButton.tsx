@@ -6,11 +6,12 @@ interface IconProps {
   style: 'arrowleft' | 'arrowright' | 'arrowup' | 'arrowdown' | 'x' | 'bars' | 'info' | 'cog'
   buttonColour: 'lightorange' | 'blue' | 'red'
   iconColour: 'black' | 'stroked'
+  isDisabled?: boolean
 }
 
-export const IconButton = ({style, buttonColour, iconColour}: IconProps) => {
+export const IconButton = ({style, buttonColour, iconColour, isDisabled}: IconProps) => {
     return (
-        <ButtonGeneric size='square' color={buttonColour} >
+        <ButtonGeneric size='square' color={buttonColour} isDisabled={isDisabled}>
             <GenericIcon style={style} colour={iconColour} />
         </ButtonGeneric>
     );
