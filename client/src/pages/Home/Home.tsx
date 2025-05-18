@@ -24,5 +24,6 @@ export const Home = () => (
   <>
     <h1>Welcome to Meteor!</h1>
   </>
+  
 
 );

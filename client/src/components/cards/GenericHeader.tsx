@@ -22,7 +22,8 @@ export const GenericHeader = ({children, color}: HeaderProps) => {
         text-large
         text-white
         font-[Jua]
-        w-[60%]
+        w-[95%]
+        xl:w-[60%]
         h-normalPhoneHeight
         rounded-bl-xl
         rounded-br-xl

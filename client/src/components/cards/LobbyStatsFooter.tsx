@@ -26,11 +26,13 @@ export const LobbyStatsFooter = ({ monster } : LobbyStatsFooterProps) => {
                 {monster}
             </OutlineText>
             </div>
+            <div className="p-[1rem]">
             <ButtonGeneric color='red' size='medium'>
-                <OutlineText size = 'large'>
+                <OutlineText size = 'medium'>
                     Exit Lobby
                 </OutlineText>
             </ButtonGeneric>
+            </div>
         </GenericFooter>
         </div>
         

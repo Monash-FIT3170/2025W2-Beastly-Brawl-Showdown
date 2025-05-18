@@ -22,7 +22,8 @@ export const GenericFooter = ({children }: FooterProps) => {
         bg-[#FBD474]
         mx-auto
         font-[Jua]
-        w-[60%]
+        w-[95%]
+        xl:w-[60%]
         h-normalPhoneHeight
         rounded-tl-xl
         rounded-tr-xl

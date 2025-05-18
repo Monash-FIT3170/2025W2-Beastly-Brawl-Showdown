@@ -8,13 +8,13 @@ interface OutlineTextProps{
 export const OutlineText = ({children, size}: OutlineTextProps) => {
     
     const sizeLoader: Record<string, string> = {
-        'tiny':'text-tiny',
-        'medium': 'text-medium',
-        'large': 'text-large'
+        'tiny':'text-[2rem] xl:text-tiny',
+        'medium': 'text-[3rem] xl:text-medium',
+        'large': 'text-[4rem] xl:text-large'
     }
 
     return(
-    <p className={`${sizeLoader[size]} font-[Jua] text-outline`}>
+    <p className={`${sizeLoader[size]}  font-[Jua] text-outline`}>
         {children}
     </p>
     );
