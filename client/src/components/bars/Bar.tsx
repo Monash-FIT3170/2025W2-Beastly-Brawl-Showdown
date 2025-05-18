@@ -83,7 +83,9 @@ export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, childre
                 ${textPositionToDisplay[textPosition]}
                 ${fillPercentageToDisplay[fillPercentage]}
             `}>
-                {children}
+                <span className="leading-[0rem] pt-[0.25rem]">
+                    {children}
+                </span>
             </div>
         </div>
     );
