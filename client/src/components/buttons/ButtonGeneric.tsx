@@ -1,18 +1,20 @@
 import React, { ReactNode } from "react";
 
 interface ButtonGenericProps{
-    color: 'lightorange' | 'blue' | 'red';
+    color: 'lightorange' | 'blue' | 'red' | 'purple';
 	size: 'tiny' | 'medium' | 'large' | 'square';
 	isDisabled?: boolean;
 	children?: ReactNode
+	onClick: () => void;
 }
 
-export const ButtonGeneric = ({color,size,isDisabled,children}: ButtonGenericProps) => {
+export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGenericProps) => {
 
 	const colorToDisplay = {
 		'lightorange': 'bg-lightorange',
 		'blue': 'bg-customblue',
-		'red': 'bg-sharpred'
+		'red': 'bg-sharpred',
+		'purple': 'bg-brightpurple'
 		}
 
 	const sizeToDisplay = {
@@ -63,7 +65,8 @@ export const ButtonGeneric = ({color,size,isDisabled,children}: ButtonGenericPro
 			${baseButton} 
 			${isDisabled ? disabledButton : enabledButton}
 			${sizeToDisplay[size]}
-		`}> 
+		`}
+		onClick={onClick}> 
 			{children}
 		</button>
   	);
