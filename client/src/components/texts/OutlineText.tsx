@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 interface OutlineTextProps{
-    size: string
+    size: 'tiny'|'medium'|'large';
     children?: ReactNode;
 }
 

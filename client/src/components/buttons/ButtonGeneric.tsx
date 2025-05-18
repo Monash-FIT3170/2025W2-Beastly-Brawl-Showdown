@@ -38,9 +38,6 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGe
 		font-medium
 		rounded-[0.5rem]
 		text-[0.875rem]
-		dark:bg-blue-600
-		dark:hover:bg-blue-600
-		dark:focus:ring-blue-800
 		`;
 
 	const enabledButton = 

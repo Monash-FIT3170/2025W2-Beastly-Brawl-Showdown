@@ -2,10 +2,14 @@ import React, {ReactNode} from "react";
 
 interface BaseCardProps{
     color: string;
-    children: ReactNode;
+    children?: ReactNode;
+    width?: number;
+    height?: number;
 }
 
-export const BaseCard = ({color, children}: BaseCardProps) =>{
+export const BaseCard = ({color, children, width, height}: BaseCardProps) =>{
+    
+
     
     
     const colorLoader: Record<string, string> = {
@@ -21,7 +25,10 @@ export const BaseCard = ({color, children}: BaseCardProps) =>{
     }
 
     return(
-        <div className={`${colorLoader[color]} border border-[4px] border-darkpurple w-fit rounded-xl`}>
+        <div className={`${colorLoader[color]} border border-[4px] border-darkpurple w-min h-min rounded-xl`}
+        style = {{width: width ? `${width}rem` : undefined,
+                    height: height ? `${height}rem` : undefined}}
+        >
             {children}
         </div>
 
