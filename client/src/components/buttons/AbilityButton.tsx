@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { ButtonGeneric } from "./ButtonGeneric";
 import { OutlineText } from "../texts/OutlineText";
 
 interface AbilityButtonProp{
     ability: string;
     imageName: string;
+    amountAllowed: number;
     onClick: () => void;
 }
 
-export const AbilityButton = ({onClick, imageName, ability}: AbilityButtonProp) => {
+export const AbilityButton = ({onClick, imageName, ability, amountAllowed}: AbilityButtonProp) => {
+
+    const [count, setCount] = useState(0);
+    const isDisabled = count >= amountAllowed;
+
+    const handleClick = () => {
+        if (isDisabled) return;
+        setCount(count + 1);
+        onClick();
+    };
     
     const image =
         `
@@ -19,7 +29,7 @@ export const AbilityButton = ({onClick, imageName, ability}: AbilityButtonProp) 
         `;
 
     return(
-        <ButtonGeneric color='purple' size='large' isDisabled={false} onClick={onClick}>
+        <ButtonGeneric color='purple' size='large' isDisabled={isDisabled} onClick={handleClick}>
             <div className="w-[50%] h-auto ">
                 <OutlineText size = 'large'>
                     <span className="whitespace-normal leading-[0.8]">
