@@ -5,6 +5,7 @@ import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
 import LoserScreen from "./LoserScreen";
 import WinnerScreen from "./WinnerScreen";
+import DicerollModal from "./DiceRollModal";
 
 interface TempGameProps {
   battleId: string | null; // Add battleId as a prop
@@ -13,8 +14,11 @@ interface TempGameProps {
 const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
   const [battleState, setBattleState] = useState<BattleState | null>(null);
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
-  const [timer, setTimer] = useState<number>(10);
+  const [timer, setTimer] = useState<number>(5);
   const [winner, setWinner] = useState<string|null>(null);
+
+  const [showModal, setShowModal] = useState(false); // show dice modal
+  const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
@@ -35,6 +39,12 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
       setWinner(winner)
     })
 
+    // TODO: Perhaps use socket to pass dice roll
+    socket.on("roll_dice", (damage: number) => {
+      setDiceValue(damage);
+      setShowModal(true);
+    });
+    
     return () => {
       socket.off("possible_actions");
       socket.off("timer");
@@ -53,6 +63,11 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
     <div>
       <h1>GAME</h1>
 
+      <DicerollModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        toRoll={diceValue}
+      />
 
       {/* Winner display if battle is over */}
       {winner ? (

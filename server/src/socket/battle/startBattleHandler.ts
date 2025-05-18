@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import { Battle } from "../../model/game/battle";
 import { NullAction } from "../../model/game/action/null";
 import { players, battles } from "../../../main";
+import { AttackAction } from "../../model/game/action/attack";
 
 export const startBattleHandler = (io: Server, socket: Socket) => {
   socket.on("start_battle", () => {
@@ -52,7 +53,7 @@ function proceedBattleTurn(io: Server, battle: Battle) {
   let player1 = playersInBattle[0];
   let player2 = playersInBattle[1];
 
-  let timer = 5; // Set the initial timer value (e.g., 60 seconds)
+  let timer = 5; // Game timer for a turn 
   const interval = setInterval(() => {
     if (timer >= 0) {
       io.to(battle.getId()).emit("timer", timer);
@@ -71,10 +72,23 @@ function proceedBattleTurn(io: Server, battle: Battle) {
       // Prepare method
       player1.getActions().forEach((action) => {
         action.prepare(player1, player2);
+
+        // Handles the dice roll - For now, typecasting to send the damage so dice can roll it
+        if (action.getName() === "Attack") {
+          const attackAction = action as AttackAction;
+          const damage = attackAction.getDamage();
+          io.to(player1.getId()).emit("roll_dice", damage);
+        }
       });
 
       player2.getActions().forEach((action) => {
         action.prepare(player2, player1);
+
+        if (action.getName() === "Attack") {
+          const attackAction = action as AttackAction;
+          const damage = attackAction.getDamage();
+          io.to(player2.getId()).emit("roll_dice", damage);
+        }
       });
 
       // Execute method
