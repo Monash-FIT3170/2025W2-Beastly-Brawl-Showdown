@@ -7,4 +7,8 @@ export default class Player {
         this.name = name;
       
     }
+
+    public getId(): string {
+    return this.userID;
+  }
 }
