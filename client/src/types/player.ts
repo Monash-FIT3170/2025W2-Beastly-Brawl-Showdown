@@ -11,4 +11,5 @@ export default class Player {
     public getId(): string {
     return this.userID;
   }
+
 }
