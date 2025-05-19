@@ -1,14 +1,21 @@
+@import "tailwindcss";
+
 body {
   padding: 10px;
   font-family: sans-serif;
-  background-color: #FBD474;
-  text-align: center
+  background-color: #fbd474;
+  text-align: center;
 }
 
 h1 {
-  color: #557D5A;
+  color: #557d5a;
   font-size: 100px;
   margin: 0;
   padding: 10px 0;
-  text-shadow: 2px 2px #FBA800, -1px -1px #FBA800, -1px 1px #FBA800, 1px -1px #FBA800, 1px 1px #FBA800;
+  text-shadow:
+    2px 2px #fba800,
+    -1px -1px #fba800,
+    -1px 1px #fba800,
+    1px -1px #fba800,
+    1px 1px #fba800;
 }
