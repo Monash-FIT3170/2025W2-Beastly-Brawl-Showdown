@@ -7,10 +7,21 @@ export default class GameSession{
     hostUID: string;
     players: Queue<Player>; //need to setup queue
 
-
-    constructor(hostID: string){
+    private gameCode : Number;
+    constructor(hostID: string, presetGameCode?: number) {
         this.hostUID = hostID;
         this.players = new Queue<Player>(8);
+    
+        
+        // Constructor that generates six digit gameCode upon startup or uses preset code
+        if (presetGameCode !== undefined) {
+            // Use preset game code if provided
+            this.gameCode = presetGameCode;
+        } else {
+            // Generate random six digit code if no preset code is provided
+            const generateSixDigitCode = (): number => parseInt(Math.floor(Math.random() * 1000000).toString().padStart(6, '0'), 10);
+            this.gameCode = generateSixDigitCode();
+        }
     }
 
     public addPlayer(player: Player){
@@ -30,7 +41,7 @@ export default class GameSession{
         }
         return true;
     }
-
+  
     public canSocketJoin(socketId: string): boolean{
         for (const p of this.players.getItems()) {
             if (p.userID === socketId) {
@@ -48,6 +59,15 @@ export default class GameSession{
           }
         return true;
     }
+  
+    public getGameCode(){
+        return this.gameCode;
+    }
 
-
+    public checkGameCode(inputCode: Number){
+        if(inputCode == this.gameCode){
+            return true;
+        }
+        return false;
+    }
 }
