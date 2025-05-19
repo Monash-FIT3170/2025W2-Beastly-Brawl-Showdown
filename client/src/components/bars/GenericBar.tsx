@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-interface BarProps {
+interface GenericBarProps {
     colour: BarColour;
     cornerRadius: BarCornerRadius;
     textPosition: BarTextPosition;
@@ -8,7 +8,7 @@ interface BarProps {
     children?: ReactNode;
 }
 
-export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, children}: BarProps) => {
+export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, children}: GenericBarProps) => {
     const colourToDisplay: Record<string, string> = {
         "green": "bg-neongreen",
         "yellow": "bg-plainyellow",

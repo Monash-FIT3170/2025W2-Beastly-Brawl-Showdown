@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar } from "./Bar";
+import { GenericBar } from "./GenericBar";
 import { OutlineText } from "../texts/OutlineText";
 
 interface ArmourClassBarProps {
@@ -9,10 +9,10 @@ interface ArmourClassBarProps {
 
 export const ArmourClassBar = ({armourClass, highestArmourClass}: ArmourClassBarProps) => {
     return (
-        <Bar colour="blue" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(armourClass / highestArmourClass * 100) as BarFillPercentage}>
+        <GenericBar colour="blue" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(armourClass / highestArmourClass * 100) as BarFillPercentage}>
             <OutlineText size="tiny">
                 {`${armourClass}`}
             </OutlineText>
-        </Bar>
+        </GenericBar>
     );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar } from "./Bar";
+import { GenericBar } from "./GenericBar";
 
 interface LoadingBarProps {
     currentPercentage: number;
@@ -7,6 +7,6 @@ interface LoadingBarProps {
 
 export const LoadingBar = ({currentPercentage}: LoadingBarProps) => {
     return (
-        <Bar colour="orange" cornerRadius="heavy" textPosition="none" fillPercentage={currentPercentage as BarFillPercentage} />
+        <GenericBar colour="orange" cornerRadius="heavy" textPosition="none" fillPercentage={currentPercentage as BarFillPercentage} />
     );
 };
