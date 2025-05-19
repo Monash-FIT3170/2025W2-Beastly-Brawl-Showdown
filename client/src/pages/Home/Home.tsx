@@ -13,7 +13,7 @@ import { BaseCard } from '../../components/cards/BaseCard';
 import { OutlineText } from '../../components/texts/OutlineText';
 import { BlackText } from '../../components/texts/BlackText';
 import { GenericFooter } from '../../components/cards/GenericFooter';
-
+import { BattleFooter } from '../../components/cards/BattleFooter';
 import { GenericHeader } from '../../components/cards/GenericHeader';
 import { LobbyStatsFooter } from '../../components/cards/LobbyStatsFooter';
 
@@ -25,6 +25,7 @@ export const Home = () => (
     <h1>Welcome to Meteor!</h1>
     <LobbyStatsFooter monster = 'dragon'/>
     <MonsterSelectionCard name = 'Mystic Wyvern' description='fearsome beast' type = 'defender'/>
+    <BattleFooter ability1='Shadow Leap' ability1Charges={1} ability1Image='AttackButtonImage' ability1OnClick={()=>{}} ability2='Light Jump' ability2Charges={2} ability2Image='logo' ability2OnClick={()=>{}} defenseCharges={3} defenseOnClick={()=>{}} attackOnClick={()=>{}}></BattleFooter>
   </>
 
   
