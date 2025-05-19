@@ -8,7 +8,7 @@ export default class GameSession {
   hostUID: string;
   players: Queue<Player>;
   battles: Queue<Battle>;
-  private gameCode: Number;
+  private gameCode: number;
 
   //constructor
   constructor(hostID: string, presetGameCode?: number) {
@@ -100,7 +100,7 @@ export default class GameSession {
     }
     return false;
   }
-
+  /*
   public createMatches() {
     // Prepare the battles with the players in them
     const cyclesCount = Math.floor(this.players.size() / 2);
@@ -146,4 +146,6 @@ export default class GameSession {
       }
     }
   }
+
+*/
 }

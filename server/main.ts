@@ -4,7 +4,7 @@ import http from "http";
 import Player from "./src/model/game/player";
 import GameSession from "./src/model/host/gameSession";
 
-const activeGameSessions: Map<Number, GameSession> = new Map();
+const activeGameSessions: Map<number, GameSession> = new Map();
 
 Meteor.startup(async () => {
   // initialise socket
@@ -38,8 +38,9 @@ Meteor.startup(async () => {
     //join request
     socket.on("join-game", ({ gameCode, name }) => {
       console.log(`Join request for Code: ${gameCode}, User: ${name}`);
+      const gameCodeN = Number(gameCode);
 
-      const session = activeGameSessions.get(gameCode);
+      const session = activeGameSessions.get(gameCodeN);
       if (!session) {
         //if session of given game code doesnt exist
         console.log(`Join request failed. Invalid Code`);
@@ -50,7 +51,7 @@ Meteor.startup(async () => {
       session.addPlayer(newPlayer);
       //!!! need to handle what happens if addplayer is rejected
 
-      socket.join(`game-${gameCode}`);
+      socket.join(`game-${gameCodeN}`);
       console.log(`Join request accepted. UserID: ${socket.id}`);
     });
 
