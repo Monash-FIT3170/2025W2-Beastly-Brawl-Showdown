@@ -29,9 +29,9 @@ export const AbilityButton = ({onClick, imageName, ability, amountAllowed}: Abil
         `;
 
     return(
-        <ButtonGeneric color='purple' size='large' isDisabled={isDisabled} onClick={handleClick}>
+        <ButtonGeneric color='purple' size='battle' isDisabled={isDisabled} onClick={handleClick}>
             <div className="w-[50%] h-auto leading-[0.8]">
-                <OutlineText size = 'large'>
+                <OutlineText size = 'medium'>
                     {ability}
                 </OutlineText>
             </div>
