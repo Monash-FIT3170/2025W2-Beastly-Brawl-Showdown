@@ -5,18 +5,6 @@ interface FooterProps{
 }
 
 export const GenericFooter = ({children }: FooterProps) => {
-
-    /**
-    return(
-    <div className = "footerLayout">
-        <div className="footer">
-            <div className="flex-col">{text}</div>
-            <div className="flex flex-row justify-evenly w-full">{children}</div>
-        </div>
-    </div>
-     */
-
-
     const footer = 
         `
         bg-[#FBD474]
@@ -38,6 +26,8 @@ export const GenericFooter = ({children }: FooterProps) => {
         text-wrap
         pl-[1%]
         pr-[1%]
+        pt-4
+        pb-4
         inset-x-0
         fixed
         bottom-0

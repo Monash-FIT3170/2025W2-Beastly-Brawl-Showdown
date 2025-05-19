@@ -20,7 +20,7 @@ export const BattleHealthBar = ({currentHealth, maxHealth}: BattleHealthBarProps
 
     return (
         <Bar colour={colour} cornerRadius="heavy" textPosition="left" fillPercentage={healthPercentage as BarFillPercentage}>
-            <OutlineText size="medium">
+            <OutlineText size="tiny">
                 {`${currentHealth}/${maxHealth}`}
             </OutlineText>
         </Bar>

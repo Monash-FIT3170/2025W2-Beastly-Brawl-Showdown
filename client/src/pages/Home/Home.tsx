@@ -13,7 +13,7 @@ import { BaseCard } from '../../components/cards/BaseCard';
 import { OutlineText } from '../../components/texts/OutlineText';
 import { BlackText } from '../../components/texts/BlackText';
 import { GenericFooter } from '../../components/cards/GenericFooter';
-
+import { BattleFooter } from '../../components/cards/BattleFooter';
 import { GenericHeader } from '../../components/cards/GenericHeader';
 import { LobbyStatsFooter } from '../../components/cards/LobbyStatsFooter';
 

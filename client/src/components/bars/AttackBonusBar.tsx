@@ -10,7 +10,7 @@ interface AttackBonusBarProps {
 export const AttackBonusBar = ({attackBonus, highestAttackBonus}: AttackBonusBarProps) => {
     return (
         <Bar colour="yellow" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(attackBonus / highestAttackBonus * 100) as BarFillPercentage}>
-            <OutlineText size="medium">
+            <OutlineText size="tiny">
                 {`+${attackBonus}`}
             </OutlineText>
         </Bar>

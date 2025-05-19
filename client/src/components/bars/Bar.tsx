@@ -13,7 +13,8 @@ export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, childre
         "green": "bg-neongreen",
         "yellow": "bg-plainyellow",
         "red": "bg-sharpred",
-        "blue": "bg-customblue"
+        "blue": "bg-customblue",
+        "orange": "bg-orange"
     };
 
     const cornerRadiusToDisplay: Record<string, string> = {
