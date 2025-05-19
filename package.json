@@ -16,7 +16,7 @@
     "postcss-load-config": "^6.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
     "react-router": "^7.6.0",
     "react-router-dom": "^7.6.0",
     "tailwindcss": "^4.1.5"
