@@ -19,18 +19,37 @@ interface BattleFooterProp{
 }
 
 export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charges, defenseCharges, ability1Image, ability2Image, ability1OnClick, ability2OnClick, defenseOnClick, attackOnClick}: BattleFooterProp) => {
+
+    const topButton=
+    `
+    justify-evenly
+    inset-x-0
+    flex 
+    w-[95%]
+    xl:w-[57.5%]
+    items-center 
+    bottom-[190px]
+    xl:bottom-[170px]
+    mx-auto
+    fixed
+    z-40
+    `
+
     return(
-        <GenericFooter>
-            <div className="space-y-[5%]">
-                <div className="flex space-x-[10%]">
-                    <AttackButton onClick={attackOnClick}></AttackButton>
-                    <DefendButtonTemp initialCount={defenseCharges} label="Defend"></DefendButtonTemp>
-                </div>
-                <div className="flex space-x-[10%]">
+        <div>
+            <div className={`${topButton}`}>
+                <AttackButton onClick={attackOnClick}></AttackButton>
+                <DefendButtonTemp initialCount={defenseCharges} label="DEFEND"></DefendButtonTemp>
+            </div>
+            <GenericFooter>
+                
+                <br></br><br></br><br></br>
+                <div className="flex justify-evenly items-center w-full">
                     <AbilityButton ability={ability1} amountAllowed={ability1Charges} imageName={ability1Image} onClick={ability1OnClick}></AbilityButton>
                     <AbilityButton ability={ability2} amountAllowed={ability2Charges} imageName={ability2Image} onClick={ability2OnClick}></AbilityButton>
                 </div>
-            </div>
-        </GenericFooter>
+                
+            </GenericFooter>
+        </div>
     )
 }

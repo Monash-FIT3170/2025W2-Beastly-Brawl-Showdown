@@ -311,3 +311,17 @@ body {
   px-[3rem]
 }
 
+@keyframes moveUpAndFade {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-3rem);
+    opacity: 0;
+  }
+}
+
+.move-up-fade {
+  animation: moveUpAndFade 2s ease-in-out forwards;
+}

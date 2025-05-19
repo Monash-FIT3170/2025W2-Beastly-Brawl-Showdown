@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar } from "./Bar";
+import { GenericBar } from "./GenericBar";
 import { OutlineText } from "../texts/OutlineText";
 
 interface TotalHealthBarProps {
@@ -9,10 +9,10 @@ interface TotalHealthBarProps {
 
 export const TotalHealthBar = ({totalHealth, highestTotalHealth}: TotalHealthBarProps) => {
     return (
-        <Bar colour="green" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(totalHealth / highestTotalHealth * 100) as BarFillPercentage}>
+        <GenericBar colour="green" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(totalHealth / highestTotalHealth * 100) as BarFillPercentage}>
             <OutlineText size="tiny">
                 {`${totalHealth}`}
             </OutlineText>
-        </Bar>
+        </GenericBar>
     );
 };

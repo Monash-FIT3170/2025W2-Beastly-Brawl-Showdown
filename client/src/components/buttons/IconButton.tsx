@@ -7,11 +7,12 @@ interface IconProps {
   buttonColour: 'ronchi' | 'blue' | 'red'
   iconColour: 'black' | 'stroked'
   isDisabled?: boolean
+  onClick?: () => void;
 }
 
-export const IconButton = ({style, buttonColour, iconColour, isDisabled}: IconProps) => {
+export const IconButton = ({style, buttonColour, iconColour, isDisabled, onClick}: IconProps) => {
     return (
-        <ButtonGeneric size='square' color={buttonColour} isDisabled={isDisabled}>
+        <ButtonGeneric size='square' color={buttonColour} isDisabled={isDisabled} onClick={onClick}>
             <GenericIcon style={style} colour={iconColour} />
         </ButtonGeneric>
     );

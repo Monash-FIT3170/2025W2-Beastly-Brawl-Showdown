@@ -18,7 +18,6 @@ export const GenericFooter = ({children }: FooterProps) => {
         border-[4px]
         border-blackCurrant
         border-b-0
-        space-x-0
         flex 
         flex-col 
         items-center 
@@ -27,7 +26,7 @@ export const GenericFooter = ({children }: FooterProps) => {
         pl-[1%]
         pr-[1%]
         pt-4
-        pb-4
+        pb-10
         inset-x-0
         fixed
         bottom-0

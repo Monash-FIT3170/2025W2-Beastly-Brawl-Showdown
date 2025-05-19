@@ -18,7 +18,8 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGe
 		}
 
 	const sizeToDisplay = {
-		'large': 'max-w-[15.625rem] h-[4.75rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]',
+		'battle': 'w-[20rem] h-[7rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem] xl:w-[15.625rem] xl:h-[4.75rem]',
+		'large': ' max-w-[15.625rem] h-[4.75rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]',
 		'medium': 'max-w-[18.75rem] h-[3.75rem] px-[1.5rem] py-[0.75rem] text-[1.5625rem]',
 		'tiny': 'max-w-[8.125rem] h-[2.5rem] px-[1.5rem] py-[0.75rem] text-[0.9375rem]',
 		'square': 'w-[2rem] min-h-[2rem]'
