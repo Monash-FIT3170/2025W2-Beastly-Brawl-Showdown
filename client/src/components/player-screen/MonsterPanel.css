@@ -1,0 +1,24 @@
+.monster-panel {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.left-monster {
+  position: absolute; 
+  bottom: 5%;
+  left: 5%;
+  width: 20%;
+  height: auto;
+  transform: scaleX(-1);
+}
+
+.right-monster {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  width: 20%;
+  height: auto;
+}

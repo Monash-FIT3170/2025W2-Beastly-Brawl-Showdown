@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import socket from "../../socket";
-import CountDownTimer from "../../components/temp/CountdownTimer";
 import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
+import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
+import MonsterPanel from "../../components/player-screen/MonsterPanel";
 
 interface TempGameProps {
   battleId: string | null; // Add battleId as a prop
@@ -47,9 +48,7 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
   };
 
   return (
-    <div>
-      <h1>GAME</h1>
-
+    <div className="game-screen">
       {/* Winner display if battle is over */}
       {winner ? (
         <div>
@@ -58,30 +57,11 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
         </div>
       ) : (
         <>
-          <CountDownTimer timer={timer} />
-
           {battleState && (
             <div>
-              <h2>Battle</h2>
-              <p>Turn: {battleState.turn}</p>
+              <PlayerInfoPanel battleState={battleState}/>
 
-              <div>
-                <h3>You: {battleState.yourPlayer.name}</h3>
-                <p>Health: {battleState.yourPlayer.currentHealth}</p>
-                <p>Attack: {battleState.yourPlayer.currentAttackStat}</p>
-                <p>Armour: {battleState.yourPlayer.currentArmourClassStat}</p>
-                <p>Monster: {battleState.yourPlayerMonster.name}</p>
-              </div>
-
-              <div>
-                <h3>Opponent: {battleState.opponentPlayer.name}</h3>
-                <p>Health: {battleState.opponentPlayer.currentHealth}</p>
-                <p>Attack: {battleState.opponentPlayer.currentAttackStat}</p>
-                <p>
-                  Armour: {battleState.opponentPlayer.currentArmourClassStat}
-                </p>
-                <p>Monster: {battleState.opponentPlayerMonster.name}</p>
-              </div>
+              <MonsterPanel battleState={battleState}/>
 
               <div>
                 <h3>Logs:</h3>
@@ -91,6 +71,10 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
               </div>
             </div>
           )}
+
+          <div className="timer-box">
+            <p>Time Remaining: {timer}</p>
+          </div>
 
           <div>
             {timer > 0 ? (

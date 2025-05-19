@@ -33,7 +33,6 @@ export const Home = () => {
 
   return (
     <div>
-      <h1>Welcome to Meteor!</h1>
       {renderScreen()}
     </div>
   );
