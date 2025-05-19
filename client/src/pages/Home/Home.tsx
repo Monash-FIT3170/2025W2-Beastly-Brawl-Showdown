@@ -23,8 +23,6 @@ import { LobbyStatsFooter } from '../../components/cards/LobbyStatsFooter';
 export const Home = () => (
   <>
     <h1>Welcome to Meteor!</h1>
-    <LobbyStatsFooter monster = 'dragon'/>
-    <MonsterSelectionCard name = 'Mystic Wyvern' description='fearsome beast' type = 'defender'/>
   </>
 
   

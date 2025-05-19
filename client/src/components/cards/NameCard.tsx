@@ -22,7 +22,9 @@ export const NameCard = ({name, monster}: NameCardProps) => {
             <MonsterImageResizable name={monster} width={8} height={8} />
             <BaseCard color={monsterCardColour[monster]}>
                 <div className='flex flex-row items-center space-x-4 m-2'>
-                    <BlackText text={name} size='medium'/>
+                    <BlackText size='medium'>
+                        {name}
+                    </BlackText>
                     <IconButton style='x' iconColour='black' buttonColour='red' />
                 </div>
             </BaseCard>
