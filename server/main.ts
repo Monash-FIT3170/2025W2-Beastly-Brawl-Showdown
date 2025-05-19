@@ -25,6 +25,7 @@ Meteor.startup(async () => {
     socket.on("create-game", ({}) => {
       //!!!!!!!! need to check the code doesn't already exist in activeGameSessions !!!!!!!
       //is hostUID just socket ID ? - i guess unless we are logged in.. which is not possible yet.. yippee!!
+      console.log("Attempting game session creation...");
       const session = new GameSession(socket.id);
       activeGameSessions.set(session.getGameCode(), session);
       console.log(
@@ -50,9 +51,18 @@ Meteor.startup(async () => {
       //!!! need to handle what happens if addplayer is rejected
 
       socket.join(`game-${gameCode}`);
-      console.log(`Join request accepted. UserID ${socket.id}`);
+      console.log(`Join request accepted. UserID: ${socket.id}`);
+    });
+
+    //list all codes
+    socket.on("game-list", () => {
+      activeGameSessions.forEach((session, gameCode) => {
+        console.log("Game code:", gameCode);
+      });
     });
   });
+
+  //need to implement ending a game session :3
 
   //listening
   server.listen(PORT, () => {
