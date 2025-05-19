@@ -1,4 +1,4 @@
-type BarColour = "green" | "yellow" | "red" | "blue";
+type BarColour = "green" | "yellow" | "red" | "blue" | "orange";
 type BarCornerRadius = "light" | "heavy";
 type BarTextPosition = "left" | "right";
 type BarFillPercentage =
