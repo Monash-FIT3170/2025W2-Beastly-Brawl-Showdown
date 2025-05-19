@@ -74,7 +74,7 @@ export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, 
     }
 
     return (
-        <div className="relative w-48 h-8">
+        <div className="relative w-[110%] h-8">
             <div className={`
                 ${baseBackBarProperties}
                 ${cornerRadiusToDisplay[cornerRadius]}
@@ -85,9 +85,9 @@ export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, 
                 ${textPositionToDisplay[textPosition]}
                 ${fillPercentageToDisplay[fillPercentage]}
             `}>
-                <span className="leading-[0rem] pt-[0.25rem]">
+                <div className="leading-none pt-[0.25rem]">
                     {children}
-                </span>
+                </div>
             </div>
         </div>
     );
