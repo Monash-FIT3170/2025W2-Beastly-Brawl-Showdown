@@ -1,4 +1,3 @@
-
 interface IQueue<T> {
     enqueue(item: T): void;
     dequeue(): T | undefined;
@@ -16,6 +15,13 @@ export default class Queue<T> implements IQueue<T> {
     }
     this.storage.push(item);
   }
+  //theoretically should this exist? is it still a queue
+  enqueuefront(item: T): void {
+    if (this.size() === this.capacity) {
+      throw Error("Queue has reached max capacity, you cannot add more items");
+    }
+    this.storage.unshift(item);
+  }
   dequeue(): T | undefined {
     return this.storage.shift();
   }
@@ -25,4 +31,5 @@ export default class Queue<T> implements IQueue<T> {
   getItems(): T[] {
     return[...this.storage];
   }
+
 }

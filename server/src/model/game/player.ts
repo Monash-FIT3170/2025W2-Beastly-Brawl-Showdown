@@ -1,5 +1,3 @@
-
-
 //need to reference: https://github.com/Monash-FIT3170/Shazam-3-Scrum-Unleashed/blob/dev/server/src/model/player.ts
 
 export default class Player {
