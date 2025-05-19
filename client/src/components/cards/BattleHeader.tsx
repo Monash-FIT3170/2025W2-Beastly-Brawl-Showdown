@@ -28,7 +28,7 @@ export const BattleHeader = ({
     return (
         <GenericHeader color="cream">
             <div className="flex justify-between w-full">
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-start pt-[2%] pl-[1%]">
                     <BattleHealthBar currentHealth={monster1CurrentHealth} maxHealth={monster1MaxHealth} />
                     <div className="leading-none py-[2%]">
                         <OutlineText size="tiny">
@@ -41,7 +41,7 @@ export const BattleHeader = ({
                         </OutlineText>
                     </div>
                 </div>
-                <div className="flex flex-col items-end">
+                <div className="flex flex-col items-end pt-[2%] pr-[1%]">
                     <BattleHealthBar currentHealth={monster2CurrentHealth} maxHealth={monster2MaxHealth} />
                     <div className="leading-none py-[2%]">
                         <OutlineText size="tiny">
