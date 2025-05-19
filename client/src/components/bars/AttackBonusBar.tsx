@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar } from "./Bar";
+import { GenericBar } from "./GenericBar";
 import { OutlineText } from "../texts/OutlineText";
 
 interface AttackBonusBarProps {
@@ -9,10 +9,10 @@ interface AttackBonusBarProps {
 
 export const AttackBonusBar = ({attackBonus, highestAttackBonus}: AttackBonusBarProps) => {
     return (
-        <Bar colour="yellow" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(attackBonus / highestAttackBonus * 100) as BarFillPercentage}>
+        <GenericBar colour="yellow" cornerRadius="light" textPosition="right" fillPercentage={Math.floor(attackBonus / highestAttackBonus * 100) as BarFillPercentage}>
             <OutlineText size="tiny">
                 {`+${attackBonus}`}
             </OutlineText>
-        </Bar>
+        </GenericBar>
     );
 };

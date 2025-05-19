@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-interface BarProps {
+interface GenericBarProps {
     colour: BarColour;
     cornerRadius: BarCornerRadius;
     textPosition: BarTextPosition;
@@ -8,7 +8,7 @@ interface BarProps {
     children?: ReactNode;
 }
 
-export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, children}: BarProps) => {
+export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, children}: GenericBarProps) => {
     const colourToDisplay: Record<string, string> = {
         "green": "bg-neongreen",
         "yellow": "bg-plainyellow",
@@ -24,7 +24,8 @@ export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, childre
 
     const textPositionToDisplay: Record<string, string> = {
         "left": "justify-start pl-[3%]",
-        "right": "justify-end pr-[3%]"
+        "right": "justify-end pr-[3%]",
+        "none": ""
     };
 
     const fillPercentageToDisplay: Record<number, string> = {
@@ -73,7 +74,7 @@ export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, childre
     }
 
     return (
-        <div className="relative w-48 h-8">
+        <div className="relative w-[110%] h-8">
             <div className={`
                 ${baseBackBarProperties}
                 ${cornerRadiusToDisplay[cornerRadius]}
@@ -84,9 +85,9 @@ export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, childre
                 ${textPositionToDisplay[textPosition]}
                 ${fillPercentageToDisplay[fillPercentage]}
             `}>
-                <span className="leading-[0rem] pt-[0.25rem]">
+                <div className="leading-none pt-[0.25rem]">
                     {children}
-                </span>
+                </div>
             </div>
         </div>
     );

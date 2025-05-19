@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode } from "react";
 
 interface HeaderProps{
     children: ReactNode;
-    color: 'blue' | 'purple' | 'lightYellow' | 'green' | 'red';
+    color: 'blue' | 'purple' | 'lightYellow' | 'green' | 'red' | 'cream';
 }
 
 export const GenericHeader = ({children, color}: HeaderProps) => {
@@ -12,7 +12,8 @@ export const GenericHeader = ({children, color}: HeaderProps) => {
         'purple': 'bg-[#BD55ED]',
         'lightYellow': 'bg-[#FFE8B1]',
         'green': 'bg-[#7EED55]',
-        'red': 'bg-[#ED5A55]'
+        'red': 'bg-[#ED5A55]',
+        'cream': 'bg-[#FFE8B1]'
     };
 
     const header = 
