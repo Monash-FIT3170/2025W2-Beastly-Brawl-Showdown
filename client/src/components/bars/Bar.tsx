@@ -24,7 +24,8 @@ export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, childre
 
     const textPositionToDisplay: Record<string, string> = {
         "left": "justify-start pl-[3%]",
-        "right": "justify-end pr-[3%]"
+        "right": "justify-end pr-[3%]",
+        "none": ""
     };
 
     const fillPercentageToDisplay: Record<number, string> = {
