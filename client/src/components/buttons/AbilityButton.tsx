@@ -30,11 +30,9 @@ export const AbilityButton = ({onClick, imageName, ability, amountAllowed}: Abil
 
     return(
         <ButtonGeneric color='purple' size='large' isDisabled={isDisabled} onClick={handleClick}>
-            <div className="w-[50%] h-auto ">
+            <div className="w-[50%] h-auto leading-[0.8]">
                 <OutlineText size = 'large'>
-                    <span className="whitespace-normal leading-[0.8]">
-                        {ability}
-                    </span>
+                    {ability}
                 </OutlineText>
             </div>
             <img className = {`${image}`} src={`${imageName}.png`} alt={`${imageName} image`}/>
