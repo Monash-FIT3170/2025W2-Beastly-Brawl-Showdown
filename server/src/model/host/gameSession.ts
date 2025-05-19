@@ -1,13 +1,13 @@
 
 import Player from "../game/player";
 import Queue from "../../utils/queue";
+
 export default class GameSession{
     //need to confirm what attributes
     hostUID: string;
     players: Queue<Player>; //need to setup queue
+
     private gameCode : Number;
-
-
     constructor(hostID: string, presetGameCode?: number) {
         this.hostUID = hostID;
         this.players = new Queue<Player>(8);
@@ -26,7 +26,12 @@ export default class GameSession{
 
     public addPlayer(player: Player){
         //need to add if statements regarding duplicate names etc.
-       this.players.enqueue(player)
+        if (
+            this.canSocketJoin(player.userID) &&
+            this.isPlayerNameFree(player.name)
+          ) {
+        this.players.enqueue(player)
+          }
     }
 
     public canStartGame(): boolean {
@@ -36,7 +41,25 @@ export default class GameSession{
         }
         return true;
     }
-    
+  
+    public canSocketJoin(socketId: string): boolean{
+        for (const p of this.players.getItems()) {
+            if (p.userID === socketId) {
+              return false;
+            }
+        }
+        return true;
+    }
+
+    public isPlayerNameFree(name: string): boolean {
+        for (const p of this.players.getItems()) {
+            if (p.name.toLocaleLowerCase() === name.toLocaleLowerCase()) {
+              return false;
+            }
+          }
+        return true;
+    }
+  
     public getGameCode(){
         return this.gameCode;
     }
@@ -47,5 +70,4 @@ export default class GameSession{
         }
         return false;
     }
-
 }

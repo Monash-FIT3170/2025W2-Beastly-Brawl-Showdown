@@ -22,4 +22,7 @@ export default class Queue<T> implements IQueue<T> {
   size(): number {
     return this.storage.length;
   }
+  getItems(): T[] {
+    return[...this.storage];
+  }
 }
