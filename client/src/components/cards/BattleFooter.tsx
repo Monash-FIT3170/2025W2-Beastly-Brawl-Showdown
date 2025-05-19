@@ -1,7 +1,7 @@
 import React from "react";
 import { AttackButton } from "../buttons/AttackButton";
 import { AbilityButton } from "../buttons/AbilityButton";
-import { DefendButtonTemp } from "../buttons/DefendButtonTemp";
+import { DefendButtonTemp } from "../buttons/DefendButton";
 import { GenericFooter } from "./GenericFooter";
 
 interface BattleFooterProp{

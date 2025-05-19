@@ -19,8 +19,8 @@ export const GenericIcon = ({style, colour}: IconProps) => {
   }
 
   const colours = {
-    'black': 'text-darkpurple size-8',
-    'stroked': 'text-whiteish size-8'
+    'black': 'text-blackCurrant size-8',
+    'stroked': 'text-merino size-8'
   }
  
   return(

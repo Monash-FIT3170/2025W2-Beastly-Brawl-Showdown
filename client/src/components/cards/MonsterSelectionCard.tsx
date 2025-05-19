@@ -12,8 +12,8 @@ interface MonsterSelectionProps{
 export const MonsterSelectionCard = ({name, description, type}: MonsterSelectionProps) =>{
 
     const colorLoader: Record<string, string> = {
-        'attacker': 'bg-sharpred',
-        'defender': 'bg-neongreen',
+        'attacker': 'bg-burntSienna',
+        'defender': 'bg-conifer',
         'balanced': 'bg-pictonBlue'
     }
     
@@ -21,7 +21,7 @@ export const MonsterSelectionCard = ({name, description, type}: MonsterSelection
         <button 
             className=
                 {`${colorLoader[type]} 
-                border border-[4px] border-darkpurple 
+                border border-[4px] border-blackCurrant 
                 rounded-xl
                 w-[40rem]
                 flex flex-row`}>

@@ -11,11 +11,11 @@ import { IconBars } from "../icons/IconBars";
 
 const FlexBoxLogoIcons: React.FC = () => {  
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center bg-cream w-2/3 h-72 m-1 rounded-2xl" style={{ width: "calc(66.6666666667% + 8px)" }}>
+    <div className="flex flex-col md:flex-row justify-center items-center bg-peach w-2/3 h-72 m-1 rounded-2xl" style={{ width: "calc(66.6666666667% + 8px)" }}>
       <div className="flex w-full items-center mx-20 space-x-40">
         <LogoResizable height={16} width={16}/>
         <div className="flex flex-col justify-around h-full">
-          <p className="font-jua text-darkpurple text-tiny">Icons</p>
+          <p className="font-jua text-blackCurrant text-tiny">Icons</p>
           <div className="flex w-full justify-center m-4 gap-8 mx-8">
             <GenericIcon />
             <IconArrowRight />

@@ -3,7 +3,7 @@ import React from 'react';
 import { InputBox } from '../../components/inputs/InputBox'
 import { MonsterSelectionCard } from '../../components/cards/MonsterSelectionCard';
 import { IconTest } from '../../components/icons/IconTest';
-import {DefendButtonTemp} from "../../components/buttons/DefendButtonTemp"
+import {DefendButton} from "../../components/buttons/DefendButton"
 import { MonsterImage } from '../../components/player-screen/monsters/MonsterImage';
 import { BaseCard } from '../../components/cards/BaseCard';
 import { OutlineText } from '../../components/texts/OutlineText';

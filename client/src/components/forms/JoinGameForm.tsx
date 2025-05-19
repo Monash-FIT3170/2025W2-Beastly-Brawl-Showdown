@@ -21,7 +21,7 @@ const JoinGameForm = () => {
                 </BlackText>
             </div>
             <InputBox />
-            <ButtonGeneric color='lightorange' size='medium' >
+            <ButtonGeneric color='ronchi' size='medium' >
                 <OutlineText size="medium">
                     Join
                 </OutlineText>

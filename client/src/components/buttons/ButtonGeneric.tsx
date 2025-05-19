@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 interface ButtonGenericProps{
-    color: 'lightorange' | 'blue' | 'red' | 'purple';
+    color: 'ronchi' | 'blue' | 'red' | 'purple';
 	size: 'tiny' | 'medium' | 'large' | 'square';
 	isDisabled?: boolean;
 	children?: ReactNode
@@ -11,10 +11,10 @@ interface ButtonGenericProps{
 export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGenericProps) => {
 
 	const colorToDisplay = {
-		'lightorange': 'bg-lightorange',
+		'ronchi': 'bg-ronchi',
 		'blue': 'bg-pictonBlue',
-		'red': 'bg-sharpred',
-		'purple': 'bg-brightpurple'
+		'red': 'bg-burntSienna',
+		'purple': 'bg-heliotrope'
 		}
 
 	const sizeToDisplay = {
@@ -29,8 +29,8 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGe
 		${colorToDisplay[color]}
 		flex
 		items-center
-		text-whiteish
-		outline-darkpurple
+		text-merino
+		outline-blackCurrant
 		outline-[0.25rem]
 		outline-offset-0
 		transition
@@ -43,9 +43,9 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGe
 	const enabledButton = 
 		`
 		hover:brightness-85
-		active:outline-darkpurple
+		active:outline-blackCurrant
 		active:ring-[0.3125rem]
-		active:ring-darkpurple
+		active:ring-blackCurrant
 		`;
 
 	const disabledButton = 

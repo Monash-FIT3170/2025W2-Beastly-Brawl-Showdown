@@ -28,7 +28,7 @@ export const GenericHeader = ({children, color}: HeaderProps) => {
         rounded-bl-xl
         rounded-br-xl
         border-[4px]
-        border-darkpurple
+        border-blackCurrant
         border-t-0
         text-center
         text-wrap

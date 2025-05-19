@@ -16,7 +16,7 @@ export const GenericFooter = ({children }: FooterProps) => {
         rounded-tl-xl
         rounded-tr-xl
         border-[4px]
-        border-darkpurple
+        border-blackCurrant
         border-b-0
         space-x-0
         flex 

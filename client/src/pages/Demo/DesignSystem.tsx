@@ -6,7 +6,7 @@ import FlexBoxTheme from '../../components/flex/FlexBoxTheme'
 import FlexBoxBars from '../../components/flex/FlexBoxBars';
 
 export const DesignSystem = () => (
-    <div className='min-h-screen max-h-screen y-screen bg-darkpurple'>
+    <div className='min-h-screen max-h-screen y-screen bg-blackCurrant'>
         <div className='flex'>
             <FlexBoxLogoIcons />
             <FlexBoxBars />

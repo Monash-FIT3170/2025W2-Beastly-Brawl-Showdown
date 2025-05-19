@@ -4,7 +4,7 @@ import { GenericIcon } from '../icons/GenericIcon';
 
 interface IconProps {
   style: 'arrowleft' | 'arrowright' | 'arrowup' | 'arrowdown' | 'x' | 'bars' | 'info' | 'cog'
-  buttonColour: 'lightorange' | 'blue' | 'red'
+  buttonColour: 'ronchi' | 'blue' | 'red'
   iconColour: 'black' | 'stroked'
   isDisabled?: boolean
 }

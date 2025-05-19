@@ -4,19 +4,19 @@
 @theme{
   --font-jua: "Jua", sans-serif;
   --color-pictonBlue: #55A9ED;
-  --color-darkpurple: #403245;
-  --color-lightorange: #EDAF55;
-  --color-forestgreen: #557D5A;
-  --color-orange: #E28454;
-  --color-brightpurple: #BD55ED;
-  --color-lightgrey: #DAD9D7;
-  --color-lightergrey: #DADADA;
-  --color-maybeyellow: #FBD474;
-  --color-whiteish: #F6F1E5;
-  --color-neongreen: #7EED55;
-  --color-cream: #FFE8B1;
-  --color-sharpred: #ED5A55;
-  --color-plainyellow: #FFD900;
+  --color-blackCurrant: #403245;
+  --color-ronchi: #EDAF55;
+  --color-springLeaves: #557D5A;
+  --color-terracotta: #E28454;
+  --color-heliotrope: #BD55ED;
+  --color-quillGray: #DAD9D7;
+  --color-alto: #DADADA;
+  --color-goldenRod: #FBD474;
+  --color-merino: #F6F1E5;
+  --color-conifer: #7EED55;
+  --color-peach: #FFE8B1;
+  --color-burntSienna: #ED5A55;
+  --color-schoolBusYellow: #FFD900;
   --text-tiny: 0.9375rem;
   --text-medium: 1.5625rem;
   --text-large: 2.1875rem;
@@ -32,9 +32,9 @@ body {
 }
 
 .text-outline{
-  -webkit-text-fill-color: var(--color-whiteish);
+  -webkit-text-fill-color: var(--color-merino);
   -webkit-text-stroke: 0.0625rem;
-  -webkit-text-stroke-color: var(--color-darkpurple)
+  -webkit-text-stroke-color: var(--color-blackCurrant)
 }
 
 .btnBlue {

@@ -10,11 +10,11 @@ interface BarProps {
 
 export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, children}: BarProps) => {
     const colourToDisplay: Record<string, string> = {
-        "green": "bg-neongreen",
-        "yellow": "bg-plainyellow",
-        "red": "bg-sharpred",
+        "green": "bg-conifer",
+        "yellow": "bg-schoolBusYellow",
+        "red": "bg-burntSienna",
         "blue": "bg-pictonBlue",
-        "orange": "bg-orange"
+        "terracotta": "bg-terracotta"
     };
 
     const cornerRadiusToDisplay: Record<string, string> = {
@@ -49,8 +49,8 @@ export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, childre
         w-full
         h-full
         border-3
-        border-darkpurple
-        bg-lightergrey
+        border-blackCurrant
+        bg-alto
     `;
 
     let baseFrontBarProperties = `
@@ -69,7 +69,7 @@ export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, childre
     if (fillPercentage == 0) {
         baseFrontBarProperties += `border-transparent`
     } else {
-        baseFrontBarProperties += `border-darkpurple ${colourToDisplay[colour]}`;
+        baseFrontBarProperties += `border-blackCurrant ${colourToDisplay[colour]}`;
     }
 
     return (

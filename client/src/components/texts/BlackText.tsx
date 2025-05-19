@@ -14,7 +14,7 @@ export const BlackText = ({children, size}: BlackTextProps) => {
     }
 
     return(
-    <p className={`${sizeLoader[size]} font-[Jua] text-darkpurple`}> 
+    <p className={`${sizeLoader[size]} font-[Jua] text-blackCurrant`}> 
         {children}
     </p>
     );
