@@ -23,7 +23,7 @@ export const DefendButtonTemp: React.FC<DefendButtonTempProps> = ({ label, initi
         className={`
 		w-normalButtonWidth
 		h-normalButtonHeight
-		bg-customblue
+		bg-pictonBlue
 		text-white 
 		font-[Jua] 
 		text-2xl 

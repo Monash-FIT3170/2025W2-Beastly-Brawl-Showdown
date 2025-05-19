@@ -14,7 +14,7 @@ export const MonsterSelectionCard = ({name, description, type}: MonsterSelection
     const colorLoader: Record<string, string> = {
         'attacker': 'bg-sharpred',
         'defender': 'bg-neongreen',
-        'balanced': 'bg-customblue'
+        'balanced': 'bg-pictonBlue'
     }
     
     return(

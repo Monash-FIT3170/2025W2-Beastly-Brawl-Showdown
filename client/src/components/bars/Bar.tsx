@@ -13,7 +13,7 @@ export const Bar = ({colour, cornerRadius, textPosition, fillPercentage, childre
         "green": "bg-neongreen",
         "yellow": "bg-plainyellow",
         "red": "bg-sharpred",
-        "blue": "bg-customblue",
+        "blue": "bg-pictonBlue",
         "orange": "bg-orange"
     };
 

@@ -32,7 +32,7 @@ const FlexBoxTheme: React.FC = () => {
         </div>
         <div className="flex w-full px-10">
           <div className="flex flex-col justify-around items-center bg-sharpred h-8 w-8 m-0.5 rounded-2xl"></div>
-          <div className="flex flex-col justify-around items-center bg-customblue h-8 w-8 m-0.5 rounded-2xl"></div>
+          <div className="flex flex-col justify-around items-center bg-pictonBlue h-8 w-8 m-0.5 rounded-2xl"></div>
           <div className="flex flex-col justify-around items-center bg-plainyellow h-8 w-8 m-0.5 rounded-2xl"></div>
           <div className="flex flex-col justify-around items-center bg-neongreen h-8 w-8 m-0.5 rounded-2xl"></div>
           <div className="flex flex-col justify-around items-center bg-forestgreen h-8 w-8 m-0.5 rounded-2xl"></div>

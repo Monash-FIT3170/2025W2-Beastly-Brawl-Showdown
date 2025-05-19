@@ -13,7 +13,7 @@ export const BaseCard = ({color, children, width, height}: BaseCardProps) =>{
     
     
     const colorLoader: Record<string, string> = {
-        'customblue':'bg-customblue',
+        'pictonBlue':'bg-pictonBlue',
         'lightorange': 'bg-lightorange',
         'orange': 'bg-orange',
         'maybeyellow': 'bg-maybeyellow',
