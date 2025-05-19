@@ -22,11 +22,11 @@ export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charg
     return(
         <GenericFooter>
             <div className="space-y-[5%]">
-                <div className="flex space-x-4">
+                <div className="flex space-x-[10%]">
                     <AttackButton onClick={attackOnClick}></AttackButton>
                     <DefendButtonTemp initialCount={defenseCharges} label="Defend"></DefendButtonTemp>
                 </div>
-                <div className="flex space-x-4">
+                <div className="flex space-x-[10%]">
                     <AbilityButton ability={ability1} amountAllowed={ability1Charges} imageName={ability1Image} onClick={ability1OnClick}></AbilityButton>
                     <AbilityButton ability={ability2} amountAllowed={ability2Charges} imageName={ability2Image} onClick={ability2OnClick}></AbilityButton>
                 </div>

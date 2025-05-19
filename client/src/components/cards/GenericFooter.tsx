@@ -27,6 +27,7 @@ export const GenericFooter = ({children }: FooterProps) => {
         pl-[1%]
         pr-[1%]
         pt-4
+        pb-4
         inset-x-0
         fixed
         bottom-0
