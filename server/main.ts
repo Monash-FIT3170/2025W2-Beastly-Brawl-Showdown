@@ -6,6 +6,8 @@ import GameSession from "./src/model/host/gameSession";
 
 const activeGameSessions: Map<number, GameSession> = new Map();
 
+//todo: need to update all console logs to be "emit" so that clients can react accordingly
+
 Meteor.startup(async () => {
   // initialise socket
   const server = http.createServer();
@@ -37,7 +39,9 @@ Meteor.startup(async () => {
 
     //join request
     socket.on("join-game", ({ gameCode, name }) => {
-      console.log(`Join request for Code: ${gameCode}, User: ${name}`);
+      console.log(
+        `Join request for Code: ${gameCode}, User: ${name} - ${socket.id}`
+      );
       const gameCodeN = Number(gameCode);
 
       const session = activeGameSessions.get(gameCodeN);
@@ -55,11 +59,64 @@ Meteor.startup(async () => {
       console.log(`Join request accepted. UserID: ${socket.id}`);
     });
 
+    //leave request
+    socket.on("leave-game", ({ gameCode, userID = socket.id }) => {
+      console.log(`Leave request for Code: ${gameCode}, User ID: ${userID}`);
+      const gameCodeN = Number(gameCode);
+
+      const session = activeGameSessions.get(gameCodeN);
+      if (!session) {
+        //if session of given game code doesnt exist
+        console.log(`Leave request failed. Invalid Code`);
+        return;
+      }
+
+      const socketToKick = io.sockets.sockets.get(userID);
+
+      if (!socketToKick) {
+        console.log(`Leave request failed. Invalid User ID`);
+        return;
+      }
+
+      socketToKick.emit("kick-warning", {
+        message: "You are being removed from the game session.",
+      });
+
+      //timeout to allow message to send before kick
+      setTimeout(() => {
+        socketToKick.leave(`game-${gameCodeN}`);
+        session.removePlayer(userID);
+        console.log(`Removed player ${userID} from game session ${gameCode}`);
+      }, 100);
+    });
+
     //list all codes
     socket.on("game-list", () => {
-      activeGameSessions.forEach((session, gameCode) => {
+      activeGameSessions.forEach((_session, gameCode) => {
         console.log("Game code:", gameCode);
       });
+    });
+
+    //close game session
+    socket.on("cancel-game", ({ gameCode }) => {
+      console.log("Session cancelling...");
+      const gameCodeN = Number(gameCode);
+      const session = activeGameSessions.get(gameCodeN);
+      if (!session) {
+        //if session of given game code doesnt exist
+        console.log(`Cancel Request failed. Invalid Code`);
+        return;
+      }
+
+      io.to(`game-${gameCodeN}`).emit("close-warning", {
+        message: "Current game session is closing.",
+      });
+      //timeout to allow the message to send before closure
+      setTimeout(() => {
+        activeGameSessions.delete(gameCodeN);
+        //removes all clients -> should auto delete room
+        io.in(`game-${gameCodeN}`).socketsLeave(`game-${gameCodeN}`);
+      }, 100);
     });
   });
 
