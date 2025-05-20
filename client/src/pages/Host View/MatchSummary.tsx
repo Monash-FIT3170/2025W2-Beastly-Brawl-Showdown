@@ -1,9 +1,14 @@
 import React from 'react';
-import GameBackground from '../../components/background/Background';
+import Background from '../../components/background/Background';
+import MatchSummaryPanel from './MatchSummaryPanel';
 
 const MatchSummary = () => {
   return (
-    <GameBackground />
+    <Background>
+        <MatchSummaryPanel>
+   
+        </MatchSummaryPanel>
+    </Background>
   );
 };
 
