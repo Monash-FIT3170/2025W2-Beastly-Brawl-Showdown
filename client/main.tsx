@@ -7,5 +7,5 @@ import { HostLobby } from './src/pages/Lobby/HostLobby';
 Meteor.startup(() => {
   const container = document.getElementById("react-target");
   const root = createRoot(container!);
-  root.render(<HostLobby/>);
+  root.render(<HostLobby />);
 });
