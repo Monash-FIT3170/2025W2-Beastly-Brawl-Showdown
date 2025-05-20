@@ -1,16 +1,16 @@
 import React from 'react';
 import './styles.css'; // Import the CSS file
 
-interface RoundHeaderProps {
+interface RoundNumberHeaderProps {
   roundNumber?: number;
 }
 
-const RoundHeader: React.FC<RoundHeaderProps> = ({ roundNumber = 2 }) => {
+const RoundNumberHeader: React.FC<RoundNumberHeaderProps> = ({ roundNumber = 2 }) => {
   return (
     <div className="round-header" style={{
-      padding: '1.7rem 3rem',
+      padding: '1rem 3rem',
       textAlign: 'center',
-      margin: '0.5rem auto 1.5rem auto',
+      margin: '0rem auto 0rem auto',
       maxWidth: '40%', // Increased width
       boxShadow: '0 4px 8px rgba(64, 50, 69, 0.2)',
       border: '4px solid #403245', // Thicker border to match image
@@ -32,4 +32,4 @@ const RoundHeader: React.FC<RoundHeaderProps> = ({ roundNumber = 2 }) => {
   );
 };
 
-export default RoundHeader;
+export default RoundNumberHeader;
