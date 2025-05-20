@@ -19,10 +19,12 @@ export const DefendButton: React.FC<DefendButtonProps> = ({ initialCount }) => {
 
   return(
     <div className="relative inline-block">
-      <ButtonGeneric color = 'blue' size = 'medium' onClick={handleClick} isDisabled = {isDisabled}>
-        <OutlineText size = 'large'>
-          DEFEND
-        </OutlineText>
+      <ButtonGeneric color = 'blue' size = 'battle' onClick={handleClick} isDisabled = {isDisabled}>
+        <div className='w-full justify-center'>
+          <OutlineText size = 'large'>
+            DEFEND
+          </OutlineText>
+          </div>
       </ButtonGeneric>
       <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-[#FFE07C] border-4 border-[#403245] rounded-full w-10 h-10 flex items-center justify-center text-[#403245] font-jua text-lg">
         {count}

@@ -13,8 +13,8 @@ export const GenericFooter = ({children }: FooterProps) => {
         w-[95%]
         xl:w-[60%]
         h-normalPhoneHeight
-        rounded-tl-xl
-        rounded-tr-xl
+        rounded-tl-[5rem]
+        rounded-tr-[5rem]
         border-[4px]
         border-blackCurrant
         border-b-0

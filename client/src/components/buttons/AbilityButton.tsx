@@ -22,10 +22,11 @@ export const AbilityButton = ({onClick, imageName, ability, amountAllowed}: Abil
     
     const image =
         `
-        mx-13
+        
         w-[30%]
-        h-auto
+        h-[auto%]
         object-contain
+        ml-auto
         `;
 
     return(

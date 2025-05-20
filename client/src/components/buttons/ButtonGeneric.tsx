@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 
 interface ButtonGenericProps{
     color: 'ronchi' | 'blue' | 'red' | 'purple';
-	size: 'tiny' | 'medium' | 'large' | 'square';
+	size: 'tiny' | 'medium' | 'large' | 'square' | 'battle';
 	isDisabled?: boolean;
 	children?: ReactNode
 	onClick?: () => void;

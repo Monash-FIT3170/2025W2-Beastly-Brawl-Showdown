@@ -1,7 +1,7 @@
 import React from "react";
 import { AttackButton } from "../buttons/AttackButton";
 import { AbilityButton } from "../buttons/AbilityButton";
-import { DefendButtonTemp } from "../buttons/DefendButton";
+import { DefendButton } from "../buttons/DefendButton";
 import { GenericFooter } from "./GenericFooter";
 
 interface BattleFooterProp{
@@ -14,18 +14,17 @@ interface BattleFooterProp{
     ability2Image: string;
     ability1OnClick: () => void;
     ability2OnClick: () => void;
-    defenseOnClick: () => void;
     attackOnClick: () => void;
 }
 
-export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charges, defenseCharges, ability1Image, ability2Image, ability1OnClick, ability2OnClick, defenseOnClick, attackOnClick}: BattleFooterProp) => {
+export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charges, defenseCharges, ability1Image, ability2Image, ability1OnClick, ability2OnClick, attackOnClick}: BattleFooterProp) => {
 
     const topButton=
     `
     justify-evenly
     inset-x-0
     flex 
-    w-[95%]
+    w-[92%]
     xl:w-[57.5%]
     items-center 
     bottom-[190px]
@@ -39,7 +38,7 @@ export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charg
         <div>
             <div className={`${topButton}`}>
                 <AttackButton onClick={attackOnClick}></AttackButton>
-                <DefendButtonTemp initialCount={defenseCharges} label="DEFEND"></DefendButtonTemp>
+                <DefendButton initialCount={defenseCharges}></DefendButton>
             </div>
             <GenericFooter>
                 
