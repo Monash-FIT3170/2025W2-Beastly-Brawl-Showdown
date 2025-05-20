@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Player from "../../types/player";
 import io from "socket.io-client";
 // import React, { useRef } from "react";
@@ -9,11 +9,37 @@ export const HostLobby = () => {
   const socket = io("http://localhost:3002"); //needs to be updated
 
   const [code, setCode] = useState(468923);
-
   const [players, setPlayers] = useState<Player[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
+  const [hostIP, setHostIP] = useState("");
 
-  //need to implement how the code works.. will need to be information passed on from create?
+  // Effect to fetch and log the host's IP address
+  useEffect(() => {
+    const getHostIP = async () => {
+      try {
+        // Using a public API to get the client's IP address
+        const response = await fetch("https://api64.ipify.org?format=json");
+        const data = await response.json();
+        setHostIP(data.ip);
+        console.log("Host IP for testing:", data.ip);
+      } catch (error) {
+        console.error("Error fetching host IP:", error);
+      }
+    };
+
+    getHostIP();
+  }, []);
+
+  // const addPlayer = (playerName: string, playerID: string) => {
+  //   setPlayers(players.concat(new Player(playerID, playerName)));
+  //   setPlayerCount(playerCount + 1);
+  // };
+
+  // const removePlayer = (playerID: string) => {
+  //   setPlayers(players.filter((player) => player.userID !== playerID));
+  //   setPlayerCount(playerCount - 1);
+  // };
+
   // const enterCode = (newCode: number) => {
   //   setCode(newCode);
   // };
@@ -38,10 +64,7 @@ export const HostLobby = () => {
   const [nameV, setNameV] = useState("");
 
   const joinSession = () => {
-    const codeX = "815948";
-    console.log(codeV);
     const codeTest = document.getElementById("code") as HTMLParagraphElement;
-    codeTest.textContent = codeV + nameV;
     socket.emit("join-game", { gameCode: codeV, name: nameV });
   };
 
@@ -93,9 +116,14 @@ export const HostLobby = () => {
         {/* Heading in the center */}
         <div className="flex-1 min-w-[200px] text-center">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold break-words">
-            Join The Game! <br className="sm:hidden" />
+            Join The Game! <p></p> <br className="sm:hidden" />
             {`${window.location.origin}/${code}`}
           </h2>
+          {hostIP && (
+            <p className="text-sm text-gray-500 mt-1">
+              Host IP (for testing): {hostIP}
+            </p>
+          )}
         </div>
 
         {/* QR code on the right */}

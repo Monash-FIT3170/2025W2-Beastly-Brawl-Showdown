@@ -15,12 +15,12 @@ export const PlayerLobby = () => {
       new Player("6", "Player 7"),
       new Player("7", "Player 8")
     ]);
-    const [battles, setBattles] = useState<Battle[]>([
-      new Battle(code,new Player("0", "Player 1"),new Player("1", "Player 2")),
-      new Battle(code,new Player("2", "Player 3"),new Player("3", "Player 4")),
-      new Battle(code,new Player("4", "Player 5"),new Player("5", "Player 6")),
-      new Battle(code,new Player("6", "Player 7"),new Player("7", "Player 8"))
-    ]);
+    // const [battles, setBattles] = useState<Battle[]>([
+    //   new Battle(code,new Player("0", "Player 1"),new Player("1", "Player 2")),
+    //   new Battle(code,new Player("2", "Player 3"),new Player("3", "Player 4")),
+    //   new Battle(code,new Player("4", "Player 5"),new Player("5", "Player 6")),
+    //   new Battle(code,new Player("6", "Player 7"),new Player("7", "Player 8"))
+    // ]);
 
     const addPlayer = (playerName: string, playerID: string) => {
       setPlayers(players.concat(new Player(playerID, playerName)))
