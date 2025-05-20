@@ -44,10 +44,12 @@ export const HostLobby = () => {
   const socket = io("http://localhost:3002");
   const createGame = () => {
     socket.emit("create-game", {});
+    console.log("Game session created");
   };
 
   const listSessions = () => {
     socket.emit("game-list", {});
+    console.log("Game session list requested");
   };
 
   const [codeV, setCodeV] = useState("");
@@ -130,27 +132,63 @@ export const HostLobby = () => {
           PLAYERS: {playerCount}/8
         </p>
       </div>
-        <p>SOCKET SETUP TESTING BELOW:</p>
-        <button onClick={createGame}>Create New Session</button>
-        <p></p>
-        <button onClick={listSessions}>Current Sessions</button>
-        <p>Code:</p>
-        <input
-          type="text"
-          id="codeInput"
-          value={codeV}
-          onChange={(e) => setCodeV(e.target.value)}
-        />
-        <p>Name:</p>
-        <input
-          type="text"
-          id="nameInput"
-          value={nameV}
-          onChange={(e) => setNameV(e.target.value)}
-        />
-        <p></p>
-        <button onClick={joinSession}>Join Created Session</button>
-        <p id="code"></p>
+      <p className="mt-8 text-lg font-semibold">SOCKET SETUP TESTING BELOW:</p>
+      <div className="mt-4 space-y-4">
+        <button
+          onClick={createGame}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+          Create New Session
+        </button>
+
+        <button
+          onClick={listSessions}
+          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
+        >
+          Current Sessions
+        </button>
+
+        <div>
+          <label
+            htmlFor="codeInput"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Code:
+          </label>
+          <input
+            type="text"
+            id="codeInput"
+            value={codeV}
+            onChange={(e) => setCodeV(e.target.value)}
+            className="mt-1 w-full max-w-xs rounded border-2 border-green-500 shadow-sm focus:ring-green-500 focus:border-green-600"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="nameInput"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Name:
+          </label>
+          <input
+            type="text"
+            id="nameInput"
+            value={nameV}
+            onChange={(e) => setNameV(e.target.value)}
+            className="mt-1 w-full max-w-xs rounded border-2 border-green-500 shadow-sm focus:ring-green-500 focus:border-green-600"
+          />
+        </div>
+
+        <button
+          onClick={joinSession}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+        >
+          Join Created Session
+        </button>
+
+        <p id="code" className="text-sm text-gray-600 mt-2"></p>
+      </div>
     </div>
   );
 };
