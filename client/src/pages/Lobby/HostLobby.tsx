@@ -6,6 +6,8 @@ import { LogoDisplay } from "../../components/logo/Logo";
 import { QRCodeSVG } from "qrcode.react";
 
 export const HostLobby = () => {
+  const socket = io("http://localhost:3002"); //needs to be updated
+
   const [playerCount, setPlayerCount] = useState(6);
   const [code, setCode] = useState(468923);
   const [players, setPlayers] = useState<Player[]>([
@@ -34,14 +36,15 @@ export const HostLobby = () => {
   const kickPlayer = (playerID: string) => {
     removePlayer(playerID);
     // backend player removal call
+    socket.emit("leave-game", { gameCode: code, userID: playerID });
   };
 
   const startGame = () => {
     // Your start game logic here
+    socket.emit("start-game", { gameCode: code });
   };
 
   //socket setup testing - anika
-  const socket = io("http://localhost:3002");
   const createGame = () => {
     socket.emit("create-game", {});
     console.log("Game session created");
@@ -82,7 +85,12 @@ export const HostLobby = () => {
 
         {/* QR code on the right */}
         <div className="flex-shrink-0">
-          <QRCodeSVG value={`${window.location.origin}/${code}`} size={220} bgColor='#FFFFFF' marginSize={2}/>
+          <QRCodeSVG
+            value={`${window.location.origin}/${code}`}
+            size={220}
+            bgColor="#FFFFFF"
+            marginSize={2}
+          />
         </div>
       </div>
 

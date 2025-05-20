@@ -97,6 +97,25 @@ Meteor.startup(async () => {
       });
     });
 
+    socket.on("start-game", ({ gameCode }) => {
+      console.log(`Start request for Code: ${gameCode}`);
+      const gameCodeN = Number(gameCode);
+
+      const session = activeGameSessions.get(gameCodeN);
+      if (!session) {
+        //if session of given game code doesnt exist
+        console.log(`Request failed. Invalid Code`);
+        return;
+      }
+
+      if (!session.canStartGame()) {
+        //need to change how this is returned
+        console.log(`Request failed.`);
+      }
+      //start game...
+      // i guess create matches then send all players to the battle sockets?
+    });
+
     //close game session
     socket.on("cancel-game", ({ gameCode }) => {
       console.log("Session cancelling...");
