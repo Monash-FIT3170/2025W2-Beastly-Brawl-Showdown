@@ -27,6 +27,10 @@ export const HostLobby = () => {
     setPlayerCount(playerCount - 1);
   };
 
+  const enterCode = (newCode: number) => {
+    setCode(newCode);
+  };
+
   const kickPlayer = (playerID: string) => {
     removePlayer(playerID);
     // backend player removal call
@@ -34,6 +38,27 @@ export const HostLobby = () => {
 
   const startGame = () => {
     // Your start game logic here
+  };
+
+  //socket setup testing - anika
+  const socket = io("http://localhost:3002");
+  const createGame = () => {
+    socket.emit("create-game", {});
+  };
+
+  const listSessions = () => {
+    socket.emit("game-list", {});
+  };
+
+  const [codeV, setCodeV] = useState("");
+  const [nameV, setNameV] = useState("");
+
+  const joinSession = () => {
+    const codeX = "815948";
+    console.log(codeV);
+    const codeTest = document.getElementById("code") as HTMLParagraphElement;
+    codeTest.textContent = codeV + nameV;
+    socket.emit("join-game", { gameCode: codeV, name: nameV });
   };
 
   return (
@@ -105,6 +130,27 @@ export const HostLobby = () => {
           PLAYERS: {playerCount}/8
         </p>
       </div>
+        <p>SOCKET SETUP TESTING BELOW:</p>
+        <button onClick={createGame}>Create New Session</button>
+        <p></p>
+        <button onClick={listSessions}>Current Sessions</button>
+        <p>Code:</p>
+        <input
+          type="text"
+          id="codeInput"
+          value={codeV}
+          onChange={(e) => setCodeV(e.target.value)}
+        />
+        <p>Name:</p>
+        <input
+          type="text"
+          id="nameInput"
+          value={nameV}
+          onChange={(e) => setNameV(e.target.value)}
+        />
+        <p></p>
+        <button onClick={joinSession}>Join Created Session</button>
+        <p id="code"></p>
     </div>
   );
 };
