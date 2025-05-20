@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import { ButtonDemo } from "../../components/buttons/Button";
 import { LogoDisplay } from "../../components/logo/Logo";
+import io from "socket.io-client";
 
 export const JoinLobby = () => {
+  //input listener basically
   const [code, setCode] = useState("");
+  const [name, setName] = useState("");
+
+  //needs to be updated to be related IP!!
+  const socket = io("http://localhost:3002");
+
+  const joinSession = () => {
+    socket.emit("join-game", { gameCode: code, name: name });
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-4 py-8 sm:px-6 lg:px-8">
@@ -41,13 +51,15 @@ export const JoinLobby = () => {
           type="text"
           maxLength={20}
           id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="border-2 border-green-500 rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
           placeholder="Enter Your Name"
         />
       </div>
 
       <div className="mt-8">
-        <ButtonDemo text="JOIN ROOM" onClick={() => {}} />
+        <ButtonDemo text="JOIN ROOM" onClick={joinSession} />
       </div>
     </div>
   );

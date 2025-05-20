@@ -120,8 +120,6 @@ Meteor.startup(async () => {
     });
   });
 
-  //need to implement ending a game session :3
-
   //listening
   server.listen(PORT, () => {
     console.log(`Socket.IO server running on port ${PORT}`);
