@@ -1,12 +1,45 @@
 import React from 'react';
 import RoundNumberHeader from './RoundNumberHeader';
+import LeftPanel from './LeftPanel';
 
 interface MatchSummaryPanelProps {
+  // Round information
   roundNumber?: number;
+  remainingPlayers?: number;
+  totalPlayers?: number;
+  
+  // Left panel data
+  damageData?: Array<{ playerName: string; damageAmount: number }>;
+  blockData?: Array<{ playerName: string; blocksAmount: number }>;
+  popularPokemon?: {
+    name: string;
+    pickRate: number;
+    imageSrc: string;
+  };
 }
 
 const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ 
-    roundNumber = 2 
+      // Default values for props
+      roundNumber = 2,
+      remainingPlayers = 6,
+      totalPlayers = 16,
+
+       // Left panel data with defaults
+      damageData = [
+        { playerName: 'CAMERON', damageAmount: 15 },
+        { playerName: 'ANIKA', damageAmount: 12 },
+        { playerName: 'DEVAN', damageAmount: 11 }
+      ],
+      blockData = [
+        { playerName: 'DANIEL', blocksAmount: 3 },
+        { playerName: 'LUNA', blocksAmount: 2 },
+        { playerName: 'RIO', blocksAmount: 1 }
+      ],
+      popularPokemon = {
+        name: 'SPARKING MOUSE',
+        pickRate: 42,
+        imageSrc: 'match-summary-assets/pikachu.png'
+      }
  }) => {
   return (
     <div 
@@ -26,6 +59,17 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
     >   
 
     <RoundNumberHeader roundNumber={roundNumber} />
+
+    {/* Only the Left Panel */}
+      <div style={{ maxWidth: '320px', width: '100%', marginTop: '1rem' }}>
+        <LeftPanel 
+          remainingPlayers={remainingPlayers}
+          totalPlayers={totalPlayers}
+          damageData={damageData}
+          blockData={blockData}
+          popularPokemon={popularPokemon}
+        />
+      </div>
 
     </div>
   );
