@@ -38,7 +38,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
       popularPokemon = {
         name: 'SPARKING MOUSE',
         pickRate: 42,
-        imageSrc: 'match-summary-assets/pikachu.png'
+        imageSrc: 'match-summary-assets/Attacker.png'
       }
  }) => {
   return (
@@ -63,7 +63,6 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
     {/* Only the Left Panel */}
       <div style={{ maxWidth: '320px', width: '100%', marginTop: '1rem' }}>
         <LeftPanel 
-          remainingPlayers={remainingPlayers}
           totalPlayers={totalPlayers}
           damageData={damageData}
           blockData={blockData}
