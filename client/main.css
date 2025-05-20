@@ -1,4 +1,12 @@
-body {
-  padding: 10px;
-  font-family: sans-serif;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+#react-target {
+  width: 100%;
+  height: 100%;
 }
