@@ -82,7 +82,7 @@ export const HostLobby = () => {
 
         {/* QR code on the right */}
         <div className="flex-shrink-0">
-          <QRCodeSVG value={`${window.location.origin}/${code}`} size={200} />
+          <QRCodeSVG value={`${window.location.origin}/${code}`} size={220} bgColor='#FFFFFF' marginSize={2}/>
         </div>
       </div>
 

@@ -8,7 +8,7 @@ import { JoinLobby } from "./src/pages/Lobby/JoinLobby";
 Meteor.startup(() => {
   const container = document.getElementById("react-target");
   const root = createRoot(container!);
-  root.render(<HostLobby />);
+  // root.render(<HostLobby />);
   // root.render(<Home />);
-  // root.render(<JoinLobby />);
+  root.render(<JoinLobby />);
 });
