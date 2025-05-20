@@ -6,6 +6,8 @@ import { LogoDisplay } from "../../components/logo/Logo";
 import { QRCodeSVG } from "qrcode.react";
 
 export const HostLobby = () => {
+  const socket = io("http://localhost:3002"); //needs to be updated
+
   const [playerCount, setPlayerCount] = useState(6);
   const [code, setCode] = useState(468923);
   const [players, setPlayers] = useState<Player[]>([
@@ -45,14 +47,41 @@ export const HostLobby = () => {
     setPlayerCount(playerCount - 1);
   };
 
+  const enterCode = (newCode: number) => {
+    setCode(newCode);
+  };
+
   const kickPlayer = (playerID: string) => {
     removePlayer(playerID);
     // backend player removal call
+    socket.emit("leave-game", { gameCode: code, userID: playerID });
   };
 
   const startGame = () => {
     // Your start game logic here
-    console.log("Starting game with host IP:", hostIP);
+    socket.emit("start-game", { gameCode: code });
+  };
+
+  //socket setup testing - anika
+  const createGame = () => {
+    socket.emit("create-game", {});
+    console.log("Game session created");
+  };
+
+  const listSessions = () => {
+    socket.emit("game-list", {});
+    console.log("Game session list requested");
+  };
+
+  const [codeV, setCodeV] = useState("");
+  const [nameV, setNameV] = useState("");
+
+  const joinSession = () => {
+    const codeX = "815948";
+    console.log(codeV);
+    const codeTest = document.getElementById("code") as HTMLParagraphElement;
+    codeTest.textContent = codeV + nameV;
+    socket.emit("join-game", { gameCode: codeV, name: nameV });
   };
 
   return (
@@ -77,7 +106,12 @@ export const HostLobby = () => {
 
         {/* QR code on the right */}
         <div className="flex-shrink-0">
-          <QRCodeSVG value={`${window.location.origin}/${code}`} size={200} />
+          <QRCodeSVG
+            value={`${window.location.origin}/${code}`}
+            size={220}
+            bgColor="#FFFFFF"
+            marginSize={2}
+          />
         </div>
       </div>
 
@@ -126,6 +160,63 @@ export const HostLobby = () => {
         <p className="text-sm font-medium text-right min-w-[120px]">
           PLAYERS: {playerCount}/8
         </p>
+      </div>
+      <p className="mt-8 text-lg font-semibold">SOCKET SETUP TESTING BELOW:</p>
+      <div className="mt-4 space-y-4">
+        <button
+          onClick={createGame}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+          Create New Session
+        </button>
+
+        <button
+          onClick={listSessions}
+          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
+        >
+          Current Sessions
+        </button>
+
+        <div>
+          <label
+            htmlFor="codeInput"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Code:
+          </label>
+          <input
+            type="text"
+            id="codeInput"
+            value={codeV}
+            onChange={(e) => setCodeV(e.target.value)}
+            className="mt-1 w-full max-w-xs rounded border-2 border-green-500 shadow-sm focus:ring-green-500 focus:border-green-600"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="nameInput"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Name:
+          </label>
+          <input
+            type="text"
+            id="nameInput"
+            value={nameV}
+            onChange={(e) => setNameV(e.target.value)}
+            className="mt-1 w-full max-w-xs rounded border-2 border-green-500 shadow-sm focus:ring-green-500 focus:border-green-600"
+          />
+        </div>
+
+        <button
+          onClick={joinSession}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+        >
+          Join Created Session
+        </button>
+
+        <p id="code" className="text-sm text-gray-600 mt-2"></p>
       </div>
     </div>
   );
