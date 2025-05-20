@@ -18,6 +18,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     );
 
     socket.join(`game-${session.getGameCode()}`);
+    socket.emit("new-game", {
+      code: session.getGameCode(),
+    });
   });
 
   //join request
@@ -38,7 +41,21 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     session.addPlayer(newPlayer);
     //!!! need to handle what happens if addplayer is rejected
 
+    //add player to game socket
     socket.join(`game-${gameCodeN}`);
+
+    //update host information
+    const hostSocket = io.sockets.sockets.get(session.hostUID);
+    if (!hostSocket) {
+      console.log(`Host UID not setup properly.${session.hostUID}`);
+      return;
+    }
+    hostSocket.emit("player-join", {
+      message: `Player ${name} - ${socket.id} added to current game session.`,
+      players: session.players.getItems(),
+    });
+
+    //accepted
     console.log(`Join request accepted. UserID: ${socket.id}`);
   });
 
@@ -70,6 +87,17 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       socketToKick.leave(`game-${gameCodeN}`);
       session.removePlayer(userID);
       console.log(`Removed player ${userID} from game session ${gameCode}`);
+
+      //update host information
+      const hostSocket = io.sockets.sockets.get(session.hostUID);
+      if (!hostSocket) {
+        console.log(`Host UID not setup properly.${session.hostUID}`);
+        return;
+      }
+      hostSocket.emit("player-join", {
+        message: `Player ${socket.id} removed from current game session.`,
+        players: session.players.getItems(),
+      });
     }, 100);
   });
 

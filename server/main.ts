@@ -24,7 +24,11 @@ Meteor.startup(async () => {
   });
 
   //listening
-  server.listen(PORT, () => {
+  // server.listen(PORT, () => {
+  //   console.log(`Socket.IO server running on port ${PORT}`);
+  // });
+  //listening
+  server.listen(PORT, "0.0.0.0", () => {
     console.log(`Socket.IO server running on port ${PORT}`);
   });
 });

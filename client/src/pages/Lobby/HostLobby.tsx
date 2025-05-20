@@ -8,40 +8,19 @@ import { QRCodeSVG } from "qrcode.react";
 export const HostLobby = () => {
   const socket = io("http://localhost:3002"); //needs to be updated
 
-  const [playerCount, setPlayerCount] = useState(6);
   const [code, setCode] = useState(468923);
-  const [players, setPlayers] = useState<Player[]>([
-    new Player("0", "Naveen"),
-    new Player("1", "Anika"),
-    new Player("2", "Daniel"),
-    new Player("3", "Derek"),
-    new Player("4", "Luna"),
-    new Player("5", "Cameron"),
-  ]);
 
-  const addPlayer = (playerName: string, playerID: string) => {
-    setPlayers(players.concat(new Player(playerID, playerName)));
-    setPlayerCount(playerCount + 1);
-  };
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [playerCount, setPlayerCount] = useState(0);
 
-  const removePlayer = (playerID: string) => {
-    setPlayers(players.filter((player) => player.userID !== playerID));
-    setPlayerCount(playerCount - 1);
-  };
-
-  const enterCode = (newCode: number) => {
-    setCode(newCode);
-  };
+  //need to implement how the code works.. will need to be information passed on from create?
+  // const enterCode = (newCode: number) => {
+  //   setCode(newCode);
+  // };
 
   const kickPlayer = (playerID: string) => {
-    removePlayer(playerID);
     // backend player removal call
     socket.emit("leave-game", { gameCode: code, userID: playerID });
-  };
-
-  const startGame = () => {
-    // Your start game logic here
-    socket.emit("start-game", { gameCode: code });
   };
 
   //socket setup testing - anika
@@ -65,6 +44,42 @@ export const HostLobby = () => {
     codeTest.textContent = codeV + nameV;
     socket.emit("join-game", { gameCode: codeV, name: nameV });
   };
+
+  const startGame = () => {
+    // Your start game logic here
+    socket.emit("start-game", { gameCode: codeV });
+  };
+
+  socket.on("new-game", ({ code }) => {
+    console.log(code);
+    setCode(code);
+  });
+
+  socket.on("player-join", ({ message, players }) => {
+    console.log(message);
+
+    //update page contents according to session?
+    console.log("players from server:", players);
+    if (Array.isArray(players)) {
+      setPlayers(players);
+      setPlayerCount(players.length);
+    } else {
+      console.error("Players is not an array!", players);
+    }
+  });
+
+  socket.on("player-leave", ({ message, players }) => {
+    console.log(message);
+
+    //update page contents according to session?
+    console.log("players from server:", players);
+    // if (Array.isArray(players)) {
+    //   setPlayers(players);
+    //   setPlayerCount(players.length);
+    // } else {
+    //   console.error("Players is not an array!", players);
+    // }
+  });
 
   return (
     <div className="min-h-screen p-4">
