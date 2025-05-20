@@ -10,10 +10,11 @@ const MatchStatisticsHeader: React.FC = () => {
         padding: '0.75rem 2rem',
         textAlign: 'center',
         borderRadius: '2rem',
+        border: '4px solid #403245', // Dark border
         boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)',
-        border: '3px solid #403245',
         display: 'inline-block',
         margin: '1rem auto',
+        width: '260px'
       }}
     >
       <span
