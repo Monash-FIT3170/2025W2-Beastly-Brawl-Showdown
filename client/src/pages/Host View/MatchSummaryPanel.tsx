@@ -1,10 +1,13 @@
 import React from 'react';
+import RoundNumberHeader from './RoundNumberHeader';
 
 interface MatchSummaryPanelProps {
-  children?: React.ReactNode;
+  roundNumber?: number;
 }
 
-const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ children }) => {
+const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ 
+    roundNumber = 2 
+ }) => {
   return (
     <div 
       style={{
@@ -20,8 +23,10 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ children }) => {
         bottom: '1rem',
         overflow: 'auto',
       }}
-    >
-      {children}
+    >   
+
+    <RoundNumberHeader roundNumber={roundNumber} />
+
     </div>
   );
 };
