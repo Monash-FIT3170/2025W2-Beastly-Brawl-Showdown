@@ -58,25 +58,25 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
       ) : (
         <>
           {battleState && (
-            <div>
+            <div className="battle-state-parts">
               <PlayerInfoPanel battleState={battleState}/>
+
+              <div className="timer-box">
+                <p>Timer: {timer}</p>
+              </div>
 
               <MonsterPanel battleState={battleState}/>
 
-              <div>
+              {/* <div className="battle-logs">
                 <h3>Logs:</h3>
                 {battleState.yourPlayer.logs.map((log, index) => (
                   <p key={index}>{log}</p>
                 ))}
-              </div>
+              </div> */}
             </div>
           )}
 
-          <div className="timer-box">
-            <p>Time Remaining: {timer}</p>
-          </div>
-
-          <div>
+          <div className="action-buttons">
             {timer > 0 ? (
               possibleActions.map((action, index) => (
                 <button key={index} onClick={() => handleActionClick(action)}>
