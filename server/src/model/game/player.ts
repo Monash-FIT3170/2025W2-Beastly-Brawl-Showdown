@@ -1,9 +1,7 @@
-//need to reference: https://github.com/Monash-FIT3170/Shazam-3-Scrum-Unleashed/blob/dev/server/src/model/player.ts
+// Reference: https://github.com/Monash-FIT3170/Shazam-3-Scrum-Unleashed/blob/dev/server/src/model/player.ts
 
 export default class Player {
-  //not sure what attributes exist
-
-  //do i need to make attributes private and create get functions ?
+  // UPDATE: make additional private attributes and get functions
 
   public userID: string;
   public name: string;

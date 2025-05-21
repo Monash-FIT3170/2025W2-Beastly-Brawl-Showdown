@@ -3,18 +3,18 @@ import Queue from "../../utils/queue";
 import Battle from "../game/battle";
 
 export default class GameSession {
-  //game session attributes:
-  //need to confirm what attributes
   hostUID: string;
   players: Queue<Player>;
   battles: Queue<Battle>;
   private gameCode: number;
+  private player_max: number = 8; // Max 8 players
+  private battle_max: number = 4; // Max 4 battles
 
-  //constructor
   constructor(hostID: string, presetGameCode?: number) {
     this.hostUID = hostID;
-    this.players = new Queue<Player>(8);
-    this.battles = new Queue<Battle>(4);
+    // POST-MVP: increase max players and battles
+    this.players = new Queue<Player>(this.player_max);
+    this.battles = new Queue<Battle>(this.battle_max);
 
     if (presetGameCode !== undefined) {
       // Use preset game code if provided
@@ -25,9 +25,8 @@ export default class GameSession {
     }
   }
 
-  //generate game code
+  // Generate game code
   public generateGameCode(): number {
-    // Generate random six digit code if no preset code is provided
     const generateSixDigitCode = (): number =>
       Math.floor(100000 + Math.random() * 900000);
     this.gameCode = generateSixDigitCode();
@@ -35,19 +34,26 @@ export default class GameSession {
     return this.gameCode;
   }
 
-  //
+  // Getters and setters
   public getHost(): string {
     return this.hostUID;
   }
 
-  //
+  public getGameCode() {
+    return this.gameCode;
+  }
+
+  public getBattles() {
+    return this.battles;
+  }
+
   public updateHost(hostID: string) {
     this.hostUID = hostID;
   }
 
-  //add player to game session queue
+  // Add player to Game Session queue
   public addPlayer(player: Player): boolean {
-    //need to add if statements regarding duplicate names etc.
+    // UPDATE: popup error messages for each of these
     if (!this.canSocketJoin(player.userID)) {
       console.log("Player already in game session");
       return false; // Player rejected
@@ -56,7 +62,7 @@ export default class GameSession {
       console.log("Player name already taken");
       return false; // Player rejected
     }
-    if (this.players.size() >= 8) {
+    if (this.players.size() >= this.player_max) {
       console.log("Game session is full");
       return false; // Player rejected
     }
@@ -64,9 +70,9 @@ export default class GameSession {
     return true; // Player accepted
   }
 
-  /*
-    Function takes a player object as an argument, and then the queue is run through by serving each item until it has looped through the entire queue. If a served item is not the same as the player given in the argument, then it is pushed back into the queue, but if it is the same, then it is not pushed back into the queue  
-    */
+  // Function takes a player object as an argument, and then the queue is run through by serving each item until it has looped through
+  // the entire queue. If a served item is not the same as the player given in the argument, then it is pushed back into the queue, but
+  // if it is the same, then it is not pushed back into the queue
   public removePlayer(removingPlayerID: String) {
     // Loop to check through each item in the queue
     const playersSize = this.players.size();
@@ -81,9 +87,8 @@ export default class GameSession {
     }
   }
 
-  //check if all requirements are met before starting game
+  // Check if all requirements are met before starting game
   public canStartGame(): boolean {
-    //theoretically when trying to start game call this function
     if (this.players.size() < 2) {
       return false;
     }
@@ -91,7 +96,7 @@ export default class GameSession {
     return true;
   }
 
-  //check if id already exists
+  // Check if Socket is already in Game Session
   public canSocketJoin(socketId: string): boolean {
     for (const p of this.players.getItems()) {
       if (p.userID === socketId) {
@@ -101,29 +106,15 @@ export default class GameSession {
     return true;
   }
 
-  //check name is not taken - need to return an error
+  // Check name is not taken
   public isPlayerNameFree(name: string): boolean {
     for (const p of this.players.getItems()) {
       if (p.name.toLocaleLowerCase() === name.toLocaleLowerCase()) {
+        // UPDATE: pop-up, need to return an error
         return false;
       }
     }
     return true;
-  }
-
-  public getGameCode() {
-    return this.gameCode;
-  }
-
-  public checkGameCode(inputCode: Number) {
-    if (inputCode == this.gameCode) {
-      return true;
-    }
-    return false;
-  }
-
-  public getBattles() {
-    return this.battles;
   }
 
   public createMatches() {
@@ -179,6 +170,7 @@ export default class GameSession {
   }
 
   public oddOneOutWinner(oddPlayer: Player) {
+    // UPDATE: handle odd player
     return oddPlayer;
   }
 }

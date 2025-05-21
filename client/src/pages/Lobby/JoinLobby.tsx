@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { ButtonDemo } from "../../components/buttons/Button";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-// import io from "socket.io-client";
 import socket from "../../socket";
 
+// Used for auto-filling the game code from the URL / QR code
 interface JoinLobbyProps {
   gameCode?: string;
 }
@@ -20,25 +20,15 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
     }
   }, [gameCode]);
 
+  // Called when 'JOIN ROOM' button is clicked
   const joinSession = () => {
     socket.emit("join-game", { gameCode: code, name: name });
   };
 
+  // Listen for the "join-accept" event from the server
   socket.on("join-accept", ({ message }) => {
     console.log(message);
     FlowRouter.go("/selection");
-  });
-
-  //to be moved to lobby
-  const leaveSession = () => {
-    socket.emit("leave-game", { userID: socket.id });
-  };
-
-  //to move this to the player lobby once connected
-  socket.on("kick-warning", ({ message }) => {
-    console.log(message);
-    //reroute to home or join page or whatever
-    FlowRouter.go("/*");
   });
 
   return (

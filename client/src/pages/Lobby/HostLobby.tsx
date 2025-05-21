@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Player from "../../types/player";
-// import io from "socket.io-client";
-// import React, { useRef } from "react";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { QRCodeSVG } from "qrcode.react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { local_url } from "/client/IPtest";
 import socket from "../../socket";
 
+// Defines code for the game session
 interface HostLobbyProps {
   gameCode?: string;
 }
@@ -17,7 +16,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
 
-  //on reload ask for players
+  // On reload ask for players and update host
   useEffect(() => {
     if (code) {
       socket.emit("host-game", { gameCode: code });
@@ -29,39 +28,34 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     };
   }, []);
 
-  //BUTTON FUNCTIONS:
-
-  //kick
+  // BUTTON FUNCTIONS:
+  // remove player from game
   const kickPlayer = (playerID: string) => {
     // backend player removal call
     socket.emit("leave-game", { userID: playerID });
   };
 
+  // start game
   const startGame = () => {
     socket.emit("start-game", { gameCode: code });
     const codeString = code?.toString();
     FlowRouter.go(`/battles/${codeString}`);
   };
 
+  // deletes game session
   const closeGame = () => {
-    //popup asking if they are sure
-    //insert!!!
-    //close game session
+    // UPDATE: popup asking if they are sure before returning to home
     socket.emit("cancel-game", { gameCode: code });
-    //return to home
+    // return to home
     FlowRouter.go("/");
   };
 
-  //LISTENERS:
-  // socket.on("new-game", ({ code }) => {
-  //   console.log(code);
-  //   setCode(code);
-  // });
-
+  // LISTENERS:
+  // Listen for the "update-players" event from the server
   socket.on("update-players", ({ message, players }) => {
     console.log(message);
 
-    //update page
+    // Update player list
     console.log("players from server:", players); //testing
     if (Array.isArray(players)) {
       setPlayers(players);

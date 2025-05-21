@@ -1,6 +1,6 @@
 interface IQueue<T> {
-  enqueue(item: T): void;
-  dequeue(): T | undefined;
+  enqueue(item: T): void; // Add item to the end of the queue
+  dequeue(): T | undefined; // Remove and return the first item from the queue
   size(): number;
 }
 
@@ -15,7 +15,7 @@ export default class Queue<T> implements IQueue<T> {
     }
     this.storage.push(item);
   }
-  //theoretically should this exist? is it still a queue
+  // UPDATE: Potentially rework battle shuffling to avoid adding items to front of Queue
   enqueuefront(item: T): void {
     if (this.size() === this.capacity) {
       throw Error("Queue has reached max capacity, you cannot add more items");

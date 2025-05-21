@@ -8,21 +8,22 @@ interface HostBattlesProps {
 }
 
 const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
-  const code = gameCode;
+  const code = gameCode; // Currently unused, used for potential page changes
   const [battles, setBattles] = useState<Battle[]>([]);
   const [battleCount, setBattleCount] = useState(0);
 
   // LISTENERS:
+  // Listen for the "battles-created" event from the server
   socket.on("battles-created", ({ message, battles }) => {
     console.log(message);
 
-    //update page contents according to session?
+    // Update page contents according to session
     console.log("players from server:", battles);
     if (Array.isArray(battles)) {
       setBattles(battles);
       setBattleCount(battles.length);
     } else {
-      console.error("Battles is not an array!", battles);
+      console.error("'battles' is not an array", battles);
     }
   });
 

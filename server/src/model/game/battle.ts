@@ -1,7 +1,7 @@
-// import { UUID } from "crypto";
 import Player from "./player";
 import Queue from "../../utils/queue";
 
+// Temporary Battle class for testing purposes
 export default class Battle {
   public id: string;
   public players: Queue<Player>;
