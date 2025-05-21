@@ -22,6 +22,7 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
 
   const joinSession = () => {
     socket.emit("join-game", { gameCode: code, name: name });
+    FlowRouter.go("/selection");
   };
 
   return (

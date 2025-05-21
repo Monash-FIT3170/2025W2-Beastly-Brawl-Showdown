@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { Home } from "./src/pages/Home/Home";
 import HostLobby from "./src/pages/Lobby/HostLobby";
 import JoinLobby from "./src/pages/Lobby/JoinLobby";
+import MonsterSelection from './src/pages/Game/MonsterSelection';
 import PathNotFound from "./src/pages/Home/PathNotFound";
 
 function mount(Component: React.FC) {
@@ -39,6 +40,13 @@ FlowRouter.route('/join/:code?', {
   name: 'JoinLobby',
   action(params) {
     mount(() => <JoinLobby gameCode={params.code} />);
+  },
+});
+
+FlowRouter.route('/selection', {
+  name: 'MonsterSelection',
+  action() {
+    mount(MonsterSelection);
   },
 });
 
