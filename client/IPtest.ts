@@ -1,4 +1,4 @@
-const local_ipv4 = "http://118.138.0.106:3000";
+const local_ipv4 = "http://localhost:3000";
 
 //@ uni
 //anika 118.138.113.235
