@@ -9,6 +9,36 @@ export const startBattleHandler = (io: Server, socket: Socket) => {
     if (players.size % 2 == 0) { // We need an even number of players so that everyone can battle
       let playersList = Array.from(players.values());
 
+      const monsterCount: Record<string, number> = {}; //to account for the monsters picked by players
+      //find most picked monster (for statictis to be displayed on host)
+      playersList.forEach((player) =>{
+        const monsterName = player.getMonster().getName()
+        
+        if (monsterCount[monsterName]){
+          monsterCount[monsterName]++;
+        } else {
+          monsterCount[monsterName] = 1;
+        }
+      })
+
+      let mostPicked: string | null = null; //return the most picked monster (return the first highest count monster)
+      let maxCount = 0;
+
+      for (const [monsterName,count] of Object.entries(monsterCount)){
+        if (count > maxCount){
+          mostPicked = monsterName;
+          maxCount = count;
+        }
+      }
+
+      const result = {
+        monster: mostPicked,
+        percentagePick: Math.round((maxCount / playersList.length) *100).toString() // to nearest integer (string type)
+      }
+      
+      //TODO: replace 'host_room' with the host socket id
+      io.to("host_room").emit("most_chosen_monster",result);
+
       // Loop over pairs of players
       for (let i = 0; i < playersList.length; i += 2) {
         let player1 = playersList[i];
@@ -123,6 +153,11 @@ function proceedBattleTurn(io: Server, battle: Battle) {
         io.to(battle.getId()).emit("battle_end", battle.getWinner());
       }
 
+      const allBattleStates = getAllBattleStatesForHost();
+      console.log(JSON.stringify(allBattleStates,null, 2))
+      //TODO: replace 'host_room' with the host socket ID
+      io.to("host_room").emit("host_battle_summary", allBattleStates) //emit every turn 
+
       // TODO: Set a 2-5 second "animation" window, and set a property in the battle instance to object it is in the animation stage (for the host match summary page)
 
       setTimeout(() => {
@@ -131,4 +166,25 @@ function proceedBattleTurn(io: Server, battle: Battle) {
       }, 2000);
     }
   }, 1000); // Emit every second
+}
+
+function getAllBattleStatesForHost(): any[] {
+  const result: any[] = [];
+  battles.forEach((battle) => {
+    const players = battle.getPlayers();
+    const battleId = battle.getId();
+
+    const playerStates = players.map((player) => ({
+      //each player state returns player's id, name, current attack/amour stats, logs (the action/s performed during last turn)
+      playerState: player.getPlayerState() 
+    }))
+
+    result.push({
+      battleId,
+      turn: battle.getTurn(),
+      players: playerStates,
+      isOver: battle.isBattleOver()
+    })
+  })
+  return result;
 }
