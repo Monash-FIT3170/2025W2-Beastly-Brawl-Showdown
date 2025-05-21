@@ -8,11 +8,11 @@ export default class GameSession {
   hostUID: string;
   players: Queue<Player>;
   battles: Queue<Battle>;
-  private gameCode: number;
+  private gameCode: string;
   private previousPosition: number;
 
   //constructor
-  constructor(hostID: string, presetGameCode?: number) {
+  constructor(hostID: string, presetGameCode?: string) {
     this.hostUID = hostID;
     this.players = new Queue<Player>(8);
     this.battles = new Queue<Battle>(4);
@@ -25,13 +25,10 @@ export default class GameSession {
       this.gameCode = presetGameCode;
     } else {
       // Generate random six digit code if no preset code is provided
-      const generateSixDigitCode = (): number =>
-        parseInt(
-          Math.floor(Math.random() * 1000000)
-            .toString()
-            .padStart(6, "0"),
-          10
-        );
+      const generateSixDigitCode = (): string =>
+  Math.floor(Math.random() * 1000000)
+    .toString()
+    .padStart(6, "0");
       this.gameCode = generateSixDigitCode();
     }
   }
@@ -97,7 +94,7 @@ export default class GameSession {
     return this.gameCode;
   }
 
-  public checkGameCode(inputCode: Number) {
+  public checkGameCode(inputCode: String) {
     if (inputCode == this.gameCode) {
       return true;
     }
