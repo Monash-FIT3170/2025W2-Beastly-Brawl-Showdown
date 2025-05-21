@@ -30,7 +30,8 @@ export class AttackAction extends Action {
     this.damage = d20 + this.attackBonus; 
     console.log(`Dice roll: ${d20} + Attack bonus: ${this.attackBonus}`);
 
-    // Dice value added to attack - If attack greater than opponent's AC, its a hit
+    // Dice roll is added to bonus attack. If this is greater than opponents armour, then we do (total damage - opponents armour).
+    // This is what we subtract from the opponent's HP. 
     if (this.damage > affectedPlayer.getMonster().getArmourClass()) {
       console.log(`New damage: ${this.damage} - ${affectedPlayer.getMonster().getArmourClass()}`);
 
