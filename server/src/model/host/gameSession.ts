@@ -9,15 +9,12 @@ export default class GameSession {
   players: Queue<Player>;
   battles: Queue<Battle>;
   private gameCode: number;
-  private previousPosition: number;
 
   //constructor
   constructor(hostID: string, presetGameCode?: number) {
     this.hostUID = hostID;
     this.players = new Queue<Player>(8);
     this.battles = new Queue<Battle>(4);
-
-    this.previousPosition = 1;
 
     // Constructor that generates six digit gameCode upon startup or uses preset code
     if (presetGameCode !== undefined) {
@@ -58,7 +55,8 @@ export default class GameSession {
     */
   public removePlayer(removingPlayerID: String) {
     // Loop to check through each item in the queue
-    for (let i = 0; i < this.players.size(); i++) {
+    const playersSize = this.players.size();
+    for (let i = 0; i < playersSize; i++) {
       const playerIndexed = this.players.dequeue(); // Serves the current player at the front
       if (
         playerIndexed != undefined &&
@@ -110,27 +108,31 @@ export default class GameSession {
     return false;
   }
 
+  public getBattles() {
+    return this.battles;
+  }
+
   public createMatches() {
+    const playersSize = this.players.size();
     // Prepare the battles with the players in them
-    const cyclesCount = Math.floor(this.players.size() / 2);
+    const cyclesCount = Math.floor(playersSize / 2);
 
     // Randomising the players into a temporary player queue
-    const tempPlayerQueue = new Queue<Player>(this.players.size());
+    const tempPlayerQueue = new Queue<Player>(playersSize);
 
-    for (let i = 0; i < this.players.size(); i++) {
+    let previousPosition = 1;
+
+    for (let i = 0; i < playersSize; i++) {
       const playerIndexed = this.players.dequeue();
 
       const currentPosition = Math.random();
 
-      if (
-        playerIndexed != undefined &&
-        this.previousPosition < currentPosition
-      ) {
+      if (playerIndexed != undefined && previousPosition < currentPosition) {
         tempPlayerQueue.enqueuefront(playerIndexed);
-        this.previousPosition = currentPosition;
+        previousPosition = currentPosition;
       } else if (playerIndexed != undefined) {
         tempPlayerQueue.enqueue(playerIndexed);
-        this.previousPosition = currentPosition;
+        previousPosition = currentPosition;
       }
     }
 
@@ -141,11 +143,13 @@ export default class GameSession {
 
       // Create a battle and add it to the queue of battles
       if (player1Indexed != undefined && player2Indexed != undefined) {
-        const battle = new Battle(player1Indexed, player2Indexed);
+        const battle = new Battle(this.hostUID, player1Indexed, player2Indexed);
         this.battles.enqueue(battle);
+        this.players.enqueue(player1Indexed);
+        this.players.enqueue(player2Indexed);
       }
 
-      this.previousPosition = 1;
+      previousPosition = 1;
     }
 
     // Taking into account the case where there's an odd number of players. The odd one out automatically wins and is added back to the queue, as they cannot be put into a battle
@@ -155,5 +159,7 @@ export default class GameSession {
         this.players.enqueue(autoWinPlayer);
       }
     }
+
+    return this.battles;
   }
 }

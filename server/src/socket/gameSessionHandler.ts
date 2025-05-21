@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { activeGameSessions, players } from "../../main";
 import Player from "../model/game/player";
+import Battle from "../model/game/battle";
 import GameSession from "../model/host/gameSession";
 
 //todo: need to update all console logs to be "emit" so that clients can react accordingly
@@ -175,6 +176,31 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
     //start game...
     // i guess create matches then send all players to the battle sockets?
+    const battles = session.createMatches();
+
+    // Add the battles to the socket
+    socket.join(`game-${gameCodeN}`);
+
+    console.log(`Battles Created. They are Below:`);
+    const battlesSize = battles.size();
+    for (let i = 0; i < battlesSize; i++) {
+      const battle = battles.dequeue();
+      if (battle != undefined) {
+        console.log(`Players in Battle ${i}: ${battle.player1Name} vs ${battle.player2Name}`);
+        battles.enqueue(battle);
+      }
+    }
+
+    // update host information
+    const hostSocket = io.sockets.sockets.get(session.hostUID);
+    if (!hostSocket) {
+      console.log(`Host UID not setup properly.${session.hostUID}`);
+      return;
+    }
+    hostSocket.emit("battles-created", {
+      message: `Battles for Session ${socket.id} added to current game session.`,
+      battles: session.battles.getItems(),
+    });
   });
 
   //close game session

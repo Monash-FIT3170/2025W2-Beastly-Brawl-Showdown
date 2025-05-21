@@ -38,7 +38,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   };
 
   const startGame = () => {
-    socket.emit("start-game", { gameCode: codeV });
+    socket.emit("start-game", { gameCode: code });
     FlowRouter.go("/playerlobby");
   };
 
