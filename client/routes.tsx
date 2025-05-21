@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { Home } from "./src/pages/Home/Home";
 import HostLobby from "./src/pages/Lobby/HostLobby";
 import JoinLobby from "./src/pages/Lobby/JoinLobby";
+import PathNotFound from "./src/pages/Home/PathNotFound";
 
 function mount(Component: React.FC) {
   const container = document.getElementById('react-target');
@@ -31,5 +32,12 @@ FlowRouter.route('/join', {
   name: 'JoinLobby',
   action() {
     mount(JoinLobby);
+  },
+});
+
+FlowRouter.route('/*', {
+  name: 'NotFound',
+  action() {
+    mount(PathNotFound);
   },
 });
