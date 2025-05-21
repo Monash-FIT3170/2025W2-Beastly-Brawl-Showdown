@@ -4,7 +4,7 @@ import http from "http";
 import GameSession from "./src/model/host/gameSession";
 import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 
-export const activeGameSessions: Map<string, GameSession> = new Map();
+export const activeGameSessions: Map<number, GameSession> = new Map();
 
 Meteor.startup(async () => {
   // initialise socket
