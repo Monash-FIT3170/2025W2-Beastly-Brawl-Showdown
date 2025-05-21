@@ -7,6 +7,6 @@ interface LoadingBarProps {
 
 export const LoadingBar = ({currentPercentage}: LoadingBarProps) => {
     return (
-        <GenericBar colour="orange" cornerRadius="heavy" textPosition="none" fillPercentage={currentPercentage as BarFillPercentage} />
+        <GenericBar colour="terracotta" cornerRadius="heavy" textPosition="none" fillPercentage={currentPercentage as BarFillPercentage} />
     );
 };
