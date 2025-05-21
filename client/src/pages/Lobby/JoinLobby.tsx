@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonDemo } from "../../components/buttons/Button";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 // import io from "socket.io-client";
 import socket from "../../socket";
 
-const JoinLobby: React.FC = () => {
-  //input listener basically
+interface JoinLobbyProps {
+  gameCode?: string;
+}
+
+const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
 
-  //needs to be updated to be related IP!!
-  // const socket = io("http://118.138.0.106:3002");
+  // On mount, prefill code from prop
+  useEffect(() => {
+    if (gameCode) {
+      setCode(gameCode);
+    }
+  }, [gameCode]);
 
   const joinSession = () => {
     socket.emit("join-game", { gameCode: code, name: name });

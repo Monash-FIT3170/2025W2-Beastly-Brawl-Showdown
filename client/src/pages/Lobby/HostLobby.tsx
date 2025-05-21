@@ -5,6 +5,7 @@ import Player from "../../types/player";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { QRCodeSVG } from "qrcode.react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import local_ipv4 from "/client/IPtest";
 import socket from "../../socket";
 
 const HostLobby: React.FC = () => {
@@ -116,7 +117,7 @@ const HostLobby: React.FC = () => {
         <div className="flex-1 min-w-[200px] text-center">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold break-words">
             Join The Game! <p></p> <br className="sm:hidden" />
-            {`${window.location.origin}/${code}`}
+            {`${local_ipv4}/join/${code}`}
           </h2>
           {hostIP && (
             <p className="text-sm text-gray-500 mt-1">
@@ -128,7 +129,7 @@ const HostLobby: React.FC = () => {
         {/* QR code on the right */}
         <div className="flex-shrink-0">
           <QRCodeSVG
-            value={`${window.location.origin}/${code}`}
+            value={`${local_ipv4}/join/${code}`}
             size={220}
             bgColor="#FFFFFF"
             marginSize={2}
