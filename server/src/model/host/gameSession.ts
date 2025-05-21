@@ -26,12 +26,7 @@ export default class GameSession {
     } else {
       // Generate random six digit code if no preset code is provided
       const generateSixDigitCode = (): number =>
-        parseInt(
-          Math.floor(Math.random() * 1000000)
-            .toString()
-            .padStart(6, "0"),
-          10
-        );
+      Math.floor(100000 + Math.random() * 900000);
       this.gameCode = generateSixDigitCode();
     }
   }

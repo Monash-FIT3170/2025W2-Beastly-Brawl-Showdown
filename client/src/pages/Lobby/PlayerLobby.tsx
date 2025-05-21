@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Player from '../../types/player';
 import Battle from '../../types/battle';
 
-export const PlayerLobby = () => {
+const PlayerLobby: React.FC = () => {
     const [playerCount, setPlayerCount] = useState(8);
     const [code, setCode] = useState(468923);
     const [players, setPlayers] = useState<Player[]>([
@@ -61,3 +61,5 @@ export const PlayerLobby = () => {
       </div>
     );
   };
+
+  export default PlayerLobby;

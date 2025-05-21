@@ -12,25 +12,6 @@ const HostLobby: React.FC = () => {
   const [code, setCode] = useState(101010); //placeholder
   const [players, setPlayers] = useState<Player[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
-  const [hostIP, setHostIP] = useState("");
-
-  //GETTING HOST IP:
-  // Effect to fetch and log the host's IP address
-  useEffect(() => {
-    const getHostIP = async () => {
-      try {
-        // Using a public API to get the client's IP address
-        const response = await fetch("https://api64.ipify.org?format=json");
-        const data = await response.json();
-        setHostIP(data.ip);
-        console.log("Host IP for testing:", data.ip);
-      } catch (error) {
-        console.error("Error fetching host IP:", error);
-      }
-    };
-
-    getHostIP();
-  }, []);
 
   //BUTTON FUNCTIONS:
 
@@ -42,6 +23,7 @@ const HostLobby: React.FC = () => {
 
   const startGame = () => {
     socket.emit("start-game", { gameCode: codeV });
+    FlowRouter.go("/playerlobby");
   };
 
   const closeGame = () => {
@@ -119,11 +101,6 @@ const HostLobby: React.FC = () => {
             Join The Game! <p></p> <br className="sm:hidden" />
             {`${local_ipv4}/join/${code}`}
           </h2>
-          {hostIP && (
-            <p className="text-sm text-gray-500 mt-1">
-              Host IP (for testing): {hostIP}
-            </p>
-          )}
         </div>
 
         {/* QR code on the right */}
@@ -159,7 +136,7 @@ const HostLobby: React.FC = () => {
       </div>
 
       {/* Bottom bar with back button, start game button, and player count */}
-      <div className="mt-12 flex justify-between items-center">
+      <div className="mt-24 flex justify-between items-center">
         <button
           onClick={closeGame}
           className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
@@ -183,7 +160,7 @@ const HostLobby: React.FC = () => {
           PLAYERS: {playerCount}/8
         </p>
       </div>
-      <p className="mt-8 text-lg font-semibold">SOCKET SETUP TESTING BELOW:</p>
+      {/* <p className="mt-8 text-lg font-semibold">SOCKET SETUP TESTING BELOW:</p>
       <div className="mt-4 space-y-4">
         <button
           onClick={createGame}
@@ -239,7 +216,7 @@ const HostLobby: React.FC = () => {
         </button>
 
         <p id="code" className="text-sm text-gray-600 mt-2"></p>
-      </div>
+      </div> */}
     </div>
   );
 };
