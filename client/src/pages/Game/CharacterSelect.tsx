@@ -5,7 +5,6 @@ import "./CharacterSelect.css"; // We'll define styles here
 export interface FrontendMonster {
   id: string;
   name: string;
-  type: string;
   hp: number;
   attack: number;
   description: string;
@@ -16,7 +15,6 @@ export const monsterList: FrontendMonster[] = [
   {
     id: "stonehide",
     name: "Stonehide Guardian",
-    type: "Earth",
     hp: 120,
     attack: 10,
     armourClass: 18,
@@ -25,7 +23,6 @@ export const monsterList: FrontendMonster[] = [
   {
     id: "shadowfang",
     name: "Shadowfang Predator",
-    type: "Dark",
     hp: 90,
     attack: 15,
     armourClass: 14,
@@ -34,7 +31,6 @@ export const monsterList: FrontendMonster[] = [
   {
     id: "mysticwyvern",
     name: "Mystic Wyvern",
-    type: "Air",
     hp: 100,
     attack: 12,
     armourClass: 16,
@@ -85,7 +81,6 @@ const CharacterSelect: React.FC<CharacterSelectProps> = ({ battleId }) => {
             onClick={() => handleSelectMonster(monster)}
           >
             <h3>{monster.name}</h3>
-            <p>{monster.type}</p>
           </div>
         ))}
       </div>

@@ -42,7 +42,7 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
         `Player ${playerId} selected ${monster.getName()} in battle ${battleId}.`
       );
 
-      // ✅ Check if all players have selected their monsters
+      // Check if all players have selected their monsters
       const allPlayersHaveMonsters = battle
         .getPlayers()
         .every((p) => p.getMonster() !== null);
