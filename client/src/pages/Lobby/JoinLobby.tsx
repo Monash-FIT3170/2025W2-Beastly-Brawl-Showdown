@@ -87,9 +87,9 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
       <div className="mt-8">
         <ButtonDemo text="JOIN ROOM" onClick={joinSession} />
       </div>
-      <div className="mt-8">
+      {/* <div className="mt-8">
         <ButtonDemo text="LEAVE ROOM (TEST)" onClick={leaveSession} />
-      </div>
+      </div> */}
     </div>
   );
 };
