@@ -16,19 +16,35 @@ export class AttackAction extends Action {
     return this.damage;
   }
 
+  public getDiceRoll(): number {
+    const d20 = Math.floor(Math.random() * 20);
+    return d20;
+  }
+
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
-    // TODO: implement the dice logic here
-    const d20 = Math.floor(Math.random() * 20) + 1;
-    this.damage = d20 + this.attackBonus;
-    affectedPlayer.incHealth(-5); // replace with this.damage
+    
+    // Rolling a d20 dice 
+    const d20 = this.getDiceRoll();
+    this.damage = d20 + this.attackBonus; 
+    console.log(`Dice roll: ${d20} + Attack bonus: ${this.attackBonus}`);
 
-    actingPlayer.addLog(
-      `You attacked ${affectedPlayer.getName()} and dealt ${this.damage} damage.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} attacked you and dealt 5 damage.`
-    );
+    // Dice value added to attack - If attack greater than opponent's AC, its a hit
+    if (this.damage > affectedPlayer.getMonster().getArmourClass()) {
+      console.log(`New damage: ${this.damage} - ${affectedPlayer.getMonster().getArmourClass()}`);
+
+      this.damage = this.damage - affectedPlayer.getMonster().getArmourClass();
+
+      // New damage is
+      console.log(`Attack: ${this.damage}`);
+      affectedPlayer.incHealth(-this.damage);
+
+      // Log successful attack
+      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt ${this.damage} damage.`);
+    } else {
+      // Log failed attack
+      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt ${this.damage} damage.`);
+    }
   }
 }

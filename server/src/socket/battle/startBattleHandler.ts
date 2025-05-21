@@ -115,8 +115,8 @@ function proceedBattleTurn(io: Server, battle: Battle) {
         // Handles the dice roll - For now, typecasting to send the damage so dice can roll it
         if (action.getName() === "Attack") {
           const attackAction = action as AttackAction;
-          const damage = attackAction.getDamage();
-          io.to(player1.getId()).emit("roll_dice", damage);
+          const diceRoll = attackAction.getDiceRoll();
+          io.to(player1.getId()).emit("roll_dice", diceRoll);
         }
 
       });
@@ -126,8 +126,8 @@ function proceedBattleTurn(io: Server, battle: Battle) {
   
         if (action.getName() === "Attack") {
           const attackAction = action as AttackAction;
-          const damage = attackAction.getDamage();
-          io.to(player2.getId()).emit("roll_dice", damage);
+          const diceRoll = attackAction.getDiceRoll();
+          io.to(player2.getId()).emit("roll_dice", diceRoll);
         }
 
       });

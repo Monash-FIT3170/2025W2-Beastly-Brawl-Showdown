@@ -40,9 +40,9 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
     })
 
     // TODO: Perhaps use socket to pass dice roll
-    socket.on("roll_dice", (damage: number) => {
-      setDiceValue(damage);
-      console.log(`From socket in TempGame: dps ${damage}`);
+    socket.on("roll_dice", (diceRoll: number) => {
+      setDiceValue(diceRoll);
+      console.log(`From socket in TempGame: dps ${diceRoll}`);
       setShowModal(true);
     });
     
