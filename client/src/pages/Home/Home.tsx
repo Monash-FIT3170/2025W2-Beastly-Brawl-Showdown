@@ -6,20 +6,19 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 
 export const Home = () => {
-  // const renderHostLobby = () => {
-  //   // FlowRouter.go("/host");
-  // };
-
+  // Called on 'Host Lobby' button press
   const createGame = () => {
     socket.emit("create-game", {});
     console.log("Game session created");
   };
 
+  // Received when Game Session is created. Takes user to 'Host Lobby' Page
   socket.on("new-game", ({ code }) => {
     const codeString = code.toString();
     FlowRouter.go(`/host/${codeString}`);
   });
 
+  // Called on 'Join Lobby' button press
   const renderJoinLobby = () => {
     FlowRouter.go("/join");
   };
