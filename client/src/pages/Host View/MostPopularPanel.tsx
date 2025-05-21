@@ -7,11 +7,7 @@ interface MostPopularPanelProps {
   imageSrc?: string;
 }
 
-const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ 
-  pokemonName = 'SPARKING MOUSE',
-  pickRate = 42,
-  imageSrc = '/match-summary-assets/Attacker.png'
-}) => {
+const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ pokemonName, pickRate, imageSrc }) => {
   return (
     <div 
       style={{

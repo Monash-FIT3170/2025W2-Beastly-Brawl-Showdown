@@ -10,13 +10,7 @@ interface AttacksBlockedPanelProps {
   blockData?: BlockData[];
 }
 
-const AttacksBlockedPanel: React.FC<AttacksBlockedPanelProps> = ({ 
-  blockData = [
-    { playerName: 'DANIEL', blocksAmount: 3 },
-    { playerName: 'LUNA', blocksAmount: 2 },
-    { playerName: 'RIO', blocksAmount: 1 }
-  ]
-}) => {
+const AttacksBlockedPanel: React.FC<AttacksBlockedPanelProps> = ({ blockData }) => {
   return (
     <div 
       style={{

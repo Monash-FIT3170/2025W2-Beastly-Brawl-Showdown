@@ -10,13 +10,7 @@ interface DamageDealtPanelProps {
   damageData?: DamageData[];
 }
 
-const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ 
-  damageData = [
-    { playerName: 'CAMERON', damageAmount: 15 },
-    { playerName: 'ANIKA', damageAmount: 12 },
-    { playerName: 'DEVAN', damageAmount: 11 }
-  ]
-}) => {
+const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
   return (
     <div 
       style={{
