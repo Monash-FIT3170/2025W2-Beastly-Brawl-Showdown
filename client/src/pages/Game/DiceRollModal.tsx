@@ -1,10 +1,4 @@
-/* 
-Requires 2 main props to passed through
-- show, which should be passed in as True to show the dice roll. The dice handles the closing of it itself.
-- onRolled, which should be a useState hook that can be set to an int. This basically returns the result of the dice. 
 
-Timing - Result is returned after the rolling animation. 
-*/
 import React, { useEffect, useState } from 'react';
 
 // Required props (hooks)
@@ -16,12 +10,14 @@ interface DicerollModalProps {
 
 const DicerollModal: React.FC<DicerollModalProps> = ({show, onClose, toRoll}) => {
     const [rollingValue, setRollingValue] = useState(1);
-    const [finalValue, setFinalValue] = useState<number | null>(null);
+    const [finalValue, setFinalValue] = useState<number | null>(null); // TODO: Appears to be some bugs on the first roll
 
     useEffect(() => {
       if (!show) return;
-  
+      
+      console.log(`From dice modal: dps ${toRoll}`);
       setFinalValue(null);
+      // setFinalValue(toRoll);
   
       let intervalId: NodeJS.Timeout;
       intervalId = setInterval(() => {
