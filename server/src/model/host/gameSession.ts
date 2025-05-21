@@ -16,16 +16,23 @@ export default class GameSession {
     this.players = new Queue<Player>(8);
     this.battles = new Queue<Battle>(4);
 
-    // Constructor that generates six digit gameCode upon startup or uses preset code
     if (presetGameCode !== undefined) {
       // Use preset game code if provided
       this.gameCode = presetGameCode;
     } else {
-      // Generate random six digit code if no preset code is provided
-      const generateSixDigitCode = (): number =>
-        Math.floor(100000 + Math.random() * 900000);
-      this.gameCode = generateSixDigitCode();
+      // Generate a new game code
+      this.gameCode = this.generateGameCode();
     }
+  }
+
+  //generate game code
+  public generateGameCode(): number {
+    // Generate random six digit code if no preset code is provided
+    const generateSixDigitCode = (): number =>
+      Math.floor(100000 + Math.random() * 900000);
+    this.gameCode = generateSixDigitCode();
+
+    return this.gameCode;
   }
 
   //
@@ -39,15 +46,22 @@ export default class GameSession {
   }
 
   //add player to game session queue
-  public addPlayer(player: Player) {
+  public addPlayer(player: Player): boolean {
     //need to add if statements regarding duplicate names etc.
-    if (
-      this.canSocketJoin(player.userID) &&
-      this.isPlayerNameFree(player.name) &&
-      this.players.size() < 8
-    ) {
-      this.players.enqueue(player);
+    if (!this.canSocketJoin(player.userID)) {
+      console.log("Player already in game session");
+      return false; // Player rejected
+    } 
+    if (!this.isPlayerNameFree(player.name)) {
+      console.log("Player name already taken");
+      return false; // Player rejected
     }
+    if (this.players.size() >= 8) {
+      console.log("Game session is full");
+      return false; // Player rejected
+    }
+    this.players.enqueue(player); // Add player to the queue
+    return true; // Player accepted
   }
 
   /*
@@ -73,7 +87,7 @@ export default class GameSession {
     if (this.players.size() < 2) {
       return false;
     }
-    //need to add that all monsters have been picked
+    // UPDATE: need to add that all monsters have been picked
     return true;
   }
 

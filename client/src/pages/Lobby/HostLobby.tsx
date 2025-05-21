@@ -5,7 +5,7 @@ import Player from "../../types/player";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { QRCodeSVG } from "qrcode.react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import local_ipv4 from "/client/IPtest";
+import { local_url } from "/client/IPtest";
 import socket from "../../socket";
 
 interface HostLobbyProps {
@@ -39,7 +39,8 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
   const startGame = () => {
     socket.emit("start-game", { gameCode: code });
-    FlowRouter.go("/playerlobby");
+    const codeString = code?.toString();
+    FlowRouter.go(`/battles/${codeString}`);
   };
 
   const closeGame = () => {
@@ -70,25 +71,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     }
   });
 
-  //SOCKET SETUP TESTING
-  const createGame = () => {
-    socket.emit("create-game", {});
-    console.log("Game session created");
-  };
-
-  const listSessions = () => {
-    socket.emit("game-list", {});
-    console.log("Game session list requested");
-  };
-
-  const [codeV, setCodeV] = useState("");
-  const [nameV, setNameV] = useState("");
-
-  const joinSession = () => {
-    // const codeTest = document.getElementById("code") as HTMLParagraphElement;
-    socket.emit("join-game", { gameCode: codeV, name: nameV });
-  };
-
   return (
     <div className="min-h-screen p-4">
       {/* Responsive header section */}
@@ -102,14 +84,14 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         <div className="flex-1 min-w-[200px] text-center">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold break-words">
             Join The Game! <p></p> <br className="sm:hidden" />
-            {`${local_ipv4}/join/${code}`}
+            {`${local_url}/join/${code}`}
           </h2>
         </div>
 
         {/* QR code on the right */}
         <div className="flex-shrink-0">
           <QRCodeSVG
-            value={`${local_ipv4}/join/${code}`}
+            value={`${local_url}/join/${code}`}
             size={220}
             bgColor="#FFFFFF"
             marginSize={2}
@@ -159,69 +141,13 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           START GAME
         </button>
 
+        {/* Debugging button to print socket ID */}
         <button onClick={() => console.log(socket.id)}>Print SocketID</button>
 
         <p className="text-sm font-medium text-right min-w-[120px]">
           PLAYERS: {playerCount}/8
         </p>
       </div>
-      {/* <p className="mt-8 text-lg font-semibold">SOCKET SETUP TESTING BELOW:</p>
-      <div className="mt-4 space-y-4">
-        <button
-          onClick={createGame}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Create New Session
-        </button>
-
-        <button
-          onClick={listSessions}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
-        >
-          Current Sessions
-        </button>
-
-        <div>
-          <label
-            htmlFor="codeInput"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Code:
-          </label>
-          <input
-            type="text"
-            id="codeInput"
-            value={codeV}
-            onChange={(e) => setCodeV(e.target.value)}
-            className="mt-1 w-full max-w-xs rounded border-2 border-green-500 shadow-sm focus:ring-green-500 focus:border-green-600"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="nameInput"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Name:
-          </label>
-          <input
-            type="text"
-            id="nameInput"
-            value={nameV}
-            onChange={(e) => setNameV(e.target.value)}
-            className="mt-1 w-full max-w-xs rounded border-2 border-green-500 shadow-sm focus:ring-green-500 focus:border-green-600"
-          />
-        </div>
-
-        <button
-          onClick={joinSession}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-        >
-          Join Created Session
-        </button>
-
-        <p id="code" className="text-sm text-gray-600 mt-2"></p>
-      </div> */}
     </div>
   );
 };

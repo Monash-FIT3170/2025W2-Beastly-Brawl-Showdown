@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import Player from "../../types/player";
 import Battle from "../../types/battle";
 import { LogoDisplay } from "../../components/logo/Logo";
-import local_ipv4 from "/client/IPtest";
 import socket from "../../socket";
 
-const PlayerLobby: React.FC = () => {
-  const [code, setCode] = useState(101010); // placeholder
+interface HostBattlesProps {
+  gameCode?: string;
+}
+
+const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
+  const code = gameCode;
   const [battles, setBattles] = useState<Battle[]>([]);
   const [battleCount, setBattleCount] = useState(0);
 
@@ -36,8 +38,7 @@ const PlayerLobby: React.FC = () => {
         {/* Heading in the center */}
         <div className="flex-1 min-w-[200px] text-center">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold break-words">
-            Game Has Started! <p></p> <br className="sm:hidden" />
-            {`${local_ipv4}/join/${code}`}
+            Game Has Started! <p></p>
           </h2>
         </div>
 
@@ -62,4 +63,4 @@ const PlayerLobby: React.FC = () => {
   );
 };
 
-export default PlayerLobby;
+export default HostBattles;

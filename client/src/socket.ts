@@ -1,6 +1,8 @@
 import { io } from "socket.io-client";
+import { local_ipv4 } from "../IPtest";
 
-const socket = io("http://localhost:3002");
+const local_port = "3002";
+const socket = io(`${local_ipv4}:${local_port}`);
 
 //@ uni
 //anika 118.138.113.235

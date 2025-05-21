@@ -14,6 +14,10 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     //is hostUID just socket ID ? - i guess unless we are logged in.. which is not possible yet.. yippee!!
     console.log("Attempting game session creation...");
     const session = new GameSession(socket.id);
+    while (activeGameSessions.has(session.getGameCode())) {
+      console.log("Game session already exists. Generating new code...");
+      session.generateGameCode();
+    }
     activeGameSessions.set(session.getGameCode(), session);
     console.log(
       `Game session created: ${session.getGameCode()} | hostId: ${socket.id}`
@@ -42,7 +46,12 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
     const newPlayer = new Player(socket.id, name);
     players.set(socket.id, newPlayer);
-    session.addPlayer(newPlayer);
+    if (!session.addPlayer(newPlayer)) {
+      //Join request rejected
+      console.log(`Player ${name} rejected from ${gameCode}`);
+      // UPDATE: Include user feedback here (pop-up)
+      return;
+    }
     newPlayer.updateGameCode(gameCode);
     //!!! need to handle what happens if addplayer is rejected
 
@@ -54,18 +63,13 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       message: `Player ${name} - ${socket.id} added to current game session.`,
       players: session.players.getItems(),
     });
-    // const hostSocket = io.sockets.sockets.get(session.hostUID);
-    // if (!hostSocket) {
-    //   console.log(`Host UID not setup properly.${session.hostUID}`);
-    //   return;
-    // }
-    // hostSocket.emit("player-join", {
-    //   message: `Player ${name} - ${socket.id} added to current game session.`,
-    //   players: session.players.getItems(),
-    // });
 
     //accepted
     console.log(`Join request accepted. UserID: ${socket.id}`);
+
+    socket.emit("join-accept", {
+      message: "Added to game session.",
+    });
   });
 
   //join as host
@@ -192,12 +196,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
 
     // update host information
-    const hostSocket = io.sockets.sockets.get(session.hostUID);
-    if (!hostSocket) {
-      console.log(`Host UID not setup properly.${session.hostUID}`);
-      return;
-    }
-    hostSocket.emit("battles-created", {
+    io.to(`game-${gameCode}`).emit("battles-created", {
       message: `Battles for Session ${socket.id} added to current game session.`,
       battles: session.battles.getItems(),
     });

@@ -6,7 +6,7 @@ import HostLobby from "./src/pages/Lobby/HostLobby";
 import JoinLobby from "./src/pages/Lobby/JoinLobby";
 import MonsterSelection from "./src/pages/Game/MonsterSelection";
 import PathNotFound from "./src/pages/Home/PathNotFound";
-import PlayerLobby from "./src/pages/Lobby/PlayerLobby";
+import HostBattles from "./src/pages/Lobby/HostBattles";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -57,10 +57,10 @@ FlowRouter.route("/selection", {
   },
 });
 
-FlowRouter.route("/playerlobby", {
-  name: "PlayerLobby",
-  action() {
-    mount(PlayerLobby);
+FlowRouter.route("/battles/:code?", {
+  name: "HostBattles",
+  action(params) {
+    mount(() => <HostBattles gameCode={params.code} />);
   },
 });
 
