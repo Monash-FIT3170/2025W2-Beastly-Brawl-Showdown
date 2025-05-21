@@ -75,10 +75,10 @@ const HostLobby: React.FC = () => {
     socket.emit("start-game", { gameCode: codeV });
   };
 
-  // socket.on("new-game", ({ code }) => {
-  //   console.log(code);
-  //   setCode(code);
-  // });
+  socket.on("new-game", ({ code }) => {
+    console.log(code);
+    setCode(code);
+  });
 
   socket.on("player-join", ({ message, players }) => {
     console.log(message);
