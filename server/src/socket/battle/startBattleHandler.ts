@@ -102,6 +102,15 @@ function proceedBattleTurn(io: Server, battle: Battle) {
       // Prepare method
       player1.getActions().forEach((action) => {
         action.prepare(player1, player2);
+      });
+
+      player2.getActions().forEach((action) => {
+        action.prepare(player2, player1);
+      });
+
+      // Execute method
+      player1.getActions().forEach((action) => {
+        action.execute(player1, player2);
 
         // Handles the dice roll - For now, typecasting to send the damage so dice can roll it
         if (action.getName() === "Attack") {
@@ -109,25 +118,18 @@ function proceedBattleTurn(io: Server, battle: Battle) {
           const damage = attackAction.getDamage();
           io.to(player1.getId()).emit("roll_dice", damage);
         }
+
       });
 
       player2.getActions().forEach((action) => {
-        action.prepare(player2, player1);
-
+        action.execute(player2, player1);
+  
         if (action.getName() === "Attack") {
           const attackAction = action as AttackAction;
           const damage = attackAction.getDamage();
           io.to(player2.getId()).emit("roll_dice", damage);
         }
-      });
 
-      // Execute method
-      player1.getActions().forEach((action) => {
-        action.execute(player1, player2);
-      });
-
-      player2.getActions().forEach((action) => {
-        action.execute(player2, player1);
       });
 
       console.log("P1: ", player1);
