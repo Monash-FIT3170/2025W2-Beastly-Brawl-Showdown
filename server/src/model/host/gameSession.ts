@@ -9,12 +9,15 @@ export default class GameSession {
   players: Queue<Player>;
   battles: Queue<Battle>;
   private gameCode: number;
+  private previousPosition: number;
 
   //constructor
   constructor(hostID: string, presetGameCode?: number) {
     this.hostUID = hostID;
     this.players = new Queue<Player>(8);
     this.battles = new Queue<Battle>(4);
+
+    this.previousPosition = 1;
 
     // Constructor that generates six digit gameCode upon startup or uses preset code
     if (presetGameCode !== undefined) {
@@ -100,25 +103,25 @@ export default class GameSession {
     }
     return false;
   }
-  /*
+
   public createMatches() {
     // Prepare the battles with the players in them
     const cyclesCount = Math.floor(this.players.size() / 2);
 
     // Randomising the players into a temporary player queue
     const tempPlayerQueue = new Queue<Player>(this.players.size());
-    const previousPosition = 1;
+
     for (let i = 0; i < this.players.size(); i++) {
       const playerIndexed = this.players.dequeue();
 
       const currentPosition = Math.random();
 
-      if (playerIndexed != undefined && previousPosition < currentPosition) {
+      if (playerIndexed != undefined && this.previousPosition < currentPosition) {
         tempPlayerQueue.enqueuefront(playerIndexed);
-        const previousPosition = currentPosition;
+        this.previousPosition = currentPosition;
       } else if (playerIndexed != undefined) {
         tempPlayerQueue.enqueue(playerIndexed);
-        const previousPosition = currentPosition;
+        this.previousPosition = currentPosition;
       }
     }
 
@@ -128,14 +131,12 @@ export default class GameSession {
       const player2Indexed = tempPlayerQueue.dequeue();
 
       // Create a battle and add it to the queue of battles
-      const battle = new Battle(player1Indexed, player2Indexed);
-      this.battles.enqueue(battle);
+      if (player1Indexed != undefined && player2Indexed != undefined) {
+        const battle = new Battle(player1Indexed, player2Indexed);
+        this.battles.enqueue(battle);
+      }
 
-      // IDEA TO CONSIDER: Putting the players back into the queue of players after they have been added to their battle
-      // if (player1Indexed != undefined && player2Indexed != undefined) {
-      //     this.players.enqueue(player1Indexed);
-      //     this.players.enqueue(player2Indexed);
-      // }
+      this.previousPosition = 1;
     }
 
     // Taking into account the case where there's an odd number of players. The odd one out automatically wins and is added back to the queue, as they cannot be put into a battle
@@ -146,6 +147,4 @@ export default class GameSession {
       }
     }
   }
-
-*/
 }
