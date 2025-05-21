@@ -1,9 +1,10 @@
 import { Server, Socket } from "socket.io";
-import { activeGameSessions } from "../../main";
+import { activeGameSessions, players } from "../../main";
 import Player from "../model/game/player";
 import GameSession from "../model/host/gameSession";
 
 //todo: need to update all console logs to be "emit" so that clients can react accordingly
+//todo: update players gamecode as they join/leave session
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
   //create game session
@@ -40,7 +41,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
 
     const newPlayer = new Player(socket.id, name);
+    players.set(socket.id, newPlayer);
     session.addPlayer(newPlayer);
+    newPlayer.updateGameCode(gameCode);
     //!!! need to handle what happens if addplayer is rejected
 
     //add player to game socket
@@ -62,7 +65,8 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
   });
 
   //leave request
-  socket.on("leave-game", ({ gameCode, userID = socket.id }) => {
+  socket.on("leave-game", ({ userID = socket.id }) => {
+    const gameCode = players.get(userID)?.getGameCode();
     console.log(`Leave request for Code: ${gameCode}, User ID: ${userID}`);
     const gameCodeN = Number(gameCode);
 
@@ -88,6 +92,8 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     setTimeout(() => {
       socketToKick.leave(`game-${gameCodeN}`);
       session.removePlayer(userID);
+      players.get(userID)?.updateGameCode(0);
+
       console.log(`Removed player ${userID} from game session ${gameCode}`);
 
       //update host information

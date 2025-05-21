@@ -17,6 +17,18 @@ const JoinLobby: React.FC = () => {
     socket.emit("join-game", { gameCode: code, name: name });
   };
 
+  //to be moved to lobby
+  const leaveSession = () => {
+    socket.emit("leave-game", { userID: socket.id });
+  };
+
+  //to move this to the player lobby once connected
+  socket.on("kick-warning", ({ message }) => {
+    console.log(message);
+    //reroute to home or join page or whatever
+    FlowRouter.go("/*");
+  });
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-4 py-8 sm:px-6 lg:px-8">
       <button
@@ -62,6 +74,9 @@ const JoinLobby: React.FC = () => {
 
       <div className="mt-8">
         <ButtonDemo text="JOIN ROOM" onClick={joinSession} />
+      </div>
+      <div className="mt-8">
+        <ButtonDemo text="LEAVE ROOM (TEST)" onClick={leaveSession} />
       </div>
     </div>
   );

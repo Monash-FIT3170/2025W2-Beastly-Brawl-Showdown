@@ -41,7 +41,8 @@ export default class GameSession {
     //need to add if statements regarding duplicate names etc.
     if (
       this.canSocketJoin(player.userID) &&
-      this.isPlayerNameFree(player.name)
+      this.isPlayerNameFree(player.name) &&
+      this.players.size() < 8
     ) {
       this.players.enqueue(player);
     }
@@ -116,7 +117,10 @@ export default class GameSession {
 
       const currentPosition = Math.random();
 
-      if (playerIndexed != undefined && this.previousPosition < currentPosition) {
+      if (
+        playerIndexed != undefined &&
+        this.previousPosition < currentPosition
+      ) {
         tempPlayerQueue.enqueuefront(playerIndexed);
         this.previousPosition = currentPosition;
       } else if (playerIndexed != undefined) {

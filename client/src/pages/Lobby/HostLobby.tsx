@@ -36,7 +36,7 @@ const HostLobby: React.FC = () => {
   //kick
   const kickPlayer = (playerID: string) => {
     // backend player removal call
-    socket.emit("leave-game", { gameCode: code, userID: playerID });
+    socket.emit("leave-game", { userID: playerID });
   };
 
   const startGame = () => {
