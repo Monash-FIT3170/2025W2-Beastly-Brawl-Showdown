@@ -1,6 +1,7 @@
 # 2025W2-Beastly-Brawl-Showdown
 
 ### Instructions To Run Application
+
 1. For MVP, the application is locally hosted from one computer but external devices can join IF both devices are under the same network.
 2. To get your local ipv4 address, open up a command prompt and enter `ipconfig` and scroll to the bottom and see the IPv4 Address under\
    the `Wireless LAN adapter Wi-Fi` heading.

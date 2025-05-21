@@ -51,7 +51,7 @@ export default class GameSession {
     if (!this.canSocketJoin(player.userID)) {
       console.log("Player already in game session");
       return false; // Player rejected
-    } 
+    }
     if (!this.isPlayerNameFree(player.name)) {
       console.log("Player name already taken");
       return false; // Player rejected

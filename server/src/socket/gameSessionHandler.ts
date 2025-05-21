@@ -20,7 +20,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
     activeGameSessions.set(session.getGameCode(), session);
     console.log(
-      `Game session created: ${session.getGameCode()} | hostId: ${socket.id}`
+      `Game session created: ${session.getGameCode()} | hostId: ${socket.id}`,
     );
     socket.join(`game-${session.getGameCode()}`);
 
@@ -33,7 +33,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
   //join request
   socket.on("join-game", ({ gameCode, name }) => {
     console.log(
-      `Join request for Code: ${gameCode}, User: ${name} - ${socket.id}`
+      `Join request for Code: ${gameCode}, User: ${name} - ${socket.id}`,
     );
     const gameCodeN = Number(gameCode);
 
@@ -94,7 +94,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     //wil need a pop up for that like "Someone's already hosting this code loser ;3"
     session.updateHost(socket.id);
     console.log(
-      `Old Host ${oldHost} has been replaced with ${socket.id} for game: ${gameCode}`
+      `Old Host ${oldHost} has been replaced with ${socket.id} for game: ${gameCode}`,
     );
 
     socket.join(`game-${gameCodeN}`);
@@ -190,7 +190,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     for (let i = 0; i < battlesSize; i++) {
       const battle = battles.dequeue();
       if (battle != undefined) {
-        console.log(`Players in Battle ${i}: ${battle.player1Name} vs ${battle.player2Name}`);
+        console.log(
+          `Players in Battle ${i}: ${battle.player1Name} vs ${battle.player2Name}`,
+        );
         battles.enqueue(battle);
       }
     }

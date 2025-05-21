@@ -1,7 +1,7 @@
 interface IQueue<T> {
-    enqueue(item: T): void;
-    dequeue(): T | undefined;
-    size(): number;
+  enqueue(item: T): void;
+  dequeue(): T | undefined;
+  size(): number;
 }
 
 export default class Queue<T> implements IQueue<T> {
@@ -29,7 +29,6 @@ export default class Queue<T> implements IQueue<T> {
     return this.storage.length;
   }
   getItems(): T[] {
-    return[...this.storage];
+    return [...this.storage];
   }
-
 }

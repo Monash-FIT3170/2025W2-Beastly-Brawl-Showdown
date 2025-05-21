@@ -1,6 +1,6 @@
-import Player from './player';
+import Player from "./player";
 import { UUID } from "crypto";
-import Queue from '/server/src/utils/queue';
+import Queue from "/server/src/utils/queue";
 
 export default class Battle {
   public id: UUID;

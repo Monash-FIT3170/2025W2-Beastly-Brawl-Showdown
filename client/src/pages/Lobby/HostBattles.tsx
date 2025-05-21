@@ -54,7 +54,9 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
               key={battle.id}
               className="flex items-center justify-between bg-gray-100 rounded-lg px-4 py-2 shadow-sm"
             >
-              <p className="text-lg font-medium truncate">{battle.player1Name} vs {battle.player2Name}</p>
+              <p className="text-lg font-medium truncate">
+                {battle.player1Name} vs {battle.player2Name}
+              </p>
             </div>
           ))}
         </div>
