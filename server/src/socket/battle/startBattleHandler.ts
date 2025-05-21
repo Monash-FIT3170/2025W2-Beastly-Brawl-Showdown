@@ -158,14 +158,17 @@ function proceedBattleTurn(io: Server, battle: Battle) {
       const allBattleStates = getAllBattleStatesForHost();
       console.log(JSON.stringify(allBattleStates,null, 2))
       //TODO: replace 'host_room' with the host socket ID
-      io.to("host_room").emit("host_battle_summary", allBattleStates) //emit every turn 
+      // io.to("host_room").emit("host_battle_summary", allBattleStates) //emit every turn 
+
+      //use this for now as no host entity has been made in the branch
+      io.emit("host_battle_summary", allBattleStates) //emit every turn 
 
       // TODO: Set a 2-5 second "animation" window, and set a property in the battle instance to object it is in the animation stage (for the host match summary page)
 
       setTimeout(() => {
         // TODO: Set a property in the battle instance to object it is in the battle result stage (for the host match summary page)
         proceedBattleTurn(io, battle);
-      }, 5000);
+      }, 2000);
     }
   }, 1000); // Emit every second
 }
@@ -182,7 +185,7 @@ function getAllBattleStatesForHost(): any[] {
     }))
 
     result.push({
-      battleId,
+      battleId: battleId,
       turn: battle.getTurn(),
       players: playerStates,
       isOver: battle.isBattleOver()

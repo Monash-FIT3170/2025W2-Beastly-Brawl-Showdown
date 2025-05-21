@@ -1,6 +1,9 @@
 import React from 'react';
 import RoundNumberHeader from './RoundNumberHeader';
 import LeftPanel from './LeftPanel';
+import { MultipleBattleState } from '../../../../types/composite/multipleBattleState';
+import { useState, useEffect } from 'react';
+import socket from '../../socket';
 
 interface MatchSummaryPanelProps {
   // Round information
@@ -41,6 +44,17 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
         imageSrc: 'match-summary-assets/Attacker.png'
       }
  }) => {
+  const [battleStates, setBattleStates] = useState<MultipleBattleState | null>(null);
+  useEffect(() => {
+    socket.on("host_battle_summary", (battles: MultipleBattleState) => {
+      setBattleStates(battles);
+      console.log(battles)
+    });
+    
+    return () => {
+      socket.off("host_battle_summary");
+    };
+  }, []);
   return (
     <div 
       style={{
