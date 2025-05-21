@@ -35,6 +35,13 @@ FlowRouter.route('/join', {
   },
 });
 
+FlowRouter.route('/join/:code?', {
+  name: 'JoinLobby',
+  action(params) {
+    mount(() => <JoinLobby gameCode={params.code} />);
+  },
+});
+
 FlowRouter.route('/*', {
   name: 'NotFound',
   action() {
