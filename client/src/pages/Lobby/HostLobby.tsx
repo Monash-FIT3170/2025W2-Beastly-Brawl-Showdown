@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Player from "../../types/player";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 // import React, { useRef } from "react";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { QRCodeSVG } from "qrcode.react";
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import socket from "../../socket";
 
 const HostLobby: React.FC = () => {
-  const socket = io("http://118.138.0.106:3002"); //needs to be updated
+  // const socket = io("http://118.138.0.106:3002"); //needs to be updated
 
-  const [code, setCode] = useState(468923);
+  const [code, setCode] = useState(101010); //placeholder
   const [players, setPlayers] = useState<Player[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
   const [hostIP, setHostIP] = useState("");
@@ -162,7 +163,7 @@ const HostLobby: React.FC = () => {
       {/* Bottom bar with back button, start game button, and player count */}
       <div className="mt-12 flex justify-between items-center">
         <button
-          onClick={() => FlowRouter.go('/')}
+          onClick={() => FlowRouter.go("/")}
           className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
         >
           ← BACK

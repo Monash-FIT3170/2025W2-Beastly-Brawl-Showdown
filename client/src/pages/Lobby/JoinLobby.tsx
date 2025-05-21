@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { ButtonDemo } from "../../components/buttons/Button";
 import { LogoDisplay } from "../../components/logo/Logo";
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import io from "socket.io-client";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+// import io from "socket.io-client";
+import socket from "../../socket";
 
 const JoinLobby: React.FC = () => {
   //input listener basically
@@ -10,7 +11,7 @@ const JoinLobby: React.FC = () => {
   const [name, setName] = useState("");
 
   //needs to be updated to be related IP!!
-  const socket = io("http://118.138.0.106:3002");
+  // const socket = io("http://118.138.0.106:3002");
 
   const joinSession = () => {
     socket.emit("join-game", { gameCode: code, name: name });
@@ -19,7 +20,7 @@ const JoinLobby: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-4 py-8 sm:px-6 lg:px-8">
       <button
-        onClick={() => FlowRouter.go('/')}
+        onClick={() => FlowRouter.go("/")}
         className="absolute top-4 left-4 bg-red-400 text-black px-4 py-3 rounded hover:bg-red-500 text-3xl font-bold"
       >
         ←
@@ -66,4 +67,4 @@ const JoinLobby: React.FC = () => {
   );
 };
 
-export default JoinLobby; 
+export default JoinLobby;
