@@ -1,6 +1,6 @@
 import React from 'react';
 import Background from '../../components/background/Background';
-import MatchSummaryPanel from './MatchSummaryPanel';
+import MatchSummaryPanel from '../../components/match-summary/MatchSummaryPanel';
 
 const MatchSummary = () => {
   return (
