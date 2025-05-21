@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { ButtonDemo } from "../../components/buttons/Button";
 import { LogoDisplay } from "../../components/logo/Logo";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import io from "socket.io-client";
 
-export const JoinLobby = () => {
+const JoinLobby: React.FC = () => {
   //input listener basically
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
@@ -18,7 +19,7 @@ export const JoinLobby = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-4 py-8 sm:px-6 lg:px-8">
       <button
-        onClick={() => {}}
+        onClick={() => FlowRouter.go('/')}
         className="absolute top-4 left-4 bg-red-400 text-black px-4 py-3 rounded hover:bg-red-500 text-3xl font-bold"
       >
         ←
@@ -64,3 +65,5 @@ export const JoinLobby = () => {
     </div>
   );
 };
+
+export default JoinLobby; 

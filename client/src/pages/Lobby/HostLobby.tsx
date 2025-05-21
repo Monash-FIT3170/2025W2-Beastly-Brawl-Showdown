@@ -4,8 +4,9 @@ import io from "socket.io-client";
 // import React, { useRef } from "react";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { QRCodeSVG } from "qrcode.react";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
-export const HostLobby = () => {
+const HostLobby: React.FC = () => {
   const socket = io("http://localhost:3002"); //needs to be updated
 
   const [code, setCode] = useState(468923);
@@ -64,7 +65,7 @@ export const HostLobby = () => {
   const [nameV, setNameV] = useState("");
 
   const joinSession = () => {
-    const codeTest = document.getElementById("code") as HTMLParagraphElement;
+    // const codeTest = document.getElementById("code") as HTMLParagraphElement;
     socket.emit("join-game", { gameCode: codeV, name: nameV });
   };
 
@@ -161,7 +162,7 @@ export const HostLobby = () => {
       {/* Bottom bar with back button, start game button, and player count */}
       <div className="mt-12 flex justify-between items-center">
         <button
-          onClick={() => {}}
+          onClick={() => FlowRouter.go('/')}
           className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
         >
           ← BACK
@@ -243,3 +244,5 @@ export const HostLobby = () => {
     </div>
   );
 };
+
+export default HostLobby;
