@@ -8,10 +8,26 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import local_ipv4 from "/client/IPtest";
 import socket from "../../socket";
 
-const HostLobby: React.FC = () => {
-  const [code, setCode] = useState(101010); //placeholder
+interface HostLobbyProps {
+  gameCode?: string;
+}
+
+const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
+  const code = gameCode;
   const [players, setPlayers] = useState<Player[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
+
+  //on reload ask for players
+  useEffect(() => {
+    if (code) {
+      socket.emit("host-game", { gameCode: code });
+      socket.emit("get-players", { gameCode: code });
+    }
+
+    return () => {
+      console.log("Page is closing/unmounting");
+    };
+  }, []);
 
   //BUTTON FUNCTIONS:
 
@@ -36,34 +52,21 @@ const HostLobby: React.FC = () => {
   };
 
   //LISTENERS:
-  socket.on("new-game", ({ code }) => {
-    console.log(code);
-    setCode(code);
-  });
+  // socket.on("new-game", ({ code }) => {
+  //   console.log(code);
+  //   setCode(code);
+  // });
 
-  socket.on("player-join", ({ message, players }) => {
+  socket.on("update-players", ({ message, players }) => {
     console.log(message);
 
-    //update page contents according to session?
-    console.log("players from server:", players);
+    //update page
+    console.log("players from server:", players); //testing
     if (Array.isArray(players)) {
       setPlayers(players);
       setPlayerCount(players.length);
     } else {
-      console.error("Players is not an array!", players);
-    }
-  });
-
-  socket.on("player-leave", ({ message, players }) => {
-    console.log(message);
-
-    //update page contents according to session?
-    console.log("players from server:", players);
-    if (Array.isArray(players)) {
-      setPlayers(players);
-      setPlayerCount(players.length);
-    } else {
-      console.error("Players is not an array!", players);
+      console.error("'players' is not an array", players);
     }
   });
 
@@ -155,6 +158,8 @@ const HostLobby: React.FC = () => {
         >
           START GAME
         </button>
+
+        <button onClick={() => console.log(socket.id)}>Print SocketID</button>
 
         <p className="text-sm font-medium text-right min-w-[120px]">
           PLAYERS: {playerCount}/8

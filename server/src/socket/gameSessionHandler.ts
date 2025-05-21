@@ -17,13 +17,12 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     console.log(
       `Game session created: ${session.getGameCode()} | hostId: ${socket.id}`
     );
-
     socket.join(`game-${session.getGameCode()}`);
-    setTimeout(() => {
-      socket.emit("new-game", {
-        code: session.getGameCode(),
-      });
-    }, 100);
+
+    socket.emit("new-game", {
+      //change who this emits to because potentially two ppl clicking host at same time would call this
+      code: session.getGameCode(),
+    });
   });
 
   //join request
@@ -50,18 +49,50 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     socket.join(`game-${gameCodeN}`);
 
     //update host information
-    const hostSocket = io.sockets.sockets.get(session.hostUID);
-    if (!hostSocket) {
-      console.log(`Host UID not setup properly.${session.hostUID}`);
-      return;
-    }
-    hostSocket.emit("player-join", {
+    io.to(`game-${gameCode}`).emit("update-players", {
       message: `Player ${name} - ${socket.id} added to current game session.`,
       players: session.players.getItems(),
     });
+    // const hostSocket = io.sockets.sockets.get(session.hostUID);
+    // if (!hostSocket) {
+    //   console.log(`Host UID not setup properly.${session.hostUID}`);
+    //   return;
+    // }
+    // hostSocket.emit("player-join", {
+    //   message: `Player ${name} - ${socket.id} added to current game session.`,
+    //   players: session.players.getItems(),
+    // });
 
     //accepted
     console.log(`Join request accepted. UserID: ${socket.id}`);
+  });
+
+  //join as host
+  socket.on("host-game", ({ gameCode }) => {
+    //concept is this is called when the host's id is changed so that they're
+    // added to the room without being added to player list like join-room does
+    console.log(`Join request for Code: ${gameCode}, Host: ${socket.id}`);
+    const gameCodeN = Number(gameCode);
+
+    const session = activeGameSessions.get(gameCodeN);
+    if (!session) {
+      //if session of given game code doesnt exist
+      console.log(`Join request failed. Invalid Code`);
+      return;
+    }
+    const oldHost = session.getHost();
+
+    //if oldHost is not in `game-${gameCodeN} then:
+    //for now i just dgaf cos idk how to check
+    //more theory around this is to block someone from overriding the current host,
+    //just overriding the old socket
+    //wil need a pop up for that like "Someone's already hosting this code loser ;3"
+    session.updateHost(socket.id);
+    console.log(
+      `Old Host ${oldHost} has been replaced with ${socket.id} for game: ${gameCode}`
+    );
+
+    socket.join(`game-${gameCodeN}`);
   });
 
   //leave request
@@ -97,16 +128,26 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Removed player ${userID} from game session ${gameCode}`);
 
       //update host information
-      const hostSocket = io.sockets.sockets.get(session.hostUID);
-      if (!hostSocket) {
-        console.log(`Host UID not setup properly.${session.hostUID}`);
-        return;
-      }
-      hostSocket.emit("player-join", {
+      io.to(`game-${gameCode}`).emit("update-players", {
         message: `Player ${socket.id} removed from current game session.`,
         players: session.players.getItems(),
       });
     }, 100);
+  });
+
+  //give players
+  socket.on("get-players", ({ gameCode }) => {
+    const gameCodeN = Number(gameCode);
+    const session = activeGameSessions.get(gameCodeN);
+    if (!session) {
+      //if session of given game code doesnt exist
+      console.log(`Get Request Failed. Invalid Code ${gameCode}`);
+      return;
+    }
+    io.to(`game-${gameCode}`).emit("update-players", {
+      message: `Players Array Fetched`,
+      players: session.players.getItems(),
+    });
   });
 
   //list all codes

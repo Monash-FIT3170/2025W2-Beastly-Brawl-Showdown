@@ -6,14 +6,19 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 
 export const Home = () => {
-  const renderHostLobby = () => {
-    FlowRouter.go("/host");
-    const createGame = () => {
-      socket.emit("create-game", {});
-      console.log("Game session created");
-    };
-    createGame();
+  // const renderHostLobby = () => {
+  //   // FlowRouter.go("/host");
+  // };
+
+  const createGame = () => {
+    socket.emit("create-game", {});
+    console.log("Game session created");
   };
+
+  socket.on("new-game", ({ code }) => {
+    const codeString = code.toString();
+    FlowRouter.go(`/host/${codeString}`);
+  });
 
   const renderJoinLobby = () => {
     FlowRouter.go("/join");
@@ -24,7 +29,7 @@ export const Home = () => {
     (
       <div>
         <LogoDisplay size="3xl" />
-        <ButtonDemo text="Host Lobby" onClick={renderHostLobby} />
+        <ButtonDemo text="Host Lobby" onClick={createGame} />
         <ButtonDemo text="Join Lobby" onClick={renderJoinLobby} />
       </div>
     )

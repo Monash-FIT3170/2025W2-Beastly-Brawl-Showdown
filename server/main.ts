@@ -23,6 +23,10 @@ Meteor.startup(async () => {
   io.on("connection", (socket) => {
     console.log(`Client connected: ${socket.id}`);
     gameSessionHandler(io, socket);
+    socket.on("disconnect", (reason) => {
+      console.log(`Client disconnected: ${socket.id} (${reason})`);
+      //need to add code to remove player from any games they're in...
+    });
   });
 
   //listening

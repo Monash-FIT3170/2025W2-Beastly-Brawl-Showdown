@@ -26,9 +26,19 @@ export default class GameSession {
     } else {
       // Generate random six digit code if no preset code is provided
       const generateSixDigitCode = (): number =>
-      Math.floor(100000 + Math.random() * 900000);
+        Math.floor(100000 + Math.random() * 900000);
       this.gameCode = generateSixDigitCode();
     }
+  }
+
+  //
+  public getHost(): string {
+    return this.hostUID;
+  }
+
+  //
+  public updateHost(hostID: string) {
+    this.hostUID = hostID;
   }
 
   //add player to game session queue
