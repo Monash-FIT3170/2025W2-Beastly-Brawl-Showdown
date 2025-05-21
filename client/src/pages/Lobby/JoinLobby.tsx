@@ -10,7 +10,7 @@ const JoinLobby: React.FC = () => {
   const [name, setName] = useState("");
 
   //needs to be updated to be related IP!!
-  const socket = io("http://localhost:3002");
+  const socket = io("http://118.138.0.106:3002");
 
   const joinSession = () => {
     socket.emit("join-game", { gameCode: code, name: name });

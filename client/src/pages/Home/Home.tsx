@@ -2,10 +2,17 @@ import React from "react";
 import { ButtonDemo } from "../../components/buttons/Button";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { io } from "socket.io-client";
 
 export const Home = () => {
   const renderHostLobby = () => {
     FlowRouter.go('/host');
+    const socket = io("http://118.138.0.106:3002");
+    const createGame = () => {
+      socket.emit("create-game", {});
+      console.log("Game session created");
+    };
+    createGame();
   };
 
   const renderJoinLobby = () => {

@@ -18,9 +18,11 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     );
 
     socket.join(`game-${session.getGameCode()}`);
-    socket.emit("new-game", {
-      code: session.getGameCode(),
-    });
+    setTimeout(() => {
+      socket.emit("new-game", {
+        code: session.getGameCode(),
+      });
+    }, 100);
   });
 
   //join request

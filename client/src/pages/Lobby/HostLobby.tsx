@@ -7,7 +7,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 const HostLobby: React.FC = () => {
-  const socket = io("http://localhost:3002"); //needs to be updated
+  const socket = io("http://118.138.0.106:3002"); //needs to be updated
 
   const [code, setCode] = useState(468923);
   const [players, setPlayers] = useState<Player[]>([]);
@@ -74,10 +74,10 @@ const HostLobby: React.FC = () => {
     socket.emit("start-game", { gameCode: codeV });
   };
 
-  socket.on("new-game", ({ code }) => {
-    console.log(code);
-    setCode(code);
-  });
+  // socket.on("new-game", ({ code }) => {
+  //   console.log(code);
+  //   setCode(code);
+  // });
 
   socket.on("player-join", ({ message, players }) => {
     console.log(message);
