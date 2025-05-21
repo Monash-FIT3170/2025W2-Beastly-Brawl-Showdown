@@ -23,6 +23,7 @@ const HostLobby: React.FC = () => {
 
   const startGame = () => {
     socket.emit("start-game", { gameCode: codeV });
+    FlowRouter.go("/playerlobby");
   };
 
   const closeGame = () => {
@@ -135,7 +136,7 @@ const HostLobby: React.FC = () => {
       </div>
 
       {/* Bottom bar with back button, start game button, and player count */}
-      <div className="mt-12 flex justify-between items-center">
+      <div className="mt-24 flex justify-between items-center">
         <button
           onClick={closeGame}
           className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
@@ -159,7 +160,7 @@ const HostLobby: React.FC = () => {
           PLAYERS: {playerCount}/8
         </p>
       </div>
-      <p className="mt-8 text-lg font-semibold">SOCKET SETUP TESTING BELOW:</p>
+      {/* <p className="mt-8 text-lg font-semibold">SOCKET SETUP TESTING BELOW:</p>
       <div className="mt-4 space-y-4">
         <button
           onClick={createGame}
@@ -215,7 +216,7 @@ const HostLobby: React.FC = () => {
         </button>
 
         <p id="code" className="text-sm text-gray-600 mt-2"></p>
-      </div>
+      </div> */}
     </div>
   );
 };

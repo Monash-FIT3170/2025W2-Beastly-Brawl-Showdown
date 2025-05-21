@@ -7,6 +7,7 @@ import HostLobby from "./src/pages/Lobby/HostLobby";
 import JoinLobby from "./src/pages/Lobby/JoinLobby";
 import MonsterSelection from './src/pages/Game/MonsterSelection';
 import PathNotFound from "./src/pages/Home/PathNotFound";
+import PlayerLobby from "./src/pages/Lobby/PlayerLobby";
 
 function mount(Component: React.FC) {
   const container = document.getElementById('react-target');
@@ -47,6 +48,13 @@ FlowRouter.route('/selection', {
   name: 'MonsterSelection',
   action() {
     mount(MonsterSelection);
+  },
+});
+
+FlowRouter.route('/playerlobby', {
+  name: 'PlayerLobby',
+  action() {
+    mount(PlayerLobby);
   },
 });
 
