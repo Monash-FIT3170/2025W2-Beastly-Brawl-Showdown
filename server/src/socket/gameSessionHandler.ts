@@ -149,6 +149,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       activeGameSessions.delete(gameCodeN);
       //removes all clients -> should auto delete room
       io.in(`game-${gameCodeN}`).socketsLeave(`game-${gameCodeN}`);
+      console.log(`Game ${gameCodeN} is cancelled.`);
     }, 100);
   });
 };

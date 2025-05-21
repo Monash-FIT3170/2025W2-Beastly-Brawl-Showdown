@@ -8,13 +8,12 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 
 const HostLobby: React.FC = () => {
-  // const socket = io("http://118.138.0.106:3002"); //needs to be updated
-
   const [code, setCode] = useState(101010); //placeholder
   const [players, setPlayers] = useState<Player[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
   const [hostIP, setHostIP] = useState("");
 
+  //GETTING HOST IP:
   // Effect to fetch and log the host's IP address
   useEffect(() => {
     const getHostIP = async () => {
@@ -32,49 +31,28 @@ const HostLobby: React.FC = () => {
     getHostIP();
   }, []);
 
-  // const addPlayer = (playerName: string, playerID: string) => {
-  //   setPlayers(players.concat(new Player(playerID, playerName)));
-  //   setPlayerCount(playerCount + 1);
-  // };
+  //BUTTON FUNCTIONS:
 
-  // const removePlayer = (playerID: string) => {
-  //   setPlayers(players.filter((player) => player.userID !== playerID));
-  //   setPlayerCount(playerCount - 1);
-  // };
-
-  // const enterCode = (newCode: number) => {
-  //   setCode(newCode);
-  // };
-
+  //kick
   const kickPlayer = (playerID: string) => {
     // backend player removal call
     socket.emit("leave-game", { gameCode: code, userID: playerID });
   };
 
-  //socket setup testing - anika
-  const createGame = () => {
-    socket.emit("create-game", {});
-    console.log("Game session created");
-  };
-
-  const listSessions = () => {
-    socket.emit("game-list", {});
-    console.log("Game session list requested");
-  };
-
-  const [codeV, setCodeV] = useState("");
-  const [nameV, setNameV] = useState("");
-
-  const joinSession = () => {
-    // const codeTest = document.getElementById("code") as HTMLParagraphElement;
-    socket.emit("join-game", { gameCode: codeV, name: nameV });
-  };
-
   const startGame = () => {
-    // Your start game logic here
     socket.emit("start-game", { gameCode: codeV });
   };
 
+  const closeGame = () => {
+    //popup asking if they are sure
+    //insert!!!
+    //close game session
+    socket.emit("cancel-game", { gameCode: code });
+    //return to home
+    FlowRouter.go("/");
+  };
+
+  //LISTENERS:
   socket.on("new-game", ({ code }) => {
     console.log(code);
     setCode(code);
@@ -98,13 +76,32 @@ const HostLobby: React.FC = () => {
 
     //update page contents according to session?
     console.log("players from server:", players);
-    // if (Array.isArray(players)) {
-    //   setPlayers(players);
-    //   setPlayerCount(players.length);
-    // } else {
-    //   console.error("Players is not an array!", players);
-    // }
+    if (Array.isArray(players)) {
+      setPlayers(players);
+      setPlayerCount(players.length);
+    } else {
+      console.error("Players is not an array!", players);
+    }
   });
+
+  //SOCKET SETUP TESTING
+  const createGame = () => {
+    socket.emit("create-game", {});
+    console.log("Game session created");
+  };
+
+  const listSessions = () => {
+    socket.emit("game-list", {});
+    console.log("Game session list requested");
+  };
+
+  const [codeV, setCodeV] = useState("");
+  const [nameV, setNameV] = useState("");
+
+  const joinSession = () => {
+    // const codeTest = document.getElementById("code") as HTMLParagraphElement;
+    socket.emit("join-game", { gameCode: codeV, name: nameV });
+  };
 
   return (
     <div className="min-h-screen p-4">
@@ -163,7 +160,7 @@ const HostLobby: React.FC = () => {
       {/* Bottom bar with back button, start game button, and player count */}
       <div className="mt-12 flex justify-between items-center">
         <button
-          onClick={() => FlowRouter.go("/")}
+          onClick={closeGame}
           className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
         >
           ← BACK
