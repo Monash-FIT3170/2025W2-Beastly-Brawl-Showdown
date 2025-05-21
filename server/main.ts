@@ -4,6 +4,7 @@ import http from "http";
 import GameSession from "./src/model/host/gameSession";
 import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 import Player from "./src/model/game/player";
+import { act } from "react";
 
 export const activeGameSessions: Map<number, GameSession> = new Map();
 export const players = new Map<string, Player>();
@@ -25,7 +26,20 @@ Meteor.startup(async () => {
     gameSessionHandler(io, socket);
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);
-      //need to add code to remove player from any games they're in...
+      //remove player from game session
+      if (players.has(socket.id)) {
+        const player = players.get(socket.id);
+        const code = player?.getGameCode();
+        const session = activeGameSessions.get(Number(code));
+        if (session) {
+          session.removePlayer(socket.id);
+          io.to(`game-${code}`).emit("update-players", {
+            message: `Player ${player?.name} - ${socket.id} disconnected.`,
+            players: session.players.getItems(),
+          });
+        }
+        players.delete(socket.id);
+      }
     });
   });
 
