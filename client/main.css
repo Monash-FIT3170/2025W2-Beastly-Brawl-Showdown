@@ -1,4 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import "tailwindcss";
+
+@theme{
+  --font-jua: "Jua", sans-serif;
+  --color-pictonBlue: #55A9ED;
+  --color-blackCurrant: #403245;
+  --color-ronchi: #EDAF55;
+  --color-springLeaves: #557D5A;
+  --color-terracotta: #E28454;
+  --color-heliotrope: #BD55ED;
+  --color-quillGray: #DAD9D7;
+  --color-alto: #DADADA;
+  --color-goldenRod: #FBD474;
+  --color-merino: #F6F1E5;
+  --color-conifer: #7EED55;
+  --color-peach: #FFE8B1;
+  --color-burntSienna: #ED5A55;
+  --color-schoolBusYellow: #FFD900;
+  --text-tiny: 0.9375rem;
+  --text-medium: 1.5625rem;
+  --text-large: 2.1875rem;
+  --spacing-normalButtonWidth: 11.25rem;
+  --spacing-normalButtonHeight: 5.625rem;
+  --spacing-normalPhoneWidth: 23.0625rem;
+}
+
+
 body {
-  padding: 10px;
+  padding: 0rem;
   font-family: sans-serif;
 }
+
+.text-outline{
+  -webkit-text-fill-color: var(--color-merino);
+  -webkit-text-stroke: 0.0625rem;
+  -webkit-text-stroke-color: var(--color-blackCurrant)
+}
+
+
+
