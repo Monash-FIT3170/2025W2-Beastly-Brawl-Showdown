@@ -156,10 +156,15 @@ export default class GameSession {
     if (tempPlayerQueue.size() != 0) {
       const autoWinPlayer = tempPlayerQueue.dequeue();
       if (autoWinPlayer != undefined) {
+        this.oddOneOutWinner(autoWinPlayer);
         this.players.enqueue(autoWinPlayer);
       }
     }
 
     return this.battles;
+  }
+
+  public oddOneOutWinner(oddPlayer: Player) {
+    return oddPlayer;
   }
 }
