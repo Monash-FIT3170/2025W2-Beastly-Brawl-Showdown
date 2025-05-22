@@ -1,4 +1,5 @@
 import React from 'react';
+import PlayerPanel from './PlayerPanel';
 
 // Define the battle interface based on your MultipleBattleState structure
 interface BattleData {
@@ -55,38 +56,12 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
         }}
       >
         {battle.players.map((playerData, playerIndex) => (
-          <div 
+          <PlayerPanel
             key={playerIndex}
-            style={{
-              backgroundColor: battle.isOver ? '#DAD9D7' : '#7EED55',
-              borderRadius: '0.5rem',
-              border: '2px solid #403245',
-              padding: '0.5rem 1rem',
-              textAlign: 'center',
-              minWidth: '120px',
-            }}
-          >
-            <div 
-              style={{
-                fontSize: '1rem',
-                fontFamily: 'Jua, sans-serif',
-                fontWeight: 'bold',
-                color: '#403245',
-                marginBottom: '0.25rem',
-              }}
-            >
-              {playerData.playerState.name}
-            </div>
-            <div 
-              style={{
-                fontSize: '0.875rem',
-                fontFamily: 'Jua, sans-serif',
-                color: '#403245',
-              }}
-            >
-              HP: {playerData.playerState.currentAttackStat || 'N/A'}
-            </div>
-          </div>
+            playerData={playerData}
+            playerIndex={playerIndex}
+            isBattleOver={battle.isOver}
+          />
         ))}
         
         {/* VS indicator between players */}
@@ -120,30 +95,6 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
         {battle.isOver ? 'Battle Complete' : 'Battle In Progress'}
       </div>
       
-      {/* Debug: Show raw battle data */}
-      <details style={{ marginTop: '0.5rem' }}>
-        <summary 
-          style={{
-            fontSize: '0.75rem',
-            color: '#666',
-            cursor: 'pointer',
-          }}
-        >
-          Debug: Raw Battle Data
-        </summary>
-        <pre 
-          style={{
-            fontSize: '0.625rem',
-            backgroundColor: '#f5f5f5',
-            padding: '0.5rem',
-            borderRadius: '0.25rem',
-            overflow: 'auto',
-            maxHeight: '150px',
-          }}
-        >
-          {JSON.stringify(battle, null, 2)}
-        </pre>
-      </details>
     </div>
   );
 };
