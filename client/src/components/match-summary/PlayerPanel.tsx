@@ -54,12 +54,18 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '0.75rem',
-          flexDirection: isLeftPlayer ? 'row' : 'row-reverse', // Left player: health-monster, Right player: monster-health
+          flexDirection: isLeftPlayer ? 'row' : 'row-reverse',
+          position: 'relative', // Enable positioning for overlap
         }}
       >
         {/* Health Bar */}
-        <div style={{ flex: 1, minWidth: '120px' }}>
+        <div 
+          style={{ 
+            flex: 1, 
+            minWidth: '120px',
+            zIndex: 1, // Keep health bar below monster image
+          }}
+        >
           <HealthBar 
             current={currentHealth} 
             max={maxHealth}
@@ -69,14 +75,17 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         {/* Monster Image */}
         <div 
           style={{
-            width: '60px',
-            height: '60px',
+            width: '70px', // Slightly larger to make overlap more visible
+            height: '70px',
             borderRadius: '0.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
-            flexShrink: 0, // Prevent image from shrinking
+            position: 'relative',
+            zIndex: 2, // Keep monster image above health bar
+            marginLeft: isLeftPlayer ? '-30px' : '0px', // Overlap from right for left player
+            marginRight: isLeftPlayer ? '0px' : '-30px', // Overlap from left for right player
           }}
         >
           <img 
@@ -86,6 +95,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
+              transform: isLeftPlayer ? 'scaleX(-1)' : 'scaleX(1)', // Flip horizontally for left player
             }}
           />
         </div>
