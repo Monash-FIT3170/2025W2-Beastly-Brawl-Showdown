@@ -20,7 +20,7 @@ interface MatchSummaryPanelProps {
     imageSrc: string;
   };
 }
-
+// This component listens for a message called host_battle_summary from the server. Then it stores the received data in a react state variable (battleStates)
 const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ 
       // Default values for props
       roundNumber = 2,
@@ -44,14 +44,30 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
         imageSrc: 'match-summary-assets/Attacker.png'
       }
  }) => {
+  // Declares a piece of React state called battleStates.
+  // Starts off as null.
+  // When data comes in from the server, you call setBattleStates(...) to store it.
+  {/*
+    useState is a React Hook that lets your component:
+    store data that can change over time
+    automatically re-render when that data changes
+    This stored data is called state.
+    */}
   const [battleStates, setBattleStates] = useState<MultipleBattleState | null>(null);
   useEffect(() => {
+    {/*Listens for the "host_battle_summary" message from the server via Socket.IO.
+    When that message arrives, it receives battles (an array or object of match data).
+    Then it updates the React state using setBattleStates(battles).
+    This lets you:
+    Store live data from the server
+    Trigger a re-render with the new data if needed */}
     socket.on("host_battle_summary", (battles: MultipleBattleState) => {
       setBattleStates(battles);
-      console.log(battles)
     });
     
     return () => {
+      {/* This is the cleanup function that React will call when the component unmounts.
+          socket.off("host_battle_summary") removes the listener, so you do not get memory leaks or duplicate event handlers. */}
       socket.off("host_battle_summary");
     };
   }, []);
@@ -76,6 +92,8 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
 
     {/* Only the Left Panel */}
       <div style={{ maxWidth: '320px', width: '100%', marginTop: '1rem' }}>
+        <h3>battleStates</h3>
+        <pre>{battleStates?.[0]?.players?.[0]?.playerState?.currentHealth}</pre>
         <LeftPanel 
           totalPlayers={totalPlayers}
           damageData={damageData}
