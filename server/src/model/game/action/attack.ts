@@ -30,22 +30,17 @@ export class AttackAction extends Action {
     this.damage = d20 + this.attackBonus; 
     console.log(`Dice roll: ${d20} + Attack bonus: ${this.attackBonus}`);
 
-    // Dice roll is added to bonus attack. If this is greater than opponents armour, then we do (total damage - opponents armour).
-    // This is what we subtract from the opponent's HP. 
+    // Attack is calculated by adding dice roll and attack bonus. 
+    // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5. 
     if (this.damage > affectedPlayer.getMonster().getArmourClass()) {
-      console.log(`New damage: ${this.damage} - ${affectedPlayer.getMonster().getArmourClass()}`);
-
-      this.damage = this.damage - affectedPlayer.getMonster().getArmourClass();
-
-      // New damage is
-      console.log(`Attack: ${this.damage}`);
-      affectedPlayer.incHealth(-this.damage);
+      console.log(`Attack successful | Attack exceeds opponents armour: (${affectedPlayer.getMonster().getArmourClass()} < ${this.damage}).`);
+      affectedPlayer.incHealth(-5);
 
       // Log successful attack
-      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt ${this.damage} damage.`);
+      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt 5 damage.`);
     } else {
       // Log failed attack
-      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt ${this.damage} damage.`);
+      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt 0 damage.`);
     }
   }
 }
