@@ -1,0 +1,61 @@
+import React from 'react';
+import { MultipleBattleState } from '../../../../types/composite/multipleBattleState';
+import BattlePanel from './BattlePanel';
+
+interface MiddlePanelProps {
+  battleStates: MultipleBattleState | null;
+}
+
+const MiddlePanel: React.FC<MiddlePanelProps> = ({ battleStates }) => {
+  return (
+    <div 
+      style={{
+        padding: '1rem',
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+      }}
+    >
+      <h2 
+        style={{
+          fontSize: '1.5rem',
+          fontFamily: 'Jua, sans-serif',
+          fontWeight: 'bold',
+          color: '#403245',
+          textAlign: 'center',
+          margin: '0 0 1rem 0',
+          textTransform: 'uppercase',
+        }}
+      >
+        Battle Arena
+      </h2>
+      
+      {/* Display battle states data */}
+      {battleStates ? (
+        <div>
+          {battleStates.map((battle, index) => (
+            <BattlePanel 
+              key={battle.battleId || index}
+              battle={battle}
+              battleIndex={index}
+            />
+          ))}
+        </div>
+      ) : (
+        <div 
+          style={{
+            textAlign: 'center',
+            fontSize: '1.125rem',
+            fontFamily: 'Jua, sans-serif',
+            color: '#666',
+            padding: '2rem',
+          }}
+        >
+          Waiting for battle data...
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MiddlePanel;

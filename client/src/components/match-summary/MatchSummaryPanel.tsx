@@ -1,6 +1,7 @@
 import React from 'react';
 import RoundNumberHeader from './RoundNumberHeader';
 import LeftPanel from './LeftPanel';
+import MiddlePanel from './MiddlePanel';
 import { MultipleBattleState } from '../../../../types/composite/multipleBattleState';
 import { useState, useEffect } from 'react';
 import socket from '../../socket';
@@ -84,11 +85,18 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
 
     <RoundNumberHeader roundNumber={battleStates?.[0]?.turn ?? ''} />
 
-
-    {/* Only the Left Panel */}
-      <div style={{ maxWidth: '320px', width: '100%', marginTop: '1rem' }}>
-        {/* <h3>{mostChosenMonster}</h3> */}
-        <h3>battleStates</h3>
+    {/* Main content area with grid layout */}
+    <div 
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '320px 1fr',
+        gap: '1rem',
+        marginTop: '1rem',
+        height: 'calc(100% - 8rem)', // Adjust based on header height
+      }}
+    >
+      {/* Left Panel */}
+      <div>
         {/* <pre>{battleStates?.[0]?.players?.[0]?.playerState?.name}</pre> */}
         {/* <pre>{JSON.stringify(battleStates, null, 2)}</pre> */}
 
@@ -99,9 +107,14 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
         />
       </div>
 
+      {/* Middle Panel */}
+      <div>
+        <MiddlePanel battleStates={battleStates} />
+      </div>
+    </div>
+
     </div>
   );
 };
-
 
 export default MatchSummaryPanel;
