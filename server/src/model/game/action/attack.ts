@@ -6,6 +6,7 @@ import socket from "../../socket";
 export class AttackAction extends Action {
   private attackBonus: number;
   private damage: number;
+  private d20: number;
 
   constructor(attackBonus: number) {
     super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy");
@@ -16,9 +17,14 @@ export class AttackAction extends Action {
     return this.damage;
   }
 
-  public getDiceRoll(): number {
-    const d20 = Math.floor(Math.random() * 20);
+  private rollDice(): number {
+    var d20 = Math.floor(Math.random() * 20);
+    console.log(`Dice roll: ${d20}`);
     return d20;
+  }
+
+  public getDiceRoll(): number {
+    return this.d20;
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
@@ -26,9 +32,9 @@ export class AttackAction extends Action {
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     
     // Rolling a d20 dice 
-    const d20 = this.getDiceRoll();
-    this.damage = d20 + this.attackBonus; 
-    console.log(`Dice roll: ${d20} | Attack bonus: ${this.attackBonus}`);
+    this.d20 = this.rollDice();
+    this.damage = this.d20 + this.attackBonus; 
+    console.log(`Dice roll: ${this.d20} | Attack bonus: ${this.attackBonus}`);
 
     // Attack is calculated by adding dice roll and attack bonus. 
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5. 
