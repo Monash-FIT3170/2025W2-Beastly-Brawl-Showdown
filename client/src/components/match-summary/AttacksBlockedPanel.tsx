@@ -38,7 +38,7 @@ const AttacksBlockedPanel: React.FC<AttacksBlockedPanelProps> = ({ blockData }) 
         textDecorationThickness: '3px', // <-- Thicker underline
         }}
       >
-        DAMAGE DEALT
+        ATTACKS BLOCKED
       </h3>
       <div>
         {blockData.map((player, index) => (
