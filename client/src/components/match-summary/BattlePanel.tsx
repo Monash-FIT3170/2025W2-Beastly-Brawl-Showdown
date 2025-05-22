@@ -7,9 +7,15 @@ interface BattleData {
   turn: number;
   players: Array<{
     playerState: {
-      name: string;
-      currentAttackStat?: number;
-      // Add other player state properties as needed
+        id: string;
+        name: string;
+
+        currentHealth: number;
+        currentAttackStat: number;
+        currentArmourClassStat: number;
+        initialHealth: number;
+
+        logs: string[];
     };
   }>;
   isOver: boolean;

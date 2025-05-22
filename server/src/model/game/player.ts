@@ -123,7 +123,7 @@ export class Player {
       currentHealth: this.currentHealth,
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
-      monster: this.monster,
+      initialHealth: this.monster.getMaxHealth(),
 
       logs: this.logs,
     };
