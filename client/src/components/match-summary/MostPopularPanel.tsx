@@ -9,7 +9,8 @@ interface MostPopularPanelProps {
 const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ monsterName, percentagePick }) => {
 
   const formattedName = monsterName.toUpperCase().replace(/ /g, "_");
-  const imageSrc = `/assets/character/${formattedName}.png`;
+  const imageSrc = `/assets/characters/${formattedName}.png`;
+  console.log("image src = ",imageSrc)
 
   return (
     <div 
