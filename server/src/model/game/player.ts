@@ -1,10 +1,15 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
+import { StonehideGuardian } from "./monster/stonehideGuardian";
 
 export class Player {
   private id: string;
+  public currentGameCode?: number;
   private name: string;
+
+  private score: number = 0;
+
   private monster: Monster;
 
   private currentHealth: number;
@@ -15,13 +20,21 @@ export class Player {
 
   private logs: string[] = [];
 
-  constructor(id: string, name: string, monster: Monster) {
+  constructor(id: string, name: string) {
     this.name = name;
     this.id = id;
-    this.monster = monster;
-    this.currentHealth = monster.getMaxHealth();
-    this.currentAttackStat = monster.getAttackBonus();
-    this.currentArmourClassStat = monster.getArmourClass();
+    this.monster = new StonehideGuardian();
+    this.currentHealth = this.monster.getMaxHealth();
+    this.currentAttackStat = this.monster.getAttackBonus();
+    this.currentArmourClassStat = this.monster.getArmourClass();
+  }
+
+  public getGameCode() {
+    return this.currentGameCode;
+  }
+
+  public updateGameCode(newCode: number) {
+    this.currentGameCode = newCode;
   }
 
   public getLogs(): string[] {

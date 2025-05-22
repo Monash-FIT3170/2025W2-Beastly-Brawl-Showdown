@@ -3,29 +3,8 @@ import { Battle } from "../../model/game/battle";
 import { NullAction } from "../../model/game/action/null";
 import { players, battles } from "../../../main";
 
-export const startBattleHandler = (io: Server, socket: Socket) => {
-  socket.on("start_battle", () => {
-    if (players.size == 2) {
-      let playersList = Array.from(players.values());
-
-      let battleId = crypto.randomUUID();
-
-      let battle = new Battle(battleId, playersList[0], playersList[1]);
-
-      battles.set(battleId, battle);
-
-      playersList.forEach((player) => {
-        io.sockets.sockets.get(player.getId())?.join(battleId);
-      });
-
-      io.to(battleId).emit("battle_started", battleId);
-      proceedBattleTurn(io, battle);
-    }
-  });
-};
-
 // TODO: separate this function into a separate file
-function proceedBattleTurn(io: Server, battle: Battle) {
+export default function proceedBattleTurn(io: Server, battle: Battle) {
   // TODO: Set a property in the battle instance to object it is in the 10 sec waiting stage (for the host match summary page)
   battle.clearBattleLogs();
   battle.incTurn();

@@ -4,11 +4,11 @@ import CountDownTimer from "../../components/temp/CountdownTimer";
 import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
 
-interface TempGameProps {
+interface BattleProps {
   battleId: string | null; // Add battleId as a prop
 }
 
-const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
+const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [battleState, setBattleState] = useState<BattleState | null>(null);
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const [timer, setTimer] = useState<number>(10);
@@ -109,4 +109,4 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
   );
 };
 
-export default TempGame;
+export default Battle;

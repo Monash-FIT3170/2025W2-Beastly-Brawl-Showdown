@@ -1,40 +1,34 @@
-import React, { useEffect, useState } from "react";
-import TempLobby from "../Lobby/TempLobby";
-import TempGame from "../Game/TempGame";
-import socket from "../../socket"; // Ensure you import the socket instance
-import { Screens } from "../../screens";
+import React from "react";
+import { LogoDisplay } from "../../components/logo/Logo";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import socket from "../../socket";
 
 export const Home = () => {
-  const [screen, setScreen] = useState<Screens>(Screens.LOBBY_SCREEN); // State to track the current screen
-  const [battleId, setBattleId] = useState<string | null>(null); // State to track the battle ID
+  // Called on 'Host Lobby' button press
+  const createGame = () => {
+    socket.emit("create-game", {});
+    console.log("Game session created");
+  };
 
-  useEffect(() => {
-    socket.on("battle_started", (battleId: string) => {
-      setScreen(Screens.GAME_SCREEN); // Switch to the GAME screen when a battle starts
-      console.log("TSX", battleId);
-      setBattleId(battleId); // Store the battle ID
-    });
+  // Received when Game Session is created. Takes user to 'Host Lobby' Page
+  socket.on("new-game", ({ code }) => {
+    const codeString = code.toString();
+    FlowRouter.go(`/host/${codeString}`);
+  });
 
-    return () => {
-      socket.off("battle_started");
-    };
-  }, []);
-
-  const renderScreen = () => {
-    switch (screen) {
-      case Screens.LOBBY_SCREEN:
-        return <TempLobby />;
-      case Screens.GAME_SCREEN:
-        return <TempGame battleId={battleId} />;
-      default:
-        return <TempLobby />;
-    }
+  // Called on 'Join Lobby' button press
+  const renderJoinLobby = () => {
+    FlowRouter.go("/join");
   };
 
   return (
-    <div>
-      <h1>Welcome to Meteor!</h1>
-      {renderScreen()}
-    </div>
+    console.log("Home"),
+    (
+      <div>
+        <LogoDisplay size="3xl" />
+        <button onClick={createGame}>Host Game</button>
+        <button onClick={renderJoinLobby}>Join Game</button>
+      </div>
+    )
   );
 };
