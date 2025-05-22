@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { ButtonDemo } from "../../components/buttons/Button";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
@@ -75,11 +74,8 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
       </div>
 
       <div className="mt-8">
-        <ButtonDemo text="JOIN ROOM" onClick={joinSession} />
+        <button onClick={joinSession}>JOIN ROOM</button>
       </div>
-      {/* <div className="mt-8">
-        <ButtonDemo text="LEAVE ROOM (TEST)" onClick={leaveSession} />
-      </div> */}
     </div>
   );
 };
