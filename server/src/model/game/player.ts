@@ -119,6 +119,7 @@ export class Player {
     return {
       id: this.id,
       name: this.name,
+      monsterName: this.monster.getName(),
 
       currentHealth: this.currentHealth,
       currentAttackStat: this.currentAttackStat,
