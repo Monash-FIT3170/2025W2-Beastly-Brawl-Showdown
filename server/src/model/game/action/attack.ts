@@ -28,7 +28,7 @@ export class AttackAction extends Action {
     // Rolling a d20 dice 
     const d20 = this.getDiceRoll();
     this.damage = d20 + this.attackBonus; 
-    console.log(`Dice roll: ${d20} + Attack bonus: ${this.attackBonus}`);
+    console.log(`Dice roll: ${d20} | Attack bonus: ${this.attackBonus}`);
 
     // Attack is calculated by adding dice roll and attack bonus. 
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5. 
