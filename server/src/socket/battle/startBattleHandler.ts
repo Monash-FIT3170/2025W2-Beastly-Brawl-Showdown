@@ -32,7 +32,7 @@ export const startBattleHandler = (io: Server, socket: Socket) => {
       }
 
       const result = {
-        monster: mostPicked,
+        monsterName: mostPicked,
         percentagePick: Math.round((maxCount / playersList.length) *100).toString() // to nearest integer (string type)
       }
       

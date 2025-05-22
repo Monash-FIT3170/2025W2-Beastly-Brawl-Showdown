@@ -7,20 +7,18 @@ import MatchStatistics from './MatchStatistics';
 
 
 interface LeftPanelProps {
-  totalPlayers?: number;
   damageData?: Array<{ playerName: string; damageAmount: number }>;
   blockData?: Array<{ playerName: string; blocksAmount: number }>;
-  popularPokemon?: {
-    name: string;
-    pickRate: number;
-    imageSrc: string;
+  popularMonster?: {
+    monsterName: string;
+    percentagePick: string;
   };
 }
 
 const LeftPanel: React.FC<LeftPanelProps> = ({ 
   damageData,
   blockData,
-  popularPokemon
+  popularMonster
 }) => {
   return (
     <div className="left-panel">
@@ -34,11 +32,13 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
       <AttacksBlockedPanel blockData={blockData} />
       
       {/* Most Popular Panel */}
-      <MostPopularPanel 
-        pokemonName={popularPokemon?.name}
-        pickRate={popularPokemon?.pickRate}
-        imageSrc={popularPokemon?.imageSrc}
+      {popularMonster && (
+        <MostPopularPanel
+          monsterName={popularMonster.monsterName}
+          percentagePick={popularMonster.percentagePick}
       />
+)}
+
     </div>
   );
 };

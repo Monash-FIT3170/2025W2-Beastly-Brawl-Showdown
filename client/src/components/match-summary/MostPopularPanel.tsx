@@ -2,12 +2,15 @@ import React from 'react';
 import './styles.css';
 
 interface MostPopularPanelProps {
-  pokemonName?: string;
-  pickRate?: number;
-  imageSrc?: string;
+  monsterName: string;
+  percentagePick: string; 
 }
 
-const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ pokemonName, pickRate, imageSrc }) => {
+const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ monsterName, percentagePick }) => {
+
+  const formattedName = monsterName.toUpperCase().replace(/ /g, "_");
+  const imageSrc = `/assets/character/${formattedName}.png`;
+
   return (
     <div 
       style={{
@@ -23,7 +26,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ pokemonName, pickRa
     >
       <img 
         src={imageSrc} 
-        alt={pokemonName} 
+        alt={monsterName} 
         style={{ 
           width: '100px', 
           height: '100px', 
@@ -43,7 +46,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ pokemonName, pickRa
           textTransform: 'uppercase'
         }}
       >
-        {pokemonName}
+        {monsterName}
       </div>
 
       <div
@@ -55,7 +58,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ pokemonName, pickRa
           WebkitTextStroke: '1px black',
         }}
       >
-        {pickRate}% Pick Rate
+        {percentagePick}% Pick Rate
       </div>
     </div>
   );

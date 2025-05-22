@@ -15,18 +15,9 @@ interface MatchSummaryPanelProps {
   // Left panel data
   damageData?: Array<{ playerName: string; damageAmount: number }>;
   blockData?: Array<{ playerName: string; blocksAmount: number }>;
-  popularPokemon?: {
-    name: string;
-    pickRate: number;
-    imageSrc: string;
-  };
 }
 // This component listens for a message called host_battle_summary from the server. Then it stores the received data in a react state variable (battleStates)
 const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ 
-      // Default values for props
-      roundNumber = 2,
-      remainingPlayers = 6,
-      totalPlayers = 16,
 
        // Left panel data with defaults
       damageData = [
@@ -38,12 +29,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
         { playerName: 'DANIEL', blocksAmount: 3 },
         { playerName: 'LUNA', blocksAmount: 2 },
         { playerName: 'RIO', blocksAmount: 1 }
-      ],
-      popularPokemon = {
-        name: 'SPARKING MOUSE',
-        pickRate: 42,
-        imageSrc: 'match-summary-assets/Attacker.png'
-      }
+      ]
  }) => {
   // Declares a piece of React state called battleStates.
   // Starts off as null.
@@ -68,6 +54,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
     });
 
     socket.on("most_chosen_monster", (monster: MostChosenMonsterState) => {
+      console.log('Received most chosen monster:', monster);
       setMostChosenMonster(monster);
     });
     
@@ -75,6 +62,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
       {/* This is the cleanup function that React will call when the component unmounts.
           socket.off("host_battle_summary") removes the listener, so you do not get memory leaks or duplicate event handlers. */}
       socket.off("host_battle_summary");
+      socket.off("most_chosen_monster");
     };
   }, []);
   return (
@@ -99,16 +87,15 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
 
     {/* Only the Left Panel */}
       <div style={{ maxWidth: '320px', width: '100%', marginTop: '1rem' }}>
-        <h3>{mostChosenMonster?.monster}</h3>
+        {/* <h3>{mostChosenMonster}</h3> */}
         <h3>battleStates</h3>
         {/* <pre>{battleStates?.[0]?.players?.[0]?.playerState?.name}</pre> */}
         {/* <pre>{JSON.stringify(battleStates, null, 2)}</pre> */}
 
         <LeftPanel 
-          totalPlayers={totalPlayers}
           damageData={damageData}
           blockData={blockData}
-          popularPokemon={popularPokemon}
+          popularMonster={mostChosenMonster ?? undefined}
         />
       </div>
 
