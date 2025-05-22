@@ -88,12 +88,15 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
       }}
     >   
 
-    <RoundNumberHeader roundNumber={roundNumber} />
+    <RoundNumberHeader roundNumber={battleStates?.[0]?.turn ?? ''} />
+
 
     {/* Only the Left Panel */}
       <div style={{ maxWidth: '320px', width: '100%', marginTop: '1rem' }}>
         <h3>battleStates</h3>
-        <pre>{battleStates?.[0]?.players?.[0]?.playerState?.currentHealth}</pre>
+        {/* <pre>{battleStates?.[0]?.players?.[0]?.playerState?.name}</pre> */}
+        {/* <pre>{JSON.stringify(battleStates, null, 2)}</pre> */}
+
         <LeftPanel 
           totalPlayers={totalPlayers}
           damageData={damageData}

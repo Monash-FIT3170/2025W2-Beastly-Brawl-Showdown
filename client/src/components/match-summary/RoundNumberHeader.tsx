@@ -5,7 +5,7 @@ interface RoundNumberHeaderProps {
   roundNumber?: number;
 }
 
-const RoundNumberHeader: React.FC<RoundNumberHeaderProps> = ({ roundNumber = 2 }) => {
+const RoundNumberHeader: React.FC<RoundNumberHeaderProps> = ({ roundNumber }) => {
   return (
     <div className="round-header" style={{
       padding: '1rem 3rem',
