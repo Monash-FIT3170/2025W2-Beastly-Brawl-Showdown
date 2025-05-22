@@ -32,7 +32,14 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ battleStates }) => {
       
       {/* Display battle states data */}
       {battleStates ? (
-        <div>
+        <div 
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr', // Two equal columns
+            gap: '1rem', // Space between battles
+            alignItems: 'start', // Align battles to the top of their grid cells
+          }}
+        >
           {battleStates.map((battle, index) => (
             <BattlePanel 
               key={battle.battleId || index}
