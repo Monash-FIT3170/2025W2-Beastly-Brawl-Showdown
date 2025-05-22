@@ -4,6 +4,7 @@ import LeftPanel from './LeftPanel';
 import { MultipleBattleState } from '../../../../types/composite/multipleBattleState';
 import { useState, useEffect } from 'react';
 import socket from '../../socket';
+import { MostChosenMonsterState } from '../../../../types/single/mostChosenMonsterState';
 
 interface MatchSummaryPanelProps {
   // Round information
@@ -54,6 +55,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
     This stored data is called state.
     */}
   const [battleStates, setBattleStates] = useState<MultipleBattleState | null>(null);
+  const [mostChosenMonster, setMostChosenMonster] = useState<MostChosenMonsterState | null>(null);
   useEffect(() => {
     {/*Listens for the "host_battle_summary" message from the server via Socket.IO.
     When that message arrives, it receives battles (an array or object of match data).
@@ -63,6 +65,10 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
     Trigger a re-render with the new data if needed */}
     socket.on("host_battle_summary", (battles: MultipleBattleState) => {
       setBattleStates(battles);
+    });
+
+    socket.on("most_chosen_monster", (monster: MostChosenMonsterState) => {
+      setMostChosenMonster(monster);
     });
     
     return () => {
@@ -93,6 +99,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
 
     {/* Only the Left Panel */}
       <div style={{ maxWidth: '320px', width: '100%', marginTop: '1rem' }}>
+        <h3>{mostChosenMonster?.monster}</h3>
         <h3>battleStates</h3>
         {/* <pre>{battleStates?.[0]?.players?.[0]?.playerState?.name}</pre> */}
         {/* <pre>{JSON.stringify(battleStates, null, 2)}</pre> */}

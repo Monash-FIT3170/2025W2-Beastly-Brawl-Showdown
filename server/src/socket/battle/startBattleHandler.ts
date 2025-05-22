@@ -37,7 +37,9 @@ export const startBattleHandler = (io: Server, socket: Socket) => {
       }
       
       //TODO: replace 'host_room' with the host socket id
-      io.to("host_room").emit("most_chosen_monster",result);
+      // io.to("host_room").emit("most_chosen_monster",result);
+      io.emit("most_chosen_monster",result);
+
 
       // Loop over pairs of players
       for (let i = 0; i < playersList.length; i += 2) {
