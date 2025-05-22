@@ -2,14 +2,19 @@ import React from 'react';
 import HealthBar from '../player-screen/HealthBar';
 import { PlayerState } from '/types/single/playerState';
 
-
 interface PlayerPanelProps {
   playerState: PlayerState;
   playerIndex: number;
   isBattleOver: boolean;
+  isLeftPlayer?: boolean; // Add this to control layout direction
 }
 
-const PlayerPanel: React.FC<PlayerPanelProps> = ({ playerState, playerIndex, isBattleOver }) => {
+const PlayerPanel: React.FC<PlayerPanelProps> = ({ 
+  playerState, 
+  playerIndex, 
+  isBattleOver, 
+  isLeftPlayer = true 
+}) => {
   // Extract current and max health values
   const currentHealth = playerState.currentHealth;
   const maxHealth = playerState.initialHealth;
@@ -22,12 +27,10 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({ playerState, playerIndex, isB
     <div 
       key={playerIndex}
       style={{
-        // backgroundColor: isBattleOver ? '#DAD9D7' : '#7EED55',
         borderRadius: '0.5rem',
-        // border: '2px solid #403245',
-        padding: '0.75rem 1rem', // Slightly more padding to accommodate health bar
+        padding: '0.75rem 1rem',
         textAlign: 'center',
-        minWidth: '200px', // Slightly wider for health bar
+        minWidth: '200px',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',
@@ -40,29 +43,40 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({ playerState, playerIndex, isB
           fontFamily: 'Jua, sans-serif',
           fontWeight: 'bold',
           color: '#403245',
+          marginBottom: '0.5rem',
         }}
       >
         {playerState.name}
       </div>
       
-      {/* Health Bar */}
-      <div style={{ width: '100%' }}>
-        <HealthBar 
-          current={currentHealth} 
-          max={maxHealth}
-        />
-                {/* Monster Image */}
+      {/* Health Bar and Monster Image Container */}
+      <div 
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+          flexDirection: isLeftPlayer ? 'row' : 'row-reverse', // Left player: health-monster, Right player: monster-health
+        }}
+      >
+        {/* Health Bar */}
+        <div style={{ flex: 1, minWidth: '120px' }}>
+          <HealthBar 
+            current={currentHealth} 
+            max={maxHealth}
+          />
+        </div>
+        
+        {/* Monster Image */}
         <div 
           style={{
             width: '60px',
             height: '60px',
             borderRadius: '0.5rem',
-            // border: '2px solid #403245',
-            // backgroundColor: '#F6F1E5',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
+            flexShrink: 0, // Prevent image from shrinking
           }}
         >
           <img 
@@ -76,7 +90,6 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({ playerState, playerIndex, isB
           />
         </div>
       </div>
-      
     </div>
   );
 };

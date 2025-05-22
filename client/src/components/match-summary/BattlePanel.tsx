@@ -50,6 +50,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
           alignItems: 'center',
           marginBottom: '0.5rem',
           position: 'relative',
+          gap: '1rem', // Add gap between players
         }}
       >
         {battle.players.map((playerData, playerIndex) => (
@@ -58,28 +59,13 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
             playerState={playerData.playerState}
             playerIndex={playerIndex}
             isBattleOver={battle.isOver}
+            isLeftPlayer={playerIndex === 0} // First player is left, second is right
           />
         ))}
         
-        {/* VS indicator between players */}
-        {battle.players.length >= 2 && (
-          <div 
-            style={{
-              fontSize: '1.5rem',
-              fontFamily: 'Jua, sans-serif',
-              fontWeight: 'bold',
-              color: '#403245',
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
-            }}
-          >
-            VS
-          </div>
-        )}
       </div>
       
-      {/* Battle status */}
+      {/* Battle status
       <div 
         style={{
           textAlign: 'center',
@@ -90,7 +76,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
         }}
       >
         {battle.isOver ? 'Battle Complete' : 'Battle In Progress'}
-      </div>
+      </div> */}
       
     </div>
   );
