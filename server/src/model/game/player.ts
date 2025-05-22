@@ -14,6 +14,8 @@ export class Player {
   private actions: Action[] = [];
 
   private logs: string[] = [];
+  private successfulHit: number = 0;
+  private successfulBlock: number = 0;
 
   constructor(id: string, name: string, monster: Monster) {
     this.name = name;
@@ -22,6 +24,21 @@ export class Player {
     this.currentHealth = monster.getMaxHealth();
     this.currentAttackStat = monster.getAttackBonus();
     this.currentArmourClassStat = monster.getArmourClass();
+  }
+  public getSuccessfulHit(){
+    return this.successfulHit
+  }
+
+  public getSuccessfulBlock(){
+    return this.successfulBlock
+  }
+
+  public incSuccessfulHit(number: number): void{
+    this.successfulHit += number
+  }
+
+  public incSuccessfulBlock(number: number): void{
+    this.successfulBlock += number
   }
 
   public getLogs(): string[] {
@@ -125,6 +142,8 @@ export class Player {
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
       initialHealth: this.monster.getMaxHealth(),
+      successBlock: this.successfulBlock,
+      successHit: this.successfulHit,
 
       logs: this.logs,
     };

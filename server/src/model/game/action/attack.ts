@@ -43,9 +43,12 @@ export class AttackAction extends Action {
 
       // Log successful attack
       actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt ${this.damage} damage.`);
+      actingPlayer.incSuccessfulHit(1);
     } else {
       // Log failed attack
-      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt ${this.damage} damage.`);
+      actingPlayer.addLog(`You attacked but it fails`);
+      affectedPlayer.addLog('You have successfully blocked an attack from your opponent');
+      affectedPlayer.incSuccessfulBlock(1);
     }
   }
 }

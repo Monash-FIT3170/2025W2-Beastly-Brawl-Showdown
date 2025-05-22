@@ -52,6 +52,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
     Trigger a re-render with the new data if needed */}
     socket.on("host_battle_summary", (battles: MultipleBattleState) => {
       setBattleStates(battles);
+      console.log(battles)
     });
 
     socket.on("most_chosen_monster", (monster: MostChosenMonsterState) => {

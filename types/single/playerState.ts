@@ -7,6 +7,8 @@ export interface PlayerState {
   currentArmourClassStat: number;
   initialHealth: number;
   monsterName: string;
+  successBlock: number;
+  successHit: number; 
 
   logs: string[];
 }
