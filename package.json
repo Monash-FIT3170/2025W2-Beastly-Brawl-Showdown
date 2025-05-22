@@ -14,8 +14,11 @@
     "meteor-node-stubs": "^1.2.5",
     "postcss": "^8.5.3",
     "postcss-load-config": "^6.0.1",
+    "qrcode.react": "^4.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.6"
   },
   "devDependencies": {
