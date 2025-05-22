@@ -1,8 +1,6 @@
 import React from "react";
-import { ButtonDemo } from "../../components/buttons/Button";
 import { LogoDisplay } from "../../components/logo/Logo";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-// import { io } from "socket.io-client";
 import socket from "../../socket";
 
 export const Home = () => {
@@ -28,8 +26,8 @@ export const Home = () => {
     (
       <div>
         <LogoDisplay size="3xl" />
-        <ButtonDemo text="Host Lobby" onClick={createGame} />
-        <ButtonDemo text="Join Lobby" onClick={renderJoinLobby} />
+        <button onClick={createGame}>Host Game</button>
+        <button onClick={renderJoinLobby}>Join Game</button>
       </div>
     )
   );
