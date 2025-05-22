@@ -58,6 +58,8 @@ export const startBattleHandler = (io: Server, socket: Socket) => {
 
         // Emit the battle_started to the pair of players + start battle turns
         io.to(battleId).emit("battle_started", battleId);
+        const allBattleStates = getAllBattleStatesForHost();
+        io.emit("host_battle_summary", allBattleStates)
         proceedBattleTurn(io, battle);
       }
     }
