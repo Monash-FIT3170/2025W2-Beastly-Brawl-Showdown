@@ -42,9 +42,9 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ battleStates }) => {
         >
           {battleStates.map((battle, index) => (
             <BattlePanel 
-              key={battle.battleId || index}
-              battle={battle}
-              battleIndex={index}
+                key={battle.battleId || index}  // Used by React for list rendering, not passed as a prop
+                battle={battle}                 // This is passed as a prop
+                battleIndex={index}            // This is passed as a prop. Represents the battle number
             />
           ))}
         </div>

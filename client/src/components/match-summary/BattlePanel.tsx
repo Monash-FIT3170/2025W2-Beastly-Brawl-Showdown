@@ -1,22 +1,13 @@
 import React from 'react';
 import PlayerPanel from './PlayerPanel';
+import { PlayerState } from '/types/single/playerState';
 
 // Define the battle interface based on your MultipleBattleState structure
 interface BattleData {
   battleId: string;
   turn: number;
   players: Array<{
-    playerState: {
-        id: string;
-        name: string;
-
-        currentHealth: number;
-        currentAttackStat: number;
-        currentArmourClassStat: number;
-        initialHealth: number;
-
-        logs: string[];
-    };
+    playerState: PlayerState;
   }>;
   isOver: boolean;
 }
@@ -64,7 +55,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
         {battle.players.map((playerData, playerIndex) => (
           <PlayerPanel
             key={playerIndex}
-            playerData={playerData}
+            playerState={playerData.playerState}
             playerIndex={playerIndex}
             isBattleOver={battle.isOver}
           />

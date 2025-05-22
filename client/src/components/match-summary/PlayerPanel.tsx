@@ -1,32 +1,18 @@
 import React from 'react';
 import HealthBar from '../player-screen/HealthBar';
-import { Monster } from '/server/src/model/game/monster/monster';
+import { PlayerState } from '/types/single/playerState';
 
-// Define the player interface
-interface PlayerData {
-  playerState: {
-        id: string;
-        name: string;
-
-        currentHealth: number;
-        currentAttackStat: number;
-        currentArmourClassStat: number;
-        initialHealth: number;
-
-        logs: string[];
-  };
-}
 
 interface PlayerPanelProps {
-  playerData: PlayerData;
+  playerState: PlayerState;
   playerIndex: number;
   isBattleOver: boolean;
 }
 
-const PlayerPanel: React.FC<PlayerPanelProps> = ({ playerData, playerIndex, isBattleOver }) => {
+const PlayerPanel: React.FC<PlayerPanelProps> = ({ playerState, playerIndex, isBattleOver }) => {
   // Extract current and max health values
-  const currentHealth = playerData.playerState.currentHealth;
-  const maxHealth = playerData.playerState.initialHealth;
+  const currentHealth = playerState.currentHealth;
+  const maxHealth = playerState.initialHealth;
 
   return (
     <div 
@@ -52,7 +38,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({ playerData, playerIndex, isBa
           color: '#403245',
         }}
       >
-        {playerData.playerState.name}
+        {playerState.name}
       </div>
       
       {/* Health Bar */}
