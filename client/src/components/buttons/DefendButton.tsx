@@ -4,9 +4,10 @@ import { OutlineText } from '../texts/OutlineText';
 
 interface DefendButtonProps {
   initialCount: number;
+  onClick?: () => void;
 }
 
-export const DefendButton: React.FC<DefendButtonProps> = ({ initialCount }) => {
+export const DefendButton: React.FC<DefendButtonProps> = ({ initialCount, onClick }) => {
   const [count, setCount] = useState(initialCount);
 
   const handleClick = () => {
@@ -19,7 +20,7 @@ export const DefendButton: React.FC<DefendButtonProps> = ({ initialCount }) => {
 
   return(
     <div className="relative inline-block">
-      <ButtonGeneric color = 'blue' size = 'battle' onClick={handleClick} isDisabled = {isDisabled}>
+      <ButtonGeneric color = 'blue' size = 'battle' onClick={() => {handleClick();if (onClick) onClick();}} isDisabled = {isDisabled}>
         <div className='w-full justify-center'>
           <OutlineText size = 'large'>
             DEFEND

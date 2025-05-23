@@ -47,12 +47,29 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.emit("action_selected", { action, battleId, playerId: socket.id });
   };
 
-  const attackAction = possibleActions.find((a) => a.id === ActionIdentifier.ATTACK);
-  const defendAction = possibleActions.find((a) => a.id === ActionIdentifier.DEFEND);
+  // const attackAction = possibleActions.find((a) => a.id === ActionIdentifier.ATTACK);
+  // const defendAction = possibleActions.find((a) => a.id === ActionIdentifier.DEFEND);
 
-  const abilityActions = possibleActions.filter(
-    (a) => a.id !== ActionIdentifier.ATTACK && a.id !== ActionIdentifier.DEFEND && a.id !== ActionIdentifier.NULL
-  );
+  // const abilityActions = possibleActions.filter(
+  //   (a) => a.id !== ActionIdentifier.ATTACK && a.id !== ActionIdentifier.DEFEND && a.id !== ActionIdentifier.NULL
+  // );
+
+  // const ability1 = abilityActions[0];
+  // const ability2 = abilityActions[1];
+
+  let attackAction: ActionState | undefined;
+  let defendAction: ActionState | undefined;
+  const abilityActions: ActionState[] = [];
+
+  possibleActions.forEach((action) => {
+    if (action.id === ActionIdentifier.ATTACK) {
+      attackAction = action;
+    } else if (action.id === ActionIdentifier.DEFEND) {
+      defendAction = action;
+    } else if (action.id !== ActionIdentifier.NULL) {
+      abilityActions.push(action);
+    }
+  });
 
   const ability1 = abilityActions[0];
   const ability2 = abilityActions[1];
@@ -113,6 +130,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
               <BattleFooter
               attackOnClick={() => attackAction && handleActionClick(attackAction)}
               defenseCharges={defendAction?.maxUse ?? 0}
+              defendOnClick={() => defendAction && handleActionClick(defendAction)}
               ability1={ability1?.name ?? "Ability 1"}
               ability1Charges={ability1?.maxUse ?? 0}
               ability1Image={'ShadowFangPredator'}

@@ -15,9 +15,10 @@ interface BattleFooterProp{
     ability1OnClick: () => void;
     ability2OnClick: () => void;
     attackOnClick: () => void;
+    defendOnClick: () => void;
 }
 
-export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charges, defenseCharges, ability1Image, ability2Image, ability1OnClick, ability2OnClick, attackOnClick}: BattleFooterProp) => {
+export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charges, defenseCharges, ability1Image, ability2Image, ability1OnClick, ability2OnClick, attackOnClick, defendOnClick}: BattleFooterProp) => {
 
     const topButton=
     `
@@ -38,7 +39,7 @@ export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charg
         <div>
             <div className={`${topButton}`}>
                 <AttackButton onClick={attackOnClick}></AttackButton>
-                <DefendButton initialCount={defenseCharges}></DefendButton>
+                <DefendButton initialCount={defenseCharges} onClick = {defendOnClick}></DefendButton>
             </div>
             <GenericFooter>
                 
