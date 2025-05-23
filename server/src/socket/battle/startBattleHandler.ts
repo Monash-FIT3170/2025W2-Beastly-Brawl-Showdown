@@ -1,10 +1,8 @@
 import { Server, Socket } from "socket.io";
 import { Battle } from "../../model/game/battle";
 import { NullAction } from "../../model/game/action/null";
-import { players, battles } from "../../../main";
 import GameSession from "../../model/host/gameSession";
 
-// TODO: separate this function into a separate file
 export default function proceedBattleTurn(io: Server, socket: Socket, gameSession: GameSession, battle: Battle) {
   // TODO: Set a property in the battle instance to object it is in the 10 sec waiting stage (for the host match summary page)
   battle.clearBattleLogs();
@@ -71,10 +69,10 @@ export default function proceedBattleTurn(io: Server, socket: Socket, gameSessio
         );
       });
 
-      socket.emit("battles-created", {
-      message: `Battles for Session ${socket.id} added to current game session.`,
-      battles: gameSession.getGameSessionState(), // cannot find name 'session'
-       });
+      // TODO: ONLY update the current battle to be more memory efficient...
+      socket.emit("game-session-state", {
+        session: gameSession.getGameSessionState(), 
+      });
 
       // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
       playersInBattle.forEach((player) => {

@@ -198,8 +198,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       percentagePick: Math.round((maxCount / session.getPlayers().getItems().length) *100).toString() // to nearest integer (string type)
     }
       
-    //TODO: replace 'host_room' with the host socket id
-    // io.to("host_room").emit("most_chosen_monster",result);
     socket.emit("most_chosen_monster",result);
 
     const battles = session.createMatches();
@@ -212,14 +210,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       proceedBattleTurn(io, socket, session, battle);
     }
 
-    // Add the battles to the socket
-    // UPDATE: Add Agile Team 1 functionality
-    socket.join(`game-${gameCodeN}`);
-
     // Update host information
-    io.to(`game-${gameCode}`).emit("battles-created", {
-      message: `Battles for Session ${socket.id} added to current game session.`,
-      battles: session.getGameSessionState(),
+    socket.emit("game-session-state", {
+      session: session.getGameSessionState(), 
     });
   });
 

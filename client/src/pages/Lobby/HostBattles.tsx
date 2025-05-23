@@ -8,81 +8,81 @@ import RoundNumberHeader from "../../components/match-summary/RoundNumberHeader"
 import LeftPanel from "../../components/match-summary/LeftPanel";
 import RightPanel from "../../components/match-summary/RightPanel";
 import MiddlePanel from "../../components/match-summary/MiddlePanel";
+import { GameSessionState } from "/types/composite/gameSessionState";
 
 interface HostBattlesProps {
   gameCode?: string;
 }
 
+interface PlayerStats {
+  blockData: BlockData[];
+  damageData: DamageData[];
+}
+
+interface BlockData {
+  playerName: string;
+  blocksAmount: number;
+}
+
+interface DamageData {
+  playerName: string;
+  damageAmount: number;
+}
+
 const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const code = gameCode; // Currently unused, used for potential page changes
-  const [battleCount, setBattleCount] = useState(0);
-  const [battles, setBattles] = useState<BattleState[]>([]);
+  const [gameSession, setGameSession] = useState<GameSessionState>();
   const [mostChosenMonster, setMostChosenMonster] = useState<MostChosenMonsterState | null>(null);
+  const [playerStats, setPlayerStats] = useState<PlayerStats>();
   
-
-  // LISTENERS:
-  // Listen for the "battles-created" event from the server
-  socket.on("battles-created", ({ message, battles }) => {
-    console.log(message);
-
-    // Update page contents according to session
-    console.log("players from server:", battles);
-    if (Array.isArray(battles)) {
-      setBattles(battles);
-      setBattleCount(battles.length);
-    } else {
-      console.error("'battles' is not an array", battles);
-    }
-  });
-
   // Function to extract player statistics from battleStates
-    const extractPlayerStatistics = (battles: BattleState[] | null) => {
-      if (!battles) return { blockData: [], damageData: [] };
+  const extractPlayerStatistics = (battles: BattleState[] | null) => {
+    if (!battles) return { blockData: [], damageData: [] };
+    
+    const blockDataMap: Record<string, number> = {};
+    const damageDataMap: Record<string, number> = {};
+    
+    // Loop through all battles and collect player statistics
+    battles.forEach(battle => {
       
-      const blockDataMap: Record<string, number> = {};
-      const damageDataMap: Record<string, number> = {};
-      
-      // Loop through all battles and collect player statistics
-      battles.forEach(battle => {
-        
-          const playerState = battle.yourPlayer;
-          const playerName = playerState.name;
-          const successBlocks = playerState.successBlock || 0; // Use successBlock from player state
-          const successHits = playerState.successHit || 0; // Use successHit from player state
-  
-          // console.log(playerState.logs)
-          
-          // Accumulate blocks for each player across all battles
-          blockDataMap[playerName] = (blockDataMap[playerName] || 0) + successBlocks;
-          
-          // Accumulate damage for each player across all battles (each hit = 5 damage)
-          damageDataMap[playerName] = (damageDataMap[playerName] || 0) + (successHits * 5);
+        const playerState = battle.yourPlayer;
+        const playerName = playerState.name;
+        const successBlocks = playerState.successBlock || 0; // Use successBlock from player state
+        const successHits = playerState.successHit || 0; // Use successHit from player state
 
-          const secondPlayerState = battle.opponentPlayer;
-          const secondPlayerName = secondPlayerState.name;
-          const secondPlayersuccessBlocks = secondPlayerState.successBlock || 0; // Use successBlock from player state
-          const secondPlayeruccessHits = secondPlayerState.successHit || 0; // Use successHit from player state
-  
-          // console.log(playerState.logs)
-          
-          // Accumulate blocks for each player across all battles
-          blockDataMap[secondPlayerName] = (blockDataMap[secondPlayerName] || 0) + secondPlayersuccessBlocks;
-          
-          // Accumulate damage for each player across all battles (each hit = 5 damage)
-          damageDataMap[secondPlayerName] = (damageDataMap[secondPlayerName] || 0) + (secondPlayeruccessHits * 5);
+        // console.log(playerState.logs)
         
-      });
-      // Convert block data to array format and sort by blocks (highest first)
-          const blockData = Object.entries(blockDataMap)
-            .map(([playerName, blocksAmount]) => ({ playerName, blocksAmount }))
-            .sort((a, b) => b.blocksAmount - a.blocksAmount);
-          
-          // Convert damage data to array format and sort by damage (highest first)
-          const damageData = Object.entries(damageDataMap)
-            .map(([playerName, damageAmount]) => ({ playerName, damageAmount }))
-            .sort((a, b) => b.damageAmount - a.damageAmount);
-          
-          return { blockData, damageData };
+        // Accumulate blocks for each player across all battles
+        blockDataMap[playerName] = (blockDataMap[playerName] || 0) + successBlocks;
+        
+        // Accumulate damage for each player across all battles (each hit = 5 damage)
+        damageDataMap[playerName] = (damageDataMap[playerName] || 0) + (successHits * 5);
+
+        const secondPlayerState = battle.opponentPlayer;
+        const secondPlayerName = secondPlayerState.name;
+        const secondPlayersuccessBlocks = secondPlayerState.successBlock || 0; // Use successBlock from player state
+        const secondPlayeruccessHits = secondPlayerState.successHit || 0; // Use successHit from player state
+
+        // console.log(playerState.logs)
+        
+        // Accumulate blocks for each player across all battles
+        blockDataMap[secondPlayerName] = (blockDataMap[secondPlayerName] || 0) + secondPlayersuccessBlocks;
+        
+        // Accumulate damage for each player across all battles (each hit = 5 damage)
+        damageDataMap[secondPlayerName] = (damageDataMap[secondPlayerName] || 0) + (secondPlayeruccessHits * 5);
+      
+    });
+    // Convert block data to array format and sort by blocks (highest first)
+        const blockData = Object.entries(blockDataMap)
+          .map(([playerName, blocksAmount]) => ({ playerName, blocksAmount }))
+          .sort((a, b) => b.blocksAmount - a.blocksAmount);
+        
+        // Convert damage data to array format and sort by damage (highest first)
+        const damageData = Object.entries(damageDataMap)
+          .map(([playerName, damageAmount]) => ({ playerName, damageAmount }))
+          .sort((a, b) => b.damageAmount - a.damageAmount);
+        
+        return { blockData, damageData };
     }
 
   useEffect(() => {
@@ -97,16 +97,24 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       console.log('Received most chosen monster:', monster);
       setMostChosenMonster(monster);
     });
+
+    socket.on("game-session-state", ({ session }) => {
+      setGameSession(session);
+    });
     
     return () => {
       {/* This is the cleanup function that React will call when the component unmounts.
           socket.off("host_battle_summary") removes the listener, so you do not get memory leaks or duplicate event handlers. */}
       socket.off("most_chosen_monster");
+      socket.off("game-session-state");
     };
   }, []);
 
-  // Extract real player statistics from battleStates
-  const playerStats = extractPlayerStatistics(battles);
+  useEffect(() => {
+  if (gameSession) {
+    setPlayerStats(extractPlayerStatistics(gameSession.battleStates));
+  }
+}, [gameSession]); // Only run when gameSession changes
 
 
   return (
@@ -125,39 +133,44 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
         overflow: 'auto',
       }}
     >   
-
-    <RoundNumberHeader roundNumber={battles?.[0]?.turn ?? ''} />
-
-    {/* Main content area with grid layout */}
-    <div 
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'auto 1fr auto', // Left panel, Middle panel, Right panel. auto means take up as much space as you need and 1fr means take up the rest of the remaining space
-        gap: '1rem',
-        marginTop: '1rem',
-        height: 'calc(100% - 8rem)', // Adjust based on header height
-      }}
-    >
-      {/* Left Panel */}
+    {gameSession && playerStats? (
       <div>
+        <RoundNumberHeader roundNumber={gameSession.round} />
 
-        <LeftPanel 
-          damageData={playerStats.damageData} // Use real damage data
-          blockData={playerStats.blockData} // Use real block data
-          popularMonster={mostChosenMonster ?? undefined}
-        />
+        {/* Main content area with grid layout */}
+        <div 
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'auto 1fr auto', // Left panel, Middle panel, Right panel. auto means take up as much space as you need and 1fr means take up the rest of the remaining space
+            gap: '1rem',
+            marginTop: '1rem',
+            height: 'calc(100% - 8rem)', // Adjust based on header height
+          }}
+        >
+          {/* Left Panel */}
+          <div>
+
+            <LeftPanel 
+              damageData={playerStats.damageData} // Use real damage data
+              blockData={playerStats.blockData} // Use real block data
+              popularMonster={mostChosenMonster ?? undefined}
+            />
+          </div>
+
+          {/* Middle Panel */}
+          {/* <div style={{ height: '100%', overflow: 'auto'  }}> */}
+            {/* <MiddlePanel battleStates={battleStates} /> */}
+          {/* </div> */}
+
+          {/* Right Panel */}
+          {/* <div style={{ minWidth: '260px', height: '100%', overflow: 'auto' }}> */}
+            {/* <RightPanel battleStates={battleStates}/> */}
+          {/* </div> */}
+        </div>
       </div>
+    ) : null}
 
-      {/* Middle Panel */}
-      {/* <div style={{ height: '100%', overflow: 'auto'  }}> */}
-        {/* <MiddlePanel battleStates={battleStates} /> */}
-      {/* </div> */}
-
-      {/* Right Panel */}
-      {/* <div style={{ minWidth: '260px', height: '100%', overflow: 'auto' }}> */}
-        {/* <RightPanel battleStates={battleStates}/> */}
-      {/* </div> */}
-    </div>
+    
 
     </div>
   );

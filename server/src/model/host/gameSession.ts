@@ -2,13 +2,14 @@ import { Player } from "../game/player";
 import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
-import { BattleState } from "/types/composite/battleState";
+import { GameSessionState } from "/types/composite/gameSessionState";
 
 export default class GameSession {
   private hostUID: string;
   private players: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
+  private round: number = 0; // Round number
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
 
@@ -188,7 +189,7 @@ export default class GameSession {
     return oddPlayer;
   }
 
-  public getGameSessionState(): BattleState[] {
+  public getGameSessionState(): GameSessionState {
 
     const allBattles = [];
 
@@ -197,8 +198,12 @@ export default class GameSession {
       allBattles.push(battle.getBattleState(firstPlayer.getId()));
     }
 
-    return allBattles;
+    return {
+      id: this.gameCode.toString(),
+      round: this.round,
+      battleStates: allBattles,
+    };
 
-  }
+}
 
 }
