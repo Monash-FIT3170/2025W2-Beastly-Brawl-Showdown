@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Battle from "../../types/battle";
-import { LogoDisplay } from "../../components/logo/Logo";
 import socket from "../../socket";
 
 interface HostBattlesProps {
@@ -33,7 +32,6 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       <div className="flex flex-wrap items-center justify-between gap-4">
         {/* Logo on the left */}
         <div className="flex-shrink-0">
-          <LogoDisplay size="xl" />
         </div>
 
         {/* Heading in the center */}

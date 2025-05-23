@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { LogoDisplay } from "../../components/logo/Logo";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
+import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
+import { OutlineText } from "../../components/texts/OutlineText";
 
 // Used for auto-filling the game code from the URL / QR code
 interface JoinLobbyProps {
@@ -39,7 +40,6 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
         ←
       </button>
 
-      <LogoDisplay size="3xl" />
 
       <div className="w-full max-w-xs mb-6">
         <h3 className="text-left text-xl font-bold mb-2">
@@ -73,8 +73,13 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
         />
       </div>
 
+      <ButtonGeneric color="blue" size="medium">
+          <OutlineText size="medium">
+            JOIN ROOM
+          </OutlineText>
+      </ButtonGeneric>
       <div className="mt-8">
-        <button onClick={joinSession}>JOIN ROOM</button>
+        <button onClick={joinSession}></button>
       </div>
     </div>
   );
