@@ -8,6 +8,8 @@ import PathNotFound from "./src/pages/Home/PathNotFound";
 import HostBattles from "./src/pages/Lobby/HostBattles";
 import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
+import Rules from './src/pages/Game/Rules';
+import MatchSummary from './src/pages/Host View/MatchSummary';
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -72,32 +74,6 @@ FlowRouter.route("/battles/:code?", {
   },
 });
 
-FlowRouter.route("/*", {
-  name: "NotFound",
-  action() {
-    mount(PathNotFound);
-  },
-});
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { Home } from './src/pages/Home/Home';
-import Rules from './src/pages/Game/Rules';
-import MatchSummary from './src/pages/Host View/MatchSummary';
-
-function mount(Component: React.FC) {
-  const container = document.getElementById('react-target');
-  if (container) {
-    createRoot(container).render(<Component />);
-  }
-}
-
-FlowRouter.route('/', {
-  name: 'Home',
-  action() {
-    mount(Home);
-  },
-});
 
 FlowRouter.route('/rules', {
   name: 'Rules',
@@ -110,5 +86,12 @@ FlowRouter.route('/match-summary', {
   name: 'Match Summary',
   action() {
     mount(MatchSummary);
+  },
+});
+
+FlowRouter.route("/*", {
+  name: "NotFound",
+  action() {
+    mount(PathNotFound);
   },
 });
