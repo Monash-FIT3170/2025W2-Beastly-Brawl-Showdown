@@ -19,7 +19,7 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGe
 
 	const sizeToDisplay = {
 		'battle': 'w-[20rem] h-[7rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem] xl:w-[15.625rem] xl:h-[4.75rem]',
-		'large': ' max-w-[15.625rem] h-[4.75rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]',
+		'large': 'lg:max-w-[15.625rem] sm:w-[40rem] lg:h-[4.75rem] sm:h-[15rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]',
 		'medium': 'max-w-[18.75rem] h-[3.75rem] px-[1.5rem] py-[0.75rem] text-[1.5625rem]',
 		'tiny': 'max-w-[8.125rem] h-[2.5rem] px-[1.5rem] py-[0.75rem] text-[0.9375rem]',
 		'square': 'w-[2rem] min-h-[2rem]'
@@ -30,15 +30,17 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGe
 		${colorToDisplay[color]}
 		flex
 		items-center
+		justify-around
 		text-merino
 		outline-blackCurrant
-		outline-[0.25rem]
+		sm:outline-[0.75rem]
+		lg:outline-[0.25rem]
 		outline-offset-0
 		transition
 		font-[Jua]
 		font-medium
-		rounded-[0.5rem]
-		text-[0.875rem]
+		lg:rounded-[0.5rem]
+		sm:rounded-[2rem]
 		`;
 
 	const enabledButton = 

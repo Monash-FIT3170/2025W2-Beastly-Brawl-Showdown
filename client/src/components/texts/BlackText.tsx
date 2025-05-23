@@ -9,8 +9,8 @@ export const BlackText = ({children, size}: BlackTextProps) => {
     
     const sizeLoader: Record<string, string> = {
         'tiny':'text-[2rem] xl:text-tiny',
-        'medium': 'text-[3rem] xl:text-medium',
-        'large': 'text-[4rem] xl:text-large'
+        'medium':'text-[3rem] xl:text-medium',
+        'large':'text-[4rem] xl:text-large'
     }
 
     return(

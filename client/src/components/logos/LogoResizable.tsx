@@ -1,19 +1,20 @@
-import React from 'react';
+import React from "react";
 
 interface MonsterImageProps {
-  width: number;
-  height: number;
+  alt?: string;
+  className?: string;
 }
 
-export const LogoResizable = ({ width, height }: MonsterImageProps) => {
-   
-    let path: string = 'logo-transparent.png';
+const LogoResizable: React.FC<MonsterImageProps> = ({ alt = 'image', className = '' }) => {
+  let path: string = 'logo-transparent.png';
 
-    return (
-        <img 
-        style={{width: `${width}rem`, height: `${height}rem`}}
-        src={path} 
-        alt={`${name} image`} 
-        />
-    );
+  return (
+    <img
+      src={path}
+      alt={alt}
+      className={`${className}`}
+    />
+  );
 };
+
+export default LogoResizable;
