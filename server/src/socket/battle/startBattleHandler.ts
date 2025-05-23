@@ -74,11 +74,9 @@ function proceedBattleTurn(io: Server, battle: Battle) {
       player1.getActions().forEach((action) => {
         action.execute(player1, player2);
       });
-
       player2.getActions().forEach((action) => {
         action.execute(player2, player1);
       });
-
       console.log("P1: ", player1);
 
       console.log("P2: ", player2);

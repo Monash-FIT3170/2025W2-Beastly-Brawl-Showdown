@@ -7,11 +7,22 @@ export class ShadowLeapAbilityAction extends Action {
     super(
       ActionIdentifier.SHADOW_LEAP,
       "Shadow Leap",
-      "Can evade an attack once per battle."
+      "Can evade an attack once per battle.",
+      Infinity
     );
   }
 
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+    actingPlayer.dodge()
+    affectedPlayer.getActions().forEach((action) => {
+      if (action.getName()!="Elemental Breath"){
+        action.incCurrentUse(-1);
+        affectedPlayer.getActions().filter(item => item !== action)
+      }
+    });
+    affectedPlayer.clearActions() 
+
+  }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.addLog(

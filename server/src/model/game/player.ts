@@ -11,9 +11,8 @@ export class Player {
   private currentArmourClassStat: number;
 
   private actions: Action[] = [];
-  private stunned = false;
   private logs: string[] = [];
-
+  private dodging = false
   constructor(id: string, name: string, monster: Monster) {
     this.name = name;
     this.id = id;
@@ -22,7 +21,12 @@ export class Player {
     this.currentAttackStat = monster.getAttackBonus();
     this.currentArmourClassStat = monster.getArmourClass();
   }
-
+  public dodge(): void{
+    this.dodging = true
+  }
+  public getdodgingpos():boolean{
+    return this.dodging
+  }
   public getLogs(): string[] {
     return this.logs;
   }
@@ -51,9 +55,7 @@ export class Player {
   public getId(): string {
     return this.id;
   }
-  public stun(): void{
-    this.stunned = true; 
-  }
+
   public getMonster(): Monster {
     return this.monster;
   }
@@ -61,6 +63,7 @@ export class Player {
   public getHealth(): number {
     return this.currentHealth;
   }
+
 
   public setHealth(health: number): void {
     this.currentHealth = health;
