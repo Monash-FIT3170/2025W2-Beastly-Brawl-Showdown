@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.7",
+    "@types/socket.io": "^3.0.1",
+    "@types/socket.io-client": "^1.4.36",
     "@tailwindcss/postcss": "^4.1.5",
     "@tailwindcss/vite": "^4.1.6",
     "meteor-node-stubs": "^1.2.5",

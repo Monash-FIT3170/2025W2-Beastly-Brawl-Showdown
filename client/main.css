@@ -26,8 +26,36 @@
 }
 
 body {
-  padding: 0rem;
+  padding: 10px;
   font-family: sans-serif;
+  background-color: #fbd474;
+  text-align: center;
+}
+
+h1 {
+  color: #557d5a;
+  font-size: 100px;
+  margin: 0;
+  padding: 10px 0;
+  text-shadow:
+    2px 2px #fba800,
+    -1px -1px #fba800,
+    -1px 1px #fba800,
+    1px -1px #fba800,
+    1px 1px #fba800;
+}
+
+h2 {
+  color: #557d5a;
+  font-size: 50px;
+  margin: 0;
+  padding: 10px 0;
+  text-shadow:
+    2px 2px #fba800,
+    -1px -1px #fba800,
+    -1px 1px #fba800,
+    1px -1px #fba800,
+    1px 1px #fba800;
 }
 
 .text-outline {

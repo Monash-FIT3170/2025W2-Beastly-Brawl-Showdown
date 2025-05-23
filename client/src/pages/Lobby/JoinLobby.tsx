@@ -25,9 +25,9 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
   };
 
   // Listen for the "join-accept" event from the server
-  socket.on("join-accept", ({ message }) => {
-    console.log(message);
-    FlowRouter.go("/selection");
+  socket.on("join-accept", ({ gameSessionId }) => {
+    console.log(gameSessionId);
+    FlowRouter.go(`/session/${gameSessionId}`);
   });
 
   return (
