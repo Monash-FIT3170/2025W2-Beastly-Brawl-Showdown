@@ -1,23 +1,22 @@
 import React from 'react';
 import PlayerPanel from './PlayerPanel';
-import { PlayerState } from '/types/single/playerState';
-
-// Define the battle interface based on your MultipleBattleState structure
-interface BattleData {
-  battleId: string;
-  turn: number;
-  players: Array<{
-    playerState: PlayerState;
-  }>;
-  isOver: boolean;
-}
+import { BattleState } from '/types/composite/battleState';
 
 interface BattlePanelProps {
-  battle: BattleData;
+  battleState: BattleState;
   battleIndex: number;
 }
 
-const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
+const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex }) => {
+  const player1State = battleState.yourPlayer;
+  const player1Index = 0;
+  const player1LeftPlayer = true;
+
+  const player2State = battleState.opponentPlayer;
+  const player2Index = 1;
+  const player2LeftPlayer = false;
+
+
   return (
     <div 
       style={{
@@ -39,7 +38,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
           textAlign: 'center',
         }}
       >
-        Battle {battleIndex + 1} - Turn {battle.turn}
+        Battle {battleIndex + 1} - Turn {battleState.turn}
       </h3>
       
       {/* Display players in this battle */}
@@ -53,15 +52,28 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
         gap: '0', // Control the exact gap
         }}
         >
-        {battle.players.map((playerData, playerIndex) => (
+
+        <PlayerPanel
+            key={player1Index}
+            playerState={player1State}
+            playerIndex={player1Index}
+            isLeftPlayer={player1LeftPlayer} // First player is left, second is right
+          />
+
+        <PlayerPanel
+            key={player2Index}
+            playerState={player2State}
+            playerIndex={player2Index}
+            isLeftPlayer={player2LeftPlayer} // First player is left, second is right
+          />
+        {/* {battleState.players.map((playerData, playerIndex) => (
           <PlayerPanel
             key={playerIndex}
             playerState={playerData.playerState}
             playerIndex={playerIndex}
-            isBattleOver={battle.isOver}
             isLeftPlayer={playerIndex === 0} // First player is left, second is right
           />
-        ))}
+        ))} */}
         
       </div>
       

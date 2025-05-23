@@ -1,12 +1,10 @@
 import React from 'react';
 import LogPanel from './LogPanel';
 import RoundSummaryPanel from './RoundSummaryPanel';
-import { GameSessionState } from '/types/composite/gameSessionState';
 import { BattleState } from '/types/composite/battleState';
 
 interface RightPanelProps {
   battleStates?: BattleState[]|null;
-  // Add other props for RoundSummaryPanel as needed
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({ battleStates }) => {

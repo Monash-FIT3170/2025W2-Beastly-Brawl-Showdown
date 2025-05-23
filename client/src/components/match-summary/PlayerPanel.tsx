@@ -5,14 +5,12 @@ import { PlayerState } from '/types/single/playerState';
 interface PlayerPanelProps {
   playerState: PlayerState;
   playerIndex: number;
-  isBattleOver: boolean;
   isLeftPlayer?: boolean; // Add this to control layout direction
 }
 
 const PlayerPanel: React.FC<PlayerPanelProps> = ({ 
   playerState, 
-  playerIndex, 
-  isBattleOver, 
+  playerIndex,  
   isLeftPlayer = true 
 }) => {
   // Extract current and max health values

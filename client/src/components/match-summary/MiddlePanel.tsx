@@ -1,9 +1,9 @@
 import React from 'react';
-import { MultipleBattleState } from '../../../../types/composite/multipleBattleState';
+import { BattleState } from '/types/composite/battleState';
 import BattlePanel from './BattlePanel';
 
 interface MiddlePanelProps {
-  battleStates: MultipleBattleState | null;
+  battleStates?: BattleState[]|null;
 }
 
 const MiddlePanel: React.FC<MiddlePanelProps> = ({ battleStates }) => {
@@ -40,10 +40,10 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ battleStates }) => {
             alignItems: 'start', // Align battles to the top of their grid cells
           }}
         >
-          {battleStates.map((battle, index) => (
+          {battleStates.map((battleState, index) => (
             <BattlePanel 
-                key={battle.battleId || index}  // Used by React for list rendering, not passed as a prop
-                battle={battle}                 // This is passed as a prop
+                key={battleState.id|| index}  // Used by React for list rendering, not passed as a prop
+                battleState={battleState}                 // This is passed as a prop
                 battleIndex={index}            // This is passed as a prop. Represents the battle number
             />
           ))}
