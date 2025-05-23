@@ -1,10 +1,11 @@
 import React from 'react';
 import LogPanel from './LogPanel';
 import RoundSummaryPanel from './RoundSummaryPanel';
-import { MultipleBattleState } from '/types/composite/multipleBattleState';
+import { GameSessionState } from '/types/composite/gameSessionState';
+import { BattleState } from '/types/composite/battleState';
 
 interface RightPanelProps {
-  battleStates?: MultipleBattleState|null;
+  battleStates?: BattleState[]|null;
   // Add other props for RoundSummaryPanel as needed
 }
 
@@ -21,9 +22,10 @@ const RightPanel: React.FC<RightPanelProps> = ({ battleStates }) => {
     >
       {/* Round Summary Panel */}
       <RoundSummaryPanel />
-      
-      {/* Log Panel */}
-      <LogPanel battleState={battleStates} />
+    
+          {/* Log Panel */}
+          <LogPanel battleStates={battleStates} />
+ 
     </div>
   );
 };

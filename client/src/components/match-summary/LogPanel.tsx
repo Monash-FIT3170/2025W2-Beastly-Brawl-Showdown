@@ -1,14 +1,14 @@
 import React from 'react';
 import './styles.css';
 import { MultipleBattleState } from '/types/composite/multipleBattleState';
-import LogConentPanel from './LogContentPanel';
+import LogContentPanel from './LogContentPanel';
+import { BattleState } from '/types/composite/battleState';
 
 interface LogPanelProps {
-  battleState?: MultipleBattleState|null;
+  battleStates?: BattleState[]|null;
 }
 
-const LogPanel: React.FC<LogPanelProps> = ({ battleState }) => {
-
+const LogPanel: React.FC<LogPanelProps> = ({ battleStates }) => {
     return (
     <div 
       style={{
@@ -48,18 +48,25 @@ const LogPanel: React.FC<LogPanelProps> = ({ battleState }) => {
           paddingRight: '0.5rem',
         }}
       >
-        {battleState?.map((battle, battleIndex) => {
-            // Combine logs of all players in this battle
-            const combinedLogs = battle.players
-                ?.flatMap(player => player.playerState.logs) || [];
-            console.log("combined logs = ", combinedLogs)
-            return (
-                <div key={battle.battleId ?? battleIndex} style={{ borderBottom: '2px solid black', paddingBottom: '1rem', marginBottom: '1rem' }}>
-                <LogConentPanel logs={combinedLogs} />
-                </div>
-            );
-            })}
 
+        {battleStates?.map((battleState, index) => {
+          const player1 = battleState.yourPlayer;
+          const player2 = battleState.opponentPlayer;
+          // const logPlayer1 = player1.battleLogs;
+          // const logPlayer2 = player2.battleLogs;
+          const logPlayer1 = player1.logs;
+          const logPlayer2 = player2.logs;
+          console.log("battlestates: ", battleStates)
+          console.log("player2: ", logPlayer2)
+          const combinedLogs = [...logPlayer1, ...logPlayer2];
+          console.log("combined logs: ",combinedLogs)
+          return (
+            <LogContentPanel 
+              key={index} 
+              logs={combinedLogs} 
+            />
+          );
+        })}
 
       </div>
     </div>

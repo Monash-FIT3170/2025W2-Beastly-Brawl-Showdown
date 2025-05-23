@@ -136,7 +136,6 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     {gameSession && playerStats? (
       <div>
         <RoundNumberHeader roundNumber={gameSession.round} />
-
         {/* Main content area with grid layout */}
         <div 
           style={{
@@ -163,9 +162,9 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
           {/* </div> */}
 
           {/* Right Panel */}
-          {/* <div style={{ minWidth: '260px', height: '100%', overflow: 'auto' }}> */}
-            {/* <RightPanel battleStates={battleStates}/> */}
-          {/* </div> */}
+          <div style={{ minWidth: '260px', height: '100%', overflow: 'auto' }}>
+            <RightPanel battleStates={gameSession.battleStates}/>
+          </div>
         </div>
       </div>
     ) : null}
