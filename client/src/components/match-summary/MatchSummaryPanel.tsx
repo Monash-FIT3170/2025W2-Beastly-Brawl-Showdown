@@ -12,26 +12,9 @@ interface MatchSummaryPanelProps {
   roundNumber?: number;
   remainingPlayers?: number;
   totalPlayers?: number;
-  
-  // Left panel data
-  damageData?: Array<{ playerName: string; damageAmount: number }>;
-  blockData?: Array<{ playerName: string; blocksAmount: number }>;
 }
 // This component listens for a message called host_battle_summary from the server. Then it stores the received data in a react state variable (battleStates)
-const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ 
-
-       // Left panel data with defaults
-      damageData = [
-        { playerName: 'CAMERON', damageAmount: 15 },
-        { playerName: 'ANIKA', damageAmount: 12 },
-        { playerName: 'DEVAN', damageAmount: 11 }
-      ],
-      blockData = [
-        { playerName: 'DANIEL', blocksAmount: 3 },
-        { playerName: 'LUNA', blocksAmount: 2 },
-        { playerName: 'RIO', blocksAmount: 1 }
-      ]
- }) => {
+const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
   // Declares a piece of React state called battleStates.
   // Starts off as null.
   // When data comes in from the server, you call setBattleStates(...) to store it.
@@ -43,6 +26,45 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
     */}
   const [battleStates, setBattleStates] = useState<MultipleBattleState | null>(null);
   const [mostChosenMonster, setMostChosenMonster] = useState<MostChosenMonsterState | null>(null);
+
+  // Function to extract player statistics from battleStates
+  const extractPlayerStatistics = (battles: MultipleBattleState | null) => {
+    if (!battles) return { blockData: [], damageData: [] };
+    
+    const blockDataMap: Record<string, number> = {};
+    const damageDataMap: Record<string, number> = {};
+    
+    // Loop through all battles and collect player statistics
+    battles.forEach(battle => {
+      battle.players.forEach(playerData => {
+        const playerState = playerData.playerState;
+        const playerName = playerState.name;
+        const successBlocks = playerState.successBlock || 0; // Use successBlock from player state
+        const successHits = playerState.successHit || 0; // Use successHit from player state
+        
+        // Accumulate blocks for each player across all battles
+        blockDataMap[playerName] = (blockDataMap[playerName] || 0) + successBlocks;
+        
+        // Accumulate damage for each player across all battles (each hit = 5 damage)
+        damageDataMap[playerName] = (damageDataMap[playerName] || 0) + (successHits * 5);
+      });
+    });
+    
+    // Convert block data to array format and sort by blocks (highest first)
+    const blockData = Object.entries(blockDataMap)
+      .map(([playerName, blocksAmount]) => ({ playerName, blocksAmount }))
+      .filter(player => player.blocksAmount > 0) // Only show players with blocks
+      .sort((a, b) => b.blocksAmount - a.blocksAmount);
+    
+    // Convert damage data to array format and sort by damage (highest first)
+    const damageData = Object.entries(damageDataMap)
+      .map(([playerName, damageAmount]) => ({ playerName, damageAmount }))
+      .filter(player => player.damageAmount > 0) // Only show players with hits
+      .sort((a, b) => b.damageAmount - a.damageAmount);
+    
+    return { blockData, damageData };
+  };
+
   useEffect(() => {
     {/*Listens for the "host_battle_summary" message from the server via Socket.IO.
     When that message arrives, it receives battles (an array or object of match data).
@@ -67,6 +89,10 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
       socket.off("most_chosen_monster");
     };
   }, []);
+
+  // Extract real player statistics from battleStates
+  const playerStats = extractPlayerStatistics(battleStates);
+
   return (
     <div 
       style={{
@@ -102,8 +128,8 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({
         {/* <pre>{JSON.stringify(battleStates, null, 2)}</pre> */}
 
         <LeftPanel 
-          damageData={damageData}
-          blockData={blockData}
+          damageData={playerStats.damageData} // Use real damage data
+          blockData={playerStats.blockData} // Use real block data
           popularMonster={mostChosenMonster ?? undefined}
         />
       </div>
