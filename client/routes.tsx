@@ -4,9 +4,10 @@ import { createRoot } from "react-dom/client";
 import { Home } from "./src/pages/Home/Home";
 import HostLobby from "./src/pages/Lobby/HostLobby";
 import JoinLobby from "./src/pages/Lobby/JoinLobby";
-import MonsterSelection from "./src/pages/Game/MonsterSelection";
 import PathNotFound from "./src/pages/Home/PathNotFound";
 import HostBattles from "./src/pages/Lobby/HostBattles";
+import Battle from "./src/pages/Game/Battle";
+import { Game } from "./src/pages/Lobby/Game";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -50,10 +51,17 @@ FlowRouter.route("/join/:code?", {
   },
 });
 
-FlowRouter.route("/selection", {
-  name: "MonsterSelection",
-  action() {
-    mount(MonsterSelection);
+FlowRouter.route("/battle/:battleId?", {
+  name: "Battle",
+  action(params) {
+    mount(() => <Battle battleId={params.battleId}  />);
+  },
+});
+
+FlowRouter.route("/session/:sessionId?", {
+  name: "Session",
+  action(params) {
+    mount(() => <Game gameSessionId={params.sessionId}  />);
   },
 });
 
