@@ -1,9 +1,9 @@
-import { PlayerState } from "types/single/playerState";
-import Battle from "/client/src/types/battle";
 import { BattleState } from "./battleState";
+import { GameSessionData } from "../other/gameSessionData";
 
 export interface GameSessionState {
   id: string;
   round: number;
   battleStates: BattleState[];
+  gameSessionData: GameSessionData;
 }

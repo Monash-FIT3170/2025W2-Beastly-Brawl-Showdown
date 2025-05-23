@@ -5,14 +5,14 @@ import AttacksBlockedPanel from './AttacksBlockedPanel';
 import MostPopularPanel from './MostPopularPanel';
 import MatchStatistics from './MatchStatistics';
 
+import { BlockData, DamageData } from '../../types/data';
+import { MostChosenMonsterResult } from '/types/other/gameSessionData';
+
 
 interface LeftPanelProps {
-  damageData?: Array<{ playerName: string; damageAmount: number }>;
-  blockData?: Array<{ playerName: string; blocksAmount: number }>;
-  popularMonster?: {
-    monsterName: string;
-    percentagePick: string;
-  };
+  damageData: Array<DamageData>;
+  blockData: Array<BlockData>;
+  popularMonster: MostChosenMonsterResult;
 }
 
 const LeftPanel: React.FC<LeftPanelProps> = ({ 
@@ -31,11 +31,10 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
   <div style={{ width: '100%' }}>
     <AttacksBlockedPanel blockData={blockData} />
   </div>
-  {popularMonster && (
+  {popularMonster && popularMonster.monster && (
     <div style={{ width: '100%' }}>
       <MostPopularPanel
-        monsterName={popularMonster.monsterName}
-        percentagePick={popularMonster.percentagePick}
+        popularMonster={popularMonster}
       />
     </div>
   )}

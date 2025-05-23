@@ -171,36 +171,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Request failed.`);
     }
 
-    const monsterCount: Record<string, number> = {}; //to account for the monsters picked by players
-    //find most picked monster (for statictis to be displayed on host)
-    session.getPlayers().getItems().forEach((player) =>{
-      const monsterName = player.getMonster().getName()
-      
-      if (monsterCount[monsterName]){
-        monsterCount[monsterName]++;
-      } else {
-        monsterCount[monsterName] = 1;
-      }
-    })
+    session.calculateMostChosenMonster();
 
-    let mostPicked: string | null = null; //return the most picked monster (return the first highest count monster)
-    let maxCount = 0;
-
-    for (const [monsterName,count] of Object.entries(monsterCount)){
-      if (count > maxCount){
-        mostPicked = monsterName;
-        maxCount = count;
-      }
-    }
-
-    const result = {
-      monsterName: mostPicked,
-      percentagePick: Math.round((maxCount / session.getPlayers().getItems().length) *100).toString() // to nearest integer (string type)
-    }
-      
-    socket.emit("most_chosen_monster",result);
-
-    const battles = session.createMatches();
+    session.createMatches();
 
     for (const battle of session.getBattles().getItems()) {
       for (const player of battle.getPlayers()) {

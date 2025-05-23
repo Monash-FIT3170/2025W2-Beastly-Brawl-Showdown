@@ -3,6 +3,8 @@ import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
 import { GameSessionState } from "/types/composite/gameSessionState";
+import { Monster } from "../game/monster/monster";
+import { GameSessionData } from "/types/other/gameSessionData";
 
 export default class GameSession {
   private hostUID: string;
@@ -12,6 +14,9 @@ export default class GameSession {
   private round: number = 0; // Round number
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
+
+  // Initialise sample data
+  private gameSessionData: GameSessionData = { mostChosenMonster: { monster: null, percentagePick: "0"} };
 
   constructor(hostID: string, presetGameCode?: number) {
     this.hostUID = hostID;
@@ -189,6 +194,41 @@ export default class GameSession {
     return oddPlayer;
   }
 
+  public calculateMostChosenMonster() {
+  // Map from monster name to { monster: Monster, count: number }
+  const monsterCount: Record<string, { monster: Monster, count: number }> = {};
+
+  this.getPlayers().getItems().forEach((player) => {
+    const monster = player.getMonster();
+    const monsterId = monster.getId();
+
+    if (monsterCount[monsterId]) {
+      monsterCount[monsterId].count++;
+    } else {
+      monsterCount[monsterId] = { monster, count: 1 };
+    }
+  });
+
+  let mostPicked: Monster | null = null;
+  let maxCount = 0;
+
+  for (const { monster, count } of Object.values(monsterCount)) {
+    if (count > maxCount) {
+      mostPicked = monster;
+      maxCount = count;
+    }
+  }
+
+  if (mostPicked) {
+    this.gameSessionData.mostChosenMonster = {
+      monster: mostPicked.getMonsterState(),
+      percentagePick: this.getPlayers().getItems().length > 0
+        ? Math.round((maxCount / this.getPlayers().getItems().length) * 100).toString()
+        : "0"
+    };
+  } 
+}
+
   public getGameSessionState(): GameSessionState {
 
     const allBattles = [];
@@ -202,6 +242,7 @@ export default class GameSession {
       id: this.gameCode.toString(),
       round: this.round,
       battleStates: allBattles,
+      gameSessionData: this.gameSessionData,
     };
 
 }

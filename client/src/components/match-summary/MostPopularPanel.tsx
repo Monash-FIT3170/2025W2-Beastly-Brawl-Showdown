@@ -1,14 +1,14 @@
 import React from 'react';
+import { MostChosenMonsterResult } from '/types/other/gameSessionData';
 import './styles.css';
 
 interface MostPopularPanelProps {
-  monsterName: string;
-  percentagePick: string; 
+  popularMonster: MostChosenMonsterResult;
 }
 
-const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ monsterName, percentagePick }) => {
+const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ popularMonster }) => {
 
-  const formattedName = monsterName.toUpperCase().replace(/ /g, "_");
+  const formattedName = popularMonster.monster!.id;
   const imageSrc = `/assets/characters/${formattedName}.png`;
   console.log("image src = ",imageSrc)
 
@@ -27,7 +27,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ monsterName, percen
     >
       <img 
         src={imageSrc} 
-        alt={monsterName} 
+        alt={formattedName} 
         style={{ 
           width: '100px', 
           height: '100px', 
@@ -47,7 +47,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ monsterName, percen
           textTransform: 'uppercase'
         }}
       >
-        {monsterName}
+        {popularMonster.monster!.name}
       </div>
 
       <div
@@ -59,7 +59,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ monsterName, percen
           WebkitTextStroke: '1px black',
         }}
       >
-        {percentagePick}% Pick Rate
+        {popularMonster.percentagePick}% Pick Rate
       </div>
     </div>
   );

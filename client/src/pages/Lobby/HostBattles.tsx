@@ -10,29 +10,16 @@ import RightPanel from "../../components/match-summary/RightPanel";
 import MiddlePanel from "../../components/match-summary/MiddlePanel";
 import { GameSessionState } from "/types/composite/gameSessionState";
 
+import { PlayerStats } from "../../types/data";
+
 interface HostBattlesProps {
   gameCode?: string;
-}
-
-interface PlayerStats {
-  blockData: BlockData[];
-  damageData: DamageData[];
-}
-
-interface BlockData {
-  playerName: string;
-  blocksAmount: number;
-}
-
-interface DamageData {
-  playerName: string;
-  damageAmount: number;
 }
 
 const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const code = gameCode; // Currently unused, used for potential page changes
   const [gameSession, setGameSession] = useState<GameSessionState>();
-  const [mostChosenMonster, setMostChosenMonster] = useState<MostChosenMonsterState | null>(null);
+  // const [mostChosenMonster, setMostChosenMonster] = useState<MostChosenMonsterState | null>(null);
   const [playerStats, setPlayerStats] = useState<PlayerStats>();
   
   // Function to extract player statistics from battleStates
@@ -93,10 +80,10 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     Store live data from the server
     Trigger a re-render with the new data if needed */}
 
-    socket.on("most_chosen_monster", (monster: MostChosenMonsterState) => {
-      console.log('Received most chosen monster:', monster);
-      setMostChosenMonster(monster);
-    });
+    // socket.on("most_chosen_monster", (monster: MostChosenMonsterState) => {
+    //   console.log('Received most chosen monster:', monster);
+    //   setMostChosenMonster(monster);
+    // });
 
     socket.on("game-session-state", ({ session }) => {
       setGameSession(session);
@@ -105,7 +92,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     return () => {
       {/* This is the cleanup function that React will call when the component unmounts.
           socket.off("host_battle_summary") removes the listener, so you do not get memory leaks or duplicate event handlers. */}
-      socket.off("most_chosen_monster");
+      // socket.off("most_chosen_monster");
       socket.off("game-session-state");
     };
   }, []);
@@ -153,7 +140,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
             <LeftPanel 
               damageData={playerStats.damageData} // Use real damage data
               blockData={playerStats.blockData} // Use real block data
-              popularMonster={mostChosenMonster ?? undefined}
+              popularMonster={gameSession.gameSessionData.mostChosenMonster}
             />
           </div>
 
