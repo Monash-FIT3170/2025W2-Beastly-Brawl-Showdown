@@ -27,11 +27,10 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
     <div 
       key={playerIndex}
       style={{
-        border: '1px solid #000', //  add this line
         borderRadius: '0.5rem',
-        padding: '0.75rem 0.25rem',
+        padding: '0.75rem 1rem',
         textAlign: 'center',
-        minWidth: '100px',
+        minWidth: '200px',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',
@@ -65,11 +64,13 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
             flex: 1, 
             minWidth: '120px',
             zIndex: 1, // Keep health bar below monster image
+            transform: isLeftPlayer ? 'scale(1, 1)' : 'scale(1, 1)', // Flip health bar for right player
           }}
         >
           <HealthBar 
             current={currentHealth} 
             max={maxHealth}
+            isLeftPlayer={isLeftPlayer}
           />
         </div>
         
