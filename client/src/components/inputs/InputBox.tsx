@@ -14,7 +14,7 @@ export const InputBox = ({value, maxLength, placeholder, pattern, onChange}: Inp
   return (
     <div>
       <input
-        className='bg-merino text=[24px] w-full text-blackCurrant font-[Jua] p-1 pl-4 rounded-[15px] border-[2px] border-blackCurrant focus:outline-none'
+        className='bg-merino lg:text-tiny sm:text-large w-full lg:h-8 sm:h-30 text-blackCurrant font-[Jua] p-1 pl-4 lg:rounded-[15px] sm:rounded-[6rem] border-[2px] border-blackCurrant focus:outline-none'
         type="text"
         value={value}
         maxLength={maxLength}

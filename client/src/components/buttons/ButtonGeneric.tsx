@@ -19,11 +19,11 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGe
 
 	const sizeToDisplay = {
 		'battle': 'w-[20rem] h-[7rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem] xl:w-[15.625rem] xl:h-[4.75rem]',
-		'large': 'lg:max-w-[15.625rem] sm:w-[40rem] lg:h-[4.75rem] sm:h-[15rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]',
-		'medium': 'max-w-[18.75rem] h-[3.75rem] px-[1.5rem] py-[0.75rem] text-[1.5625rem]',
-		'tiny': 'max-w-[8.125rem] h-[2.5rem] px-[1.5rem] py-[0.75rem] text-[0.9375rem]',
+		'large': 'lg:w-[16rem] sm:w-[40rem] lg:h-[4.75rem] sm:h-[15rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]',
+		'medium': 'lg:w-[12rem] sm:w-[25rem] lg:h-[3.75rem] sm:h-[10rem] px-[1.5rem] py-[0.75rem] text-[1.5625rem]',
+		'tiny': 'lg:w-[8.125rem] lg:h-[2.5rem] px-[1.5rem] py-[0.75rem] text-[0.9375rem]',
 		'square': 'w-[2rem] h-[2rem]',
-		'squaremedium': 'w-[4rem] h-[4rem]'
+		'squaremedium': 'lg:w-[4rem] lg:h-[4rem] sm:w-[8rem] sm:h-[8rem]',
 	}
 
 	const baseButton =

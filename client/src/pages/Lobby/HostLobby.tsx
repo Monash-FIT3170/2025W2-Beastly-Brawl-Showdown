@@ -124,7 +124,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </ButtonGeneric>
 
         <div className="mb-5 mr-13">
-          <ButtonGeneric color="ronchi" size="medium" isDisabled={playerCount < 2} onClick={startGame}>
+          <ButtonGeneric color="ronchi" size="large" isDisabled={playerCount < 2} onClick={startGame}>
             <div className="mt-1">
               <OutlineText size="large">
                 START GAME

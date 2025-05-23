@@ -10,7 +10,7 @@ export const OutlineText = ({children, size}: OutlineTextProps) => {
     const sizeLoader: Record<string, string> = {
         'tiny':'text-[2rem] xl:text-tiny',
         'medium':'text-[3rem] xl:text-medium',
-        'large':'text-[4rem] xl:text-large sm:text-largemobile '
+        'large':'text-[4rem] xl:text-large sm:text-largemobile'
     }
 
     return(

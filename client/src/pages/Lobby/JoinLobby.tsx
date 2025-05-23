@@ -38,26 +38,25 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
 
   return (
     <BlankPage>
-      <div className="flex flex-row h-1/2 w-full">
-        
-        <div className="flex flex-row w-1/4">
-          <div className="ml-2 mt-2">
+      <div className="flex lg:flex-row lg:h-1/2 sm:flex-col w-full">
+        <div className="flex flex-row w-1/4 sm:h-1/4">
+          <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
             <IconButton
               style="arrowleft"
-              iconColour="stroked"
+              iconColour="black"
               buttonColour="red"
               size="medium"
               onClick={() => FlowRouter.go("/")}
             />
           </div>
         </div>
-        <div className="flex flex-row h-full w-1/2 items-center justify-around">
-          <LogoResizable className="lg:w-1/2 sm:1/2 h-full"></LogoResizable> 
+        <div className="flex flex-row lg:h-full lg:w-1/2 sm:h-3/4 lg:items-center sm:items-end justify-around">
+          <LogoResizable className="lg:w-1/2 h-full"></LogoResizable> 
         </div>
       </div>
-      <div className="flex flex-row h-1/2 items-center justify-around">
-        <div className="flex flex-col space-y-6">
-          <div className="w-full max-w-xs">
+      <div className="flex flex-row h-1/2 w-full items-center justify-around">
+        <div className="flex flex-col h-full lg:space-y-6 lg:w-1/4.8 sm:w-1/2 items-center sm:justify-around">
+          <div className="w-full lg:max-w-xs">
             <BlackText size="medium">
               Please Enter Room Code:
             </BlackText>
@@ -73,7 +72,7 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
             />
           </div>
 
-          <div className="w-full max-w-xs">
+          <div className="w-full lg:max-w-xs">
             <BlackText size="medium">
               Name:
             </BlackText>
