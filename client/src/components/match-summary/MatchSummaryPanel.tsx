@@ -42,6 +42,8 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
         const playerName = playerState.name;
         const successBlocks = playerState.successBlock || 0; // Use successBlock from player state
         const successHits = playerState.successHit || 0; // Use successHit from player state
+
+        console.log(playerState.logs)
         
         // Accumulate blocks for each player across all battles
         blockDataMap[playerName] = (blockDataMap[playerName] || 0) + successBlocks;
@@ -140,20 +142,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
 
       {/* Right Panel */}
       <div>
-        <RightPanel 
-          logs={[
-            "Game started with 8 players",
-            "Round 1 battles initiated", 
-            "Player DANIEL attacked LUNA",
-            "Player CAMERON blocked successfully",
-            "Round 1 completed",
-            "Round 2 battles initiated",
-            "Player ANIKA dealt 5 damage",
-            "Player RIO eliminated",
-            "Current round: 2",
-            "Battles in progress..."
-          ]}
-        />
+        <RightPanel battleStates={battleStates}/>
       </div>
     </div>
 

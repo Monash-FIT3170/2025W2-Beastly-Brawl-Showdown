@@ -1,24 +1,12 @@
 import React from 'react';
 import './styles.css';
+import { MultipleBattleState } from '/types/composite/multipleBattleState';
 
 interface LogPanelProps {
-  logs?: string[];
+  battleState?: MultipleBattleState|null;
 }
 
-const LogPanel: React.FC<LogPanelProps> = ({ 
-  logs = [
-    "Game started with 8 players",
-    "Round 1 battles initiated",
-    "Player DANIEL attacked LUNA",
-    "Player CAMERON blocked successfully",
-    "Round 1 completed",
-    "Round 2 battles initiated",
-    "Player ANIKA dealt 5 damage",
-    "Player RIO eliminated",
-    "Current round: 2",
-    "Battles in progress..."
-  ]
-}) => {
+const LogPanel: React.FC<LogPanelProps> = ({ battleState }) => {
   return (
     <div 
       style={{
@@ -58,24 +46,31 @@ const LogPanel: React.FC<LogPanelProps> = ({
           paddingRight: '0.5rem',
         }}
       >
-        {logs.map((logEntry, index) => (
-          <div 
-            key={index}
-            style={{
-              fontSize: '0.875rem',
-              fontFamily: 'Jua, sans-serif',
-              fontWeight: '100',
-              color: '#403245', // Dark text for readability
-              margin: '0.25rem 0',
-              padding: '0.25rem 0.5rem',
-              backgroundColor: 'rgba(255, 255, 255, 0.3)',
-              borderRadius: '0.25rem',
-              borderLeft: '3px solid #403245',
-            }}
-          >
-            {logEntry}
-          </div>
-        ))}
+        {battleState?.players.map((player, index) => (
+        <div key={index}>
+            {player.logs.map((logEntry, i) => (
+            
+            <div 
+                key={i}
+                style={{
+                fontSize: '0.875rem',
+                fontFamily: 'Jua, sans-serif',
+                fontWeight: '100',
+                color: '#403245',
+                margin: '0.25rem 0',
+                padding: '0.25rem 0.5rem',
+                backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                borderRadius: '0.25rem',
+                borderLeft: '3px solid #403245',
+                }}
+            >
+        {logEntry}
+        console.log(player); 
+      </div>
+    ))}
+  </div>
+))}
+
       </div>
     </div>
   );
