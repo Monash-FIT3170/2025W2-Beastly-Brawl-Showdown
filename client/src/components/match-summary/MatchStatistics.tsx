@@ -7,7 +7,7 @@ const MatchStatisticsHeader: React.FC = () => {
       className="match-stats-header"
       style={{
         backgroundColor: '#EFB056',
-        padding: '0.75rem 2rem',
+        padding: '0.75rem 1.5rem',
         textAlign: 'center',
         borderRadius: '2rem',
         border: '4px solid #403245', // Dark border

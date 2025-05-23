@@ -28,7 +28,8 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
       key={playerIndex}
       style={{
         borderRadius: '0.5rem',
-        padding: '0.75rem 1rem',
+        border: '2px solid #403245',
+        padding: '0.75rem 0.5rem',
         textAlign: 'center',
         minWidth: '200px',
         display: 'flex',

@@ -22,24 +22,25 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
 }) => {
   return (
     <div className="left-panel">
-      {/* Match Statistics Header */}
-      <MatchStatistics/>
-      
-      {/* Damage Dealt Panel */}
-      <DamageDealtPanel damageData={damageData} />
-      
-      {/* Attacks Blocked Panel */}
-      <AttacksBlockedPanel blockData={blockData} />
-      
-      {/* Most Popular Panel */}
-      {popularMonster && (
-        <MostPopularPanel
-          monsterName={popularMonster.monsterName}
-          percentagePick={popularMonster.percentagePick}
+  <div style={{ width: '100%' }}>
+    <MatchStatistics />
+  </div>
+  <div style={{ width: '100%' }}>
+    <DamageDealtPanel damageData={damageData} />
+  </div>
+  <div style={{ width: '100%' }}>
+    <AttacksBlockedPanel blockData={blockData} />
+  </div>
+  {popularMonster && (
+    <div style={{ width: '100%' }}>
+      <MostPopularPanel
+        monsterName={popularMonster.monsterName}
+        percentagePick={popularMonster.percentagePick}
       />
-)}
-
     </div>
+  )}
+</div>
+
   );
 };
 

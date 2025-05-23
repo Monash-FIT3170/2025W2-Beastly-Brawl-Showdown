@@ -117,7 +117,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
     <div 
       style={{
         display: 'grid',
-        gridTemplateColumns: '320px 1fr 320px', // Left panel, Middle panel, Right panel
+        gridTemplateColumns: 'auto 1fr auto', // Left panel, Middle panel, Right panel. auto means take up as much space as you need and 1fr means take up the rest of the remaining space
         gap: '1rem',
         marginTop: '1rem',
         height: 'calc(100% - 8rem)', // Adjust based on header height
@@ -125,8 +125,6 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
     >
       {/* Left Panel */}
       <div>
-        {/* <pre>{battleStates?.[0]?.players?.[0]?.playerState?.name}</pre> */}
-        {/* <pre>{JSON.stringify(battleStates, null, 2)}</pre> */}
 
         <LeftPanel 
           damageData={playerStats.damageData} // Use real damage data
@@ -136,12 +134,12 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
       </div>
 
       {/* Middle Panel */}
-      <div>
+      <div style={{ height: '100%', overflow: 'auto' /* remove width: 100% */ }}>
         <MiddlePanel battleStates={battleStates} />
       </div>
 
       {/* Right Panel */}
-      <div>
+      <div style={{ minWidth: '260px', height: '100%', overflow: 'auto' }}>
         <RightPanel battleStates={battleStates}/>
       </div>
     </div>

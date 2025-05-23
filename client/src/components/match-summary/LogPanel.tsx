@@ -17,7 +17,7 @@ const LogPanel: React.FC<LogPanelProps> = ({ battleState }) => {
         border: '4px solid #403245', // Dark border
         boxShadow: '0 4px 8px rgba(0,0,0,0.3)', // Shadow for depth
         padding: '0.75rem 1.5rem',
-        width: '100%',
+        width: '260px',
         margin: '1rem 0',
         height: '300px', // Fixed height with scrolling
       }}

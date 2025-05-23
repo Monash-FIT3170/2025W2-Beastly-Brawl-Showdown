@@ -22,7 +22,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ monsterName, percen
         padding: '0.75rem 1.5rem',
         width: '260px',
         margin: '1rem auto',
-        textAlign: 'center'
+        textAlign: 'center',
       }}
     >
       <img 

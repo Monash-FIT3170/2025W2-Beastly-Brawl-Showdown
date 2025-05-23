@@ -20,6 +20,7 @@ const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
         boxShadow: '0 4px 8px rgba(0,0,0,0.3)', // Shadow for depth
         padding: '0.75rem 1.5rem',
         width: '260px',
+        margin: '1rem auto',
       }}
     >
       <h3 
