@@ -68,9 +68,9 @@ FlowRouter.route("/session/:sessionId?", {
 });
 
 FlowRouter.route("/battles/:code?", {
-  name: "HostBattles",
+  name: "MatchSummary",
   action(params) {
-    mount(() => <HostBattles gameCode={params.code} />);
+    mount(() => <MatchSummary gameCode={params.code} />);
   },
 });
 
@@ -79,13 +79,6 @@ FlowRouter.route('/rules', {
   name: 'Rules',
   action() {
     mount(Rules);
-  },
-});
-
-FlowRouter.route('/match-summary', {
-  name: 'Match Summary',
-  action() {
-    mount(MatchSummary);
   },
 });
 

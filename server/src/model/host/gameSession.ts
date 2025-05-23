@@ -5,9 +5,9 @@ import { battles } from "../../../main";
 import { BattleState } from "/types/composite/battleState";
 
 export default class GameSession {
-  hostUID: string;
-  players: Queue<Player>;
-  battles: Queue<Battle>;
+  private hostUID: string;
+  private players: Queue<Player>;
+  private battles: Queue<Battle>;
   private gameCode: number;
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
@@ -51,6 +51,10 @@ export default class GameSession {
 
   public updateHost(hostID: string) {
     this.hostUID = hostID;
+  }
+
+  public getPlayers() {
+    return this.players;
   }
 
   // Add player to Game Session queue

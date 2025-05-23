@@ -41,7 +41,7 @@ Meteor.startup(async () => {
           // Updates host pages
           io.to(`game-${code}`).emit("update-players", {
             message: `Player ${player?.getName()} - ${socket.id} disconnected.`,
-            players: session.players.getItems(),
+            players: session.getPlayers().getItems(),
           });
         }
         players.delete(socket.id);

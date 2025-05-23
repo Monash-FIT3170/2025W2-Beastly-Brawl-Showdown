@@ -1,13 +1,14 @@
 import React from 'react';
 import Background from '../../components/background/Background';
-import MatchSummaryPanel from '../../components/match-summary/MatchSummaryPanel';
+import HostBattles from '../Lobby/HostBattles';
 
-const MatchSummary = () => {
+interface MatchSummaryProps{
+  gameCode?: string;
+}
+const MatchSummary: React.FC<MatchSummaryProps> = ({ gameCode }) => {
   return (
     <Background>
-        <MatchSummaryPanel>
-   
-        </MatchSummaryPanel>
+        <HostBattles gameCode={gameCode}/>
     </Background>
   );
 };

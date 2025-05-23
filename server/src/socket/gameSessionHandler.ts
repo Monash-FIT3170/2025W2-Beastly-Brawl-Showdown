@@ -56,7 +56,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     // Update host information
     io.to(`game-${gameCode}`).emit("update-players", {
       message: `Player ${name} - ${socket.id} added to current game session.`,
-      players: session.players.getItems(),
+      players: session.getPlayers().getItems(),
     });
 
     // Player is accepted
@@ -127,7 +127,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       // Update host information
       io.to(`game-${gameCode}`).emit("update-players", {
         message: `Player ${socket.id} removed from current game session.`,
-        players: session.players.getItems(),
+        players: session.getPlayers().getItems(),
       });
     }, 100);
   });
@@ -143,7 +143,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
     io.to(`game-${gameCode}`).emit("update-players", {
       message: `Players Array Fetched`,
-      players: session.players.getItems(),
+      players: session.getPlayers().getItems(),
     });
   });
 
@@ -170,6 +170,38 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       // UPDATE: Need to change how this is returned
       console.log(`Request failed.`);
     }
+
+    const monsterCount: Record<string, number> = {}; //to account for the monsters picked by players
+    //find most picked monster (for statictis to be displayed on host)
+    session.getPlayers().getItems().forEach((player) =>{
+      const monsterName = player.getMonster().getName()
+      
+      if (monsterCount[monsterName]){
+        monsterCount[monsterName]++;
+      } else {
+        monsterCount[monsterName] = 1;
+      }
+    })
+
+    let mostPicked: string | null = null; //return the most picked monster (return the first highest count monster)
+    let maxCount = 0;
+
+    for (const [monsterName,count] of Object.entries(monsterCount)){
+      if (count > maxCount){
+        mostPicked = monsterName;
+        maxCount = count;
+      }
+    }
+
+    const result = {
+      monsterName: mostPicked,
+      percentagePick: Math.round((maxCount / session.getPlayers().getItems().length) *100).toString() // to nearest integer (string type)
+    }
+      
+    //TODO: replace 'host_room' with the host socket id
+    // io.to("host_room").emit("most_chosen_monster",result);
+    socket.emit("most_chosen_monster",result);
+
     const battles = session.createMatches();
 
     for (const battle of session.getBattles().getItems()) {
@@ -177,7 +209,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
         io.sockets.sockets.get(player.getId())?.join(battle.getId());
       }
       io.to(battle.getId()).emit("battle_started", battle.getId());
-      proceedBattleTurn(io, battle);
+      proceedBattleTurn(io, socket, session, battle);
     }
 
     // Add the battles to the socket
