@@ -33,11 +33,11 @@ body {
   padding: 0rem;
   font-family: sans-serif;
   
-  @apply bg-peach; /* or use bg-your-color */
+  @apply bg-peach; 
 }
 
 .text-outline {
   -webkit-text-fill-color: var(--color-merino);
-  -webkit-text-stroke: 0.1rem;
+  -webkit-text-stroke-width: 0.05em; 
   -webkit-text-stroke-color: var(--color-blackCurrant);
 }
