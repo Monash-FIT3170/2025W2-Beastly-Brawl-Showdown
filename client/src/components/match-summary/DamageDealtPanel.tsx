@@ -57,43 +57,41 @@ const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
                 fontWeight: '100',
                 color: '#FFFFFF', // White text
                 WebkitTextStroke: '1px black', // Black outline
-                textAlign: 'center',
-                margin: '0 0 0.75rem 0',
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                flex: '1',
               }}
             >
               {player.playerName}
             </span>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span 
-                style={{
-                  fontSize: '1.5rem',
-                    fontFamily: 'Jua, sans-serif',
-                    fontWeight: '100',
-                    color: '#FFFFFF', // White text
-                    WebkitTextStroke: '1px black', // Black outline
-                    textAlign: 'center',
-                    margin: '0 0 0.75rem 0',
-                    textTransform: 'uppercase'
-                }}
-              >
-                -
-              </span>
-              <span 
-                style={{
-                  fontSize: '1.5rem',
-                    fontFamily: 'Jua, sans-serif',
-                    fontWeight: '100',
-                    color: '#FFFFFF', // White text
-                    WebkitTextStroke: '1px black', // Black outline
-                    textAlign: 'center',
-                    margin: '0 0 0.75rem 0',
-                    textTransform: 'uppercase'
-                }}
-              >
-                {player.damageAmount}
-              </span>
-            </div>
+            <span 
+              style={{
+                fontSize: '1.5rem',
+                fontFamily: 'Jua, sans-serif',
+                fontWeight: '100',
+                color: '#FFFFFF', // White text
+                WebkitTextStroke: '1px black', // Black outline
+                textTransform: 'uppercase',
+                flex: '0 0 auto',
+                textAlign: 'center',
+                minWidth: '20px',
+              }}
+            >
+              -
+            </span>
+            <span 
+              style={{
+                fontSize: '1.5rem',
+                fontFamily: 'Jua, sans-serif',
+                fontWeight: '100',
+                color: '#FFFFFF', // White text
+                WebkitTextStroke: '1px black', // Black outline
+                textTransform: 'uppercase',
+                flex: '1',
+                textAlign: 'right',
+              }}
+            >
+              {player.damageAmount}
+            </span>
           </div>
         ))}
       </div>

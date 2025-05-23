@@ -53,13 +53,11 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
     // Convert block data to array format and sort by blocks (highest first)
     const blockData = Object.entries(blockDataMap)
       .map(([playerName, blocksAmount]) => ({ playerName, blocksAmount }))
-      .filter(player => player.blocksAmount > 0) // Only show players with blocks
       .sort((a, b) => b.blocksAmount - a.blocksAmount);
     
     // Convert damage data to array format and sort by damage (highest first)
     const damageData = Object.entries(damageDataMap)
       .map(([playerName, damageAmount]) => ({ playerName, damageAmount }))
-      .filter(player => player.damageAmount > 0) // Only show players with hits
       .sort((a, b) => b.damageAmount - a.damageAmount);
     
     return { blockData, damageData };
