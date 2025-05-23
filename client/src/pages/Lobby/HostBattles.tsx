@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// Update the import path and extension as needed; for example:
+import Battle from "../../types/battle";
 import { BattleState } from "/types/composite/battleState";
 import { LogoDisplay } from "../../components/logo/Logo";
 import socket from "../../socket";
@@ -34,7 +34,6 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       <div className="flex flex-wrap items-center justify-between gap-4">
         {/* Logo on the left */}
         <div className="flex-shrink-0">
-          <LogoDisplay size="xl" />
         </div>
 
         {/* Heading in the center */}
