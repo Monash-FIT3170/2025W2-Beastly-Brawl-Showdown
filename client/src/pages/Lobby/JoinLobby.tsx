@@ -3,6 +3,11 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
+import { BlankPage } from "../../components/pagelayouts/BlankPage";
+import LogoResizable from "../../components/logos/LogoResizable";
+import { IconButton } from "../../components/buttons/IconButton";
+import { InputBox } from "../../components/inputs/InputBox";
+import { BlackText } from "../../components/texts/BlackText";
 
 // Used for auto-filling the game code from the URL / QR code
 interface JoinLobbyProps {
@@ -32,56 +37,62 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
   });
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start px-4 py-8 sm:px-6 lg:px-8">
-      <button
-        onClick={() => FlowRouter.go("/")}
-        className="absolute top-4 left-4 bg-red-400 text-black px-4 py-3 rounded hover:bg-red-500 text-3xl font-bold"
-      >
-        ←
-      </button>
-
-
-      <div className="w-full max-w-xs mb-6">
-        <h3 className="text-left text-xl font-bold mb-2">
-          Please Enter Room Code:
-        </h3>
-        <input
-          type="text"
-          inputMode="numeric"
-          pattern="[0-9]*"
-          maxLength={6}
-          value={code}
-          onChange={(e) => {
-            const numericValue = e.target.value.replace(/\D/g, ""); // remove non-digits
-            setCode(numericValue);
-          }}
-          className="border-2 border-green-500 rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-          placeholder="Enter 6-Digit Code"
-        />
+    <BlankPage>
+      <div className="flex flex-row h-1/2 w-full">
+        
+        <div className="flex flex-row w-1/4">
+          <div className="ml-2 mt-2">
+            <IconButton
+              style="arrowleft"
+              iconColour="stroked"
+              buttonColour="red"
+              size="medium"
+              onClick={() => FlowRouter.go("/")}
+            />
+          </div>
+        </div>
+        <div className="flex flex-row h-full w-1/2 items-center justify-around">
+          <LogoResizable className="lg:w-1/2 sm:1/2 h-full"></LogoResizable> 
+        </div>
       </div>
+      <div className="flex flex-row h-1/2 items-center justify-around">
+        <div className="flex flex-col space-y-6">
+          <div className="w-full max-w-xs">
+            <BlackText size="medium">
+              Please Enter Room Code:
+            </BlackText>
+            <InputBox 
+              pattern="[0-9]*"
+              maxLength={6}
+              value={code}
+              onChange={(e) => {
+                const numericValue = e.target.value.replace(/\D/g, ""); // remove non-digits
+                setCode(numericValue);
+              }}
+              placeholder="Enter 6-Digit Code"
+            />
+          </div>
 
-      <div className="w-full max-w-xs mb-6">
-        <h3 className="text-left text-xl font-bold mb-2">Name:</h3>
-        <input
-          type="text"
-          maxLength={20}
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border-2 border-green-500 rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-          placeholder="Enter Your Name"
-        />
-      </div>
+          <div className="w-full max-w-xs">
+            <BlackText size="medium">
+              Name:
+            </BlackText>
+            <InputBox 
+              maxLength={20}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter Your Name"
+            />
+          </div>
 
-      <ButtonGeneric color="blue" size="medium">
-          <OutlineText size="medium">
-            JOIN ROOM
-          </OutlineText>
-      </ButtonGeneric>
-      <div className="mt-8">
-        <button onClick={joinSession}></button>
+          <ButtonGeneric color="blue" size="medium" onClick={joinSession}>
+              <OutlineText size="medium">
+                JOIN ROOM
+              </OutlineText>
+          </ButtonGeneric>
+        </div>
       </div>
-    </div>
+    </BlankPage>
   );
 };
 

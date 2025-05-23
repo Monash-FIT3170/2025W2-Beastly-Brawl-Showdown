@@ -28,7 +28,9 @@ export const Home = () => {
     console.log("Home"),
     (
       <BlankPage> 
-        <LogoResizable className="lg:w-1/4 sm:1/2 h-1/2"></LogoResizable> 
+        <div className="flex flex-row h-1/2 w-full items-center justify-around">
+          <LogoResizable className="lg:w-1/4 sm:1/2 h-full"></LogoResizable> 
+        </div>
         <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-10 sm:space-y-30">
           <ButtonGeneric color="ronchi" size="large" onClick={createGame}>
             <OutlineText size="large">
