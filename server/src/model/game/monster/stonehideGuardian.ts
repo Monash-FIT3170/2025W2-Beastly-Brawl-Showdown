@@ -14,7 +14,7 @@ export class StonehideGuardian extends Monster {
       new GroundSlamAbilityAction(),
       30,
       1,
-      8
+      16
     );
   }
 }
