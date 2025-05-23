@@ -43,7 +43,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
         const successBlocks = playerState.successBlock || 0; // Use successBlock from player state
         const successHits = playerState.successHit || 0; // Use successHit from player state
 
-        console.log(playerState.logs)
+        // console.log(playerState.logs)
         
         // Accumulate blocks for each player across all battles
         blockDataMap[playerName] = (blockDataMap[playerName] || 0) + successBlocks;
@@ -75,7 +75,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
     Trigger a re-render with the new data if needed */}
     socket.on("host_battle_summary", (battles: MultipleBattleState) => {
       setBattleStates(battles);
-      console.log(battles)
+      // console.log(battles)
     });
 
     socket.on("most_chosen_monster", (monster: MostChosenMonsterState) => {

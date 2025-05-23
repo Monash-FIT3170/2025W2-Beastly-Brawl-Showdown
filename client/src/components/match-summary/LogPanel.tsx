@@ -1,13 +1,15 @@
 import React from 'react';
 import './styles.css';
 import { MultipleBattleState } from '/types/composite/multipleBattleState';
+import LogConentPanel from './LogContentPanel';
 
 interface LogPanelProps {
   battleState?: MultipleBattleState|null;
 }
 
 const LogPanel: React.FC<LogPanelProps> = ({ battleState }) => {
-  return (
+
+    return (
     <div 
       style={{
         backgroundColor: '#FFE8B1', // Peach/light yellow background
@@ -46,30 +48,18 @@ const LogPanel: React.FC<LogPanelProps> = ({ battleState }) => {
           paddingRight: '0.5rem',
         }}
       >
-        {battleState?.players.map((player, index) => (
-        <div key={index}>
-            {player.logs.map((logEntry, i) => (
-            
-            <div 
-                key={i}
-                style={{
-                fontSize: '0.875rem',
-                fontFamily: 'Jua, sans-serif',
-                fontWeight: '100',
-                color: '#403245',
-                margin: '0.25rem 0',
-                padding: '0.25rem 0.5rem',
-                backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                borderRadius: '0.25rem',
-                borderLeft: '3px solid #403245',
-                }}
-            >
-        {logEntry}
-        console.log(player); 
-      </div>
-    ))}
-  </div>
-))}
+        {battleState?.map((battle, battleIndex) => {
+            // Combine logs of all players in this battle
+            const combinedLogs = battle.players
+                ?.flatMap(player => player.playerState.logs) || [];
+            console.log("combined logs = ", combinedLogs)
+            return (
+                <div key={battle.battleId ?? battleIndex} style={{ borderBottom: '2px solid black', paddingBottom: '1rem', marginBottom: '1rem' }}>
+                <LogConentPanel logs={combinedLogs} />
+                </div>
+            );
+            })}
+
 
       </div>
     </div>
