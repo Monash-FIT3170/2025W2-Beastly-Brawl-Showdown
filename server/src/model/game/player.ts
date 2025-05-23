@@ -1,15 +1,10 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
-import { StonehideGuardian } from "./monster/stonehideGuardian";
 
 export class Player {
   private id: string;
-  public currentGameCode?: number;
   private name: string;
-
-  private score: number = 0;
-
   private monster: Monster;
 
   private currentHealth: number;
@@ -23,15 +18,14 @@ export class Player {
   private successfulHit: number = 0;
   private successfulBlock: number = 0;
 
-  constructor(id: string, name: string) {
+  constructor(id: string, name: string, monster: Monster) {
     this.name = name;
     this.id = id;
-    this.monster = new StonehideGuardian();
-    this.currentHealth = this.monster.getMaxHealth();
-    this.currentAttackStat = this.monster.getAttackBonus();
-    this.currentArmourClassStat = this.monster.getArmourClass();
+    this.monster = monster;
+    this.currentHealth = monster.getMaxHealth();
+    this.currentAttackStat = monster.getAttackBonus();
+    this.currentArmourClassStat = monster.getArmourClass();
   }
-
   public getSuccessfulHit(){
     return this.successfulHit
   }
@@ -46,14 +40,6 @@ export class Player {
 
   public incSuccessfulBlock(number: number): void{
     this.successfulBlock += number
-  }
-
-  public getGameCode() {
-    return this.currentGameCode;
-  }
-
-  public updateGameCode(newCode: number) {
-    this.currentGameCode = newCode;
   }
 
   public getLogs(): string[] {
@@ -161,7 +147,6 @@ export class Player {
       successHit: this.successfulHit,
 
       logs: this.logs,
-      battleLogs: this.battleLogs,
     };
   }
 }
