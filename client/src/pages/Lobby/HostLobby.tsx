@@ -104,7 +104,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         <div className="flex flex-row h-full w-full justify-around items-center bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl">
        
             {players.map((player) => (
-              <NameCard name={player.name} monster='ShadowFangPredator' onClick={() => kickPlayer(player.getId())}/>
+              <NameCard name={player.name} monster='ShadowFangPredator' onClick={() => kickPlayer(player.userID)}/>
             ))}
         
         </div>
