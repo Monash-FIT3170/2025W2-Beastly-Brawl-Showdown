@@ -1,7 +1,8 @@
 import { Server, Socket } from "socket.io";
 import { activeGameSessions, players } from "../../main";
-import Player from "../model/game/player";
+import { Player } from "../model/game/player";
 import GameSession from "../model/host/gameSession";
+import proceedBattleTurn from "./battle/startBattleHandler";
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
@@ -63,7 +64,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
     // Update player success message
     socket.emit("join-accept", {
-      message: "Added to game session.",
+      gameSessionId: gameCode,
     });
   });
 
@@ -171,26 +172,22 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
     const battles = session.createMatches();
 
+    for (const battle of session.getBattles().getItems()) {
+      for (const player of battle.getPlayers()) {
+        io.sockets.sockets.get(player.getId())?.join(battle.getId());
+      }
+      io.to(battle.getId()).emit("battle_started", battle.getId());
+      proceedBattleTurn(io, battle);
+    }
+
     // Add the battles to the socket
     // UPDATE: Add Agile Team 1 functionality
     socket.join(`game-${gameCodeN}`);
 
-    console.log(`Battles Created. They are Below:`);
-    const battlesSize = battles.size();
-    for (let i = 0; i < battlesSize; i++) {
-      const battle = battles.dequeue();
-      if (battle != undefined) {
-        console.log(
-          `Players in Battle ${i}: ${battle.player1Name} vs ${battle.player2Name}`
-        );
-        battles.enqueue(battle);
-      }
-    }
-
     // Update host information
     io.to(`game-${gameCode}`).emit("battles-created", {
       message: `Battles for Session ${socket.id} added to current game session.`,
-      battles: session.battles.getItems(),
+      battles: session.getGameSessionState(),
     });
   });
 

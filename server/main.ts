@@ -1,18 +1,21 @@
 import { Meteor } from "meteor/meteor";
+// import { startBattleHandler } from "./src/socket/battle/startBattleHandler";
+import { actionSelectedHandler } from "./src/socket/battle/actionSelectedHandler";
+import http from "node:http";
 import { Server } from "socket.io";
-import { gameSessionHandler } from "./src/socket/gameSessionHandler";
-import http from "http";
+import { Player } from "./src/model/game/player";
+import { Battle } from "./src/model/game/battle";
 import GameSession from "./src/model/host/gameSession";
-import Player from "./src/model/game/player";
+import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 
-export const activeGameSessions: Map<number, GameSession> = new Map();
+export const activeGameSessions = new Map<number, GameSession>();
 export const players = new Map<string, Player>();
+export const battles = new Map<string, Battle>();
 
 Meteor.startup(async () => {
   // Initialise socket
   const server = http.createServer();
   const PORT = 3002;
-
   const io = new Server(server, {
     cors: {
       origin: "*",
@@ -21,10 +24,10 @@ Meteor.startup(async () => {
   });
 
   io.on("connection", (socket) => {
-    console.log(`Client connected: ${socket.id}`);
-    // All game session functions are handled in the gameSessionHandler
+    // startBattleHandler(io, socket);
+    actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
-    // Called when socket disconnects from server
+
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);
       // Remove player from game session
@@ -37,7 +40,7 @@ Meteor.startup(async () => {
           session.removePlayer(socket.id);
           // Updates host pages
           io.to(`game-${code}`).emit("update-players", {
-            message: `Player ${player?.name} - ${socket.id} disconnected.`,
+            message: `Player ${player?.getName()} - ${socket.id} disconnected.`,
             players: session.players.getItems(),
           });
         }

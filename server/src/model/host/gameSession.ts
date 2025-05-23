@@ -1,6 +1,8 @@
-import Player from "../game/player";
+import { Player } from "../game/player";
 import Queue from "../../utils/queue";
-import Battle from "../game/battle";
+import { Battle } from "../game/battle";
+import { battles } from "../../../main";
+import { BattleState } from "/types/composite/battleState";
 
 export default class GameSession {
   hostUID: string;
@@ -54,11 +56,11 @@ export default class GameSession {
   // Add player to Game Session queue
   public addPlayer(player: Player): boolean {
     // UPDATE: popup error messages for each of these
-    if (!this.canSocketJoin(player.userID)) {
+    if (!this.canSocketJoin(player.getId())) {
       console.log("Player already in game session");
       return false; // Player rejected
     }
-    if (!this.isPlayerNameFree(player.name)) {
+    if (!this.isPlayerNameFree(player.getName())) {
       console.log("Player name already taken");
       return false; // Player rejected
     }
@@ -80,7 +82,7 @@ export default class GameSession {
       const playerIndexed = this.players.dequeue(); // Serves the current player at the front
       if (
         playerIndexed != undefined &&
-        playerIndexed.userID != removingPlayerID
+        playerIndexed.getId() != removingPlayerID
       ) {
         this.players.enqueue(playerIndexed); // If the player is not the argument one, then put them back in the queue
       }
@@ -99,7 +101,7 @@ export default class GameSession {
   // Check if Socket is already in Game Session
   public canSocketJoin(socketId: string): boolean {
     for (const p of this.players.getItems()) {
-      if (p.userID === socketId) {
+      if (p.getId() === socketId) {
         return false;
       }
     }
@@ -109,7 +111,7 @@ export default class GameSession {
   // Check name is not taken
   public isPlayerNameFree(name: string): boolean {
     for (const p of this.players.getItems()) {
-      if (p.name.toLocaleLowerCase() === name.toLocaleLowerCase()) {
+      if (p.getId().toLocaleLowerCase() === name.toLocaleLowerCase()) {
         // UPDATE: pop-up, need to return an error
         return false;
       }
@@ -148,10 +150,18 @@ export default class GameSession {
 
       // Create a battle and add it to the queue of battles
       if (player1Indexed != undefined && player2Indexed != undefined) {
-        const battle = new Battle(this.hostUID, player1Indexed, player2Indexed);
+
+        let battleId = crypto.randomUUID();
+
+        const battle = new Battle(battleId, player1Indexed, player2Indexed, this.hostUID);
+
+        battles.set(battleId, battle)
+
         this.battles.enqueue(battle);
+
         this.players.enqueue(player1Indexed);
         this.players.enqueue(player2Indexed);
+
       }
 
       previousPosition = 1;
@@ -173,4 +183,18 @@ export default class GameSession {
     // UPDATE: handle odd player
     return oddPlayer;
   }
+
+  public getGameSessionState(): BattleState[] {
+
+    const allBattles = [];
+
+    for (const battle of this.battles.getItems()) {
+      var firstPlayer = battle.getPlayers()[0];
+      allBattles.push(battle.getBattleState(firstPlayer.getId()));
+    }
+
+    return allBattles;
+
+  }
+
 }

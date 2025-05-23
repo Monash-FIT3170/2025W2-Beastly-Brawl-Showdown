@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Battle from "../../types/battle";
+import { BattleState } from "/types/composite/battleState";
+import { LogoDisplay } from "../../components/logo/Logo";
 import socket from "../../socket";
 
 interface HostBattlesProps {
@@ -8,7 +10,7 @@ interface HostBattlesProps {
 
 const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const code = gameCode; // Currently unused, used for potential page changes
-  const [battles, setBattles] = useState<Battle[]>([]);
+  const [battles, setBattles] = useState<BattleState[]>([]);
   const [battleCount, setBattleCount] = useState(0);
 
   // LISTENERS:
@@ -54,7 +56,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
               className="flex items-center justify-between bg-gray-100 rounded-lg px-4 py-2 shadow-sm"
             >
               <p className="text-lg font-medium truncate">
-                {battle.player1Name} vs {battle.player2Name}
+                {battle.yourPlayer.name} vs {battle.opponentPlayer.name}
               </p>
             </div>
           ))}
