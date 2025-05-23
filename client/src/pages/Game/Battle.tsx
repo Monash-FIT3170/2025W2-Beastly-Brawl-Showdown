@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import socket from "../../socket";
 import CountDownTimer from "../../components/temp/CountdownTimer";
-import { ActionState } from "/types/single/actionState";
+import { ActionState, ActionIdentifier } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
+import { BattleFooter } from "../../components/cards/BattleFooter";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -45,6 +46,16 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     // You can emit the selected action to the server here if needed
     socket.emit("action_selected", { action, battleId, playerId: socket.id });
   };
+
+  const attackAction = possibleActions.find((a) => a.id === ActionIdentifier.ATTACK);
+  const defendAction = possibleActions.find((a) => a.id === ActionIdentifier.DEFEND);
+
+  const abilityActions = possibleActions.filter(
+    (a) => a.id !== ActionIdentifier.ATTACK && a.id !== ActionIdentifier.DEFEND && a.id !== ActionIdentifier.NULL
+  );
+
+  const ability1 = abilityActions[0];
+  const ability2 = abilityActions[1];
 
   return (
     <div>
@@ -94,11 +105,23 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
           <div>
             {timer > 0 ? (
-              possibleActions.map((action, index) => (
-                <button key={index} onClick={() => handleActionClick(action)}>
-                  {action.name} {action.currentUse}/{action.maxUse}
-                </button>
-              ))
+              // possibleActions.map((action, index) => (
+              //   <button key={index} onClick={() => handleActionClick(action)}>
+              //     {action.name} {action.currentUse}/{action.maxUse}
+              //   </button>
+              // ))
+              <BattleFooter
+              attackOnClick={() => attackAction && handleActionClick(attackAction)}
+              defenseCharges={defendAction?.maxUse ?? 0}
+              ability1={ability1?.name ?? "Ability 1"}
+              ability1Charges={ability1?.maxUse ?? 0}
+              ability1Image={'ShadowFangPredator'}
+              ability1OnClick={() => ability1 && handleActionClick(ability1)}
+              ability2={ability2?.name ?? "Ability 2"}
+              ability2Charges={ability2?.maxUse ?? 0}
+              ability2Image={'ShadowFangPredator'}
+              ability2OnClick={() => ability2 && handleActionClick(ability2)}
+              />
             ) : (
               <p>TURN ENDED...</p>
             )}
@@ -110,3 +133,4 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 };
 
 export default Battle;
+ 
