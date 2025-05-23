@@ -36,6 +36,10 @@ export class AttackAction extends Action {
     actingPlayer.incSuccessfulHit(1);
     // If unsuccessful atttack
     affectedPlayer.incSuccessfulBlock(1);
+    
+    //TODO: put the actual logic for attack action to account for successful hit and successful block
+    actingPlayer.addBattleLog(`${actingPlayer.getName()} has successfully attacked for ${actingPlayer.getAttackStat()} damage`)
+    affectedPlayer.addBattleLog(`${affectedPlayer.getName()} has successfully blocked an attack`)
 
   }
 }

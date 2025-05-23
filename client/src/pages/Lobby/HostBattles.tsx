@@ -85,7 +85,8 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     //   setMostChosenMonster(monster);
     // });
 
-    socket.on("game-session-state", ({ session }) => {
+    socket.on("game-session-state", ({ session}) => {
+      console.log('sessionData:',session)
       setGameSession(session);
     });
     
