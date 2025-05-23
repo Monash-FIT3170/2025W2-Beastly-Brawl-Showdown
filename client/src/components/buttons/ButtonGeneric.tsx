@@ -6,9 +6,10 @@ interface ButtonGenericProps{
 	isDisabled?: boolean;
 	children?: ReactNode
 	onClick?: () => void;
+	mobileHidden?: 'false' | 'true' 
 }
 
-export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGenericProps) => {
+export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidden}: ButtonGenericProps) => {
 
 	const colorToDisplay = {
 		'ronchi': 'bg-ronchi',
@@ -26,9 +27,15 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick}: ButtonGe
 		'squaremedium': 'lg:w-[4rem] lg:h-[4rem] sm:w-[8rem] sm:h-[8rem]',
 	}
 
+	const mobile = {
+		'true': '',
+		'false': '',
+	}
+
 	const baseButton =
 		`
 		${colorToDisplay[color]}
+		${mobile[mobileHidden]}
 		flex
 		items-center
 		justify-around

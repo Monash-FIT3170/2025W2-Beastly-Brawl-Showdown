@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
@@ -7,6 +7,7 @@ import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 
 export const Home = () => {
+
   // Called on 'Host Lobby' button press
   const createGame = () => {
     socket.emit("create-game", {});
@@ -32,14 +33,14 @@ export const Home = () => {
           <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full"></LogoResizable> 
         </div>
         <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-10 sm:space-y-30">
-          <ButtonGeneric color="ronchi" size="large" onClick={createGame}>
+          <ButtonGeneric color="ronchi" size="large" onClick={createGame} mobileHidden={'true'}>
             <OutlineText size="large">
-              Host Game
+              HOST GAME
             </OutlineText> 
           </ButtonGeneric>
           <ButtonGeneric color="ronchi" size="large" onClick={renderJoinLobby}>
             <OutlineText size="large">
-              Join Game
+              JOIN GAME
             </OutlineText>
           </ButtonGeneric>
         </div>

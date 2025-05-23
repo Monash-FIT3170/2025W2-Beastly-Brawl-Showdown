@@ -78,12 +78,12 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
       <div className="flex flex-row h-1/5 w-full items-center justify-between px-2">
         {/* Logo on the left */}
         
-        <LogoResizable className="h-full w-1/9"></LogoResizable>
+        <LogoResizable className="h-full w-1/10"></LogoResizable>
         
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={55} height={5}>
           <OutlineText size="large">
-            Join The Game! {`${local_url}/join/${code}`}
+            Join the game at {`${local_url}/join/${code}`}
           </OutlineText>
         </BaseCard>
 
@@ -134,8 +134,8 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </div>
 
         <div className="mb-20">
-          <BaseCard color='peach' width={7} height={3}>
-            <OutlineText size="tiny">
+          <BaseCard color='peach' width={12} height={4}>
+            <OutlineText size="medium">
               PLAYERS: {playerCount}/8
             </OutlineText>
           </BaseCard>
