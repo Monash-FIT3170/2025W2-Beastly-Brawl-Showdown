@@ -14,6 +14,7 @@ export class Player {
   private actions: Action[] = [];
 
   private logs: string[] = [];
+  private battleLogs: string[] = [];
   private successfulHit: number = 0;
   private successfulBlock: number = 0;
 

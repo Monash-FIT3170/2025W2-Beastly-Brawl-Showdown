@@ -11,4 +11,5 @@ export interface PlayerState {
   successHit: number; 
 
   logs: string[];
+  battleLogs: string[];
 }
