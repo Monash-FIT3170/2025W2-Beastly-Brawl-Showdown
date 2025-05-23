@@ -27,10 +27,11 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
     <div 
       key={playerIndex}
       style={{
+        border: '1px solid #000', //  add this line
         borderRadius: '0.5rem',
-        padding: '0.75rem 1rem',
+        padding: '0.75rem 0.25rem',
         textAlign: 'center',
-        minWidth: '200px',
+        minWidth: '100px',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',

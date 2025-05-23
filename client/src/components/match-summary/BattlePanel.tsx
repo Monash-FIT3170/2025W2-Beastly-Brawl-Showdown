@@ -24,7 +24,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
         backgroundColor: '#FFE8B1',
         borderRadius: '0.75rem',
         border: '2px solid #403245',
-        padding: '1rem',
+        padding: '1rem 0rem',
         marginBottom: '1rem',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
       }}
@@ -43,16 +43,16 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battle, battleIndex }) => {
       </h3>
       
       {/* Display players in this battle */}
-      <div 
+        <div 
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '0.5rem',
-          position: 'relative',
-          gap: '1rem', // Add gap between players
+        display: 'flex',
+        justifyContent: 'center', // Change to center
+        alignItems: 'center',
+        marginBottom: '0.5rem',
+        position: 'relative',
+        gap: '0', // Control the exact gap
         }}
-      >
+        >
         {battle.players.map((playerData, playerIndex) => (
           <PlayerPanel
             key={playerIndex}
