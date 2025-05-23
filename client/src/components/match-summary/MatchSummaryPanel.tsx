@@ -2,6 +2,7 @@ import React from 'react';
 import RoundNumberHeader from './RoundNumberHeader';
 import LeftPanel from './LeftPanel';
 import MiddlePanel from './MiddlePanel';
+import RightPanel from './RightPanel';
 import { MultipleBattleState } from '../../../../types/composite/multipleBattleState';
 import { useState, useEffect } from 'react';
 import socket from '../../socket';
@@ -114,7 +115,7 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
     <div 
       style={{
         display: 'grid',
-        gridTemplateColumns: '320px 1fr',
+        gridTemplateColumns: '320px 1fr 320px', // Left panel, Middle panel, Right panel
         gap: '1rem',
         marginTop: '1rem',
         height: 'calc(100% - 8rem)', // Adjust based on header height
@@ -135,6 +136,24 @@ const MatchSummaryPanel: React.FC<MatchSummaryPanelProps> = ({ }) => {
       {/* Middle Panel */}
       <div>
         <MiddlePanel battleStates={battleStates} />
+      </div>
+
+      {/* Right Panel */}
+      <div>
+        <RightPanel 
+          logs={[
+            "Game started with 8 players",
+            "Round 1 battles initiated", 
+            "Player DANIEL attacked LUNA",
+            "Player CAMERON blocked successfully",
+            "Round 1 completed",
+            "Round 2 battles initiated",
+            "Player ANIKA dealt 5 damage",
+            "Player RIO eliminated",
+            "Current round: 2",
+            "Battles in progress..."
+          ]}
+        />
       </div>
     </div>
 
