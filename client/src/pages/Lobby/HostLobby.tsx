@@ -81,7 +81,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         <LogoResizable className="h-full w-1/11"></LogoResizable>
         
         {/* Heading in the center */}
-        <BaseCard color="springLeaves" width={55} height={5}>
+        <BaseCard color="springLeaves" width={65} height={5}>
           <OutlineText size="large">
             Join the game at {`${local_url}/join/${code}`}
           </OutlineText>
