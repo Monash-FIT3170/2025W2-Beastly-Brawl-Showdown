@@ -11,7 +11,7 @@ export default class GameSession {
   private players: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
-  private round: number = 0; // Round number
+  private round: number = 1; // Round number
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
 

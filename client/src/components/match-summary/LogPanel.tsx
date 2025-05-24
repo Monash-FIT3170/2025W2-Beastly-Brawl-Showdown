@@ -52,19 +52,23 @@ const LogPanel: React.FC<LogPanelProps> = ({ battleStates }) => {
         {battleStates?.map((battleState, index) => {
           const player1 = battleState.yourPlayer;
           const player2 = battleState.opponentPlayer;
-          // const logPlayer1 = player1.battleLogs;
-          // const logPlayer2 = player2.battleLogs;
           const logPlayer1 = player1.logs;
           const logPlayer2 = player2.logs;
-          console.log("battlestates: ", battleStates)
-          console.log("player2: ", logPlayer2)
           const combinedLogs = [...logPlayer1, ...logPlayer2];
-          console.log("combined logs: ",combinedLogs)
+          
           return (
-            <LogContentPanel 
-              key={index} 
-              logs={combinedLogs} 
-            />
+            <div 
+              key={index}
+              style={{
+                borderBottom: index < battleStates.length - 1 ? '2px solid #403245' : 'none', // Use your theme color
+                paddingBottom: '0.75rem',
+                marginBottom: '0.75rem',
+              }}
+            >
+              <LogContentPanel 
+                logs={combinedLogs} 
+              />
+            </div>
           );
         })}
 
