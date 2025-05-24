@@ -65,6 +65,7 @@ export class Battle {
 
       opponentPlayer: opponentPlayer!.getPlayerState(),
       opponentPlayerMonster: opponentPlayer!.getMonster().getMonsterState(),
+      isOver: this.isBattleOver();
     };
   }
   public isBattleOver(): boolean {

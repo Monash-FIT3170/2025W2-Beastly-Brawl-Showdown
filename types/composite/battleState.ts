@@ -15,4 +15,5 @@ export interface BattleState {
   yourPlayerMonster: MonsterState;
   opponentPlayer: PlayerState;
   opponentPlayerMonster: MonsterState;
+  isOver: boolean;
 }
