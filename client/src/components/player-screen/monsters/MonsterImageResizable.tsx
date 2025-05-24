@@ -8,8 +8,7 @@ interface MonsterImageProps {
 
 export const MonsterImageResizable = ({ name, width, height }: MonsterImageProps) => {
 
-    let path: string = name.replace(/\s+/g, '');
-    path = path+'.png';
+    const path = `/${name.replace(/\s+/g, '')}.png`;
 
     return (
         <img 
