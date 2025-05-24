@@ -75,10 +75,10 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     
     <BlankPage>
       {/* Responsive header section */}
-      <div className="flex flex-row h-1/5 w-full items-center justify-between px-2">
+      <div className="flex flex-row h-1/5 w-full items-center justify-between px-4 pt-4">
         {/* Logo on the left */}
         
-        <LogoResizable className="h-full w-1/10"></LogoResizable>
+        <LogoResizable className="h-full w-1/11"></LogoResizable>
         
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={55} height={5}>
