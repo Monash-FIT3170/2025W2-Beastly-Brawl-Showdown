@@ -7,7 +7,8 @@ export class GroundSlamAbilityAction extends Action {
     super(
       ActionIdentifier.GROUND_SLAM,
       "Ground Slam",
-      "Can stun opponents with a powerful stomp."
+      "Can stun opponents with a powerful stomp.",
+      Infinity
     );
   }
 

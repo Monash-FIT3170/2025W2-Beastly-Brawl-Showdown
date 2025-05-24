@@ -6,6 +6,8 @@ export class Player {
   private id: string;
   private name: string;
   private monster: Monster | null;
+  public currentGameCode?: number;
+  private score: number = 0;
 
   private currentHealth: number;
   private currentAttackStat: number;
@@ -22,6 +24,14 @@ export class Player {
     this.currentHealth = 0;
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
+  }
+
+  public getGameCode() {
+    return this.currentGameCode;
+  }
+
+  public updateGameCode(newCode: number) {
+    this.currentGameCode = newCode;
   }
 
   public getLogs(): string[] {

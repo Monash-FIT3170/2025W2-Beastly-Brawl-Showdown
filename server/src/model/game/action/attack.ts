@@ -6,7 +6,7 @@ export class AttackAction extends Action {
   private attackBonus: number;
 
   constructor(attackBonus: number) {
-    super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy");
+    super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity);
     this.attackBonus = attackBonus;
   }
 

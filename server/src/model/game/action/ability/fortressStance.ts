@@ -7,7 +7,8 @@ export class FortressStanceAbilityAction extends Action {
     super(
       ActionIdentifier.FORTRESS_STANCE,
       "Fortress Stance",
-      "Increases AC for one round."
+      "Increases AC for one round.",
+      Infinity
     );
   }
 
