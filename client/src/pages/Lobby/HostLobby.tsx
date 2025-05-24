@@ -29,7 +29,27 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
       socket.emit("get-players", { gameCode: code });
     }
 
+    console.log(`LENGTH: ${socket.listeners("update-players").length}`);
+    socket.on("update-players", ({ message, players }) => {
+      console.log(message);
+
+      // Update player list
+      if (Array.isArray(players)) {
+        // because list has come from socket need to map it to our player.ts type
+        // lmk if i'm wrong
+        const properPlayers = players.map((p: any) => new Player(p.id, p.name));
+        console.log("newly mapped players:", properPlayers); //testing
+        setPlayers(properPlayers);
+        setPlayerCount(properPlayers.length);
+      } else {
+        console.error("'players' is not an array", players);
+      }
+    });
+    console.log(`LENGTH: ${socket.listeners("update-players").length}`);
+
     return () => {
+      socket.off("update-players");
+
       console.log("Page is closing/unmounting");
     };
   }, []);
