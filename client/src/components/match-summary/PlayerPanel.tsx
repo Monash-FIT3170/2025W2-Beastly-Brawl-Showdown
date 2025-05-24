@@ -26,13 +26,15 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
       key={playerIndex}
       style={{
         borderRadius: '0.5rem',
-        border: '2px solid #403245',
+        border: '2px solid #964B00',
         padding: '0.75rem 0.5rem',
         textAlign: 'center',
         minWidth: '200px',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',
+        // position: 'absolute',
+        width: '50%'
       }}
     >
       {/* Player Name */}

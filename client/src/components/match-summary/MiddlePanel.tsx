@@ -48,8 +48,10 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ battleStates }) => {
             <div className='individual-battle-panel-holder'
               key={battleState.id || index}
               style={{
-                border: '2px dotted',
+                border: '2px dotted #006400',
                 padding: '0.5rem',
+                // position: 'absolute',
+                width: '100%'
               }}
             >
               <BattlePanel 

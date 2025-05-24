@@ -22,10 +22,11 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex }) =
       style={{
         backgroundColor: '#FFE8B1',
         borderRadius: '0.75rem',
-        border: '2px solid #403245',
+        border: '2px solid #006400',
         padding: '1rem 0rem',
         marginBottom: '1rem',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        // position: 'relative'
       }}
     >
       <h3 
@@ -50,6 +51,8 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex }) =
         marginBottom: '0.5rem',
         position: 'relative',
         gap: '0', // Control the exact gap
+        border: '2px solid',
+        width: '100%'
         }}
         >
 
