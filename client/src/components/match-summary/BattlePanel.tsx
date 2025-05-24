@@ -1,13 +1,14 @@
 import React from 'react';
 import PlayerPanel from './PlayerPanel';
-import { BattleState } from '/types/composite/battleState';
+import { BattlePhase, BattleState } from '/types/composite/battleState';
 
 interface BattlePanelProps {
   battleState: BattleState;
   battleIndex: number;
+  currentPhase: BattlePhase|null;
 }
 
-const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex }) => {
+const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, currentPhase }) => {
   const player1State = battleState.yourPlayer;
   const player1Index = 0;
   const player1LeftPlayer = true;

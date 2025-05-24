@@ -56,7 +56,8 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
             >
               <BattlePanel 
                 battleState={battleState}       // This is passed as a prop
-                battleIndex={index}             // This is passed as a prop. Represents the battle number
+                battleIndex={index} 
+                currentPhase={gameSession.currentPhase}            // This is passed as a prop. Represents the battle number
               />
             </div>
           ))}

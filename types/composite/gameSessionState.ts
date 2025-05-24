@@ -6,5 +6,5 @@ export interface GameSessionState {
   round: number;
   battleStates: BattleState[];
   gameSessionData: GameSessionData;
-  currentPhase: BattlePhase
+  currentPhase: BattlePhase;
 }
