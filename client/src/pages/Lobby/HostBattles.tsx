@@ -131,17 +131,18 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
             gap: '1rem',
             marginTop: '1rem',
             height: 'calc(100% - 8rem)', // Adjust based on header height
+            border: '2px solid #403245',
+            position: 'relative'
           }}
         >
           {/* Left Panel */}
-          <div>
-
+          {/* <div className="left-panel"> */}
             <LeftPanel 
               damageData={playerStats.damageData} // Use real damage data
               blockData={playerStats.blockData} // Use real block data
               popularMonster={gameSession.gameSessionData.mostChosenMonster}
             />
-          </div>
+          {/* </div> */}
 
           {/* Middle Panel */}
           <div style={{ height: '100%', overflow: 'auto'  }}>
