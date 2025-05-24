@@ -9,7 +9,7 @@ interface ButtonGenericProps{
 	mobileHidden?: 'false' | 'true' 
 }
 
-export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidden}: ButtonGenericProps) => {
+export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidden='false'}: ButtonGenericProps) => {
 
 	const colorToDisplay = {
 		'ronchi': 'bg-ronchi',
@@ -28,8 +28,8 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidd
 	}
 
 	const mobile = {
-		'true': '',
-		'false': '',
+		'true': 'sm:hidden lg:block',
+		'false': 'block',
 	}
 
 	const baseButton =
