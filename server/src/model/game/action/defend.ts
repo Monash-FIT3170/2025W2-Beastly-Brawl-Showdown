@@ -1,12 +1,13 @@
 import { Action } from "./action";
 import { Player } from "../player";
 import { ActionIdentifier } from "/types/single/actionState";
+import { act } from "react";
 
 export class DefendAction extends Action {
   private armourBonus: number;
 
   constructor(armourBonus: number) {
-    super(ActionIdentifier.DEFEND, "Defend", "Defend against an attack");
+    super(ActionIdentifier.DEFEND, "Defend", "Defend against an attack", 3);
     this.armourBonus = armourBonus;
   }
 
@@ -22,5 +23,7 @@ export class DefendAction extends Action {
     );
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {}
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    this.incCurrentUse(-1);
+  }
 }

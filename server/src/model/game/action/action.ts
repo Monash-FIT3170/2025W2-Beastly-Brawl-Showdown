@@ -6,10 +6,32 @@ export abstract class Action {
   private name: string;
   private description: string;
 
-  constructor(id: ActionIdentifier, name: string, description: string) {
+  private currentUse: number;
+  private maxUse: number;
+
+  constructor(
+    id: ActionIdentifier,
+    name: string,
+    description: string,
+    maxUse: number
+  ) {
     this.id = id;
     this.name = name;
     this.description = description;
+    this.currentUse = maxUse;
+    this.maxUse = maxUse;
+  }
+
+  protected incCurrentUse(value: number): void {
+    this.currentUse += value;
+  }
+
+  public getCurrentUse(): number {
+    return this.currentUse;
+  }
+
+  public getMaxUse(): number {
+    return this.maxUse;
   }
 
   public abstract prepare(actingPlayer: Player, affectedPlayer: Player): void;
@@ -33,6 +55,8 @@ export abstract class Action {
       id: this.id,
       name: this.name,
       description: this.description,
+      currentUse: this.currentUse,
+      maxUse: this.maxUse,
     };
   }
 }

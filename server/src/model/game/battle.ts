@@ -6,12 +6,19 @@ export class Battle {
   private id: UUID;
   private players: Map<string, Player> = new Map();
 
+  private gameSessionId: string;
+
   private turn: number = 0;
 
-  constructor(id: UUID, player1: Player, player2: Player) {
+  constructor(id: UUID, player1: Player, player2: Player, gameSessionId: string ) {
     this.id = id;
     this.players.set(player1.getId(), player1);
     this.players.set(player2.getId(), player2);
+    this.gameSessionId = gameSessionId;
+  }
+
+  public getGameSessionId(): string | undefined {
+    return this.gameSessionId;
   }
 
   public getPlayer(id: string): Player | undefined {
@@ -59,15 +66,11 @@ export class Battle {
       opponentPlayerMonster: opponentPlayer!.getMonster().getMonsterState(),
     };
   }
-
-  // Checks if a player's health is 0. If so, then battle is over
   public isBattleOver(): boolean {
     return Array.from(this.players.values()).some(
       (player) => player.getHealth() == 0 
     )
   }
-
-  // Returns the winner of battle by checkning if there is a single player alive
   public getWinner(): string| null {
     const alive_players = Array.from(this.players.values()).filter((player) => player.getHealth() > 0)
     return alive_players.length === 1? alive_players[0].getName(): null;

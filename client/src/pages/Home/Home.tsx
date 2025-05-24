@@ -1,40 +1,50 @@
-import React, { useEffect, useState } from "react";
-import TempLobby from "../Lobby/TempLobby";
-import TempGame from "../Game/TempGame";
-import socket from "../../socket"; // Ensure you import the socket instance
-import { Screens } from "../../screens";
+import React, { useState, useEffect } from "react";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import socket from "../../socket";
+import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
+import { OutlineText } from "../../components/texts/OutlineText";
+import LogoResizable from "../../components/logos/LogoResizable";
+import { BlankPage } from "../../components/pagelayouts/BlankPage";
 
 export const Home = () => {
-  const [screen, setScreen] = useState<Screens>(Screens.LOBBY_SCREEN); // State to track the current screen
-  const [battleId, setBattleId] = useState<string | null>(null); // State to track the battle ID
 
-  useEffect(() => {
-    socket.on("battle_started", (battleId: string) => {
-      setScreen(Screens.GAME_SCREEN); // Switch to the GAME screen when a battle starts
-      console.log("TSX", battleId);
-      setBattleId(battleId); // Store the battle ID
-    });
+  // Called on 'Host Lobby' button press
+  const createGame = () => {
+    socket.emit("create-game", {});
+    console.log("Game session created");
+  };
 
-    return () => {
-      socket.off("battle_started");
-    };
-  }, []);
+  // Received when Game Session is created. Takes user to 'Host Lobby' Page
+  socket.on("new-game", ({ code }) => {
+    const codeString = code.toString();
+    FlowRouter.go(`/host/${codeString}`);
+  });
 
-  const renderScreen = () => {
-    switch (screen) {
-      case Screens.LOBBY_SCREEN:
-        return <TempLobby />;
-      case Screens.GAME_SCREEN:
-        return <TempGame battleId={battleId} />;
-      default:
-        return <TempLobby />;
-    }
+  // Called on 'Join Lobby' button press
+  const renderJoinLobby = () => {
+    FlowRouter.go("/join");
   };
 
   return (
-    <div>
-      <h1>Welcome to Meteor!</h1>
-      {renderScreen()}
-    </div>
+    console.log("Home"),
+    (
+      <BlankPage> 
+        <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
+          <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full"></LogoResizable> 
+        </div>
+        <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-10 sm:space-y-30">
+          <ButtonGeneric color="ronchi" size="large" onClick={createGame} mobileHidden={'true'}>
+            <OutlineText size="large">
+              HOST GAME
+            </OutlineText> 
+          </ButtonGeneric>
+          <ButtonGeneric color="ronchi" size="large" onClick={renderJoinLobby}>
+            <OutlineText size="large">
+              JOIN GAME
+            </OutlineText>
+          </ButtonGeneric>
+        </div>
+      </BlankPage>
+    )
   );
 };
