@@ -1,9 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { startBattleHandler } from "./src/socket/battle/startBattleHandler";
 import { actionSelectedHandler } from "./src/socket/battle/actionSelectedHandler";
 import { characterSelectHandler } from "./src/socket/battle/characterSelectHandler";
-import { ContinueBattle } from "./src/socket/battle/startBattleHandler";
-import { actionSelectedHandler } from "./src/socket/battle/actionSelectedHandler";
 import http from "node:http";
 import { Server } from "socket.io";
 import { Player } from "./src/model/game/player";
@@ -30,10 +27,8 @@ Meteor.startup(async () => {
     // startBattleHandler(io, socket);
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
-    startBattleHandler(io, socket);
     actionSelectedHandler(io, socket);
     characterSelectHandler(io, socket);
-    ContinueBattle(io, socket);
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);
