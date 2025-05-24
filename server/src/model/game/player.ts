@@ -5,7 +5,7 @@ import { StonehideGuardian } from "./monster/stonehideGuardian";
 
 export class Player {
   private id: string;
-  public currentGameCode?: number;
+  public currentGameCode: number;
   private name: string;
 
   private score: number = 0;
@@ -27,6 +27,7 @@ export class Player {
     this.currentHealth = this.monster.getMaxHealth();
     this.currentAttackStat = this.monster.getAttackBonus();
     this.currentArmourClassStat = this.monster.getArmourClass();
+    this.currentGameCode = 0;
   }
 
   public getGameCode() {

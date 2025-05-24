@@ -1,13 +1,13 @@
 export default class Player {
-  public userID: string;
+  public id: string;
   public name: string;
 
-  constructor(userID: string, name: string) {
-    this.userID = userID;
+  constructor(id: string, name: string) {
+    this.id = id;
     this.name = name;
   }
 
   public getId(): string {
-    return this.userID;
+    return this.id;
   }
 }
