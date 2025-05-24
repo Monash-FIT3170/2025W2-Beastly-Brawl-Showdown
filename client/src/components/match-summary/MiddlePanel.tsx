@@ -14,7 +14,9 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
         height: '100%',
         overflow: 'auto',
         border: '2px solid',
-        position: 'relative'
+        position: 'relative',
+        color: '#403245',
+
       }}
     >
       <h2 
@@ -23,9 +25,12 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
           fontFamily: 'Jua, sans-serif',
           fontWeight: 'bold',
           color: '#403245',
-          textAlign: 'center',
+          textAlign: 'left',
           margin: '0 0 1rem 0',
           textTransform: 'uppercase',
+          WebkitTextStroke: 'none',  // Add this
+          textShadow: 'none',   
+          padding: '1rem'     // Add this
         }}
       >
         Battle Arena

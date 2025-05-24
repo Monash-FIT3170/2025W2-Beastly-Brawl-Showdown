@@ -72,19 +72,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
           />
         
       </div>
-      
-      {/* Battle status
-      <div 
-        style={{
-          textAlign: 'center',
-          fontSize: '0.875rem',
-          fontFamily: 'Jua, sans-serif',
-          color: '#403245',
-          fontStyle: 'italic',
-        }}
-      >
-        {battle.isOver ? 'Battle Complete' : 'Battle In Progress'}
-      </div> */}
+    
       
     </div>
   );
