@@ -44,6 +44,7 @@ export class Battle {
   public clearBattleLogs(): void {
     this.players.forEach((player) => {
       player.clearLogs();
+      player.clearBattleLogs();
     });
   }
 

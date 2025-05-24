@@ -5,6 +5,7 @@ import { battles } from "../../../main";
 import { GameSessionState } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
+import { BattlePhase } from "../../../../types/composite/battleState";
 
 export default class GameSession {
   private hostUID: string;
@@ -14,6 +15,7 @@ export default class GameSession {
   private round: number = 1; // Round number
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
+  private currentPhase: BattlePhase;
 
   // Initialise sample data
   private gameSessionData: GameSessionData = { mostChosenMonster: { monster: null, percentagePick: "0"} };
@@ -45,6 +47,14 @@ export default class GameSession {
   // Getters and setters
   public getHost(): string {
     return this.hostUID;
+  }
+
+  public setCurrentPhase(phase: BattlePhase): void {
+    this.currentPhase = phase
+  }
+
+  public getCurrentPhase(): BattlePhase{
+    return this.currentPhase
   }
 
   public getGameCode() {
@@ -243,6 +253,7 @@ export default class GameSession {
       round: this.round,
       battleStates: allBattles,
       gameSessionData: this.gameSessionData,
+      currentPhase: this.currentPhase
     };
 
 }

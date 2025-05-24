@@ -64,6 +64,10 @@ export class Player {
     this.logs.push(log);
   }
 
+  public addBattleLog(log: string): void {
+    this.battleLogs.push(log);
+  }
+
   public clearLogs(): void {
     this.logs = [];
   }
@@ -79,6 +83,10 @@ export class Player {
 
   public getName(): string {
     return this.name;
+  }
+
+  public clearBattleLogs(): void {
+    this.battleLogs = [];
   }
 
   public getId(): string {

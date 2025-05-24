@@ -1,4 +1,4 @@
-import { BattleState } from "./battleState";
+import { BattlePhase, BattleState } from "./battleState";
 import { GameSessionData } from "../other/gameSessionData";
 
 export interface GameSessionState {
@@ -6,4 +6,5 @@ export interface GameSessionState {
   round: number;
   battleStates: BattleState[];
   gameSessionData: GameSessionData;
+  currentPhase: BattlePhase
 }

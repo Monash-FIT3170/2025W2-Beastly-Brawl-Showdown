@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import { Battle } from "../../model/game/battle";
 import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
+import { BattlePhase } from "../../../../types/composite/battleState";
 
 export default function proceedBattleTurn(io: Server, socket: Socket, gameSession: GameSession, battle: Battle) {
   // TODO: Set a property in the battle instance to object it is in the 10 sec waiting stage (for the host match summary page)
@@ -9,6 +10,13 @@ export default function proceedBattleTurn(io: Server, socket: Socket, gameSessio
   battle.incTurn();
 
   let playersInBattle = battle.getPlayers();
+
+  //Players' states before the turn start
+  gameSession.setCurrentPhase(BattlePhase.CHOOSE_ACTION)
+  socket.emit("game-session-state", {
+    session: gameSession.getGameSessionState(), 
+    });
+  
 
   playersInBattle.forEach((player) => {
     io.to(player.getId()).emit(
@@ -69,10 +77,6 @@ export default function proceedBattleTurn(io: Server, socket: Socket, gameSessio
         );
       });
 
-      // TODO: ONLY update the current battle to be more memory efficient...
-      socket.emit("game-session-state", {
-        session: gameSession.getGameSessionState(), 
-      });
 
       // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
       playersInBattle.forEach((player) => {
@@ -83,10 +87,17 @@ export default function proceedBattleTurn(io: Server, socket: Socket, gameSessio
       if (battle.isBattleOver()) {
         io.to(battle.getId()).emit("battle_end", battle.getWinner());
       }
+      // TODO: ONLY update the current battle to be more memory efficient...
+      //Players' states after the turn ends 
+      gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION)
+      socket.emit("game-session-state", {
+        session: gameSession.getGameSessionState(), 
+        });
 
       // TODO: Set a 2-5 second "animation" window, and set a property in the battle instance to object it is in the animation stage (for the host match summary page)
 
       setTimeout(() => {
+
         // TODO: Set a property in the battle instance to object it is in the battle result stage (for the host match summary page)
         proceedBattleTurn(io, socket, gameSession, battle);
       }, 5000);

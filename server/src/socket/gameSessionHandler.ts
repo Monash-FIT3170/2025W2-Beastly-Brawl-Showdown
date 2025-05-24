@@ -183,11 +183,12 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       proceedBattleTurn(io, socket, session, battle);
     }
 
+    //Comment out as host information are updated live in battleHandler
     // Update host information
-    socket.emit("game-session-state", {
-      session: session.getGameSessionState(), 
-    });
-  });
+    //   socket.emit("game-session-state", {
+    //     session: session.getGameSessionState(), 
+    //   });
+    // });
 
   // Close game session
   socket.on("cancel-game", ({ gameCode }) => {
