@@ -3,17 +3,19 @@ import socket from "../../socket";
 import CountDownTimer from "../../components/temp/CountdownTimer";
 import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
+import LoserScreen from "./LoserScreen";
+import WinnerScreen from "./WinnerScreen";
 import DicerollModal from "./DiceRollModal";
 
-interface BattleProps {
+interface TempGameProps {
   battleId: string | null; // Add battleId as a prop
 }
 
-const Battle: React.FC<BattleProps> = ({ battleId }) => {
+const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
   const [battleState, setBattleState] = useState<BattleState | null>(null);
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
-  const [timer, setTimer] = useState<number>(10);
-  const [winner, setWinner] = useState<string | null>(null);
+  const [timer, setTimer] = useState<number>(5);
+  const [winner, setWinner] = useState<string|null>(null);
 
   const [showModal, setShowModal] = useState(false); // show dice modal
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
@@ -33,10 +35,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     });
 
     socket.on("battle_end", (winner: string) => {
-      console.log(`Winner ${winner}`);
-      setWinner(winner);
-    });
+      console.log(`Winner ${winner}`)
+      setWinner(winner)
+    })
 
+    // TODO: Perhaps use socket to pass dice roll
     socket.on("roll_dice", (diceRoll: number) => {
       setDiceValue(diceRoll);
       console.log(`From socket in TempGame: dps ${diceRoll}`);
@@ -56,6 +59,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.emit("action_selected", { action, battleId, playerId: socket.id });
   };
 
+  // TODO: Need to make this more modular so that we can insert different types of screens rather than using if statements within css
   return (
     <div>
       <h1>GAME</h1>
@@ -68,18 +72,21 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
       {/* Winner display if battle is over */}
       {winner ? (
-        <div>
-          <h2>Battle Ended</h2>
-          <p>Winner: {winner}</p>
-        </div>
+        battleState?.yourPlayer.name === winner ? (
+          <WinnerScreen />
+        ) : (
+          <LoserScreen />
+        )
       ) : (
         <>
           <CountDownTimer timer={timer} />
+
 
           {battleState && (
             <div>
               <h2>Battle</h2>
               <p>Turn: {battleState.turn}</p>
+
 
               <div>
                 <h3>You: {battleState.yourPlayer.name}</h3>
@@ -89,15 +96,15 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                 <p>Monster: {battleState.yourPlayerMonster.name}</p>
               </div>
 
+
               <div>
                 <h3>Opponent: {battleState.opponentPlayer.name}</h3>
                 <p>Health: {battleState.opponentPlayer.currentHealth}</p>
                 <p>Attack: {battleState.opponentPlayer.currentAttackStat}</p>
-                <p>
-                  Armour: {battleState.opponentPlayer.currentArmourClassStat}
-                </p>
+                <p>Armour: {battleState.opponentPlayer.currentArmourClassStat}</p>
                 <p>Monster: {battleState.opponentPlayerMonster.name}</p>
               </div>
+
 
               <div>
                 <h3>Logs:</h3>
@@ -108,11 +115,12 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             </div>
           )}
 
+
           <div>
             {timer > 0 ? (
               possibleActions.map((action, index) => (
                 <button key={index} onClick={() => handleActionClick(action)}>
-                  {action.name} {action.currentUse}/{action.maxUse}
+                  {action.name}
                 </button>
               ))
             ) : (
@@ -125,4 +133,4 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   );
 };
 
-export default Battle;
+export default TempGame;
