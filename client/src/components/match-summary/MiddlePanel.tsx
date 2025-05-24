@@ -1,12 +1,12 @@
 import React from 'react';
-import { BattleState } from '/types/composite/battleState';
 import BattlePanel from './BattlePanel';
+import { GameSessionState } from '/types/composite/gameSessionState';
 
 interface MiddlePanelProps {
-  battleStates?: BattleState[] | null;
+  gameSession?: GameSessionState | null;
 }
 
-const MiddlePanel: React.FC<MiddlePanelProps> = ({ battleStates }) => {
+const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
   return (
     <div 
       style={{
@@ -32,7 +32,7 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ battleStates }) => {
       </h2>
       
       {/* Display battle states data */}
-      {battleStates && (
+      {gameSession.battleStates && (
         
         <div className='all-battle-panels-holder'
           style={{
@@ -44,7 +44,7 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ battleStates }) => {
             border: '2px solid'
           }}
         >
-          {battleStates.map((battleState, index) => (
+          {gameSession.battleStates.map((battleState, index) => (
             <div className='individual-battle-panel-holder'
               key={battleState.id || index}
               style={{

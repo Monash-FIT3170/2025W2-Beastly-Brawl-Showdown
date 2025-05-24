@@ -69,14 +69,6 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex }) =
             playerIndex={player2Index}
             isLeftPlayer={player2LeftPlayer} // First player is left, second is right
           />
-        {/* {battleState.players.map((playerData, playerIndex) => (
-          <PlayerPanel
-            key={playerIndex}
-            playerState={playerData.playerState}
-            playerIndex={playerIndex}
-            isLeftPlayer={playerIndex === 0} // First player is left, second is right
-          />
-        ))} */}
         
       </div>
       

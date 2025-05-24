@@ -147,7 +147,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
 
           {/* Middle Panel */}
           <div style={{ height: '100%', overflow: 'auto'  }}>
-            <MiddlePanel battleStates={gameSession.battleStates} />
+            <MiddlePanel gameSession={gameSession} />
           </div>
 
           {/* Right Panel */}
