@@ -64,7 +64,7 @@ const WaitingScreen: React.FC = () => {
         </div>
       </div>
 
-        {/* For now, EXIT just changes the screen to the home page. TODO: Route users who exit the game appropriately */}
+        {/* For now, EXIT just changes the screen to the home page. TODO: Route users who exit the game appropriately + disconnects them from battle appropriately */}
         <ButtonGeneric color="red" size="medium" onClick={() => FlowRouter.go("/")}>
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
             <div>
