@@ -7,6 +7,7 @@ import { ActionIdentifier, ActionState } from "/types/single/actionState";
 
 export abstract class Monster {
   private id: MonsterIdentifier;
+  private imageID: string;
   private name: string;
 
   private description: string;
@@ -27,7 +28,8 @@ export abstract class Monster {
     ability: Action,
     maxHealth: number,
     attackBonus: number,
-    armourClass: number
+    armourClass: number,
+    imageID: string
   ) {
     this.id = id;
     this.name = name;
@@ -40,12 +42,17 @@ export abstract class Monster {
     this.possibleActions.push(new DefendAction(armourClass));
     this.possibleActions.push(ability);
     this.possibleActions.push(archetype.getAbility());
+    this.imageID = imageID;
   }
 
   public getAction(actionIdentifier: ActionIdentifier): Action | undefined {
     return this.possibleActions.find(
       (action) => action.getId() === actionIdentifier
     );
+  }
+
+  public getImageID(): string {
+    return this.imageID;
   }
 
   public getId(): MonsterIdentifier {

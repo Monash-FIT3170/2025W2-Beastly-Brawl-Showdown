@@ -8,8 +8,8 @@ import {
 
 import {
   StonehideGuardian,
-  test1,
-  test2,
+  MysticWyvern,
+  ShadowFangPredator,
 } from "../../model/game/monster/stonehideGuardian";
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
@@ -32,7 +32,7 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
         return;
       }
 
-      player.setMonsterCode(getMonsterCode(monsterID));
+      player.setMonsterCode(monster.getImageID());
       player.setMonster(monster);
 
       const gameCode = player.getGameCode();
@@ -57,8 +57,8 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
 // Function to create a monster by its name
 const monsterMap = new Map([
   [MonsterIdentifier.STONEHIDE_GUARDIAN, () => new StonehideGuardian()],
-  [MonsterIdentifier.SHADOWFANG_PREDATOR, () => new test1()],
-  [MonsterIdentifier.MYSTIC_WYVERN, () => new test2()],
+  [MonsterIdentifier.SHADOWFANG_PREDATOR, () => new ShadowFangPredator()],
+  [MonsterIdentifier.MYSTIC_WYVERN, () => new MysticWyvern()],
 ]);
 
 function getMonster(monsterID: MonsterIdentifier) {
@@ -68,17 +68,6 @@ function getMonster(monsterID: MonsterIdentifier) {
 
 export var MonsterList: MonsterState[] = [
   new StonehideGuardian().getMonsterState(),
-  new test1().getMonsterState(),
-  new test2().getMonsterState(),
+  new MysticWyvern().getMonsterState(),
+  new ShadowFangPredator().getMonsterState(),
 ];
-
-function getMonsterCode(monsterID: MonsterIdentifier) {
-  const createMonster = monsterCodeMap.get(monsterID);
-  return createMonster ? createMonster() : "None";
-}
-
-const monsterCodeMap = new Map([
-  [MonsterIdentifier.STONEHIDE_GUARDIAN, () => "StonehideGuardian"],
-  [MonsterIdentifier.SHADOWFANG_PREDATOR, () => "ShadowFangPredator"],
-  [MonsterIdentifier.MYSTIC_WYVERN, () => "MysticWyvern"],
-]);
