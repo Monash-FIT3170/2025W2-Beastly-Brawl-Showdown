@@ -55,6 +55,8 @@ export default function proceedBattleTurn(io: Server, battle: Battle) {
         action.execute(player1, player2);
 
         // Handles the dice roll - For now, typecasting to send the damage so dice can roll it
+        // TODO: For the future, actions should trigger their own animations themselves. Perhaps add a feature that emits animation type and let the
+        // battle screen handle the type of animation to show
         if (action.getName() === "Attack") {
           const attackAction = action as AttackAction;
           const diceRoll = attackAction.getDiceRoll();
