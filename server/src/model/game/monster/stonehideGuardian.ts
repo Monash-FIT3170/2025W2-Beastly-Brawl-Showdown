@@ -18,3 +18,33 @@ export class StonehideGuardian extends Monster {
     );
   }
 }
+
+export class test1 extends Monster {
+  constructor() {
+    super(
+      MonsterIdentifier.MYSTIC_WYVERN,
+      "mysteric wyvern",
+      "mysteric wyvern",
+      new Tank(),
+      new GroundSlamAbilityAction(),
+      30,
+      1,
+      16
+    );
+  }
+}
+
+export class test2 extends Monster {
+  constructor() {
+    super(
+      MonsterIdentifier.SHADOWFANG_PREDATOR,
+      "shadowfang predator",
+      "shadowfang",
+      new Tank(),
+      new GroundSlamAbilityAction(),
+      30,
+      1,
+      16
+    );
+  }
+}
