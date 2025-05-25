@@ -6,12 +6,14 @@ interface PlayerPanelProps {
   playerState: PlayerState;
   playerIndex: number;
   isLeftPlayer?: boolean; // Add this to control layout direction
+  winner: boolean;
 }
 
 const PlayerPanel: React.FC<PlayerPanelProps> = ({ 
   playerState, 
   playerIndex,  
-  isLeftPlayer = true 
+  isLeftPlayer = true,
+  winner
 }) => {
   // Extract current and max health values
   const currentHealth = playerState.currentHealth;
@@ -36,7 +38,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         width: '50%'
       }}
     >
-      {/* Player Name */}
+      {/* Player Name with Crown */}
       <div 
         style={{
           fontSize: '1rem',
@@ -44,10 +46,42 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
           fontWeight: 'bold',
           color: '#403245',
           marginBottom: '0.5rem',
-          border: '2px solid'
+          border: '2px solid',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.5rem',
+          position: 'relative',
         }}
       >
-        {playerState.name}
+        {/* Crown image - only show if winner */}
+        {winner && (
+          <img 
+            src="/match-summary-assets/CROWN.png"
+            alt="Winner Crown"
+            style={{
+              width: '20px',
+              height: '20px',
+              objectFit: 'contain',
+            }}
+          />
+        )}
+        
+        {/* Player Name */}
+        <span>{playerState.name}</span>
+        
+        {/* Crown on the other side for balance (optional) */}
+        {winner && (
+          <img 
+            src="/match-summary-assets/CROWN.png"
+            alt="Winner Crown"
+            style={{
+              width: '20px',
+              height: '20px',
+              objectFit: 'contain',
+            }}
+          />
+        )}
       </div>
       
       {/* Health Bar and Monster Image Container */}
@@ -64,7 +98,6 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         {/* Health Bar */}
         <div 
           style={{ 
-            // flex: 1, 
             width: '80%',
             zIndex: 1, // Keep health bar below monster image
             border: '2px dotted',
@@ -89,10 +122,8 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
             overflow: 'hidden',
             position: 'absolute',
             zIndex: 2,
-            // For left player: position on the right side and shift left to overlap
-            // For right player: position on the left side and shift right to overlap
-            right: isLeftPlayer ? '10px' : 'auto', // Left player: 30px from right edge
-            left: isLeftPlayer ? 'auto' : '10px',  // Right player: 30px from left edge
+            right: isLeftPlayer ? '10px' : 'auto',
+            left: isLeftPlayer ? 'auto' : '10px',
             top: '50%',
             transform: `translateY(-50%) ${isLeftPlayer ? 'scaleX(-1)' : 'scaleX(1)'}`,
             border: '2px solid',
