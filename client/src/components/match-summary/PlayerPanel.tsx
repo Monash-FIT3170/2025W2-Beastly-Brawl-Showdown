@@ -28,7 +28,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
       key={playerIndex}
       style={{
         borderRadius: '0.5rem',
-        border: '2px solid #964B00',
+        // border: '2px solid #964B00',
         padding: '0.75rem 0.5rem',
         textAlign: 'center',
         minWidth: '200px',
@@ -46,7 +46,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
           fontWeight: 'bold',
           color: '#403245',
           marginBottom: '0.5rem',
-          border: '2px solid',
+          // border: '2px solid',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -92,7 +92,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
           alignItems: 'center',
           flexDirection: isLeftPlayer ? 'row' : 'row-reverse',
           position: 'relative', // Enable positioning for overlap
-          border: '2px solid',
+          // border: '2px solid',
         }}
       >
         {/* Health Bar */}
@@ -100,7 +100,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
           style={{ 
             width: '80%',
             zIndex: 1, // Keep health bar below monster image
-            border: '2px dotted',
+            // border: '2px dotted',
           }}
         >
           <HealthBar 
@@ -126,7 +126,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
             left: isLeftPlayer ? 'auto' : '10px',
             top: '50%',
             transform: `translateY(-50%) ${isLeftPlayer ? 'scaleX(-1)' : 'scaleX(1)'}`,
-            border: '2px solid',
+            // border: '2px solid',
           }}
         >
           <img 

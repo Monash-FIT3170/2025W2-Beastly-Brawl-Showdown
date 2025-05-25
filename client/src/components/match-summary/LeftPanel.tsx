@@ -21,7 +21,9 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
   popularMonster
 }) => {
   return (
-    <div className="left-panel" style={{ width: '100%', border:'2px solid' }}>
+    <div className="left-panel" style={{ width: '100%',
+    //  border:'2px solid'
+      }}>
       <div style={{ width: '100%' }}>
         <MatchStatistics />
       </div>

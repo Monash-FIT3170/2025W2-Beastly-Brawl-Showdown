@@ -28,7 +28,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
       style={{
         backgroundColor: '#FFE8B1',
         borderRadius: '0.75rem',
-        border: '2px solid #006400',
+        // border: '2px solid #006400',
         padding: '1rem 0rem',
         marginBottom: '1rem',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
@@ -57,7 +57,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
           marginBottom: '0.5rem',
           position: 'relative',
           gap: '0',
-          border: '2px solid',
+          // border: '2px solid',
           width: '100%'
         }}
       >

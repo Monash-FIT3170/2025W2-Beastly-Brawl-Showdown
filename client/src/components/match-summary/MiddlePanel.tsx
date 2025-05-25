@@ -13,7 +13,7 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
         width: '100%',
         height: '100%',
         overflow: 'auto',
-        border: '2px solid',
+        // border: '2px solid',
         position: 'relative',
         color: '#403245',
 
@@ -46,14 +46,14 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
             gap: '1rem', // Space between battles
             alignItems: 'start', // Align battles to the top of their grid cells
             width: '100%',
-            border: '2px solid'
+            // border: '2px solid'
           }}
         >
           {gameSession.battleStates.map((battleState, index) => (
             <div className='individual-battle-panel-holder'
               key={battleState.id || index}
               style={{
-                border: '2px dotted #006400',
+                // border: '2px dotted #006400',
                 padding: '0.5rem',
                 boxSizing: 'border-box'
                 // position: 'absolute',
