@@ -4,8 +4,13 @@ import socket from "../../socket";
 import { MonsterImageResizable } from "../../components/player-screen/monsters/MonsterImageResizable";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
+import { Screens } from "../../screens";
 
-const WaitingScreen: React.FC = () => {
+interface WaitingScreenProps {
+  setScreen: (screen: Screens) => void;
+}
+
+const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
 
   // Sample battle stats data - TODO: Replace this with real player's data
   const [battleStats, setBattleStats] = useState({
@@ -15,8 +20,11 @@ const WaitingScreen: React.FC = () => {
     criticalHitsDealt: 3,
     successfulBlocks: 2,
   });
+  const [playerMonster, setPlayerMonster] = useState<string>("");
 
+  // Listen for battle start event + send req to server for player's detail
   useEffect(() => {
+    socket.emit("request_waiting_screen_data");
     socket.on("battle_started", (battleId: string) => {
       FlowRouter.go(`/battle/${battleId}`);
     });
@@ -25,6 +33,20 @@ const WaitingScreen: React.FC = () => {
       socket.off("battle_started");
     };
   }, []);
+
+  // Listen to server to wait for a response with the player's monster name
+  // We can use this to pass in more of the player's information for the lobby stats page later...
+  useEffect(() => {
+    socket.on("waiting_screen_data", (data: { monsterName: string }) => {
+      const monsterName = data.monsterName.toUpperCase();
+      console.log(`Received waiting screen data: ${monsterName}`);
+      setPlayerMonster(monsterName);
+    });
+
+    return () => {
+      socket.off("waiting_screen_data");
+    };
+  })
 
   return (
     <div className="bg-peach lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">
@@ -38,7 +60,7 @@ const WaitingScreen: React.FC = () => {
 
     {/* Monster Image - Centered */}
     <div className="flex justify-center">
-      <MonsterImageResizable name="ShadowFangPredator" width={13} height={13} />
+      <MonsterImageResizable name={playerMonster} width={13} height={13} />
     </div>
 
       {/* Lobby stats (Using <BlankPage> styling but resized)*/}
