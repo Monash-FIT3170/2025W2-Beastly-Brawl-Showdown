@@ -6,7 +6,7 @@ import { OutlineText } from "../texts/OutlineText";
 
 interface NameCardProps {
   name: string;
-  monster: "None" | "StonehideGuardian" | "ShadowFangPredator" | "MysticWyvern";
+  monster: string;
   onClick?: () => void;
 }
 

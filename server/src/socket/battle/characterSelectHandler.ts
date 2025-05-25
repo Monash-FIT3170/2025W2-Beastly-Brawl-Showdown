@@ -31,6 +31,7 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
         return;
       }
 
+      player.setMonsterCode(getMonsterCode(monsterID));
       player.setMonster(monster);
 
       console.log(`Player ${playerId} selected ${monster.getName()}.`);
@@ -59,3 +60,14 @@ export var MonsterList: MonsterState[] = [
   new test1().getMonsterState(),
   new test2().getMonsterState(),
 ];
+
+function getMonsterCode(monsterID: MonsterIdentifier) {
+  const createMonster = monsterCodeMap.get(monsterID);
+  return createMonster ? createMonster() : "None";
+}
+
+const monsterCodeMap = new Map([
+  [MonsterIdentifier.STONEHIDE_GUARDIAN, () => "StonehideGuardian"],
+  [MonsterIdentifier.SHADOWFANG_PREDATOR, () => "ShadowFangPredator"],
+  [MonsterIdentifier.MYSTIC_WYVERN, () => "MysticWyvern"],
+]);

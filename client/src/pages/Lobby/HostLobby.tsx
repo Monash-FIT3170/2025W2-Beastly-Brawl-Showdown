@@ -104,7 +104,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           {players.map((player) => (
             <NameCard
               name={player.name}
-              monster={"ShadowFangPredator"}
+              monster={player.monsterCode}
               onClick={() => kickPlayer(player.userID)}
             />
           ))}

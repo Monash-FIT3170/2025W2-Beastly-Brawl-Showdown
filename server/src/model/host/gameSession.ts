@@ -150,18 +150,21 @@ export default class GameSession {
 
       // Create a battle and add it to the queue of battles
       if (player1Indexed != undefined && player2Indexed != undefined) {
-
         let battleId = crypto.randomUUID();
 
-        const battle = new Battle(battleId, player1Indexed, player2Indexed, this.hostUID);
+        const battle = new Battle(
+          battleId,
+          player1Indexed,
+          player2Indexed,
+          this.hostUID
+        );
 
-        battles.set(battleId, battle)
+        battles.set(battleId, battle);
 
         this.battles.enqueue(battle);
 
         this.players.enqueue(player1Indexed);
         this.players.enqueue(player2Indexed);
-
       }
 
       previousPosition = 1;
@@ -185,7 +188,6 @@ export default class GameSession {
   }
 
   public getGameSessionState(): BattleState[] {
-
     const allBattles = [];
 
     for (const battle of this.battles.getItems()) {
@@ -194,7 +196,5 @@ export default class GameSession {
     }
 
     return allBattles;
-
   }
-
 }
