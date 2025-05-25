@@ -242,10 +242,17 @@ export default class GameSession {
   public getGameSessionState(): GameSessionState {
 
     const allBattles = [];
+    let remainingPlayers = 0;
+    let totalPlayers = this.battles.size()*2;
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
       allBattles.push(battle.getBattleState(firstPlayer.getId()));
+      if (battle.isBattleOver()){
+        remainingPlayers += 1;
+      } else {
+        remainingPlayers += 2
+      }
     }
 
     return {
@@ -253,7 +260,9 @@ export default class GameSession {
       round: this.round,
       battleStates: allBattles,
       gameSessionData: this.gameSessionData,
-      currentPhase: this.currentPhase
+      currentPhase: this.currentPhase,
+      totalPlayers: totalPlayers,
+      remainingPlayers: remainingPlayers
     };
 
 }

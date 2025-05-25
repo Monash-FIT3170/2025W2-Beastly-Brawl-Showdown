@@ -7,4 +7,6 @@ export interface GameSessionState {
   battleStates: BattleState[];
   gameSessionData: GameSessionData;
   currentPhase: BattlePhase;
+  totalPlayers: number;
+  remainingPlayers: number;
 }
