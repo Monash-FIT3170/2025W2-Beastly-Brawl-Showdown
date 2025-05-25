@@ -21,19 +21,19 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
     >
       <h2 
         style={{
-          fontSize: '1.5rem',
+          fontSize: '2rem',
           fontFamily: 'Jua, sans-serif',
           fontWeight: 'bold',
-          color: '#403245',
+          color: '#FFFFFF',
           textAlign: 'left',
           margin: '0 0 1rem 0',
           textTransform: 'uppercase',
-          WebkitTextStroke: 'none',  // Add this
+          WebkitTextStroke: '0.1px black',  // Add this
           textShadow: 'none',   
-          padding: '1rem'     // Add this
+          padding: '0.5rem'     // Add this
         }}
       >
-        Battle Arena
+        {'Remaining: ' + gameSession?.remainingPlayers+ '/' + gameSession?.totalPlayers}
       </h2>
       
       {/* Display battle states data */}
