@@ -19,7 +19,7 @@ const LogPanel: React.FC<LogPanelProps> = ({ battleStates }) => {
         padding: '0.75rem 1.5rem',
         width: '260px',
         margin: '1rem 0',
-        height: '300px', // Fixed height with scrolling
+        height: '500px', // Changes height of logpanel
       }}
     >
       <h3 
