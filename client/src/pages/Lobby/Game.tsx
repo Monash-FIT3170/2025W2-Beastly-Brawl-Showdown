@@ -18,7 +18,7 @@ export const Game: React.FC<GameProps> = ({ gameSessionId }) => {
       case Screens.CHARACTER_SELECT_SCREEN:
         return <MonsterSelection setScreen={setScreen} />;
       case Screens.WAITING_SCREEN:
-        return <WaitingScreen />;
+        return <WaitingScreen setScreen={setScreen}/>;
       default:
         return <MonsterSelection setScreen={setScreen} />;
     }
