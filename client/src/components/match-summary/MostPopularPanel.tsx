@@ -22,44 +22,86 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ popularMonster }) =
         padding: '0.75rem 1.5rem',
         width: '260px',
         margin: '1rem auto',
-        textAlign: 'center',
       }}
     >
-      <img 
-        src={imageSrc} 
-        alt={formattedName} 
-        style={{ 
-          width: '100px', 
-          height: '100px', 
-          objectFit: 'contain',
-          marginBottom: '0.5rem' 
-        }} 
-      />
-
-      <div
+      {/* Most Popular Title */}
+      <h3 
         style={{
           fontSize: '1.5rem',
           fontFamily: 'Jua, sans-serif',
           fontWeight: '100',
           color: '#FFFFFF',
           WebkitTextStroke: '1px black',
-          marginBottom: '0.25rem',
-          textTransform: 'uppercase'
+          textAlign: 'center',
+          margin: '0 0 0.75rem 0',
+          textTransform: 'uppercase',
+          textDecoration: 'underline',
+          textUnderlineOffset: '6px',
+          textDecorationThickness: '3px',
         }}
       >
-        {popularMonster.monster!.name}
-      </div>
+        MOST POPULAR
+      </h3>
 
-      <div
+      {/* Image and Monster Info Container */}
+      <div 
         style={{
-          fontSize: '1.25rem',
-          fontFamily: 'Jua, sans-serif',
-          fontWeight: '100',
-          color: '#FFFFFF',
-          WebkitTextStroke: '1px black',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1rem',
         }}
       >
-        {popularMonster.percentagePick}% Pick Rate
+        {/* Monster Image on Left */}
+        <img 
+          src={imageSrc} 
+          alt={formattedName} 
+          style={{ 
+            width: '80px', 
+            height: '80px', 
+            objectFit: 'contain',
+            flexShrink: 0, // Prevent image from shrinking
+          }} 
+        />
+
+        {/* Monster Info on Right */}
+        <div 
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            flex: 1,
+          }}
+        >
+          {/* Monster Name */}
+          <div
+            style={{
+              fontSize: '1.4rem',
+              fontFamily: 'Jua, sans-serif',
+              fontWeight: '100',
+              color: '#FFFFFF',
+              WebkitTextStroke: '1px black',
+              marginBottom: '0.25rem',
+              textTransform: 'uppercase',
+              lineHeight: '1.2',
+            }}
+          >
+            {popularMonster.monster!.name}
+          </div>
+
+          {/* Pick Rate */}
+          <div
+            style={{
+              fontSize: '1.2rem',
+              fontFamily: 'Jua, sans-serif',
+              fontWeight: '100',
+              color: '#FFFFFF',
+              WebkitTextStroke: '1px black',
+              textTransform: 'uppercase',
+            }}
+          >
+            PICK {popularMonster.percentagePick}%
+          </div>
+        </div>
       </div>
     </div>
   );

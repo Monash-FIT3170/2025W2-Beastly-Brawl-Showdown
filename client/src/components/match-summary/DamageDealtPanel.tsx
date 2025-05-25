@@ -35,7 +35,7 @@ const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
           textTransform: 'uppercase',
           textDecoration: 'underline', // Underline as in the image
           textUnderlineOffset: '6px',
-        textDecorationThickness: '3px', // <-- Thicker underline
+          textDecorationThickness: '3px', // <-- Thicker underline
         }}
       >
         DAMAGE DEALT
@@ -46,9 +46,9 @@ const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
             key={index}
             style={{
               display: 'flex', 
-              justifyContent: 'space-between',
               alignItems: 'center',
-              margin: '0.5rem 0',
+              margin: '0 0', // Reduced from 0.5rem to 0.25rem
+              gap: '1rem', // Add consistent gap between all elements
             }}
           >
             <span 
@@ -60,6 +60,7 @@ const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
                 WebkitTextStroke: '1px black', // Black outline
                 textTransform: 'uppercase',
                 flex: '1',
+                textAlign: 'center', // Center the player name in its flex area
               }}
             >
               {player.playerName}
@@ -88,7 +89,7 @@ const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
                 WebkitTextStroke: '1px black', // Black outline
                 textTransform: 'uppercase',
                 flex: '1',
-                textAlign: 'right',
+                textAlign: 'center', // Center the damage amount in its flex area
               }}
             >
               {player.damageAmount}

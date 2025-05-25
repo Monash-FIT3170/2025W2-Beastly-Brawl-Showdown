@@ -26,27 +26,12 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
   return (
     <div 
       style={{
-        backgroundColor: '#FFE8B1',
         borderRadius: '0.75rem',
         // border: '2px solid #006400',
         padding: '1rem 0rem',
         marginBottom: '1rem',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        // position: 'relative'
       }}
     >
-      <h3 
-        style={{
-          fontSize: '1.25rem',
-          fontFamily: 'Jua, sans-serif',
-          fontWeight: 'bold',
-          color: '#403245',
-          margin: '0 0 0.75rem 0',
-          textAlign: 'center',
-        }}
-      >
-        Battle {battleIndex + 1} - Turn {battleState.turn}
-      </h3>
       
       {/* Display players in this battle */}
       <div 

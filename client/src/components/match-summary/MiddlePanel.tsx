@@ -54,10 +54,7 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
               key={battleState.id || index}
               style={{
                 // border: '2px dotted #006400',
-                padding: '0.5rem',
-                boxSizing: 'border-box'
-                // position: 'absolute',
-                // width: '100%'
+                padding: '0rem',
               }}
             >
               <BattlePanel 
