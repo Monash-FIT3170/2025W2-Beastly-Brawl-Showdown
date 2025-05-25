@@ -33,7 +33,6 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',
-        // position: 'absolute',
         width: '50%'
       }}
     >
@@ -53,6 +52,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
       
       {/* Health Bar and Monster Image Container */}
       <div 
+        className='Healtbar-monsterimage-container'
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -64,11 +64,10 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         {/* Health Bar */}
         <div 
           style={{ 
-            flex: 1, 
-            minWidth: '120px',
+            // flex: 1, 
+            width: '80%',
             zIndex: 1, // Keep health bar below monster image
-            transform: isLeftPlayer ? 'scale(1, 1)' : 'scale(1, 1)', // Flip health bar for right player
-            border: '2px solid',
+            border: '2px dotted',
           }}
         >
           <HealthBar 
@@ -81,17 +80,21 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         {/* Monster Image */}
         <div 
           style={{
-            width: '70px', // Slightly larger to make overlap more visible
+            width: '70px',
             height: '70px',
             borderRadius: '0.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
-            position: 'relative',
-            zIndex: 2, // Keep monster image above health bar
-            marginLeft: isLeftPlayer ? '-30px' : '0px', // Overlap from right for left player
-            marginRight: isLeftPlayer ? '0px' : '-30px', // Overlap from left for right player
+            position: 'absolute',
+            zIndex: 2,
+            // For left player: position on the right side and shift left to overlap
+            // For right player: position on the left side and shift right to overlap
+            right: isLeftPlayer ? '10px' : 'auto', // Left player: 30px from right edge
+            left: isLeftPlayer ? 'auto' : '10px',  // Right player: 30px from left edge
+            top: '50%',
+            transform: `translateY(-50%) ${isLeftPlayer ? 'scaleX(-1)' : 'scaleX(1)'}`,
             border: '2px solid',
           }}
         >
@@ -102,7 +105,6 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              transform: isLeftPlayer ? 'scaleX(-1)' : 'scaleX(1)', // Flip horizontally for left player
             }}
           />
         </div>

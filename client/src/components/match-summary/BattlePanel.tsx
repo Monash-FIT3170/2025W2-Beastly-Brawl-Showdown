@@ -1,6 +1,7 @@
 import React from 'react';
 import PlayerPanel from './PlayerPanel';
 import { BattlePhase, BattleState } from '/types/composite/battleState';
+import DifferentPhaseImage from './PhaseImage';
 
 interface BattlePanelProps {
   battleState: BattleState;
@@ -44,33 +45,39 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
       </h3>
       
       {/* Display players in this battle */}
-        <div 
+      <div 
         style={{
-        display: 'flex',
-        justifyContent: 'center', // Change to center
-        alignItems: 'center',
-        marginBottom: '0.5rem',
-        position: 'relative',
-        gap: '0', // Control the exact gap
-        border: '2px solid',
-        width: '100%'
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '0.5rem',
+          position: 'relative',
+          gap: '0',
+          border: '2px solid',
+          width: '100%'
         }}
-        >
+      >
+        <PlayerPanel
+          key={player1Index}
+          playerState={player1State}
+          playerIndex={player1Index}
+          isLeftPlayer={player1LeftPlayer}
+        />
+
+        {/* Use the new DifferentPhaseImage component */}
+        <DifferentPhaseImage 
+          currentPhase={currentPhase}
+          width="35%"
+          height="35%"
+          top="70%"
+        />
 
         <PlayerPanel
-            key={player1Index}
-            playerState={player1State}
-            playerIndex={player1Index}
-            isLeftPlayer={player1LeftPlayer} // First player is left, second is right
-          />
-
-        <PlayerPanel
-            key={player2Index}
-            playerState={player2State}
-            playerIndex={player2Index}
-            isLeftPlayer={player2LeftPlayer} // First player is left, second is right
-          />
-        
+          key={player2Index}
+          playerState={player2State}
+          playerIndex={player2Index}
+          isLeftPlayer={player2LeftPlayer}
+        />
       </div>
     
       

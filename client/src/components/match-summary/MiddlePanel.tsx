@@ -55,8 +55,9 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
               style={{
                 border: '2px dotted #006400',
                 padding: '0.5rem',
+                boxSizing: 'border-box'
                 // position: 'absolute',
-                width: '100%'
+                // width: '100%'
               }}
             >
               <BattlePanel 
