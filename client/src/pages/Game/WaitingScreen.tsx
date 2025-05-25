@@ -14,11 +14,11 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
 
   // Sample battle stats data - TODO: Replace this with real player's data
   const [battleStats, setBattleStats] = useState({
-    battleWon: 3,
-    mostDamageDealt: 20,
-    abilitiesUsed: 5,
-    criticalHitsDealt: 3,
-    successfulBlocks: 2,
+    battleWon: 0,
+    mostDamageDealt: 0,
+    abilitiesUsed: 0,
+    criticalHitsDealt: 0,
+    successfulBlocks: 0,
   });
   const [playerMonster, setPlayerMonster] = useState<string>("");
 
