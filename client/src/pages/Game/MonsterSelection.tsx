@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { Screens } from "../../screens";
-import { MonsterIdentifier } from "/types/single/monsterState";
+import { MonsterIdentifier } from "../../../../types/single/monsterState";
 
 interface MonsterSelectionProps {
   setScreen: (screen: Screens) => void;
@@ -73,7 +73,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
   const handleConfirmSelection = () => {
     if (selectedMonster) {
       socket.emit("monster_selected", {
-        monsterName: selectedMonster.id,
+        monsterID: selectedMonster.id,
       });
 
       console.log(`Monster ${selectedMonster.name} selected for player`);

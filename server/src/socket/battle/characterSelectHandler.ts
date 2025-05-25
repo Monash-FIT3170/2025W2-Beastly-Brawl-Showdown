@@ -1,15 +1,12 @@
 import { Server, Socket } from "socket.io";
-import { battles, players } from "../../../main";
-import { Battle } from "../../model/game/battle";
-import { MonsterState, MonsterIdentifier } from "types/single/monsterState";
-import { NullAction } from "../../model/game/action/null";
+import { players } from "../../../main";
+import { MonsterIdentifier } from "../../../../types/single/monsterState";
 
 import {
   StonehideGuardian,
   test1,
   test2,
 } from "../../model/game/monster/stonehideGuardian";
-import { Monster } from "../../model/game/monster/monster";
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
   socket.on(
