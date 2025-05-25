@@ -3,6 +3,7 @@ import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
 import { BattleState } from "/types/composite/battleState";
+import { PlayerState } from "/types/single/playerState";
 
 export default class GameSession {
   hostUID: string;
@@ -150,18 +151,21 @@ export default class GameSession {
 
       // Create a battle and add it to the queue of battles
       if (player1Indexed != undefined && player2Indexed != undefined) {
-
         let battleId = crypto.randomUUID();
 
-        const battle = new Battle(battleId, player1Indexed, player2Indexed, this.hostUID);
+        const battle = new Battle(
+          battleId,
+          player1Indexed,
+          player2Indexed,
+          this.hostUID
+        );
 
-        battles.set(battleId, battle)
+        battles.set(battleId, battle);
 
         this.battles.enqueue(battle);
 
         this.players.enqueue(player1Indexed);
         this.players.enqueue(player2Indexed);
-
       }
 
       previousPosition = 1;
@@ -185,7 +189,6 @@ export default class GameSession {
   }
 
   public getGameSessionState(): BattleState[] {
-
     const allBattles = [];
 
     for (const battle of this.battles.getItems()) {
@@ -194,7 +197,13 @@ export default class GameSession {
     }
 
     return allBattles;
-
   }
 
+  public getPlayerStates(): PlayerState[] {
+    const playerStates: PlayerState[] = [];
+    for (const player of this.players.getItems()) {
+      playerStates.push(player.getPlayerState());
+    }
+    return playerStates;
+  }
 }

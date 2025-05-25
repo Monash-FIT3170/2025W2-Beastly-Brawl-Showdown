@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Player from "../../types/player";
 import { QRCodeSVG } from "qrcode.react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { local_url } from "/client/IPtest";
@@ -11,6 +10,7 @@ import { BaseCard } from "../../components/cards/BaseCard";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { GenericIcon } from "../../components/icons/GenericIcon";
+import { PlayerState } from "/types/single/playerState";
 
 // Defines code for the game session
 interface HostLobbyProps {
@@ -19,8 +19,9 @@ interface HostLobbyProps {
 
 const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const code = gameCode;
-  const [players, setPlayers] = useState<Player[]>([]);
+  const [players, setPlayers] = useState<PlayerState[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
+  const [canStart, setCanStart] = useState(false);
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -66,20 +67,34 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     if (Array.isArray(players)) {
       setPlayers(players);
       setPlayerCount(players.length);
+
+      setCanStart(canStartGame(players));
     } else {
       console.error("'players' is not an array", players);
     }
   });
 
+  const canStartGame = (players: PlayerState[]) => {
+    if (players.length < 2) {
+      return false; // If less than 2 players, cannot start
+    }
+
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].monster === null) {
+        return false; // If any player does not have a monster selected, cannot start
+      }
+    }
+    return true;
+  };
+
   return (
-    
     <BlankPage>
       {/* Responsive header section */}
       <div className="flex flex-row h-1/5 w-full items-center justify-between px-4 pt-4">
         {/* Logo on the left */}
-        
+
         <LogoResizable className="h-full w-1/11"></LogoResizable>
-        
+
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
           <OutlineText size="large">
@@ -102,11 +117,9 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
       {/* Not sure how the monster is being determined yet, so just using a string for now */}
       <div className="flex flex-row h-3/5 w-full items-center justify-between p-[2rem]">
         <div className="flex flex-row h-full w-full justify-around items-center bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl">
-       
-            {players.map((player) => (
-              <NameCard name={player.name} monster='ShadowFangPredator' onClick={() => kickPlayer(player.userID)}/>
-            ))}
-        
+          {players.map((player) => (
+            <NameCard player={player} onClick={() => kickPlayer(player.id)} />
+          ))}
         </div>
       </div>
 
@@ -114,33 +127,31 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
       <div className="flex flex-row h-1/5 w-full px-10 items-center justify-between">
         <ButtonGeneric color="blue" size="medium" onClick={closeGame}>
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
-            <GenericIcon style="arrowleft" colour="stroked"/>
+            <GenericIcon style="arrowleft" colour="stroked" />
             <div className="mt-1">
-              <OutlineText size="large">
-                BACK
-              </OutlineText>
+              <OutlineText size="large">BACK</OutlineText>
             </div>
           </div>
         </ButtonGeneric>
 
         <div className="mb-5 mr-13">
-          <ButtonGeneric color="ronchi" size="large" isDisabled={playerCount < 2} onClick={startGame}>
+          <ButtonGeneric
+            color="ronchi"
+            size="large"
+            isDisabled={playerCount < 2}
+            onClick={startGame}
+          >
             <div className="mt-1">
-              <OutlineText size="large">
-                START GAME
-              </OutlineText>
-            </div> 
+              <OutlineText size="large">START GAME</OutlineText>
+            </div>
           </ButtonGeneric>
         </div>
 
         <div className="mb-20">
-          <BaseCard color='peach' width={12} height={4}>
-            <OutlineText size="medium">
-              PLAYERS: {playerCount}/8
-            </OutlineText>
+          <BaseCard color="peach" width={12} height={4}>
+            <OutlineText size="medium">PLAYERS: {playerCount}/8</OutlineText>
           </BaseCard>
         </div>
-        
       </div>
 
       {/* Debugging button to print socket ID */}

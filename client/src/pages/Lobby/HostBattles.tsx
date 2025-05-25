@@ -33,8 +33,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       {/* Responsive header section */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         {/* Logo on the left */}
-        <div className="flex-shrink-0">
-        </div>
+        <div className="flex-shrink-0"></div>
 
         {/* Heading in the center */}
         <div className="flex-1 min-w-[200px] text-center">
