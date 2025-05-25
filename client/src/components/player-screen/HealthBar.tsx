@@ -11,7 +11,9 @@ const HealthBar: React.FC<HealthBarProps> = ({ current, max, isLeftPlayer = true
   const percentage = (current / max) * 100;
 
   let color = "green";
-  if (percentage <= 20) color = "red";
+
+  if (percentage === 0) color = "grey";
+  else if (percentage <= 20) color = "red";
   else if (percentage <= 50) color = "orange";
 
   return (
