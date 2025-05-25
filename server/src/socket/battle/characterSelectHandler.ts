@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
-import { players } from "../../../main";
+import { players, activeGameSessions } from "../../../main";
+
 import {
   MonsterIdentifier,
   MonsterState,
@@ -34,6 +35,16 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
       player.setMonsterCode(getMonsterCode(monsterID));
       player.setMonster(monster);
 
+      const gameCode = player.getGameCode();
+      const gameCodeN = Number(gameCode);
+      const session = activeGameSessions.get(gameCodeN);
+      // Update host information
+      io.to(`game-${gameCode}`).emit("update-players", {
+        message: `Player ${player.getName()} - ${
+          socket.id
+        } added to current game session.`,
+        players: session.players.getItems(),
+      });
       console.log(`Player ${playerId} selected ${monster.getName()}.`);
     }
   );
