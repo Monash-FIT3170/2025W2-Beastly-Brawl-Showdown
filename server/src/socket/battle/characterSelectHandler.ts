@@ -1,6 +1,9 @@
 import { Server, Socket } from "socket.io";
 import { players } from "../../../main";
-import { MonsterIdentifier } from "../../../../types/single/monsterState";
+import {
+  MonsterIdentifier,
+  MonsterState,
+} from "../../../../types/single/monsterState";
 
 import {
   StonehideGuardian,
@@ -33,6 +36,10 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
       console.log(`Player ${playerId} selected ${monster.getName()}.`);
     }
   );
+
+  socket.on("request_monster_list", () => {
+    socket.emit("monster_list", MonsterList);
+  });
 };
 
 // Function to create a monster by its name
@@ -46,3 +53,9 @@ function getMonster(monsterID: MonsterIdentifier) {
   const createMonster = monsterMap.get(monsterID);
   return createMonster ? createMonster() : null;
 }
+
+export var MonsterList: MonsterState[] = [
+  new StonehideGuardian().getMonsterState(),
+  new test1().getMonsterState(),
+  new test2().getMonsterState(),
+];

@@ -22,9 +22,9 @@ export class StonehideGuardian extends Monster {
 export class test1 extends Monster {
   constructor() {
     super(
-      MonsterIdentifier.STONEHIDE_GUARDIAN,
-      "test Guardian",
-      "test1",
+      MonsterIdentifier.MYSTIC_WYVERN,
+      "mysteric wyvern",
+      "mysteric wyvern",
       new Tank(),
       new GroundSlamAbilityAction(),
       30,
@@ -37,9 +37,9 @@ export class test1 extends Monster {
 export class test2 extends Monster {
   constructor() {
     super(
-      MonsterIdentifier.STONEHIDE_GUARDIAN,
-      "test gwbuosjlzm 2",
-      "2",
+      MonsterIdentifier.SHADOWFANG_PREDATOR,
+      "shadowfang predator",
+      "shadowfang",
       new Tank(),
       new GroundSlamAbilityAction(),
       30,

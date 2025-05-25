@@ -2,71 +2,46 @@ import React, { useState, useEffect } from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { Screens } from "../../screens";
-import { MonsterIdentifier } from "../../../../types/single/monsterState";
+import { MonsterState } from "../../../../types/single/monsterState";
 
 interface MonsterSelectionProps {
   setScreen: (screen: Screens) => void;
 }
 
-export interface FrontendMonster {
-  id: MonsterIdentifier;
-  name: string;
-  hp: number;
-  attack: number;
-  description: string;
-  armourClass: number;
-}
-
-const monsterList: FrontendMonster[] = [
-  {
-    id: MonsterIdentifier.STONEHIDE_GUARDIAN,
-    name: "Stonehide Guardian",
-    hp: 120,
-    attack: 10,
-    armourClass: 18,
-    description: "A sturdy tank with powerful defense.",
-  },
-  {
-    id: MonsterIdentifier.SHADOWFANG_PREDATOR,
-    name: "Shadowfang Predator",
-    hp: 90,
-    attack: 15,
-    armourClass: 14,
-    description: "A stealthy striker with high damage.",
-  },
-  {
-    id: MonsterIdentifier.MYSTIC_WYVERN,
-    name: "Mystic Wyvern",
-    hp: 100,
-    attack: 12,
-    armourClass: 16,
-    description: "A balanced attacker with magical prowess.",
-  },
-];
-
 export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
   setScreen,
 }) => {
-  const [monsters, setMonsters] = useState<FrontendMonster[]>([]);
-  const [selectedMonster, setSelectedMonster] =
-    useState<FrontendMonster | null>(null);
+  const [monsters, setMonsters] = useState<MonsterState[]>([]);
+  const [selectedMonster, setSelectedMonster] = useState<MonsterState | null>(
+    null
+  );
 
   useEffect(() => {
-    setMonsters(monsterList);
+    // Request the monster list once when component mounts
+    socket.emit("request_monster_list");
 
-    // Listen for the "kick-warning" event from the server
+    // Listen for the monster list from server
+    socket.on("monster_list", (monsterList: MonsterState[]) => {
+      setMonsters(monsterList);
+    });
+
+    return () => {
+      socket.off("monster_list");
+    };
+  }, []);
+
+  useEffect(() => {
     socket.on("kick-warning", ({ message }) => {
       console.log(message);
       FlowRouter.go("/*");
     });
 
-    // Cleanup to avoid duplicate listeners
     return () => {
       socket.off("kick-warning");
     };
   }, []);
 
-  const handleSelectMonster = (monster: FrontendMonster) => {
+  const handleSelectMonster = (monster: MonsterState) => {
     setSelectedMonster(monster);
   };
 
@@ -104,8 +79,8 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
         <div className="mt-6 p-4 border rounded-lg shadow w-full max-w-md bg-white">
           <h2 className="text-xl font-bold">{selectedMonster.name}</h2>
           <p className="mt-1">{selectedMonster.description}</p>
-          <p className="mt-2">HP: {selectedMonster.hp}</p>
-          <p>Attack: {selectedMonster.attack}</p>
+          <p className="mt-2">HP: {selectedMonster.maxHealth}</p>
+          <p>Attack: {selectedMonster.attackBonus}</p>
           <p>Armor Class: {selectedMonster.armourClass}</p>
           <button
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"

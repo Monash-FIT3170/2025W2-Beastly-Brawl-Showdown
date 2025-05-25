@@ -27,7 +27,6 @@ Meteor.startup(async () => {
     // startBattleHandler(io, socket);
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
-    actionSelectedHandler(io, socket);
     characterSelectHandler(io, socket);
 
     socket.on("disconnect", (reason) => {
