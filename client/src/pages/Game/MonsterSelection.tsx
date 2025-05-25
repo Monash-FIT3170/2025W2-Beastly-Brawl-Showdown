@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { Screens } from "../../screens";
+import { MonsterIdentifier } from "/types/single/monsterState";
 
 interface MonsterSelectionProps {
   setScreen: (screen: Screens) => void;
 }
 
 export interface FrontendMonster {
-  id: string;
+  id: MonsterIdentifier;
   name: string;
   hp: number;
   attack: number;
@@ -18,7 +19,7 @@ export interface FrontendMonster {
 
 const monsterList: FrontendMonster[] = [
   {
-    id: "stonehide",
+    id: MonsterIdentifier.STONEHIDE_GUARDIAN,
     name: "Stonehide Guardian",
     hp: 120,
     attack: 10,
@@ -26,7 +27,7 @@ const monsterList: FrontendMonster[] = [
     description: "A sturdy tank with powerful defense.",
   },
   {
-    id: "shadowfang",
+    id: MonsterIdentifier.SHADOWFANG_PREDATOR,
     name: "Shadowfang Predator",
     hp: 90,
     attack: 15,
@@ -34,7 +35,7 @@ const monsterList: FrontendMonster[] = [
     description: "A stealthy striker with high damage.",
   },
   {
-    id: "mysticwyvern",
+    id: MonsterIdentifier.MYSTIC_WYVERN,
     name: "Mystic Wyvern",
     hp: 100,
     attack: 12,
@@ -72,7 +73,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
   const handleConfirmSelection = () => {
     if (selectedMonster) {
       socket.emit("monster_selected", {
-        monsterName: selectedMonster.name,
+        monsterName: selectedMonster.id,
       });
 
       console.log(`Monster ${selectedMonster.name} selected for player`);

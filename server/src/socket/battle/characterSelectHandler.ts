@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { battles, players } from "../../../main";
 import { Battle } from "../../model/game/battle";
-import { MonsterState } from "types/single/monsterState";
+import { MonsterState, MonsterIdentifier } from "types/single/monsterState";
 import { NullAction } from "../../model/game/action/null";
 
 import {
@@ -12,40 +12,40 @@ import {
 import { Monster } from "../../model/game/monster/monster";
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
-  socket.on("monster_selected", ({ monsterName }: { monsterName: string }) => {
-    console.log(`Made it to characterSelectHandler`);
+  socket.on(
+    "monster_selected",
+    ({ monsterID }: { monsterID: MonsterIdentifier }) => {
+      console.log(`Made it to characterSelectHandler`);
 
-    const playerId = socket.id;
+      const playerId = socket.id;
 
-    const monster = createMonsterByName(monsterName);
-    if (!monster) {
-      console.error(`Invalid monster name: ${monsterName}`);
-      return;
+      const monster = getMonster(monsterID);
+      if (!monster) {
+        console.error(`Invalid monster name: ${monsterID}`);
+        return;
+      }
+
+      const player = players.get(socket.id);
+      if (!player) {
+        console.error(`Player ${playerId} not found`);
+        return;
+      }
+
+      player.setMonster(monster);
+
+      console.log(`Player ${playerId} selected ${monster.getName()}.`);
     }
-
-    const player = players.get(socket.id);
-    if (!player) {
-      console.error(`Player ${playerId} not found`);
-      return;
-    }
-
-    player.setMonster(monster);
-
-    console.log(`Player ${playerId} selected ${monster.getName()}.`);
-  });
+  );
 };
 
 // Function to create a monster by its name
-export function createMonsterByName(name: string): Monster | null {
-  switch (name) {
-    case "Stonehide Guardian":
-      return new StonehideGuardian();
-    case "Shadowfang Predator":
-      return new test1();
-    case "Mystic Wyvern":
-      return new test2();
+const monsterMap = new Map([
+  [MonsterIdentifier.STONEHIDE_GUARDIAN, () => new StonehideGuardian()],
+  [MonsterIdentifier.SHADOWFANG_PREDATOR, () => new test1()],
+  [MonsterIdentifier.MYSTIC_WYVERN, () => new test2()],
+]);
 
-    default:
-      return null;
-  }
+function getMonster(monsterID: MonsterIdentifier) {
+  const createMonster = monsterMap.get(monsterID);
+  return createMonster ? createMonster() : null;
 }
