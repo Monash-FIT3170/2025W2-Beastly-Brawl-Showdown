@@ -3,6 +3,7 @@ import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
 import { BattleState } from "/types/composite/battleState";
+import { PlayerState } from "/types/single/playerState";
 
 export default class GameSession {
   hostUID: string;
@@ -196,5 +197,13 @@ export default class GameSession {
     }
 
     return allBattles;
+  }
+
+  public getPlayerStates(): PlayerState[] {
+    const playerStates: PlayerState[] = [];
+    for (const player of this.players.getItems()) {
+      playerStates.push(player.getPlayerState());
+    }
+    return playerStates;
   }
 }

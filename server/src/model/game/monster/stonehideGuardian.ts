@@ -14,40 +14,7 @@ export class StonehideGuardian extends Monster {
       new GroundSlamAbilityAction(),
       30,
       1,
-      16,
-      "StonehideGuardian"
-    );
-  }
-}
-
-export class MysticWyvern extends Monster {
-  constructor() {
-    super(
-      MonsterIdentifier.MYSTIC_WYVERN,
-      "mystic wyvern",
-      "mystic wyvern",
-      new Tank(),
-      new GroundSlamAbilityAction(),
-      30,
-      1,
-      16,
-      "MysticWyvern"
-    );
-  }
-}
-
-export class ShadowFangPredator extends Monster {
-  constructor() {
-    super(
-      MonsterIdentifier.SHADOWFANG_PREDATOR,
-      "shadowfang predator",
-      "shadowfang",
-      new Tank(),
-      new GroundSlamAbilityAction(),
-      30,
-      1,
-      16,
-      "ShadowFangPredator"
+      16
     );
   }
 }

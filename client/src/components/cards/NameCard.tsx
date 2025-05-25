@@ -3,27 +3,35 @@ import { IconButton } from "../buttons/IconButton";
 import { BaseCard } from "./BaseCard";
 import { MonsterImageResizable } from "../player-screen/monsters/MonsterImageResizable";
 import { OutlineText } from "../texts/OutlineText";
+import { PlayerState } from "/types/single/playerState";
+import { MonsterIdentifier } from "/types/single/monsterState";
 
 interface NameCardProps {
-  name: string;
-  monster: string;
+  player: PlayerState;
   onClick?: () => void;
 }
 
-export const NameCard = ({ name, monster, onClick }: NameCardProps) => {
+export const NameCard = ({ player, onClick }: NameCardProps) => {
   const monsterCardColour = {
-    StonehideGuardian: "guardian",
-    ShadowFangPredator: "predator",
-    MysticWyvern: "wyvern",
+    [MonsterIdentifier.STONEHIDE_GUARDIAN]: "guardian",
+    [MonsterIdentifier.SHADOWFANG_PREDATOR]: "predator",
+    [MonsterIdentifier.MYSTIC_WYVERN]: "wyvern",
     None: "quillGray",
   };
 
   return (
     <div className="flex flex-col justify-center items-center h-60">
-      <MonsterImageResizable name={monster} width={8} height={8} />
-      <BaseCard color={monsterCardColour[monster]} width={8}>
+      <MonsterImageResizable
+        name={player.monster?.id ?? "None"}
+        width={8}
+        height={8}
+      />
+      <BaseCard
+        color={monsterCardColour[player.monster?.id ?? "None"]}
+        width={8}
+      >
         <div className="flex flex-row items-center justify-apart space-x-4 m-2">
-          <OutlineText size="tiny">{name}</OutlineText>
+          <OutlineText size="tiny">{player.name}</OutlineText>
           <IconButton
             style="x"
             iconColour="black"

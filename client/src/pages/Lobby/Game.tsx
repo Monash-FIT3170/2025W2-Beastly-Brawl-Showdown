@@ -9,22 +9,20 @@ interface GameProps {
 }
 
 export const Game: React.FC<GameProps> = ({ gameSessionId }) => {
-  const [screen, setScreen] = useState<Screens>(Screens.MONSTER_SELECT_SCREEN); // State to track the current screen
+  const [screen, setScreen] = useState<Screens>(
+    Screens.CHARACTER_SELECT_SCREEN
+  ); // State to track the current screen
 
   const renderScreen = () => {
     switch (screen) {
-      case Screens.MONSTER_SELECT_SCREEN:
-        return <MonsterSelection setScreen={setScreen}/>;
+      case Screens.CHARACTER_SELECT_SCREEN:
+        return <MonsterSelection setScreen={setScreen} />;
       case Screens.WAITING_SCREEN:
         return <WaitingScreen />;
       default:
-        return <MonsterSelection setScreen={setScreen}/>;
+        return <MonsterSelection setScreen={setScreen} />;
     }
   };
 
-  return (
-    <div>
-      {renderScreen()}
-    </div>
-  );
+  return <div>{renderScreen()}</div>;
 };
