@@ -15,7 +15,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [timer, setTimer] = useState<number>(10);
   const [winner, setWinner] = useState<string | null>(null);
 
-  const [showModal, setShowModal] = useState(false); // show dice modal
+  const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
   useEffect(() => {
@@ -37,10 +37,12 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setWinner(winner);
     });
 
+    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier 
+    // to handle all types of animations triggered by actions  
     socket.on("roll_dice", (diceRoll: number) => {
       setDiceValue(diceRoll);
       console.log(`From socket in TempGame: dps ${diceRoll}`);
-      setShowModal(true);
+      setShowDiceModal(true);
     });
     
     return () => {
@@ -61,8 +63,8 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       <h1>GAME</h1>
 
       <DicerollModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
+        show={showDiceModal}
+        onClose={() => setShowDiceModal(false)}
         toRoll={diceValue}
       />
 

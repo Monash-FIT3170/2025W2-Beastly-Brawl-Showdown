@@ -9,7 +9,7 @@ export class AttackAction extends Action {
   private d20: number;
 
   constructor(attackBonus: number) {
-    super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy");
+    super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity);
     this.attackBonus = attackBonus;
   }
 
@@ -46,7 +46,7 @@ export class AttackAction extends Action {
       actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt 5 damage.`);
     } else {
       // Log failed attack
-      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt 0 damage.`);
+      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and failed to hit. `);
     }
   }
 }
