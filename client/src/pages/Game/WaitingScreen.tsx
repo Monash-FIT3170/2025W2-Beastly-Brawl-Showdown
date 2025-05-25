@@ -11,7 +11,6 @@ interface WaitingScreenProps {
 }
 
 const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
-
   // Sample battle stats data - TODO: Replace this with real player's data
   const [battleStats, setBattleStats] = useState({
     battleWon: 0,
@@ -46,53 +45,57 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
     return () => {
       socket.off("waiting_screen_data");
     };
-  })
+  });
 
   return (
     <div className="bg-peach lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">
+      {/* Title - Using OutlineText styling as text sizing needs to be modified */}
+      <div className="bg-pictonBlue outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center p-4 mt-[-3rem]">
+        <p className="text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-[Jua] text-outline text-center">
+          WAITING FOR HOST TO START GAME
+        </p>
+      </div>
 
-    {/* Title - Using OutlineText styling as text sizing needs to be modified */}
-    <div className="bg-pictonBlue outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center p-4 mt-[-3rem]">
-      <p className="text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-[Jua] text-outline text-center">
-        WAITING FOR HOST TO START GAME
-      </p>
-    </div>
-
-    {/* Monster Image - Centered */}
-    <div className="flex justify-center">
-      <MonsterImageResizable name={playerMonster} width={13} height={13} />
-    </div>
+      {/* Monster Image - Centered */}
+      <div className="flex justify-center">
+        <MonsterImageResizable name={playerMonster} width={13} height={13} />
+      </div>
 
       {/* Lobby stats (Using <BlankPage> styling but resized)*/}
       <div className="bg-goldenRod outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col justify-around items-center p-4">
-      <h2 className="text-[3rem] xl:text-medium font-[Jua] text-outline">Lobby Stats</h2>
-      <div className="flex flex-col items-center w-full max-w-md space-y-2">
-        <div className="grid grid-cols-1 gap-y-2 max-w-md w-full text-center">
-          <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-            Battle Won: {battleStats.battleWon}
-          </p>
-          <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-            Abilities Used: {battleStats.abilitiesUsed}
-          </p>
-          <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-            Most Damage Dealt: {battleStats.mostDamageDealt}
-          </p>
-          <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-            Successful Blocks: {battleStats.successfulBlocks}
-          </p>
-          <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-            Critical Hits Dealt: {battleStats.criticalHitsDealt}
-          </p>
+        <h2 className="text-[3rem] xl:text-medium font-[Jua] text-outline">
+          Lobby Stats
+        </h2>
+        <div className="flex flex-col items-center w-full max-w-md space-y-2">
+          <div className="grid grid-cols-1 gap-y-2 max-w-md w-full text-center">
+            <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
+              Battle Won: {battleStats.battleWon}
+            </p>
+            <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
+              Abilities Used: {battleStats.abilitiesUsed}
+            </p>
+            <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
+              Most Damage Dealt: {battleStats.mostDamageDealt}
+            </p>
+            <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
+              Successful Blocks: {battleStats.successfulBlocks}
+            </p>
+            <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
+              Critical Hits Dealt: {battleStats.criticalHitsDealt}
+            </p>
+          </div>
         </div>
-      </div>
 
         {/* For now, EXIT just changes the screen to the home page. TODO: Route users who exit the game appropriately + disconnects them from battle appropriately */}
-        <ButtonGeneric color="red" size="medium" onClick={() => FlowRouter.go("/")}>
+        <ButtonGeneric
+          isDisabled={true}
+          color="red"
+          size="medium"
+          onClick={() => FlowRouter.go("/")}
+        >
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
             <div>
-              <OutlineText size="medium">
-                EXIT LOBBY
-              </OutlineText>
+              <OutlineText size="medium">EXIT LOBBY</OutlineText>
             </div>
           </div>
         </ButtonGeneric>
