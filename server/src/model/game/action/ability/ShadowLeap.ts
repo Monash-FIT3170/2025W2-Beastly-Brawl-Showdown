@@ -15,12 +15,11 @@ export class ShadowLeapAbilityAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.dodge()
     affectedPlayer.getActions().forEach((action) => {
+      action.incCurrentUse(-1);
       if (action.getName()!="Elemental Breath"){
-        action.incCurrentUse(-1);
         affectedPlayer.getActions().filter(item => item !== action)
       }
     });
-    affectedPlayer.clearActions() 
 
   }
 

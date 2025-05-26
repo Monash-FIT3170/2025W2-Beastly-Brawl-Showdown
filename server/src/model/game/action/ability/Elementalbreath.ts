@@ -5,7 +5,7 @@ import { ActionIdentifier } from "/types/single/actionState";
 export class ElementalBreathAction extends Action {
   constructor() {
     super(
-      ActionIdentifier.FERAL_STRIKE,
+      ActionIdentifier.ELEMENTAL_BREATH,
       "Elemental Breath",
       "Deals damage to opponents in a cone.",
       Infinity 
@@ -15,7 +15,7 @@ export class ElementalBreathAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
-    var dodge = affectedPlayer.getdodgingpos()
+    var dodge = affectedPlayer.getDodgingPosition()
     if (dodge = true){
         affectedPlayer.incHealth(-3);
     }

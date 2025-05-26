@@ -1,0 +1,41 @@
+
+.dice-modal-overlay {
+    position: absolute; /* Changed from fixed */
+    top: 100px; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    pointer-events: none; /* Let clicks pass through */
+    }
+    
+    .dice-modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    width: 200px;
+    pointer-events: auto; 
+    background-color: #FBD474;
+    }
+    
+    .dice-face {
+    font-size: 3rem;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    width: 80px;
+    height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+    }
+    
+    .dice-result-text {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    }

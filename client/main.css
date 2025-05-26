@@ -1,4 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-jua: "Jua", sans-serif;
+  --color-pictonBlue: #55a9ed;
+  --color-blackCurrant: #403245;
+  --color-ronchi: #edaf55;
+  --color-springLeaves: #557d5a;
+  --color-terracotta: #e28454;
+  --color-heliotrope: #bd55ed;
+  --color-quillGray: #dad9d7;
+  --color-alto: #dadada;
+  --color-goldenRod: #fbd474;
+  --color-merino: #f6f1e5;
+  --color-conifer: #7eed55;
+  --color-peach: #ffe8b1;
+  --color-burntSienna: #ed5a55;
+  --color-schoolBusYellow: #ffd900;
+  --color-guardianblue: #bad5f6;
+  --color-predatorpurple: #64467a;
+  --color-wyvernred: #e83f5e;
+  --text-tiny: 0.9375rem;
+  --text-medium: 1.5625rem;
+  --text-large: 2.1875rem;
+  --text-largemobile: 6rem;
+  --spacing-normalButtonWidth: 11.25rem;
+  --spacing-normalButtonHeight: 5.625rem;
+  --spacing-normalPhoneWidth: 23.0625rem;
+}
+
 body {
-  padding: 10px;
   font-family: sans-serif;
+  @apply bg-peach; 
+}
+
+h1 {
+  color: #557d5a;
+  font-size: 100px;
+  margin: 0;
+  padding: 10px 0;
+  text-shadow:
+    2px 2px #fba800,
+    -1px -1px #fba800,
+    -1px 1px #fba800,
+    1px -1px #fba800,
+    1px 1px #fba800;
+}
+
+h2 {
+  color: #557d5a;
+  font-size: 50px;
+  margin: 0;
+  padding: 10px 0;
+  text-shadow:
+    2px 2px #fba800,
+    -1px -1px #fba800,
+    -1px 1px #fba800,
+    1px -1px #fba800,
+    1px 1px #fba800;
+}
+
+.text-outline {
+  -webkit-text-fill-color: var(--color-merino);
+  -webkit-text-stroke-width: 0.05em; 
+  -webkit-text-stroke-color: var(--color-blackCurrant);
 }

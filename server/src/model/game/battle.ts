@@ -5,12 +5,25 @@ import { BattleState } from "/types/composite/battleState"; // Adjust the path b
 export class Battle {
   private id: UUID;
   private players: Map<string, Player> = new Map();
+
+  private gameSessionId: string;
+
   private turn: number = 0;
 
-  constructor(id: UUID, player1: Player, player2: Player) {
+  constructor(
+    id: UUID,
+    player1: Player,
+    player2: Player,
+    gameSessionId: string
+  ) {
     this.id = id;
     this.players.set(player1.getId(), player1);
     this.players.set(player2.getId(), player2);
+    this.gameSessionId = gameSessionId;
+  }
+
+  public getGameSessionId(): string | undefined {
+    return this.gameSessionId;
   }
 
   public getPlayer(id: string): Player | undefined {
@@ -60,11 +73,13 @@ export class Battle {
   }
   public isBattleOver(): boolean {
     return Array.from(this.players.values()).some(
-      (player) => player.getHealth() == 0 
-    )
+      (player) => player.getHealth() == 0
+    );
   }
-  public getWinner(): string| null {
-    const alive_players = Array.from(this.players.values()).filter((player) => player.getHealth() > 0)
-    return alive_players.length === 1? alive_players[0].getName(): null;
+  public getWinner(): string | null {
+    const alive_players = Array.from(this.players.values()).filter(
+      (player) => player.getHealth() > 0
+    );
+    return alive_players.length === 1 ? alive_players[0].getName() : null;
   }
 }
