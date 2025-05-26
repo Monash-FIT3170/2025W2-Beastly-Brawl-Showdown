@@ -16,8 +16,14 @@ const MonsterPanel: React.FC<MonsterPanelProps> = ({ battleState }) => {
 
     return (
         <div className="monster-panel">
-            <div className="right-monster"><img src={pathRightMon}/></div>
-            <div className="left-monster"><img src={pathLeftMon}/></div>
+            <div className="right-monster">
+                <img src={pathRightMon}/>
+                <div className="monster-shadow"></div>
+            </div>
+            <div className="left-monster">
+                <img src={pathLeftMon}/>
+                <div className="monster-shadow"></div>
+            </div>
         </div>
     );
 };

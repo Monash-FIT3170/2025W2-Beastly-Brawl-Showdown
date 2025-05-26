@@ -13,6 +13,7 @@
 .right-monster {
   width: auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-right: 8px;
@@ -21,8 +22,11 @@
 
 .left-monster img,
 .right-monster img {
-  width: 15vw;
+  position: relative;
+  z-index: 1;
+  width: 200px;
   height: auto;
+  display: block;
 }
 
 .left-monster {
@@ -32,4 +36,14 @@
 
 .right-monster {
   align-self: flex-end;
+}
+
+.monster-shadow {
+  width: 160px;
+  height: 20px;
+  background: rgba(0,0,0,0.50);
+  border-radius: 50%;
+  filter: blur(1.5px);
+  margin-top: -50px;
+  margin-bottom: 8px;     /* Space below shadow */
 }

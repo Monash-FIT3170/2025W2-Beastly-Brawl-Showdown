@@ -23,7 +23,7 @@ const TempGame: React.FC<TempGameProps> = ({ battleId }) => {
     socket.on("possible_actions", (actions: ActionState[]) => {
       setPossibleActions(actions);
     });
-
+    
     socket.on("timer", (time: number) => {
       console.log(`Timer: ${time}`);
       setTimer(time);
