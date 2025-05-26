@@ -28,7 +28,6 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
       key={playerIndex}
       style={{
         borderRadius: '0.5rem',
-        // border: '2px solid #964B00',
         padding: '0.75rem 0.5rem',
         textAlign: 'center',
         minWidth: '200px',
@@ -52,6 +51,8 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
           justifyContent: 'center',
           gap: '0.5rem',
           position: 'relative',
+          height: '50px', // Fixed height instead of minHeight
+          padding: '0.5rem',
         }}
       >
         {/* Crown image - only show if winner */}
@@ -60,8 +61,8 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
             src="/match-summary-assets/CROWN.png"
             alt="Winner Crown"
             style={{
-              width: '20px',
-              height: '20px',
+              width: '35px', // Increased from 20px to 35px
+              height: '35px', // Increased from 20px to 35px
               objectFit: 'contain',
             }}
           />
@@ -70,14 +71,14 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         {/* Player Name */}
         <span>{playerState.name}</span>
         
-        {/* Crown on the other side for balance (optional) */}
+        {/* Crown on the other side for balance */}
         {winner && (
           <img 
             src="/match-summary-assets/CROWN.png"
             alt="Winner Crown"
             style={{
-              width: '20px',
-              height: '20px',
+              width: '35px', // Increased from 20px to 35px
+              height: '35px', // Increased from 20px to 35px
               objectFit: 'contain',
             }}
           />
@@ -92,7 +93,6 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
           alignItems: 'center',
           flexDirection: isLeftPlayer ? 'row' : 'row-reverse',
           position: 'relative', // Enable positioning for overlap
-          // border: '2px solid',
         }}
       >
         {/* Health Bar */}
@@ -100,7 +100,6 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
           style={{ 
             width: '80%',
             zIndex: 1, // Keep health bar below monster image
-            // border: '2px dotted',
           }}
         >
           <HealthBar 
@@ -126,7 +125,6 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
             left: isLeftPlayer ? 'auto' : '10px',
             top: '50%',
             transform: `translateY(-50%) ${isLeftPlayer ? 'scaleX(-1)' : 'scaleX(1)'}`,
-            // border: '2px solid',
           }}
         >
           <img 
