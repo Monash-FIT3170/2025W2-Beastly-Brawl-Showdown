@@ -57,6 +57,9 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
         {/* Use the new DifferentPhaseImage component */}
         <DifferentPhaseImage 
           currentPhase={currentPhase}
+          player1Win = {player1Win}
+          player2Win = {player2Win}
+          isOver={battleState.isOver}
           width="35%"
           height="35%"
           top="70%"
