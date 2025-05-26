@@ -1,8 +1,8 @@
 import { Archetype } from "./archetype";
-import { ElementalBreathAction } from "../action/ability/Elementalbreath";
+import { ElementalBreathAction } from "../action/ability/elementalBreath";
 
 export class Balanced  extends Archetype {
   constructor() {
-    super("Dps", new ElementalBreathAction());
+    super("Balanced", new ElementalBreathAction());
   }
 }

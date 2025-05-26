@@ -1,5 +1,5 @@
 import { Archetype } from "./archetype";
-import { FeralStrikeAbilityAction } from "../action/ability/FeralStrike";
+import { FeralStrikeAbilityAction } from "../action/ability/feralStrike";
 
 export class Dps extends Archetype {
   constructor() {
