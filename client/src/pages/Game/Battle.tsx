@@ -3,6 +3,7 @@ import socket from "../../socket";
 import CountDownTimer from "../../components/temp/CountdownTimer";
 import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
+import DicerollModal from "./DiceRollModal";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -13,6 +14,9 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const [timer, setTimer] = useState<number>(10);
   const [winner, setWinner] = useState<string | null>(null);
+
+  const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
+  const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
@@ -33,6 +37,14 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setWinner(winner);
     });
 
+    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier 
+    // to handle all types of animations triggered by actions  
+    socket.on("roll_dice", (diceRoll: number) => {
+      setDiceValue(diceRoll);
+      console.log(`From socket in TempGame: dps ${diceRoll}`);
+      setShowDiceModal(true);
+    });
+    
     return () => {
       socket.off("possible_actions");
       socket.off("timer");
@@ -49,6 +61,12 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   return (
     <div>
       <h1>GAME</h1>
+
+      <DicerollModal
+        show={showDiceModal}
+        onClose={() => setShowDiceModal(false)}
+        toRoll={diceValue}
+      />
 
       {/* Winner display if battle is over */}
       {winner ? (
