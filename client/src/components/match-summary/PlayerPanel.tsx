@@ -17,10 +17,10 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
 }) => {
   // Extract current and max health values
   const currentHealth = playerState.currentHealth;
-  const maxHealth = playerState.initialHealth;
+  const maxHealth = playerState.monster?.maxHealth;
 
   // Format the name of the monster from the form 'Monster Name' to 'MONSTER_NAME'.
-  const formattedName = playerState.monsterName.toUpperCase().replace(/ /g, "_");
+  const formattedName = playerState.monster?.id;
   const imageSrc = `/assets/characters/${formattedName}.png`;
 
   return (

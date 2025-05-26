@@ -167,12 +167,12 @@ export class Player {
     return {
       id: this.id,
       name: this.name,
-      monsterName: this.monster.getName(),
+      // monsterName: this.monster.getName(),
 
       currentHealth: this.currentHealth,
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
-      initialHealth: this.monster.getMaxHealth(),
+      // initialHealth: this.monster.getMaxHealth(),
       successBlock: this.successfulBlock,
       successHit: this.successfulHit,
 
