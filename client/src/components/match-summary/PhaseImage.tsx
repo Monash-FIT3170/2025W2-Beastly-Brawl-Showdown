@@ -26,6 +26,11 @@ const PhaseImage: React.FC<PhaseImageProps> = ({
     if (player1Win || player2Win) {
       return '/match-summary-assets/TRIANGLE_WINNER.png';
     }
+
+    // This conditional will be true if both players eliminate each other at the same time
+    if (isOver) {
+      return '/match-summary-assets/NO_WINNER.png';
+    }
     
     // Otherwise use phase-based images
     switch (currentPhase) {
