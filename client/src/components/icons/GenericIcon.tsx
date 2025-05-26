@@ -3,9 +3,10 @@ import React from 'react';
 interface IconProps {
   style: 'arrowleft' | 'arrowright' | 'arrowup' | 'arrowdown' | 'x' | 'bars' | 'info' | 'cog'
   colour: 'black' | 'stroked'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-export const GenericIcon = ({style, colour}: IconProps) => {
+export const GenericIcon = ({style, colour, size}: IconProps) => {
 
   const styles = {
     'arrowleft': 'M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18',
@@ -22,10 +23,17 @@ export const GenericIcon = ({style, colour}: IconProps) => {
     'black': 'text-blackCurrant size-8',
     'stroked': 'text-merino size-8'
   }
+
+  const sizes = {
+  sm: 'lg:w-4 lg:h-4 sm:w-8 sm:h-8',
+  md: 'lg:w-6 lg:h-6 sm:w-16 sm:h-16',  
+  lg: 'lg:w-8 lg:h-8 sm:w-24 sm:h-24',   
+  xl: 'lg:w-12 lg:h-12 sm:w-26 sm:h-26', 
+  }
  
   return(
     <svg 
-      className={colours[colour]}
+      className={`${colours[colour]} ${sizes[size]}`}
       xmlns="http://www.w3.org/2000/svg" 
       fill="#403245" 
       viewBox="0 0 24 24" 

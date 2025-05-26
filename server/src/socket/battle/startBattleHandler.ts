@@ -3,6 +3,7 @@ import { Battle } from "../../model/game/battle";
 import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
+import { AttackAction } from "../../model/game/action/attack";
 
 export default function proceedBattleTurn(io: Server, socket: Socket, gameSession: GameSession, battle: Battle) {
   // TODO: Set a property in the battle instance to object it is in the 10 sec waiting stage (for the host match summary page)
@@ -59,10 +60,25 @@ export default function proceedBattleTurn(io: Server, socket: Socket, gameSessio
       // Execute method
       player1.getActions().forEach((action) => {
         action.execute(player1, player2);
+
+        // Handles the dice roll - For now, typecasting to send the damage so dice can roll it
+        // TODO: For the future, actions should trigger their own animations themselves. Perhaps add a feature that emits animation type and let the
+        // battle screen handle the type of animation to show
+        if (action.getName() === "Attack") {
+          const attackAction = action as AttackAction;
+          const diceRoll = attackAction.getDiceRoll();
+          io.to(player1.getId()).emit("roll_dice", diceRoll);
+        }
       });
 
       player2.getActions().forEach((action) => {
         action.execute(player2, player1);
+
+        if (action.getName() === "Attack") {
+          const attackAction = action as AttackAction;
+          const diceRoll = attackAction.getDiceRoll();
+          io.to(player2.getId()).emit("roll_dice", diceRoll);
+        }
       });
 
       console.log("P1: ", player1);

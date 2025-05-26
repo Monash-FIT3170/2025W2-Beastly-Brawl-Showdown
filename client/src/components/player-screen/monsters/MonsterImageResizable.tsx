@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface MonsterImageProps {
   name: string;
@@ -6,16 +6,18 @@ interface MonsterImageProps {
   height: number;
 }
 
-export const MonsterImageResizable = ({ name, width, height }: MonsterImageProps) => {
+export const MonsterImageResizable = ({
+  name,
+  width,
+  height,
+}: MonsterImageProps) => {
+  const path = `/${name}.png`;
 
-    let path: string = name.replace(/\s+/g, '');
-    path = path+'.png';
-
-    return (
-        <img 
-        style={{width: `${width}rem`, height: `${height}rem`}}
-        src={path} 
-        alt={`${name} image`} 
-        />
-    );
+  return (
+    <img
+      style={{ width: `${width}rem`, height: `${height}rem` }}
+      src={path}
+      alt={`${name} image`}
+    />
+  );
 };

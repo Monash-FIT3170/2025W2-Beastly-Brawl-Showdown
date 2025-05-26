@@ -56,7 +56,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     // Update host information
     io.to(`game-${gameCode}`).emit("update-players", {
       message: `Player ${name} - ${socket.id} added to current game session.`,
-      players: session.getPlayers().getItems(),
+      players: session.getPlayerStates(),
     });
 
     // Player is accepted
@@ -127,7 +127,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       // Update host information
       io.to(`game-${gameCode}`).emit("update-players", {
         message: `Player ${socket.id} removed from current game session.`,
-        players: session.getPlayers().getItems(),
+        players: session.getPlayerStates(),
       });
     }, 100);
   });
@@ -143,7 +143,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
     io.to(`game-${gameCode}`).emit("update-players", {
       message: `Players Array Fetched`,
-      players: session.getPlayers().getItems(),
+      players: session.getPlayerStates(),
     });
   });
 

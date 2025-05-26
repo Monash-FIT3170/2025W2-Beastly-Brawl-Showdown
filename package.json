@@ -21,7 +21,8 @@
     "react-dom": "^18.2.0",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
-    "tailwindcss": "^4.1.6"
+    "tailwindcss": "^4.1.6",
+    "types": "^0.1.1"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.3",

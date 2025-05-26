@@ -1,45 +1,52 @@
 import { Action } from "./action";
 import { Player } from "../player";
 import { ActionIdentifier } from "/types/single/actionState";
+import socket from "../../socket";
 
 export class AttackAction extends Action {
   private attackBonus: number;
+  private damage: number;
+  private d20: number;
 
   constructor(attackBonus: number) {
     super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity);
     this.attackBonus = attackBonus;
   }
 
+  public getDamage(): number {
+    return this.damage;
+  }
+
+  private rollDice(): number {
+    var d20 = Math.floor(Math.random() * 20);
+    console.log(`Dice roll: ${d20}`);
+    return d20;
+  }
+
+  public getDiceRoll(): number {
+    return this.d20;
+  }
+
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
-    // TODO: implement the dice logic here
-    // roll a d20
-    // var d20 = 0;
-
-    // var damage = d20 + this.attackBonus;
-
-    // if (damage >= affectedPlayer.getArmourClassStat()) {
-    //   // hit
-    //   affectedPlayer.incHealth(-5);
-    // }
-    affectedPlayer.incHealth(-5);
-    actingPlayer.addLog(
-      `You attacked ${affectedPlayer.getName()} and dealt 5 damage.`
-    );
     
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} attacked you and dealt 5 damage.`
-    );
-    // TODO: Need the following conditional logic for Match Summary Page
-    // If successful attack
-    actingPlayer.incSuccessfulHit(1);
-    // If unsuccessful atttack
-    affectedPlayer.incSuccessfulBlock(1);
-    
-    //TODO: put the actual logic for attack action to account for successful hit and successful block
-    actingPlayer.addBattleLog(`${actingPlayer.getName()} has successfully attacked for ${actingPlayer.getAttackStat()} damage`)
-    affectedPlayer.addBattleLog(`${affectedPlayer.getName()} has successfully blocked an attack`)
+    // Rolling a d20 dice 
+    this.d20 = this.rollDice();
+    this.damage = this.d20 + this.attackBonus; 
+    console.log(`Dice roll: ${this.d20} | Attack bonus: ${this.attackBonus}`);
 
+    // Attack is calculated by adding dice roll and attack bonus. 
+    // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5. 
+    if (this.damage > affectedPlayer.getMonster().getArmourClass()) {
+      console.log(`Attack successful | Attack exceeds opponents armour: (${affectedPlayer.getMonster().getArmourClass()} < ${this.damage}).`);
+      affectedPlayer.incHealth(-5);
+
+      // Log successful attack
+      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and dealt 5 damage.`);
+    } else {
+      // Log failed attack
+      actingPlayer.addLog(`You attacked ${affectedPlayer.getName()} and failed to hit. `);
+    }
   }
 }
