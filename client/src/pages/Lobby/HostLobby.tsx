@@ -25,6 +25,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const [playerCount, setPlayerCount] = useState(0);
   const [canStart, setCanStart] = useState(false);
   const [exit, setExit] = useState<Boolean>();
+  const [errors, setErrors] = useState<string[]>([]);
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -76,6 +77,10 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     FlowRouter.go(`/battles/${codeString}`);
   });
 
+  socket.on("start-failed", (errors: string[]) => {
+    setErrors(errors);
+  });
+
   // deletes game session
   const closeGame = () => {
     // UPDATE: popup asking if they are sure before returning to home
@@ -112,6 +117,33 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
                 </ButtonGeneric>
                 <ButtonGeneric size="large" color="blue" onClick={closeGame}>
                   CONFIRM
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
+
+        {errors && errors.length > 0 && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">Matchmaking failed</OutlineText>
+              <BlackText size="large">
+                MATCHMAKING HAS FAILED DUE TO THE FOLLOWING REASON(S):
+              </BlackText>
+              {errors.map((error, idx) => (
+                <div className="mt-4">
+                  <BlackText size="medium" key={idx}>
+                    {error.toUpperCase()}
+                  </BlackText>
+                </div>
+              ))}
+              <div className="mt-10 flex flex-col items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setErrors([])}
+                >
+                  BACK
                 </ButtonGeneric>
               </div>
             </div>
@@ -163,7 +195,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           <ButtonGeneric
             color="ronchi"
             size="large"
-            isDisabled={playerCount < 2}
+            // isDisabled={!canStart}
             onClick={startGame}
           >
             <div className="mt-1">

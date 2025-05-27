@@ -174,7 +174,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
 
     if (!session.canStartGame()) {
+      var errors = session.calculateErrors();
       // UPDATE: Need to change how this is returned
+      io.to(`game-${gameCode}`).emit("start-failed", errors);
       console.log(`Request failed.`);
       return;
     }

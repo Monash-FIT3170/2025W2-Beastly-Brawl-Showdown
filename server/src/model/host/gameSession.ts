@@ -126,6 +126,22 @@ export default class GameSession {
     return true;
   }
 
+  public calculateErrors(): string[] {
+    var errors: string[] = [];
+
+    if (this.players.size() < 2) {
+      errors.push("Not enough players to start the game.");
+    }
+
+    for (const p of this.players.getItems()) {
+      if (p.getMonster() === null) {
+        errors.push(`${p.getName()} has not picked a monster.`);
+      }
+    }
+
+    return errors;
+  }
+
   // Check if Socket is already in Game Session
   public canSocketJoin(socketId: string): boolean {
     for (const p of this.players.getItems()) {
