@@ -47,15 +47,10 @@ export class Player {
   }
 
   public resetStats(): void {
-<<<<<<< HEAD
-    this.currentAttackStat = this.monster.getAttackBonus();
-    this.currentArmourClassStat = this.monster.getArmourClass();
-=======
     if (this.monster) {
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
     }
->>>>>>> main
   }
 
   public resetActions(): void {
@@ -70,12 +65,6 @@ export class Player {
     return this.id;
   }
 
-<<<<<<< HEAD
-  public getMonster(): Monster {
-    return this.monster;
-  }
-
-=======
   public getMonster(): Monster | null {
     return this.monster;
   }
@@ -87,7 +76,6 @@ export class Player {
     this.currentArmourClassStat = monster.getArmourClass();
   }
 
->>>>>>> main
   public getHealth(): number {
     return this.currentHealth;
   }
@@ -100,14 +88,10 @@ export class Player {
     this.currentHealth += number;
     if (this.currentHealth < 0) {
       this.currentHealth = 0;
-<<<<<<< HEAD
-    } else if (this.currentHealth > this.monster.getMaxHealth()) {
-=======
     } else if (
       this.monster &&
       this.currentHealth > this.monster.getMaxHealth()
     ) {
->>>>>>> main
       this.currentHealth = this.monster.getMaxHealth();
     }
   }
@@ -140,10 +124,6 @@ export class Player {
     return this.actions;
   }
 
-<<<<<<< HEAD
-  // TODO: Remove the other action and push the new one? How do we want to handle this?
-=======
->>>>>>> main
   public addAction(action: Action): void {
     this.actions.push(action);
   }
@@ -165,11 +145,8 @@ export class Player {
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
 
-<<<<<<< HEAD
-=======
       monster: this.monster ? this.monster.getMonsterState() : null,
 
->>>>>>> main
       logs: this.logs,
     };
   }
