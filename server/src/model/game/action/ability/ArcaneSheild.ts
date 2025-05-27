@@ -17,10 +17,10 @@ export class ArcaneSheildAbilityAction extends Action {
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     //replay dice roll
     actingPlayer.addLog(
-      `You did nothing. Unimplemented action ${this.getName()}`
+      `dice has been rerolled with  ${this.getName()}`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} did nothing. Unimplemented action ${this.getName()}`
+      `${actingPlayer.getName()} rerolled their di, implemented action ${this.getName()}`
     );
   }
 }

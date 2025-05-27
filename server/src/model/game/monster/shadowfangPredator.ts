@@ -4,7 +4,7 @@ import { ShadowLeapAbilityAction } from "../action/ability/shadowLeap";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
 // Random monser for now
-export class ShadowfandPredetor extends Monster {
+export class shadowfangPredator extends Monster {
   constructor() {
     super(
       MonsterIdentifier.SHADOWFANG_PREDATOR,

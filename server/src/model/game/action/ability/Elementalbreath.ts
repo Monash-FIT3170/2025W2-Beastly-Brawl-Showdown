@@ -23,10 +23,10 @@ export class ElementalBreathAction extends Action {
         affectedPlayer.incHealth(-5);
     }
     actingPlayer.addLog(
-      `You did nothing. Unimplemented action ${this.getName()}`
+      `${this.getName()} used, no escaping now!!!`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} did nothing. Unimplemented action ${this.getName()}`
+      `${actingPlayer.getName()} used ${this.getName()} no escaping now!!!`
     );
   }
 }

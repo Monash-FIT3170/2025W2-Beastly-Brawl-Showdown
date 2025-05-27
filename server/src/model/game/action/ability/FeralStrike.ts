@@ -16,10 +16,10 @@ export class FeralStrikeAbilityAction extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.addLog(
-      `You did nothing. Unimplemented action ${this.getName()}`
+      `Critcal damage increase due to ${this.getName()}`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} did nothing. Unimplemented action ${this.getName()}`
+      `${actingPlayer.getName()} has increased crit dmg implemented action ${this.getName()}`
     );
   }
 }

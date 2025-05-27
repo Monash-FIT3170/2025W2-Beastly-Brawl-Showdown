@@ -17,7 +17,7 @@ export class ShadowLeapAbilityAction extends Action {
     affectedPlayer.getActions().forEach((action) => {
       action.incCurrentUse(-1);
       if (action.getName()!="Elemental Breath"){
-        affectedPlayer.getActions().filter(item => item !== action)
+        affectedPlayer. removeAction(action)
       }
     });
 
@@ -25,10 +25,10 @@ export class ShadowLeapAbilityAction extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.addLog(
-      `You did nothing. Unimplemented action ${this.getName()}`
+      `You dodge using ${this.getName()} hopefully they dont et you`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} did nothing. Unimplemented action ${this.getName()}`
+      `${actingPlayer.getName()} attempts to dodge with ${this.getName()}`
     );
   }
 }
