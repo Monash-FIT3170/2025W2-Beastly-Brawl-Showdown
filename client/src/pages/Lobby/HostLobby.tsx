@@ -81,20 +81,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     FlowRouter.go("/");
   };
 
-  //UPDATE: why is this not called
-  const canStartGame = (players: PlayerState[]) => {
-    if (players.length < 2) {
-      return false; // If less than 2 players, cannot start
-    }
-
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].monster === null) {
-        return false; // If any player does not have a monster selected, cannot start
-      }
-    }
-    return true;
-  };
-
   return (
     <BlankPage>
       {/* Responsive header section */}
@@ -104,17 +90,30 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         <LogoResizable className="h-full w-1/11"></LogoResizable>
 
         {exit && (
-        <PopupClean>
-          <div className="flex flex-col justify-around">
-          <OutlineText size = 'extraLarge'>QUIT GAME?</OutlineText>
-          <BlackText size = 'large'>THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY</BlackText>
-          <BlackText size = 'large'>DO YOU WANT TO CONTINUE OR END THE GAME</BlackText>
-          <div className="flex flex-row justify-between items-center">
-            <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
-            <ButtonGeneric size="large" color="blue" onClick={closeGame}>CONFIRM</ButtonGeneric>
-          </div>
-          </div>
-        </PopupClean>)}
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">QUIT GAME?</OutlineText>
+              <BlackText size="large">
+                THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY
+              </BlackText>
+              <BlackText size="large">
+                DO YOU WANT TO CONTINUE OR END THE GAME
+              </BlackText>
+              <div className="flex flex-row justify-between items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setExit(false)}
+                >
+                  BACK
+                </ButtonGeneric>
+                <ButtonGeneric size="large" color="blue" onClick={closeGame}>
+                  CONFIRM
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
 
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
@@ -141,6 +140,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           {players.map((player) => (
             <NameCard player={player} onClick={() => kickPlayer(player.id)} />
           ))}
+          {/* UPDATE: Add pop up for : Do you want to kick this player? */}
         </div>
       </div>
 
@@ -156,6 +156,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </ButtonGeneric>
 
         <div className="mb-5 mr-13">
+          {/* UPDATE: Add pop up for : Do you want to start the game? */}
           <ButtonGeneric
             color="ronchi"
             size="large"

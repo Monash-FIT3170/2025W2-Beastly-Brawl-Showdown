@@ -16,10 +16,12 @@ export default class GameSession {
   private round: number = 1; // Round number
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
-  private currentPhase: BattlePhase=BattlePhase.CHOOSE_ACTION;
+  private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
 
   // Initialise sample data
-  private gameSessionData: GameSessionData = { mostChosenMonster: { monster: null, percentagePick: "0"} };
+  private gameSessionData: GameSessionData = {
+    mostChosenMonster: { monster: null, percentagePick: "0" },
+  };
 
   constructor(hostID: string, presetGameCode?: number) {
     this.hostUID = hostID;
@@ -51,11 +53,11 @@ export default class GameSession {
   }
 
   public setCurrentPhase(phase: BattlePhase): void {
-    this.currentPhase = phase
+    this.currentPhase = phase;
   }
 
-  public getCurrentPhase(): BattlePhase{
-    return this.currentPhase
+  public getCurrentPhase(): BattlePhase {
+    return this.currentPhase;
   }
 
   public getGameCode() {
@@ -115,7 +117,12 @@ export default class GameSession {
     if (this.players.size() < 2) {
       return false;
     }
-    // UPDATE: need to add that all monsters have been picked
+    // check every player has picked a monster
+    for (const p of this.players.getItems()) {
+      if (p.getMonster() === null) {
+        return false;
+      }
+    }
     return true;
   }
 
@@ -209,58 +216,63 @@ export default class GameSession {
   }
 
   public calculateMostChosenMonster() {
-  // Map from monster name to { monster: Monster, count: number }
-  const monsterCount: Record<string, { monster: Monster, count: number }> = {};
+    // Map from monster name to { monster: Monster, count: number }
+    const monsterCount: Record<string, { monster: Monster; count: number }> =
+      {};
 
-  this.getPlayers().getItems().forEach((player) => {
-    const monster = player.getMonster();
-    const monsterId = monster.getId();
+    //UPDATE: calling error that monster is possibly null.
+    this.getPlayers()
+      .getItems()
+      .forEach((player) => {
+        const monster = player.getMonster();
+        const monsterId = monster.getId();
 
-    if (monsterCount[monsterId]) {
-      monsterCount[monsterId].count++;
-    } else {
-      monsterCount[monsterId] = { monster, count: 1 };
+        if (monsterCount[monsterId]) {
+          monsterCount[monsterId].count++;
+        } else {
+          monsterCount[monsterId] = { monster, count: 1 };
+        }
+      });
+
+    let mostPicked: Monster | null = null;
+    let maxCount = 0;
+
+    for (const { monster, count } of Object.values(monsterCount)) {
+      if (count > maxCount) {
+        mostPicked = monster;
+        maxCount = count;
+      }
     }
-  });
 
-  let mostPicked: Monster | null = null;
-  let maxCount = 0;
-
-  for (const { monster, count } of Object.values(monsterCount)) {
-    if (count > maxCount) {
-      mostPicked = monster;
-      maxCount = count;
+    if (mostPicked) {
+      this.gameSessionData.mostChosenMonster = {
+        monster: mostPicked.getMonsterState(),
+        percentagePick:
+          this.getPlayers().getItems().length > 0
+            ? Math.round(
+                (maxCount / this.getPlayers().getItems().length) * 100
+              ).toString()
+            : "0",
+      };
     }
   }
-
-  if (mostPicked) {
-    this.gameSessionData.mostChosenMonster = {
-      monster: mostPicked.getMonsterState(),
-      percentagePick: this.getPlayers().getItems().length > 0
-        ? Math.round((maxCount / this.getPlayers().getItems().length) * 100).toString()
-        : "0"
-    };
-  } 
-}
 
   public areBattlesConcluded(): boolean {
-    return this.battles.getItems().every(battle => battle.isBattleOver());
+    return this.battles.getItems().every((battle) => battle.isBattleOver());
   }
 
-
   public getGameSessionState(): GameSessionState {
-
     const allBattles = [];
     let remainingPlayers = 0;
-    let totalPlayers = this.battles.size()*2;
+    let totalPlayers = this.battles.size() * 2;
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
       allBattles.push(battle.getBattleState(firstPlayer.getId()));
-      if (battle.isBattleOver()){
+      if (battle.isBattleOver()) {
         remainingPlayers += 1;
       } else {
-        remainingPlayers += 2
+        remainingPlayers += 2;
       }
     }
 
@@ -271,17 +283,15 @@ export default class GameSession {
       gameSessionData: this.gameSessionData,
       currentPhase: this.currentPhase,
       totalPlayers: totalPlayers,
-      remainingPlayers: remainingPlayers
+      remainingPlayers: remainingPlayers,
     };
+  }
 
-}
-
-public getPlayerStates(): PlayerState[] {
+  public getPlayerStates(): PlayerState[] {
     const playerStates: PlayerState[] = [];
     for (const player of this.players.getItems()) {
       playerStates.push(player.getPlayerState());
     }
     return playerStates;
   }
-
 }

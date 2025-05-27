@@ -70,6 +70,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     });
   });
 
+  // UPDATE: What is this?
   console.log(socket.listeners("example").length);
 
   // Join as host
@@ -178,6 +179,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     if (!session.canStartGame()) {
       // UPDATE: Need to change how this is returned
       console.log(`Request failed.`);
+      return;
     }
 
     session.calculateMostChosenMonster();
@@ -195,9 +197,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     //Comment out as host information are updated live in battleHandler
     // Update host information
     //   socket.emit("game-session-state", {
-    //     session: session.getGameSessionState(), 
+    //     session: session.getGameSessionState(),
     //   });
-    });
+  });
 
   // Close game session
   socket.on("cancel-game", ({ gameCode }) => {
