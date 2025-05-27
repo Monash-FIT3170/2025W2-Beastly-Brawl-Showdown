@@ -5,7 +5,9 @@ import { PlayerState } from "/types/single/playerState";
 export class Player {
   private id: string;
   private name: string;
-  private monster: Monster;
+  private monster: Monster | null;
+  public currentGameCode?: number;
+  private score: number = 0;
 
   private currentHealth: number;
   private currentAttackStat: number;
@@ -15,13 +17,21 @@ export class Player {
 
   private logs: string[] = [];
 
-  constructor(id: string, name: string, monster: Monster) {
+  constructor(id: string, name: string) {
     this.name = name;
     this.id = id;
-    this.monster = monster;
-    this.currentHealth = monster.getMaxHealth();
-    this.currentAttackStat = monster.getAttackBonus();
-    this.currentArmourClassStat = monster.getArmourClass();
+    this.monster = null;
+    this.currentHealth = 0;
+    this.currentAttackStat = 0;
+    this.currentArmourClassStat = 0;
+  }
+
+  public getGameCode() {
+    return this.currentGameCode;
+  }
+
+  public updateGameCode(newCode: number) {
+    this.currentGameCode = newCode;
   }
 
   public getLogs(): string[] {
@@ -37,8 +47,15 @@ export class Player {
   }
 
   public resetStats(): void {
+<<<<<<< HEAD
     this.currentAttackStat = this.monster.getAttackBonus();
     this.currentArmourClassStat = this.monster.getArmourClass();
+=======
+    if (this.monster) {
+      this.currentAttackStat = this.monster.getAttackBonus();
+      this.currentArmourClassStat = this.monster.getArmourClass();
+    }
+>>>>>>> main
   }
 
   public resetActions(): void {
@@ -53,10 +70,24 @@ export class Player {
     return this.id;
   }
 
+<<<<<<< HEAD
   public getMonster(): Monster {
     return this.monster;
   }
 
+=======
+  public getMonster(): Monster | null {
+    return this.monster;
+  }
+
+  public setMonster(monster: Monster) {
+    this.monster = monster;
+    this.currentHealth = monster.getMaxHealth();
+    this.currentAttackStat = monster.getAttackBonus();
+    this.currentArmourClassStat = monster.getArmourClass();
+  }
+
+>>>>>>> main
   public getHealth(): number {
     return this.currentHealth;
   }
@@ -69,7 +100,14 @@ export class Player {
     this.currentHealth += number;
     if (this.currentHealth < 0) {
       this.currentHealth = 0;
+<<<<<<< HEAD
     } else if (this.currentHealth > this.monster.getMaxHealth()) {
+=======
+    } else if (
+      this.monster &&
+      this.currentHealth > this.monster.getMaxHealth()
+    ) {
+>>>>>>> main
       this.currentHealth = this.monster.getMaxHealth();
     }
   }
@@ -102,7 +140,10 @@ export class Player {
     return this.actions;
   }
 
+<<<<<<< HEAD
   // TODO: Remove the other action and push the new one? How do we want to handle this?
+=======
+>>>>>>> main
   public addAction(action: Action): void {
     this.actions.push(action);
   }
@@ -124,6 +165,11 @@ export class Player {
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
 
+<<<<<<< HEAD
+=======
+      monster: this.monster ? this.monster.getMonsterState() : null,
+
+>>>>>>> main
       logs: this.logs,
     };
   }
