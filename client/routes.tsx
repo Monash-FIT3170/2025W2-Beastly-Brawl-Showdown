@@ -8,6 +8,8 @@ import PathNotFound from "./src/pages/Home/PathNotFound";
 import HostBattles from "./src/pages/Lobby/HostBattles";
 import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
+import Rules from './src/pages/Game/Rules';
+import MatchSummary from './src/pages/Host View/MatchSummary';
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -66,9 +68,17 @@ FlowRouter.route("/session/:sessionId?", {
 });
 
 FlowRouter.route("/battles/:code?", {
-  name: "HostBattles",
+  name: "MatchSummary",
   action(params) {
-    mount(() => <HostBattles gameCode={params.code} />);
+    mount(() => <MatchSummary gameCode={params.code} />);
+  },
+});
+
+
+FlowRouter.route('/rules', {
+  name: 'Rules',
+  action() {
+    mount(Rules);
   },
 });
 

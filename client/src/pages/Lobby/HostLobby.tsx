@@ -43,6 +43,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   };
 
   // start game
+  // TODO: MAKE SURE START GAME CAN ONLY BEGIN ONCE ALL PLAYERS HAVE SELECTED A MONSTER AND IN THE WAITING ROOM!
   const startGame = () => {
     socket.emit("start-game", { gameCode: code });
     const codeString = code?.toString();
