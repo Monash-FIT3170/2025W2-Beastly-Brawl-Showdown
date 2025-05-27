@@ -1,7 +1,7 @@
 import React from 'react';
 
 // 
-const WinnerScreen: React.FC = () => {
+const LoserScreen: React.FC = () => {
   return (
     <div>
       You Lost!
@@ -9,4 +9,4 @@ const WinnerScreen: React.FC = () => {
   );
 };
 
-export default WinnerScreen;
+export default LoserScreen;
