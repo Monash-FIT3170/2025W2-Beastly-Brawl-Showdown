@@ -8,7 +8,7 @@ import {
 
 import { StonehideGuardian } from "../../model/game/monster/stonehideGuardian";
 import { shadowfangPredator } from "../../model/game/monster/shadowfangPredator";
-import { MysticWyvern } from "../../model/game/monster/mysticWyvern";
+import { MysticWvyren } from "../../model/game/monster/mysticWyvern";
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
   socket.on(
@@ -68,7 +68,7 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
 const monsterMap = new Map([
   [MonsterIdentifier.STONEHIDE_GUARDIAN, () => new StonehideGuardian()],
   [MonsterIdentifier.SHADOWFANG_PREDATOR, () => new shadowfangPredator()],
-  [MonsterIdentifier.MYSTIC_WYVERN, () => new MysticWyvern()],
+  [MonsterIdentifier.MYSTIC_WYVERN, () => new MysticWvyren()],
 ]);
 
 function getMonster(monsterID: MonsterIdentifier) {
