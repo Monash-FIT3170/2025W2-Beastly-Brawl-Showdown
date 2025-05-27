@@ -12,7 +12,7 @@ interface ActionButtonProps {
 
 const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) => {
     const imagePath = "/assets/actions/" + actionState.id + ".png";
-    const name = actionState.name;
+    const name = actionState.name.toUpperCase();
     const availableUses = actionState.currentUse; // How many REMAINING uses
 
     const colorLoader: Record<string, ButtonGenericProps["color"]> = {
@@ -40,7 +40,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) =>
 
     return(
         <div>
-            <ButtonGeneric color={colorLoader[actionState.id]} size='battle' isDisabled={isDisabled} onClick={handleClick}>
+            <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={handleClick}>
                 <div className="w-[50%] h-auto leading-[0.8]">
                     <OutlineText size = 'medium'>
                         {name}
