@@ -1,5 +1,5 @@
 .health-bar {
-  width: 190px;
+  width: '100%';
   height: 40px;
   background-color: #d3d3d3;
   border-radius: 20px;
@@ -12,13 +12,14 @@
   height: 100%;
   display: flex;
   align-items: center;
+  padding-left: 10px;
   box-sizing: border-box;
   transition: width 0.3s ease;
+  border-radius: 20px 0 0 20px;
 }
 
 .health-bar-text {
   font-weight: bold;
   color: white;
   text-shadow: 1px 1px 2px #000;
-  padding-left: 10px;
 }

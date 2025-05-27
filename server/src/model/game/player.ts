@@ -16,6 +16,9 @@ export class Player {
   private actions: Action[] = [];
 
   private logs: string[] = [];
+  private battleLogs: string[] = [];
+  private successfulHit: number = 0;
+  private successfulBlock: number = 0;
 
   constructor(id: string, name: string) {
     this.name = name;
@@ -24,6 +27,22 @@ export class Player {
     this.currentHealth = 0;
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
+  }
+
+  public getSuccessfulHit(){
+    return this.successfulHit
+  }
+
+  public getSuccessfulBlock(){
+    return this.successfulBlock
+  }
+
+  public incSuccessfulHit(number: number): void{
+    this.successfulHit += number
+  }
+
+  public incSuccessfulBlock(number: number): void{
+    this.successfulBlock += number
   }
 
   public getGameCode() {
@@ -40,6 +59,10 @@ export class Player {
 
   public addLog(log: string): void {
     this.logs.push(log);
+  }
+
+  public addBattleLog(log: string): void {
+    this.battleLogs.push(log);
   }
 
   public clearLogs(): void {
@@ -59,6 +82,10 @@ export class Player {
 
   public getName(): string {
     return this.name;
+  }
+
+  public clearBattleLogs(): void {
+    this.battleLogs = [];
   }
 
   public getId(): string {
@@ -140,14 +167,19 @@ export class Player {
     return {
       id: this.id,
       name: this.name,
+      // monsterName: this.monster.getName(),
 
       currentHealth: this.currentHealth,
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
+      // initialHealth: this.monster.getMaxHealth(),
+      successBlock: this.successfulBlock,
+      successHit: this.successfulHit,
 
       monster: this.monster ? this.monster.getMonsterState() : null,
 
       logs: this.logs,
+      battleLogs: this.battleLogs,
     };
   }
 }

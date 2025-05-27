@@ -7,7 +7,7 @@ import MonsterPanel from "../../components/player-screen/MonsterPanel";
 import DicerollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
-// import DrawScreen from "./DrawScreen";
+import DrawScreen from "./DrawScreen";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -35,9 +35,14 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setTimer(time);
     });
 
-    socket.on("battle_end", (winner: string) => {
-      console.log(`Winner ${winner}`);
-      setWinner(winner);
+    socket.on("battle_end", ({result, winners}) => {
+      console.log(result,winners)
+      if (result === "draw"){
+        setWinner("Draw")
+      } else if (result === "concluded"){
+        setWinner(winners[0])
+      }
+      console.log(winner)
     });
 
     // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier 
@@ -68,7 +73,9 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
           <DrawScreen />
         ) : */}
       {winner ? (
-        battleState?.yourPlayer.name === winner ? (
+        winner === "Draw" ? (
+          <DrawScreen />
+        ) : battleState?.yourPlayer.name === winner ? (
           <WinnerScreen />
         ) : (
           <LoserScreen />

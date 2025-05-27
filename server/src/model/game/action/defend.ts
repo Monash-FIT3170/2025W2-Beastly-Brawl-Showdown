@@ -21,6 +21,7 @@ export class DefendAction extends Action {
         this.armourBonus
       }.`
     );
+    actingPlayer.addBattleLog(`${actingPlayer.getName()} defended and increased your armour class stat by ${this.armourBonus}.`)
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {

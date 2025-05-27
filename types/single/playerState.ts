@@ -7,8 +7,13 @@ export interface PlayerState {
   currentHealth: number;
   currentAttackStat: number;
   currentArmourClassStat: number;
+  // initialHealth: number;
+  // monsterName: string;
+  successBlock: number;
+  successHit: number; 
 
   monster: MonsterState | null;
 
   logs: string[];
+  battleLogs: string[];
 }

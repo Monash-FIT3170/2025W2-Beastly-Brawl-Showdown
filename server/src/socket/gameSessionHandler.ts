@@ -170,26 +170,25 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       // UPDATE: Need to change how this is returned
       console.log(`Request failed.`);
     }
-    const battles = session.createMatches();
+
+    session.calculateMostChosenMonster();
+
+    session.createMatches();
 
     for (const battle of session.getBattles().getItems()) {
       for (const player of battle.getPlayers()) {
         io.sockets.sockets.get(player.getId())?.join(battle.getId());
       }
       io.to(battle.getId()).emit("battle_started", battle.getId());
-      proceedBattleTurn(io, battle);
+      proceedBattleTurn(io, socket, session, battle);
     }
 
-    // Add the battles to the socket
-    // UPDATE: Add Agile Team 1 functionality
-    socket.join(`game-${gameCodeN}`);
-
+    //Comment out as host information are updated live in battleHandler
     // Update host information
-    io.to(`game-${gameCode}`).emit("battles-created", {
-      message: `Battles for Session ${socket.id} added to current game session.`,
-      battles: session.getGameSessionState(),
-    });
-  });
+    //   socket.emit("game-session-state", {
+    //     session: session.getGameSessionState(), 
+    //   });
+    // });
 
   // Close game session
   socket.on("cancel-game", ({ gameCode }) => {
