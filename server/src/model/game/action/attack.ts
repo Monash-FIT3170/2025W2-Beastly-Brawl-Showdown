@@ -7,10 +7,12 @@ export class AttackAction extends Action {
   private attackBonus: number;
   private damage: number;
   private d20: number;
+  private rolls: number;
 
-  constructor(attackBonus: number) {
+  constructor(attackBonus: number, rolls: number) {
     super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity);
     this.attackBonus = attackBonus;
+    this.rolls = rolls;
   }
 
   public getDamage(): number {
@@ -18,8 +20,14 @@ export class AttackAction extends Action {
   }
 
   private rollDice(): number {
-    var d20 = Math.floor(Math.random() * 20);
-    console.log(`Dice roll: ${d20}`);
+    var d20 = 0
+    for(let i: number = 0; i < this.rolls; i++){
+      console.log(`Dice roll: ${d20}`);
+      var dice = Math.floor(Math.random() * 20);
+      if (dice>d20){
+        d20 = dice
+      }
+    } 
     return d20;
   }
 

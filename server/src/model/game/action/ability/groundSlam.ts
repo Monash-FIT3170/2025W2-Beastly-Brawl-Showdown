@@ -23,7 +23,7 @@ export class GroundSlamAbilityAction extends Action {
       `You have stunned ${affectedPlayer.getName()} with ${this.getName()}`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} has tuneed you with ${this.getName()}`
+      `${actingPlayer.getName()} has stuned you with ${this.getName()}`
     );
   }
 }

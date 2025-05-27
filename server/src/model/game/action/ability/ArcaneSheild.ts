@@ -1,8 +1,10 @@
 import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
+import { AttackAction } from "../attack";
 
 export class ArcaneSheildAbilityAction extends Action {
+  private strike = new AttackAction(7,2);
   constructor() {
     super(
       ActionIdentifier.FERAL_STRIKE,
@@ -12,10 +14,12 @@ export class ArcaneSheildAbilityAction extends Action {
     );
   }
 
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+    this.strike.prepare(actingPlayer,affectedPlayer)
+  }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
-    //replay dice roll
+    this.strike.prepare(actingPlayer,affectedPlayer)
     actingPlayer.addLog(
       `dice has been rerolled with  ${this.getName()}`
     );

@@ -56,6 +56,7 @@ export class Player {
     if (this.monster) {
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
+      this.dodging = false;
     }
   }
 

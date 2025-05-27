@@ -16,11 +16,9 @@ export class ElementalBreathAction extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     var dodge = affectedPlayer.getDodgingPosition()
-    if (dodge = true){
+    affectedPlayer.incHealth(-2)
+    if (dodge == true){
         affectedPlayer.incHealth(-3);
-    }
-    else{
-        affectedPlayer.incHealth(-5);
     }
     actingPlayer.addLog(
       `${this.getName()} used, no escaping now!!!`
