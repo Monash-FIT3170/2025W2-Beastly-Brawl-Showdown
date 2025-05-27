@@ -11,9 +11,9 @@ export class MysticWyvern extends Monster {
       "A dragon-like creature with vibrant scales and a balanced physique. It possesses both offensive and defensive capabilities, making it versatile in battle.",
       new Balanced(),
       new ElementalBreathAbilityAction(),
-      30,
-      1,
-      16
+      25,
+      7,
+      14
     );
   }
 }

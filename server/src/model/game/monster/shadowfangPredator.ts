@@ -11,9 +11,9 @@ export class ShadowfangPredator extends Monster {
       "A sleek, agile beast resembling a wolf or panther, cloaked in shadows. Its speed and ferocity make it a deadly opponent.",
       new Warrior(),
       new ShadowLeapAbilityAction(),
-      30,
-      1,
-      16
+      20,
+      10,
+      12
     );
   }
 }
