@@ -14,7 +14,7 @@ export class shadowfangPredator extends Monster {
       new ShadowLeapAbilityAction(),
       20,
       4,
-      12
+      14
     );
   }
 }
