@@ -3,7 +3,6 @@ import { Tank } from "../archetype/tank";
 import { GroundSlamAbilityAction } from "../action/ability/groundSlam";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
-// Random monser for now
 export class StonehideGuardian extends Monster {
   constructor() {
     super(
@@ -13,8 +12,8 @@ export class StonehideGuardian extends Monster {
       new Tank(),
       new GroundSlamAbilityAction(),
       30,
-      1,
-      8
+      4,
+      16
     );
   }
 }

@@ -177,7 +177,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                     <OutlineText size="medium">Attack Bonus:</OutlineText>
                     <AttackBonusBar
                       attackBonus={selectedMonster.attackBonus}
-                      highestAttackBonus={4}
+                      highestAttackBonus={10}
                     />
                   </div>
                   <div className="pb-[7pt]" />

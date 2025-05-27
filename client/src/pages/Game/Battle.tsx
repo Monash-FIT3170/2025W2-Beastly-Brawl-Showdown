@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import socket from "../../socket";
-import CountDownTimer from "../../components/temp/CountdownTimer";
 import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
+import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
+import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
 import DicerollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
+import ActionButton from "../../components/buttons/ActionButton";
+import { BattleFooter } from "../../components/cards/BattleFooter";
+import { GenericFooter } from "../../components/cards/GenericFooter";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -17,7 +21,6 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const [timer, setTimer] = useState<number>(10);
   const [winner, setWinner] = useState<string | null>(null);
-
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
@@ -29,7 +32,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.on("possible_actions", (actions: ActionState[]) => {
       setPossibleActions(actions);
     });
-
+    
     socket.on("timer", (time: number) => {
       console.log(`Timer: ${time}`);
       setTimer(time);
@@ -49,10 +52,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     // to handle all types of animations triggered by actions  
     socket.on("roll_dice", (diceRoll: number) => {
       setDiceValue(diceRoll);
-      console.log(`From socket in TempGame: dps ${diceRoll}`);
+      console.log(`From socket in Battle: dps ${diceRoll}`);
       setShowDiceModal(true);
     });
-    
+
     return () => {
       socket.off("possible_actions");
       socket.off("timer");
@@ -67,16 +70,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   };
 
   return (
-    <div>
-      <h1>GAME</h1>
-
-      <DicerollModal
-        show={showDiceModal}
-        onClose={() => setShowDiceModal(false)}
-        toRoll={diceValue}
-      />
-
+    <div className="game-screen flex flex-col">
       {/* Winner display if battle is over */}
+      {/*winner === "Draw" ? (
+          <DrawScreen />
+        ) : */}
       {winner ? (
         winner === "Draw" ? (
           <DrawScreen />
@@ -87,49 +85,30 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         )
       )  : (
         <>
-          <CountDownTimer timer={timer} />
-
           {battleState && (
-            <div>
-              <h2>Battle</h2>
-              <p>Turn: {battleState.turn}</p>
+            <div className="battle-state-parts">
+              <PlayerInfoPanel battleState={battleState}/>
 
-              <div>
-                <h3>You: {battleState.yourPlayer.name}</h3>
-                <p>Health: {battleState.yourPlayer.currentHealth}</p>
-                <p>Attack: {battleState.yourPlayer.currentAttackStat}</p>
-                <p>Armour: {battleState.yourPlayer.currentArmourClassStat}</p>
-                <p>Monster: {battleState.yourPlayerMonster.name}</p>
+              <div className="timer-box">
+                <p>Timer: {timer}</p>
               </div>
 
-              <div>
-                <h3>Opponent: {battleState.opponentPlayer.name}</h3>
-                <p>Health: {battleState.opponentPlayer.currentHealth}</p>
-                <p>Attack: {battleState.opponentPlayer.currentAttackStat}</p>
-                <p>
-                  Armour: {battleState.opponentPlayer.currentArmourClassStat}
-                </p>
-                <p>Monster: {battleState.opponentPlayerMonster.name}</p>
-              </div>
+              <BattleMonsterPanel battleState={battleState}/>
 
-              <div>
+              {/* <div className="battle-logs">
                 <h3>Logs:</h3>
                 {battleState.yourPlayer.logs.map((log, index) => (
                   <p key={index}>{log}</p>
                 ))}
-              </div>
+              </div> */}
+              
+              <DicerollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} />
             </div>
           )}
 
           <div>
-            {timer > 0 ? (
-              possibleActions.map((action, index) => (
-                <button key={index} onClick={() => handleActionClick(action)}>
-                  {action.name} {action.currentUse}/{action.maxUse}
-                </button>
-              ))
-            ) : (
-              <p>TURN ENDED...</p>
+            {timer > 0 && (
+              <BattleFooter possibleActions={possibleActions} battleId={battleId} />
             )}
           </div>
         </>
