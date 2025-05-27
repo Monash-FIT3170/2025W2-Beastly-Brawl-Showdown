@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-interface ButtonGenericProps{
+export interface ButtonGenericProps{
     color: 'ronchi' | 'blue' | 'red' | 'purple';
 	size: ButtonSize;
 	isDisabled?: boolean;

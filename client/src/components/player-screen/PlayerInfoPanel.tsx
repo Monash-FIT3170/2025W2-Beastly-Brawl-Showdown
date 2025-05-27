@@ -7,7 +7,7 @@ interface PlayerInfoPanelProps {
   battleState: BattleState;
 }
 
-const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({battleState}) => {
+const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({ battleState }) => {
   return (
     <div className="player-info-container">
       <div className="player-info left">

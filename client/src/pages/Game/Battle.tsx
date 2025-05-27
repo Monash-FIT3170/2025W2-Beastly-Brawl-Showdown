@@ -8,6 +8,7 @@ import DicerollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
+import ActionButton from "../../components/buttons/ActionButton";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { GenericFooter } from "../../components/cards/GenericFooter";
 
@@ -105,6 +106,14 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             </div>
           )}
 
+          <div>
+            {timer > 0 ? (
+              possibleActions.map((action, index) => (
+                // <button key={index} onClick={() => handleActionClick(action)}>
+                //   {action.name} {action.currentUse}/{action.maxUse}
+                // </button>
+                <ActionButton actionState={action} battleId={battleId!} />
+              ))
           <BattleFooter possibleActions={possibleActions} battleId={battleId} />
 
           {/* <div className="action-buttons"> */}
