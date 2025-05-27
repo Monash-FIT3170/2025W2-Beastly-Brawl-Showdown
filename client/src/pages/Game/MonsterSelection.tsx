@@ -167,7 +167,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                           CANCEL
                         </OutlineText>
                     </ButtonGeneric>
-                    <ButtonGeneric color = 'blue' size = 'medium' onClick={() => {handleConfirmSelection}}> 
+                    <ButtonGeneric color = 'blue' size = 'medium' onClick={handleConfirmSelection}> 
                         <OutlineText size="medium">
                           CONFIRM
                         </OutlineText>
