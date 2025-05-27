@@ -36,7 +36,7 @@ export abstract class Monster {
     this.maxHealth = maxHealth;
     this.attackBonus = attackBonus;
     this.armourClass = armourClass;
-    this.possibleActions.push(new AttackAction(attackBonus,1));
+    this.possibleActions.push(new AttackAction(attackBonus));
     this.possibleActions.push(new DefendAction(armourClass));
     this.possibleActions.push(ability);
     this.possibleActions.push(archetype.getAbility());

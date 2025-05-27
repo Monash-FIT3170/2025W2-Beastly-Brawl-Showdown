@@ -4,7 +4,7 @@ import { ActionIdentifier } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 
 export class FeralStrikeAbilityAction extends Action {
-  private strike = new AttackAction(7,1);
+  private strike = new AttackAction(7);
   constructor() {
     super(
       ActionIdentifier.FERAL_STRIKE,
