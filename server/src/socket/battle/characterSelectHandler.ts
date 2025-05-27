@@ -7,7 +7,7 @@ import {
 } from "../../../../types/single/monsterState";
 
 import { StonehideGuardian } from "../../model/game/monster/stonehideGuardian";
-import { shadowfangPredator } from "../../model/game/monster/shadowfangPredator";
+import { shadowfangPredator } from "../../model/game/monster/shadowfangPredator.ts";
 import { MysticWvyren } from "../../model/game/monster/mysticWyvern";
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
