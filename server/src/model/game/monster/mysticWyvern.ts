@@ -1,19 +1,20 @@
-import { MonsterIdentifier } from "/types/single/monsterState";
 import { Monster } from "./monster";
-import { Tank } from "../archetype/tank";
-import { GroundSlamAbilityAction } from "../action/ability/groundSlam";
+import { ArcaneSheildAbilityAction } from "../action/ability/ArcaneSheild";
+import { MonsterIdentifier } from "/types/single/monsterState";
+import { Balanced } from "../archetype/balanced";
 
-export class MysticWyvern extends Monster {
+// Random monser for now
+export class MysticWvyren extends Monster {
   constructor() {
     super(
-      MonsterIdentifier.MYSTIC_WYVERN,
-      "Mysteric Wyvern",
+      MonsterIdentifier.SHADOWFANG_PREDATOR,
+      "Mystic Wvyren",
       "A dragon-like creature with vibrant scales and a balanced physique. It possesses both offensive and defensive capabilities, making it versatile in battle.",
-      new Tank(),
-      new GroundSlamAbilityAction(),
-      25,
-      2,
-      14
+      new Balanced(),
+      new ArcaneSheildAbilityAction(),
+      30,
+      1,
+      16
     );
   }
 }

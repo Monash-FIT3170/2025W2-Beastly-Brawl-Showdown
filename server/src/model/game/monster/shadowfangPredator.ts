@@ -1,10 +1,10 @@
 import { Monster } from "./monster";
 import { Dps } from "../archetype/dps";
-import { ShadowLeapAbilityAction } from "../action/ability/shadowLeap";
+import { ShadowLeapAbilityAction } from "../action/ability/ShadowLeap";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
 // Random monser for now
-export class shadowfangPredator extends Monster {
+export class ShadowfandPredetor extends Monster {
   constructor() {
     super(
       MonsterIdentifier.SHADOWFANG_PREDATOR,
