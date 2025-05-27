@@ -192,7 +192,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                   {abilities.map((ability, idx) => (
                     <div
                       key={ability.id || idx}
-                      className="flex flex-row items-center grow-1 justify-center"
+                      className="flex flex-row items-center grow-1 justify-left"
                     >
                       <img
                         src="/logo.png"
@@ -234,42 +234,5 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
         </div>
       )}
     </>
-
-    /**
-    <div className="min-h-screen flex flex-col items-center justify-start px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold mb-4">Choose Your Monster</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl">
-        {monsters.map((monster) => (
-          <div
-            key={monster.id}
-            onClick={() => handleSelectMonster(monster)}
-            className={`cursor-pointer border rounded-lg p-4 shadow-md hover:shadow-lg transition ${
-              selectedMonster?.id === monster.id
-                ? "border-blue-600 bg-blue-50"
-                : "border-gray-300"
-            }`}
-          >
-            <h3 className="text-lg font-semibold">{monster.name}</h3>
-          </div>
-        ))}
-      </div>
-
-      {selectedMonster && (
-        <div className="mt-6 p-4 border rounded-lg shadow w-full max-w-md bg-white">
-          <h2 className="text-xl font-bold">{selectedMonster.name}</h2>
-          <p className="mt-1">{selectedMonster.description}</p>
-          <p className="mt-2">HP: {selectedMonster.maxHealth}</p>
-          <p>Attack: {selectedMonster.attackBonus}</p>
-          <p>Armor Class: {selectedMonster.armourClass}</p>
-          <button
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            onClick={handleConfirmSelection}
-          >
-            Confirm Selection
-          </button>
-        </div>
-      )}
-    </div>
-    */
   );
 };

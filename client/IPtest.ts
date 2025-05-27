@@ -1,5 +1,4 @@
 // UPDATE ME WITH YOUR LOCAL IP
-//const local_ipv4 = "http://localhost";
 
 const local_ipv4 = "http://localhost";
 
