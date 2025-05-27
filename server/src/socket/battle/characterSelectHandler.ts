@@ -7,7 +7,7 @@ import {
 } from "../../../../types/single/monsterState";
 
 import { StonehideGuardian } from "../../model/game/monster/stonehideGuardian";
-import { shadowfangPredator } from "../../model/game/monster/shadowfangPredator";
+import { shadowfangPredetor } from "../../model/game/monster/shadowfangPredator";
 import { MysticWvyren } from "../../model/game/monster/mysticWyvern";
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
@@ -67,7 +67,7 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
 // Function to create a monster by its name
 const monsterMap = new Map([
   [MonsterIdentifier.STONEHIDE_GUARDIAN, () => new StonehideGuardian()],
-  [MonsterIdentifier.SHADOWFANG_PREDATOR, () => new shadowfangPredator()],
+  [MonsterIdentifier.SHADOWFANG_PREDATOR, () => new shadowfangPredetor()],
   [MonsterIdentifier.MYSTIC_WYVERN, () => new MysticWvyren()],
 ]);
 
