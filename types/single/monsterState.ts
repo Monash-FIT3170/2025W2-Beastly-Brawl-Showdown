@@ -1,3 +1,5 @@
+import { ActionState } from "./actionState";
+
 export enum MonsterIdentifier {
   STONEHIDE_GUARDIAN = "STONEHIDE_GUARDIAN",
   SHADOWFANG_PREDATOR = "SHADOWFANG_PREDATOR",
@@ -12,4 +14,6 @@ export interface MonsterState {
   maxHealth: number;
   attackBonus: number;
   armourClass: number;
+
+  possibleActions: ActionState[];
 }
