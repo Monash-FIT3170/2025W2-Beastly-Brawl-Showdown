@@ -1,6 +1,6 @@
 import React from "react";
 import { AttackButton } from "../buttons/AttackButton";
-import { AbilityButton } from "../buttons/AbilityButton";
+import { AbilityButton } from "../buttons/ActionButton";
 import { DefendButton } from "../buttons/DefendButton";
 import { GenericFooter } from "./GenericFooter";
 
@@ -15,6 +15,7 @@ interface BattleFooterProp{
     ability1OnClick: () => void;
     ability2OnClick: () => void;
     attackOnClick: () => void;
+    // battleState: BattleState;
 }
 
 export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charges, defenseCharges, ability1Image, ability2Image, ability1OnClick, ability2OnClick, attackOnClick}: BattleFooterProp) => {
@@ -38,14 +39,17 @@ export const BattleFooter = ({ability1, ability2, ability1Charges, ability2Charg
         <div>
             <div className={`${topButton}`}>
                 <AttackButton onClick={attackOnClick}></AttackButton>
+                // Figure out how to make the count show up
                 <DefendButton initialCount={defenseCharges}></DefendButton>
             </div>
             <GenericFooter>
                 
                 <br></br><br></br><br></br>
                 <div className="flex justify-evenly items-center w-full">
+                    // Check the size of the word
                     <AbilityButton ability={ability1} amountAllowed={ability1Charges} imageName={ability1Image} onClick={ability1OnClick}></AbilityButton>
                     <AbilityButton ability={ability2} amountAllowed={ability2Charges} imageName={ability2Image} onClick={ability2OnClick}></AbilityButton>
+                    // AbilityButton ={actionState}
                 </div>
                 
             </GenericFooter>

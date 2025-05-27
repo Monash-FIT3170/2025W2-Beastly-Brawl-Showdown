@@ -8,6 +8,7 @@ import DicerollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
+import ActionButton from "../../components/buttons/ActionButton";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -103,12 +104,13 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             </div>
           )}
 
-          <div className="action-buttons">
+          <div>
             {timer > 0 ? (
               possibleActions.map((action, index) => (
-                <button key={index} onClick={() => handleActionClick(action)}>
-                  {action.name} {action.currentUse}/{action.maxUse}
-                </button>
+                // <button key={index} onClick={() => handleActionClick(action)}>
+                //   {action.name} {action.currentUse}/{action.maxUse}
+                // </button>
+                <ActionButton actionState={action} battleId={battleId!} />
               ))
             ) : (
               <p>TURN ENDED...</p>
