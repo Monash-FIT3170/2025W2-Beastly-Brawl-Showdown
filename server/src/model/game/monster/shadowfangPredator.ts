@@ -4,7 +4,7 @@ import { ShadowLeapAbilityAction } from "../action/ability/ShadowLeap";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
 // Random monser for now
-export class shadowfangPredator extends Monster {
+export class ShadowfandPredetor extends Monster {
   constructor() {
     super(
       MonsterIdentifier.SHADOWFANG_PREDATOR,
@@ -12,9 +12,9 @@ export class shadowfangPredator extends Monster {
       " A sleek, agile beast resembling a wolf or panther, cloaked in shadows. Its speed and ferocity make it a deadly opponent.",
       new Dps(),
       new ShadowLeapAbilityAction(),
-      20,
-      4,
-      14
+      30,
+      1,
+      16
     );
   }
 }
