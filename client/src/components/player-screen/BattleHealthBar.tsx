@@ -1,12 +1,12 @@
 import React from "react";
-import "./HealthBar.css";
+import "./BattleHealthBar.css";
 
-interface HealthBarProps {
+interface BattleHealthBarProps {
   current: number;
   max: number;
 }
 
-const HealthBar: React.FC<HealthBarProps> = ({ current, max }) => {
+const BattleHealthBar: React.FC<BattleHealthBarProps> = ({ current, max }) => {
   const percentage = (current / max) * 100;
 
   let color = "green";
@@ -28,4 +28,4 @@ const HealthBar: React.FC<HealthBarProps> = ({ current, max }) => {
   );
 };
 
-export default HealthBar;
+export default BattleHealthBar;

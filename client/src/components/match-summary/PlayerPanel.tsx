@@ -1,5 +1,5 @@
 import React from 'react';
-import HealthBar from '../player-screen/HealthBar';
+import HealthBar from './HealthBar';
 import { PlayerState } from '/types/single/playerState';
 
 interface PlayerPanelProps {
@@ -104,7 +104,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         >
           <HealthBar 
             current={currentHealth} 
-            max={maxHealth}
+            max={maxHealth} // Health bar won't show before player selects a monster
             isLeftPlayer={isLeftPlayer}
           />
         </div>

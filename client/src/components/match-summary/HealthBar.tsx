@@ -1,13 +1,13 @@
 import React from "react";
-import "./MSHealthBar.css";
+import "./HealthBar.css";
 
-interface MSHealthBarProps {
+interface HealthBarProps {
   current: number;
   max: number;
   isLeftPlayer?: boolean|null;
 }
 
-const MSHealthBar: React.FC<MSHealthBarProps> = ({ current, max, isLeftPlayer = true }) => {
+const HealthBar: React.FC<HealthBarProps> = ({ current, max, isLeftPlayer = true }) => {
   const percentage = (current / max) * 100;
 
   let color = "green";
@@ -44,4 +44,4 @@ const MSHealthBar: React.FC<MSHealthBarProps> = ({ current, max, isLeftPlayer = 
   );
 };
 
-export default MSHealthBar;
+export default HealthBar;

@@ -3,7 +3,7 @@ import socket from "../../socket";
 import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
 import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
-import MonsterPanel from "../../components/player-screen/MonsterPanel";
+import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
 import DicerollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
@@ -90,7 +90,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                 <p>Timer: {timer}</p>
               </div>
 
-              <MonsterPanel battleState={battleState}/>
+              <BattleMonsterPanel battleState={battleState}/>
 
               {/* <div className="battle-logs">
                 <h3>Logs:</h3>

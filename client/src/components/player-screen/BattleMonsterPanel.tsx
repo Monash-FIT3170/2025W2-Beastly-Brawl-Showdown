@@ -1,12 +1,12 @@
 import React from "react";
-import "./MonsterPanel.css";
+import "./BattleMonsterPanel.css";
 import { BattleState } from "/types/composite/battleState";
 
-interface MonsterPanelProps {
+interface BattleMonsterPanelProps {
   battleState: BattleState;
 }
 
-const MonsterPanel: React.FC<MonsterPanelProps> = ({ battleState }) => {
+const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({ battleState }) => {
 
     const pathLeftMon = "/assets/characters/" + battleState.yourPlayerMonster.id + ".png";
     const pathRightMon = "/assets/characters/" + battleState.opponentPlayerMonster.id + ".png";
@@ -28,4 +28,4 @@ const MonsterPanel: React.FC<MonsterPanelProps> = ({ battleState }) => {
     );
 };
 
-export default MonsterPanel;
+export default BattleMonsterPanel;
