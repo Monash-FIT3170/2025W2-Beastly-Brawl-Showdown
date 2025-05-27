@@ -10,6 +10,13 @@ import MiddlePanel from "../../components/match-summary/MiddlePanel";
 import { GameSessionState } from "/types/composite/gameSessionState";
 
 import { PlayerStats } from "../../types/data";
+import { IconButton } from "../../components/buttons/IconButton";
+import { FadingBattleText } from "../../components/texts/FadingBattleText";
+import { PopupClean } from "../../components/popups/PopupClean";
+import { OutlineText } from "../../components/texts/OutlineText";
+import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
+import { BlackText } from "../../components/texts/BlackText";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -20,6 +27,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const [gameSession, setGameSession] = useState<GameSessionState>();
   // const [mostChosenMonster, setMostChosenMonster] = useState<MostChosenMonsterState | null>(null);
   const [playerStats, setPlayerStats] = useState<PlayerStats>();
+  const [exit, setExit] = useState<Boolean>();
 
   // Function to extract player statistics from battleStates
   const extractPlayerStatistics = (battles: BattleState[] | null) => {
@@ -73,6 +81,14 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     return { blockData, damageData };
   };
 
+    // deletes game session
+    const closeGame = () => {
+      // UPDATE: popup asking if they are sure before returning to home
+      socket.emit("cancel-game", { gameCode: code });
+      // return to home
+      FlowRouter.go("/");
+    };
+
   useEffect(() => {
     {
       /*Listens for the "host_battle_summary" message from the server via Socket.IO.
@@ -125,8 +141,32 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
         overflow: "auto",
       }}
     >
+        {exit && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+          <OutlineText size = 'extraLarge'>QUIT GAME?</OutlineText>
+          <BlackText size = 'large'>THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY</BlackText>
+          <BlackText size = 'large'>DO YOU WANT TO CONTINUE OR END THE GAME</BlackText>
+          <div className="flex flex-row justify-between items-center">
+            <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
+            <ButtonGeneric size="large" color="blue" onClick={closeGame}>CONFIRM</ButtonGeneric>
+          </div>
+          </div>
+        </PopupClean>)}
       {gameSession && playerStats ? (
+        
+
+
         <div>
+          <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
+            <IconButton
+              style="arrowleft"
+              iconColour="black"
+              buttonColour="red"
+              size="medium"
+              onClick={() => setExit(true)}
+            />
+          </div>
           <RoundNumberHeader roundNumber={gameSession.round} />
           {/* Main content area with grid layout */}
           <div
