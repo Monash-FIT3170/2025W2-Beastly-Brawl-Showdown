@@ -74,7 +74,7 @@ export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, 
     }
 
     return (
-        <div className="relative w-full h-8">
+        <div className="relative w-full h-12">
             <div className={`
                 ${baseBackBarProperties}
                 ${cornerRadiusToDisplay[cornerRadius]}
