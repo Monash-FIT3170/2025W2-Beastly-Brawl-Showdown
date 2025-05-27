@@ -12,7 +12,7 @@ interface ActionButtonProps {
 
 const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) => {
     const imagePath = "/assets/actions/" + actionState.id + ".png";
-    const name = actionState.name;
+    const name = actionState.name.toUpperCase();
     const availableUses = actionState.currentUse; // How many REMAINING uses
 
     const colorLoader: Record<string, ButtonGenericProps["color"]> = {
@@ -40,7 +40,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) =>
 
     return(
         <div>
-            <ButtonGeneric color={colorLoader[actionState.id]} size='battle' isDisabled={isDisabled} onClick={handleClick}>
+            <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={handleClick}>
                 <div className="w-[50%] h-auto leading-[0.8]">
                     <OutlineText size = 'medium'>
                         {name}
@@ -48,12 +48,37 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) =>
                 </div>
                 <img className = {`${image}`} src={`${imagePath}`} alt={`${actionState.id} image`}/>
             </ButtonGeneric>
-
             {availableUses != Infinity && (
-                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-[#FFE07C] border-4 border-[#403245] rounded-full w-10 h-10 flex items-center justify-center text-[#403245] font-jua text-lg">
+                <div className="
+                    absolute
+                    -bottom-2
+                    left-1/2
+                    -translate-x-1/2
+                    bg-[#FFE07C]
+                    border-4
+                    border-[#403245]
+                    rounded-full
+                    w-10
+                    h-10
+                    flex
+                    items-center
+                    justify-center
+                    text-[#403245]
+                    font-jua
+                    text-lg
+                ">
                     {availableUses}
                 </div>
             )}
+
+            {/* <div className="flex justify-center items-center">
+                <button className="relative px-6 py-3 bg-blue-600 text-white rounded-lg">
+                    Click Me
+                    <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-6 h-6 bg-red-500 text-xs text-white flex items-center justify-center rounded-full border-2 border-white">
+                        5
+                    </span>
+                </button>
+            </div> */}
         </div>
     );
 };

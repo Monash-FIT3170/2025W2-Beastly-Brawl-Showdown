@@ -108,27 +108,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
           <div>
             {timer > 0 ? (
-              possibleActions.map((action, index) => (
-                // <button key={index} onClick={() => handleActionClick(action)}>
-                //   {action.name} {action.currentUse}/{action.maxUse}
-                // </button>
-                <ActionButton actionState={action} battleId={battleId!} />
-              ))
-          <BattleFooter possibleActions={possibleActions} battleId={battleId} />
-
-          {/* <div className="action-buttons"> */}
-            
-            {/* {timer > 0 ? (
-              <BattleFooter possibleActions={possibleActions} battleId={battleId}/>
-              // possibleActions.map((action, index) => (
-              //   <button key={index} onClick={() => handleActionClick(action)}>
-              //     {action.name} {action.currentUse}/{action.maxUse}
-              //   </button>
-              // ))
+              <BattleFooter possibleActions={possibleActions} battleId={battleId} />
             ) : (
               <p>TURN ENDED...</p>
-            )} */}
-          {/* </div> */}
+            )}
+          </div>
         </>
       )}
     </div>

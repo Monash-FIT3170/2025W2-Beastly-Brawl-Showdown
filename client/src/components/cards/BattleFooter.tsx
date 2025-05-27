@@ -1,5 +1,5 @@
 import React from "react";
-import { AttackButton } from "../buttons/AttackButton";
+import ActionButton from "../buttons/ActionButton";
 import { ActionState } from "/types/single/actionState";
 import socket from "../../socket";
 import { BaseCard } from "./BaseCard";
@@ -50,7 +50,7 @@ export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
         bg-[#FBD474]
         mx-auto
         font-[Jua]
-        w-1/3
+        w-115
         h-30
         rounded-tl-[1rem]
         rounded-tr-[1rem]
@@ -62,8 +62,7 @@ export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
         items-center
         justify-center
         text-wrap
-        pl-[1%]
-        pr-[1%]
+        pr-[1.5%]
         pb-[10%]
         pt-4
         pb-10
@@ -77,8 +76,8 @@ export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
         <div className={`${footer}`}>
             <div className={`${topButton}`}>
                     {possibleActions.map((action, _) => (
-                        <AttackButton onClick={() => handleActionClick(action)} />
-                        //<ActionButton attackState={action} onClick={() => handleActionClick(action)} />
+                        
+                        <ActionButton actionState={action} battleId={battleId!} />
                     ))}
             </div>
         </div>
