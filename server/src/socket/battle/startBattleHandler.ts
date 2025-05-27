@@ -101,7 +101,12 @@ export default function proceedBattleTurn(io: Server, socket: Socket, gameSessio
       });
 
       if (battle.isBattleOver()) {
-        io.to(battle.getId()).emit("battle_end", battle.getWinner());
+        const winners = battle.getWinners()
+        if (winners.length ==0){  //if battle is over, the array length is guaranteed to be either 0 or 1
+          io.to(battle.getId()).emit("battle_end", {result: "draw", winners: winners})
+        } else {
+          io.to(battle.getId()).emit("battle_end", {result: "concluded", winners: winners});
+        }
       }
       // TODO: ONLY update the current battle to be more memory efficient...
       //Players' states after the turn ends 
@@ -113,6 +118,14 @@ export default function proceedBattleTurn(io: Server, socket: Socket, gameSessio
       // TODO: Set a 2-5 second "animation" window, and set a property in the battle instance to object it is in the animation stage (for the host match summary page)
 
       setTimeout(() => {
+        if (gameSession.areBattlesConcluded()){
+          console.log(`All battales are concluded in game session ${gameSession.getGameCode()}`)
+          //TODO: for future, this can be used to handle what happens after a game session ends 
+          socket.emit("game_session_ended", {
+            message: `Game session ${gameSession.getGameCode()} has ended.`
+          })
+          return;
+        }
 
         // TODO: Set a property in the battle instance to object it is in the battle result stage (for the host match summary page)
         proceedBattleTurn(io, socket, gameSession, battle);

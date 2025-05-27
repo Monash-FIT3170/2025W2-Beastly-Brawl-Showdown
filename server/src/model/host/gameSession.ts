@@ -243,6 +243,11 @@ export default class GameSession {
   } 
 }
 
+  public areBattlesConcluded(): boolean {
+    return this.battles.getItems().every(battle => battle.isBattleOver());
+  }
+
+
   public getGameSessionState(): GameSessionState {
 
     const allBattles = [];
