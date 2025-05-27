@@ -17,7 +17,7 @@ export class ElementalBreathAction extends Action {
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     var dodge = affectedPlayer.getDodgingPosition()
     affectedPlayer.incHealth(-2)
-    if (dodge == true){
+    if (dodge != true){
         affectedPlayer.incHealth(-3);
     }
     actingPlayer.addLog(
