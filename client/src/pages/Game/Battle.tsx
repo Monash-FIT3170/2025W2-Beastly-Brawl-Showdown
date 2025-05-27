@@ -107,10 +107,8 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
           )}
 
           <div>
-            {timer > 0 ? (
+            {timer > 0 && (
               <BattleFooter possibleActions={possibleActions} battleId={battleId} />
-            ) : (
-              <p>TURN ENDED...</p>
             )}
           </div>
         </>

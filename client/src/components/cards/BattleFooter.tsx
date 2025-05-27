@@ -81,14 +81,5 @@ export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
                     ))}
             </div>
         </div>
-
-        //     {/* <GenericFooter>
-        //         <br></br><br></br><br></br>
-        //         <div className="flex justify-evenly items-center w-full">
-        //             <AbilityButton ability={ability1} amountAllowed={ability1Charges} imageName={ability1Image} onClick={ability1OnClick}></AbilityButton>
-        //             <AbilityButton ability={ability2} amountAllowed={ability2Charges} imageName={ability2Image} onClick={ability2OnClick}></AbilityButton>
-        //         </div>
-        //     </GenericFooter> */}
-        // </div>
     )
 }
