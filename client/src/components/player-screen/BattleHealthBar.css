@@ -1,0 +1,24 @@
+.health-bar {
+  width: 190px;
+  height: 40px;
+  background-color: #d3d3d3;
+  border-radius: 20px;
+  border: 4px solid #3d2f4f;
+  overflow: hidden;
+  position: relative;
+}
+
+.health-bar-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  transition: width 0.3s ease;
+}
+
+.health-bar-text {
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px #000;
+  padding-left: 10px;
+}

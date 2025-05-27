@@ -153,6 +153,9 @@ export class Player {
   }
 
   public addAction(action: Action): void {
+    if (this.actions.length > 0) {
+      this.clearActions();
+    }
     this.actions.push(action);
   }
 

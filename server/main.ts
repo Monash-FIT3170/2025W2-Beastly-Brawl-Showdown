@@ -9,10 +9,9 @@ import GameSession from "./src/model/host/gameSession";
 import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataHandler";
 
-
-export const activeGameSessions = new Map<number, GameSession>();
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
+export const activeGameSessions = new Map<number, GameSession>();
 
 Meteor.startup(async () => {
   // Initialise socket

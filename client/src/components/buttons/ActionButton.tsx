@@ -1,14 +1,79 @@
-import React from 'react';
+import React from "react";
+import { ButtonGeneric } from "./ButtonGeneric";
+import { OutlineText } from "../texts/OutlineText";
+import { ActionState, ActionIdentifier } from "../../../../types/single/actionState";
+import socket from "../../socket";
+import { ButtonGenericProps } from "./ButtonGeneric";
 
-type ActionButtonProps = {
-  label: string;
-  onClick: () => void;
+interface ActionButtonProps {
+    actionState: ActionState;
+    battleId: string;
+}
+
+const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) => {
+    const imagePath = "/assets/actions/" + actionState.id + ".png";
+    const name = actionState.name.toUpperCase();
+    const availableUses = actionState.currentUse; // How many REMAINING uses
+
+    const colorLoader: Record<string, ButtonGenericProps["color"]> = {
+        [ActionIdentifier.ATTACK]: 'red',
+        [ActionIdentifier.DEFEND]: 'blue',
+        [ActionIdentifier.NULL]: 'ronchi',
+    };
+
+    // Check if we still have available uses
+    const isDisabled = availableUses == 0;
+
+    const handleClick = () => {
+        if (isDisabled) return;
+        // Do the action stuff
+        socket.emit("action_selected", { action: actionState, battleId, playerId: socket.id });
+    };
+    
+    const image =
+        `
+        w-[30%]
+        h-[auto%]
+        object-contain
+        ml-auto
+        `;
+
+    return(
+        <div className="relative">
+        <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={handleClick}>
+            <div className="w-[50%] h-auto leading-[0.8]">
+                <OutlineText size = 'medium'>
+                    {name}
+                </OutlineText>
+            </div>
+            <img className = {`${image} rounded-md`} src={`${imagePath}`} alt={`${actionState.id} image`}/>
+        </ButtonGeneric>
+
+        {availableUses != null && (
+            <div className="                    
+                absolute
+                top-14
+                right-18
+                w-10
+                h-10
+                rounded-full
+                bg-[#FFE07C]
+                border-3
+                border-[#403245]
+                text-white
+                flex
+                items-center
+                justify-center
+                text-sm
+                font-jua"
+            >
+                <OutlineText size="medium">
+                    {availableUses}
+                </OutlineText>
+            </div>
+        )}
+    </div>
+    );
 };
-const ActionButton: React.FC<ActionButtonProps> = ({ label, onClick }) => {
-  return (
-    <button onClick={onClick}>
-      {label}
-    </button>
-  );
-};
+
 export default ActionButton;
