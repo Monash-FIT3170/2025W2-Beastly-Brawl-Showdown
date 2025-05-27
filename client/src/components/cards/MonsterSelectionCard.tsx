@@ -14,15 +14,15 @@ interface MonsterSelectionProps{
 export const MonsterSelectionCard = ({monster, type, onClick}: MonsterSelectionProps) =>{
 
     const colorLoader: Record<string, string> = {
-        'attacker': 'bg-burntSienna',
-        'defender': 'bg-conifer',
-        'balanced': 'bg-pictonBlue'
+        'Shadowfang Predator': 'bg-[#DC7466]',
+        'Stonehide Guardian': 'bg-[#7EACD5]',
+        'Mystic Wyvern': 'bg-[#9DD786]'
     }
     
     return(
         <button 
             className=
-                {`${colorLoader[type]} 
+                {`${colorLoader[monster.name]} 
                 border border-[4px] border-blackCurrant 
                 rounded-xl
                 sm:w-[95%]

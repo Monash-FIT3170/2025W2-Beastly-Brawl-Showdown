@@ -7,7 +7,7 @@ export class MysticWyvern extends Monster {
   constructor() {
     super(
       MonsterIdentifier.MYSTIC_WYVERN,
-      "Mysteric Wyvern",
+      "Mystic Wyvern",
       "A dragon-like creature with vibrant scales and a balanced physique. It possesses both offensive and defensive capabilities, making it versatile in battle.",
       new Tank(),
       new GroundSlamAbilityAction(),
