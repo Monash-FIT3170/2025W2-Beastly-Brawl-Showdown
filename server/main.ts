@@ -11,10 +11,7 @@ import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataH
 
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
-
 export const activeGameSessions = new Map<number, GameSession>();
-export const players = new Map<string, Player>();
-export const battles = new Map<string, Battle>();
 
 Meteor.startup(async () => {
   // Initialise socket
@@ -28,24 +25,6 @@ Meteor.startup(async () => {
   });
 
   io.on("connection", (socket) => {
-<<<<<<< HEAD
-    socket.on("create_player", (name) => {
-      let monster = new StonehideGuardian();
-      let player = new Player(socket.id, name, monster);
-
-      players.set(socket.id, player);
-    });
-
-    startBattleHandler(io, socket);
-    actionSelectedHandler(io, socket);
-
-    socket.on("disconnect", () => {
-      players.delete(socket.id);
-    });
-  });
-
-  server.listen(PORT, () => {});
-=======
     // startBattleHandler(io, socket);
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
@@ -76,5 +55,4 @@ Meteor.startup(async () => {
   server.listen(PORT, "0.0.0.0", () => {
     console.log(`Socket.IO server running on port ${PORT}`);
   });
->>>>>>> main
 });
