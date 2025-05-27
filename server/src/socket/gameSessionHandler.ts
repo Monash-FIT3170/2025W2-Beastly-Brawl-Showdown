@@ -179,6 +179,8 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       return;
     }
 
+    io.to(`game-${gameCode}`).emit("start-success", {});
+
     session.calculateMostChosenMonster();
 
     session.createMatches();

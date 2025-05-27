@@ -69,9 +69,12 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   // TODO: MAKE SURE START GAME CAN ONLY BEGIN ONCE ALL PLAYERS HAVE SELECTED A MONSTER AND IN THE WAITING ROOM!
   const startGame = () => {
     socket.emit("start-game", { gameCode: code });
+  };
+
+  socket.on("start-success", () => {
     const codeString = code?.toString();
     FlowRouter.go(`/battles/${codeString}`);
-  };
+  });
 
   // deletes game session
   const closeGame = () => {
