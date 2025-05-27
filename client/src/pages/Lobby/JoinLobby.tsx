@@ -51,16 +51,14 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
           </div>
         </div>
         <div className="flex flex-row lg:h-full lg:w-1/2 sm:h-3/4 lg:items-center sm:items-end justify-around">
-          <LogoResizable className="lg:w-1/2 h-full"></LogoResizable> 
+          <LogoResizable className="lg:w-1/2 h-full"></LogoResizable>
         </div>
       </div>
       <div className="flex flex-row h-1/2 w-full items-center justify-around">
         <div className="flex flex-col h-full lg:space-y-6 lg:w-1/4.8 sm:w-1/2 items-center sm:justify-around">
           <div className="w-full lg:max-w-xs">
-            <BlackText size="medium">
-              Please Enter Room Code:
-            </BlackText>
-            <InputBox 
+            <BlackText size="medium">Please Enter Room Code:</BlackText>
+            <InputBox
               pattern="[0-9]*"
               maxLength={6}
               value={code}
@@ -73,10 +71,8 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
           </div>
 
           <div className="w-full lg:max-w-xs">
-            <BlackText size="medium">
-              Name:
-            </BlackText>
-            <InputBox 
+            <BlackText size="medium">Name:</BlackText>
+            <InputBox
               maxLength={8}
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -85,9 +81,7 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
           </div>
 
           <ButtonGeneric color="blue" size="medium" onClick={joinSession}>
-              <OutlineText size="medium">
-                JOIN ROOM
-              </OutlineText>
+            <OutlineText size="medium">JOIN ROOM</OutlineText>
           </ButtonGeneric>
         </div>
       </div>

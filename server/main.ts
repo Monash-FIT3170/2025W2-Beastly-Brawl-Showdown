@@ -1,12 +1,14 @@
 import { Meteor } from "meteor/meteor";
-// import { startBattleHandler } from "./src/socket/battle/startBattleHandler";
 import { actionSelectedHandler } from "./src/socket/battle/actionSelectedHandler";
+import { characterSelectHandler } from "./src/socket/battle/characterSelectHandler";
 import http from "node:http";
 import { Server } from "socket.io";
 import { Player } from "./src/model/game/player";
 import { Battle } from "./src/model/game/battle";
 import GameSession from "./src/model/host/gameSession";
 import { gameSessionHandler } from "./src/socket/gameSessionHandler";
+import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataHandler";
+
 
 export const activeGameSessions = new Map<number, GameSession>();
 export const players = new Map<string, Player>();
@@ -27,6 +29,8 @@ Meteor.startup(async () => {
     // startBattleHandler(io, socket);
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
+    characterSelectHandler(io, socket);
+    waitingScreenDataHandler(io, socket);
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);
@@ -41,7 +45,7 @@ Meteor.startup(async () => {
           // Updates host pages
           io.to(`game-${code}`).emit("update-players", {
             message: `Player ${player?.getName()} - ${socket.id} disconnected.`,
-            players: session.players.getItems(),
+            players: session.getPlayerStates(),
           });
         }
         players.delete(socket.id);

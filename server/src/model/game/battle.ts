@@ -10,7 +10,12 @@ export class Battle {
 
   private turn: number = 0;
 
-  constructor(id: UUID, player1: Player, player2: Player, gameSessionId: string ) {
+  constructor(
+    id: UUID,
+    player1: Player,
+    player2: Player,
+    gameSessionId: string
+  ) {
     this.id = id;
     this.players.set(player1.getId(), player1);
     this.players.set(player2.getId(), player2);
@@ -44,6 +49,7 @@ export class Battle {
   public clearBattleLogs(): void {
     this.players.forEach((player) => {
       player.clearLogs();
+      player.clearBattleLogs();
     });
   }
 
@@ -64,15 +70,26 @@ export class Battle {
 
       opponentPlayer: opponentPlayer!.getPlayerState(),
       opponentPlayerMonster: opponentPlayer!.getMonster().getMonsterState(),
+      isOver: this.isBattleOver();
     };
   }
   public isBattleOver(): boolean {
     return Array.from(this.players.values()).some(
-      (player) => player.getHealth() == 0 
-    )
+      (player) => player.getHealth() == 0
+    );
   }
-  public getWinner(): string| null {
-    const alive_players = Array.from(this.players.values()).filter((player) => player.getHealth() > 0)
-    return alive_players.length === 1? alive_players[0].getName(): null;
+  public getWinners(): string[] | null {
+    const alivePlayers = Array.from(this.players.values()).filter(
+      (player) => player.getHealth() > 0
+    );
+  
+    if (this.isBattleOver()) {
+      // If no players are alive, it's a draw
+      return alivePlayers.length === 0
+        ? [] // draw: no survivors
+        : alivePlayers.map((player) => player.getName()); 
+    }
+  
+    return null;
   }
 }

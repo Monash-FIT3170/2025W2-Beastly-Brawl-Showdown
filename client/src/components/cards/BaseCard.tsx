@@ -5,9 +5,10 @@ interface BaseCardProps{
     children?: ReactNode;
     width?: number;
     height?: number;
+    className?: string;
 }
 
-export const BaseCard = ({color, children, width, height}: BaseCardProps) =>{
+export const BaseCard = ({color, children, width, height, className}: BaseCardProps) =>{
     
     const colorLoader: Record<string, string> = {
         'pictonBlue':'bg-pictonBlue',
@@ -24,7 +25,7 @@ export const BaseCard = ({color, children, width, height}: BaseCardProps) =>{
     }
 
     return(
-        <div className={`${colorLoader[color]} flex flex-row items-center justify-around border-[4px] border-blackCurrant w-min h-min rounded-xl`}
+        <div className={`${colorLoader[color]} flex items-center justify-around border-[4px] border-blackCurrant w-min h-min rounded-xl ${className}`}
         style = {{width: width ? `${width}rem` : undefined,
                     height: height ? `${height}rem` : undefined}}
         >

@@ -1,3 +1,5 @@
+import { MonsterState } from "./monsterState";
+
 export interface PlayerState {
   id: string;
   name: string;
@@ -5,6 +7,13 @@ export interface PlayerState {
   currentHealth: number;
   currentAttackStat: number;
   currentArmourClassStat: number;
+  // initialHealth: number;
+  // monsterName: string;
+  successBlock: number;
+  successHit: number; 
+
+  monster: MonsterState | null;
 
   logs: string[];
+  battleLogs: string[];
 }

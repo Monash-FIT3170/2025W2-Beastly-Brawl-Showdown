@@ -3,6 +3,10 @@ import socket from "../../socket";
 import CountDownTimer from "../../components/temp/CountdownTimer";
 import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
+import DicerollModal from "./DiceRollModal";
+import WinnerScreen from "./WinnerScreen";
+import LoserScreen from "./LoserScreen";
+import DrawScreen from "./DrawScreen";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -13,6 +17,9 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const [timer, setTimer] = useState<number>(10);
   const [winner, setWinner] = useState<string | null>(null);
+
+  const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
+  const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
@@ -28,11 +35,24 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setTimer(time);
     });
 
-    socket.on("battle_end", (winner: string) => {
-      console.log(`Winner ${winner}`);
-      setWinner(winner);
+    socket.on("battle_end", ({result, winners}) => {
+      console.log(result,winners)
+      if (result === "draw"){
+        setWinner("Draw")
+      } else if (result === "concluded"){
+        setWinner(winners[0])
+      }
+      console.log(winner)
     });
 
+    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier 
+    // to handle all types of animations triggered by actions  
+    socket.on("roll_dice", (diceRoll: number) => {
+      setDiceValue(diceRoll);
+      console.log(`From socket in TempGame: dps ${diceRoll}`);
+      setShowDiceModal(true);
+    });
+    
     return () => {
       socket.off("possible_actions");
       socket.off("timer");
@@ -50,13 +70,22 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     <div>
       <h1>GAME</h1>
 
+      <DicerollModal
+        show={showDiceModal}
+        onClose={() => setShowDiceModal(false)}
+        toRoll={diceValue}
+      />
+
       {/* Winner display if battle is over */}
       {winner ? (
-        <div>
-          <h2>Battle Ended</h2>
-          <p>Winner: {winner}</p>
-        </div>
-      ) : (
+        winner === "Draw" ? (
+          <DrawScreen />
+        ) : battleState?.yourPlayer.name === winner ? (
+          <WinnerScreen />
+        ) : (
+          <LoserScreen />
+        )
+      )  : (
         <>
           <CountDownTimer timer={timer} />
 

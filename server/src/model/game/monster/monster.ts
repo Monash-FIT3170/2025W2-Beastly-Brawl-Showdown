@@ -93,6 +93,8 @@ export abstract class Monster {
       maxHealth: this.maxHealth,
       attackBonus: this.attackBonus,
       armourClass: this.armourClass,
+
+      possibleActions: this.getPossibleActionStates(),
     };
   }
 }

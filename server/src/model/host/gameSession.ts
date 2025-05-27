@@ -2,15 +2,24 @@ import { Player } from "../game/player";
 import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
-import { BattleState } from "/types/composite/battleState";
+import { GameSessionState } from "/types/composite/gameSessionState";
+import { Monster } from "../game/monster/monster";
+import { GameSessionData } from "/types/other/gameSessionData";
+import { BattlePhase } from "../../../../types/composite/battleState";
+import { PlayerState } from "/types/single/playerState";
 
 export default class GameSession {
-  hostUID: string;
-  players: Queue<Player>;
-  battles: Queue<Battle>;
+  private hostUID: string;
+  private players: Queue<Player>;
+  private battles: Queue<Battle>;
   private gameCode: number;
+  private round: number = 1; // Round number
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
+  private currentPhase: BattlePhase=BattlePhase.CHOOSE_ACTION;
+
+  // Initialise sample data
+  private gameSessionData: GameSessionData = { mostChosenMonster: { monster: null, percentagePick: "0"} };
 
   constructor(hostID: string, presetGameCode?: number) {
     this.hostUID = hostID;
@@ -41,6 +50,14 @@ export default class GameSession {
     return this.hostUID;
   }
 
+  public setCurrentPhase(phase: BattlePhase): void {
+    this.currentPhase = phase
+  }
+
+  public getCurrentPhase(): BattlePhase{
+    return this.currentPhase
+  }
+
   public getGameCode() {
     return this.gameCode;
   }
@@ -51,6 +68,10 @@ export default class GameSession {
 
   public updateHost(hostID: string) {
     this.hostUID = hostID;
+  }
+
+  public getPlayers() {
+    return this.players;
   }
 
   // Add player to Game Session queue
@@ -150,18 +171,21 @@ export default class GameSession {
 
       // Create a battle and add it to the queue of battles
       if (player1Indexed != undefined && player2Indexed != undefined) {
-
         let battleId = crypto.randomUUID();
 
-        const battle = new Battle(battleId, player1Indexed, player2Indexed, this.hostUID);
+        const battle = new Battle(
+          battleId,
+          player1Indexed,
+          player2Indexed,
+          this.hostUID
+        );
 
-        battles.set(battleId, battle)
+        battles.set(battleId, battle);
 
         this.battles.enqueue(battle);
 
         this.players.enqueue(player1Indexed);
         this.players.enqueue(player2Indexed);
-
       }
 
       previousPosition = 1;
@@ -184,17 +208,80 @@ export default class GameSession {
     return oddPlayer;
   }
 
-  public getGameSessionState(): BattleState[] {
+  public calculateMostChosenMonster() {
+  // Map from monster name to { monster: Monster, count: number }
+  const monsterCount: Record<string, { monster: Monster, count: number }> = {};
+
+  this.getPlayers().getItems().forEach((player) => {
+    const monster = player.getMonster();
+    const monsterId = monster.getId();
+
+    if (monsterCount[monsterId]) {
+      monsterCount[monsterId].count++;
+    } else {
+      monsterCount[monsterId] = { monster, count: 1 };
+    }
+  });
+
+  let mostPicked: Monster | null = null;
+  let maxCount = 0;
+
+  for (const { monster, count } of Object.values(monsterCount)) {
+    if (count > maxCount) {
+      mostPicked = monster;
+      maxCount = count;
+    }
+  }
+
+  if (mostPicked) {
+    this.gameSessionData.mostChosenMonster = {
+      monster: mostPicked.getMonsterState(),
+      percentagePick: this.getPlayers().getItems().length > 0
+        ? Math.round((maxCount / this.getPlayers().getItems().length) * 100).toString()
+        : "0"
+    };
+  } 
+}
+
+  public areBattlesConcluded(): boolean {
+    return this.battles.getItems().every(battle => battle.isBattleOver());
+  }
+
+
+  public getGameSessionState(): GameSessionState {
 
     const allBattles = [];
+    let remainingPlayers = 0;
+    let totalPlayers = this.battles.size()*2;
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
       allBattles.push(battle.getBattleState(firstPlayer.getId()));
+      if (battle.isBattleOver()){
+        remainingPlayers += 1;
+      } else {
+        remainingPlayers += 2
+      }
     }
 
-    return allBattles;
+    return {
+      id: this.gameCode.toString(),
+      round: this.round,
+      battleStates: allBattles,
+      gameSessionData: this.gameSessionData,
+      currentPhase: this.currentPhase,
+      totalPlayers: totalPlayers,
+      remainingPlayers: remainingPlayers
+    };
 
+}
+
+public getPlayerStates(): PlayerState[] {
+    const playerStates: PlayerState[] = [];
+    for (const player of this.players.getItems()) {
+      playerStates.push(player.getPlayerState());
+    }
+    return playerStates;
   }
 
 }
