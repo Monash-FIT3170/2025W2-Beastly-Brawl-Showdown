@@ -8,6 +8,8 @@ import DicerollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
+import { BattleFooter } from "../../components/cards/BattleFooter";
+import { GenericFooter } from "../../components/cards/GenericFooter";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -67,7 +69,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   };
 
   return (
-    <div className="game-screen">
+    <div className="game-screen flex flex-col">
       {/* Winner display if battle is over */}
       {/*winner === "Draw" ? (
           <DrawScreen />
@@ -103,17 +105,21 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             </div>
           )}
 
-          <div className="action-buttons">
-            {timer > 0 ? (
-              possibleActions.map((action, index) => (
-                <button key={index} onClick={() => handleActionClick(action)}>
-                  {action.name} {action.currentUse}/{action.maxUse}
-                </button>
-              ))
+          <BattleFooter possibleActions={possibleActions} battleId={battleId} />
+
+          {/* <div className="action-buttons"> */}
+            
+            {/* {timer > 0 ? (
+              <BattleFooter possibleActions={possibleActions} battleId={battleId}/>
+              // possibleActions.map((action, index) => (
+              //   <button key={index} onClick={() => handleActionClick(action)}>
+              //     {action.name} {action.currentUse}/{action.maxUse}
+              //   </button>
+              // ))
             ) : (
               <p>TURN ENDED...</p>
-            )}
-          </div>
+            )} */}
+          {/* </div> */}
         </>
       )}
     </div>
