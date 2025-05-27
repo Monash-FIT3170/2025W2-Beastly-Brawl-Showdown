@@ -11,6 +11,8 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { GenericIcon } from "../../components/icons/GenericIcon";
 import { PlayerState } from "/types/single/playerState";
+import { PopupClean } from "../../components/popups/PopupClean";
+import { BlackText } from "../../components/texts/BlackText";
 
 // Defines code for the game session
 interface HostLobbyProps {
@@ -22,6 +24,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const [players, setPlayers] = useState<PlayerState[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
   const [canStart, setCanStart] = useState(false);
+  const [exit, setExit] = useState<Boolean>();
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -100,6 +103,19 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
         <LogoResizable className="h-full w-1/11"></LogoResizable>
 
+        {exit && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+          <OutlineText size = 'extraLarge'>QUIT GAME?</OutlineText>
+          <BlackText size = 'large'>THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY</BlackText>
+          <BlackText size = 'large'>DO YOU WANT TO CONTINUE OR END THE GAME</BlackText>
+          <div className="flex flex-row justify-between items-center">
+            <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
+            <ButtonGeneric size="large" color="blue" onClick={closeGame}>CONFIRM</ButtonGeneric>
+          </div>
+          </div>
+        </PopupClean>)}
+
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
           <OutlineText size="large">
@@ -130,7 +146,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
       {/* Bottom bar with back button, start game button, and player count */}
       <div className="flex flex-row h-1/5 w-full px-10 items-center justify-between">
-        <ButtonGeneric color="blue" size="medium" onClick={closeGame}>
+        <ButtonGeneric color="blue" size="medium" onClick={() => setExit(true)}>
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
             <GenericIcon style="arrowleft" colour="stroked" />
             <div className="mt-1">

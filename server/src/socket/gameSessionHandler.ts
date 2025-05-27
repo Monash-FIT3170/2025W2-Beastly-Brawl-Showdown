@@ -197,7 +197,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     //   socket.emit("game-session-state", {
     //     session: session.getGameSessionState(), 
     //   });
-    // });
+    });
 
   // Close game session
   socket.on("cancel-game", ({ gameCode }) => {

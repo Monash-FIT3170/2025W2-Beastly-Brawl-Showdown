@@ -11,6 +11,7 @@ import DrawScreen from "./DrawScreen";
 import ActionButton from "../../components/buttons/ActionButton";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { GenericFooter } from "../../components/cards/GenericFooter";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -27,6 +28,12 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
       setBattleState(battle);
+    });
+
+    socket.on("kick-warning", ({ message }) => {
+      console.log(message);
+      // UPDATE: add pop up when kicked
+      FlowRouter.go("/");
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {

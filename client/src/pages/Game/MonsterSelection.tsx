@@ -95,6 +95,12 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
     setAbilities([]);
   };
 
+  socket.on("kick-warning", ({ message }) => {
+    console.log(message);
+    // UPDATE: add pop up when kicked
+    FlowRouter.go("/");
+  });
+  
   return (
     <>
       <GenericHeader color="purple">

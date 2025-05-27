@@ -33,6 +33,17 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
     };
   }, []);
 
+  socket.on("kick-warning", ({ message }) => {
+    console.log(message);
+    // UPDATE: add pop up when kicked
+    FlowRouter.go("/");
+  });
+
+  const leave = () => {
+    socket.emit('leave-game', {userID:socket.id})
+    FlowRouter.go("/")
+  };
+
   // Listen to server to wait for a response with the player's monster name
   // We can use this to pass in more of the player's information for the lobby stats page later...
   useEffect(() => {
@@ -88,10 +99,9 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
 
         {/* For now, EXIT just changes the screen to the home page. TODO: Route users who exit the game appropriately + disconnects them from battle appropriately */}
         <ButtonGeneric
-          isDisabled={true}
           color="red"
           size="medium"
-          onClick={() => FlowRouter.go("/")}
+          onClick={() => leave()}
         >
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
             <div>
