@@ -70,9 +70,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     });
   });
 
-  // UPDATE: What is this?
-  console.log(socket.listeners("example").length);
-
   // Join as host
   socket.on("host-game", ({ gameCode }) => {
     // Concept is this is called when the host's id is changed so that they're
