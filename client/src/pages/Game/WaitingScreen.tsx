@@ -5,6 +5,8 @@ import { MonsterImageResizable } from "../../components/player-screen/monsters/M
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { Screens } from "../../screens";
+import { PopupClean } from "../../components/popups/PopupClean";
+import { BlackText } from "../../components/texts/BlackText";
 
 interface WaitingScreenProps {
   setScreen: (screen: Screens) => void;
@@ -20,6 +22,7 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
     successfulBlocks: 0,
   });
   const [playerMonster, setPlayerMonster] = useState<string>("");
+  const [exit, setExit] = useState<Boolean>(false);
 
   // Listen for battle start event + send req to server for player's detail
   useEffect(() => {
@@ -97,11 +100,22 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
           </div>
         </div>
 
+        {exit && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+          <OutlineText size = 'extraLarge'>Are you sure you want to leave the lobby?</OutlineText>
+          <div className="flex flex-row justify-between items-center">
+            <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
+            <ButtonGeneric size="large" color="blue" onClick={() => leave()}>CONFIRM</ButtonGeneric>
+          </div>
+          </div>
+        </PopupClean>)}
+
         {/* For now, EXIT just changes the screen to the home page. TODO: Route users who exit the game appropriately + disconnects them from battle appropriately */}
         <ButtonGeneric
           color="red"
           size="medium"
-          onClick={() => leave()}
+          onClick={() => setExit(true)}
         >
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
             <div>

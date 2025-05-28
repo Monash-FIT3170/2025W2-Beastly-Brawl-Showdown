@@ -63,4 +63,4 @@ const LoserScreen: React.FC = () => {
   );
 };
 
-export default WinnerScreen;
+export default LoserScreen;

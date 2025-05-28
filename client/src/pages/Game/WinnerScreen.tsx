@@ -6,7 +6,6 @@ import { GenericHeader } from "../../components/cards/GenericHeader";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { BaseCard } from "../../components/cards/BaseCard";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
-import React, { useEffect, useState } from "react";
 import { MonsterState } from "/types/single/monsterState";
 
 interface WinningScreenProps {
