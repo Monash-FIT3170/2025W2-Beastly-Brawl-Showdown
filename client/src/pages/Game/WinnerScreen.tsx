@@ -63,14 +63,13 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({playerMonster}) => {
       <GenericHeader color="blue">
         <OutlineText size="extraLarge">VICTORY!</OutlineText>
       </GenericHeader>
-      <div className="bg-peach flex items-center justify-around border-[4px] border-blackCurrant w-[90%] h-[80%] rounded-xl mt-[10%]">
+      <div className="bg-peach flex items-center flex flex-col justify-around border-[4px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
         {/* <BaseCard color="peach" width={60} height={70}> */}
         
-          <div className="flex flex-col items-center justify-center">
-            <OutlineText size="large">YOU ARE THE</OutlineText>
-            <OutlineText size="large">WINNER!</OutlineText>
+          
+            <OutlineText size="large">BETTER LUCK NEXT TIME!</OutlineText>
   
-            <img style={{ width: `${40}rem`, height: `${40}rem` }} src={`/${playerMonster.id}_WIN.png`} alt={`${playerMonster.id}_WIN image`} />
+            <img className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]" src={`/${playerMonster.id}_WIN.png`} alt={`${playerMonster.id}_WIN image`} />
   
             <ButtonGeneric
               color="red"
@@ -83,7 +82,7 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({playerMonster}) => {
                 </div>
               </div>
             </ButtonGeneric>
-          </div>
+          
         
         {/* </BaseCard> */}
         
