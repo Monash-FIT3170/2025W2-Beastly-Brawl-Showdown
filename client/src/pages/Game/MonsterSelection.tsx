@@ -141,19 +141,14 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
             flex-col
             items-center`}
           >
-            <div className="h-[10%]"></div>
             <BaseCard
               color="goldenRod"
-              className="flex flex-col justify-around sm:h-[60%] sm:w-[80%] lg:h-50% lg:w:90%"
+              className="flex flex-col justify-around sm:w-[80%] lg:w:[90%]"
             >
               <MonsterImage
                 name={selectedMonster.id}
                 className="sm:w-[20rem] sm:h-[20rem] 
-                           lg:w-[15rem] lg:h-[15rem]
-                           absolute sm:top-20 md:top-10 lg:top-3"
-              />
-
-              <div className="h-[1%]" />
+                           lg:w-[15rem] lg:h-[15rem]"/>
               <div className="w-[100%] flex items-center flex-col">
                 <div className="bg-ronchi border-[4px] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
                   <OutlineText size="medium">
@@ -216,7 +211,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                 </div>
               </div>
             </BaseCard>
-            <div className="flex flex-row space-x-10 pt-15 pb-15">
+            <div className="flex flex-row space-x-10 pt-5 pb-5">
               <ButtonGeneric
                 color="red"
                 size="medium"
