@@ -86,7 +86,13 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         winner === "Draw" ? (
           <DrawScreen />
         ) : battleState?.yourPlayer.name === winner ? (
-          <WinnerScreen />
+          <WinnerScreen playerMonster={battleState?.yourPlayer.monster}/>
+          // <DrawScreen />
+        // ) : battleState.yourPlayer.name === winner ? (
+        //   // You win: pass your monster
+        //   <WinnerScreen
+        //     playerMonster={battleState.yourPlayer.monster}
+        //   />
         ) : (
           <LoserScreen />
         )
@@ -123,5 +129,4 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     </div>
   );
 };
-
 export default Battle;
