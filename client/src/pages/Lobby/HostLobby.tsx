@@ -126,7 +126,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         {errors && errors.length > 0 && (
           <PopupClean>
             <div className="flex flex-col justify-around">
-              <OutlineText size="extraLarge">Matchmaking failed</OutlineText>
+              <OutlineText size="extraLarge">Matchmaking Failed</OutlineText>
               <BlackText size="large">
                 MATCHMAKING HAS FAILED DUE TO THE FOLLOWING REASON(S):
               </BlackText>

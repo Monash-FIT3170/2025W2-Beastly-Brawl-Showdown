@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
 import socket from "../../socket";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import { MonsterImageResizable } from "../../components/player-screen/monsters/MonsterImageResizable";
-import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
+import { BlankPage } from "../../components/pagelayouts/BlankPage";
+import { GenericHeader } from "../../components/cards/GenericHeader";
 import { OutlineText } from "../../components/texts/OutlineText";
-import { BlackText } from "../../components/texts/BlackText";
+import { BaseCard } from "../../components/cards/BaseCard";
+import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
+import React, { useEffect, useState } from "react";
+import { MonsterState } from "/types/single/monsterState";
 
-const WinnerScreen: React.FC = () => {
-  const [playerMonster, setPlayerMonster] = useState<string>("");
+// 
+const DrawScreen: React.FC = () => {
 
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
@@ -20,38 +22,45 @@ const WinnerScreen: React.FC = () => {
     FlowRouter.go("/")
   };
 
-  useEffect(() => {
-    // TO DO: Replace this with real player's monster data
-  });
   
-  return (
-      <div className="bg-peach lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">
-        {/* Monster Image - Centered */}
-        <div className="flex justify-center">
-          {/* Currently no image to show for draw. Showing Loser screen for now since the monster still dies */}
-          <MonsterImageResizable name="LOSER" width={30} height={30} /> 
-        </div>
 
-        <div className="flex justify-center">
-          <BlackText size="large">IT'S A DRAW!</BlackText>
-        </div>
+  return (
+    // <div>
+    //   You Lost!
+    // </div>
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-ronchi">
+              
+      <GenericHeader color="red">
+        <OutlineText size="extraLarge">DEFEATED!</OutlineText>
+      </GenericHeader>
+      <div className="bg-peach flex items-center justify-around border-[4px] border-blackCurrant w-[90%] h-[80%] rounded-xl mt-[10%]">
+        {/* <BaseCard color="peach" width={60} height={70}> */}
+        
+          <div className="flex flex-col items-center justify-center">
+            <OutlineText size="large">BETTER LUCK</OutlineText>
+            <OutlineText size="large">NEXT TIME!</OutlineText>
   
-        <div className="bg-goldenRod outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col justify-around items-center p-4">
-          {/* For now, EXIT just changes the screen to the home page. TODO: Route users who exit the game appropriately + disconnects them from battle appropriately */}
-          <ButtonGeneric
-            color="red"
-            size="medium"
-            onClick={() => leave()}
-          >
-            <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
-              <div>
-                <OutlineText size="medium">EXIT LOBBY</OutlineText>
+            <img style={{ width: `${40}rem`, height: `${40}rem` }} src={`/GRAVE.png`} alt={`GRAVE image`} />
+  
+            <ButtonGeneric
+              color="red"
+              size="medium"
+              onClick={() => leave()}
+            >
+              <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+                <div>
+                  <OutlineText size="medium">EXIT LOBBY</OutlineText>
+                </div>
               </div>
-            </div>
-          </ButtonGeneric>
-        </div>
+            </ButtonGeneric>
+          </div>
+        
+        {/* </BaseCard> */}
+        
       </div>
-    );
+    
+    </div>
+  );
 };
 
-export default WinnerScreen;
+export default DrawScreen;
