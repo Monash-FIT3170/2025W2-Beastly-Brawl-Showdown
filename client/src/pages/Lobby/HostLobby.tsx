@@ -25,6 +25,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const [playerCount, setPlayerCount] = useState(0);
   const [canStart, setCanStart] = useState(false);
   const [exit, setExit] = useState<Boolean>();
+  const [errors, setErrors] = useState<string[]>([]);
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -69,9 +70,16 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   // TODO: MAKE SURE START GAME CAN ONLY BEGIN ONCE ALL PLAYERS HAVE SELECTED A MONSTER AND IN THE WAITING ROOM!
   const startGame = () => {
     socket.emit("start-game", { gameCode: code });
+  };
+
+  socket.on("start-success", () => {
     const codeString = code?.toString();
     FlowRouter.go(`/battles/${codeString}`);
-  };
+  });
+
+  socket.on("start-failed", (errors: string[]) => {
+    setErrors(errors);
+  });
 
   // deletes game session
   const closeGame = () => {
@@ -79,20 +87,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     socket.emit("cancel-game", { gameCode: code });
     // return to home
     FlowRouter.go("/");
-  };
-
-  //UPDATE: why is this not called
-  const canStartGame = (players: PlayerState[]) => {
-    if (players.length < 2) {
-      return false; // If less than 2 players, cannot start
-    }
-
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].monster === null) {
-        return false; // If any player does not have a monster selected, cannot start
-      }
-    }
-    return true;
   };
 
   return (
@@ -104,17 +98,57 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         <LogoResizable className="h-full w-1/11"></LogoResizable>
 
         {exit && (
-        <PopupClean>
-          <div className="flex flex-col justify-around">
-          <OutlineText size = 'extraLarge'>QUIT GAME?</OutlineText>
-          <BlackText size = 'large'>THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY</BlackText>
-          <BlackText size = 'large'>DO YOU WANT TO CONTINUE OR END THE GAME</BlackText>
-          <div className="flex flex-row justify-between items-center">
-            <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
-            <ButtonGeneric size="large" color="blue" onClick={closeGame}>CONFIRM</ButtonGeneric>
-          </div>
-          </div>
-        </PopupClean>)}
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">QUIT GAME?</OutlineText>
+              <BlackText size="large">
+                THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY
+              </BlackText>
+              <BlackText size="large">
+                DO YOU WANT TO CONTINUE OR END THE GAME
+              </BlackText>
+              <div className="flex flex-row justify-between items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setExit(false)}
+                >
+                  BACK
+                </ButtonGeneric>
+                <ButtonGeneric size="large" color="blue" onClick={closeGame}>
+                  CONFIRM
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
+
+        {errors && errors.length > 0 && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">Matchmaking failed</OutlineText>
+              <BlackText size="large">
+                MATCHMAKING HAS FAILED DUE TO THE FOLLOWING REASON(S):
+              </BlackText>
+              {errors.map((error, idx) => (
+                <div className="mt-4">
+                  <BlackText size="medium" key={idx}>
+                    {error.toUpperCase()}
+                  </BlackText>
+                </div>
+              ))}
+              <div className="mt-10 flex flex-col items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setErrors([])}
+                >
+                  BACK
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
 
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
@@ -141,6 +175,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           {players.map((player) => (
             <NameCard player={player} onClick={() => kickPlayer(player.id)} />
           ))}
+          {/* UPDATE: Add pop up for : Do you want to kick this player? */}
         </div>
       </div>
 
@@ -156,10 +191,11 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </ButtonGeneric>
 
         <div className="mb-5 mr-13">
+          {/* UPDATE: Add pop up for : Do you want to start the game? */}
           <ButtonGeneric
             color="ronchi"
             size="large"
-            isDisabled={playerCount < 2}
+            // isDisabled={!canStart}
             onClick={startGame}
           >
             <div className="mt-1">

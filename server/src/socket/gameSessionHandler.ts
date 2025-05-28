@@ -70,8 +70,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     });
   });
 
-  console.log(socket.listeners("example").length);
-
   // Join as host
   socket.on("host-game", ({ gameCode }) => {
     // Concept is this is called when the host's id is changed so that they're
@@ -176,9 +174,14 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
 
     if (!session.canStartGame()) {
+      var errors = session.calculateErrors();
       // UPDATE: Need to change how this is returned
+      io.to(`game-${gameCode}`).emit("start-failed", errors);
       console.log(`Request failed.`);
+      return;
     }
+
+    io.to(`game-${gameCode}`).emit("start-success", {});
 
     session.calculateMostChosenMonster();
 
@@ -195,9 +198,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     //Comment out as host information are updated live in battleHandler
     // Update host information
     //   socket.emit("game-session-state", {
-    //     session: session.getGameSessionState(), 
+    //     session: session.getGameSessionState(),
     //   });
-    });
+  });
 
   // Close game session
   socket.on("cancel-game", ({ gameCode }) => {
