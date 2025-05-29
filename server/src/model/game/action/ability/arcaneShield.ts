@@ -3,7 +3,7 @@ import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 
-export class ArcaneSheildAbilityAction extends Action {
+export class ArcaneShieldAbilityAction extends Action {
   
   private armourBonus = 0
   constructor() {
