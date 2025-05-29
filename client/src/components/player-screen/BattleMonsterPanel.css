@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  padding: 12px 20px;
+  padding: 0vh 20px;
   width: auto;
   box-sizing: border-box;
   margin-right: 8px;
@@ -24,7 +24,7 @@
 .right-monster img {
   position: relative;
   z-index: 1;
-  width: 200px;
+  width: 250px;
   height: auto;
   display: block;
 }

@@ -54,6 +54,8 @@ export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
         h-30
         rounded-tl-[1rem]
         rounded-tr-[1rem]
+        rounded-bl-[1rem]
+        rounded-br-[1rem]
         border-[4px]
         border-blackCurrant
         border-b-0
@@ -68,7 +70,7 @@ export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
         pb-10
         inset-x-0
         fixed
-        bottom-12
+        bottom-0
         z-10
         `;
 
