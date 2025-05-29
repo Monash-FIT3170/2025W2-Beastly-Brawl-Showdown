@@ -1,0 +1,120 @@
+/* styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+:root {
+  /* Color Palette */
+  --merino: #F6F1E5;
+  --quill-grey: #DAD9D7;
+  --peach: #FFE8B1;
+  --goldenrod: #FBD474;
+  --terracotta: #E28454;
+  --blackcurrant: #403245;
+  
+  /* Themed Components */
+  --burnt-sienna: #ED5A55;
+  --picton-blue: #55A9ED;
+  --school-bus-yellow: #FBD773;
+  --conifer-green: #7EED55;
+  --spring-green: #557D5A;
+  --heliotrope-purple: #BD55ED;
+  --ronchi-orange: #EDAF55;
+  
+  /* Typography */
+  --font-large: 2.1875rem; /* 35px */
+  --font-medium: 1.5625rem; /* 25px */
+  --font-small: 0.9375rem; /* 15px */
+  --font-family: 'Jua', sans-serif;
+  
+  /* Spacing (following 8px grid) */
+  --spacing-xs: 0.25rem; /* 4px */
+  --spacing-sm: 0.5rem; /* 8px */
+  --spacing-md: 1rem; /* 16px */
+  --spacing-lg: 1.5rem; /* 24px */
+  --spacing-xl: 2rem; /* 32px */
+  
+  /* Border */
+  --border-radius-sm: 0.5rem; /* 8px */
+  --border-radius-lg: 0.9375rem; /* 15px */
+  --border-width: 0.125rem; /* 2px */
+  --outline-width: 0.25rem; /* 4px */
+}
+
+body {
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  color: var(--blackcurrant);
+}
+
+/* Button Styles */
+.game-button {
+  font-family: var(--font-family);
+  font-weight: 500;
+  border-radius: var(--border-radius-sm);
+  border: var(--outline-width) solid var(--blackcurrant);
+  padding: var(--spacing-xs) var(--spacing-md);
+  margin-right: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  color: var(--merino);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.game-button:hover {
+  transform: translateY(-2px);
+}
+
+.game-button.primary {
+  background-color: var(--picton-blue);
+}
+
+.game-button.danger {
+  background-color: var(--burnt-sienna);
+}
+
+.game-button.neutral {
+  background-color: var(--ronchi-orange);
+}
+
+/* Card Styles */
+.game-card {
+  border: var(--border-width) solid var(--blackcurrant);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xs);
+  height: 2rem;
+}
+
+.game-card.purple {
+  background-color: var(--heliotrope-purple);
+}
+
+.game-card.red {
+  background-color: var(--burnt-sienna);
+}
+
+.game-card.yellow {
+  background-color: var(--goldenrod);
+}
+
+/* Input Field Styles */
+.game-input {
+  background-color: var(--merino);
+  font-size: var(--font-medium);
+  border: var(--border-width) solid var(--blackcurrant);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xs);
+  padding-left: var(--spacing-md);
+}
+
+/* Custom panel styles */
+.match-summary-panel {
+  background-color: var(--merino);
+  border-radius: var(--border-radius-lg);
+  border: var(--border-width) solid var(--blackcurrant);
+}
+
+.round-header {
+  background-color: var(--school-bus-yellow);
+  border-radius: var(--border-radius-lg);
+  border: var(--outline-width) solid var(--blackcurrant);
+}

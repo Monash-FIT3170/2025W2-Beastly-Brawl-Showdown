@@ -1,0 +1,49 @@
+.monster-panel {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 12px 20px;
+  width: auto;
+  box-sizing: border-box;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.left-monster,
+.right-monster {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.left-monster img,
+.right-monster img {
+  position: relative;
+  z-index: 1;
+  width: 200px;
+  height: auto;
+  display: block;
+}
+
+.left-monster {
+  align-self: flex-start;
+  transform: scaleX(-1);
+}
+
+.right-monster {
+  align-self: flex-end;
+}
+
+.monster-shadow {
+  width: 160px;
+  height: 20px;
+  background: rgba(0,0,0,0.50);
+  border-radius: 50%;
+  filter: blur(1.5px);
+  margin-top: -50px;
+  margin-bottom: 8px;     /* Space below shadow */
+}
