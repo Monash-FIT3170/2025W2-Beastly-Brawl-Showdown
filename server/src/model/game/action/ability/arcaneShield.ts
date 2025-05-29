@@ -4,7 +4,7 @@ import { ActionIdentifier } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 
 export class ArcaneShieldAbilityAction extends Action {
-  
+  private strike = new AttackAction(7,10);
   private armourBonus = 0
   constructor() {
     super(
@@ -16,28 +16,17 @@ export class ArcaneShieldAbilityAction extends Action {
   }
 
 
-  private rollDice(): number {
-    var d20 = 0
-    console.log(`Dice roll: ${d20}`);
-    var d20 = Math.floor(Math.random() * 20);
-    return d20;
-  }
-
-  public getDiceRoll(): number {
-    return this.rollDice();
-  }
-
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    this.armourBonus = this.getDiceRoll();
+    this.strike.prepare(actingPlayer,affectedPlayer)
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
-    actingPlayer.incArmourClassStat(this.armourBonus);
+    this.strike.execute(actingPlayer,affectedPlayer)
     actingPlayer.addLog(
-      `Dice has been rerolled to gain shield with ${this.getName()}`
+      `Biased dice has been rerolled for an attack using ${this.getName()}`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} rerolled their dice, implemented action ${this.getName()} and gaining shield`
+      `${actingPlayer.getName()} rerolled their dice, implemented action ${this.getName()} and obtaining a biased attack`
     );
   }
 }
