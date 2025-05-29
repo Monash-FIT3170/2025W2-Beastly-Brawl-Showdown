@@ -27,6 +27,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const [errors, setErrors] = useState<string[]>([]);
   const [startPopup, setStartPopup] = useState<Boolean>();
   const [kickPopup, setKickPopup] = useState<string>();
+  const [kickName, setKickName] = useState<string>();
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -186,13 +187,15 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           </PopupClean>
         )}
 
-        {/* Popup: Confirming kick player action */}
+        {/* Popup: Confirming kick player action 
+        UPDATE: should i add the player's name into the pop up?
+        */}
         {kickPopup != "" && kickPopup != undefined && (
           <PopupClean>
             <div className="flex flex-col justify-around">
               <OutlineText size="extraLarge">Kick Player?</OutlineText>
               <BlackText size="large">
-                ARE YOU SURE YOU WANNA KICK THIS PLAYER?
+                ARE YOU SURE YOU WANNA KICK {kickName?.toUpperCase()}?
               </BlackText>
               <div className="flex flex-row justify-between items-center">
                 <ButtonGeneric
@@ -244,7 +247,13 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
       <div className="flex flex-row h-3/5 w-full items-center justify-between p-[2rem]">
         <div className="flex flex-row h-full w-full justify-around items-center bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl">
           {players.map((player) => (
-            <NameCard player={player} onClick={() => setKickPopup(player.id)} />
+            <NameCard
+              player={player}
+              onClick={() => {
+                setKickPopup(player.id);
+                setKickName(player.name);
+              }}
+            />
           ))}
           {/* UPDATE: Add pop up for : Do you want to kick this player? */}
         </div>

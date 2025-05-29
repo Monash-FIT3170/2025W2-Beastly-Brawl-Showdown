@@ -20,6 +20,7 @@ import { TotalHealthBar } from "../../components/bars/TotalHealthBar";
 import { ArmourClassBar } from "../../components/bars/ArmourClassBar";
 import { AttackBonusBar } from "../../components/bars/AttackBonusBar";
 import { BlackText } from "../../components/texts/BlackText";
+import { PopupClean } from "../../components/popups/PopupClean";
 
 interface MonsterSelectionProps {
   setScreen: (screen: Screens) => void;
@@ -33,6 +34,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
     null
   );
   const [abilities, setAbilities] = useState<ActionState[]>([]);
+  const [exitPopup, setExitPopup] = useState<Boolean>();
 
   const colorLoader: Record<string, string> = {
     [MonsterIdentifier.SHADOWFANG_PREDATOR]: "bg-[#DC7466]",
@@ -56,8 +58,9 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
 
   useEffect(() => {
     socket.on("kick-warning", ({ message }) => {
+      //UPDATE: ADD POP-UP "You've been disconnected from game session."
       console.log(message);
-      FlowRouter.go("/*");
+      setExitPopup(true);
     });
 
     return () => {
@@ -95,17 +98,35 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
     setAbilities([]);
   };
 
-  socket.on("kick-warning", ({ message }) => {
-    console.log(message);
-    // UPDATE: add pop up when kicked
+  const sendHome = () => {
     FlowRouter.go("/");
-  });
-  
+  };
+
   return (
     <>
       <GenericHeader color="purple">
         <OutlineText size="extraLarge">SELECT YOUR MONSTER</OutlineText>
       </GenericHeader>
+
+      {/* Popup */}
+      {exitPopup && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+            <OutlineText size="extraLarge">
+              YOU HAVE BEEN REMOVED FROM THE GAME SESSION.
+            </OutlineText>
+            <div className="mt-10 flex flex-col items-center">
+              <ButtonGeneric
+                size="large"
+                color="red"
+                onClick={() => sendHome()}
+              >
+                EXIT
+              </ButtonGeneric>
+            </div>
+          </div>
+        </PopupClean>
+      )}
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-40 lg:pt-35">
         {monsters.map((monster) => (
@@ -148,7 +169,8 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
               <MonsterImage
                 name={selectedMonster.id}
                 className="sm:w-[20rem] sm:h-[20rem] 
-                           lg:w-[15rem] lg:h-[15rem]"/>
+                           lg:w-[15rem] lg:h-[15rem]"
+              />
               <div className="w-[100%] flex items-center flex-col">
                 <div className="bg-ronchi border-[4px] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
                   <OutlineText size="medium">
