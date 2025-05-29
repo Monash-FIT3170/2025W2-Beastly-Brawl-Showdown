@@ -11,14 +11,13 @@ const RoundNumberHeader: React.FC<RoundNumberHeaderProps> = ({ roundNumber }) =>
       padding: '1rem 3rem',
       textAlign: 'center',
       margin: '0rem auto 0rem auto',
-      maxWidth: '60%', // Increased width
+      maxWidth: '40%', // Increased width
       boxShadow: '0 4px 8px rgba(64, 50, 69, 0.2)',
       border: '4px solid #403245', // Thicker border to match image
 
     }}>
       <h1 style={{
       fontSize: '5rem',
-      fontFamily: 'Jua, sans-serif',
       margin: 0,
       letterSpacing: '0.25rem',
       fontWeight: 'bold',

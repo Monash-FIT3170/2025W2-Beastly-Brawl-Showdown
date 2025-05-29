@@ -11,8 +11,6 @@ import DrawScreen from "./DrawScreen";
 import ActionButton from "../../components/buttons/ActionButton";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { GenericFooter } from "../../components/cards/GenericFooter";
-import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import { FadingBattleText } from "../../components/texts/FadingBattleText";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -31,33 +29,27 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setBattleState(battle);
     });
 
-    socket.on("kick-warning", ({ message }) => {
-      console.log(message);
-      // UPDATE: add pop up when kicked
-      FlowRouter.go("/");
-    });
-
     socket.on("possible_actions", (actions: ActionState[]) => {
       setPossibleActions(actions);
     });
-
+    
     socket.on("timer", (time: number) => {
       console.log(`Timer: ${time}`);
       setTimer(time);
     });
 
-    socket.on("battle_end", ({ result, winners }) => {
-      console.log(result, winners);
-      if (result === "draw") {
-        setWinner("Draw");
-      } else if (result === "concluded") {
-        setWinner(winners[0]);
+    socket.on("battle_end", ({result, winners}) => {
+      console.log(result,winners)
+      if (result === "draw"){
+        setWinner("Draw")
+      } else if (result === "concluded"){
+        setWinner(winners[0])
       }
-      console.log(winner);
+      console.log(winner)
     });
 
-    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
-    // to handle all types of animations triggered by actions
+    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier 
+    // to handle all types of animations triggered by actions  
     socket.on("roll_dice", (diceRoll: number) => {
       setDiceValue(diceRoll);
       console.log(`From socket in Battle: dps ${diceRoll}`);
@@ -87,27 +79,21 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         winner === "Draw" ? (
           <DrawScreen />
         ) : battleState?.yourPlayer.name === winner ? (
-          <WinnerScreen playerMonster={battleState?.yourPlayer.monster}/>
-          // <DrawScreen />
-        // ) : battleState.yourPlayer.name === winner ? (
-        //   // You win: pass your monster
-        //   <WinnerScreen
-        //     playerMonster={battleState.yourPlayer.monster}
-        //   />
+          <WinnerScreen />
         ) : (
           <LoserScreen />
         )
-      ) : (
+      )  : (
         <>
           {battleState && (
             <div className="battle-state-parts">
-              <PlayerInfoPanel battleState={battleState} />
+              <PlayerInfoPanel battleState={battleState}/>
 
               <div className="timer-box">
                 <p>Timer: {timer}</p>
               </div>
 
-              <BattleMonsterPanel battleState={battleState} />
+              <BattleMonsterPanel battleState={battleState}/>
 
               {/* <div className="battle-logs">
                 <h3>Logs:</h3>
@@ -115,36 +101,14 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                   <p key={index}>{log}</p>
                 ))}
               </div> */}
-
-              <div
-                className="battle-logs-stack"
-                style={{ position: "relative", width: "100%", height: "120px" }}
-              >
-                {battleState.yourPlayer.logs.map((log, index) => (
-                  <FadingBattleText
-                    key={index}
-                    size="tiny"
-                    style={{ top: `${index * 32}px` }}
-                  >
-                    {log}
-                  </FadingBattleText>
-                ))}
-              </div>
-
-              <DicerollModal
-                show={showDiceModal}
-                onClose={() => setShowDiceModal(false)}
-                toRoll={diceValue}
-              />
+              
+              <DicerollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} />
             </div>
           )}
 
           <div>
             {timer > 0 && (
-              <BattleFooter
-                possibleActions={possibleActions}
-                battleId={battleId}
-              />
+              <BattleFooter possibleActions={possibleActions} battleId={battleId} />
             )}
           </div>
         </>
@@ -152,4 +116,5 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     </div>
   );
 };
+
 export default Battle;

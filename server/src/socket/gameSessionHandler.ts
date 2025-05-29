@@ -41,16 +41,14 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
 
     const newPlayer = new Player(socket.id, name);
+    players.set(socket.id, newPlayer);
     if (!session.addPlayer(newPlayer)) {
       // Join request rejected
       console.log(`Player ${name} rejected from ${gameCode}`);
       // UPDATE: Include user feedback here (pop-up)
       return;
     }
-    newPlayer.updateGameCode(gameCodeN);
-
-    // Add player to players map
-    players.set(socket.id, newPlayer);
+    newPlayer.updateGameCode(gameCode);
 
     // Add player to Game Session socket
     socket.join(`game-${gameCodeN}`);
@@ -97,11 +95,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Leave request
   socket.on("leave-game", ({ userID = socket.id }) => {
     const gameCode = players.get(userID)?.getGameCode();
-    //debugging
-    if (!players.get(userID)) {
-      console.log(`Player not in map.`);
-    }
-
     console.log(`Leave request for Code: ${gameCode}, User ID: ${userID}`);
     const gameCodeN = Number(gameCode);
 
@@ -174,14 +167,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
 
     if (!session.canStartGame()) {
-      var errors = session.calculateErrors();
       // UPDATE: Need to change how this is returned
-      io.to(`game-${gameCode}`).emit("start-failed", errors);
       console.log(`Request failed.`);
-      return;
     }
-
-    io.to(`game-${gameCode}`).emit("start-success", {});
 
     session.calculateMostChosenMonster();
 
@@ -198,9 +186,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     //Comment out as host information are updated live in battleHandler
     // Update host information
     //   socket.emit("game-session-state", {
-    //     session: session.getGameSessionState(),
+    //     session: session.getGameSessionState(), 
     //   });
-  });
+    // });
 
   // Close game session
   socket.on("cancel-game", ({ gameCode }) => {
