@@ -49,7 +49,7 @@ const DiceRollModal: React.FC<DiceRollModalProps> = ({show, onClose, toRoll, bat
     }
 
     return (
-      <div className="dice-modal-overlay">
+      <div className="dice-modal-overlay border-[4px] border-blackCurrant border-b-0">
         <div className="dice-modal-content">
           <h5 className="dice-result-text font-bold">
             ENEMY AC: {enemyMonsterAC} <br />
