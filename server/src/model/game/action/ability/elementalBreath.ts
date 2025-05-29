@@ -10,6 +10,7 @@ export class ElementalBreathAbilityAction extends Action {
       "Deals damage to opponents in a cone.",
       Infinity 
     );
+    this.setDodgeable(false);
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}

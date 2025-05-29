@@ -18,10 +18,10 @@ export class FortressStanceAbilityAction extends Action {
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.incArmourClassStat(this.armourBonus)
     actingPlayer.addLog(
-      `You have activated  ${this.getName()} + 5 AC!!!!`
+      `You have activated ${this.getName()} + 5 AC!!!!`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} has temporarly increased his AC due to using ${this.getName()}`
+      `${actingPlayer.getName()} has temporarly increased his AC by using ${this.getName()}`
     );
   }
 }

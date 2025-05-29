@@ -16,7 +16,7 @@ export class ShadowLeapAbilityAction extends Action {
     actingPlayer.dodge()
     affectedPlayer.getActions().forEach((action) => {
       action.incCurrentUse(-1);
-      if (action.getName()!="Elemental Breath"){
+      if (action.getDodgeable()==true){
         affectedPlayer. removeAction(action)
       }
     });
