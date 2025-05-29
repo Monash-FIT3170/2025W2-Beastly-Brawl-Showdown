@@ -94,7 +94,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                 ))}
               </div> */}
               
-              <DiceRollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} />
+              <DiceRollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} battleState={battleState}/>
             </div>
           )}
 
