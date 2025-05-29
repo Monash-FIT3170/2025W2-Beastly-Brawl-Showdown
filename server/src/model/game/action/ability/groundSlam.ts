@@ -12,14 +12,18 @@ export class GroundSlamAbilityAction extends Action {
     );
   }
 
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+    affectedPlayer.clearActions() 
+  }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    affectedPlayer.incHealth(-3);
+
     actingPlayer.addLog(
-      `You did nothing. Unimplemented action ${this.getName()}`
+      `You have stunned ${affectedPlayer.getName()} with ${this.getName()}`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} did nothing. Unimplemented action ${this.getName()}`
+      `${actingPlayer.getName()} has stunned you with ${this.getName()}`
     );
   }
 }

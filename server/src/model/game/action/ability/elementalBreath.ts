@@ -8,18 +8,23 @@ export class ElementalBreathAbilityAction extends Action {
       ActionIdentifier.ELEMENTAL_BREATH,
       "Elemental Breath",
       "Deals damage to opponents in a cone.",
-      Infinity
+      Infinity 
     );
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    var dodge = affectedPlayer.getDodgingPosition()
+    affectedPlayer.incHealth(-2)
+    if (dodge != true){
+        affectedPlayer.incHealth(-3);
+    }
     actingPlayer.addLog(
-      `You did nothing. Unimplemented action ${this.getName()}`
+      `${this.getName()} used, no escaping now!!!`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} did nothing. Unimplemented action ${this.getName()}`
+      `${actingPlayer.getName()} used ${this.getName()} no escaping now!!!`
     );
   }
 }

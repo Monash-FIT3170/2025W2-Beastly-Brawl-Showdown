@@ -12,14 +12,23 @@ export class ShadowLeapAbilityAction extends Action {
     );
   }
 
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+    actingPlayer.dodge()
+    affectedPlayer.getActions().forEach((action) => {
+      action.incCurrentUse(-1);
+      if (action.getName()!="Elemental Breath"){
+        affectedPlayer. removeAction(action)
+      }
+    });
+
+  }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.addLog(
-      `You did nothing. Unimplemented action ${this.getName()}`
+      `You dodge using ${this.getName()} hopefully they dont get you`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} did nothing. Unimplemented action ${this.getName()}`
+      `${actingPlayer.getName()} attempts to dodge with ${this.getName()}`
     );
   }
 }

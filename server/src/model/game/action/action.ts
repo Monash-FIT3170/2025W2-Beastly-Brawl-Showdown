@@ -22,7 +22,7 @@ export abstract class Action {
     this.maxUse = maxUse;
   }
 
-  protected incCurrentUse(value: number): void {
+  public incCurrentUse(value: number): void {
     this.currentUse += value;
   }
 

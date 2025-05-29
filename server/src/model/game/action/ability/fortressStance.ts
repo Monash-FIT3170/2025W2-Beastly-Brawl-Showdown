@@ -3,6 +3,7 @@ import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
 export class FortressStanceAbilityAction extends Action {
+  private armourBonus = 5
   constructor() {
     super(
       ActionIdentifier.FORTRESS_STANCE,
@@ -15,11 +16,12 @@ export class FortressStanceAbilityAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    actingPlayer.incArmourClassStat(this.armourBonus)
     actingPlayer.addLog(
-      `You did nothing. Unimplemented action ${this.getName()}`
+      `You have activated  ${this.getName()} + 5 AC!!!!`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} did nothing. Unimplemented action ${this.getName()}`
+      `${actingPlayer.getName()} has temporarly increased his AC due to using ${this.getName()}`
     );
   }
 }
