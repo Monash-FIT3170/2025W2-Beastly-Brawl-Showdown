@@ -40,10 +40,13 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) =>
         `;
 
     return(
-        <div className="relative">
+        <div className="fixed absolute relative">
         <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={handleClick}>
             <div className="w-[50%] h-auto leading-[0.8]">
-                <OutlineTextResizable max1 = {5} max2 = {7} max3 = {10} size="medium">{name}</OutlineTextResizable>
+                { (name === "ATTACK" || name === "DEFEND")
+                ? (<OutlineTextResizable size="medium">{name}</OutlineTextResizable>)
+                :(<OutlineTextResizable max1 = {5} max2 = {7} max3 = {10} size="medium">{name}</OutlineTextResizable>
+                )}
             </div>
             <img className = {`${image} rounded-md`} src={`${imagePath}`} alt={`${actionState.id} image`}/>
         </ButtonGeneric>

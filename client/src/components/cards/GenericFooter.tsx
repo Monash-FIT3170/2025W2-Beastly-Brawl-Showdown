@@ -25,7 +25,8 @@ export const GenericFooter = ({children }: FooterProps) => {
         text-wrap
         pl-[1%]
         pr-[1%]
-        pt-4
+        xl:pt-[2%]
+        pt-[4%]
         pb-10
         inset-x-0
         fixed
