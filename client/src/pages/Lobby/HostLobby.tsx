@@ -26,6 +26,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const [canStart, setCanStart] = useState(false);
   const [exit, setExit] = useState<Boolean>();
   const [errors, setErrors] = useState<string[]>([]);
+  const [start, setStart] = useState<Boolean>();
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -69,15 +70,18 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   // start game
   // TODO: MAKE SURE START GAME CAN ONLY BEGIN ONCE ALL PLAYERS HAVE SELECTED A MONSTER AND IN THE WAITING ROOM!
   const startGame = () => {
+    console.log("DEBUGGING: STARTGAME CALLED");
     socket.emit("start-game", { gameCode: code });
   };
 
   socket.on("start-success", () => {
+    console.log("DEBUGGING: STARTGAME SUCCEEDED");
     const codeString = code?.toString();
     FlowRouter.go(`/battles/${codeString}`);
   });
 
   socket.on("start-failed", (errors: string[]) => {
+    console.log("DEBUGGING: STARTGAME FAILED");
     setErrors(errors);
   });
 
@@ -97,32 +101,33 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
         <LogoResizable className="h-full w-1/11"></LogoResizable>
 
+        {/* Popup: Confirming whether host wants to exit game. */}
         {exit && (
           <PopupClean>
             <div className="flex flex-col justify-around">
-              <OutlineText size="extraLarge">QUIT GAME?</OutlineText>
+              <OutlineText size="extraLarge">EXIT GAME?</OutlineText>
               <BlackText size="large">
-                THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY
+                THIS WILL CANCEL THE GAME SESSION, REMOVING ALL PLAYERS, AND END
+                ALL BATTLES.
               </BlackText>
-              <BlackText size="large">
-                DO YOU WANT TO CONTINUE OR END THE GAME
-              </BlackText>
+              <BlackText size="large">ARE YOU SURE YOU WANT TO EXIT?</BlackText>
               <div className="flex flex-row justify-between items-center">
                 <ButtonGeneric
                   size="large"
-                  color="red"
+                  color="blue"
                   onClick={() => setExit(false)}
                 >
-                  BACK
+                  CANCEL
                 </ButtonGeneric>
-                <ButtonGeneric size="large" color="blue" onClick={closeGame}>
-                  CONFIRM
+                <ButtonGeneric size="large" color="red" onClick={closeGame}>
+                  EXIT
                 </ButtonGeneric>
               </div>
             </div>
           </PopupClean>
         )}
 
+        {/* Popup: Explaining why Start Game failed. */}
         {errors && errors.length > 0 && (
           <PopupClean>
             <div className="flex flex-col justify-around">
@@ -144,6 +149,44 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
                   onClick={() => setErrors([])}
                 >
                   BACK
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
+
+        {/* Popup: Confirming whether host wants to Start Game. 
+        UPDATE: FIGURE OUT COLOURS OF BUTTONS THAT MAKES MOST SENSE
+        UPDATE: (2) MAKE FORMAT MATCH OTHER POP-UPS (RN DEVAN'S DOESNT USE CAPS IN TITLE - SEE WHAT LOOKS BETTER)
+        */}
+        {start && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">START GAME?</OutlineText>
+              <BlackText size="large">
+                ONCE THE GAME HAS STARTED NO NEW PLAYERS MAY JOIN AND
+                MATCHMAKING WILL BEGIN
+              </BlackText>
+              <BlackText size="large">
+                ARE YOU SURE YOU WANT TO START?
+              </BlackText>
+              <div className="flex flex-row justify-between items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setStart(false)}
+                >
+                  BACK
+                </ButtonGeneric>
+                <ButtonGeneric
+                  size="large"
+                  color="blue"
+                  onClick={() => {
+                    setStart(false);
+                    startGame();
+                  }}
+                >
+                  CONFIRM
                 </ButtonGeneric>
               </div>
             </div>
@@ -181,11 +224,11 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
       {/* Bottom bar with back button, start game button, and player count */}
       <div className="flex flex-row h-1/5 w-full px-10 items-center justify-between">
-        <ButtonGeneric color="blue" size="medium" onClick={() => setExit(true)}>
+        <ButtonGeneric color="red" size="medium" onClick={() => setExit(true)}>
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
             <GenericIcon style="arrowleft" colour="stroked" />
             <div className="mt-1">
-              <OutlineText size="large">BACK</OutlineText>
+              <OutlineText size="large">EXIT</OutlineText>
             </div>
           </div>
         </ButtonGeneric>
@@ -196,7 +239,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
             color="ronchi"
             size="large"
             // isDisabled={!canStart}
-            onClick={startGame}
+            onClick={() => setStart(true)}
           >
             <div className="mt-1">
               <OutlineText size="large">START GAME</OutlineText>
