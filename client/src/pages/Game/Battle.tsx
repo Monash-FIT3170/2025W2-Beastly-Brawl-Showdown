@@ -8,9 +8,7 @@ import DiceRollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
-import ActionButton from "../../components/buttons/ActionButton";
 import { BattleFooter } from "../../components/cards/BattleFooter";
-import { GenericFooter } from "../../components/cards/GenericFooter";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop

@@ -18,7 +18,7 @@ export class AttackAction extends Action {
   }
 
   private rollDice(): number {
-    var d20 = Math.floor(Math.random() * 20);
+    var d20 = Math.floor(Math.random() * 20) + 1; // Rolls 1-20 rather than 0-19
     console.log(`Dice roll: ${d20}`);
     return d20;
   }
