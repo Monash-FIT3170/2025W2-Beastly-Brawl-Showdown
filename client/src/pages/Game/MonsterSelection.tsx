@@ -35,9 +35,9 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
   const [abilities, setAbilities] = useState<ActionState[]>([]);
 
   const colorLoader: Record<string, string> = {
-    [MonsterIdentifier.SHADOWFANG_PREDATOR]: "bg-[#DC7466]",
-    [MonsterIdentifier.STONEHIDE_GUARDIAN]: "bg-[#7EACD5]",
-    [MonsterIdentifier.MYSTIC_WYVERN]: "bg-[#9DD786]",
+    [MonsterIdentifier.POUNCING_BANDIT]: "bg-[#DC7466]",
+    [MonsterIdentifier.ROCKY_RHINO]: "bg-[#7EACD5]",
+    [MonsterIdentifier.CINDER_TAIL]: "bg-[#9DD786]",
   };
 
   useEffect(() => {
@@ -195,7 +195,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                       className="flex flex-row items-center grow-1 justify-left"
                     >
                       <img
-                        src="/logo.png"
+                        src="/assets/logo/logo.png"
                         alt="ability icon"
                         className="w-[7rem] h-[7rem]"
                       />

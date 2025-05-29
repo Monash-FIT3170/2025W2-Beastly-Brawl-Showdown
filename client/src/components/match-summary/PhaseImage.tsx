@@ -24,22 +24,22 @@ const PhaseImage: React.FC<PhaseImageProps> = ({
   const getImageSrc = () => {
     // Check for winner first
     if (player1Win || player2Win) {
-      return '/match-summary-assets/TRIANGLE_WINNER.png';
+      return '/assets/match-summary/TRIANGLE_WINNER.png';
     }
 
     // This conditional will be true if both players eliminate each other at the same time
     if (isOver) {
-      return '/match-summary-assets/NO_WINNER.png';
+      return '/assets/match-summary/NO_WINNER.png';
     }
     
     // Otherwise use phase-based images
     switch (currentPhase) {
       case 'CHOOSE_ACTION':
-        return '/match-summary-assets/SWORDS_CROSSED.png';
+        return '/assets/match-summary/SWORDS_CROSSED.png';
       case 'EXECUTE_ACTION':
-        return '/match-summary-assets/SMOKE.png';
+        return '/assets/match-summary/SMOKE.png';
       default:
-        return '/match-summary-assets/SWORDS_CROSSED.png'; // Default image
+        return '/assets/match-summary/SWORDS_CROSSED.png'; // Default image
     }
   };
 
