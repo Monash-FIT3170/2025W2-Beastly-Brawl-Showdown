@@ -4,6 +4,7 @@ import { OutlineText } from "../texts/OutlineText";
 import { ActionState, ActionIdentifier } from "../../../../types/single/actionState";
 import socket from "../../socket";
 import { ButtonGenericProps } from "./ButtonGeneric";
+import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 
 interface ActionButtonProps {
     actionState: ActionState;
@@ -42,9 +43,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) =>
         <div className="relative">
         <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={handleClick}>
             <div className="w-[50%] h-auto leading-[0.8]">
-                <OutlineText size = 'medium'>
-                    {name}
-                </OutlineText>
+                <OutlineTextResizable max1 = {5} max2 = {7} max3 = {10} size="medium">{name}</OutlineTextResizable>
             </div>
             <img className = {`${image} rounded-md`} src={`${imagePath}`} alt={`${actionState.id} image`}/>
         </ButtonGeneric>
