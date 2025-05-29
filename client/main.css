@@ -17,10 +17,11 @@
   --color-peach: #ffe8b1;
   --color-burntSienna: #ed5a55;
   --color-schoolBusYellow: #ffd900;
-  --color-rhinoBlue: #bad5f6;
-  --color-banditPurple: #64467a;
-  --color-cinderTailRed: #e83f5e;
+  --color-guardianblue: #bad5f6;
+  --color-predatorpurple: #64467a;
+  --color-wyvernred: #e83f5e;
   --text-tiny: 0.9375rem;
+  --text-small: 1.125remrem;
   --text-medium: 1.5625rem;
   --text-large: 2.1875rem;
   --text-largemobile: 6rem;
