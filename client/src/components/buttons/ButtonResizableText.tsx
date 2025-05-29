@@ -6,21 +6,13 @@ export interface ButtonResizableTextProps{
     color: 'ronchi' | 'blue' | 'red' | 'purple';
     max1:number;
     max2:number;
-    // isDisabled?: boolean;
     children: string
     onClick?: () => void;
-    // mobileHidden?: 'false' | 'true' 
     buttonSize: ButtonSize;
 }
 
 export const ButtonResizableText = ({color,max1, max2, buttonSize,children,onClick}: ButtonResizableTextProps) => {
     
-    // let textSize = 'large';
-    // if (children.length > max1) {
-    //     textSize = "medium";
-    // } else if (children.length > max2) {
-    //     textSize = "tiny";
-    // }
     const isDisabled = false
     const mobileHidden = 'false'
 

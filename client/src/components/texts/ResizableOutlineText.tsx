@@ -11,11 +11,9 @@ interface OutlineTextResizableProps{
 }
 
 export const OutlineTextResizable = ({children, max1, max2, max3, size}: OutlineTextResizableProps) => {
-    
-    // const sizeList: SizeKey[] = ['extraLarge', 'large', 'medium', 'tiny']
+
     const sizeList: SizeKey[] = ['tiny', 'smaller', 'small', 'medium', 'large', 'extraLarge']
 
-    // const text = React.Children.toArray(children).join('').trim();
 
 
     let index = sizeList.indexOf(size);
@@ -35,14 +33,6 @@ export const OutlineTextResizable = ({children, max1, max2, max3, size}: Outline
         }
     });
 
-    // if (max3 && children.length > max3){
-    //     index = Math.max(0, index - 3);
-    // }else if (max2 && children.length > max2) {
-    //     index = Math.max(0, index - 2);
-    // } else if (max1 && children.length > max1) {
-    //     index = Math.max(0, index - 1);
-
-    // } 
     index = index - shrink;
 
     const trueSize = sizeList[index]
