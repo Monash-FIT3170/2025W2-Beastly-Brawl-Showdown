@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react';
 
 // Required props (hooks)
-interface DicerollModalProps {
+interface DiceRollModalProps {
   show: boolean;                                // Shows the modal 
   onClose: () => void;                          // Closes the modal (doesnt work???)
   toRoll: number;                               // The value to roll
 }
 
-const DicerollModal: React.FC<DicerollModalProps> = ({show, onClose, toRoll}) => {
+const DiceRollModal: React.FC<DiceRollModalProps> = ({show, onClose, toRoll}) => {
     const [rollingValue, setRollingValue] = useState(1);
     const [finalValue, setFinalValue] = useState<number | null>(null); // TODO: Appears to be some bugs on the first roll
 
@@ -56,4 +56,4 @@ const DicerollModal: React.FC<DicerollModalProps> = ({show, onClose, toRoll}) =>
 
 };
 
-export default DicerollModal;
+export default DiceRollModal;
