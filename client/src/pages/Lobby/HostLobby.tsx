@@ -23,10 +23,10 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const code = gameCode;
   const [players, setPlayers] = useState<PlayerState[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
-  const [canStart, setCanStart] = useState(false);
-  const [exit, setExit] = useState<Boolean>();
+  const [exitPopup, setExitPopup] = useState<Boolean>();
   const [errors, setErrors] = useState<string[]>([]);
-  const [start, setStart] = useState<Boolean>();
+  const [startPopup, setStartPopup] = useState<Boolean>();
+  const [kickPopup, setKickPopup] = useState<string>();
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -68,7 +68,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   };
 
   // start game
-  // TODO: MAKE SURE START GAME CAN ONLY BEGIN ONCE ALL PLAYERS HAVE SELECTED A MONSTER AND IN THE WAITING ROOM!
   const startGame = () => {
     console.log("DEBUGGING: STARTGAME CALLED");
     socket.emit("start-game", { gameCode: code });
@@ -97,15 +96,12 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     <BlankPage>
       {/* Responsive header section */}
       <div className="flex flex-row h-1/5 w-full items-center justify-between px-4 pt-4">
-        {/* Logo on the left */}
-
-        <LogoResizable className="h-full w-1/11"></LogoResizable>
-
+        {/* POPUPS */}
         {/* Popup: Confirming whether host wants to exit game. */}
-        {exit && (
+        {exitPopup && (
           <PopupClean>
             <div className="flex flex-col justify-around">
-              <OutlineText size="extraLarge">EXIT GAME?</OutlineText>
+              <OutlineText size="extraLarge">Exit Game?</OutlineText>
               <BlackText size="large">
                 THIS WILL CANCEL THE GAME SESSION, REMOVING ALL PLAYERS, AND END
                 ALL BATTLES.
@@ -115,7 +111,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
                 <ButtonGeneric
                   size="large"
                   color="blue"
-                  onClick={() => setExit(false)}
+                  onClick={() => setExitPopup(false)}
                 >
                   CANCEL
                 </ButtonGeneric>
@@ -155,14 +151,11 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           </PopupClean>
         )}
 
-        {/* Popup: Confirming whether host wants to Start Game. 
-        UPDATE: FIGURE OUT COLOURS OF BUTTONS THAT MAKES MOST SENSE
-        UPDATE: (2) MAKE FORMAT MATCH OTHER POP-UPS (RN DEVAN'S DOESNT USE CAPS IN TITLE - SEE WHAT LOOKS BETTER)
-        */}
-        {start && (
+        {/* Popup: Confirming whether host wants to Start Game.*/}
+        {startPopup && (
           <PopupClean>
             <div className="flex flex-col justify-around">
-              <OutlineText size="extraLarge">START GAME?</OutlineText>
+              <OutlineText size="extraLarge">Start Game?</OutlineText>
               <BlackText size="large">
                 ONCE THE GAME HAS STARTED NO NEW PLAYERS MAY JOIN AND
                 MATCHMAKING WILL BEGIN
@@ -173,16 +166,16 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
               <div className="flex flex-row justify-between items-center">
                 <ButtonGeneric
                   size="large"
-                  color="red"
-                  onClick={() => setStart(false)}
+                  color="blue"
+                  onClick={() => setStartPopup(false)}
                 >
                   BACK
                 </ButtonGeneric>
                 <ButtonGeneric
                   size="large"
-                  color="blue"
+                  color="red"
                   onClick={() => {
-                    setStart(false);
+                    setStartPopup(false);
                     startGame();
                   }}
                 >
@@ -192,6 +185,41 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
             </div>
           </PopupClean>
         )}
+
+        {/* Popup: Confirming kick player action */}
+        {kickPopup != "" && kickPopup != undefined && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">Kick Player?</OutlineText>
+              <BlackText size="large">
+                ARE YOU SURE YOU WANNA KICK THIS PLAYER?
+              </BlackText>
+              <div className="flex flex-row justify-between items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="blue"
+                  onClick={() => setKickPopup("")}
+                >
+                  BACK
+                </ButtonGeneric>
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => {
+                    kickPlayer(kickPopup);
+                    setKickPopup("");
+                  }}
+                >
+                  KICK
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
+
+        {/* Logo on the left */}
+
+        <LogoResizable className="h-full w-1/11"></LogoResizable>
 
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
@@ -216,7 +244,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
       <div className="flex flex-row h-3/5 w-full items-center justify-between p-[2rem]">
         <div className="flex flex-row h-full w-full justify-around items-center bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl">
           {players.map((player) => (
-            <NameCard player={player} onClick={() => kickPlayer(player.id)} />
+            <NameCard player={player} onClick={() => setKickPopup(player.id)} />
           ))}
           {/* UPDATE: Add pop up for : Do you want to kick this player? */}
         </div>
@@ -224,7 +252,11 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
       {/* Bottom bar with back button, start game button, and player count */}
       <div className="flex flex-row h-1/5 w-full px-10 items-center justify-between">
-        <ButtonGeneric color="red" size="medium" onClick={() => setExit(true)}>
+        <ButtonGeneric
+          color="red"
+          size="medium"
+          onClick={() => setExitPopup(true)}
+        >
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
             <GenericIcon style="arrowleft" colour="stroked" />
             <div className="mt-1">
@@ -239,7 +271,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
             color="ronchi"
             size="large"
             // isDisabled={!canStart}
-            onClick={() => setStart(true)}
+            onClick={() => setStartPopup(true)}
           >
             <div className="mt-1">
               <OutlineText size="large">START GAME</OutlineText>
