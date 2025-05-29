@@ -5,7 +5,7 @@ interface MonsterImageProps {
 }
 
 const LogoResizable: React.FC<MonsterImageProps> = ({ className = '' }) => {
-  const path = `/${"logo-transparent".replace(/\s+/g, '')}.png`;
+  const path = `/assets/logo/${"logo-transparent".replace(/\s+/g, '')}.png`;
 
   return (
     <img

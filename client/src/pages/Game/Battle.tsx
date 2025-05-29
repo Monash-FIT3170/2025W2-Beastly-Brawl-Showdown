@@ -81,7 +81,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             <div className="battle-state-parts">
               <PlayerInfoPanel battleState={battleState}/>
 
-              <div className="timer-box">
+              <div className="timer-box font-[Jua]">
                 <p>Timer: {timer}</p>
               </div>
 
