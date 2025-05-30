@@ -21,7 +21,7 @@ export class FortressStanceAbilityAction extends Action {
     actingPlayer.addLog(
       `You have activated ${this.getName()} + 8 AC!!!!`
     );
-    affectedPlayer.addLog(
+    affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} has temporarly increased his AC by using ${this.getName()}`
     );
   }

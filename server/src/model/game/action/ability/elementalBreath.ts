@@ -27,7 +27,7 @@ export class ElementalBreathAbilityAction extends Action {
     actingPlayer.addLog(
       `${this.getName()} used, no escaping now!!!`
     );
-    affectedPlayer.addLog(
+    affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()} no escaping now!!!`
     );
   }

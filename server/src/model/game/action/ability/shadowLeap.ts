@@ -28,7 +28,7 @@ export class ShadowLeapAbilityAction extends Action {
     actingPlayer.addLog(
       `You dodge using ${this.getName()} hopefully they dont get you`
     );
-    affectedPlayer.addLog(
+    affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} attempts to dodge with ${this.getName()}`
     );
   }

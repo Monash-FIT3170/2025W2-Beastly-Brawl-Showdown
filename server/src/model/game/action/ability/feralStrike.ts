@@ -29,7 +29,7 @@ export class FeralStrikeAbilityAction extends Action {
     actingPlayer.addLog(
       `Critcal damage increase due to ${this.getName()}`
     );
-    affectedPlayer.addLog(
+    affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} has used ${this.getName()} increasing their critical damage`
     );
     

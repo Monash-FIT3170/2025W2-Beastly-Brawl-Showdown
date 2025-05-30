@@ -27,7 +27,7 @@ export class ArcaneShieldAbilityAction extends Action {
     actingPlayer.addLog(
       `Biased dice has been rolled for an attack using ${this.getName()}`
     );
-    affectedPlayer.addLog(
+    affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} has used ${this.getName()} rolling a biased dice for their attack`
     );
   }
