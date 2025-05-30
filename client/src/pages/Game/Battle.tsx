@@ -4,11 +4,10 @@ import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
 import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
 import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
-import DicerollModal from "./DiceRollModal";
+import DiceRollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
-import ActionButton from "../../components/buttons/ActionButton";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { GenericFooter } from "../../components/cards/GenericFooter";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
@@ -71,12 +70,6 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     };
   }, []);
 
-  const handleActionClick = (action: ActionState) => {
-    console.log(`Action selected: ${action}`);
-    // You can emit the selected action to the server here if needed
-    socket.emit("action_selected", { action, battleId, playerId: socket.id });
-  };
-
   return (
     <div className="game-screen flex flex-col">
       {/* Winner display if battle is over */}
@@ -87,14 +80,14 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         winner === "Draw" ? (
           <DrawScreen />
         ) : battleState?.yourPlayer.name === winner ? (
-          <WinnerScreen playerMonster={battleState?.yourPlayer.monster}/>
-          // <DrawScreen />
-        // ) : battleState.yourPlayer.name === winner ? (
-        //   // You win: pass your monster
-        //   <WinnerScreen
-        //     playerMonster={battleState.yourPlayer.monster}
-        //   />
+          <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
         ) : (
+          // <DrawScreen />
+          // ) : battleState.yourPlayer.name === winner ? (
+          //   // You win: pass your monster
+          //   <WinnerScreen
+          //     playerMonster={battleState.yourPlayer.monster}
+          //   />
           <LoserScreen />
         )
       ) : (
@@ -103,7 +96,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             <div className="battle-state-parts">
               <PlayerInfoPanel battleState={battleState} />
 
-              <div className="timer-box">
+              <div className="timer-box font-[Jua]">
                 <p>Timer: {timer}</p>
               </div>
 

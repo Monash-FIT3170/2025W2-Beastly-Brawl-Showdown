@@ -1,9 +1,9 @@
 import { ActionState } from "./actionState";
 
 export enum MonsterIdentifier {
-  STONEHIDE_GUARDIAN = "STONEHIDE_GUARDIAN",
-  SHADOWFANG_PREDATOR = "SHADOWFANG_PREDATOR",
-  MYSTIC_WYVERN = "MYSTIC_WYVERN",
+  ROCKY_RHINO = "ROCKY_RHINO",
+  POUNCING_BANDIT = "POUNCING_BANDIT",
+  CINDER_TAIL = "CINDER_TAIL",
 }
 
 export interface MonsterState {

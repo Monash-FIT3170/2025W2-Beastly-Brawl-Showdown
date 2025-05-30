@@ -52,7 +52,7 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidd
 
 	const enabledButton = 
 		`
-		hover:brightness-85
+		group-hover:brightness-85
 		active:outline-blackCurrant
 		active:ring-[0.3125rem]
 		active:ring-blackCurrant

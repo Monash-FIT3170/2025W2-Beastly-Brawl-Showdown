@@ -19,9 +19,9 @@ export const BaseCard = ({color, children, width, height, className}: BaseCardPr
         'springLeaves': 'bg-springLeaves',
         'schoolBusYellow': 'bg-schoolBusYellow',
         'quillGray': 'bg-quillGray',
-        'guardian': 'bg-guardianblue',
-        'predator': 'bg-predatorpurple',
-        'wyvern': 'bg-wyvernred'
+        'rhino': 'bg-rhinoBlue',
+        'bandit': 'bg-banditPurple',
+        'cinderTail': 'bg-cinderTailRed'
     }
 
     return(

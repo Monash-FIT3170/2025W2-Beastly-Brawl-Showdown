@@ -8,14 +8,13 @@ interface BattleHealthBarProps {
 }
 
 export const BattleHealthBar = ({currentHealth, maxHealth}: BattleHealthBarProps) => {
-    let colour: BarColour;
     let healthPercentage = Math.floor(currentHealth / maxHealth * 100);
-    if (healthPercentage > 70) {
-        colour = "green";
-    } else if (healthPercentage > 30) {
-        colour = "yellow";
-    } else {
+
+    let colour: BarColour = "green";
+    if (healthPercentage <= 20) {
         colour = "red";
+    } else if (healthPercentage <= 50) {
+        colour = "yellow";
     }
 
     return (

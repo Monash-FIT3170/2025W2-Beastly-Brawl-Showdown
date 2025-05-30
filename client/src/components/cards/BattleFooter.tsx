@@ -1,9 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import ActionButton from "../buttons/ActionButton";
 import { ActionState } from "/types/single/actionState";
-import socket from "../../socket";
-import { BaseCard } from "./BaseCard";
-import { GenericFooter } from "./GenericFooter";
 
 interface BattleFooterProp{
     possibleActions: ActionState[];
@@ -11,26 +8,8 @@ interface BattleFooterProp{
 }
 
 export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
-    const handleActionClick = (action: ActionState) => {
-        console.log(`Action selected: ${action}`);
-        // You can emit the selected action to the server here if needed
-        socket.emit("action_selected", { action, battleId, playerId: socket.id });
-    };
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-    // const topButton=
-    // `
-    // justify-evenly
-    // inset-x-0
-    // flex 
-    // w-[92%]
-    // xl:w-[57.5%]
-    // items-center 
-    // bottom-[190px]
-    // xl:bottom-[170px]
-    // mx-auto
-    // fixed
-    // z-40
-    // `
     const topButton=`
         flex
         items-center
@@ -75,10 +54,9 @@ export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
     return(
         <div className={`${footer}`}>
             <div className={`${topButton}`}>
-                    {possibleActions.map((action, _) => (
-                        
-                        <ActionButton actionState={action} battleId={battleId!} />
-                    ))}
+                {possibleActions.map((action, index) => (
+                    <ActionButton actionState={action} battleId={battleId!} isActive={activeIndex === index} onClick={() => setActiveIndex(index)} />
+                ))}
             </div>
         </div>
     )
