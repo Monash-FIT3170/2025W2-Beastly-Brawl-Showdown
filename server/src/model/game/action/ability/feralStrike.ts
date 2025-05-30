@@ -19,7 +19,8 @@ export class FeralStrikeAbilityAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     var bonus = actingPlayer.getAttackStat();
     bonus += 3
-    let strike = new AttackAction(bonus);
+    actingPlayer.setAttackStat(bonus)
+    let strike = new AttackAction(5);
     strike.prepare(actingPlayer,affectedPlayer)
   }
 
