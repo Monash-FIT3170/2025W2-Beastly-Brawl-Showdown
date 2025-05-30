@@ -11,7 +11,6 @@ import DrawScreen from "./DrawScreen";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import BattleMonsterPanelTest from "../../components/player-screen/BattleMonsterPanelTest";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -92,7 +91,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                 <p>Timer: {timer}</p>
               </div>
 
-              <BattleMonsterPanelTest battleState={battleState} />
+              <BattleMonsterPanel battleState={battleState} />
 
               {/* <div className="battle-logs">
                 <h3>Logs:</h3>
@@ -102,7 +101,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
               </div> */}
 
                 <div
-                className="battle-logs-stack mt-[-10%]"
+                className="battle-logs-stack mt-[60%] xl:mt-[15%]"
                 style={{ position: "relative", width: "100%", height: "120px" }}
               >
                 {battleState.yourPlayer.logs.map((log, index) => (
@@ -115,7 +114,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                   </FadingBattleText>
                 ))}
               </div>
-
+              
               <DiceRollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} battleState={battleState}/>
             </div>
           )}
