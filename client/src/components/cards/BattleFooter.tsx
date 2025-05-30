@@ -39,7 +39,7 @@ export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
     grid 
     grid-cols-2 
     gap-y-[7rem] 
-    xl:gap-y-[4rem] 
+    xl:gap-y-[3rem] 
     pb-[4%]
     xl: pb-[2%]
     

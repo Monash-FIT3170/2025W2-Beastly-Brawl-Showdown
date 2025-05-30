@@ -49,7 +49,8 @@ const DiceRollModal: React.FC<DiceRollModalProps> = ({show, onClose, toRoll, bat
     }
 
     return (
-      <div className="dice-modal-overlay border-[4px] border-blackCurrant font-[Jua] rounded-xl">
+      <div className="fixed inset-0 flex items-center justify-center">
+      <div className="dice-modal-overlay border-[4px] border-blackCurrant font-[Jua] rounded-xl ">
         <div className="dice-modal-content">
           <h5 className="dice-result-text font-bold">
             ENEMY AC: {enemyMonsterAC} <br />
@@ -65,6 +66,7 @@ const DiceRollModal: React.FC<DiceRollModalProps> = ({show, onClose, toRoll, bat
             </h5>
           )}
         </div>
+      </div>
       </div>
     );
 
