@@ -226,7 +226,7 @@ export default class GameSession {
 
   public oddOneOutWinner(oddPlayer: Player) {
     let battleId = crypto.randomUUID();
-    const placeHolderPlayer = new Player("placeHolder", "");
+    const placeHolderPlayer = new Player("placeHolder", "Big Bum Loser");
     const placerHolderMonster = new RockyRhino();
     placeHolderPlayer.setMonster(placerHolderMonster);
     placeHolderPlayer.setHealth(0);

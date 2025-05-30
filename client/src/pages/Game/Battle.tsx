@@ -10,6 +10,7 @@ import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { FadingBattleText } from "../../components/texts/FadingBattleText";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -61,6 +62,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       socket.off("turn_over");
     };
   }, []);
+
+  socket.on("new-connect", () => {
+    FlowRouter.go("/");
+  });
 
   return (
     <div className="game-screen flex flex-col">
