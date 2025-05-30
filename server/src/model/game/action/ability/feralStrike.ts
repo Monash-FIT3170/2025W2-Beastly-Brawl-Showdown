@@ -2,24 +2,17 @@ import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
-export class FeralStrikeAbilityAction extends Action {
+export class FeralStrikeAbilityPassive extends Action {
   constructor() {
     super(
       ActionIdentifier.FERAL_STRIKE,
       "Feral Strike",
-      "Deals extra damage on critical hits.",
-      Infinity
+      "Increases your critical hit rate by 15%.",
+      0 // Passive abilities do not have uses
     );
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
-    actingPlayer.addLog(
-      `You did nothing. Unimplemented action ${this.getName()}`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} did nothing. Unimplemented action ${this.getName()}`
-    );
-  }
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {}
 }
