@@ -79,22 +79,18 @@ export default class GameSession {
   }
 
   // Add player to Game Session queue
-  public addPlayer(player: Player): boolean {
-    // UPDATE: popup error messages for each of these
+  public addPlayer(player: Player): { success: boolean; reason?: string } {
     if (!this.canSocketJoin(player.getId())) {
-      console.log("Player already in game session");
-      return false; // Player rejected
+      return { success: false, reason: "Player already in game session" };
     }
     if (!this.isPlayerNameFree(player.getName())) {
-      console.log("Player name already taken");
-      return false; // Player rejected
+      return { success: false, reason: "Player name is already taken" };
     }
     if (this.players.size() >= this.player_max) {
-      console.log("Game session is full");
-      return false; // Player rejected
+      return { success: false, reason: "Game is full" };
     }
-    this.players.enqueue(player); // Add player to the queue
-    return true; // Player accepted
+    this.players.enqueue(player);
+    return { success: true };
   }
 
   // Function takes a player object as an argument, and then the queue is run through by serving each item until it has looped through
@@ -157,8 +153,8 @@ export default class GameSession {
   // Check name is not taken
   public isPlayerNameFree(name: string): boolean {
     for (const p of this.players.getItems()) {
-      if (p.getId().toLocaleLowerCase() === name.toLocaleLowerCase()) {
-        // UPDATE: pop-up, need to return an error
+      if (p.getName().toLocaleLowerCase() === name.toLocaleLowerCase()) {
+        // Name is already taken
         return false;
       }
     }
