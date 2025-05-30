@@ -8,6 +8,7 @@ export abstract class Action {
 
   private currentUse: number;
   private maxUse: number;
+  private dodgeable: boolean = true;
 
   constructor(
     id: ActionIdentifier,
@@ -22,14 +23,21 @@ export abstract class Action {
     this.maxUse = maxUse;
   }
 
-  protected incCurrentUse(value: number): void {
+  public incCurrentUse(value: number): void {
     this.currentUse += value;
   }
 
   public getCurrentUse(): number {
     return this.currentUse;
   }
-
+  //returns if an action can be dodged 
+  public getDodgeable(): boolean {
+    return this.dodgeable;
+  }
+  //if an action cant be dodged, this function is used to set it apart from the default 
+  protected setDodgeable(value: boolean): void {
+    this.dodgeable = value;
+  }
   public getMaxUse(): number {
     return this.maxUse;
   }

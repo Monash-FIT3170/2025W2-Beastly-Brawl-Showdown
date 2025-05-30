@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.6",
     "@types/socket.io": "^3.0.1",
     "@types/socket.io-client": "^1.4.36",
+    "babel-runtime": "^6.26.0",
     "meteor-node-stubs": "^1.2.5",
     "postcss": "^8.5.3",
     "postcss-load-config": "^6.0.1",
