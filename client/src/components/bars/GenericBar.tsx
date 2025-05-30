@@ -19,7 +19,7 @@ export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, 
 
     const cornerRadiusToDisplay: Record<string, string> = {
         "light": "rounded-[0.5rem]",
-        "heavy": "rounded-[1rem]"
+        "heavy": "rounded-[2rem]"
     };
 
     const textPositionToDisplay: Record<string, string> = {
@@ -64,6 +64,9 @@ export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, 
         flex
         items-center
         justify-center
+        transition-[width]
+        duration-300
+        ease-in-out
     `;
 
     // Make the coloured portion of the bar completely disappear if its fill percentage is zero

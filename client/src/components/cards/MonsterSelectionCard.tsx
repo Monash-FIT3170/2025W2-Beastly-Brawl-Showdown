@@ -14,9 +14,9 @@ interface MonsterSelectionProps{
 export const MonsterSelectionCard = ({monster, type, onClick}: MonsterSelectionProps) =>{
 
     const colorLoader: Record<string, string> = {
-        'Shadowfang Predator': 'bg-[#DC7466]',
-        'Stonehide Guardian': 'bg-[#7EACD5]',
-        'Mystic Wyvern': 'bg-[#9DD786]'
+        'Pouncing Bandit': 'bg-[#DC7466]',
+        'Rocky Rhino': 'bg-[#7EACD5]',
+        'Cinder Tail': 'bg-[#9DD786]'
     }
     
     return(

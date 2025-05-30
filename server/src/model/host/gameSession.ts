@@ -7,6 +7,8 @@ import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";
+import { MonsterIdentifier } from "/types/single/monsterState";
+import { RockyRhino } from "../game/monster/rockyRhino";
 
 export default class GameSession {
   private hostUID: string;
@@ -16,10 +18,12 @@ export default class GameSession {
   private round: number = 1; // Round number
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
-  private currentPhase: BattlePhase=BattlePhase.CHOOSE_ACTION;
+  private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
 
   // Initialise sample data
-  private gameSessionData: GameSessionData = { mostChosenMonster: { monster: null, percentagePick: "0"} };
+  private gameSessionData: GameSessionData = {
+    mostChosenMonster: { monster: null, percentagePick: "0" },
+  };
 
   constructor(hostID: string, presetGameCode?: number) {
     this.hostUID = hostID;
@@ -51,11 +55,11 @@ export default class GameSession {
   }
 
   public setCurrentPhase(phase: BattlePhase): void {
-    this.currentPhase = phase
+    this.currentPhase = phase;
   }
 
-  public getCurrentPhase(): BattlePhase{
-    return this.currentPhase
+  public getCurrentPhase(): BattlePhase {
+    return this.currentPhase;
   }
 
   public getGameCode() {
@@ -75,22 +79,18 @@ export default class GameSession {
   }
 
   // Add player to Game Session queue
-  public addPlayer(player: Player): boolean {
-    // UPDATE: popup error messages for each of these
+  public addPlayer(player: Player): { success: boolean; reason?: string } {
     if (!this.canSocketJoin(player.getId())) {
-      console.log("Player already in game session");
-      return false; // Player rejected
+      return { success: false, reason: "Player already in game session" };
     }
     if (!this.isPlayerNameFree(player.getName())) {
-      console.log("Player name already taken");
-      return false; // Player rejected
+      return { success: false, reason: "Player name is already taken" };
     }
     if (this.players.size() >= this.player_max) {
-      console.log("Game session is full");
-      return false; // Player rejected
+      return { success: false, reason: "Game is full" };
     }
-    this.players.enqueue(player); // Add player to the queue
-    return true; // Player accepted
+    this.players.enqueue(player);
+    return { success: true };
   }
 
   // Function takes a player object as an argument, and then the queue is run through by serving each item until it has looped through
@@ -115,8 +115,29 @@ export default class GameSession {
     if (this.players.size() < 2) {
       return false;
     }
-    // UPDATE: need to add that all monsters have been picked
+    // check every player has picked a monster
+    for (const p of this.players.getItems()) {
+      if (p.getMonster() === null) {
+        return false;
+      }
+    }
     return true;
+  }
+
+  public calculateErrors(): string[] {
+    var errors: string[] = [];
+
+    if (this.players.size() < 2) {
+      errors.push("Not enough players to start the game.");
+    }
+
+    for (const p of this.players.getItems()) {
+      if (p.getMonster() === null) {
+        errors.push(`${p.getName()} has not picked a monster.`);
+      }
+    }
+
+    return errors;
   }
 
   // Check if Socket is already in Game Session
@@ -132,8 +153,8 @@ export default class GameSession {
   // Check name is not taken
   public isPlayerNameFree(name: string): boolean {
     for (const p of this.players.getItems()) {
-      if (p.getId().toLocaleLowerCase() === name.toLocaleLowerCase()) {
-        // UPDATE: pop-up, need to return an error
+      if (p.getName().toLocaleLowerCase() === name.toLocaleLowerCase()) {
+        // Name is already taken
         return false;
       }
     }
@@ -204,63 +225,80 @@ export default class GameSession {
   }
 
   public oddOneOutWinner(oddPlayer: Player) {
-    // UPDATE: handle odd player
+    let battleId = crypto.randomUUID();
+    const placeHolderPlayer = new Player("placeHolder", "Big Bum Loser");
+    const placerHolderMonster = new RockyRhino();
+    placeHolderPlayer.setMonster(placerHolderMonster);
+    placeHolderPlayer.setHealth(0);
+    const battle = new Battle(
+      battleId,
+      oddPlayer,
+      placeHolderPlayer,
+      this.hostUID
+    );
+    battles.set(battleId, battle);
+    this.battles.enqueue(battle);
     return oddPlayer;
   }
 
   public calculateMostChosenMonster() {
-  // Map from monster name to { monster: Monster, count: number }
-  const monsterCount: Record<string, { monster: Monster, count: number }> = {};
+    // Map from monster name to { monster: Monster, count: number }
+    const monsterCount: Record<string, { monster: Monster; count: number }> =
+      {};
 
-  this.getPlayers().getItems().forEach((player) => {
-    const monster = player.getMonster();
-    const monsterId = monster.getId();
+    //UPDATE: calling error that monster is possibly null.
+    this.getPlayers()
+      .getItems()
+      .forEach((player) => {
+        const monster = player.getMonster();
+        const monsterId = monster.getId();
 
-    if (monsterCount[monsterId]) {
-      monsterCount[monsterId].count++;
-    } else {
-      monsterCount[monsterId] = { monster, count: 1 };
+        if (monsterCount[monsterId]) {
+          monsterCount[monsterId].count++;
+        } else {
+          monsterCount[monsterId] = { monster, count: 1 };
+        }
+      });
+
+    let mostPicked: Monster | null = null;
+    let maxCount = 0;
+
+    for (const { monster, count } of Object.values(monsterCount)) {
+      if (count > maxCount) {
+        mostPicked = monster;
+        maxCount = count;
+      }
     }
-  });
 
-  let mostPicked: Monster | null = null;
-  let maxCount = 0;
-
-  for (const { monster, count } of Object.values(monsterCount)) {
-    if (count > maxCount) {
-      mostPicked = monster;
-      maxCount = count;
+    if (mostPicked) {
+      this.gameSessionData.mostChosenMonster = {
+        monster: mostPicked.getMonsterState(),
+        percentagePick:
+          this.getPlayers().getItems().length > 0
+            ? Math.round(
+                (maxCount / this.getPlayers().getItems().length) * 100
+              ).toString()
+            : "0",
+      };
     }
   }
-
-  if (mostPicked) {
-    this.gameSessionData.mostChosenMonster = {
-      monster: mostPicked.getMonsterState(),
-      percentagePick: this.getPlayers().getItems().length > 0
-        ? Math.round((maxCount / this.getPlayers().getItems().length) * 100).toString()
-        : "0"
-    };
-  } 
-}
 
   public areBattlesConcluded(): boolean {
-    return this.battles.getItems().every(battle => battle.isBattleOver());
+    return this.battles.getItems().every((battle) => battle.isBattleOver());
   }
 
-
   public getGameSessionState(): GameSessionState {
-
     const allBattles = [];
     let remainingPlayers = 0;
-    let totalPlayers = this.battles.size()*2;
+    let totalPlayers = this.battles.size() * 2;
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
       allBattles.push(battle.getBattleState(firstPlayer.getId()));
-      if (battle.isBattleOver()){
+      if (battle.isBattleOver()) {
         remainingPlayers += 1;
       } else {
-        remainingPlayers += 2
+        remainingPlayers += 2;
       }
     }
 
@@ -271,17 +309,15 @@ export default class GameSession {
       gameSessionData: this.gameSessionData,
       currentPhase: this.currentPhase,
       totalPlayers: totalPlayers,
-      remainingPlayers: remainingPlayers
+      remainingPlayers: remainingPlayers,
     };
+  }
 
-}
-
-public getPlayerStates(): PlayerState[] {
+  public getPlayerStates(): PlayerState[] {
     const playerStates: PlayerState[] = [];
     for (const player of this.players.getItems()) {
       playerStates.push(player.getPlayerState());
     }
     return playerStates;
   }
-
 }

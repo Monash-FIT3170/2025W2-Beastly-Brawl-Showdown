@@ -6,7 +6,7 @@ export class Player {
   private id: string;
   private name: string;
   private monster: Monster | null;
-  public currentGameCode?: number;
+  public currentGameCode: number;
   private score: number = 0;
   private dodging = false
   private currentHealth: number;
@@ -27,10 +27,11 @@ export class Player {
     this.currentHealth = 0;
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
+    this.currentGameCode = 0;
   }
 
-  public getSuccessfulHit(){
-    return this.successfulHit
+  public getSuccessfulHit() {
+    return this.successfulHit;
   }
   public dodge(): void{
     this.dodging = true
@@ -39,16 +40,16 @@ export class Player {
     return this.dodging
   }  
 
-  public getSuccessfulBlock(){
-    return this.successfulBlock
+  public getSuccessfulBlock() {
+    return this.successfulBlock;
   }
 
-  public incSuccessfulHit(number: number): void{
-    this.successfulHit += number
+  public incSuccessfulHit(number: number): void {
+    this.successfulHit += number;
   }
 
-  public incSuccessfulBlock(number: number): void{
-    this.successfulBlock += number
+  public incSuccessfulBlock(number: number): void {
+    this.successfulBlock += number;
   }
 
   public getGameCode() {

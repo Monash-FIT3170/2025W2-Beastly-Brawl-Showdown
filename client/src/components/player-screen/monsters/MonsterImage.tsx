@@ -7,6 +7,6 @@ interface MonsterImageProps {
 
 export const MonsterImage = ({ name, className }: MonsterImageProps) => {
   return (
-    <img src={`/${name}.png`} alt={`${name} image`} className={className} />
+    <img src={`/assets/characters/${name}.png`} alt={`${name} image`} className={className} />
   );
 };
