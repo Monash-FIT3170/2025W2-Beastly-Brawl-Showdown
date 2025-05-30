@@ -1,7 +1,7 @@
 
 .dice-modal-overlay {
     position: absolute; /* Changed from fixed */
-    top: 100px; 
+    
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;

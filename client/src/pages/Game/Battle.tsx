@@ -68,7 +68,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   });
 
   return (
-    <div className="w-full min-h-screen bg-springLeaves">
+    <div className="inset-0 w-full h-screen bg-springLeaves overscroll-contain">
       {/* Winner display if battle is over */}
       {/*winner === "Draw" ? (
           <DrawScreen />
@@ -84,7 +84,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       ) : (
         <>
           {battleState && (
-            <div className="battle-state-parts">
+            <div className="battle-state-parts item-center justify-center ">
               <PlayerInfoPanel battleState={battleState} />
 
               <div className="timer-box font-[Jua]">
@@ -101,7 +101,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
               </div> */}
 
                 <div
-                className="battle-logs-stack mt-[-10%]"
+                className="battle-logs-stack mt-[60%] xl:mt-[15%]"
                 style={{ position: "relative", width: "100%", height: "120px" }}
               >
                 {battleState.yourPlayer.logs.map((log, index) => (
@@ -114,7 +114,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                   </FadingBattleText>
                 ))}
               </div>
-
+              
               <DiceRollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} battleState={battleState}/>
             </div>
           )}
