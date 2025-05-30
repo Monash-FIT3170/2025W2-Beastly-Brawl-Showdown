@@ -5,12 +5,16 @@ import socket from "../../socket";
 
 export class AttackAction extends Action {
   private attackBonus: number;
-  private damage: number;
-  private d20: number;
+  private damage: number = 0;
+  private d20: number = 0;
+  private diceMin: number;
+  private diceMax: number;
 
-  constructor(attackBonus: number) {
+  constructor(attackBonus: number, diceMin: number = 1, diceMax: number = 20) {
     super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity);
     this.attackBonus = attackBonus;
+    this.diceMin = diceMin;
+    this.diceMax = diceMax;
   }
 
   public getDamage(): number {
@@ -18,7 +22,11 @@ export class AttackAction extends Action {
   }
 
   private rollDice(): number {
-    var d20 = Math.floor(Math.random() * 20);
+    // Determine the range of the dice roll
+    const range = this.diceMax - this.diceMin + 1;
+
+    // Generate a number within the range size, then add the minimum value to bring it within the actual range
+    const d20 = Math.floor(Math.random() * range) + this.diceMin;
     console.log(`Dice roll: ${d20}`);
     return d20;
   }

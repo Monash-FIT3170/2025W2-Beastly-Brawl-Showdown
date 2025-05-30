@@ -1,27 +1,69 @@
 import React from "react";
-import "./PlayerInfoPanel.css";
-import BattleHealthBar from "./BattleHealthBar";
+import { BattleHealthBar } from "../bars/BattleHealthBar";
 import { BattleState } from "/types/composite/battleState";
-import { BlackText } from "../texts/BlackText";
 import { OutlineText } from "../texts/OutlineText";
 
 interface PlayerInfoPanelProps {
   battleState: BattleState;
 }
 
-const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({ battleState }) => {
+export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({ battleState }) => {
   return (
-    <div className="player-info-container">
-      <div className="player-info left">
-        <BattleHealthBar current={battleState.yourPlayer.currentHealth} max={battleState.yourPlayerMonster.maxHealth}/>
-        <BlackText size="medium">{battleState.yourPlayerMonster.name}</BlackText>
-        {/* <div className="monster-name">{battleState.yourPlayerMonster.name}</div> */}
-        <BlackText size="large">{battleState.yourPlayer.name}</BlackText>
+    <div className="
+      bg-[#ffe9af]
+      border
+      border-4
+      border-[#3d2f4f]
+      rounded-bl-[20px]
+      rounded-br-[20px]
+      flex
+      justify-between
+      px-[20px]
+      py-[12px]
+      w-auto
+      box-border
+      mx-[8px]
+      mt-[-8px]
+    ">
+      <div className="
+        flex
+        flex-col
+        gap-[4px]
+        w-[45%]
+        items-start
+        text-left
+      ">
+        <BattleHealthBar currentHealth={battleState.yourPlayer.currentHealth} maxHealth={battleState.yourPlayerMonster.maxHealth}/>
+        <div className="leading-none pt-[2%]">
+          <OutlineText size="small">
+              {battleState.yourPlayerMonster.name.toUpperCase()}
+          </OutlineText>
+        </div>
+        <div className="leading-none pb-[2%]">
+          <OutlineText size="medium">
+              {battleState.yourPlayer.name.toUpperCase()}
+          </OutlineText>
+        </div>
       </div>
-      <div className="player-info right">
-        <BattleHealthBar current={battleState.opponentPlayer.currentHealth} max={battleState.opponentPlayerMonster.maxHealth}/>
-        <BlackText size="medium">{battleState.opponentPlayerMonster.name}</BlackText>
-        <BlackText size="large">{battleState.opponentPlayer.name}</BlackText>
+      <div className="
+        flex
+        flex-col
+        gap-[4px]
+        w-[45%]
+        items-end
+        text-right
+      ">
+        <BattleHealthBar currentHealth={battleState.opponentPlayer.currentHealth} maxHealth={battleState.opponentPlayerMonster.maxHealth}/>
+        <div className="leading-none pt-[2%]">
+          <OutlineText size="small">
+              {battleState.opponentPlayerMonster.name.toUpperCase()}
+          </OutlineText>
+        </div>
+        <div className="leading-none pb-[2%]">
+          <OutlineText size="medium">
+            {battleState.opponentPlayer.name.toUpperCase()}
+          </OutlineText>
+        </div>
       </div>
     </div>
   );

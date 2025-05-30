@@ -9,9 +9,11 @@ import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 interface ActionButtonProps {
     actionState: ActionState;
     battleId: string;
+    isActive: boolean;
+    onClick: () => void;
 }
 
-const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) => {
+const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId, isActive, onClick }) => {
     const imagePath = "/assets/actions/" + actionState.id + ".png";
     const name = actionState.name.toUpperCase();
     const availableUses = actionState.currentUse; // How many REMAINING uses
@@ -30,7 +32,12 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) =>
         // Do the action stuff
         socket.emit("action_selected", { action: actionState, battleId, playerId: socket.id });
     };
-    
+
+    const allClickHandlers = () => {
+        if (onClick) onClick();
+        handleClick();
+    }
+
     const image =
         `
         w-[30%]
@@ -40,8 +47,8 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) =>
         `;
 
     return(
-        <div className="fixed absolute relative">
-        <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={handleClick}>
+        <div className="relative group">
+        <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={allClickHandlers}>
             <div className="w-[50%] h-auto leading-[0.8]">
                 { (name === "ATTACK" || name === "DEFEND")
                 ? (<OutlineTextResizable size="medium">{name}</OutlineTextResizable>)
@@ -52,7 +59,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) =>
         </ButtonGeneric>
 
         {availableUses != null && (
-            <div className="                    
+            <div className={`
                 absolute
                 top-14
                 right-18
@@ -67,13 +74,28 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId }) =>
                 items-center
                 justify-center
                 text-sm
-                font-jua"
-            >
+                font-jua
+                overflow-hidden
+                ${!isDisabled ? "group-hover:brightness-85" : ""}
+                ${isDisabled ? "\
+                    grayscale\
+                    cursor-not-allowed\
+                " : ""}
+            `}>
                 <OutlineText size="medium">
                     {availableUses}
                 </OutlineText>
+            
+                {isActive && (
+                    <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/30 rounded-b pointer-events-none h-[50%]" />
+                )}
             </div>
         )}
+
+        {isActive && (
+            <div className="absolute inset-0 z-10 bg-black/30 rounded pointer-events-none" />
+        )}
+
     </div>
     );
 };
