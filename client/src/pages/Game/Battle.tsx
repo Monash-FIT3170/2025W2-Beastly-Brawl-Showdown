@@ -13,7 +13,7 @@ import { BattleFooter } from "../../components/cards/BattleFooter";
 import { GenericFooter } from "../../components/cards/GenericFooter";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { FadingBattleText } from "../../components/texts/FadingBattleText";
-import { BattleFooterTest } from "../../components/cards/BattleFooterTest";
+
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -142,7 +142,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
           <div>
             {timer > 0 && (
-              <BattleFooterTest
+              <BattleFooter
                 possibleActions={possibleActions}
                 battleId={battleId}
               />

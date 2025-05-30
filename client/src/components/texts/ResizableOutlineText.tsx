@@ -22,14 +22,17 @@ export const OutlineTextResizable = ({children, max1, max2, max3, size}: Outline
 
     let shrink = 0;
 
-
+    
     textLine.forEach(line => {
         if (max3 && line.length > max3) {
-        shrink = Math.max(shrink, 3);
+            // if third maxiumm is reached - shrink text size on down three times
+            shrink = Math.max(shrink, 3);
         } else if (max2 && line.length > max2) {
-        shrink = Math.max(shrink, 2);
+            // if second maxiumm is reached - shrink text size on down twice
+            shrink = Math.max(shrink, 2);
         } else if (max1 && line.length > max1) {
-        shrink = Math.max(shrink, 1);
+            // if first maxiumm is reached - shrink text size down once
+            shrink = Math.max(shrink, 1);
         }
     });
 

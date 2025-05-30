@@ -67,7 +67,7 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({playerMonster}) => {
         {/* <BaseCard color="peach" width={60} height={70}> */}
         
           
-            <OutlineText size="large">BETTER LUCK NEXT TIME!</OutlineText>
+            <OutlineText size="large">YOU ARE THE WINNER!</OutlineText>
   
             <img className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]" src={`/${playerMonster.id}_WIN.png`} alt={`${playerMonster.id}_WIN image`} />
   
