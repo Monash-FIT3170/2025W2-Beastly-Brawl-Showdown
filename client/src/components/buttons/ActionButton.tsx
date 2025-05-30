@@ -51,7 +51,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId, isAc
         <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={allClickHandlers}>
             <div className="w-[50%] h-auto leading-[0.8]">
                 { (name === "ATTACK" || name === "DEFEND")
-                ? (<OutlineTextResizable size="medium">{name}</OutlineTextResizable>)
+                ? (<OutlineText size="medium">{name}</OutlineText>)
                 :(<OutlineTextResizable max1 = {5} max2 = {7} max3 = {10} size="medium">{name}</OutlineTextResizable>
                 )}
             </div>

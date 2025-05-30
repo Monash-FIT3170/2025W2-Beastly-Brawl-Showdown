@@ -35,12 +35,13 @@ export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {
     flex 
     place-items-center 
     w-full 
-    justify-evenly 
+    justify-center 
     grid 
     grid-cols-2 
-    gap-y-[5rem] 
+    gap-y-[7rem] 
     xl:gap-y-[4rem] 
-    pb-[2%]
+    pb-[4%]
+    xl: pb-[2%]
     
     `;
 

@@ -36,14 +36,14 @@ export const OutlineTextResizable = ({children, max1, max2, max3, size}: Outline
         }
     });
 
-    index = index - shrink;
+    index = Math.max(0, index - shrink);
 
-    const trueSize = sizeList[index]
+    const trueSize = sizeList[index];
     
     const sizeLoader: Record<SizeKey, string> = {
         tiny:'text-[2rem] lg:text-tiny',
         smaller:'text-[2rem] lg:text-smaller',
-        small: 'text-[2.5rem] lg:text-small',
+        small: 'text-[2.5rem] lg:text-small-abilityButton',
         medium:'text-[3rem] lg:text-medium',
         large:'text-[4rem] lg:text-large sm:text-largemobile',
         extraLarge: 'text-[5rem]'
