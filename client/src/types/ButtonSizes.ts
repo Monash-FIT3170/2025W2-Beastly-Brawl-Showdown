@@ -1,1 +1,1 @@
-type ButtonSize = 'tiny' | 'medium' | 'large' | 'square' | 'squaremedium' | 'battle'
+type ButtonSize = 'tiny' | 'medium' | 'large' | 'square' | 'squaremedium' | 'battle' | 'scaling'

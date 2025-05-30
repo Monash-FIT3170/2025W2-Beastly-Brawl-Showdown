@@ -9,7 +9,8 @@ import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
 import { BattleFooter } from "../../components/cards/BattleFooter";
-import { GenericFooter } from "../../components/cards/GenericFooter";
+import { FadingBattleText } from "../../components/texts/FadingBattleText";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import BattleMonsterPanelTest from "../../components/player-screen/BattleMonsterPanelTest";
 
 interface BattleProps {
@@ -63,6 +64,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     };
   }, []);
 
+  socket.on("new-connect", () => {
+    FlowRouter.go("/");
+  });
+
   return (
     <div className="inset-0 w-full h-screen bg-springLeaves overscroll-contain">
       {/* Winner display if battle is over */}
@@ -73,7 +78,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         winner === "Draw" ? (
           <DrawScreen />
         ) : battleState?.yourPlayer.name === winner ? (
-          <WinnerScreen playerMonster={battleState?.yourPlayer.monster}/>
+          <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
         ) : (
           <LoserScreen />
         )
@@ -95,14 +100,32 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                   <p key={index}>{log}</p>
                 ))}
               </div> */}
-              
+
+                <div
+                className="battle-logs-stack mt-[-10%]"
+                style={{ position: "relative", width: "100%", height: "120px" }}
+              >
+                {battleState.yourPlayer.logs.map((log, index) => (
+                  <FadingBattleText
+                    key={index}
+                    size="medium-battle-text"
+                    style={{ top: `${index * 32}px` }}
+                  >
+                    {log}
+                  </FadingBattleText>
+                ))}
+              </div>
+
               <DiceRollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} battleState={battleState}/>
             </div>
           )}
 
           <div>
             {timer > 0 && (
-              <BattleFooter possibleActions={possibleActions} battleId={battleId} />
+              <BattleFooter
+                possibleActions={possibleActions}
+                battleId={battleId}
+              />
             )}
           </div>
         </>
