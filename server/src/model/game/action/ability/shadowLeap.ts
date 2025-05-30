@@ -8,10 +8,10 @@ export class ShadowLeapAbilityAction extends Action {
       ActionIdentifier.SHADOW_LEAP,
       "Shadow Leap",
       "Can evade an attack once per battle.",
-      Infinity
-    );
+      1
+        );
   }
-
+  //puts the player ina state of "dodgeing" and removes all enemy actions that can be dodged 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.dodge()
     affectedPlayer.getActions().forEach((action) => {

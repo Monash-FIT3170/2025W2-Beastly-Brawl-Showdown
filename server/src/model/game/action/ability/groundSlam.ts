@@ -7,15 +7,15 @@ export class GroundSlamAbilityAction extends Action {
     super(
       ActionIdentifier.GROUND_SLAM,
       "Ground Slam",
-      "Can stun opponents with a powerful stomp.",
-      Infinity
+      "Can stun opponents with a powerful stomp canceling out all abilities and even dealing 3 damage.",
+      1
     );
   }
-
+  //Gets rid of all enemy players actions
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     affectedPlayer.clearActions() 
   }
-
+  //deals small amount of damage
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     affectedPlayer.incHealth(-3);
 

@@ -4,8 +4,9 @@ import { ActionIdentifier } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 
 export class ArcaneShieldAbilityAction extends Action {
+  //sets us a biased dice for better chances by preparing and excecuting an attack with a higher minimum dice roll
   private strike = new AttackAction(7,10);
-  private armourBonus = 0
+
   constructor() {
     super(
       ActionIdentifier.ARCANE_SHIELD,
