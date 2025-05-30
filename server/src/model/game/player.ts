@@ -32,9 +32,11 @@ export class Player {
   public getSuccessfulHit(){
     return this.successfulHit
   }
+  //sets the player in a dodging position
   public dodge(): void{
     this.currentlyDodging= true
   }
+  //returns wheather or not the player was dodging 
   public getDodgingPosition():boolean{
     return this.currentlyDodging
   }  

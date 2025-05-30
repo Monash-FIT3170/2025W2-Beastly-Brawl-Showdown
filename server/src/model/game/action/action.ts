@@ -8,7 +8,7 @@ export abstract class Action {
 
   private currentUse: number;
   private maxUse: number;
-  protected dodgeable: boolean = true;
+  private dodgeable: boolean = true;
 
   constructor(
     id: ActionIdentifier,

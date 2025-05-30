@@ -11,7 +11,7 @@ export class ShadowLeapAbilityAction extends Action {
       1
         );
   }
-  //puts the player ina state of "dodgeing" and removes all enemy actions that can be dodged 
+  //puts the player in a state of "dodgeing", if an enemy's actions can be dodged, it will be incremented and removed, leading to the enemy wasting a charge 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.dodge()
     affectedPlayer.getActions().forEach((action) => {
