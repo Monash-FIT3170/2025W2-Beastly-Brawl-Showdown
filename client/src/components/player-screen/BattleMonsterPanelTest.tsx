@@ -18,24 +18,24 @@ const BattleMonsterPanelTest: React.FC<BattleMonsterPanelTestProps> = ({ battleS
     xl:w-[13rem]
     xl:h-[2rem]
     opacity-70
-    xl:-mt-[4rem]
+    xl:-mt-[3.5rem]
     xl:mb-[2rem]
     w-[30rem]
     h-[4rem]
-    -mt-[8rem]
-    mb-[10rem]
+    -mt-[7rem]
+    mb-[8rem]
     z-0
     flex
 
     `
 
     return (
-        <div className="fixed flex flex-col w-full h-screen justify-center pb-[50%] xl:pb-[25%] pl-[5%] xl:pl-[0%] xl:pr-[0%] pr-[5%]">
-            <div className="w-full place-items-center xl:gap-x-[40rem] grid grid-cols-2 gap-y-[7rem] xl:gap-y-[0rem] ">
+        <div className="fixed flex flex-col w-full h-screen justify-center pb-[60%] xl:pb-[25%] pl-[5%] xl:pl-[0%] xl:pr-[0%] pr-[5%]">
+            <div className="w-full place-items-center xl:gap-x-[40rem] grid grid-cols-2 gap-y-[10rem] xl:gap-y-[0rem] ">
                 <div></div>
                 <div className=" relative inline-block xl:w-[50%] ">
                     <img  className="relative z-10" src={pathRightMon}/>
-                    <img className={`${shadow}`} src="/assets/shadow.png"></img>
+                    <img className={`${shadow}`} src="/shadow.png"></img>
                 </div>
                 <div className="relative inline-block xl:w-[50%]">
                     <img className=" relative transform -scale-x-100 z-10" src={pathLeftMon}/>
