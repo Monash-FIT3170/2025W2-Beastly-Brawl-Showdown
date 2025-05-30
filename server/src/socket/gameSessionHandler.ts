@@ -28,46 +28,53 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
   // Join request
   socket.on("join-game", ({ gameCode, name }) => {
-    console.log(
-      `Join request for Code: ${gameCode}, User: ${name} - ${socket.id}`
-    );
-    const gameCodeN = Number(gameCode);
+    try {
+      console.log(
+        `Join request for Code: ${gameCode}, User: ${name} - ${socket.id}`
+      );
+      const gameCodeN = Number(gameCode);
 
-    const session = activeGameSessions.get(gameCodeN);
-    if (!session) {
-      // If session of given game code doesn't exist
-      console.log(`Join request failed. Invalid Code`);
-      return;
+      const session = activeGameSessions.get(gameCodeN);
+      if (!session) {
+        // If session of given game code doesn't exist
+        console.log(`Join request failed. Invalid Code`);
+        socket.emit("join-reject", ["The code entered is invalid. Please verify and try again"]);
+        return;
+      }
+
+      const newPlayer = new Player(socket.id, name);
+      const addResult = session.addPlayer(newPlayer);
+      if (!addResult.success) {
+        // Join request rejected
+        console.log(`Player ${name} rejected from ${gameCode}`);
+        socket.emit("join-reject", [addResult.reason || "Unable to join."]);
+        return;
+      }
+      newPlayer.updateGameCode(gameCodeN);
+
+      // Add player to players map
+      players.set(socket.id, newPlayer);
+
+      // Add player to Game Session socket
+      socket.join(`game-${gameCodeN}`);
+
+      // Update host information
+      io.to(`game-${gameCode}`).emit("update-players", {
+        message: `Player ${name} - ${socket.id} added to current game session.`,
+        players: session.getPlayerStates(),
+      });
+
+      // Player is accepted
+      console.log(`Join request accepted. UserID: ${socket.id}`);
+
+      // Update player success message
+      socket.emit("join-accept", {
+        gameSessionId: gameCode,
+      });
+    } catch (err) {
+      console.error("Unexpected join error:", err);
+      socket.emit("join-reject", ["An unexpected error occurred. Please try again."]);
     }
-
-    const newPlayer = new Player(socket.id, name);
-    if (!session.addPlayer(newPlayer)) {
-      // Join request rejected
-      console.log(`Player ${name} rejected from ${gameCode}`);
-      // UPDATE: Include user feedback here (pop-up)
-      return;
-    }
-    newPlayer.updateGameCode(gameCodeN);
-
-    // Add player to players map
-    players.set(socket.id, newPlayer);
-
-    // Add player to Game Session socket
-    socket.join(`game-${gameCodeN}`);
-
-    // Update host information
-    io.to(`game-${gameCode}`).emit("update-players", {
-      message: `Player ${name} - ${socket.id} added to current game session.`,
-      players: session.getPlayerStates(),
-    });
-
-    // Player is accepted
-    console.log(`Join request accepted. UserID: ${socket.id}`);
-
-    // Update player success message
-    socket.emit("join-accept", {
-      gameSessionId: gameCode,
-    });
   });
 
   // Join as host
@@ -81,6 +88,10 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     if (!session) {
       // If session of given game code doesn't exist
       console.log(`Join request failed. Invalid Code`);
+      socket.emit("join-reject", {
+        message: "Invalid game code. Unable to join as host.",
+        code: gameCode,
+      });
       return;
     }
     const oldHost = session.getHost();

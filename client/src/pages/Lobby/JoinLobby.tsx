@@ -8,6 +8,7 @@ import LogoResizable from "../../components/logos/LogoResizable";
 import { IconButton } from "../../components/buttons/IconButton";
 import { InputBox } from "../../components/inputs/InputBox";
 import { BlackText } from "../../components/texts/BlackText";
+import { PopupClean } from "../../components/popups/PopupClean";
 
 // Used for auto-filling the game code from the URL / QR code
 interface JoinLobbyProps {
@@ -17,6 +18,7 @@ interface JoinLobbyProps {
 const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
 
   // On mount, prefill code from prop
   useEffect(() => {
@@ -34,6 +36,12 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
   socket.on("join-accept", ({ gameSessionId }) => {
     console.log(gameSessionId);
     FlowRouter.go(`/session/${gameSessionId}`);
+  });
+
+  // Listen for the "join-reject" event from the server
+  socket.on("join-reject", (errors: string[]) => {
+    console.error("Join rejected:", errors);
+    setErrors(errors);
   });
 
   return (
@@ -54,6 +62,32 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
           <LogoResizable className="lg:w-1/2 h-full"></LogoResizable>
         </div>
       </div>
+
+      {/* Popup: Explaining why Joining the game has failed. */}
+      {errors && errors.length > 0 && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+            <OutlineText size="extraLarge">Joining Failed</OutlineText>
+            {errors.map((error, idx) => (
+              <div className="mt-4">
+                <BlackText size="medium" key={idx}>
+                  {error.toUpperCase()}
+                </BlackText>
+              </div>
+            ))}
+            <div className="mt-10 flex flex-col items-center">
+              <ButtonGeneric
+                size="large"
+                color="red"
+                onClick={() => setErrors([])}
+              >
+                BACK
+              </ButtonGeneric>
+            </div>
+          </div>
+        </PopupClean>
+      )}
+
       <div className="flex flex-row h-1/2 w-full items-center justify-around">
         <div className="flex flex-col h-full lg:space-y-6 lg:w-1/4.8 sm:w-1/2 items-center sm:justify-around">
           <div className="w-full lg:max-w-xs">

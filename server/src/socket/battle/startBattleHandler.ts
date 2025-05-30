@@ -17,6 +17,22 @@ export default function proceedBattleTurn(
 
   let playersInBattle = battle.getPlayers();
 
+  if (battle.isBattleOver()) {
+    const winners = battle.getWinners();
+    if (winners.length == 0) {
+      //if battle is over, the array length is guaranteed to be either 0 or 1
+      io.to(battle.getId()).emit("battle_end", {
+        result: "draw",
+        winners: winners,
+      });
+    } else {
+      io.to(battle.getId()).emit("battle_end", {
+        result: "concluded",
+        winners: winners,
+      });
+    }
+  }
+
   //Players' states before the turn start
   gameSession.setCurrentPhase(BattlePhase.CHOOSE_ACTION);
   socket.emit("game-session-state", {
