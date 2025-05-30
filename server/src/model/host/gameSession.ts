@@ -7,6 +7,8 @@ import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";
+import { MonsterIdentifier } from "/types/single/monsterState";
+import { StonehideGuardian } from "../game/monster/stonehideGuardian";
 
 export default class GameSession {
   private hostUID: string;
@@ -227,7 +229,19 @@ export default class GameSession {
   }
 
   public oddOneOutWinner(oddPlayer: Player) {
-    // UPDATE: handle odd player
+    let battleId = crypto.randomUUID();
+    const placeHolderPlayer = new Player("placeHolder", "");
+    const placerHolderMonster = new StonehideGuardian();
+    placeHolderPlayer.setMonster(placerHolderMonster);
+    placeHolderPlayer.setHealth(0);
+    const battle = new Battle(
+      battleId,
+      oddPlayer,
+      placeHolderPlayer,
+      this.hostUID
+    );
+    battles.set(battleId, battle);
+    this.battles.enqueue(battle);
     return oddPlayer;
   }
 
