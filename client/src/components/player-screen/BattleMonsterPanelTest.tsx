@@ -39,7 +39,7 @@ const BattleMonsterPanelTest: React.FC<BattleMonsterPanelTestProps> = ({ battleS
                 </div>
                 <div className="relative inline-block xl:w-[50%]">
                     <img className=" relative transform -scale-x-100 z-10" src={pathLeftMon}/>
-                    <img className={`${shadow}`} src="/assets/shadow.png"></img>
+                    <img className={`${shadow}`} src="/shadow.png"></img>
                 </div>
                 <div></div>
             </div>
