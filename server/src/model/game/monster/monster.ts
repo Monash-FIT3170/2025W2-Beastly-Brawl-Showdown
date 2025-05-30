@@ -4,6 +4,7 @@ import { AttackAction } from "../action/attack";
 import { DefendAction } from "../action/defend";
 import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import { arch } from "os";
 
 export abstract class Monster {
   private id: MonsterIdentifier;
@@ -18,6 +19,7 @@ export abstract class Monster {
   private maxHealth: number;
   private attackBonus: number;
   private armourClass: number;
+  private critRate: number;
 
   constructor(
     id: MonsterIdentifier,
@@ -36,7 +38,9 @@ export abstract class Monster {
     this.maxHealth = maxHealth;
     this.attackBonus = attackBonus;
     this.armourClass = armourClass;
-    this.possibleActions.push(new AttackAction(attackBonus));
+    this.critRate = archetype.getCritRate();
+
+    this.possibleActions.push(new AttackAction(attackBonus, this.critRate));
     this.possibleActions.push(new DefendAction(armourClass));
     this.possibleActions.push(ability);
     this.possibleActions.push(archetype.getAbility());
