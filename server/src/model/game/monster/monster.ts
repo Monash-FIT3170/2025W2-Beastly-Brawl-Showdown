@@ -4,7 +4,6 @@ import { AttackAction } from "../action/attack";
 import { DefendAction } from "../action/defend";
 import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
-import { arch } from "os";
 
 export abstract class Monster {
   private id: MonsterIdentifier;

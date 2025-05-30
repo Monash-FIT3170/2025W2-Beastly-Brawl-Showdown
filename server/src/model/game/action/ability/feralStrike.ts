@@ -2,7 +2,7 @@ import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
-export class FeralStrikePassive extends Action {
+export class FeralStrikeAbilityPassive extends Action {
   constructor() {
     super(
       ActionIdentifier.FERAL_STRIKE,

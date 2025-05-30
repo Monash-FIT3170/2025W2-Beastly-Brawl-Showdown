@@ -6,10 +6,11 @@ export interface ButtonGenericProps{
 	isDisabled?: boolean;
 	children?: ReactNode
 	onClick?: () => void;
-	mobileHidden?: 'false' | 'true' 
+	mobileHidden?: 'false' | 'true'
+	isPassive?: boolean;
 }
 
-export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidden='false'}: ButtonGenericProps) => {
+export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidden='false',isPassive=false}: ButtonGenericProps) => {
 
 	const colorToDisplay = {
 		'ronchi': 'bg-ronchi',
@@ -41,7 +42,6 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidd
 		items-center
 		justify-around
 		text-merino
-		outline-blackCurrant
 		sm:outline-[0.75rem]
 		md:outline-[0.5rem]
 		lg:outline-[0.25rem]
@@ -59,20 +59,28 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidd
 		active:outline-blackCurrant
 		active:ring-[0.3125rem]
 		active:ring-blackCurrant
+		outline-blackCurrant
 		`;
 
 	const disabledButton = 
 		`
 		grayscale
 		cursor-not-allowed 
+		outline-blackCurrant
 		`;
+
+	const passiveButton = 
+		`
+		outline-[#43bf37]
+		cursor-not-allowed
+		`
 
     return(
 		<button
 		disabled={isDisabled}
 		className={`
-			${baseButton} 
-			${isDisabled ? disabledButton : enabledButton}
+			${baseButton}
+			${isDisabled ? (isPassive ? passiveButton : disabledButton) : enabledButton}
 			${sizeToDisplay[size]}
 		`}
 		onClick={onClick}> 
