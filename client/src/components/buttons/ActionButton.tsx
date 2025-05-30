@@ -17,6 +17,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId, isAc
     const imagePath = "/assets/actions/" + actionState.id + ".png";
     const name = actionState.name.toUpperCase();
     const availableUses = actionState.currentUse; // How many REMAINING uses
+    const isPassive = actionState.maxUse == 0; // Action is a passive ability if it can't be used
 
     const colorLoader: Record<string, ButtonGenericProps["color"]> = {
         [ActionIdentifier.ATTACK]: 'red',
@@ -48,7 +49,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId, isAc
 
     return(
         <div className="relative group">
-        <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={allClickHandlers}>
+        <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={allClickHandlers} isPassive={isPassive}>
             <div className="w-[50%] h-auto leading-[0.8]">
                 { (name === "ATTACK" || name === "DEFEND")
                 ? (<OutlineText size="medium">{name}</OutlineText>)
@@ -58,7 +59,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId, isAc
             <img className = {`${image} rounded-md`} src={`${imagePath}`} alt={`${actionState.id} image`}/>
         </ButtonGeneric>
 
-        {availableUses != null && (
+        {availableUses != null && !isPassive && (
             <div className={`
                 absolute
                 top-14

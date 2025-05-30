@@ -5,28 +5,26 @@ import socket from "../../socket";
 
 export class AttackAction extends Action {
   private attackBonus: number;
-  private damage: number = 0;
+  private attackHit: number = 0; // attackBonus + d20 roll
   private d20: number = 0;
   private diceMin: number;
   private diceMax: number;
+  private damageDealt: number = 5; // Damage on a non-crit is 5
+  private critRate: number; // % Chance to crit
+  private rollRange: number = 0;
 
-  constructor(attackBonus: number, diceMin: number = 1, diceMax: number = 20) {
+  constructor(attackBonus: number, critRate: number, diceMin: number = 1, diceMax: number = 20) {
     super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity);
     this.attackBonus = attackBonus;
     this.diceMin = diceMin;
     this.diceMax = diceMax;
-  }
-
-  public getDamage(): number {
-    return this.damage;
+    this.critRate = critRate;
+    this.rollRange = this.diceMax - this.diceMin + 1; // Determine the range of the dice roll
   }
 
   private rollDice(): number {
-    // Determine the range of the dice roll
-    const range = this.diceMax - this.diceMin + 1;
-
     // Generate a number within the range size, then add the minimum value to bring it within the actual range
-    const d20 = Math.floor(Math.random() * range) + this.diceMin;
+    const d20 = Math.floor(Math.random() * this.rollRange) + this.diceMin;
     console.log(`Dice roll: ${d20}`);
     return d20;
   }
@@ -38,31 +36,42 @@ export class AttackAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     // Rolling a d20 dice
     this.d20 = this.rollDice();
-    this.damage = this.d20 + this.attackBonus;
+    this.attackHit = this.d20 + this.attackBonus;
     console.log(`Dice roll: ${this.d20} | Attack bonus: ${this.attackBonus}`);
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
-    if (this.damage > affectedPlayer.getMonster().getArmourClass()) {
+    if (this.attackHit > affectedPlayer.getMonster().getArmourClass()) {
       console.log(
         `Attack successful | Attack exceeds opponents armour: (${affectedPlayer
           .getMonster()
-          .getArmourClass()} < ${this.damage}).`
+          .getArmourClass()} < ${this.attackHit}).`
       );
-      affectedPlayer.incHealth(-5);
+
+      // Check for a critical hit
+      // Calculate the crit range as a percentage of the dice roll range
+      // Set the crit range starting from the maximum dice value and going down
+      // Check if the dice roll is within the crit range
+      // E.g. normal d20 roll is 1-20, with a crit rate of 10%, you need to roll 19 or 20 to crit
+      const isCrit = this.d20 >= (this.diceMax - (this.rollRange * this.critRate/100) + 1);
+      if (isCrit) {
+        this.damageDealt *= 2; // Double the damage on a crit
+      }
+      affectedPlayer.incHealth(-this.damageDealt);
 
       // Log successful attack
       actingPlayer.addLog(
-        `You attacked ${affectedPlayer.getName()} and dealt 5 damage.`
+        `${isCrit ? "Critical hit! " : ""}You attacked ${affectedPlayer.getName()} and dealt ${this.damageDealt} damage.`
       );
 
       affectedPlayer.addLog(
-        `${actingPlayer.getName()} attacked you and dealt 5 damage.`
+        `${isCrit ? "Critical hit! " : ""}${actingPlayer.getName()} attacked you and dealt ${this.damageDealt} damage.`
       );
+
       actingPlayer.addBattleLog(
-        `${actingPlayer.getName()} attacked ${affectedPlayer.getName()} and dealt 5 damage.`
+        `${isCrit ? "Critical hit! " : ""}${actingPlayer.getName()} attacked ${affectedPlayer.getName()} and dealt ${this.damageDealt} damage.`
       );
       // Increment successful hit for front end
       actingPlayer.incSuccessfulHit(1);
