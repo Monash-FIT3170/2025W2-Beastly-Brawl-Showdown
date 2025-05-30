@@ -31,24 +31,24 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.on("possible_actions", (actions: ActionState[]) => {
       setPossibleActions(actions);
     });
-    
+
     socket.on("timer", (time: number) => {
       console.log(`Timer: ${time}`);
       setTimer(time);
     });
 
-    socket.on("battle_end", ({result, winners}) => {
-      console.log(result,winners)
-      if (result === "draw"){
-        setWinner("Draw")
-      } else if (result === "concluded"){
-        setWinner(winners[0])
+    socket.on("battle_end", ({ result, winners }) => {
+      console.log(result, winners);
+      if (result === "draw") {
+        setWinner("Draw");
+      } else if (result === "concluded") {
+        setWinner(winners[0]);
       }
-      console.log(winner)
+      console.log(winner);
     });
 
-    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier 
-    // to handle all types of animations triggered by actions  
+    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
+    // to handle all types of animations triggered by actions
     socket.on("roll_dice", (diceRoll: number) => {
       setDiceValue(diceRoll);
       console.log(`From socket in Battle: dps ${diceRoll}`);
@@ -63,7 +63,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   }, []);
 
   return (
-    <div className="game-screen flex flex-col">
+    <div className="w-full min-h-screen bg-springLeaves">
       {/* Winner display if battle is over */}
       {/*winner === "Draw" ? (
           <DrawScreen />
@@ -72,21 +72,21 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         winner === "Draw" ? (
           <DrawScreen />
         ) : battleState?.yourPlayer.name === winner ? (
-          <WinnerScreen />
+          <WinnerScreen playerMonster={battleState?.yourPlayer.monster}/>
         ) : (
           <LoserScreen />
         )
-      )  : (
+      ) : (
         <>
           {battleState && (
             <div className="battle-state-parts">
-              <PlayerInfoPanel battleState={battleState}/>
+              <PlayerInfoPanel battleState={battleState} />
 
               <div className="timer-box font-[Jua]">
                 <p>Timer: {timer}</p>
               </div>
 
-              <BattleMonsterPanel battleState={battleState}/>
+              <BattleMonsterPanel battleState={battleState} />
 
               {/* <div className="battle-logs">
                 <h3>Logs:</h3>
@@ -124,5 +124,4 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     </div>
   );
 };
-
 export default Battle;
