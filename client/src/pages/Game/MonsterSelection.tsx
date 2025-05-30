@@ -103,7 +103,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
   };
 
   return (
-    <>
+    <div>
       <GenericHeader color="purple">
         <OutlineText size="extraLarge">SELECT YOUR MONSTER</OutlineText>
       </GenericHeader>
@@ -141,7 +141,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
 
       {selectedMonster && (
         <div
-          className={`flex items-center justify-center box-border bg-white/30 fixed left-0 right-0 bottom-0 top-0 flex flex-col backdrop-blur-md z-50  `}
+          className={`flex items-center justify-center box-border bg-white/30 fixed left-0 right-0 bottom-0 top-0 flex flex-col backdrop-blur-md z-50 overflow-y-scroll `}
         >
           {/* Popup */}
           {exitPopup && (
@@ -168,10 +168,10 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
             border-blackCurrant w-min h-min rounded-xl
             ${colorLoader[selectedMonster.id]}
             top-[20%]
-            sm:h-[95%]
-            sm:w-[95%]
-            lg:h-[90%]
-            lg:x-[80%]
+            sm:h-min
+            sm:w-[95dvw]
+            lg:h-min
+            lg:w-[90dvw]
             border-[3px]
             border-[#403245]
             rounded-[20px]
@@ -181,14 +181,17 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
             flex-col
             items-center`}
           >
+            <div className="pt-[2dvh]"/>
             <BaseCard
               color="goldenRod"
-              className="flex flex-col justify-around sm:w-[80%] lg:w:[90%]"
+              className="flex flex-col justify-around sm:w-[80dvw] lg:w:[90dvw] h-min"
             >
               <MonsterImage
                 name={selectedMonster.id}
-                className="sm:w-[20rem] sm:h-[20rem] 
-                           lg:w-[15rem] lg:h-[15rem]"
+                className="sm:size-[30dvw]
+                            lg:size-[10dvw]"
+
+                           
               />
               <div className="w-[100%] flex items-center flex-col">
                 <div className="bg-ronchi border-[4px] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
@@ -227,7 +230,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
               </div>
 
               <div className="flex flex-col items-center justify-start">
-                <p className="text-outline font-[Jua] text-[4rem]">
+                <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
                   SPECIAL ABILITIES
                 </p>
                 <div className="flex flex-col justify-center lg:flex-row w-full">
@@ -242,20 +245,20 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                         className="w-[7rem] h-[7rem]"
                       />
                       <div>
-                        <OutlineText size="medium">{ability.name}</OutlineText>
-                        <BlackText size="medium">
-                          {ability.description}
-                        </BlackText>
+                      <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">{ability.name}</p>
+                        {/**<BlackText size="medium">{ability.description}</BlackText>*/}
+                        <p className="text-black font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">{ability.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
             </BaseCard>
-            <div className="flex flex-row space-x-10 pt-5 pb-5">
+
+            <div className="flex flex-row space-x-10 justify-around pt-[2dvh] pb-[2dvh]">
               <ButtonGeneric
                 color="red"
-                size="medium"
+                size= "medium"
                 onClick={() => {
                   handleCancelSelection();
                 }}
@@ -275,6 +278,6 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
