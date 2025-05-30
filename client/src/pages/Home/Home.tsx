@@ -5,6 +5,7 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
+import { ButtonResizableText } from "../../components/buttons/ButtonResizableText";
 
 export const Home = () => {
   // Called on 'Host Lobby' button press
@@ -26,7 +27,7 @@ export const Home = () => {
 
   return (
     console.log("Home"),
-    (
+    ( 
       <BlankPage>
         <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
           <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full"></LogoResizable>

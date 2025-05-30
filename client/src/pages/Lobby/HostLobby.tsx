@@ -11,6 +11,8 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { GenericIcon } from "../../components/icons/GenericIcon";
 import { PlayerState } from "/types/single/playerState";
+import { PopupClean } from "../../components/popups/PopupClean";
+import { BlackText } from "../../components/texts/BlackText";
 
 // Defines code for the game session
 interface HostLobbyProps {
@@ -22,6 +24,8 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const [players, setPlayers] = useState<PlayerState[]>([]);
   const [playerCount, setPlayerCount] = useState(0);
   const [canStart, setCanStart] = useState(false);
+  const [exit, setExit] = useState<Boolean>();
+  const [errors, setErrors] = useState<string[]>([]);
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -30,7 +34,27 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
       socket.emit("get-players", { gameCode: code });
     }
 
+    console.log(`LENGTH: ${socket.listeners("update-players").length}`);
+    socket.on("update-players", ({ message, players }) => {
+      console.log(message);
+
+      // Update player list
+      if (Array.isArray(players)) {
+        // because list has come from socket need to map it to our player.ts type
+        // lmk if i'm wrong
+        // const properPlayers = players.map((p: any) => new Player(p.id, p.name));
+        // console.log("newly mapped players:", properPlayers); //testing
+        setPlayers(players);
+        setPlayerCount(players.length);
+      } else {
+        console.error("'players' is not an array", players);
+      }
+    });
+    console.log(`LENGTH: ${socket.listeners("update-players").length}`);
+
     return () => {
+      socket.off("update-players");
+
       console.log("Page is closing/unmounting");
     };
   }, []);
@@ -46,9 +70,16 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   // TODO: MAKE SURE START GAME CAN ONLY BEGIN ONCE ALL PLAYERS HAVE SELECTED A MONSTER AND IN THE WAITING ROOM!
   const startGame = () => {
     socket.emit("start-game", { gameCode: code });
+  };
+
+  socket.on("start-success", () => {
     const codeString = code?.toString();
     FlowRouter.go(`/battles/${codeString}`);
-  };
+  });
+
+  socket.on("start-failed", (errors: string[]) => {
+    setErrors(errors);
+  });
 
   // deletes game session
   const closeGame = () => {
@@ -58,36 +89,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     FlowRouter.go("/");
   };
 
-  // LISTENERS:
-  // Listen for the "update-players" event from the server
-  socket.on("update-players", ({ message, players }) => {
-    console.log(message);
-
-    // Update player list
-    console.log("players from server:", players); //testing
-    if (Array.isArray(players)) {
-      setPlayers(players);
-      setPlayerCount(players.length);
-
-      setCanStart(canStartGame(players));
-    } else {
-      console.error("'players' is not an array", players);
-    }
-  });
-
-  const canStartGame = (players: PlayerState[]) => {
-    if (players.length < 2) {
-      return false; // If less than 2 players, cannot start
-    }
-
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].monster === null) {
-        return false; // If any player does not have a monster selected, cannot start
-      }
-    }
-    return true;
-  };
-
   return (
     <BlankPage>
       {/* Responsive header section */}
@@ -95,6 +96,59 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         {/* Logo on the left */}
 
         <LogoResizable className="h-full w-1/11"></LogoResizable>
+
+        {exit && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">QUIT GAME?</OutlineText>
+              <BlackText size="large">
+                THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY
+              </BlackText>
+              <BlackText size="large">
+                DO YOU WANT TO CONTINUE OR END THE GAME
+              </BlackText>
+              <div className="flex flex-row justify-between items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setExit(false)}
+                >
+                  BACK
+                </ButtonGeneric>
+                <ButtonGeneric size="large" color="blue" onClick={closeGame}>
+                  CONFIRM
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
+
+        {errors && errors.length > 0 && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">Matchmaking Failed</OutlineText>
+              <BlackText size="large">
+                MATCHMAKING HAS FAILED DUE TO THE FOLLOWING REASON(S):
+              </BlackText>
+              {errors.map((error, idx) => (
+                <div className="mt-4">
+                  <BlackText size="medium" key={idx}>
+                    {error.toUpperCase()}
+                  </BlackText>
+                </div>
+              ))}
+              <div className="mt-10 flex flex-col items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setErrors([])}
+                >
+                  BACK
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
 
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
@@ -121,12 +175,13 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           {players.map((player) => (
             <NameCard player={player} onClick={() => kickPlayer(player.id)} />
           ))}
+          {/* UPDATE: Add pop up for : Do you want to kick this player? */}
         </div>
       </div>
 
       {/* Bottom bar with back button, start game button, and player count */}
       <div className="flex flex-row h-1/5 w-full px-10 items-center justify-between">
-        <ButtonGeneric color="blue" size="medium" onClick={closeGame}>
+        <ButtonGeneric color="blue" size="medium" onClick={() => setExit(true)}>
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
             <GenericIcon style="arrowleft" colour="stroked" />
             <div className="mt-1">
@@ -136,10 +191,11 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </ButtonGeneric>
 
         <div className="mb-5 mr-13">
+          {/* UPDATE: Add pop up for : Do you want to start the game? */}
           <ButtonGeneric
             color="ronchi"
             size="large"
-            isDisabled={playerCount < 2}
+            // isDisabled={!canStart}
             onClick={startGame}
           >
             <div className="mt-1">

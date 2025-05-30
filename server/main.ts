@@ -26,6 +26,7 @@ Meteor.startup(async () => {
 
   io.on("connection", (socket) => {
     // startBattleHandler(io, socket);
+    console.log(`Client connected: ${socket.id}`);
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
     characterSelectHandler(io, socket);

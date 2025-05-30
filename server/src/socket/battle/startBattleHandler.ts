@@ -135,7 +135,7 @@ export default function proceedBattleTurn(
         setTimeout(() => {
           if (gameSession.areBattlesConcluded()) {
             console.log(
-              `All battales are concluded in game session ${gameSession.getGameCode()}`
+              `All battles are concluded in game session ${gameSession.getGameCode()}`
             );
 
             //TODO: for future, this can be used to handle what happens after a game session ends
