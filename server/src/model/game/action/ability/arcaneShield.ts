@@ -11,7 +11,7 @@ export class ArcaneShieldAbilityAction extends Action {
     super(
       ActionIdentifier.ARCANE_SHIELD,
       "Arcane Shield",
-      "Can reroll one d20 roll once per battle",
+      "Rolls a biased dice to better your odds at a hit",
       1
     );
   }
@@ -20,14 +20,14 @@ export class ArcaneShieldAbilityAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     this.strike.prepare(actingPlayer,affectedPlayer)
   }
-
+  //excecutes modified attack action
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.strike.execute(actingPlayer,affectedPlayer)
     actingPlayer.addLog(
-      `Biased dice has been rerolled for an attack using ${this.getName()}`
+      `Biased dice has been rolled for an attack using ${this.getName()}`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} rerolled their dice, implemented action ${this.getName()} and obtaining a biased attack`
+      `${actingPlayer.getName()} has used ${this.getName()} rolling a biased dice for their attack`
     );
   }
 }

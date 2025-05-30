@@ -8,7 +8,7 @@ export class Player {
   private monster: Monster | null;
   public currentGameCode?: number;
   private score: number = 0;
-  private currentlydodging = false
+  private currentlyDodging = false
   private currentHealth: number;
   private currentAttackStat: number;
   private currentArmourClassStat: number;
@@ -33,10 +33,10 @@ export class Player {
     return this.successfulHit
   }
   public dodge(): void{
-    this.currentlydodging= true
+    this.currentlyDodging= true
   }
   public getDodgingPosition():boolean{
-    return this.currentlydodging
+    return this.currentlyDodging
   }  
 
   public getSuccessfulBlock(){

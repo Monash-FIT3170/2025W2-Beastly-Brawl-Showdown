@@ -3,7 +3,7 @@ import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
 export class FortressStanceAbilityAction extends Action {
-  private armourBonus = 6
+  private armourBonus = 8
   constructor() {
     super(
       ActionIdentifier.FORTRESS_STANCE,
@@ -14,11 +14,11 @@ export class FortressStanceAbilityAction extends Action {
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
-  //gives player an armour bomus for the round
+  //gives player an armour bonus for the round
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.incArmourClassStat(this.armourBonus)
     actingPlayer.addLog(
-      `You have activated ${this.getName()} + 5 AC!!!!`
+      `You have activated ${this.getName()} + 8 AC!!!!`
     );
     affectedPlayer.addLog(
       `${actingPlayer.getName()} has temporarly increased his AC by using ${this.getName()}`

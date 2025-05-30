@@ -30,9 +30,11 @@ export abstract class Action {
   public getCurrentUse(): number {
     return this.currentUse;
   }
+  //returns if an action can be dodged 
   public getDodgeable(): boolean {
     return this.dodgeable;
   }
+  //if an action cant be dodged, this function is used to set it apart from the default 
   protected setDodgeable(value: boolean): void {
     this.dodgeable = value;
   }
