@@ -9,7 +9,7 @@
   margin-left: 8px;
 }
 
-.left-monster,
+/* .left-monster,
 .right-monster {
   width: auto;
   display: flex;
@@ -36,14 +36,36 @@
 
 .right-monster {
   align-self: flex-end;
+} */
+
+.right-monster,
+.left-monster {
+  position: relative;
 }
 
 .monster-shadow {
-  width: 180px;
-  height: 20px;
+  width: 13rem;
+  height: 2rem;
   background: rgba(0,0,0,0.50);
   border-radius: 50%;
   filter: blur(1.5px);
   margin-top: -60px;
   margin-bottom: 8px;     /* Space below shadow */
+  z-index: 0;
+  
+}
+
+
+
+@media (max-width: 600px) {
+  .monster-shadow {
+    width: 23rem;
+  height: 2rem;
+  background: rgba(0,0,0,0.50);
+  border-radius: 50%;
+  filter: blur(1.5px);
+  margin-top: -110px;
+  margin-bottom: 8px;     /* Space below shadow */
+  z-index: 0;
+  }
 }

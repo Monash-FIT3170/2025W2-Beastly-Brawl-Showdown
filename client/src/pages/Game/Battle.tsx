@@ -10,6 +10,7 @@ import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { GenericFooter } from "../../components/cards/GenericFooter";
+import BattleMonsterPanelTest from "../../components/player-screen/BattleMonsterPanelTest";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -63,7 +64,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-springLeaves">
+    <div className="inset-0 w-full h-screen bg-springLeaves overscroll-contain">
       {/* Winner display if battle is over */}
       {/*winner === "Draw" ? (
           <DrawScreen />
@@ -79,14 +80,14 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       ) : (
         <>
           {battleState && (
-            <div className="battle-state-parts">
+            <div className="battle-state-parts item-center justify-center ">
               <PlayerInfoPanel battleState={battleState} />
 
               <div className="timer-box font-[Jua]">
                 <p>Timer: {timer}</p>
               </div>
 
-              <BattleMonsterPanel battleState={battleState} />
+              <BattleMonsterPanelTest battleState={battleState} />
 
               {/* <div className="battle-logs">
                 <h3>Logs:</h3>
