@@ -143,6 +143,25 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
         <div
           className={`flex items-center justify-center box-border bg-white/30 fixed left-0 right-0 bottom-0 top-0 flex flex-col backdrop-blur-md z-50  `}
         >
+          {/* Popup */}
+          {exitPopup && (
+            <PopupClean>
+              <div className="flex flex-col justify-around">
+                <OutlineText size="extraLarge">
+                  YOU HAVE BEEN REMOVED FROM THE GAME SESSION.
+                </OutlineText>
+                <div className="mt-10 flex flex-col items-center">
+                  <ButtonGeneric
+                    size="large"
+                    color="red"
+                    onClick={() => sendHome()}
+                  >
+                    EXIT
+                  </ButtonGeneric>
+                </div>
+              </div>
+            </PopupClean>
+          )}
           <div
             className={`flex  
             justify-around border-[4px] 

@@ -42,10 +42,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
       // Update player list
       if (Array.isArray(players)) {
-        // because list has come from socket need to map it to our player.ts type
-        // lmk if i'm wrong
-        // const properPlayers = players.map((p: any) => new Player(p.id, p.name));
-        // console.log("newly mapped players:", properPlayers); //testing
         setPlayers(players);
         setPlayerCount(players.length);
       } else {
