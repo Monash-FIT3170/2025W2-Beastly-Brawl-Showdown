@@ -1,6 +1,8 @@
 import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
+import { AttackAction } from "../attack";
+import { NullAction } from "../null";
 
 export class ShadowLeapAbilityAction extends Action {
   // Puts you in an evasive stance, allowing you to dodge an attack once per battle.
@@ -22,6 +24,10 @@ export class ShadowLeapAbilityAction extends Action {
       if (action.getDodgeable()==true){
         action.incCurrentUse(-1);
         affectedPlayer.removeAction(action);
+        const actingMessage = `${actingPlayer.getName()} dodged your attack!`;
+        const affectedMessage = `You dodged ${affectedPlayer.getName()}'s attack!`;
+        const battleLogMessage = `${actingPlayer.getName()} dodged ${affectedPlayer.getName()}'s attack!`;
+        affectedPlayer.addAction(new NullAction(actingMessage, affectedMessage, battleLogMessage));
       }
     });
 
