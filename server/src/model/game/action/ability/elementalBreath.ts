@@ -18,6 +18,7 @@ export class ElementalBreathAbilityAction extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     //finds out of the target is dodging then deals extra damage if standing still, baseline damage dealt regardless of enemy position
+    this.incCurrentUse(-1);
     var dodge = affectedPlayer.getDodgingPosition()
     affectedPlayer.incHealth(-2)
     if (dodge != true){

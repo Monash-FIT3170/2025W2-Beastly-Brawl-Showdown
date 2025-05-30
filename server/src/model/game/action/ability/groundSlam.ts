@@ -17,6 +17,7 @@ export class GroundSlamAbilityAction extends Action {
   }
   //deals small amount of damage
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    this.incCurrentUse(-1);
     affectedPlayer.incHealth(-3);
 
     actingPlayer.addLog(

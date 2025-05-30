@@ -16,6 +16,7 @@ export class FortressStanceAbilityAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
   //gives player an armour bonus for the round
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    this.incCurrentUse(-1);
     actingPlayer.incArmourClassStat(this.armourBonus)
     actingPlayer.addLog(
       `You have activated ${this.getName()} + 8 AC!!!!`

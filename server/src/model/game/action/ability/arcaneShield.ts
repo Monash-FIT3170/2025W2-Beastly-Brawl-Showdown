@@ -22,6 +22,7 @@ export class ArcaneShieldAbilityAction extends Action {
   }
   //excecutes modified attack action
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    this.incCurrentUse(-1);
     this.strike.execute(actingPlayer,affectedPlayer)
     actingPlayer.addLog(
       `Biased dice has been rolled for an attack using ${this.getName()}`

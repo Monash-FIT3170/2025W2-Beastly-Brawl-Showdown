@@ -24,6 +24,7 @@ export class ShadowLeapAbilityAction extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
+    this.incCurrentUse(-1);
     actingPlayer.addLog(
       `You dodge using ${this.getName()} hopefully they dont get you`
     );
