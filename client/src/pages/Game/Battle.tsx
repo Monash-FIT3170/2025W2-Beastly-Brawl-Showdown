@@ -9,8 +9,6 @@ import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
 import { BattleFooter } from "../../components/cards/BattleFooter";
-import { GenericFooter } from "../../components/cards/GenericFooter";
-import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { FadingBattleText } from "../../components/texts/FadingBattleText";
 
 interface BattleProps {
@@ -28,12 +26,6 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
       setBattleState(battle);
-    });
-
-    socket.on("kick-warning", ({ message }) => {
-      console.log(message);
-      // UPDATE: add pop up when kicked
-      FlowRouter.go("/");
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -82,12 +74,6 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         ) : battleState?.yourPlayer.name === winner ? (
           <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
         ) : (
-          // <DrawScreen />
-          // ) : battleState.yourPlayer.name === winner ? (
-          //   // You win: pass your monster
-          //   <WinnerScreen
-          //     playerMonster={battleState.yourPlayer.monster}
-          //   />
           <LoserScreen />
         )
       ) : (
@@ -108,7 +94,6 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                   <p key={index}>{log}</p>
                 ))}
               </div> */}
-
               <div
                 className="battle-logs-stack"
                 style={{ position: "relative", width: "100%", height: "120px" }}
@@ -124,10 +109,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                 ))}
               </div>
 
-              <DicerollModal
+              <DiceRollModal
                 show={showDiceModal}
                 onClose={() => setShowDiceModal(false)}
                 toRoll={diceValue}
+                battleState={battleState}
               />
             </div>
           )}
@@ -145,4 +131,5 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     </div>
   );
 };
+
 export default Battle;
