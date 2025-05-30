@@ -13,9 +13,9 @@ interface NameCardProps {
 
 export const NameCard = ({ player, onClick }: NameCardProps) => {
   const monsterCardColour = {
-    [MonsterIdentifier.STONEHIDE_GUARDIAN]: "guardian",
-    [MonsterIdentifier.SHADOWFANG_PREDATOR]: "predator",
-    [MonsterIdentifier.MYSTIC_WYVERN]: "wyvern",
+    [MonsterIdentifier.ROCKY_RHINO]: "rhino",
+    [MonsterIdentifier.POUNCING_BANDIT]: "bandit",
+    [MonsterIdentifier.CINDER_TAIL]: "cinderTail",
     None: "quillGray",
   };
 

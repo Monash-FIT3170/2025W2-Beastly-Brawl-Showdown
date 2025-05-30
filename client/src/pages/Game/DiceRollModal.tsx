@@ -1,16 +1,21 @@
 
 import React, { useEffect, useState } from 'react';
+import { BattleState } from '/types/composite/battleState';
 
 // Required props (hooks)
-interface DicerollModalProps {
+interface DiceRollModalProps {
   show: boolean;                                // Shows the modal 
   onClose: () => void;                          // Closes the modal (doesnt work???)
   toRoll: number;                               // The value to roll
+  battleState: BattleState;
 }
 
-const DicerollModal: React.FC<DicerollModalProps> = ({show, onClose, toRoll}) => {
+const DiceRollModal: React.FC<DiceRollModalProps> = ({show, onClose, toRoll, battleState}) => {
     const [rollingValue, setRollingValue] = useState(1);
     const [finalValue, setFinalValue] = useState<number | null>(null); // TODO: Appears to be some bugs on the first roll
+    const yourMonsterATK = battleState.yourPlayerMonster.attackBonus;
+    const enemyMonsterAC = battleState.opponentPlayerMonster.armourClass;
+    const outcome = finalValue !== null ? (finalValue + yourMonsterATK >= enemyMonsterAC) : false;
 
     useEffect(() => {
       if (!show) return;
@@ -44,16 +49,25 @@ const DicerollModal: React.FC<DicerollModalProps> = ({show, onClose, toRoll}) =>
     }
 
     return (
-      <div className="dice-modal-overlay">
+      <div className="dice-modal-overlay border-[4px] border-blackCurrant font-[Jua] rounded-xl">
         <div className="dice-modal-content">
-          {finalValue !== null && (
-            <h5 className="dice-result-text">You rolled a {finalValue}!</h5>
-          )}
+          <h5 className="dice-result-text font-bold">
+            ENEMY AC: {enemyMonsterAC} <br />
+            YOUR ATK: {yourMonsterATK} <br /><br />
+            ROLL NEEDED: {enemyMonsterAC - yourMonsterATK}+
+          </h5>
           <div className="dice-face">{rollingValue}</div>
+          {finalValue !== null && (
+            <h5 className="dice-result-text font-bold">
+              <br />
+              OUTCOME: {finalValue} + {yourMonsterATK} {outcome ? '≥' : '<'} {enemyMonsterAC} <br /><br />
+              {outcome ? 'SUCCESS!' : 'FAILED...'}
+            </h5>
+          )}
         </div>
       </div>
     );
 
 };
 
-export default DicerollModal;
+export default DiceRollModal;

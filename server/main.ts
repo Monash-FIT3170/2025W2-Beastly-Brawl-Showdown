@@ -8,7 +8,6 @@ import { Battle } from "./src/model/game/battle";
 import GameSession from "./src/model/host/gameSession";
 import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataHandler";
-
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
@@ -26,6 +25,10 @@ Meteor.startup(async () => {
 
   io.on("connection", (socket) => {
     // startBattleHandler(io, socket);
+    console.log(`Client connected: ${socket.id}`);
+    // for refresh
+    socket.emit("new-connect", {});
+    // handlers
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
     characterSelectHandler(io, socket);

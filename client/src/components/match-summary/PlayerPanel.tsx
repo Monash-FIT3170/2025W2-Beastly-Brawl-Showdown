@@ -58,7 +58,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         {/* Crown image - only show if winner */}
         {winner && (
           <img 
-            src="/match-summary-assets/CROWN.png"
+            src="/assets/match-summary/CROWN.png"
             alt="Winner Crown"
             style={{
               width: '35px', // Increased from 20px to 35px
@@ -74,7 +74,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         {/* Crown on the other side for balance */}
         {winner && (
           <img 
-            src="/match-summary-assets/CROWN.png"
+            src="/assets/match-summary/CROWN.png"
             alt="Winner Crown"
             style={{
               width: '35px', // Increased from 20px to 35px

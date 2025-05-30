@@ -57,6 +57,10 @@ export class AttackAction extends Action {
       actingPlayer.addLog(
         `You attacked ${affectedPlayer.getName()} and dealt 5 damage.`
       );
+
+      affectedPlayer.addLog(
+        `${actingPlayer.getName()} attacked you and dealt 5 damage.`
+      );
       actingPlayer.addBattleLog(
         `${actingPlayer.getName()} attacked ${affectedPlayer.getName()} and dealt 5 damage.`
       );
@@ -67,6 +71,11 @@ export class AttackAction extends Action {
       actingPlayer.addLog(
         `You attacked ${affectedPlayer.getName()} and failed to hit. `
       );
+
+      affectedPlayer.addLog(
+        `${actingPlayer.getName()} tried to attacked and failed to hit.`
+      );
+
       affectedPlayer.addBattleLog(
         `${affectedPlayer.getName()} has successfully blocked an attack`
       );

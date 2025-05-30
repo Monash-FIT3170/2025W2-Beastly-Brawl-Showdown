@@ -6,9 +6,9 @@ import {
   MonsterState,
 } from "../../../../types/single/monsterState";
 
-import { StonehideGuardian } from "../../model/game/monster/stonehideGuardian";
-import { ShadowfangPredator } from "../../model/game/monster/shadowfangPredator";
-import { MysticWyvern } from "../../model/game/monster/mysticWyvern";
+import { RockyRhino } from "../../model/game/monster/rockyRhino";
+import { PouncingBandit } from "../../model/game/monster/pouncingBandit";
+import { CinderTail } from "../../model/game/monster/cinderTail";
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
   socket.on(
@@ -66,9 +66,9 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
 
 // Function to create a monster by its name
 const monsterMap = new Map([
-  [MonsterIdentifier.STONEHIDE_GUARDIAN, () => new StonehideGuardian()],
-  [MonsterIdentifier.SHADOWFANG_PREDATOR, () => new ShadowfangPredator()],
-  [MonsterIdentifier.MYSTIC_WYVERN, () => new MysticWyvern()],
+  [MonsterIdentifier.ROCKY_RHINO, () => new RockyRhino()],
+  [MonsterIdentifier.POUNCING_BANDIT, () => new PouncingBandit()],
+  [MonsterIdentifier.CINDER_TAIL, () => new CinderTail()],
 ]);
 
 function getMonster(monsterID: MonsterIdentifier) {

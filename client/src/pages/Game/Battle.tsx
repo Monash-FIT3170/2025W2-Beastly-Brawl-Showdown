@@ -4,13 +4,13 @@ import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
 import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
 import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
-import DicerollModal from "./DiceRollModal";
+import DiceRollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
-import ActionButton from "../../components/buttons/ActionButton";
 import { BattleFooter } from "../../components/cards/BattleFooter";
-import { GenericFooter } from "../../components/cards/GenericFooter";
+import { FadingBattleText } from "../../components/texts/FadingBattleText";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -32,24 +32,24 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.on("possible_actions", (actions: ActionState[]) => {
       setPossibleActions(actions);
     });
-    
+
     socket.on("timer", (time: number) => {
       console.log(`Timer: ${time}`);
       setTimer(time);
     });
 
-    socket.on("battle_end", ({result, winners}) => {
-      console.log(result,winners)
-      if (result === "draw"){
-        setWinner("Draw")
-      } else if (result === "concluded"){
-        setWinner(winners[0])
+    socket.on("battle_end", ({ result, winners }) => {
+      console.log(result, winners);
+      if (result === "draw") {
+        setWinner("Draw");
+      } else if (result === "concluded") {
+        setWinner(winners[0]);
       }
-      console.log(winner)
+      console.log(winner);
     });
 
-    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier 
-    // to handle all types of animations triggered by actions  
+    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
+    // to handle all types of animations triggered by actions
     socket.on("roll_dice", (diceRoll: number) => {
       setDiceValue(diceRoll);
       console.log(`From socket in Battle: dps ${diceRoll}`);
@@ -63,14 +63,12 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     };
   }, []);
 
-  const handleActionClick = (action: ActionState) => {
-    console.log(`Action selected: ${action}`);
-    // You can emit the selected action to the server here if needed
-    socket.emit("action_selected", { action, battleId, playerId: socket.id });
-  };
+  socket.on("new-connect", () => {
+    FlowRouter.go("/");
+  });
 
   return (
-    <div className="game-screen flex flex-col">
+    <div className="w-full min-h-screen bg-springLeaves">
       {/* Winner display if battle is over */}
       {/*winner === "Draw" ? (
           <DrawScreen />
@@ -79,21 +77,21 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         winner === "Draw" ? (
           <DrawScreen />
         ) : battleState?.yourPlayer.name === winner ? (
-          <WinnerScreen />
+          <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
         ) : (
           <LoserScreen />
         )
-      )  : (
+      ) : (
         <>
           {battleState && (
             <div className="battle-state-parts">
-              <PlayerInfoPanel battleState={battleState}/>
+              <PlayerInfoPanel battleState={battleState} />
 
-              <div className="timer-box">
+              <div className="timer-box font-[Jua]">
                 <p>Timer: {timer}</p>
               </div>
 
-              <BattleMonsterPanel battleState={battleState}/>
+              <BattleMonsterPanel battleState={battleState} />
 
               {/* <div className="battle-logs">
                 <h3>Logs:</h3>
@@ -101,14 +99,36 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                   <p key={index}>{log}</p>
                 ))}
               </div> */}
-              
-              <DicerollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} />
+              <div
+                className="battle-logs-stack"
+                style={{ position: "relative", width: "100%", height: "120px" }}
+              >
+                {battleState.yourPlayer.logs.map((log, index) => (
+                  <FadingBattleText
+                    key={index}
+                    size="tiny"
+                    style={{ top: `${index * 32}px` }}
+                  >
+                    {log}
+                  </FadingBattleText>
+                ))}
+              </div>
+
+              <DiceRollModal
+                show={showDiceModal}
+                onClose={() => setShowDiceModal(false)}
+                toRoll={diceValue}
+                battleState={battleState}
+              />
             </div>
           )}
 
           <div>
             {timer > 0 && (
-              <BattleFooter possibleActions={possibleActions} battleId={battleId} />
+              <BattleFooter
+                possibleActions={possibleActions}
+                battleId={battleId}
+              />
             )}
           </div>
         </>
@@ -116,5 +136,4 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     </div>
   );
 };
-
 export default Battle;

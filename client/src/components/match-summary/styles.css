@@ -13,7 +13,7 @@
   /* Themed Components */
   --burnt-sienna: #ED5A55;
   --picton-blue: #55A9ED;
-  --school-bus-yellow: #FFD900;
+  --school-bus-yellow: #FBD773;
   --conifer-green: #7EED55;
   --spring-green: #557D5A;
   --heliotrope-purple: #BD55ED;
@@ -115,6 +115,6 @@ body {
 
 .round-header {
   background-color: var(--school-bus-yellow);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--border-radius-lg);
   border: var(--outline-width) solid var(--blackcurrant);
 }
