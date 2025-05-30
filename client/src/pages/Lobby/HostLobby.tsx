@@ -13,6 +13,8 @@ import { GenericIcon } from "../../components/icons/GenericIcon";
 import { PlayerState } from "/types/single/playerState";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { BlackText } from "../../components/texts/BlackText";
+import { PopupClean } from "../../components/popups/PopupClean";
+import { BlackText } from "../../components/texts/BlackText";
 
 // Defines code for the game session
 interface HostLobbyProps {
@@ -51,6 +53,8 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     console.log(`LENGTH: ${socket.listeners("update-players").length}`);
 
     return () => {
+      socket.off("update-players");
+
       socket.off("update-players");
 
       console.log("Page is closing/unmounting");
@@ -220,6 +224,59 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
         <LogoResizable className="h-full w-1/11"></LogoResizable>
 
+        {exit && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">QUIT GAME?</OutlineText>
+              <BlackText size="large">
+                THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY
+              </BlackText>
+              <BlackText size="large">
+                DO YOU WANT TO CONTINUE OR END THE GAME
+              </BlackText>
+              <div className="flex flex-row justify-between items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setExit(false)}
+                >
+                  BACK
+                </ButtonGeneric>
+                <ButtonGeneric size="large" color="blue" onClick={closeGame}>
+                  CONFIRM
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
+
+        {errors && errors.length > 0 && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+              <OutlineText size="extraLarge">Matchmaking Failed</OutlineText>
+              <BlackText size="large">
+                MATCHMAKING HAS FAILED DUE TO THE FOLLOWING REASON(S):
+              </BlackText>
+              {errors.map((error, idx) => (
+                <div className="mt-4">
+                  <BlackText size="medium" key={idx}>
+                    {error.toUpperCase()}
+                  </BlackText>
+                </div>
+              ))}
+              <div className="mt-10 flex flex-col items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setErrors([])}
+                >
+                  BACK
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
+
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
           <OutlineText size="large">
@@ -252,6 +309,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
             />
           ))}
           {/* UPDATE: Add pop up for : Do you want to kick this player? */}
+          {/* UPDATE: Add pop up for : Do you want to kick this player? */}
         </div>
       </div>
 
@@ -271,6 +329,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </ButtonGeneric>
 
         <div className="mb-5 mr-13">
+          {/* UPDATE: Add pop up for : Do you want to start the game? */}
           {/* UPDATE: Add pop up for : Do you want to start the game? */}
           <ButtonGeneric
             color="ronchi"

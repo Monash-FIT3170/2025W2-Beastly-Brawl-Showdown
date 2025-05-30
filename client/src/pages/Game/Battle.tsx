@@ -68,7 +68,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   });
 
   return (
-    <div className="game-screen flex flex-col">
+    <div className="w-full min-h-screen bg-springLeaves">
       {/* Winner display if battle is over */}
       {/*winner === "Draw" ? (
           <DrawScreen />
@@ -136,5 +136,4 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     </div>
   );
 };
-
 export default Battle;
