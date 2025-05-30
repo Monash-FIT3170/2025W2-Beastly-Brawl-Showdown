@@ -9,6 +9,7 @@ import WinnerScreen from "./WinnerScreen";
 import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
 import { BattleFooter } from "../../components/cards/BattleFooter";
+import { FadingBattleText } from "../../components/texts/FadingBattleText";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -93,7 +94,22 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                   <p key={index}>{log}</p>
                 ))}
               </div> */}
-              
+
+                <div
+                className="battle-logs-stack mt-[-10%]"
+                style={{ position: "relative", width: "100%", height: "120px" }}
+              >
+                {battleState.yourPlayer.logs.map((log, index) => (
+                  <FadingBattleText
+                    key={index}
+                    size="medium"
+                    style={{ top: `${index * 32}px` }}
+                  >
+                    {log}
+                  </FadingBattleText>
+                ))}
+              </div>
+
               <DiceRollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} battleState={battleState}/>
             </div>
           )}
