@@ -13,8 +13,6 @@ import { GenericIcon } from "../../components/icons/GenericIcon";
 import { PlayerState } from "/types/single/playerState";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { BlackText } from "../../components/texts/BlackText";
-import { PopupClean } from "../../components/popups/PopupClean";
-import { BlackText } from "../../components/texts/BlackText";
 
 // Defines code for the game session
 interface HostLobbyProps {
@@ -224,7 +222,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
         <LogoResizable className="h-full w-1/11"></LogoResizable>
 
-        {exit && (
+        {exitPopup && (
           <PopupClean>
             <div className="flex flex-col justify-around">
               <OutlineText size="extraLarge">QUIT GAME?</OutlineText>
@@ -238,7 +236,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
                 <ButtonGeneric
                   size="large"
                   color="red"
-                  onClick={() => setExit(false)}
+                  onClick={() => setExitPopup(false)}
                 >
                   BACK
                 </ButtonGeneric>
