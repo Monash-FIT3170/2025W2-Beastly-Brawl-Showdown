@@ -10,6 +10,7 @@ import LoserScreen from "./LoserScreen";
 import DrawScreen from "./DrawScreen";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { FadingBattleText } from "../../components/texts/FadingBattleText";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -62,6 +63,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     };
   }, []);
 
+  socket.on("new-connect", () => {
+    FlowRouter.go("/");
+  });
+
   return (
     <div className="w-full min-h-screen bg-springLeaves">
       {/* Winner display if battle is over */}
@@ -72,7 +77,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         winner === "Draw" ? (
           <DrawScreen />
         ) : battleState?.yourPlayer.name === winner ? (
-          <WinnerScreen playerMonster={battleState?.yourPlayer.monster}/>
+          <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
         ) : (
           <LoserScreen />
         )
@@ -116,7 +121,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
           <div>
             {timer > 0 && (
-              <BattleFooter possibleActions={possibleActions} battleId={battleId} />
+              <BattleFooter
+                possibleActions={possibleActions}
+                battleId={battleId}
+              />
             )}
           </div>
         </>
