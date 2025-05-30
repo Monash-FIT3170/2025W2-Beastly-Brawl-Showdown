@@ -1,8 +1,9 @@
+
 import React, { ReactNode, useEffect, useState } from "react";
 import { OutlineText } from "./OutlineText";
 
 interface FadingBattleTextProps {
-  size: "tiny" | "medium" | "large";
+  size: "tiny" | "small" | "medium" | "medium-battle-text" | "large";
   children?: ReactNode;
   style: React.CSSProperties;
 }

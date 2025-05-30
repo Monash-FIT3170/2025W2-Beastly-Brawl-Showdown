@@ -99,14 +99,15 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                   <p key={index}>{log}</p>
                 ))}
               </div> */}
-              <div
-                className="battle-logs-stack"
+
+                <div
+                className="battle-logs-stack mt-[-10%]"
                 style={{ position: "relative", width: "100%", height: "120px" }}
               >
                 {battleState.yourPlayer.logs.map((log, index) => (
                   <FadingBattleText
                     key={index}
-                    size="tiny"
+                    size="medium-battle-text"
                     style={{ top: `${index * 32}px` }}
                   >
                     {log}
@@ -114,12 +115,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                 ))}
               </div>
 
-              <DiceRollModal
-                show={showDiceModal}
-                onClose={() => setShowDiceModal(false)}
-                toRoll={diceValue}
-                battleState={battleState}
-              />
+              <DiceRollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} battleState={battleState}/>
             </div>
           )}
 
