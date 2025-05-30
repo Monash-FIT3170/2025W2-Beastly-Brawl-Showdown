@@ -102,7 +102,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                 {battleState.yourPlayer.logs.map((log, index) => (
                   <FadingBattleText
                     key={index}
-                    size="medium"
+                    size="small-battle-text"
                     style={{ top: `${index * 32}px` }}
                   >
                     {log}
