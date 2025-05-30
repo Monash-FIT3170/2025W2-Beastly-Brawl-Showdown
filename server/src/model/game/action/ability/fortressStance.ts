@@ -3,26 +3,35 @@ import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
 export class FortressStanceAbilityAction extends Action {
-  private armourBonus = 8
+  // Grants the user bonus AC for 1 round
+  private armourBonus = 10;
+
   constructor() {
     super(
       ActionIdentifier.FORTRESS_STANCE,
       "Fortress Stance",
-      "Increases AC for one round.",
+      "Increase your AC by 10 for 1 turn.",
       1
     );
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
-  //gives player an armour bonus for the round
+  
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
-    actingPlayer.incArmourClassStat(this.armourBonus)
+
+    // Increase the AC of the player
+    actingPlayer.incArmourClassStat(this.armourBonus);
+
+    // Add logs
     actingPlayer.addLog(
-      `You have activated ${this.getName()} + 8 AC!!!!`
+      `You used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
+    );
+    affectedPlayer.addLog(
+      `${actingPlayer.getName()} used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
     );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} has temporarly increased his AC by using ${this.getName()}`
+      `${actingPlayer.getName()} used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
     );
   }
 }

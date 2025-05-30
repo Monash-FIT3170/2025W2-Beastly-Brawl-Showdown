@@ -3,21 +3,25 @@ import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
 export class ShadowLeapAbilityAction extends Action {
+  // Puts you in an evasive stance, allowing you to dodge an attack once per battle.
   constructor() {
     super(
       ActionIdentifier.SHADOW_LEAP,
       "Shadow Leap",
-      "Can evade an attack once per battle.",
+      "Enter an evasive stance, allowing you to dodge an attack in the current turn.",
       1
         );
   }
-  //puts the player in a state of "dodgeing", if an enemy's actions can be dodged, it will be incremented and removed, leading to the enemy wasting a charge 
+
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    actingPlayer.dodge()
+    // Set dodge to true
+    actingPlayer.dodge();
+
+    // Remove 1 use from each of the opponent's actions and remove the action if they can be dodged.
     affectedPlayer.getActions().forEach((action) => {
-      action.incCurrentUse(-1);
       if (action.getDodgeable()==true){
-        affectedPlayer. removeAction(action)
+        action.incCurrentUse(-1);
+        affectedPlayer.removeAction(action);
       }
     });
 
@@ -25,11 +29,16 @@ export class ShadowLeapAbilityAction extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
+
+    // Log the action
     actingPlayer.addLog(
-      `You dodge using ${this.getName()} hopefully they dont get you`
+      `You used ${this.getName()}, preparing to dodge an attack.`
+    );
+    affectedPlayer.addLog(
+      `${actingPlayer.getName()} uses ${this.getName()}, preparing to dodge an attack.`
     );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} attempts to dodge with ${this.getName()}`
+      `${actingPlayer.getName()} uses ${this.getName()}, preparing to dodge an attack.`
     );
   }
 }

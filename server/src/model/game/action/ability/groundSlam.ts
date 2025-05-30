@@ -7,24 +7,31 @@ export class GroundSlamAbilityAction extends Action {
     super(
       ActionIdentifier.GROUND_SLAM,
       "Ground Slam",
-      "Can stun opponents with a powerful stomp canceling out all abilities and even dealing 3 damage.",
+      "Deal 3 damage and stun your opponent, preventing them from acting for 1 turn.",
       1
     );
   }
-  //Gets rid of all enemy players actions
+
+  // Clear the opponent's actions
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    affectedPlayer.clearActions() 
+    affectedPlayer.clearActions();
   }
-  //deals small amount of damage
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
+
+    // Deal 3 damage
     affectedPlayer.incHealth(-3);
 
+    // Add logs
     actingPlayer.addLog(
-      `You have stunned ${affectedPlayer.getName()} with ${this.getName()}`
+      `You used ${this.getName()}, dealing 3 damage and stunning ${affectedPlayer.getName()} for 1 turn.`
+    );
+    affectedPlayer.addLog(
+      `${actingPlayer.getName()} used ${this.getName()}, dealing 3 damage and stunning you for 1 turn.`
     );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} has stunned you with ${this.getName()}`
+      `${actingPlayer.getName()} used ${this.getName()}, dealing 3 damage and stunning ${affectedPlayer.getName()} for 1 turn.`
     );
   }
 }

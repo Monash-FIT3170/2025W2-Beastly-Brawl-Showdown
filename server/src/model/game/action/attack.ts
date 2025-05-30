@@ -63,15 +63,15 @@ export class AttackAction extends Action {
 
       // Log successful attack
       actingPlayer.addLog(
-        `${isCrit ? "Critical hit! " : ""}You attacked ${affectedPlayer.getName()} and dealt ${this.damageDealt} damage.`
+        `${isCrit ? "Critical hit! " : ""}You attacked ${affectedPlayer.getName()}, dealing ${this.damageDealt} damage.`
       );
 
       affectedPlayer.addLog(
-        `${isCrit ? "Critical hit! " : ""}${actingPlayer.getName()} attacked you and dealt ${this.damageDealt} damage.`
+        `${isCrit ? "Critical hit! " : ""}${actingPlayer.getName()} attacked you, dealing ${this.damageDealt} damage.`
       );
 
       actingPlayer.addBattleLog(
-        `${isCrit ? "Critical hit! " : ""}${actingPlayer.getName()} attacked ${affectedPlayer.getName()} and dealt ${this.damageDealt} damage.`
+        `${isCrit ? "Critical hit! " : ""}${actingPlayer.getName()} attacked ${affectedPlayer.getName()}, dealing ${this.damageDealt} damage.`
       );
       // Increment successful hit for front end
       actingPlayer.incSuccessfulHit(1);

@@ -4,31 +4,36 @@ import { ActionIdentifier } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 
 export class ArcaneShieldAbilityAction extends Action {
-  //sets us a biased dice for better chances by preparing and excecuting an attack with a higher minimum dice roll
-  private strike = new AttackAction(7,10);
+  private strike: AttackAction | null = null;
 
   constructor() {
     super(
       ActionIdentifier.ARCANE_SHIELD,
       "Arcane Shield",
-      "Rolls a biased dice to better your odds at a hit",
+      "Use a biased d20, increasing the minimum roll to 10 for your next attack.",
       1
     );
   }
 
-
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    this.strike.prepare(actingPlayer,affectedPlayer)
+    this.strike = new AttackAction(actingPlayer.getAttackStat(), 10);
+    this.strike.prepare(actingPlayer,affectedPlayer);
   }
-  //excecutes modified attack action
+
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
-    this.strike.execute(actingPlayer,affectedPlayer)
+    this.strike?.execute(actingPlayer,affectedPlayer)
+
+    // Log actions
     actingPlayer.addLog(
-      `Biased dice has been rolled for an attack using ${this.getName()}`
+      `You used ${this.getName()}, increasing the minimum roll to 10 for your next attack.`
+    );
+    affectedPlayer.addLog(
+      `${actingPlayer.getName()} used ${this.getName()}, increasing the minimum roll to 10 for their next attack.`
     );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} has used ${this.getName()} rolling a biased dice for their attack`
+      `${actingPlayer.getName()} used ${this.getName()}, increasing the minimum roll to 10 for their next attack.`
     );
   }
 }
