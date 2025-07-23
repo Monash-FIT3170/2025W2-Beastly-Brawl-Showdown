@@ -219,6 +219,11 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
     session.closeAllBattles() //close all the ongoing battles in the current game session (host)
+
+    //Notify all players that the host is closed
+    session?.getBattles().getItems().forEach((curBattle)=> {
+      io.to(curBattle.getId()).emit("host-closed")
+    })
     if (!session) {
       // If session of given game code doesn't exist
       console.log(`Cancel Request failed. Invalid Code`);

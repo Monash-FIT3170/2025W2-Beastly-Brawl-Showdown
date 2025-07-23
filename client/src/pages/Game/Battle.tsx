@@ -56,6 +56,12 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setShowDiceModal(true);
     });
 
+    //Socket to handle the case where the host cancel the game sesion
+    // TODO: notify the player that the game session has been cancelled (using popup etc.)
+    socket.on("host-closed", () =>{
+      FlowRouter.go("/");
+    })
+
     return () => {
       socket.off("possible_actions");
       socket.off("timer");
