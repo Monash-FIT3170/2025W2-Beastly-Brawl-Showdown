@@ -218,6 +218,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     console.log("Session cancelling...");
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
+    session.closeAllBattles() //close all the ongoing battles in the current game session (host)
     if (!session) {
       // If session of given game code doesn't exist
       console.log(`Cancel Request failed. Invalid Code`);
