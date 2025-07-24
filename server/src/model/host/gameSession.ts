@@ -49,7 +49,7 @@ export default class GameSession {
     return this.gameCode;
   }
 
-  //Elimate all the players presented in each battle
+  //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
     this.battles.getItems().forEach((curBattle) => {
       curBattle.eliminateAllPlayers()
