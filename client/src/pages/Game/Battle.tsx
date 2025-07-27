@@ -11,6 +11,10 @@ import DrawScreen from "./DrawScreen";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import { PopupClean } from "../../components/popups/PopupClean";
+import { OutlineText } from "../../components/texts/OutlineText";
+import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
+import { BlackText } from "../../components/texts/BlackText";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -23,6 +27,12 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [winner, setWinner] = useState<string | null>(null);
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
+  const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live 
+
+
+  const closeBattle = () => {
+    FlowRouter.go("/");
+  }
 
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
@@ -57,9 +67,8 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     });
 
     //Socket to handle the case where the host cancel the game sesion
-    // TODO: notify the player that the game session has been cancelled (using popup etc.)
     socket.on("host-closed", () =>{
-      FlowRouter.go("/");
+      setIsSessionCancelled(true);
     })
 
     return () => {
@@ -74,6 +83,20 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   });
 
   return (
+    <>
+    {isSessionCancelled && (
+    <PopupClean>
+      <div className="flex flex-col justify-around">
+      <OutlineText size = 'extraLarge'>CANCELLED SESSION</OutlineText>
+      <BlackText size = 'large'>YOUR GAME SESSION HAS BEEN CANCELLED</BlackText>
+      <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE HOME PAGE</BlackText>
+      <div className="flex flex-col justify-between items-center">
+        <ButtonGeneric size="large" color="blue" onClick={closeBattle}>CLOSE</ButtonGeneric>
+      </div>
+      </div>
+    </PopupClean>)}
+
+
     <div className="inset-0 w-full h-screen bg-springLeaves overscroll-contain">
       {/* Winner display if battle is over */}
       {/*winner === "Draw" ? (
@@ -136,6 +159,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         </>
       )}
     </div>
+    </>
   );
 };
 export default Battle;
