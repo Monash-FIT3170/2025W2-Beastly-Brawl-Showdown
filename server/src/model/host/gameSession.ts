@@ -49,6 +49,13 @@ export default class GameSession {
     return this.gameCode;
   }
 
+  //Eliminate all the players presented in each battle
+  public closeAllBattles(): void {
+    this.battles.getItems().forEach((curBattle) => {
+      curBattle.eliminateAllPlayers()
+    })
+  }
+
   // Getters and setters
   public getHost(): string {
     return this.hostUID;

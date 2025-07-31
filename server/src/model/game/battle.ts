@@ -53,6 +53,13 @@ export class Battle {
     });
   }
 
+  // Reduce all the player's health to 0 
+  public eliminateAllPlayers(): void {
+    this.players.forEach((player) => {
+      player.setHealth(0)
+    })
+  }
+
   // Battle state is different for each player
   public getBattleState(currentPlayerId: string): BattleState {
     const currentPlayer = this.getPlayer(currentPlayerId);
