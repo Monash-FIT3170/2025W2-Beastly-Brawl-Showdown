@@ -1,0 +1,42 @@
+name: Terraform
+
+on:
+  workflow_dispatch:
+
+env:
+  working_directory: ./terraform
+
+jobs:
+  terraform:
+    name: Terraform Runner
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup ARM environment variables
+        shell: bash
+        run: |
+          echo "DO_PAT=${{ secrets.DIGITAL_OCEAN_PAT }}" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.DIGITAL_OCEAN_SPACES_SECRET_KEY }}" >> $GITHUB_ENV
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        shell: bash
+        run: terraform init
+        working-directory: ${{ env.working_directory }}
+
+      - name: Terraform Plan
+        shell: bash
+        run: terraform plan -out=tfplan
+        working-directory: ${{ env.working_directory }}
+
+    # - name: Terraform Apply
+    #   shell: bash
+    #   if: github.ref == 'refs/heads/main'
+    #   run: terraform apply -auto-approve tfplan
+    #   working-directory: ${{ env.working_directory }}
