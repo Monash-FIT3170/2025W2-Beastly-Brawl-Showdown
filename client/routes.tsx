@@ -94,6 +94,13 @@ FlowRouter.route("/adventure/level-select", {
     mount(LevelSelect);
   },
 });
+FlowRouter.route('/config', {
+  name: 'GameConfiguraion',
+  action() {
+    mount(GameConfiguration);
+  },
+});
+
 
 FlowRouter.route("/adventure/monster-select", {
   name: "MonsterSelect",
