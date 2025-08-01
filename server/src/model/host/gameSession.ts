@@ -16,6 +16,9 @@ import { IGameMode } from "./gamemode/gameMode";
 import { Server, Socket } from "socket.io";
 import { ActionResult } from "/types/single/actionState";
 import crypto from "crypto";
+import { PouncingBandit } from "../game/monster/pouncingBandit";
+import { CinderTail } from "../game/monster/cinderTail";
+import { botplayer } from "../game/botplayer";
 
 export default class GameSession {
   private hostUID: string;
