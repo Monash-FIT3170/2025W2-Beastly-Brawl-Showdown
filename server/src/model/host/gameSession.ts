@@ -9,6 +9,9 @@ import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";``
 import { RockyRhino } from "../game/monster/rockyRhino";
 import crypto from "crypto";
+import { PouncingBandit } from "../game/monster/pouncingBandit";
+import { CinderTail } from "../game/monster/cinderTail";
+import { BotPlayer } from "../game/botplayer";
 
 export default class GameSession {
   private hostUID: string;
