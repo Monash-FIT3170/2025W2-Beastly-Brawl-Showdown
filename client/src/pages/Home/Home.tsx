@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
-import { ButtonResizableText } from "../../components/buttons/ButtonResizableText";
 
 export const Home = () => {
   // Called on 'Host Lobby' button press
-  const createGame = () => {
-    socket.emit("create-game", {});
-    console.log("Game session created");
+  const renderConfigPage = () => {
+    FlowRouter.go("/config");
   };
-
-  // Received when Game Session is created. Takes user to 'Host Lobby' Page
-  socket.on("new-game", ({ code }) => {
-    const codeString = code.toString();
-    FlowRouter.go(`/host/${codeString}`);
-  });
 
   // Called on 'Join Lobby' button press
   const renderJoinLobby = () => {
@@ -36,7 +27,7 @@ export const Home = () => {
           <ButtonGeneric
             color="ronchi"
             size="large"
-            onClick={createGame}
+            onClick={renderConfigPage}
             mobileHidden={"true"}
           >
             <OutlineText size="large">HOST GAME</OutlineText>
