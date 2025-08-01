@@ -9,6 +9,9 @@ import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
+import { PouncingBandit } from "../game/monster/pouncingBandit";
+import { CinderTail } from "../game/monster/cinderTail";
+import { botplayer } from "../game/botplayer";
 
 export default class GameSession {
   private hostUID: string;
@@ -19,7 +22,8 @@ export default class GameSession {
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
-
+  private monsters: Array<String>;
+  
   // Initialise sample data
   private gameSessionData: GameSessionData = {
     mostChosenMonster: { monster: null, percentagePick: "0" },
@@ -30,6 +34,7 @@ export default class GameSession {
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
+    this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
 
     if (presetGameCode !== undefined) {
       // Use preset game code if provided
@@ -83,6 +88,9 @@ export default class GameSession {
 
   public getPlayers() {
     return this.players;
+  }
+  public getMonsters(){
+    return this.monsters;
   }
 
   // Add player to Game Session queue
@@ -233,9 +241,17 @@ export default class GameSession {
 
   public oddOneOutWinner(oddPlayer: Player) {
     let battleId = crypto.randomUUID();
-    const placeHolderPlayer = new Player("placeHolder", "Big Bum Loser");
-    const placerHolderMonster = new RockyRhino();
-    placeHolderPlayer.setMonster(placerHolderMonster);
+    const placeHolderPlayer = new botplayer()
+    const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3) + 1];
+    if (placerHolderMonster == "RockyRhino"){
+      placeHolderPlayer.setMonster(new RockyRhino());
+    }
+    if (placerHolderMonster == "PouncingBandit"){
+      placeHolderPlayer.setMonster(new PouncingBandit());
+    } 
+    if (placerHolderMonster == "CinderTail"){
+      placeHolderPlayer.setMonster(new CinderTail());
+    }           
     placeHolderPlayer.setHealth(0);
     const battle = new Battle(
       battleId,
