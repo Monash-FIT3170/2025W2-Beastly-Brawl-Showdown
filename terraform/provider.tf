@@ -14,7 +14,7 @@ terraform {
     bucket = "spaces-bbs"
     key    = "terraform.tfstate"
 
-    # Deactivate a few AWS-specific checks
+    # This deactivates some AWS S3 features that are not needed for DigitalOcean Spaces.
     skip_credentials_validation = true
     skip_requesting_account_id  = true
     skip_metadata_api_check     = true
@@ -27,5 +27,3 @@ terraform {
 provider "digitalocean" {
     token = var.do_token
 }
-
-variable "do_token" {}
