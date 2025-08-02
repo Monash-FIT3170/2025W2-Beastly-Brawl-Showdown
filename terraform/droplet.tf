@@ -4,4 +4,6 @@ resource "digitalocean_droplet" "droplet_bbs_game_server" {
   region  = var.region
   size    = var.droplet_size
   ssh_keys = [data.digitalocean_ssh_key.selected.id]
+
+  graceful_shutdown = true
 }

@@ -18,7 +18,7 @@ jobs:
       - name: Setup ARM environment variables
         shell: bash
         run: |
-          echo "DO_PAT=${{ secrets.DIGITAL_OCEAN_PAT }}" >> $GITHUB_ENV
+          echo "TF_VAR_do_token=${{ secrets.DIGITAL_OCEAN_PAT }}" >> $GITHUB_ENV
           echo "AWS_ACCESS_KEY_ID=${{ secrets.DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.DIGITAL_OCEAN_SPACES_SECRET_KEY }}" >> $GITHUB_ENV
 
@@ -35,8 +35,8 @@ jobs:
         run: terraform plan -out=tfplan
         working-directory: ${{ env.working_directory }}
 
-    # - name: Terraform Apply
-    #   shell: bash
-    #   if: github.ref == 'refs/heads/main'
-    #   run: terraform apply -auto-approve tfplan
-    #   working-directory: ${{ env.working_directory }}
+      - name: Terraform Apply
+        shell: bash
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan
+        working-directory: ${{ env.working_directory }}
