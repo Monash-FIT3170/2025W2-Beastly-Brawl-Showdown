@@ -14,11 +14,14 @@ export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
 import { insertPlayerAsync } from "./src/database/dbManager";
 
-
 Meteor.startup(async () => {
-
+  console.log("MONGO_URL:", process.env.MONGO_URL); // Testing for database connection
   // Testing adding a player to the database
-  insertPlayerAsync({ username: "Player1", email: "test@gmail.com", score: 100 });
+  insertPlayerAsync({
+    username: "Player1",
+    email: "test@gmail.com",
+    score: 100,
+  });
 
   // Initialise socket
   const server = http.createServer();
