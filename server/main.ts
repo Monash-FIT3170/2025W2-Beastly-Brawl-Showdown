@@ -11,8 +11,14 @@ import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataH
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
+import { insertPlayerAsync } from "./src/database/dbManager";
+
 
 Meteor.startup(async () => {
+
+  // Testing adding a player to the database
+  insertPlayerAsync({ username: "Player1", email: "test@gmail.com", score: 100 });
+
   // Initialise socket
   const server = http.createServer();
   const PORT = 3002;
