@@ -10,6 +10,7 @@ export default function proceedBattleTurn(
   socket: Socket,
   gameSession: GameSession,
   battle: Battle
+  
 ) {
   // TODO: Set a property in the battle instance to object it is in the 10 sec waiting stage (for the host match summary page)
   battle.clearBattleLogs();
@@ -66,6 +67,10 @@ export default function proceedBattleTurn(
         if (player.getActions().length === 0) {
           player.addAction(new NullAction());
         }
+        if ((player as any).decideAction) {
+            const opponent = playersInBattle.find(p => p !== player);
+            (player as any).decideAction(battle, opponent!);
+          }
       });
 
       // Prepare method
