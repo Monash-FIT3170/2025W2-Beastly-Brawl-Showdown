@@ -20,6 +20,9 @@ import { IGameMode } from "./gamemode/gameMode";
 import { Server, Socket } from "socket.io";
 import { ActionResult } from "/types/single/actionState";
 
+import { BotPlayer } from "../game/botplayer";
+
+
 export default class GameSession {
   private hostUID: string;
   private players: Queue<Player>;
@@ -262,7 +265,7 @@ export default class GameSession {
     if (placerHolderMonster == "CinderTail"){
       placeHolderPlayer.setMonster(new CinderTail());
     }           
-    placeHolderPlayer.setHealth(0);
+    // placeHolderPlayer.setHealth(0);
     const battle = new Battle(
       battleId,
       oddPlayer,
