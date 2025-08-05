@@ -6,6 +6,7 @@ import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
+import { ActionIdentifier } from "/types/single/actionState";
 
 export default function proceedBattleTurn(
   io: Server,
