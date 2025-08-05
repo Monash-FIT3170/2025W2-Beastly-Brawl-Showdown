@@ -19,7 +19,7 @@ import { ActionResult } from "/types/single/actionState";
 import crypto from "crypto";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
-import { botplayer } from "../game/botplayer";
+import { BotPlayer } from "../game/botplayer";
 
 export default class GameSession {
   private hostUID: string;
