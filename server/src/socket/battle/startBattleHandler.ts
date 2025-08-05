@@ -4,6 +4,7 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
+import { ActionIdentifier } from "/types/single/actionState";
 
 export default function proceedBattleTurn(
   io: Server,
@@ -40,13 +41,23 @@ export default function proceedBattleTurn(
   });
 
   playersInBattle.forEach((player) => {
-    io.to(player.getId()).emit(
-      "battle_state",
-      battle.getBattleState(player.getId())
-    ); // Emit the battle state to each player
+    if (!player.isBotPlayer()){ //only emit to socket if the player is a human
+      io.to(player.getId()).emit(
+        "battle_state",
+        battle.getBattleState(player.getId())
+      ); // Emit the battle state to each player
 
-    let actions = player.getMonster().getPossibleActionStates();
-    io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+      let actions = player.getMonster().getPossibleActionStates();
+      io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+    } else {
+      //TODO: Bot action logic here
+      //Hardcoded to be attack action for now
+      var actionToAdd = player?.getMonster().getAction(ActionIdentifier.ATTACK);
+
+      if (actionToAdd) {
+        player?.addAction(actionToAdd);
+      }
+    }
   });
 
   let player1 = playersInBattle[0];
@@ -82,18 +93,22 @@ export default function proceedBattleTurn(
       // TODO: For the future, actions should trigger their own animations themselves. Perhaps add a feature that emits animation type and let the
       // battle screen handle the type of animation to show
       player1.getActions().forEach((action) => {
-        if (action.getName() === "Attack") {
-          const attackAction = action as AttackAction;
-          const diceRoll = attackAction.getDiceRoll();
-          io.to(player1.getId()).emit("roll_dice", diceRoll);
+        if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
+          if (action.getName() === "Attack") {
+            const attackAction = action as AttackAction;
+            const diceRoll = attackAction.getDiceRoll();
+            io.to(player1.getId()).emit("roll_dice", diceRoll);
+          }
         }
       });
 
       player2.getActions().forEach((action) => {
-        if (action.getName() === "Attack") {
-          const attackAction = action as AttackAction;
-          const diceRoll = attackAction.getDiceRoll();
-          io.to(player2.getId()).emit("roll_dice", diceRoll);
+        if (!player2.isBotPlayer()){ //only emit to socket if the player is a human
+          if (action.getName() === "Attack") {
+            const attackAction = action as AttackAction;
+            const diceRoll = attackAction.getDiceRoll();
+            io.to(player2.getId()).emit("roll_dice", diceRoll);
+          }
         }
       });
 
@@ -111,12 +126,14 @@ export default function proceedBattleTurn(
 
         console.log("P2: ", player2);
 
-        // Emite the result of the battle state after the turn is complete
+        // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
-          io.to(player.getId()).emit(
+          if (!player.isBotPlayer()){ // Only emit the battle state of human player
+            io.to(player.getId()).emit(
             "battle_state",
             battle.getBattleState(player.getId())
           );
+          }
         });
 
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
