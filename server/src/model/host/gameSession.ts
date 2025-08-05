@@ -267,7 +267,7 @@ export default class GameSession {
     if (placerHolderMonster == "CinderTail"){
       placeHolderPlayer.setMonster(new CinderTail());
     }           
-    placeHolderPlayer.setHealth(0);
+    // placeHolderPlayer.setHealth(0);
     const battle = new Battle(
       battleId,
       oddPlayer,
