@@ -7,6 +7,7 @@ import SimpleSchema from 'simpl-schema';
 export interface PlayerAccount {
   email: string;
   username: string;
+  password: string;
   level: number;
   stats: {
     numGamesPlayed: number;
@@ -20,7 +21,7 @@ export const PlayersCollection = new Mongo.Collection('players');
 
 
 // Inserts a new player account if not existing already
-export async function insertNewPlayer(email: string, username: string): Promise<void> {
+export async function insertNewPlayer(email: string, username: string, password: string): Promise<void> {
   try {
     const existingPlayer = await PlayersCollection.findOneAsync({ email });
     if (existingPlayer) {
@@ -32,6 +33,7 @@ export async function insertNewPlayer(email: string, username: string): Promise<
     const newPlayer: PlayerAccount = {
       email,
       username,
+      password,
       level: 1, 
       stats: {
         numGamesPlayed: 0, 
@@ -60,6 +62,7 @@ export async function getPlayerData(email: string): Promise<PlayerAccount | null
     return {
       email: player.email,
       username: player.username,
+      password: player.password,
       level: player.level,
       stats: {
         numGamesPlayed: player.stats.numGamesPlayed,
