@@ -12,16 +12,14 @@ import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataH
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
-import { insertPlayer} from "./src/database/dbManager";
+import { insertNewPlayer } from "./src/database/dbManager";
 
 Meteor.startup(async () => {
   console.log("MONGO_URL:", process.env.MONGO_URL); // Testing for database connection
   // Testing adding a player to the database
-  insertPlayer({
-    username: "Player1",
-    email: "test@gmail.com",
-    score: 100,
-  });
+
+  // test add player
+  insertNewPlayer("gg.gmail.com", "Player2");
 
   // Initialise socket
   const server = http.createServer();

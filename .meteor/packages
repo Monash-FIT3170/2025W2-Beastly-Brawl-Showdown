@@ -22,3 +22,5 @@ static-html@1.4.0             # Define static page content in .html files
 react-meteor-data       # React higher-order component for reactively tracking Meteor data
 zodern:types            # Pull in type declarations from other Meteor packages
 ostrio:flow-router-extra
+aldeed:simple-schema
+aldeed:collection2
