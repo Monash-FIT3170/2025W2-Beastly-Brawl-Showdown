@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { actionSelectedHandler } from "./src/socket/battle/actionSelectedHandler";
 import { characterSelectHandler } from "./src/socket/battle/characterSelectHandler";
-import http from "node:http";
+import http, { get } from "node:http";
 import { Server } from "socket.io";
 import { Player } from "./src/model/game/player";
 import { Battle } from "./src/model/game/battle";
@@ -12,7 +12,7 @@ import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataH
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
-import { insertNewPlayer } from "./src/database/dbManager";
+import { insertNewPlayer,getPlayerData } from "./src/database/dbManager";
 
 Meteor.startup(async () => {
   console.log("MONGO_URL:", process.env.MONGO_URL); // Testing for database connection
@@ -20,6 +20,10 @@ Meteor.startup(async () => {
 
   // test add player
   insertNewPlayer("gg.gmail.com", "Player2");
+  // test getting player data
+  const playerData = await getPlayerData("gg.gmail.com");
+  console.log("Player Data:", playerData);
+
 
   // Initialise socket
   const server = http.createServer();

@@ -19,6 +19,7 @@ export interface PlayerAccount {
 export const PlayersCollection = new Mongo.Collection('players');
 
 
+// Inserts a new player account if not existing already
 export async function insertNewPlayer(email: string, username: string): Promise<void> {
   try {
     const existingPlayer = await PlayersCollection.findOneAsync({ email });
@@ -46,4 +47,31 @@ export async function insertNewPlayer(email: string, username: string): Promise<
     console.error(`Error adding player: ${error.message}`);
   }
 }
+
+// Gets player data by their email
+export async function getPlayerData(email: string): Promise<PlayerAccount | null> {
+  try {
+    const player = await PlayersCollection.findOneAsync({ email });
+    if (!player) {
+      console.error(`No player found with email: ${email}`);
+      return null;
+    }
+    // Return the player data as JSON
+    return {
+      email: player.email,
+      username: player.username,
+      level: player.level,
+      stats: {
+        numGamesPlayed: player.stats.numGamesPlayed,
+        numGamesWon: player.stats.numGamesWon,
+      },
+      achievments: player.achievments,
+    };
+  } catch (error) {
+    console.error(`Error fetching player data for email ${email}: ${error.message}`);
+    return null;
+  }
+}
+
+
 
