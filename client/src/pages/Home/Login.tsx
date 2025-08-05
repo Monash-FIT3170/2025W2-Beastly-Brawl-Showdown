@@ -1,152 +1,104 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import socket from "../../socket";
-import { PopupClean } from "./PopupClean";
+import { PopupClean } from "../../components/popups/PopupClean";
 
-interface AuthPopupProps {
-  onAuthSuccess: (username: string) => void;
-  onClose: () => void;
-}
+export function LoginPopup({ onLoginSuccess }: { onLoginSuccess: () => void }) {
+  const [mode, setMode] = useState<'login' | 'register'>('login');
 
-export const AuthPopup: React.FC<AuthPopupProps> = ({ onAuthSuccess, onClose }) => {
-  const [mode, setMode] = useState<"login" | "register">("login");
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState(""); // only for register
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  // Shared fields
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // Register-only field
+  const [username, setUsername] = useState('');
+
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (mode === 'login') {
+      socket.emit('login', { email, password });
+    } else {
+      socket.emit('register', { email, username, password });
+    }
+  };
 
   useEffect(() => {
-    const loginHandler = (data: { success: boolean; message: string; username?: string }) => {
-      setMessage(data.message);
-      if (data.success && data.username) {
-        onAuthSuccess(data.username);
-      }
-    };
-
-    const registerHandler = (data: { success: boolean; message: string }) => {
+    const loginListener = (data: { success: boolean; message: string }) => {
       setMessage(data.message);
       if (data.success) {
-        // after successful registration, switch to login or auto-login
-        setMode("login");
-        setMessage("Registration successful! Please log in.");
+        onLoginSuccess();
       }
     };
 
-    socket.on("loginResponse", loginHandler);
-    socket.on("registerResponse", registerHandler);
+    const registerListener = (data: { success: boolean; message: string }) => {
+      setMessage(data.message);
+      if (data.success) {
+        // After successful registration, switch back to login mode
+        setMode('login');
+        setMessage('Registration successful! Please log in.');
+      }
+    };
+
+    socket.on('loginResponse', loginListener);
+    socket.on('registerResponse', registerListener);
 
     return () => {
-      socket.off("loginResponse", loginHandler);
-      socket.off("registerResponse", registerHandler);
+      socket.off('loginResponse', loginListener);
+      socket.off('registerResponse', registerListener);
     };
-  }, [onAuthSuccess]);
-
-  const handleLoginSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    socket.emit("login", { email, password });
-  };
-
-  const handleRegisterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    socket.emit("register", { email, username, password });
-  };
+  }, [onLoginSuccess]);
 
   return (
     <PopupClean>
-      {mode === "login" ? (
-        <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="p-2 rounded border"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="p-2 rounded border"
-          />
-          <button type="submit" className="bg-[#403245] text-white py-2 rounded">
-            Log In
-          </button>
-          <p className="text-sm mt-2">
-            Don't have an account?{" "}
-            <button
-              type="button"
-              onClick={() => {
-                setMode("register");
-                setMessage("");
-              }}
-              className="underline"
-            >
-              Register here
-            </button>
-          </p>
-          {message && <p className="text-red-600">{message}</p>}
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-2 underline text-sm"
-          >
-            Cancel
-          </button>
-        </form>
-      ) : (
-        <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="p-2 rounded border"
-          />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+          className="p-2 rounded border"
+        />
+
+        {mode === 'register' && (
           <input
             type="text"
             placeholder="Username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={e => setUsername(e.target.value)}
             required
             className="p-2 rounded border"
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="p-2 rounded border"
-          />
-          <button type="submit" className="bg-[#403245] text-white py-2 rounded">
-            Register
-          </button>
-          <p className="text-sm mt-2">
-            Already have an account?{" "}
-            <button
-              type="button"
-              onClick={() => {
-                setMode("login");
-                setMessage("");
-              }}
-              className="underline"
-            >
-              Log in here
-            </button>
-          </p>
-          {message && <p className="text-red-600">{message}</p>}
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-2 underline text-sm"
-          >
-            Cancel
-          </button>
-        </form>
-      )}
+        )}
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+          className="p-2 rounded border"
+        />
+
+        <button type="submit" className="bg-[#403245] text-white py-2 rounded">
+          {mode === 'login' ? 'Log In' : 'Register'}
+        </button>
+
+        {message && <p className="text-red-600">{message}</p>}
+
+        <button
+          type="button"
+          onClick={() => {
+            setMessage('');
+            setMode(mode === 'login' ? 'register' : 'login');
+          }}
+          className="mt-2 underline text-sm"
+        >
+          {mode === 'login'
+            ? "Don't have an account? Register here"
+            : 'Already have an account? Log in here'}
+        </button>
+      </form>
     </PopupClean>
   );
-};
+}
