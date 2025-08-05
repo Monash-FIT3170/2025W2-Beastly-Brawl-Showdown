@@ -1,8 +1,5 @@
-import { Monster } from "./monster/monster";
-import { Action } from "./action/action";
-import { PlayerState } from "/types/single/playerState";
-import {Player} from "server/src/model/game/player"
-import { RockyRhino } from "./monster/rockyRhino";
+import { Player } from "./player";
+
 
 export class BotPlayer extends Player {
   private static nameList = [
@@ -20,6 +17,6 @@ export class BotPlayer extends Player {
 
   constructor() {
     const randomName = BotPlayer.getRandomName();
-    super("placeholder",randomName);
+    super("placeholder",randomName,true);
   }
 }
