@@ -14,8 +14,12 @@ import crypto from "crypto";
 =======
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
+<<<<<<< HEAD
 import { botplayer } from "../game/botplayer";
 >>>>>>> 1c19dfe (made bot player and set up randomised monster selection)
+=======
+import { BotPlayer } from "../game/botplayer";
+>>>>>>> 449ca5e (Feature/1006.1-bot-socket: Make sure the bot does not automatically die when matched with a player)
 
 export default class GameSession {
   private hostUID: string;
@@ -243,9 +247,9 @@ export default class GameSession {
     return this.battles;
   }
 
-  public oddOneOutWinner(oddPlayer: Player) {
+  public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
-    const placeHolderPlayer = new botplayer()
+    const placeHolderPlayer = new BotPlayer()
     const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3) + 1];
     if (placerHolderMonster == "RockyRhino"){
       placeHolderPlayer.setMonster(new RockyRhino());
@@ -256,7 +260,7 @@ export default class GameSession {
     if (placerHolderMonster == "CinderTail"){
       placeHolderPlayer.setMonster(new CinderTail());
     }           
-    placeHolderPlayer.setHealth(0);
+    // placeHolderPlayer.setHealth(0);
     const battle = new Battle(
       battleId,
       oddPlayer,
