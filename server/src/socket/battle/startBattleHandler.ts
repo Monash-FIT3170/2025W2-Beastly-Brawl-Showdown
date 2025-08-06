@@ -17,6 +17,14 @@ export default function proceedBattleTurn(
 
   let playersInBattle = battle.getPlayers();
 
+  // checks/ticks statuses for each player
+  playersInBattle.forEach((player) => {
+    let statuses = player.getStatuses();
+    statuses.forEach((status) => {
+      status.tick(player);
+    })
+  });
+
   if (battle.isBattleOver()) {
     const winners = battle.getWinners();
     if (winners.length == 0) {

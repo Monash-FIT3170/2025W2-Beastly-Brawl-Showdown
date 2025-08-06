@@ -1,6 +1,7 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
+import { Status } from "./status/status";
 
 export class Player {
   private id: string;
@@ -14,6 +15,7 @@ export class Player {
   private currentArmourClassStat: number;
 
   private actions: Action[] = [];
+  private statuses: Status[] = [];
 
   private logs: string[] = [];
   private battleLogs: string[] = [];
@@ -40,6 +42,29 @@ export class Player {
   //returns wheather or not the player was dodging
   public getDodgingPosition(): boolean {
     return this.currentlyDodging;
+  }
+
+  public getStatuses(): Status[] {
+    return this.statuses;
+  }
+
+  public addStatus(status: Status){
+    this.statuses.push(status);
+  }
+
+  public tickStatuses() {
+    this.statuses.forEach((status) => status.tick(this));
+    //removes statuses that have expired after the tick
+    this.statuses = this.statuses.filter((status) => !status.isExpired());
+  }
+
+  //is this function required?
+  public hasStatus(name: String) {
+    return this.statuses.some((status) => status.getName() === name);
+  }
+
+  public removeStatus(statusToRemove: Status){
+    this.statuses = this.statuses.filter(status => status !== statusToRemove);
   }
 
   public getSuccessfulBlock() {
