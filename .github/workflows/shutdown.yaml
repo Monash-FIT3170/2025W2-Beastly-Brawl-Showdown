@@ -33,16 +33,16 @@ jobs:
         id: get_droplet
         run: |
           set -e
-
           DROPLET_ID=$(doctl compute droplet list --format ID,Name --no-header | grep "${{ vars.droplet_name }}" | awk '{print $1}')
           if [ -z "$DROPLET_ID" ]; then
-            echo "Droplet '${{ vars.droplet_name }}' not found. Exiting workflow."
-            exit 1
+            echo "found=false" >> $GITHUB_OUTPUT
+            exit 0
           fi
           echo "DROPLET_ID=$DROPLET_ID" >> $GITHUB_ENV
+          echo "found=true" >> $GITHUB_OUTPUT
 
       - name: Take Snapshot
-        if: github.ref == 'refs/heads/main'
+        if: steps.get_droplet.outputs.found == 'true' && github.ref == 'refs/heads/main'
         run: |
           set -e
 
@@ -82,20 +82,23 @@ jobs:
           doctl compute snapshot list --resource droplet --format ID,Name,CreatedAt
 
       - name: Setup Terraform
+        if: steps.get_droplet.outputs.found == 'true'
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
+        if: steps.get_droplet.outputs.found == 'true'
         working-directory: ${{ env.working_directory }}
         run: terraform init
 
       - name: Terraform Destroy Plan
+        if: steps.get_droplet.outputs.found == 'true'
         working-directory: ${{ env.working_directory }}
         run: |
           set -e
           terraform plan -destroy -target=digitalocean_droplet.droplet_bbs_game_server -out=destroy.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
 
       - name: Terraform Destroy
-        if: github.ref == 'refs/heads/main'
+        if: steps.get_droplet.outputs.found == 'true' && github.ref == 'refs/heads/main'
         working-directory: ${{ env.working_directory }}
         run: |
           set -e
