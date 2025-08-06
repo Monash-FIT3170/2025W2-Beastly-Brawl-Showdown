@@ -8,7 +8,7 @@ export class Player {
   private monster: Monster | null;
   public currentGameCode: number;
   private score: number = 0;
-  private currentlyDodging = false
+  private currentlyDodging = false;
   private currentHealth: number;
   private currentAttackStat: number;
   private currentArmourClassStat: number;
@@ -34,13 +34,13 @@ export class Player {
     return this.successfulHit;
   }
   //sets the player in a dodging position
-  public dodge(): void{
-    this.currentlyDodging= true
+  public dodge(): void {
+    this.currentlyDodging = true;
   }
-  //returns wheather or not the player was dodging 
-  public getDodgingPosition():boolean{
-    return this.currentlyDodging
-  }  
+  //returns wheather or not the player was dodging
+  public getDodgingPosition(): boolean {
+    return this.currentlyDodging;
+  }
 
   public getSuccessfulBlock() {
     return this.successfulBlock;
@@ -71,6 +71,7 @@ export class Player {
   }
 
   public addBattleLog(log: string): void {
+    // match summary logs
     this.battleLogs.push(log);
   }
 

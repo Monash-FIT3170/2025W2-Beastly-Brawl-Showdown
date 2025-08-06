@@ -101,17 +101,19 @@ export default function proceedBattleTurn(
         // Execute method
         player1.getActions().forEach((action) => {
           action.execute(player1, player2);
+          if (action instanceof NullAction) {
+            console.log(`P1 - ${player1.getName()} did nothing.`);
+          }
         });
 
         player2.getActions().forEach((action) => {
           action.execute(player2, player1);
+          if (action instanceof NullAction) {
+            console.log(`P2 - ${player2.getName()} did nothing.`);
+          }
         });
 
-        console.log("P1: ", player1);
-
-        console.log("P2: ", player2);
-
-        // Emite the result of the battle state after the turn is complete
+        // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
           io.to(player.getId()).emit(
             "battle_state",
