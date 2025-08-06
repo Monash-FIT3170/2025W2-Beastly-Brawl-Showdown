@@ -58,13 +58,12 @@ export class Player {
     this.statuses = this.statuses.filter((status) => !status.isExpired());
   }
 
-  //is this function required?
   public hasStatus(name: String) {
     return this.statuses.some((status) => status.getName() === name);
   }
 
   public removeStatus(statusToRemove: Status){
-    this.statuses = this.statuses.filter(status => status !== statusToRemove);
+    this.statuses = this.statuses.filter((status) => status !== statusToRemove);
   }
 
   public getSuccessfulBlock() {

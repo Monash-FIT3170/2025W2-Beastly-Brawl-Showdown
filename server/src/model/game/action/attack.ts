@@ -65,7 +65,7 @@ export class AttackAction extends Action {
       // Check if the dice roll is within the crit range
       // E.g. normal d20 roll is 1-20, with a crit rate of 10%, you need to roll 19 or 20 to crit
       const isCrit =
-        this.d20 >= this.diceMax - (this.rollRange * this.critRate) / 100 + 1;
+        this.d20 > this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
       if (isCrit) {
         this.damageDealt *= 2; // Double the damage on a crit
       }

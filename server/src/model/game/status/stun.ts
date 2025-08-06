@@ -6,19 +6,9 @@ export class Stun extends Status {
     super("Stun", "Monster is unable to attack");
   }
 
-  //do this tonight:
-  //then in startBattle handler, loop through statuses, for each status,, status.tick(player);
-  //this will happen start of each turn
 
-  //do basic turn ticking...
-  //update GROUND SLAM to utilise stun
-  
-
-
-  //then split poison and stun to do tmrw???
-  //am i tired.. yes...
-
-  public tick(player: Player): void {
+  //TODO: implement stun
+  public effect(player: Player): void {
     //INPUT: PLAYER    
 
     //for player -> make stunned lol
@@ -28,11 +18,20 @@ export class Stun extends Status {
     // the end
 
 
-    //player.damage++++
+    //IM THINKING WE DO THIS TOMORROW.. BUT THIS IS JUST A better WAY FOR THE PLAYER TO UNDERSTAND THEYRE STUNNED 
+    // RATHER THAN JUST TAKING AWAY THE MOVE THEY THINK THEY DID
 
-    if(this.countDown === 0){
-      
-    }
+    //I THINK THAT GREYING OUT WILL BE A LOT OF DEBUGGGING AND MESSING AROUND.. if you can do it i believe but
+    //atleast other states (purely poison) will be simpler
+
+    //if its in the button.. lets put this in the button
+    //fight fire with fire
+
+    //player.damage++++
+    //erm i tried closing this and it said save now im scared
+    //..........................................
+    
+    console.log(`${player.getName()} has been stunned!`);
 
   }
 }

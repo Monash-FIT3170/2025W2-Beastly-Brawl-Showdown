@@ -3,6 +3,8 @@ import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
 export class GroundSlamAbilityAction extends Action {
+
+  //TODO: update to utilise stun EFFECT!!!
   constructor() {
     super(
       ActionIdentifier.GROUND_SLAM,

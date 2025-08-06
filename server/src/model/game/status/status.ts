@@ -1,5 +1,3 @@
-// Let's worry about passive abilities later, after we have the game loop going
-
 import { Player } from "../player";
 
 export abstract class Status {
@@ -15,8 +13,11 @@ export abstract class Status {
   }
 
   public tick(player: Player): void {
+    this.effect(player);
     this.countDown -= 1;
   } 
+
+  public abstract effect(player: Player): void;
 
   public getName(): string{
     return this.name;

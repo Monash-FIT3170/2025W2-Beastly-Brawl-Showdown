@@ -19,10 +19,11 @@ export default function proceedBattleTurn(
 
   // checks/ticks statuses for each player
   playersInBattle.forEach((player) => {
-    let statuses = player.getStatuses();
-    statuses.forEach((status) => {
-      status.tick(player);
-    })
+    player.tickStatuses();
+    // let statuses = player.getStatuses();
+    // statuses.forEach((status) => {
+    //   status.tick(player);
+    // })
   });
 
   if (battle.isBattleOver()) {
