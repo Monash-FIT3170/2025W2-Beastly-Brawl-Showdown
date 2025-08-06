@@ -1,0 +1,87 @@
+name: Startup Droplet (Recreate from Snapshot)
+
+on:
+  workflow_dispatch:
+
+env:
+  working_directory: ./terraform
+  snapshot_name: bbs-snapshot-latest
+  droplet_name: droplet-bbs-game-server
+
+jobs:
+  startup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup environment variables
+        run: |
+          echo "DIGITALOCEAN_ACCESS_TOKEN=${{ secrets.DIGITAL_OCEAN_PAT }}" >> $GITHUB_ENV
+          echo "TF_VAR_do_token=${{ secrets.DIGITAL_OCEAN_PAT }}" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.DIGITAL_OCEAN_SPACES_SECRET_KEY }}" >> $GITHUB_ENV
+
+      - name: Install doctl
+        run: |
+          curl -sL https://github.com/digitalocean/doctl/releases/download/v1.135.0/doctl-1.135.0-linux-amd64.tar.gz | tar -xz
+          sudo mv doctl /usr/local/bin
+          doctl version
+          doctl auth init -t $DIGITALOCEAN_ACCESS_TOKEN
+
+      - name: Check if droplet is already running
+        id: check_droplet
+        run: |
+          set -e
+
+          DROPLET_ID=$(doctl compute droplet list --format ID,Name,Status --no-header | grep "${{ env.droplet_name }}" | awk '{print $1}')
+
+          if [ -n "$DROPLET_ID" ]; then
+            STATUS=$(doctl compute droplet get "$DROPLET_ID" --format Status --no-header)
+            if [ "$STATUS" = "active" ]; then
+              echo "already_running=true" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Update Terraform image variable to latest snapshot
+        if: steps.check_droplet.outputs.already_running != 'true'
+        working-directory: ${{ env.working_directory }}
+        run: |
+          set -e
+
+          # Get the latest snapshot ID with the name "bbs-snapshot-latest"
+          SNAPSHOT_ID=$(doctl compute snapshot list --resource droplet --format ID,Name,Created --no-header \
+            | grep "${{ env.snapshot_name }}" \
+            | sort -rk3 \
+            | head -n1 \
+            | awk '{print $1}')
+
+          if [ -n "$SNAPSHOT_ID" ]; then
+            echo "TF_VAR_droplet_image=$SNAPSHOT_ID" >> $GITHUB_ENV
+            echo "Snapshot has been found with ID $SNAPSHOT_ID"
+          else
+            echo "No snapshot found with name '${{ env.snapshot_name }}'. Not setting TF_VAR_droplet_image."
+          fi
+
+      - name: Setup Terraform
+        if: steps.check_droplet.outputs.already_running != 'true'
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        if: steps.check_droplet.outputs.already_running != 'true'
+        working-directory: ${{ env.working_directory }}
+        run: terraform init
+
+      - name: Terraform Plan
+        if: steps.check_droplet.outputs.already_running != 'true'
+        working-directory: ${{ env.working_directory }}
+        run: |
+          set -e
+          terraform plan -out=startup.tfplan | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
+
+      - name: Terraform Apply
+        if: steps.check_droplet.outputs.already_running != 'true' && github.ref == 'refs/heads/main'
+        working-directory: ${{ env.working_directory }}
+        run: |
+          set -e
+          terraform apply -auto-approve startup.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
