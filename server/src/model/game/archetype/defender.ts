@@ -1,8 +1,8 @@
 import { Archetype } from "./archetype";
 import { FortressStanceAbilityAction } from "../action/ability/fortressStance";
 
-export class Tank extends Archetype {
+export class Defender extends Archetype {
   constructor() {
-    super("Tank", new FortressStanceAbilityAction());
+    super("Defender", new FortressStanceAbilityAction());
   }
 }
