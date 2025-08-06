@@ -24,9 +24,9 @@ jobs:
 
       - name: Install doctl
         run: |
-          set -e
-
-          sudo snap install doctl
+          curl -sL https://github.com/digitalocean/doctl/releases/download/v1.135.0/doctl-1.135.0-linux-amd64.tar.gz | tar -xz
+          sudo mv doctl /usr/local/bin
+          doctl version
           doctl auth init -t $DIGITALOCEAN_ACCESS_TOKEN
 
       - name: Check if droplet is already running
@@ -75,7 +75,9 @@ jobs:
       - name: Terraform Plan
         if: steps.check_droplet.outputs.already_running != 'true'
         working-directory: ${{ env.working_directory }}
-        run: terraform plan -out=startup.tfplan
+        run: |
+          set -e
+          terraform plan -out=startup.tfplan | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
 
       - name: Terraform Apply
         if: steps.check_droplet.outputs.already_running != 'true' && github.ref == 'refs/heads/main'
