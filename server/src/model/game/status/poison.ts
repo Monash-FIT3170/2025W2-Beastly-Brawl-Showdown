@@ -6,11 +6,8 @@ export class Poison extends Status {
     super("Poison", "Lose 1 HP.", countdown);
   }
 
-  //TODO: implement poison
   public effect(player: Player): void {
-
     player.incHealth(-1);
-    console.log("Player poison tick");
-
+    console.log(`${player.getName()} -1 Health: Poison Tick`);
   }
 }
