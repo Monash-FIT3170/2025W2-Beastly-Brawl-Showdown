@@ -77,8 +77,6 @@ export abstract class Monster {
   public getPossibleActionStates(): ActionState[] {
     //checks if using temporary actions
     if (this.useTemporaryActions == true) {
-      console.log("temp actions used");
-      // this.useTemporaryActions = false; //set back to no for next turn
       return this.temporaryActions.map((action) => action.getActionState());
     }
     console.log("normal actions used");
@@ -87,7 +85,6 @@ export abstract class Monster {
 
   //sets alternate actions for the next turn
   public setTemporaryActions(actions: Action[]) {
-    console.log("temp actions set");
     this.useTemporaryActions = true;
     this.temporaryActions = actions;
   }
