@@ -2,7 +2,7 @@ import React from "react";
 import { OutlineText } from "../texts/OutlineText";
 
 interface RankingBarProps {
-	playerName: string;
+  playerName: string;
   monsterName: string;
   rank: number;
 }
