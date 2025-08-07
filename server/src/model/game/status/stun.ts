@@ -1,6 +1,7 @@
 import { NullAction } from "../action/null";
 import { Player } from "../player";
 import { Status } from "./status";
+import { ActionIdentifier } from "/types/single/actionState";
 
 export class Stun extends Status {
   constructor(countDown: number) {
@@ -17,10 +18,10 @@ export class Stun extends Status {
     // temporaryActions.push(new DefendAction(armourClass));
     // temporaryActions.push(ability);
     // temporaryActions.push(archetype.getAbility());
-    temporaryActions.push(new NullAction());
-    temporaryActions.push(new NullAction());
-    temporaryActions.push(new NullAction());
-    temporaryActions.push(new NullAction());
+    temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));
+    temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));
+    temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));
+    temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));
 
     player.getMonster()?.setTemporaryActions(temporaryActions);
     console.log(`${player.getName()} is stunned. Cannot make a move.`);

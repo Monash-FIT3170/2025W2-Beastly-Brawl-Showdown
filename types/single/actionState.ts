@@ -8,6 +8,7 @@ export enum ActionIdentifier {
   SHADOW_LEAP = "SHADOW_LEAP",
   ELEMENTAL_BREATH = "ELEMENTAL_BREATH",
   ARCANE_SHIELD = "ARCANE_SHIELD",
+  STUNNED = "STUNNED",
 }
 
 export interface ActionState {
