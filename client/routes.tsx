@@ -10,6 +10,7 @@ import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
 import Rules from './src/pages/Game/Rules';
 import MatchSummary from './src/pages/Host View/MatchSummary';
+import { FinalRankings } from "./src/pages/Game/FinalRankings";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -72,6 +73,13 @@ FlowRouter.route("/battles/:code?", {
   action(params) {
     mount(() => <MatchSummary gameCode={params.code} />);
   },
+});
+
+FlowRouter.route("/rankings/:code?", {
+  name: "FinalRankings",
+    action(params) {
+      mount(() => <FinalRankings gameCode={params.code} />);
+    },
 });
 
 FlowRouter.route('/config', {
