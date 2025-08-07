@@ -9,6 +9,9 @@ import {
 import { RockyRhino } from "../../model/game/monster/rockyRhino";
 import { PouncingBandit } from "../../model/game/monster/pouncingBandit";
 import { CinderTail } from "../../model/game/monster/cinderTail";
+import { KillingBluey } from "../../model/game/monster/killingBluey";
+import { PoisonFrog } from "../../model/game/monster/poisonFrog";
+import { CharmerCobra } from "../../model/game/monster/charmerCobra";
 
 export const characterSelectHandler = (io: Server, socket: Socket) => {
   socket.on(
@@ -69,6 +72,9 @@ const monsterMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => new RockyRhino()],
   [MonsterIdentifier.POUNCING_BANDIT, () => new PouncingBandit()],
   [MonsterIdentifier.CINDER_TAIL, () => new CinderTail()],
+  [MonsterIdentifier.KILLING_BLUEY, () => new KillingBluey()],
+  [MonsterIdentifier.POISON_FROG, () => new PoisonFrog()],
+  [MonsterIdentifier.CHARMER_COBRA, () => new CharmerCobra()],
 ]);
 
 function getMonster(monsterID: MonsterIdentifier) {
