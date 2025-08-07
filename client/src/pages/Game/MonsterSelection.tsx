@@ -40,6 +40,9 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
     [MonsterIdentifier.POUNCING_BANDIT]: "bg-[#DC7466]",
     [MonsterIdentifier.ROCKY_RHINO]: "bg-[#7EACD5]",
     [MonsterIdentifier.CINDER_TAIL]: "bg-[#9DD786]",
+    [MonsterIdentifier.KILLING_BLUEY]: "bg-[#A0C4FF]",
+    [MonsterIdentifier.POISON_FROG]: "bg-[#B9FBC0]",
+    [MonsterIdentifier.CHARMER_COBRA]: "bg-[#FFE156]",
   };
 
   useEffect(() => {
@@ -181,7 +184,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
             flex-col
             items-center`}
           >
-            <div className="pt-[2dvh]"/>
+            <div className="pt-[2dvh]" />
             <BaseCard
               color="goldenRod"
               className="flex flex-col justify-around sm:w-[80dvw] lg:w:[90dvw] h-min"
@@ -190,8 +193,6 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                 name={selectedMonster.id}
                 className="sm:size-[30dvw]
                             lg:size-[10dvw]"
-
-                           
               />
               <div className="w-[100%] flex items-center flex-col">
                 <div className="bg-ronchi border-[4px] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
@@ -245,9 +246,13 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                         className="w-[7rem] h-[7rem]"
                       />
                       <div>
-                      <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">{ability.name}</p>
+                        <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
+                          {ability.name}
+                        </p>
                         {/**<BlackText size="medium">{ability.description}</BlackText>*/}
-                        <p className="text-black font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">{ability.description}</p>
+                        <p className="text-black font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">
+                          {ability.description}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -258,7 +263,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
             <div className="flex flex-row space-x-10 justify-around pt-[2dvh] pb-[2dvh]">
               <ButtonGeneric
                 color="red"
-                size= "medium"
+                size="medium"
                 onClick={() => {
                   handleCancelSelection();
                 }}
