@@ -134,6 +134,7 @@ export default function proceedBattleTurn(
         playersInBattle.forEach((player) => {
           player.resetStats();
           player.resetActions();
+          player.getMonster()?.removeTemporaryActions();
         });
 
         if (battle.isBattleOver()) {

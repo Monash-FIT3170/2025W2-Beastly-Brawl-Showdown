@@ -20,6 +20,9 @@ export abstract class Monster {
   private armourClass: number;
   private critRate: number;
 
+  private useTemporaryActions: boolean = false;
+  private temporaryActions: Action[] = [];
+
   constructor(
     id: MonsterIdentifier,
     name: string,
@@ -72,7 +75,26 @@ export abstract class Monster {
   }
 
   public getPossibleActionStates(): ActionState[] {
+    //checks if using temporary actions
+    if (this.useTemporaryActions == true) {
+      console.log("temp actions used");
+      // this.useTemporaryActions = false; //set back to no for next turn
+      return this.temporaryActions.map((action) => action.getActionState());
+    }
+    console.log("normal actions used");
     return this.possibleActions.map((action) => action.getActionState());
+  }
+
+  //sets alternate actions for the next turn
+  public setTemporaryActions(actions: Action[]) {
+    console.log("temp actions set");
+    this.useTemporaryActions = true;
+    this.temporaryActions = actions;
+  }
+
+  public removeTemporaryActions() {
+    this.useTemporaryActions = false;
+    this.temporaryActions = [];
   }
 
   public getMaxHealth(): number {
