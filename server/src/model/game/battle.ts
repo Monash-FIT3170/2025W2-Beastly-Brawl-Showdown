@@ -85,6 +85,14 @@ export class Battle {
       (player) => player.getHealth() == 0
     );
   }
+
+  public getWinner(): Player {
+  const alivePlayers = Array.from(this.players.values()).filter(
+      (player) => player.getHealth() > 0);
+  const winningPlayer = alivePlayers[0];
+  return winningPlayer
+  }
+
   public getWinners(): string[] | null {
     const alivePlayers = Array.from(this.players.values()).filter(
       (player) => player.getHealth() > 0
