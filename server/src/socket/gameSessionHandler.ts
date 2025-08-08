@@ -12,6 +12,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
   socket.on("create-game", ({ mode }) => {
     console.log("Attempting game session creation...");
+
     let session: GameSession;
     //Assuming there won't be many game modes as this expands...
     if (mode === GameModeIdentifier.SCORING){

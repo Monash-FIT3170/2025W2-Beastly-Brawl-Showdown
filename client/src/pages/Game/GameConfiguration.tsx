@@ -45,11 +45,6 @@ export const GameConfiguration = () => {
     FlowRouter.go(`/host/${codeString}`);
   });
 
-  // Called on 'Join Lobby' button press
-  const createRoyale = () => {
-    // FlowRouter.go("/join");
-  };
-
   return (
     (
       <BlankPage>
