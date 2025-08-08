@@ -130,7 +130,41 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
       )}
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-40 lg:pt-35">
-        {monsters.map((monster) => (
+        <div className="w-full flex items-center flex-col">
+          <OutlineText size = "extraLarge">DEFENDER</OutlineText>
+          <hr className="border-t border-gray-900 w-[90%]"></hr>
+        </div>
+        {monsters.filter(monster => monster.archetypeId === ArchetypeIdentifier.DEFENDER).map((monster) => (
+          <MonsterSelectionCard
+            key={monster.id}
+            monster={monster}
+            type= {monster.archetypeId}
+            onClick={() => handleSelectMonster(monster)}
+          />
+        ))}
+      </div>
+
+      <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
+        <div className="w-full flex items-center flex-col">
+          <OutlineText size = "extraLarge">BALANCED</OutlineText>
+          <hr className="border-t border-gray-900 w-[90%]"></hr>
+        </div>
+        {monsters.filter(monster => monster.archetypeId === ArchetypeIdentifier.BALANCED).map((monster) => (
+          <MonsterSelectionCard
+            key={monster.id}
+            monster={monster}
+            type= {monster.archetypeId}
+            onClick={() => handleSelectMonster(monster)}
+          />
+        ))}
+      </div>
+
+      <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
+        <div className="w-full flex items-center flex-col">
+          <OutlineText size = "extraLarge">ATTACKER</OutlineText>
+          <hr className="border-t border-gray-900 w-[90%]"></hr>
+        </div>
+        {monsters.filter(monster => monster.archetypeId === ArchetypeIdentifier.ATTACKER).map((monster) => (
           <MonsterSelectionCard
             key={monster.id}
             monster={monster}
