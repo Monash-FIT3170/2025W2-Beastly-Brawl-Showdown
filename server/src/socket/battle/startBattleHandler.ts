@@ -26,6 +26,19 @@ export default function proceedBattleTurn(
         winners: winners,
       });
     } else {
+      const winningPlayer = battle.getWinner();
+      const removingBattle = battle.getId().toString();
+      gameSession.removeBattle(battle.getId().toString());
+      gameSession.nextBattle(winningPlayer);
+      console.log(``);
+      console.log(``);
+      console.log(`Battle ${removingBattle} Concluded and Removed`);
+      console.log(`Player ${winningPlayer.getName()} added to the Waiting Queue`);
+      console.log(``);
+      console.log(`Current Waiting Queue: ${gameSession.getWaitQueue()}`);
+      console.log(`It currently has ${gameSession.getWaitQueue().size()} players`)
+      console.log(``);
+      console.log(``);
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
         winners: winners,
