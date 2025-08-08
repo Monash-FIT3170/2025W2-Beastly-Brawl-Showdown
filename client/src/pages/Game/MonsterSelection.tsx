@@ -167,7 +167,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
             className={`flex  
             justify-around border-[4px] 
             border-blackCurrant w-min h-min rounded-xl
-            ${colorLoader[selectedMonster.id]}
+            ${colorLoader[selectedMonster.archetypeId]}
             top-[20%]
             sm:h-min
             sm:w-[95dvw]
