@@ -73,7 +73,7 @@ export const FinalRankings = ({ gameCode }: FinalRankingsProps) => {
         <ButtonGeneric color="red" size="large" onClick={exitToHome}>
             <OutlineText size="large">EXIT TO HOME</OutlineText>
         </ButtonGeneric>
-    </div>
+      </div>
     </BlankPage>
   );
 };

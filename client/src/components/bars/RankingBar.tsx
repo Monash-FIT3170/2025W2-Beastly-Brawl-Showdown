@@ -8,19 +8,17 @@ interface RankingBarProps {
 }
 
 export const RankingBar = ({ playerName, monsterName, rank }: RankingBarProps) => {
-  const colourToDisplay: Record<number, string> = {
-    1: "bg-schoolBusYellow",
-    2: "bg-brightsilver",
-    3: "bg-terracotta"
+  const rankingBarStyleSets: Record<number, [string, string]> = {
+    1: ["1st", "bg-schoolBusYellow"],
+    2: ["2nd", "bg-brightsilver"],
+    3: ["3rd", "bg-terracotta"]
   };
 
-  const rankToDisplay: Record<number, string> = {
-    1: "1st",
-    2: "2nd",
-    3: "3rd"
-  };
+  const rankToDisplay = rankingBarStyleSets[rank][0];
+  const colourToDisplay = rankingBarStyleSets[rank][1];
+  const altText = "Image of " + monsterName;
 
-  const baseFrontBarProperties = `
+  const rankingBarProperties = `
     absolute
     top-0
     left-0
@@ -35,17 +33,15 @@ export const RankingBar = ({ playerName, monsterName, rank }: RankingBarProps) =
     ease-in-out
     rounded-e-[0.5rem]
     justify-start pl-[3%]
-    ${colourToDisplay[rank]}
+    ${colourToDisplay}
   `;
 
-  const altText = "Image of " + monsterName
-
-	return (
+  return (
     <div className="flex flex-row h-full w-full items-center justify-between">
       <div className="relative w-full h-12">
-        <div className={`${baseFrontBarProperties}`}>
+        <div className={`${rankingBarProperties}`}>
           <div className="flex justify-between items-center w-full px-3">
-            <div className="flex flex-col leading-none">
+            <div className="flex flex-col leading-none pt-[0.25rem]">
               <OutlineText size="large">
                 {playerName.toUpperCase()}
               </OutlineText>
@@ -67,9 +63,9 @@ export const RankingBar = ({ playerName, monsterName, rank }: RankingBarProps) =
 
       <div className="pl-[0.5rem]">
         <OutlineText size="large">
-          {rankToDisplay[rank]}
+          {rankToDisplay}
         </OutlineText>
       </div>
     </div>
-	);
+  );
 };
