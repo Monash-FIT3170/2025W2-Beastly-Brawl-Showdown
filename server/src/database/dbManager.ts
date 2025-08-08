@@ -66,9 +66,13 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
 
 
 
+/**
+ * Functions to retrieve/update player data in the database
+ */
+
 
 // Inserts a new player account if not existing already
-export async function insertNewPlayer(email: string, username: string, password: string): Promise<void> {
+export async function insertNewPlayerAccount(email: string, username: string, password: string): Promise<void> {
   try {
     const existingPlayer = await PlayersCollection.findOneAsync({ email });
     if (existingPlayer) {
@@ -126,6 +130,20 @@ export async function getPlayerData(email: string): Promise<PlayerAccountSchema 
   } catch (error) {
     console.error(`Error fetching player data for email ${email}: ${error.message}`);
     return null;
+  }
+}
+
+// Delete a player account by their email
+export async function deletePlayerAccount(email: string): Promise<void> {
+  try {
+    const result = await PlayersCollection.removeAsync({ email });
+    if (result === 0) {
+      console.error(`No player found with email: ${email}`);
+    } else {
+      console.log(`Player with email ${email} deleted successfully.`);
+    }
+  } catch (error) {
+    console.error(`Error deleting player account: ${error.message}`);
   }
 }
 
