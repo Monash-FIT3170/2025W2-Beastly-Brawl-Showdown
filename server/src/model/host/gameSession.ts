@@ -19,6 +19,7 @@ import { ActionResult } from "/types/single/actionState";
 export default class GameSession {
   private hostUID: string;
   private players: Queue<Player>;
+  private waitQueue: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
   private round: number = 1; // Round number
@@ -37,6 +38,7 @@ export default class GameSession {
     this.hostUID = hostID;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
+    this.waitQueue = new Queue<Player>(2);
     this.battles = new Queue<Battle>(this.battle_max);
     this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
     this.mode = addition.mode
@@ -94,13 +96,6 @@ export default class GameSession {
   public getPlayers() {
     return this.players;
   }
-  public getMonsters(){
-    return this.monsters;
-  }
-
-  public clearBattles():void {
-    this.battles = new Queue<Battle>();
-  }
 
   // Add player to Game Session queue
   public addPlayer(player: Player): { success: boolean; reason?: string } {
@@ -132,6 +127,34 @@ export default class GameSession {
         this.players.enqueue(playerIndexed); // If the player is not the argument one, then put them back in the queue
       }
     }
+  }
+
+  removeBattle(removingBattleID: String) {
+    // Loop to check through each item in the queue
+    const battlesSize = this.battles.size();
+    for (let i = 0; i < battlesSize; i++) {
+      const battleIndexed = this.battles.dequeue(); // Serves the current player at the front
+      if (
+        battleIndexed != undefined &&
+        battleIndexed.getId().toString() != removingBattleID
+      ) {
+        this.battles.enqueue(battleIndexed); // If the player is not the argument one, then put them back in the queue
+      }
+    }
+  }
+
+  getPlayerWaiting(seaarchingPlayerID: String): Player | null {
+    // Loop to check through each item in the queue
+    for (let i = 0; i < this.waitQueue.size(); i++) {
+      const playerIndexed = this.waitQueue.dequeue(); // Serves the current player at the front
+      if (playerIndexed != undefined) {
+        this.waitQueue.enqueue(playerIndexed);
+        if (playerIndexed.getId() == seaarchingPlayerID) {
+          return playerIndexed
+        }
+      }
+    }
+    return null;
   }
 
   // Check if all requirements are met before starting game
@@ -273,6 +296,58 @@ export default class GameSession {
     return oddPlayer;
   }
 
+  // Call every time a player needs to be added into the waitQueue
+  public nextBattle(winningPlayer: Player) {
+    if (this.getPlayerWaiting(winningPlayer.getId()) == null) {
+      this.waitQueue.enqueue(winningPlayer);
+    }
+    // Check if there are currently at least 2 players waiting to be matched up and match them together
+    if (this.waitQueue.size() >= 2) {
+      const player1Indexed = this.waitQueue.dequeue();
+      const player2Indexed = this.waitQueue.dequeue();
+
+      if (player1Indexed != undefined && player2Indexed != undefined) {
+       
+        let battleId = crypto.randomUUID();
+
+        const battle = new Battle(
+          battleId,
+          player1Indexed,
+          player2Indexed,
+          this.hostUID
+        );
+
+          battles.set(battleId, battle);
+          this.battles.enqueue(battle);
+      }
+
+    }
+
+    // // } else if (this.battles.size() == 0) {
+    // //   // Add Bot and Add match if there are no more battles still running and therefore the player needs to be matched with a bot
+    // //   const playerIndexed = this.waitQueue.dequeue();
+
+    // //   if (playerIndexed != undefined) {
+       
+    // //     let battleId = crypto.randomUUID();
+    // //     const placeHolderPlayer = new Player("placeHolder", "Big Bum Loser");
+    // //     const placerHolderMonster = new RockyRhino();
+    // //     placeHolderPlayer.setMonster(placerHolderMonster);
+    // //     placeHolderPlayer.setHealth(0);
+
+    // //     const battle = new Battle(
+    // //       battleId,
+    // //       playerIndexed,
+    // //       placeHolderPlayer,
+    // //       this.hostUID
+    // //     );
+
+    // //       battles.set(battleId, battle);
+    // //       this.battles.enqueue(battle);
+    // //   }
+    // }
+  }
+
   public calculateMostChosenMonster() {
     // Map from monster name to { monster: Monster, count: number }
     const monsterCount: Record<string, { monster: Monster; count: number }> =
@@ -316,7 +391,8 @@ export default class GameSession {
   }
 
   public areBattlesConcluded(): boolean {
-    return this.battles.getItems().every((battle) => battle.isBattleOver());
+    return false;
+    // return this.battles.getItems().every((battle) => battle.isBattleOver());
   }
 
   public getGameSessionState(): GameSessionState {
