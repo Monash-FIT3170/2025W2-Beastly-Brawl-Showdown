@@ -14,6 +14,7 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import { BlankPage } from "../../components/pagelayouts/BlankPage";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -134,6 +135,13 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     };
   }, []);
 
+
+if (gameMode === null) {
+  return <div>Loading game mode...</div>;
+}
+if (gameMode === "royale") {
+  return <BlankPage />;
+}
   return (
     <div
       style={{
