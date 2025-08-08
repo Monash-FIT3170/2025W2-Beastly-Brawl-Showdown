@@ -11,7 +11,7 @@ import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataH
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
-import { insertNewPlayer,getPlayerData } from "./src/database/dbManager";
+import { insertNewPlayerAccount, getPlayerData, deletePlayerAccount } from "./src/database/dbManager";
 import { registerHandler } from "./src/socket/backend/registerHandler";
 import { loginHandler } from "./src/socket/backend/loginHandler";
 import { register } from "node:module";
@@ -42,6 +42,8 @@ Meteor.startup(async () => {
     gameSessionHandler(io, socket);
     characterSelectHandler(io, socket);
     waitingScreenDataHandler(io, socket);
+
+    // deletePlayerAccount("asd@gmail.com")
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);
