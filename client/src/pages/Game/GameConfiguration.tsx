@@ -9,8 +9,8 @@ import { BlankPage } from "../../components/pagelayouts/BlankPage";
 
 export const GameConfiguration = () => {
   // Called on 'Host Lobby' button press
-  const createGame = () => {
-    socket.emit("create-game", {});
+  const createGame = (mode: Mode) => {
+    socket.emit("create-game", { mode });
     console.log("Game session created");
   };
 
@@ -19,11 +19,6 @@ export const GameConfiguration = () => {
     const codeString = code.toString();
     FlowRouter.go(`/host/${codeString}`);
   });
-
-  // Called on 'Join Lobby' button press
-  const createRoyale = () => {
-    // FlowRouter.go("/join");
-  };
 
   return (
     console.log("Home"),
@@ -34,17 +29,17 @@ export const GameConfiguration = () => {
         </div>
         <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-10 sm:space-y-30">
             <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
-                <ButtonGeneric color="ronchi" size="large" onClick={createGame}>
-                    <OutlineText size="large">SINGLE ROUND</OutlineText>
-                </ButtonGeneric>
-                <ButtonGeneric color="ronchi" size="large" onClick={createRoyale}>
-                    <OutlineText size="large">BATTLE ROYALE</OutlineText>
-                </ButtonGeneric>
+              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('battle')}>
+                  <OutlineText size="large">SINGLE ROUND</OutlineText>
+              </ButtonGeneric>
+              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('royale')}>
+                  <OutlineText size="large">BATTLE ROYALE</OutlineText>
+              </ButtonGeneric>
             </div>
             <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
-            <ButtonGeneric color="ronchi" size="large">
-                <OutlineText size="large">ROUND ROBIN</OutlineText>
-            </ButtonGeneric>
+              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('scored')} isDisabled>
+                  <OutlineText size="large">ROUND ROBIN</OutlineText>
+              </ButtonGeneric>
             </div>
         </div>
       </BlankPage>
