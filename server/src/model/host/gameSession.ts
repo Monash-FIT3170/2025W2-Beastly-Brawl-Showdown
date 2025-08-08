@@ -23,6 +23,7 @@ export default class GameSession {
   private players: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
+  private gameMode: Mode;
   private round: number = 1; // Round number
   private player_max: number = 120; // Max 120 players
   private battle_max: number = 60; // Max 60 battles
@@ -38,6 +39,7 @@ export default class GameSession {
 
   constructor(hostID: string, addition: {mode: IGameMode, presetGameCode?: number}) {
     this.hostUID = hostID;
+    this.gameMode = gameMode;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
@@ -64,6 +66,8 @@ export default class GameSession {
 
   //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
+    if (!this.battles) return;
+
     this.battles.getItems().forEach((curBattle) => {
       curBattle.eliminateAllPlayers();
     });
@@ -84,6 +88,10 @@ export default class GameSession {
 
   public getGameCode() {
     return this.gameCode;
+  }
+
+  public getGameMode() {
+    return this.gameMode;
   }
 
   public getBattles() {
