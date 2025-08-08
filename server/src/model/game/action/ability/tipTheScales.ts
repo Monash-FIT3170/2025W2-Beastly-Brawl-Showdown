@@ -3,13 +3,13 @@ import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 
-export class ArcaneShieldAbilityAction extends Action {
+export class TipTheScalesAbilityAction extends Action {
   private strike: AttackAction | null = null;
 
   constructor() {
     super(
-      ActionIdentifier.ARCANE_SHIELD,
-      "Arcane Shield",
+      ActionIdentifier.TIP_THE_SCALES,
+      "Tip The Scales",
       "Use a biased d20, increasing the minimum roll to 10 for your next attack.",
       1
     );

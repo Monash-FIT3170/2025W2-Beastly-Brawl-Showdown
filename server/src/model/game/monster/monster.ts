@@ -79,7 +79,6 @@ export abstract class Monster {
     if (this.useTemporaryActions == true) {
       return this.temporaryActions.map((action) => action.getActionState());
     }
-    console.log("normal actions used");
     return this.possibleActions.map((action) => action.getActionState());
   }
 

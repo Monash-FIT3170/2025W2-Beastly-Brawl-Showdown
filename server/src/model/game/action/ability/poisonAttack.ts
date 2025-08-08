@@ -1,11 +1,7 @@
 import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
-
-/**
- * FIX
- * Poison using statuses needs to be implemented.
- */
+import { Poison } from "../../status/poison";
 
 export class PoisonAttack extends Action {
   // Attack that always lands on your opponent, even if they attempt to dodge the attack.
@@ -14,7 +10,7 @@ export class PoisonAttack extends Action {
       ActionIdentifier.POISON_ATTACK,
       "Poison Attack",
       "Poison your opponent, dealing damage over time.",
-      1
+      2
     );
     this.setDodgeable(false);
   }
@@ -24,6 +20,21 @@ export class PoisonAttack extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
-    // TODO: Implement poison damage logic
+    this.incCurrentUse(-1);
+    var numberOfTurns = 5;
+    
+    // Poison the opponent
+    affectedPlayer.addStatus(new Poison(numberOfTurns));
+
+    // Add logs
+    actingPlayer.addLog(
+      `You used ${this.getName()}, ${affectedPlayer.getName()} is now poisoned for ${numberOfTurns} turns.`
+    );
+    affectedPlayer.addLog(
+      `${actingPlayer.getName()} used ${this.getName()}, you are now poisoned for ${numberOfTurns} turns.`
+    );
+    affectedPlayer.addBattleLog(
+      `${actingPlayer.getName()} used ${this.getName()}, ${affectedPlayer.getName()} is now poisoned for ${numberOfTurns} turns.`
+    );
   }
 }
