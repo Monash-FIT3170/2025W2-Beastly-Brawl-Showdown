@@ -31,6 +31,11 @@ export const Home = () => {
     setLoggedInUser(username);
   };
 
+  const handleExitLogin = () => {
+    setShowLogin(false);
+    console.log("Exit login");
+  };
+
   return (
     <BlankPage>
       <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
@@ -65,7 +70,12 @@ export const Home = () => {
         </ButtonGeneric>
       </div>
 
-      {showLogin && <LoginPopup onLoginSuccess={handleLoginSuccess} />}
+      {showLogin && (
+        <LoginPopup
+          onLoginSuccess={handleLoginSuccess}
+          setExitPopup={handleExitLogin}
+        />
+      )}
     </BlankPage>
   );
 };
