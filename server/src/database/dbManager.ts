@@ -298,6 +298,20 @@ export async function deletePlayerAccount(email: string): Promise<void> {
   }
 }
 
+// Delete a player account by their email
+export async function deletePlayerAccount(email: string): Promise<void> {
+  try {
+    const result = await PlayersCollection.removeAsync({ email });
+    if (result === 0) {
+      console.error(`No player found with email: ${email}`);
+    } else {
+      console.log(`Player with email ${email} deleted successfully.`);
+    }
+  } catch (error) {
+    console.error(`Error deleting player account: ${error.message}`);
+  }
+}
+
 export async function updatePlayerAccount(
   _id: string,
   updates: Partial<PlayerAccountSchema>
