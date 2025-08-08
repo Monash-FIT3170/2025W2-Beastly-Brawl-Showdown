@@ -17,6 +17,7 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import { BlankPage } from "../../components/pagelayouts/BlankPage";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -24,8 +25,8 @@ interface HostBattlesProps {
 
 const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const code = gameCode; // Currently unused, used for potential page changes
+  const [gameMode, setGameMode] = useState<Mode>(null);
   const [gameSession, setGameSession] = useState<GameSessionState>();
-  // const [mostChosenMonster, setMostChosenMonster] = useState<MostChosenMonsterState | null>(null);
   const [playerStats, setPlayerStats] = useState<PlayerStats>();
   const [exit, setExit] = useState<Boolean>();
 
@@ -120,11 +121,27 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   }, []);
 
   useEffect(() => {
-    if (gameSession) {
-      setPlayerStats(extractPlayerStatistics(gameSession.battleStates));
-    }
-  }, [gameSession]); // Only run when gameSession changes
+    const handleGameMode = ({ mode }: { mode: Mode }) => {
+      console.log("Received game mode:", mode);
+      setGameMode(mode);
+    };
 
+    socket.on("game-mode", handleGameMode);
+
+    socket.emit("request-game-mode", { gameCode });
+
+    return () => {
+      socket.off("game-mode", handleGameMode);
+    };
+  }, []);
+
+
+if (gameMode === null) {
+  return <div>Loading game mode...</div>;
+}
+if (gameMode === "royale") {
+  return <BlankPage />;
+}
   return (
     <div
       style={{
