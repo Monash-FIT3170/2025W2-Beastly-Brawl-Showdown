@@ -1,10 +1,14 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { Monster } from '../model/game/monster/monster';
+// Import the 3 monster types
+import { RockyRhino } from '../model/game/monster/rockyRhino';
+import { CinderTail } from '../model/game/monster/cinderTail';
+import { PouncingBandit } from '../model/game/monster/pouncingBandit';
 
 
-// Working on a schema for player - Might not need some of these fields, but I'll keep them for now
-// Concerns - When customizing monster stats, will the player's preference be saved to db?
-export interface PlayerAccount {
+// Schema for a Player Account 
+export interface PlayerAccountSchema {
   email: string;
   username: string;
   password: string;
@@ -14,10 +18,53 @@ export interface PlayerAccount {
     numGamesWon: number;
   }
   achievments: string[];
+  monstersStat: PlayerMonsterStatSchema[]; 
+}
+
+// Schema for the Player's monsters stats customization
+export interface PlayerMonsterStatSchema {
+  monsterId: string,
+  maxHealth: number,
+  attackBonus: number,
+  armourClass: number
 }
 
 // Collections
 export const PlayersCollection = new Mongo.Collection('players');
+
+
+
+
+
+/** Helper functions that retrieves information/data locally */
+const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit()];
+
+// Gets default stats of monsters
+function getBaseMonsterStats(monsterId: string): { maxHealth: number, attackBonus: number, armourClass: number } {
+  const monster = monsterList.find(m => m.getId() === monsterId);
+  if (!monster) {throw new Error(`Monster with id ${monsterId} not found.`);}
+
+  return {
+    maxHealth: monster.getMaxHealth(),
+    attackBonus: monster.getAttackBonus(),
+    armourClass: monster.getArmourClass(),
+  };
+}
+
+// Used for initializing a Player Account PlayerMonsterStatSchema
+function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSchema {
+  const baseStats = getBaseMonsterStats(monsterId);
+  return {
+    monsterId,
+    maxHealth: baseStats.maxHealth,
+    attackBonus: baseStats.attackBonus,
+    armourClass: baseStats.armourClass,
+  };
+}
+
+
+
+
 
 
 // Inserts a new player account if not existing already
@@ -30,7 +77,7 @@ export async function insertNewPlayer(email: string, username: string, password:
     }
 
     // Create a new player object with default values
-    const newPlayer: PlayerAccount = {
+    const newPlayer: PlayerAccountSchema = {
       email,
       username,
       password,
@@ -40,6 +87,11 @@ export async function insertNewPlayer(email: string, username: string, password:
         numGamesWon: 0,
       },
       achievments: [], 
+      monstersStat: [
+        createPlayerMonsterStatSchema('ROCKY_RHINO'), 
+        createPlayerMonsterStatSchema('CINDER_TAIL'), 
+        createPlayerMonsterStatSchema('POUNCING_BANDIT'),
+      ], 
     };
 
     // Insert the new player into the collection
@@ -51,7 +103,7 @@ export async function insertNewPlayer(email: string, username: string, password:
 }
 
 // Gets player data by their email
-export async function getPlayerData(email: string): Promise<PlayerAccount | null> {
+export async function getPlayerData(email: string): Promise<PlayerAccountSchema | null> {
   try {
     const player = await PlayersCollection.findOneAsync({ email });
     if (!player) {
@@ -69,6 +121,7 @@ export async function getPlayerData(email: string): Promise<PlayerAccount | null
         numGamesWon: player.stats.numGamesWon,
       },
       achievments: player.achievments,
+      monstersStat: player.monstersStat
     };
   } catch (error) {
     console.error(`Error fetching player data for email ${email}: ${error.message}`);
