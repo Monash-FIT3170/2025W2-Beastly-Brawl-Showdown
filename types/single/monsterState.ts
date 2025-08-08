@@ -9,8 +9,15 @@ export enum MonsterIdentifier {
   CHARMER_COBRA = "CHARMER_COBRA",
 }
 
+export enum ArchetypeIdentifier {
+  BALANCED = "BALANCED",
+  ATTACKER = "ATTACKER",
+  DEFENDER = "DEFENDER",
+}
+
 export interface MonsterState {
   id: MonsterIdentifier;
+  archetypeId: ArchetypeIdentifier;
   name: string;
   description: string;
 

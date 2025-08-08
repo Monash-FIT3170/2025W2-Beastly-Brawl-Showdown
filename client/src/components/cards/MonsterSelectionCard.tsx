@@ -2,12 +2,13 @@ import React from "react";
 import { MonsterImageResizable } from "../player-screen/monsters/MonsterImageResizable";
 import { OutlineText } from "../texts/OutlineText";
 import { BlackText } from "../texts/BlackText";
-import { MonsterState } from "/types/single/monsterState";
+import { ArchetypeIdentifier, MonsterState } from "/types/single/monsterState";
 import { MonsterImage } from "../player-screen/monsters/MonsterImage";
+import { Archetype } from "/server/src/model/game/archetype/archetype";
 
 interface MonsterSelectionProps {
   monster: MonsterState;
-  type: string;
+  type: ArchetypeIdentifier;
   onClick: () => void;
 }
 
@@ -16,18 +17,15 @@ export const MonsterSelectionCard = ({
   type,
   onClick,
 }: MonsterSelectionProps) => {
-  const colorLoader: Record<string, string> = {
-    "Pouncing Bandit": "bg-[#DC7466]",
-    "Rocky Rhino": "bg-[#7EACD5]",
-    "Cinder Tail": "bg-[#9DD786]",
-    "Killing Bluey": "bg-[#A0C4FF]",
-    "Poison Frog": "bg-[#B9FBC0]",
-    "Charmer Cobra": "bg-[#FFE156]",
+  const colorLoader: Record<ArchetypeIdentifier, string> = {
+    [ArchetypeIdentifier.ATTACKER]: "bg-[#DC7466]",
+    [ArchetypeIdentifier.DEFENDER]: "bg-[#7EACD5]",
+    [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
   };
 
   return (
     <button
-      className={`${colorLoader[monster.name]} 
+      className={`${colorLoader[type]} 
                 border border-[4px] border-blackCurrant 
                 rounded-xl
                 sm:w-[95%]

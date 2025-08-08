@@ -3,6 +3,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { Screens } from "../../screens";
 import {
+  ArchetypeIdentifier,
   MonsterIdentifier,
   MonsterState,
 } from "../../../../types/single/monsterState";
@@ -37,12 +38,9 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
   const [exitPopup, setExitPopup] = useState<Boolean>();
 
   const colorLoader: Record<string, string> = {
-    [MonsterIdentifier.POUNCING_BANDIT]: "bg-[#DC7466]",
-    [MonsterIdentifier.ROCKY_RHINO]: "bg-[#7EACD5]",
-    [MonsterIdentifier.CINDER_TAIL]: "bg-[#9DD786]",
-    [MonsterIdentifier.KILLING_BLUEY]: "bg-[#A0C4FF]",
-    [MonsterIdentifier.POISON_FROG]: "bg-[#B9FBC0]",
-    [MonsterIdentifier.CHARMER_COBRA]: "bg-[#FFE156]",
+    [ArchetypeIdentifier.ATTACKER]: "bg-[#DC7466]",
+    [ArchetypeIdentifier.DEFENDER]: "bg-[#7EACD5]",
+    [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
   };
 
   useEffect(() => {
@@ -136,7 +134,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
           <MonsterSelectionCard
             key={monster.id}
             monster={monster}
-            type="balanced"
+            type= {monster.archetypeId}
             onClick={() => handleSelectMonster(monster)}
           />
         ))}

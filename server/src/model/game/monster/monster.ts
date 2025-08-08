@@ -2,7 +2,7 @@ import { Archetype } from "../archetype/archetype";
 import { Action } from "../action/action";
 import { AttackAction } from "../action/attack";
 import { DefendAction } from "../action/defend";
-import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
+import { ArchetypeIdentifier, MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
 
 export abstract class Monster {
@@ -108,6 +108,7 @@ export abstract class Monster {
   public getMonsterState(): MonsterState {
     return {
       id: this.id,
+      archetypeId: this.archetype.getArchetypeIdentifier(),
       name: this.name,
       description: this.description,
 

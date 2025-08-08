@@ -1,7 +1,7 @@
-import { Attacker } from "./../archetype/attacker";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Monster } from "./monster";
 import { PoisonAttack } from "./../action/ability/poisonAttack";
+import { Attacker } from "../archetype/attacker";
 
 export class PoisonFrog extends Monster {
   constructor() {

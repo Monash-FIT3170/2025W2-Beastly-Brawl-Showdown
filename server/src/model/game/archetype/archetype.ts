@@ -1,16 +1,19 @@
 import { Action } from "../action/action";
+import { ArchetypeIdentifier } from "/types/single/monsterState";
 
 export abstract class Archetype {
+  private archetypeId: ArchetypeIdentifier;
   private name: string;
 
   private ability: Action;
 
   private critRate: number; // Monsters have a default crit rate of 10%
 
-  constructor(name: string, ability: Action, critRate: number = 10) {
+  constructor(name: string, ability: Action, archetypeId: ArchetypeIdentifier, critRate: number = 10,) {
     this.ability = ability;
     this.name = name;
     this.critRate = critRate;
+    this.archetypeId=archetypeId;
   }
 
   public getName(): string {
@@ -23,5 +26,9 @@ export abstract class Archetype {
 
   public getCritRate(): number {
     return this.critRate;
+  }
+
+  public getArchetypeIdentifier(): ArchetypeIdentifier {
+    return this.archetypeId;
   }
 }

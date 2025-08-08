@@ -1,7 +1,8 @@
 import { Monster } from "./monster";
-import { Defender } from "../archetype/defender";
+
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { AlluringLullaby } from "./../action/ability/alluringLullaby";
+import { Defender } from "../archetype/defender";
 
 export class CharmerCobra extends Monster {
   constructor() {
