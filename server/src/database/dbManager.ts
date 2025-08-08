@@ -51,6 +51,40 @@ export interface AdventureProgressionSchema {
 // Collections
 export const PlayersCollection = new Mongo.Collection('players');
 
+
+
+
+
+/** Helper functions that retrieves information/data locally */
+const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit()];
+
+// Gets default stats of monsters
+function getBaseMonsterStats(monsterId: string): { maxHealth: number, attackBonus: number, armourClass: number } {
+  const monster = monsterList.find(m => m.getId() === monsterId);
+  if (!monster) {throw new Error(`Monster with id ${monsterId} not found.`);}
+
+  return {
+    maxHealth: monster.getMaxHealth(),
+    attackBonus: monster.getAttackBonus(),
+    armourClass: monster.getArmourClass(),
+  };
+}
+
+// Used for initializing a Player Account PlayerMonsterStatSchema
+function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSchema {
+  const baseStats = getBaseMonsterStats(monsterId);
+  return {
+    monsterId,
+    maxHealth: baseStats.maxHealth,
+    attackBonus: baseStats.attackBonus,
+    armourClass: baseStats.armourClass,
+  };
+}
+
+
+
+
+
 /**
  * Helper functions for encrypting/decrypting passwords
  */
