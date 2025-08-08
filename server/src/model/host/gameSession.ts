@@ -37,6 +37,7 @@ export default class GameSession {
 
   constructor(hostID: string, addition: {mode: IGameMode, presetGameCode?: number}) {
     this.hostUID = hostID;
+    this.gameMode = gameMode;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);

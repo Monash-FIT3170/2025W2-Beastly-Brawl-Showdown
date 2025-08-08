@@ -247,7 +247,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     console.log("Session cancelling...");
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
-
     session.closeAllBattles() //close all the ongoing battles in the current game session (host)
 
     //Notify all players that the host is closed
