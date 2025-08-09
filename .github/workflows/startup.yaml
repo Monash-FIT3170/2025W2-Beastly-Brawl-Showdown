@@ -7,6 +7,7 @@ env:
   working_directory: ./terraform
   snapshot_name: bbs-snapshot-latest
   droplet_name: droplet-bbs-game-server
+  droplet_user: root
 
 jobs:
   startup:
@@ -85,3 +86,74 @@ jobs:
         run: |
           set -e
           terraform apply -auto-approve startup.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
+
+  # TODO: Add a docker build job here, which will build the Meteor app into a docker image and push it to the GitHub Container Registry.
+
+  deployment:
+    runs-on: ubuntu-latest
+    needs: startup
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy setup script to Droplet
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: ${{ env.droplet_user }}
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          source: "./deployment/setup.sh"
+          target: "~/deployment"
+          strip_components: 2
+
+      - name: Copy docker compose script to Droplet
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: ${{ env.droplet_user }}
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          source: "./deployment/docker-compose.yaml"
+          target: "~/deployment"
+          strip_components: 3
+
+      - name: Copy nginx config file to Droplet
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: ${{ env.droplet_user }}
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          source: "./deployment/default.conf"
+          target: "~/deployment"
+          strip_components: 3
+
+      - name: Create SSL cert and key files
+        run: |
+          echo '${{ secrets.BEASTLYBRAWL_APP_SSL_CERT }}' > ./ssl.crt
+          echo '${{ secrets.BEASTLYBRAWL_APP_SSL_KEY }}' > ./ssl.key
+
+      - name: Copy ssl cert to Droplet
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: ${{ env.droplet_user }}
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          source: "./ssl.crt"
+          target: "~/deployment"
+
+      - name: Copy ssl key to Droplet
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: ${{ env.droplet_user }}
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          source: "./ssl.key"
+          target: "~/deployment"
+
+      - name: Run the setup script on Droplet
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: ${{ env.droplet_user }}
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          script: |
+            source ~/deployment/setup.sh ${{ secrets.GHCR_PACKAGES_TOKEN }}
