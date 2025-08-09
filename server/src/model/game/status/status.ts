@@ -1,7 +1,7 @@
 import { Player } from "../player";
 
 export abstract class Status {
-  protected name: string;
+  public name: string;
   protected description: string;
   protected countDown: number;
  

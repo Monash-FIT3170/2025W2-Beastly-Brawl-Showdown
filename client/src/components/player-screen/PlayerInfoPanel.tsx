@@ -34,6 +34,11 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({ battleState })
         text-left
       ">
         <BattleHealthBar currentHealth={battleState.yourPlayer.currentHealth} maxHealth={battleState.yourPlayerMonster.maxHealth}/>
+        <div className="flex flex-row">
+          {battleState.yourPlayer.statuses.map((status) => (
+            <img className = " size-[30px] object-contain rounded-md block" src={`/assets/statuses/${status.name.toUpperCase()}.png`} alt={`${status.name.toUpperCase()} image`}/>
+          ))}
+        </div>
         <div className="leading-none pt-[2%]">
           <OutlineText size="small">
               {battleState.yourPlayerMonster.name.toUpperCase()}
@@ -54,6 +59,11 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({ battleState })
         text-right
       ">
         <BattleHealthBar currentHealth={battleState.opponentPlayer.currentHealth} maxHealth={battleState.opponentPlayerMonster.maxHealth}/>
+        <div className="flex flex-row">
+          {battleState.opponentPlayer.statuses.map((status) => (
+            <img className = " size-[30px] object-contain rounded-md block" src={`/assets/statuses/${status.name.toUpperCase()}.png`} alt={`${status.name.toUpperCase()} image`}/>
+          ))}
+        </div>
         <div className="leading-none pt-[2%]">
           <OutlineText size="small">
               {battleState.opponentPlayerMonster.name.toUpperCase()}

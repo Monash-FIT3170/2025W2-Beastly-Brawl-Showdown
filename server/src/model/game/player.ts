@@ -214,6 +214,8 @@ export class Player {
       successBlock: this.successfulBlock,
       successHit: this.successfulHit,
 
+      statuses: this.statuses,
+
       monster: this.monster ? this.monster.getMonsterState() : null,
 
       logs: this.logs,
