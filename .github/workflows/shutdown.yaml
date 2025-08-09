@@ -23,6 +23,7 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=${{ secrets.DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.DIGITAL_OCEAN_SPACES_SECRET_KEY }}" >> $GITHUB_ENV
 
+      # doctl is DigitalOcean's command line tool to interact with their API.
       - name: Install doctl
         run: |
           curl -sL https://github.com/digitalocean/doctl/releases/download/v1.135.0/doctl-1.135.0-linux-amd64.tar.gz | tar -xz
@@ -30,6 +31,7 @@ jobs:
           doctl version
           doctl auth init -t $DIGITALOCEAN_ACCESS_TOKEN
 
+      # Use doctl to check if the droplet is already running.
       - name: Get Droplet ID
         id: get_droplet
         run: |
@@ -42,8 +44,9 @@ jobs:
           echo "DROPLET_ID=$DROPLET_ID" >> $GITHUB_ENV
           echo "found=true" >> $GITHUB_OUTPUT
 
-      - name: Bring down the Docker services on the Droplet #fewfe
-        if: steps.get_droplet.outputs.found == 'true'
+      # Bring down the docker services on the droplet
+      - name: Bring down the Docker services on the Droplet
+        if: steps.get_droplet.outputs.found == 'true' && github.ref == 'refs/heads/main'
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
@@ -55,6 +58,8 @@ jobs:
             cd ~/deployment
             docker compose down
 
+      # We need to take a snapshot (image) of the droplet before destroying it as this will be used to create new droplets in the future.
+      # This helps us save money as simply "shutting down" the droplet does not stop billing. It needs to be destroyed.
       - name: Take Snapshot
         if: steps.get_droplet.outputs.found == 'true' && github.ref == 'refs/heads/main'
         run: |
@@ -95,6 +100,7 @@ jobs:
           echo "Snapshot rotation complete. Current snapshots:"
           doctl compute snapshot list --resource droplet --format ID,Name,CreatedAt
 
+      # Terraform will be used to destroy the droplet.
       - name: Setup Terraform
         if: steps.get_droplet.outputs.found == 'true'
         uses: hashicorp/setup-terraform@v3
