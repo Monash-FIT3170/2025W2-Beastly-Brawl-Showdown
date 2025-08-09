@@ -55,7 +55,10 @@ export const PlayersCollection = new Mongo.Collection('players');
 
 
 
-/** Helper functions that retrieves information/data locally */
+/** Helper functions that ... 
+ * retrieves information/data locally 
+ * creates new instances of monsters or players
+ * */
 const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit()];
 
 // Gets default stats of monsters
@@ -81,6 +84,25 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
   };
 }
 
+// Used for initializing a Player Account that represents a Guest. Will be overwritten when users register/logins
+export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
+  return {
+    email: '',
+    username: '',
+    password: '',
+    level: 1,
+    stats: {
+      numGamesPlayed: 0,
+      numGamesWon: 0,
+    },
+    achievments: [],
+    monstersStat: [
+      createPlayerMonsterStatSchema('ROCKY_RHINO'),
+      createPlayerMonsterStatSchema('CINDER_TAIL'),
+      createPlayerMonsterStatSchema('POUNCING_BANDIT'),
+    ],
+  };
+}
 
 
 
