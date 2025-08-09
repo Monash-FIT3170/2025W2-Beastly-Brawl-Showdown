@@ -3,7 +3,6 @@ import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
 export class AlluringLullaby extends Action {
-  // Attack that always lands on your opponent, even if they attempt to dodge the attack.
   constructor() {
     super(
       ActionIdentifier.ALLURING_LULLABY,
@@ -14,17 +13,36 @@ export class AlluringLullaby extends Action {
     this.setDodgeable(false);
   }
 
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    // TOODO: Implement confusion status effect
-  }
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
-    // if (affectedPlayer.) {
-    //   // If the opponent is already confused, they take 5 damage
-    //   affectedPlayer.incHealth(-5);
-    //   affectedPlayer.addLog(
-    //     `${affectedPlayer.getName()} is confused and takes 5 damage!`
-    //   );
-    // }
+    this.incCurrentUse(-1);
+
+    affectedPlayer.getActions().forEach((action) => {
+      // If the action is an attack, apply confusion
+      if (action.getActionState().id === ActionIdentifier.ATTACK) {
+        affectedPlayer.incHealth(-5);
+
+        // Add logs
+        actingPlayer.addLog(
+          `You successfully used ${this.getName()}. They hit themselves in confusion.`
+        );
+        affectedPlayer.addLog(
+          `${actingPlayer.getName()} used ${this.getName()}, you hit yourself in confusion.`
+        );
+        affectedPlayer.addBattleLog(
+          `${actingPlayer.getName()} used ${this.getName()}, confusing ${affectedPlayer.getName()} and hitting themselves.`
+        );
+      } else {
+        // Add logs
+        actingPlayer.addLog(`Your ${this.getName()} was ineffective!`);
+        affectedPlayer.addLog(
+          `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
+        );
+        affectedPlayer.addBattleLog(
+          `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
+        );
+      }
+    });
   }
 }
