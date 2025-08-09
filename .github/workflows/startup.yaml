@@ -97,6 +97,7 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     needs: startup
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
