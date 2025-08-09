@@ -7,6 +7,7 @@ env:
   working_directory: ./terraform
   snapshot_name: bbs-snapshot-latest
   max_num_snapshots: 2
+  droplet_user: root
 
 jobs:
   shutdown:
@@ -40,6 +41,19 @@ jobs:
           fi
           echo "DROPLET_ID=$DROPLET_ID" >> $GITHUB_ENV
           echo "found=true" >> $GITHUB_OUTPUT
+
+      - name: Bring down the Docker services on the Droplet #fewfe
+        if: steps.get_droplet.outputs.found == 'true'
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: ${{ env.droplet_user }}
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+
+            cd ~/deployment
+            docker compose down
 
       - name: Take Snapshot
         if: steps.get_droplet.outputs.found == 'true' && github.ref == 'refs/heads/main'
