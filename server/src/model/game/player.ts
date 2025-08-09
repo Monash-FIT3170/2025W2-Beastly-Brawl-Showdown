@@ -1,6 +1,8 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
+import { PlayerAccountSchema } from "../../database/dbManager";
+
 
 export class Player {
   private id: string;

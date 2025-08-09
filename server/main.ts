@@ -16,6 +16,10 @@ import { registerHandler } from "./src/socket/backend/registerHandler";
 import { loginHandler } from "./src/socket/backend/loginHandler";
 import { register } from "node:module";
 
+import { PlayerAccountSchema, createDefaultPlayerAccountSchema } from "./src/database/dbManager";
+export const playerAccounts = new Map<string, PlayerAccountSchema>();
+
+// Helper function that 
 
 Meteor.startup(async () => {
   console.log("MONGO_URL:", process.env.MONGO_URL); // Testing for database connection
@@ -33,6 +37,10 @@ Meteor.startup(async () => {
   io.on("connection", (socket) => {
     // startBattleHandler(io, socket);
     console.log(`Client connected: ${socket.id}`);
+    // Adds a default PlayerAccount to the playerAccounts map
+    playerAccounts.set(socket.id, createDefaultPlayerAccountSchema());
+    console.log(`Player account created with socketID: ${socket.id}. PlayerAccounts size: ${playerAccounts.size}`);
+
     // for refresh
     socket.emit("new-connect", {});
     // handlers
@@ -62,6 +70,11 @@ Meteor.startup(async () => {
           });
         }
         players.delete(socket.id);
+      }
+      // Remove player account from playerAccounts map
+      if (playerAccounts.has(socket.id)) {
+        playerAccounts.delete(socket.id);
+        console.log(`Player account with socketID: ${socket.id} deleted. PlayerAccounts size: ${playerAccounts.size}`);
       }
     });
   });
