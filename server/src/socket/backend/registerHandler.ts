@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { getPlayerData,insertNewPlayer } from "../../database/dbManager";
+import { getPlayerData,insertNewPlayerAccount } from "../../database/dbManager";
 
 export const registerHandler = (io: Server, socket: Socket) => {
     socket.on('register', async (data) => {
@@ -15,7 +15,7 @@ export const registerHandler = (io: Server, socket: Socket) => {
             return;
         }
         try{
-            insertNewPlayer(email,username,password);
+            insertNewPlayerAccount(email,username,password);
             socket.emit('registerResponse',{success:true,message:'Registration Successful'});
         } catch (error){
             socket.emit('registerResponse',{success:false,message:error.message});
