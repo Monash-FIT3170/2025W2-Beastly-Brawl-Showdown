@@ -23,7 +23,9 @@ export class Player {
   private successfulHit: number = 0;
   private successfulBlock: number = 0;
 
-  constructor(id: string, name: string) {
+  private playerAccount: PlayerAccountSchema;
+
+  constructor(id: string, name: string, playerAccount: PlayerAccountSchema) {
     this.name = name;
     this.id = id;
     this.monster = null;
@@ -31,6 +33,15 @@ export class Player {
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
     this.currentGameCode = 0;
+    this.playerAccount = playerAccount;
+  }
+
+  public getPlayerAccountEmail() {
+    return this.playerAccount.email;
+  }
+
+  public getPlayerAccountUsername() {
+    return this.playerAccount.username;
   }
 
   public getSuccessfulHit() {
