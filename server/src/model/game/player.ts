@@ -2,6 +2,7 @@ import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
 import { Status } from "./status/status";
+import { PlayerAccountSchema } from "../../database/dbManager";
 
 export class Player {
   private id: string;
@@ -48,7 +49,7 @@ export class Player {
     return this.statuses;
   }
 
-  public addStatus(status: Status){
+  public addStatus(status: Status) {
     this.statuses.push(status);
   }
 
@@ -62,7 +63,7 @@ export class Player {
     return this.statuses.some((status) => status.getName() === name);
   }
 
-  public removeStatus(statusToRemove: Status){
+  public removeStatus(statusToRemove: Status) {
     this.statuses = this.statuses.filter((status) => status !== statusToRemove);
   }
 
