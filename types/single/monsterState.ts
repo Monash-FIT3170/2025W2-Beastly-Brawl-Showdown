@@ -27,3 +27,10 @@ export interface MonsterState {
 
   possibleActions: ActionState[];
 }
+
+export interface ArchetypeInfo {
+  id: ArchetypeIdentifier;
+  name: string;
+  ability: string;
+  abilityDesc: string;
+}

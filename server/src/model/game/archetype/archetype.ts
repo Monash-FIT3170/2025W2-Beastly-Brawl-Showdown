@@ -1,5 +1,5 @@
 import { Action } from "../action/action";
-import { ArchetypeIdentifier } from "/types/single/monsterState";
+import { ArchetypeIdentifier, ArchetypeInfo } from "/types/single/monsterState";
 
 export abstract class Archetype {
   private archetypeId: ArchetypeIdentifier;
@@ -30,5 +30,15 @@ export abstract class Archetype {
 
   public getArchetypeIdentifier(): ArchetypeIdentifier {
     return this.archetypeId;
+  }
+
+  public getArchetypeInfo(): ArchetypeInfo{
+    return{
+      id: this.archetypeId,
+      name: this.name,
+      ability: this.ability.getName(),
+      abilityDesc: this.ability.getDescription(),
+
+    }
   }
 }

@@ -4,6 +4,7 @@ import socket from "../../socket";
 import { Screens } from "../../screens";
 import {
   ArchetypeIdentifier,
+  ArchetypeInfo,
   MonsterIdentifier,
   MonsterState,
 } from "../../../../types/single/monsterState";
@@ -22,6 +23,8 @@ import { ArmourClassBar } from "../../components/bars/ArmourClassBar";
 import { AttackBonusBar } from "../../components/bars/AttackBonusBar";
 import { BlackText } from "../../components/texts/BlackText";
 import { PopupClean } from "../../components/popups/PopupClean";
+import { IconButton } from "../../components/buttons/IconButton";
+import { Popup } from "../../components/popups/Popup";
 
 interface MonsterSelectionProps {
   setScreen: (screen: Screens) => void;
@@ -31,9 +34,11 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
   setScreen,
 }) => {
   const [monsters, setMonsters] = useState<MonsterState[]>([]);
+  const [archetypes, setArchetypes] = useState<ArchetypeInfo[]>([]);
   const [selectedMonster, setSelectedMonster] = useState<MonsterState | null>(
     null
   );
+  const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeInfo | null> (null);
   const [abilities, setAbilities] = useState<ActionState[]>([]);
   const [exitPopup, setExitPopup] = useState<Boolean>();
 
@@ -54,6 +59,18 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
 
     return () => {
       socket.off("monster_list");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.emit("request_archetype_list");
+
+    socket.on("archetype_list", (archetypes: ArchetypeInfo[]) => {
+      setArchetypes(archetypes);
+    });
+
+    return () => {
+      socket.off("archetype_list");
     };
   }, []);
 
@@ -82,6 +99,15 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
       }
     }
   };
+
+  const handleCheckInfo = (archetype: ArchetypeIdentifier) => {
+    const chosenArchetype: ArchetypeInfo | null = archetypes.find(archetypeInfo => archetypeInfo.id === archetype) ?? null;
+    setSelectedArchetype(chosenArchetype);
+  }
+
+  const handleCancelInfo = () => {
+    setSelectedArchetype(null);
+  }
 
   const handleConfirmSelection = () => {
     if (selectedMonster) {
@@ -131,7 +157,15 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-40 lg:pt-35">
         <div className="w-full flex items-center flex-col">
-          <OutlineText size = "extraLarge">DEFENDER</OutlineText>
+          <div className="flex flex-row items-center space-x-5">
+            <OutlineText size = "extraLarge">DEFENDER</OutlineText>
+            <IconButton 
+              size = "small" 
+              style = "info" 
+              buttonColour="alto" 
+              iconColour="black" 
+              onClick={() => handleCheckInfo(ArchetypeIdentifier.DEFENDER)}/>
+          </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
         {monsters.filter(monster => monster.archetypeId === ArchetypeIdentifier.DEFENDER).map((monster) => (
@@ -146,7 +180,15 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
         <div className="w-full flex items-center flex-col">
-          <OutlineText size = "extraLarge">BALANCED</OutlineText>
+          <div className="flex flex-row items-center space-x-5">
+            <OutlineText size = "extraLarge">BALANCED</OutlineText>
+            <IconButton 
+              size = "small" 
+              style = "info" 
+              buttonColour="alto" 
+              iconColour="black" 
+              onClick={() => handleCheckInfo(ArchetypeIdentifier.BALANCED)}/>
+          </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
         {monsters.filter(monster => monster.archetypeId === ArchetypeIdentifier.BALANCED).map((monster) => (
@@ -161,7 +203,15 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
         <div className="w-full flex items-center flex-col">
-          <OutlineText size = "extraLarge">ATTACKER</OutlineText>
+          <div className="flex flex-row items-center space-x-5">
+            <OutlineText size = "extraLarge">ATTACKER</OutlineText>
+            <IconButton 
+              size = "small" 
+              style = "info" 
+              buttonColour="alto" 
+              iconColour="black" 
+              onClick={() => handleCheckInfo(ArchetypeIdentifier.ATTACKER)}/>
+          </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
         {monsters.filter(monster => monster.archetypeId === ArchetypeIdentifier.ATTACKER).map((monster) => (
@@ -173,7 +223,29 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
           />
         ))}
       </div>
-
+      
+      {selectedArchetype && (
+        <PopupClean>
+          <div className="top-0 left-0">
+              <IconButton
+                size="small"
+                style="x"
+                buttonColour="red"
+                iconColour="black"
+                onClick={() => handleCancelInfo()}
+              />
+                
+          </div>
+          <div className="flex flex-col">
+            <OutlineText size="extraLarge">
+              {`${selectedArchetype.name} Monster Ability`}
+            </OutlineText>
+            <BlackText size="medium">
+              {`${selectedArchetype.abilityDesc}`}
+            </BlackText>
+          </div>
+        </PopupClean>
+      )}
       {selectedMonster && (
         <div
           className={`flex items-center justify-center box-border bg-white/30 fixed left-0 right-0 bottom-0 top-0 flex flex-col backdrop-blur-md z-50 overflow-y-scroll `}
