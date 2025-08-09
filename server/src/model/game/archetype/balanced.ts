@@ -1,8 +1,9 @@
 import { Archetype } from "./archetype";
-import { ArcaneShieldAbilityAction } from "../action/ability/arcaneShield";
+import { TipTheScalesAbilityAction } from "../action/ability/tipTheScales";
+import { ArchetypeIdentifier } from "/types/single/monsterState";
 
 export class Balanced extends Archetype {
   constructor() {
-    super("Balanced", new ArcaneShieldAbilityAction());
+    super("Balanced", new TipTheScalesAbilityAction(), ArchetypeIdentifier.BALANCED);
   }
 }

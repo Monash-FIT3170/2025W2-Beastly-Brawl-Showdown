@@ -1,8 +1,10 @@
 import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
+import { Stun } from "../../status/stun";
 
 export class GroundSlamAbilityAction extends Action {
+  //TODO: update to utilise stun EFFECT!!!
   constructor() {
     super(
       ActionIdentifier.GROUND_SLAM,
@@ -14,14 +16,15 @@ export class GroundSlamAbilityAction extends Action {
 
   // Clear the opponent's actions
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    affectedPlayer.clearActions();
+    // affectedPlayer.clearActions();
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
 
-    // Deal 3 damage
+    // Deal 3 damage + Stun
     affectedPlayer.incHealth(-3);
+    affectedPlayer.addStatus(new Stun(1));
 
     // Add logs
     actingPlayer.addLog(

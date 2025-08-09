@@ -2,6 +2,7 @@ import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
+
 export class FeralStrikeAbilityAction extends Action {
   // Passive ability that increases critical hit rate by 15%
   constructor() {
@@ -13,7 +14,9 @@ export class FeralStrikeAbilityAction extends Action {
     );
   }
 
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+
+  }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {}
 }

@@ -2,7 +2,7 @@ import { Archetype } from "../archetype/archetype";
 import { Action } from "../action/action";
 import { AttackAction } from "../action/attack";
 import { DefendAction } from "../action/defend";
-import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
+import { ArchetypeIdentifier, MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
 
 export abstract class Monster {
@@ -19,6 +19,9 @@ export abstract class Monster {
   private attackBonus: number;
   private armourClass: number;
   private critRate: number;
+
+  private useTemporaryActions: boolean = false;
+  private temporaryActions: Action[] = [];
 
   constructor(
     id: MonsterIdentifier,
@@ -72,7 +75,22 @@ export abstract class Monster {
   }
 
   public getPossibleActionStates(): ActionState[] {
+    //checks if using temporary actions
+    if (this.useTemporaryActions == true) {
+      return this.temporaryActions.map((action) => action.getActionState());
+    }
     return this.possibleActions.map((action) => action.getActionState());
+  }
+
+  //sets alternate actions for the next turn
+  public setTemporaryActions(actions: Action[]) {
+    this.useTemporaryActions = true;
+    this.temporaryActions = actions;
+  }
+
+  public removeTemporaryActions() {
+    this.useTemporaryActions = false;
+    this.temporaryActions = [];
   }
 
   public getMaxHealth(): number {
@@ -90,6 +108,7 @@ export abstract class Monster {
   public getMonsterState(): MonsterState {
     return {
       id: this.id,
+      archetypeId: this.archetype.getArchetypeIdentifier(),
       name: this.name,
       description: this.description,
 
