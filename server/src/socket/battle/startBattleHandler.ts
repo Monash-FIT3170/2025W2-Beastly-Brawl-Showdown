@@ -4,6 +4,7 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
+import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
 
 export default function proceedBattleTurn(
   io: Server,
@@ -96,12 +97,30 @@ export default function proceedBattleTurn(
           const diceRoll = attackAction.getDiceRoll();
           io.to(player1.getId()).emit("roll_dice", diceRoll);
         }
+
+        if (action.getName() === "Tip The Scales") {
+          const tipTheScalesAction = action as TipTheScalesAbilityAction;
+          const diceRoll = tipTheScalesAction.getDiceRoll();
+          io.to(player1.getId()).emit("roll_dice", diceRoll);
+          console.log(
+            `Player 1 used tip the scales and dice roll = ${diceRoll}`
+          );
+        }
       });
 
       player2.getActions().forEach((action) => {
         if (action.getName() === "Attack") {
           const attackAction = action as AttackAction;
           const diceRoll = attackAction.getDiceRoll();
+          io.to(player2.getId()).emit("roll_dice", diceRoll);
+        }
+
+        if (action.getName() === "Tip The Scales") {
+          const tipTheScalesAction = action as TipTheScalesAbilityAction;
+          const diceRoll = tipTheScalesAction.getDiceRoll();
+          console.log(
+            `Player 2 used tip the scales and dice roll = ${diceRoll}`
+          );
           io.to(player2.getId()).emit("roll_dice", diceRoll);
         }
       });

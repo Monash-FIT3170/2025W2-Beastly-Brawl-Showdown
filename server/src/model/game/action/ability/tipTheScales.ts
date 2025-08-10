@@ -4,35 +4,52 @@ import { ActionIdentifier } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 
 export class TipTheScalesAbilityAction extends Action {
-  private strike: AttackAction | null = null;
+  private attackAction: AttackAction | null = null;
+  private critRate: number;
 
-  constructor() {
+  constructor(critRate: number) {
     super(
       ActionIdentifier.TIP_THE_SCALES,
       "Tip The Scales",
-      "Use a biased d20, increasing the minimum roll to 10 for your next attack.",
+      "Attack with a biased D20, increasing the odds of success.",
       1
     );
+    this.critRate = critRate;
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    this.strike = new AttackAction(actingPlayer.getAttackStat(), 10);
-    this.strike.prepare(actingPlayer, affectedPlayer);
+    //initiates an attack with a biased d20
+    this.attackAction = new AttackAction(
+      actingPlayer.getAttackStat(),
+      this.critRate,
+      10
+    );
+    this.attackAction.prepare(actingPlayer, affectedPlayer);
+  }
+
+  public getDiceRoll(): number {
+    if (this.attackAction) {
+      return this.attackAction.getDiceRoll();
+    }
+    return 0;
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
-    this.strike?.execute(actingPlayer, affectedPlayer);
 
     // Log actions
+
+    //TODO: update log writing to be better
     actingPlayer.addLog(
-      `You used ${this.getName()}, increasing the minimum roll to 10 for your next attack.`
+      `You used ${this.getName()}, attacking with an increased minimum roll of 10.`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, increasing the minimum roll to 10 for their next attack.`
+      `${actingPlayer.getName()} used ${this.getName()}, attacking with an increased minimum roll of 10.`
     );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${this.getName()}, increasing the minimum roll to 10 for their next attack.`
+      `${actingPlayer.getName()} used ${this.getName()}, attacking with an increased minimum roll of 10.`
     );
+
+    this.attackAction?.execute(actingPlayer, affectedPlayer);
   }
 }
