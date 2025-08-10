@@ -25,4 +25,5 @@ export class Slime extends Monster {
   //we need to consider how the level gets passed to front end to determine the images
   //because different monster level = different slime picture
   //i've put in a level - but monster state is restricted so i'm not sure
+  //wait also in endless mode the level won't be tied to the monster like it is now
 }
