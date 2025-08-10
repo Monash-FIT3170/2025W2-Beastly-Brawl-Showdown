@@ -7,12 +7,14 @@ export enum MonsterIdentifier {
   KILLING_BLUEY = "KILLING_BLUEY",
   POISON_FROG = "POISON_FROG",
   CHARMER_COBRA = "CHARMER_COBRA",
+  SLIME = "SLIME",
 }
 
 export enum ArchetypeIdentifier {
   BALANCED = "BALANCED",
   ATTACKER = "ATTACKER",
   DEFENDER = "DEFENDER",
+  NEUTRAL = "NEUTRAL",
 }
 
 export interface MonsterState {
