@@ -17,13 +17,12 @@ export class TipTheScalesAbilityAction extends Action {
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     this.strike = new AttackAction(actingPlayer.getAttackStat(), 10);
-    this.strike.prepare(actingPlayer,affectedPlayer);
+    this.strike.prepare(actingPlayer, affectedPlayer);
   }
-
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
-    this.strike?.execute(actingPlayer,affectedPlayer)
+    this.strike?.execute(actingPlayer, affectedPlayer);
 
     // Log actions
     actingPlayer.addLog(

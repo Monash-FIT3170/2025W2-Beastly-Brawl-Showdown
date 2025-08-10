@@ -10,7 +10,7 @@ import {
 import { RockyRhino } from "../../model/game/monster/rockyRhino";
 import { PouncingBandit } from "../../model/game/monster/pouncingBandit";
 import { CinderTail } from "../../model/game/monster/cinderTail";
-import { KillingBluey } from "../../model/game/monster/killingBluey";
+import { FuriousFlipper } from "../../model/game/monster/furiousFlipper";
 import { PoisonFrog } from "../../model/game/monster/poisonFrog";
 import { CharmerCobra } from "../../model/game/monster/charmerCobra";
 import { Defender } from "../../model/game/archetype/defender";
@@ -74,13 +74,14 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
   socket.on("request_archetype_list", () => {
     console.log("Requesting archetype list from server");
 
-    const archetypes = Array.from(archetypeArray.map((createArchetype) => 
-      createArchetype().getArchetypeInfo()
-    ));
+    const archetypes = Array.from(
+      archetypeArray.map((createArchetype) =>
+        createArchetype().getArchetypeInfo()
+      )
+    );
 
     socket.emit("archetype_list", archetypes);
   });
-
 };
 
 // Function to create a monster by its name
@@ -88,17 +89,16 @@ const monsterMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => new RockyRhino()],
   [MonsterIdentifier.POUNCING_BANDIT, () => new PouncingBandit()],
   [MonsterIdentifier.CINDER_TAIL, () => new CinderTail()],
-  [MonsterIdentifier.KILLING_BLUEY, () => new KillingBluey()],
+  [MonsterIdentifier.FURIOUS_FLIPPER, () => new FuriousFlipper()],
   [MonsterIdentifier.POISON_FROG, () => new PoisonFrog()],
   [MonsterIdentifier.CHARMER_COBRA, () => new CharmerCobra()],
 ]);
 
-
 const archetypeArray: Array<() => Archetype> = [
   () => new Defender(),
   () => new Attacker(),
-  () => new Balanced()
-] 
+  () => new Balanced(),
+];
 
 function getMonster(monsterID: MonsterIdentifier) {
   const createMonster = monsterMap.get(monsterID);

@@ -16,7 +16,7 @@ export const NameCard = ({ player, onClick }: NameCardProps) => {
     [MonsterIdentifier.ROCKY_RHINO]: "rhino",
     [MonsterIdentifier.POUNCING_BANDIT]: "bandit",
     [MonsterIdentifier.CINDER_TAIL]: "cinderTail",
-    [MonsterIdentifier.KILLING_BLUEY]: "bluey",
+    [MonsterIdentifier.FURIOUS_FLIPPER]: "flipper",
     [MonsterIdentifier.POISON_FROG]: "frog",
     [MonsterIdentifier.CHARMER_COBRA]: "cobra",
     None: "quillGray",
