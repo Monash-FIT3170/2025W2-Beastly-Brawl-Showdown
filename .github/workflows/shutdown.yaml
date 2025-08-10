@@ -1,0 +1,105 @@
+name: Shutdown Droplet (Snapshot & Destroy)
+
+on:
+  workflow_dispatch:
+
+env:
+  working_directory: ./terraform
+  snapshot_name: bbs-snapshot-latest
+  max_num_snapshots: 2
+
+jobs:
+  shutdown:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup environment variables
+        run: |
+          echo "DIGITALOCEAN_ACCESS_TOKEN=${{ secrets.DIGITAL_OCEAN_PAT }}" >> $GITHUB_ENV
+          echo "TF_VAR_do_token=${{ secrets.DIGITAL_OCEAN_PAT }}" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.DIGITAL_OCEAN_SPACES_SECRET_KEY }}" >> $GITHUB_ENV
+
+      - name: Install doctl
+        run: |
+          curl -sL https://github.com/digitalocean/doctl/releases/download/v1.135.0/doctl-1.135.0-linux-amd64.tar.gz | tar -xz
+          sudo mv doctl /usr/local/bin
+          doctl version
+          doctl auth init -t $DIGITALOCEAN_ACCESS_TOKEN
+
+      - name: Get Droplet ID
+        id: get_droplet
+        run: |
+          set -e
+          DROPLET_ID=$(doctl compute droplet list --format ID,Name --no-header | grep "${{ vars.droplet_name }}" | awk '{print $1}')
+          if [ -z "$DROPLET_ID" ]; then
+            echo "found=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "DROPLET_ID=$DROPLET_ID" >> $GITHUB_ENV
+          echo "found=true" >> $GITHUB_OUTPUT
+
+      - name: Take Snapshot
+        if: steps.get_droplet.outputs.found == 'true' && github.ref == 'refs/heads/main'
+        run: |
+          set -e
+
+          SNAPSHOT_NAME=${{ env.snapshot_name }}
+
+          # Get existing snapshot IDs with this name
+          EXISTING_IDS=$(doctl compute snapshot list --resource droplet --format ID,Name --no-header | grep "$SNAPSHOT_NAME" | awk '{print $1}')
+
+          # Create a new snapshot
+          doctl compute droplet-action snapshot $DROPLET_ID --snapshot-name $SNAPSHOT_NAME
+
+          # Wait for a new snapshot to appear
+          while true; do
+            NEW_ID=$(doctl compute snapshot list --resource droplet --format ID,Name --no-header | grep "$SNAPSHOT_NAME" | awk '{print $1}' | grep -vxFf <(echo "$EXISTING_IDS") | head -n1)
+            if [ -n "$NEW_ID" ]; then
+              SNAPSHOT_ID="$NEW_ID"
+              break
+            fi
+            echo "Waiting for new snapshot..."; sleep 10;
+          done
+
+          echo "Snapshot has been created with ID $SNAPSHOT_ID"
+
+          # Keep only the 2 most recent snapshots matching the name pattern
+          SNAPSHOTS=$(doctl compute snapshot list --resource droplet --format ID,Name,CreatedAt --no-header | grep "$SNAPSHOT_NAME" | sort -rk3)
+          SNAPSHOT_IDS=($(echo "$SNAPSHOTS" | awk '{print $1}'))
+
+          # If more than 2 snapshots, delete the older ones
+          if [ ${#SNAPSHOT_IDS[@]} -gt ${{ env.max_num_snapshots }} ]; then
+            for ((i=2; i<${#SNAPSHOT_IDS[@]}; i++)); do
+              echo "Deleting old snapshot: ${SNAPSHOT_IDS[$i]}"
+              doctl compute snapshot delete "${SNAPSHOT_IDS[$i]}" --force
+            done
+          fi
+
+          echo "Snapshot rotation complete. Current snapshots:"
+          doctl compute snapshot list --resource droplet --format ID,Name,CreatedAt
+
+      - name: Setup Terraform
+        if: steps.get_droplet.outputs.found == 'true'
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        if: steps.get_droplet.outputs.found == 'true'
+        working-directory: ${{ env.working_directory }}
+        run: terraform init
+
+      - name: Terraform Destroy Plan
+        if: steps.get_droplet.outputs.found == 'true'
+        working-directory: ${{ env.working_directory }}
+        run: |
+          set -e
+          terraform plan -destroy -target=digitalocean_droplet.droplet_bbs_game_server -out=destroy.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
+
+      - name: Terraform Destroy
+        if: steps.get_droplet.outputs.found == 'true' && github.ref == 'refs/heads/main'
+        working-directory: ${{ env.working_directory }}
+        run: |
+          set -e
+          terraform apply -auto-approve destroy.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
