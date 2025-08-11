@@ -36,7 +36,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   // Check if we still have available uses
   const isDisabled = availableUses == 0;
 
-  const handleClick = () => {
+  const actionClicked = () => {
     if (isDisabled) return;
     // Do the action stuff
     socket.emit("action_selected", {
@@ -46,9 +46,12 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     });
   };
 
-  const allClickHandlers = () => {
-    if (onClick) onClick();
-    handleClick();
+  const adventureClicked = () => {
+    socket.emit("adventure_action", {
+      action: actionState,
+      battleId,
+      playerId: socket.id,
+    });
   };
 
   const image = `
@@ -64,7 +67,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
         color={colorLoader[actionState.id] ?? "purple"}
         size="battle"
         isDisabled={isDisabled}
-        onClick={allClickHandlers}
+        onClick={battleId === "ADVENTURE" ? adventureClicked : actionClicked}
         isPassive={isPassive}
       >
         <div className="w-[50%] h-auto leading-[0.8]">

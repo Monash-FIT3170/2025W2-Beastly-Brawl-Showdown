@@ -11,6 +11,7 @@ import { FuriousFlipper } from "../model/game/monster/furiousFlipper";
 import { CharmerCobra } from "../model/game/monster/charmerCobra";
 import { Battle } from "../model/game/battle";
 import proceedAdventureTurn from "./proceedAdventureTurn";
+import { ActionState } from "/types/single/actionState";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   //todo sockets:
@@ -37,21 +38,33 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       bot.setMonster(new CharmerCobra());
       players.set(socket.id, player);
       players.set("Bot", bot);
-      //   console.log("Player", player);
       //TODO: GET ACTUAL LEVEL.
       const adventure = new Adventure(player, 1);
       activeAdventures.set(socket.id, adventure);
-      //   console.log("Adventure", adventure);
       //add player to adventure
-      //   socket.join(`adventure-${socket.id}`);
       //TODO: initialise battle properly
       const battle = new Battle(crypto.randomUUID(), player, bot, socket.id);
-      //   console.log("Battle", battle);
       proceedAdventureTurn(io, socket, adventure, battle);
     }
   );
 
-  socket.on("action_added", () => {});
+  socket.on(
+    "adventure_action",
+    ({
+      action,
+      battleId,
+      playerId,
+    }: {
+      action: ActionState;
+      battleId: string;
+      playerId: string;
+    }) => {
+      //TODO: implement action immediately initiating
+      //TODO: prepare...
+      //TODO: execute...
+      console.log("action clicked VIA ADVENTURE WOO!!", action);
+    }
+  );
 };
 
 const monsterMap = new Map([

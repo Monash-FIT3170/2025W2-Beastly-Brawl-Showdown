@@ -13,7 +13,8 @@ export default function proceedAdventureTurn(
   adventure: Adventure,
   battle: Battle
 ) {
-  console.log("Proceeeding.................");
+  //TODO: figure out what goes here / if necessary
+  //THIS MIGHT ONLY EXIST FOR THE TIMER -> NO LONGER EXISTS.
   io.to(adventure.getId()).emit(
     "adventure_state",
     battle.getBattleState(adventure.getId())
