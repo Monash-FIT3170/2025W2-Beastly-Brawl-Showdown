@@ -25,6 +25,11 @@ export const Home = () => {
     FlowRouter.go("/join");
   };
 
+    // Called on 'Adventure' button press
+  const renderAdventure = () => {
+    FlowRouter.go("");
+  };
+
   return (
     console.log("Home"),
     ( 
@@ -40,9 +45,12 @@ export const Home = () => {
             mobileHidden={"true"}
           >
             <OutlineText size="large">HOST GAME</OutlineText>
-          </ButtonGeneric>
+          </ButtonGeneric>          
           <ButtonGeneric color="ronchi" size="large" onClick={renderJoinLobby}>
             <OutlineText size="large">JOIN GAME</OutlineText>
+          </ButtonGeneric>
+          <ButtonGeneric color="ronchi" size="large" onClick={renderAdventure}>
+            <OutlineText size="large">ADVENTURE</OutlineText>
           </ButtonGeneric>
         </div>
       </BlankPage>
