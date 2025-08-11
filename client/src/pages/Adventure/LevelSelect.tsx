@@ -14,6 +14,10 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     setObservedLevel(observedLevel + val);
   };
 
+  const renderAdventureMonsterSelect = () => {
+    FlowRouter.go("/adventure/monster-select");
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">
       <GenericHeader color="lightYellow">
@@ -38,7 +42,11 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
         <OutlineText size="extraLarge">NEXT CHAPTER</OutlineText>
         <div>monster image</div>
-        <ButtonGeneric color="ronchi" size="large">
+        <ButtonGeneric
+          color="ronchi"
+          size="large"
+          onClick={renderAdventureMonsterSelect}
+        >
           PROCEED
         </ButtonGeneric>
       </div>
