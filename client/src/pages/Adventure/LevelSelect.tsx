@@ -44,9 +44,13 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         <OutlineText size="extraLarge">NEXT CHAPTER</OutlineText>
         <div>monster image</div>
         <ButtonGeneric
-          color="ronchi"
+          color={UNLOCKED_LEVELS.includes(observedLevel) ? `ronchi` : `alto`}
           size="large"
-          onClick={renderAdventureMonsterSelect}
+          onClick={
+            UNLOCKED_LEVELS.includes(observedLevel)
+              ? renderAdventureMonsterSelect
+              : undefined
+          }
         >
           {UNLOCKED_LEVELS.includes(observedLevel) ? `PROCEED` : `LOCKED`}
         </ButtonGeneric>
