@@ -29,6 +29,10 @@ export class AttackAction extends Action {
 
   private rollDice(): number {
     // Generate a number within the range size, then add the minimum value to bring it within the actual range
+    console.log(
+      `diceMin: ${this.diceMin}, diceMax: ${this.diceMax}, rollRange: ${this.rollRange}`
+    );
+
     const d20 = Math.floor(Math.random() * this.rollRange) + this.diceMin;
     // console.log(`Dice roll: ${d20}`);
     return d20;
@@ -65,7 +69,8 @@ export class AttackAction extends Action {
       // Check if the dice roll is within the crit range
       // E.g. normal d20 roll is 1-20, with a crit rate of 10%, you need to roll 19 or 20 to crit
       const isCrit =
-        this.d20 > this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
+        this.d20 >
+        this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
       if (isCrit) {
         this.damageDealt *= 2; // Double the damage on a crit
       }
