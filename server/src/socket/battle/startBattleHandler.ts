@@ -6,7 +6,6 @@ import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
-import { ActionIdentifier } from "/types/single/actionState";
 
 export default function proceedBattleTurn(
   io: Server,
@@ -193,13 +192,10 @@ export default function proceedBattleTurn(
 
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
-          if (!player.isBotPlayer()){ // Only emit the battle state of human player
-            io.to(player.getId()).emit(
+          io.to(player.getId()).emit(
             "battle_state",
             battle.getBattleState(player.getId())
           );
-          }
-          
         });
 
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
