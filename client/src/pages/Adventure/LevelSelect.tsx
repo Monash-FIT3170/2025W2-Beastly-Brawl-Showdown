@@ -15,7 +15,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[100dvh]">
+    <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">
       <GenericHeader color="lightYellow">
         <OutlineText size="extraLarge">START YOUR JOURNEY</OutlineText>
       </GenericHeader>
@@ -27,17 +27,23 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             sm:h-min
             sm:w-[95dvw]
             lg:h-min
-            lg:w-[90dvw]
+            lg:w-[40dvw]
             border-[3px]
             border-[#403245]
             rounded-[20px]
             w-[60%]
-            box-border`}
+            box-border
+            flex flex-col items-center`}
       >
-        test
+        {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
+        <OutlineText size="extraLarge">NEXT CHAPTER</OutlineText>
+        <div>monster image</div>
+        <ButtonGeneric color="ronchi" size="large">
+          PROCEED
+        </ButtonGeneric>
       </div>
-      <div className="grid grid-cols-3">
-        <div>
+      <div className="grid grid-cols-3 justify-items-center">
+        <div className="flex justify-center items-center">
           {observedLevel != 0 && (
             <IconButton
               style="arrowleft"
@@ -48,12 +54,14 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             />
           )}
         </div>
-        <div>
+
+        <div className="w-min">
           <ButtonGeneric color="red" size="large">
             BACK
           </ButtonGeneric>
         </div>
-        <div>
+
+        <div className="flex justify-center items-center">
           {observedLevel != 5 && (
             <IconButton
               style="arrowright"
