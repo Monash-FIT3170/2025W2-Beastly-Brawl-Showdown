@@ -4,11 +4,8 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
-<<<<<<< HEAD
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
-=======
 import { ActionIdentifier } from "/types/single/actionState";
->>>>>>> e0c6129 (Feature/1006.1-bot-socket: Prevent socket emitting for bot player; allow the player to compete against bot player with limited move)
 
 export default function proceedBattleTurn(
   io: Server,
@@ -159,13 +156,6 @@ export default function proceedBattleTurn(
           }
         });
 
-<<<<<<< HEAD
-=======
-        console.log("P1: ", player1);
-
-        console.log("P2: ", player2);
-
->>>>>>> e0c6129 (Feature/1006.1-bot-socket: Prevent socket emitting for bot player; allow the player to compete against bot player with limited move)
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
           if (!player.isBotPlayer()){ // Only emit the battle state of human player
