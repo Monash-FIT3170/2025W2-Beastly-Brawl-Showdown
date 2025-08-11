@@ -7,8 +7,8 @@ export class NullAction extends Action {
   private affectedMessage: string | null;
   private battleLogMessage: string | null;
 
-  constructor(actingMessage: string | null = null, affectedMessage: string | null = null, battleLogMessage: string | null = null) {
-    super(ActionIdentifier.NULL, "Null", "No action", Infinity);
+  constructor(name: string = "Null", actionIdentifier: ActionIdentifier = ActionIdentifier.NULL, actingMessage: string | null = null, affectedMessage: string | null = null, battleLogMessage: string | null = null) {
+    super(actionIdentifier, name, "No action", 0);
     this.actingMessage = actingMessage;
     this.affectedMessage = affectedMessage;
     this.battleLogMessage = battleLogMessage;

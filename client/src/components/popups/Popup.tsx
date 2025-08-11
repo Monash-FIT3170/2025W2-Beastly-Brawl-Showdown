@@ -55,7 +55,7 @@ export const Popup = ({children}:PopupProp) => {
     return(
     <div className = {`${popupLayout}`}>
         <div className = {`${popup}`}> 
-            <IconButton style='x' iconColour='black' buttonColour='red' onClick={() => setVisible(false)} />
+            <IconButton size = 'small' style='x' iconColour='black' buttonColour='red' onClick={() => setVisible(false)} />
             <div className = {`${popupText}`}>
                 {children}
             </div>

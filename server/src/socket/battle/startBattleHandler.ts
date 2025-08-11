@@ -4,7 +4,11 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
+<<<<<<< HEAD
 import { ActionIdentifier } from "/types/single/actionState";
+=======
+import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
+>>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 
 export default function proceedBattleTurn(
   io: Server,
@@ -17,6 +21,15 @@ export default function proceedBattleTurn(
   battle.incTurn();
 
   let playersInBattle = battle.getPlayers();
+
+  // checks/ticks statuses for each player
+  playersInBattle.forEach((player) => {
+    player.tickStatuses();
+    // let statuses = player.getStatuses();
+    // statuses.forEach((status) => {
+    //   status.tick(player);
+    // })
+  });
 
   if (battle.isBattleOver()) {
     const winners = battle.getWinners();
@@ -100,6 +113,15 @@ export default function proceedBattleTurn(
             io.to(player1.getId()).emit("roll_dice", diceRoll);
           }
         }
+
+        if (action.getName() === "Tip The Scales") {
+          const tipTheScalesAction = action as TipTheScalesAbilityAction;
+          const diceRoll = tipTheScalesAction.getDiceRoll();
+          io.to(player1.getId()).emit("roll_dice", diceRoll);
+          console.log(
+            `Player 1 used tip the scales and dice roll = ${diceRoll}`
+          );
+        }
       });
 
       player2.getActions().forEach((action) => {
@@ -110,22 +132,40 @@ export default function proceedBattleTurn(
             io.to(player2.getId()).emit("roll_dice", diceRoll);
           }
         }
+
+        if (action.getName() === "Tip The Scales") {
+          const tipTheScalesAction = action as TipTheScalesAbilityAction;
+          const diceRoll = tipTheScalesAction.getDiceRoll();
+          console.log(
+            `Player 2 used tip the scales and dice roll = ${diceRoll}`
+          );
+          io.to(player2.getId()).emit("roll_dice", diceRoll);
+        }
       });
 
       setTimeout(() => {
         // Execute method
         player1.getActions().forEach((action) => {
           action.execute(player1, player2);
+          if (action instanceof NullAction) {
+            console.log(`P1 - ${player1.getName()} did nothing.`);
+          }
         });
 
         player2.getActions().forEach((action) => {
           action.execute(player2, player1);
+          if (action instanceof NullAction) {
+            console.log(`P2 - ${player2.getName()} did nothing.`);
+          }
         });
 
+<<<<<<< HEAD
         console.log("P1: ", player1);
 
         console.log("P2: ", player2);
 
+=======
+>>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
           if (!player.isBotPlayer()){ // Only emit the battle state of human player
@@ -140,6 +180,7 @@ export default function proceedBattleTurn(
         playersInBattle.forEach((player) => {
           player.resetStats();
           player.resetActions();
+          player.getMonster()?.removeTemporaryActions();
         });
 
         if (battle.isBattleOver()) {
