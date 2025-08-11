@@ -125,13 +125,6 @@ export default function proceedBattleTurn(
             const diceRoll = attackAction.getDiceRoll();
             io.to(player1.getId()).emit("roll_dice", diceRoll);
           }
-        if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
-          if (action.getName() === "Attack") {
-            const attackAction = action as AttackAction;
-            const diceRoll = attackAction.getDiceRoll();
-            io.to(player1.getId()).emit("roll_dice", diceRoll);
-          }
-        }
 
         if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
           if (action.getName() === "Tip The Scales") {
@@ -143,7 +136,8 @@ export default function proceedBattleTurn(
             );
           }
         }
-      })
+      }});
+    
 
 
       player2.getActions().forEach((action) => {
@@ -172,7 +166,8 @@ export default function proceedBattleTurn(
 
 
       
-      });
+      }
+    });
 
       setTimeout(() => {
         // Execute method
@@ -190,13 +185,10 @@ export default function proceedBattleTurn(
           }
         });
 
-<<<<<<< HEAD
         console.log("P1: ", player1);
 
         console.log("P2: ", player2);
 
-=======
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
           if (!player.isBotPlayer()){ // Only emit the battle state of human player
