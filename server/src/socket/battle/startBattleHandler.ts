@@ -4,11 +4,8 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
-<<<<<<< HEAD
 import { ActionIdentifier } from "/types/single/actionState";
-=======
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 
 export default function proceedBattleTurn(
   io: Server,
@@ -59,7 +56,23 @@ export default function proceedBattleTurn(
         "battle_state",
         battle.getBattleState(player.getId())
       ); // Emit the battle state to each player
+    if (!player.isBotPlayer()){ //only emit to socket if the player is a human
+      io.to(player.getId()).emit(
+        "battle_state",
+        battle.getBattleState(player.getId())
+      ); // Emit the battle state to each player
 
+      let actions = player.getMonster().getPossibleActionStates();
+      io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+    } else {
+      //TODO: Bot action logic here
+      //Hardcoded to be attack action for now
+      var actionToAdd = player?.getMonster().getAction(ActionIdentifier.ATTACK);
+
+      if (actionToAdd) {
+        player?.addAction(actionToAdd);
+      }
+    }
       let actions = player.getMonster().getPossibleActionStates();
       io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
@@ -112,19 +125,34 @@ export default function proceedBattleTurn(
             const diceRoll = attackAction.getDiceRoll();
             io.to(player1.getId()).emit("roll_dice", diceRoll);
           }
+        if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
+          if (action.getName() === "Attack") {
+            const attackAction = action as AttackAction;
+            const diceRoll = attackAction.getDiceRoll();
+            io.to(player1.getId()).emit("roll_dice", diceRoll);
+          }
         }
 
-        if (action.getName() === "Tip The Scales") {
-          const tipTheScalesAction = action as TipTheScalesAbilityAction;
-          const diceRoll = tipTheScalesAction.getDiceRoll();
-          io.to(player1.getId()).emit("roll_dice", diceRoll);
-          console.log(
-            `Player 1 used tip the scales and dice roll = ${diceRoll}`
-          );
+        if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
+          if (action.getName() === "Tip The Scales") {
+            const tipTheScalesAction = action as TipTheScalesAbilityAction;
+            const diceRoll = tipTheScalesAction.getDiceRoll();
+            io.to(player1.getId()).emit("roll_dice", diceRoll);
+            console.log(
+              `Player 1 used tip the scales and dice roll = ${diceRoll}`
+            );
+          }
         }
-      });
+      })
+
 
       player2.getActions().forEach((action) => {
+        if (!player2.isBotPlayer()){ //only emit to socket if the player is a human
+          if (action.getName() === "Attack") {
+            const attackAction = action as AttackAction;
+            const diceRoll = attackAction.getDiceRoll();
+            io.to(player2.getId()).emit("roll_dice", diceRoll);
+          }
         if (!player2.isBotPlayer()){ //only emit to socket if the player is a human
           if (action.getName() === "Attack") {
             const attackAction = action as AttackAction;
@@ -141,6 +169,9 @@ export default function proceedBattleTurn(
           );
           io.to(player2.getId()).emit("roll_dice", diceRoll);
         }
+
+
+      
       });
 
       setTimeout(() => {
@@ -170,9 +201,12 @@ export default function proceedBattleTurn(
         playersInBattle.forEach((player) => {
           if (!player.isBotPlayer()){ // Only emit the battle state of human player
             io.to(player.getId()).emit(
+          if (!player.isBotPlayer()){ // Only emit the battle state of human player
+            io.to(player.getId()).emit(
             "battle_state",
             battle.getBattleState(player.getId())
           );
+          }
           }
         });
 
