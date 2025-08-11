@@ -1,6 +1,10 @@
 import { Action } from "../action";
 import { Player } from "../../player";
+<<<<<<< HEAD
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
+=======
+import { ActionIdentifier } from "/types/single/actionState";
+>>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 import { Stun } from "../../status/stun";
 
 export class GroundSlamAbilityAction extends Action {
@@ -24,7 +28,11 @@ export class GroundSlamAbilityAction extends Action {
 
     // Deal 3 damage + Stun
     affectedPlayer.incHealth(-3);
+<<<<<<< HEAD
     affectedPlayer.addStatus(new Stun(1), 100);
+=======
+    affectedPlayer.addStatus(new Stun(1));
+>>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 
     // Add logs
     actingPlayer.addLog(
