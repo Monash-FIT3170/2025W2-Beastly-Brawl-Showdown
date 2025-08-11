@@ -1,4 +1,5 @@
 import { MonsterState } from "./monsterState";
+import { Status } from "/server/src/model/game/status/status";
 
 export interface PlayerState {
   id: string;
@@ -11,6 +12,8 @@ export interface PlayerState {
   // monsterName: string;
   successBlock: number;
   successHit: number; 
+
+  statuses: Status[];
 
   monster: MonsterState | null;
 
