@@ -2,18 +2,12 @@ import { NullAction } from "../action/null";
 import { Player } from "../player";
 import { Status } from "./status";
 import { ActionIdentifier } from "/types/single/actionState";
-<<<<<<< HEAD
 import { StatusType } from "/types/single/statusType";
 
 export class Stun extends Status {
   constructor(countDown: number) {
     super("Stun", "Monster is unable to attack", countDown, StatusType.DEBUFF);
-=======
 
-export class Stun extends Status {
-  constructor(countDown: number) {
-    super("Stun", "Monster is unable to attack", countDown);
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
   }
 
   //TODO: implement stun

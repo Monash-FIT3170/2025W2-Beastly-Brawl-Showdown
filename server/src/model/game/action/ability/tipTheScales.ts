@@ -1,10 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-<<<<<<< HEAD
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
-=======
-import { ActionIdentifier } from "/types/single/actionState";
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 import { AttackAction } from "../attack";
 
 export class TipTheScalesAbilityAction extends Action {
@@ -38,11 +34,7 @@ export class TipTheScalesAbilityAction extends Action {
     return 0;
   }
 
-<<<<<<< HEAD
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
-=======
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
     this.incCurrentUse(-1);
 
     // Log actions
@@ -59,14 +51,11 @@ export class TipTheScalesAbilityAction extends Action {
     );
 
     this.attackAction?.execute(actingPlayer, affectedPlayer);
-<<<<<<< HEAD
 
     return {
       appliedStatus: {
         success: false
       }
     }
-=======
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
   }
 }
