@@ -1,6 +1,5 @@
 import { Player } from "../player";
 import { StatusType } from "/types/single/statusType";
-import { StatusType } from "/types/single/statusType";
 
 export abstract class Status {
   public name: string;
