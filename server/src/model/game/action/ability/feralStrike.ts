@@ -4,7 +4,6 @@ import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 
 
-
 export class FeralStrikeAbilityAction extends Action {
   // Passive ability that increases critical hit rate by 15%
   constructor() {
