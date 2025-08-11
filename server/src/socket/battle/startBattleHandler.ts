@@ -72,14 +72,7 @@ export default function proceedBattleTurn(
       let actions = player.getMonster().getPossibleActionStates();
       io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
-      //TODO: Bot action logic here
-      //Hardcoded to be attack action for now
-      var actionToAdd = player?.getMonster().getAction(ActionIdentifier.ATTACK);
-
-      if (actionToAdd) {
-        player?.addAction(actionToAdd);
-      }
-    }
+      ActionRandomiser.randomAction(player)
   });
 
   let player1 = playersInBattle[0];
@@ -121,13 +114,6 @@ export default function proceedBattleTurn(
             const diceRoll = attackAction.getDiceRoll();
             io.to(player1.getId()).emit("roll_dice", diceRoll);
           }
-        if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
-          if (action.getName() === "Attack") {
-            const attackAction = action as AttackAction;
-            const diceRoll = attackAction.getDiceRoll();
-            io.to(player1.getId()).emit("roll_dice", diceRoll);
-          }
-        }
 
         if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
           if (action.getName() === "Tip The Scales") {
@@ -139,7 +125,8 @@ export default function proceedBattleTurn(
             );
           }
         }
-      })
+      }});
+    
 
 
       player2.getActions().forEach((action) => {
@@ -168,7 +155,8 @@ export default function proceedBattleTurn(
 
 
       
-      });
+      }
+    });
 
       setTimeout(() => {
         // Execute method
@@ -202,14 +190,12 @@ export default function proceedBattleTurn(
         playersInBattle.forEach((player) => {
           if (!player.isBotPlayer()){ // Only emit the battle state of human player
             io.to(player.getId()).emit(
-          if (!player.isBotPlayer()){ // Only emit the battle state of human player
-            io.to(player.getId()).emit(
             "battle_state",
             battle.getBattleState(player.getId())
           );
           }
           }
-        });
+        );
 
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
         playersInBattle.forEach((player) => {
