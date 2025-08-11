@@ -58,21 +58,12 @@ export default function proceedBattleTurn(
         "battle_state",
         battle.getBattleState(player.getId())
       ); // Emit the battle state to each player
-    if (!player.isBotPlayer()){ //only emit to socket if the player is a human
-      io.to(player.getId()).emit(
-        "battle_state",
-        battle.getBattleState(player.getId())
-      ); // Emit the battle state to each player
 
       let actions = player.getMonster().getPossibleActionStates();
       io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
       ActionRandomiser.randomAction(player)
     }
-      let actions = player.getMonster().getPossibleActionStates();
-      io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
-    } else {
-      ActionRandomiser.randomAction(player)
   });
 
   let player1 = playersInBattle[0];
@@ -194,8 +185,7 @@ export default function proceedBattleTurn(
             battle.getBattleState(player.getId())
           );
           }
-          }
-        );
+        });
 
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
         playersInBattle.forEach((player) => {
