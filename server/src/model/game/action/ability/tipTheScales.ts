@@ -5,23 +5,23 @@ import { AttackAction } from "../attack";
 
 export class TipTheScalesAbilityAction extends Action {
   private attackAction: AttackAction | null = null;
-  private critRate: number;
 
-  constructor(critRate: number) {
+  constructor() {
     super(
       ActionIdentifier.TIP_THE_SCALES,
       "Tip The Scales",
       "Attack with a biased D20, increasing the odds of success.",
       1
     );
-    this.critRate = critRate;
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     //initiates an attack with a biased d20
+    var critrate =
+      actingPlayer.getMonster()?.getArchetype().getCritRate() ?? 10;
     this.attackAction = new AttackAction(
       actingPlayer.getAttackStat(),
-      this.critRate,
+      critrate,
       10
     );
     this.attackAction.prepare(actingPlayer, affectedPlayer);
