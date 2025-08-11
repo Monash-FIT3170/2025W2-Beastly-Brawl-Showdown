@@ -126,7 +126,6 @@ export default function proceedBattleTurn(
             io.to(player1.getId()).emit("roll_dice", diceRoll);
           }
 
-
         if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
           if (action.getName() === "Tip The Scales") {
             const tipTheScalesAction = action as TipTheScalesAbilityAction;
@@ -184,7 +183,6 @@ export default function proceedBattleTurn(
           }
         });
 
-
         console.log("P1: ", player1);
 
         console.log("P2: ", player2);
@@ -196,13 +194,11 @@ export default function proceedBattleTurn(
         playersInBattle.forEach((player) => {
           if (!player.isBotPlayer()){ // Only emit the battle state of human player
             io.to(player.getId()).emit(
-          if (!player.isBotPlayer()){ // Only emit the battle state of human player
-            io.to(player.getId()).emit(
             "battle_state",
             battle.getBattleState(player.getId())
           );
           }
-          }
+          
         });
 
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
