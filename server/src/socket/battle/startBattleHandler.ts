@@ -126,13 +126,7 @@ export default function proceedBattleTurn(
             const diceRoll = attackAction.getDiceRoll();
             io.to(player2.getId()).emit("roll_dice", diceRoll);
           }
-        if (!player2.isBotPlayer()){ //only emit to socket if the player is a human
-          if (action.getName() === "Attack") {
-            const attackAction = action as AttackAction;
-            const diceRoll = attackAction.getDiceRoll();
-            io.to(player2.getId()).emit("roll_dice", diceRoll);
-          }
-        }
+
 
         if (action.getName() === "Tip The Scales") {
           const tipTheScalesAction = action as TipTheScalesAbilityAction;
