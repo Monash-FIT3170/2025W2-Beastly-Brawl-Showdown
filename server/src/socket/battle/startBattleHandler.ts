@@ -56,7 +56,23 @@ export default function proceedBattleTurn(
         "battle_state",
         battle.getBattleState(player.getId())
       ); // Emit the battle state to each player
+    if (!player.isBotPlayer()){ //only emit to socket if the player is a human
+      io.to(player.getId()).emit(
+        "battle_state",
+        battle.getBattleState(player.getId())
+      ); // Emit the battle state to each player
 
+      let actions = player.getMonster().getPossibleActionStates();
+      io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+    } else {
+      //TODO: Bot action logic here
+      //Hardcoded to be attack action for now
+      var actionToAdd = player?.getMonster().getAction(ActionIdentifier.ATTACK);
+
+      if (actionToAdd) {
+        player?.addAction(actionToAdd);
+      }
+    }
       let actions = player.getMonster().getPossibleActionStates();
       io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
@@ -180,9 +196,12 @@ export default function proceedBattleTurn(
         playersInBattle.forEach((player) => {
           if (!player.isBotPlayer()){ // Only emit the battle state of human player
             io.to(player.getId()).emit(
+          if (!player.isBotPlayer()){ // Only emit the battle state of human player
+            io.to(player.getId()).emit(
             "battle_state",
             battle.getBattleState(player.getId())
           );
+          }
           }
         });
 
