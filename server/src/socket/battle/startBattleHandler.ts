@@ -110,6 +110,7 @@ export default function proceedBattleTurn(
             io.to(player1.getId()).emit("roll_dice", diceRoll);
           }
 
+
         if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
           if (action.getName() === "Tip The Scales") {
             const tipTheScalesAction = action as TipTheScalesAbilityAction;
@@ -131,7 +132,6 @@ export default function proceedBattleTurn(
             const diceRoll = attackAction.getDiceRoll();
             io.to(player2.getId()).emit("roll_dice", diceRoll);
           }
-
 
         if (action.getName() === "Tip The Scales") {
           const tipTheScalesAction = action as TipTheScalesAbilityAction;
