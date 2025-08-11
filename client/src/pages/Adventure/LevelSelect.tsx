@@ -9,6 +9,7 @@ interface LevelSelectProps {}
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(0);
+  const UNLOCKED_LEVELS = [0];
 
   const alterLevel = (val: number) => {
     setObservedLevel(observedLevel + val);
@@ -43,11 +44,15 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         <OutlineText size="extraLarge">NEXT CHAPTER</OutlineText>
         <div>monster image</div>
         <ButtonGeneric
-          color="ronchi"
+          color={UNLOCKED_LEVELS.includes(observedLevel) ? `ronchi` : `alto`}
           size="large"
-          onClick={renderAdventureMonsterSelect}
+          onClick={
+            UNLOCKED_LEVELS.includes(observedLevel)
+              ? renderAdventureMonsterSelect
+              : undefined
+          }
         >
-          PROCEED
+          {UNLOCKED_LEVELS.includes(observedLevel) ? `PROCEED` : `LOCKED`}
         </ButtonGeneric>
       </div>
       <div className="grid grid-cols-3 justify-items-center">

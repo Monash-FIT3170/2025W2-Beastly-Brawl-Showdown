@@ -42,7 +42,11 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
     [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
   };
 
-  const UNLOCKED_MONSTER_IDS = [MonsterIdentifier.ROCKY_RHINO];
+  //TODO: implement getting genuine unlocked monsters
+  //dependent on how player accounts work :)
+  const [unlockedMonstersIDs, setUnlockedMonstersIDs] = useState<
+    MonsterIdentifier[]
+  >([MonsterIdentifier.ROCKY_RHINO]);
 
   useEffect(() => {
     // Request the monster list once when component mounts
@@ -52,7 +56,7 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
     socket.on("monster_list", (monsterList: MonsterState[]) => {
       // Mimic filtering by unlocked monsters
       const filtered = monsterList.filter((monster) =>
-        UNLOCKED_MONSTER_IDS.includes(monster.id)
+        unlockedMonstersIDs.includes(monster.id)
       );
       setMonsters(filtered);
     });
