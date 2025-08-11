@@ -150,20 +150,15 @@ export default function proceedBattleTurn(
 
       setTimeout(() => {
         // Execute method
-        let p1_result;
-        let p2_result;
-
-        //player list of actions will always be 1; hence p1_result can be used
         player1.getActions().forEach((action) => {
-          p1_result = action.execute(player1, player2);
+          action.execute(player1, player2);
           if (action instanceof NullAction) {
             console.log(`P1 - ${player1.getName()} did nothing.`);
           }
         });
 
-        //player list of actions will always be 1; hence p2_result can be used
         player2.getActions().forEach((action) => {
-          p2_result = action.execute(player2, player1);
+          action.execute(player2, player1);
           if (action instanceof NullAction) {
             console.log(`P2 - ${player2.getName()} did nothing.`);
           }
@@ -174,7 +169,7 @@ export default function proceedBattleTurn(
         console.log("P2: ", player2);
 
         //Handle logic after actions are executed (see GameMode)
-        gameSession.onActionExecuted(player1.getId(), p1_result, player2.getId(), p2_result)
+        gameSession.onActionExecuted()
 
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
@@ -236,7 +231,7 @@ export default function proceedBattleTurn(
           if (gameSession.areBattlesConcluded()) {
 
             //Handler after all battles have ended
-            // gameSession.onBattlesEnded(io, socket)
+            gameSession.onBattlesEnded(io, socket)
 
             console.log(
               `All battles are concluded in game session ${gameSession.getGameCode()}`
