@@ -70,7 +70,7 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
 export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
   return {
     email: '',
-    username: '',
+    username: 'Default',
     password: '',
     level: 1,
     stats: {
