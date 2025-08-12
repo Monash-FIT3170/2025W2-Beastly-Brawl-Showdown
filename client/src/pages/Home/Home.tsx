@@ -6,11 +6,11 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { ButtonResizableText } from "../../components/buttons/ButtonResizableText";
-import { LoginPopup } from "./Login"; // import your login popup component
+import { LoginPopup } from "./Login";
 
 export const Home = () => {
   const [showLogin, setShowLogin] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState<string | null>(null);
+  const [loggedInUser, setLoggedInUser] = useState(false);
 
   const createGame = () => {
     socket.emit("create-game", {});
@@ -28,7 +28,7 @@ export const Home = () => {
 
   const handleLoginSuccess = (username: string) => {
     setShowLogin(false);
-    setLoggedInUser(username);
+    setLoggedInUser(true);
   };
 
   const handleExitLogin = () => {
@@ -42,18 +42,22 @@ export const Home = () => {
         <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
       </div>
       <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-10 sm:space-y-30">
-        {!loggedInUser && (
+        {!loggedInUser ? (
           <ButtonGeneric
             color="ronchi"
             size="medium"
             onClick={() => setShowLogin(true)}
           >
-            <OutlineText size="medium">LOG IN</OutlineText>
+            <OutlineText size="medium">LOGIN</OutlineText>
           </ButtonGeneric>
-        )}
-
-        {loggedInUser && (
-          <p className="text-white">Welcome back, {loggedInUser}!</p>
+        ) : (
+          <ButtonGeneric
+            color="ronchi"
+            size="medium"
+            onClick={() => FlowRouter.go("/account")}
+          >
+            <OutlineText size="medium">ACCOUNT</OutlineText>
+          </ButtonGeneric>
         )}
 
         <ButtonGeneric
