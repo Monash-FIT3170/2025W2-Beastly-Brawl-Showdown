@@ -5,7 +5,7 @@ import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
 import { ActionIdentifier } from "/types/single/actionState";
-
+import { ActionRandomiser } from "../../model/game/actionrandomiser";
 export default function proceedBattleTurn(
   io: Server,
   socket: Socket,
@@ -50,13 +50,8 @@ export default function proceedBattleTurn(
       let actions = player.getMonster().getPossibleActionStates();
       io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
-      //TODO: Bot action logic here
-      //Hardcoded to be attack action for now
-      var actionToAdd = player?.getMonster().getAction(ActionIdentifier.ATTACK);
-
-      if (actionToAdd) {
-        player?.addAction(actionToAdd);
-      }
+      const randomiser = new ActionRandomiser
+      randomiser.randomaction(player)
     }
   });
 
