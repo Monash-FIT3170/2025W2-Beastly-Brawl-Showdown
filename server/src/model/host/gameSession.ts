@@ -129,19 +129,6 @@ export default class GameSession {
     }
   }
 
-  removeBattle(removingBattleID: String) {
-    // Loop to check through each item in the queue
-    const battlesSize = this.battles.size();
-    for (let i = 0; i < battlesSize; i++) {
-      const battleIndexed = this.battles.dequeue(); // Serves the current player at the front
-      if (
-        battleIndexed != undefined &&
-        battleIndexed.getId().toString() != removingBattleID
-      ) {
-        this.battles.enqueue(battleIndexed); // If the player is not the argument one, then put them back in the queue
-      }
-    }
-  }
 
   getPlayerWaiting(seaarchingPlayerID: String): Player | null {
     // Loop to check through each item in the queue
@@ -317,35 +304,13 @@ export default class GameSession {
           this.hostUID
         );
 
-          battles.set(battleId, battle);
-          this.battles.enqueue(battle);
+        battles.set(battleId, battle);
+        this.battles.enqueuefront(battle);
+        return true;
       }
 
     }
-
-    // // } else if (this.battles.size() == 0) {
-    // //   // Add Bot and Add match if there are no more battles still running and therefore the player needs to be matched with a bot
-    // //   const playerIndexed = this.waitQueue.dequeue();
-
-    // //   if (playerIndexed != undefined) {
-       
-    // //     let battleId = crypto.randomUUID();
-    // //     const placeHolderPlayer = new Player("placeHolder", "Big Bum Loser");
-    // //     const placerHolderMonster = new RockyRhino();
-    // //     placeHolderPlayer.setMonster(placerHolderMonster);
-    // //     placeHolderPlayer.setHealth(0);
-
-    // //     const battle = new Battle(
-    // //       battleId,
-    // //       playerIndexed,
-    // //       placeHolderPlayer,
-    // //       this.hostUID
-    // //     );
-
-    // //       battles.set(battleId, battle);
-    // //       this.battles.enqueue(battle);
-    // //   }
-    // }
+    return false;
   }
 
   public calculateMostChosenMonster() {
