@@ -23,8 +23,12 @@ export const DialogChoiceButton = ({children, onClick} : DialogChoiceButtonProp)
         font-[Jua]
         rounded-[1rem]
         outline-offset-0
-        px-1
-        py-1
+        px-[1rem]
+        py-[1rem]
+        xl:py-[0.5rem]
+        xl:px-[0.5rem]
+        pl-[1rem]
+        pr-[1rem]
         
         `
 
