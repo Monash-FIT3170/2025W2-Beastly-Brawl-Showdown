@@ -53,7 +53,7 @@ export const RankingBar = ({ player, rank }: RankingBarProps) => {
               </OutlineText>
 
               <img
-                src="/assets/characters/ROCKY_RHINO.png"
+                src={`/assets/characters/${player.monster?.id}.png`}
                 alt={altText}
               />
             </div>
