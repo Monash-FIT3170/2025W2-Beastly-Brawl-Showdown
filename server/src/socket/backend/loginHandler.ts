@@ -146,3 +146,11 @@ export const LogBool = (io: Server, socket: Socket) => {
     updatePlayerAccount(user?._id, { online: true });
   });
 };
+
+export const startChecker = (io: Server, socket: Socket) => {
+  socket.on("check-login", async () => {
+    const user = playerAccounts.get(socket.id);
+
+    socket.emit("login-status", { loggedIn: Boolean(user) });
+  });
+};
