@@ -12,6 +12,20 @@ export const Home = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(false);
 
+  useEffect(() => {
+    socket.emit("check-login");
+
+    const handleLoginStatus = ({ loggedIn }) => {
+      setLoggedInUser(loggedIn);
+    };
+
+    socket.on("login-status", handleLoginStatus);
+
+    return () => {
+      socket.off("login-status", handleLoginStatus);
+    };
+  }, []);
+
   const createGame = () => {
     socket.emit("create-game", {});
     console.log("Game session created");
