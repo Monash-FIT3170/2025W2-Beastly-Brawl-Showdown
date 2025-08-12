@@ -12,15 +12,25 @@ import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataH
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
-import { insertNewPlayerAccount, getPlayerData, deletePlayerAccount } from "./src/database/dbManager";
+import {
+  insertNewPlayerAccount,
+  getPlayerData,
+  deletePlayerAccount,
+} from "./src/database/dbManager";
 import { registerHandler } from "./src/socket/backend/registerHandler";
-import { loginHandler } from "./src/socket/backend/loginHandler";
+import {
+  loginHandler,
+  accountHandler,
+} from "./src/socket/backend/loginHandler";
 import { register } from "node:module";
 
-import { PlayerAccountSchema, createDefaultPlayerAccountSchema } from "./src/database/dbManager";
+import {
+  PlayerAccountSchema,
+  createDefaultPlayerAccountSchema,
+} from "./src/database/dbManager";
 export const playerAccounts = new Map<string, PlayerAccountSchema>();
 
-// Helper function that 
+// Helper function that
 
 Meteor.startup(async () => {
   console.log("MONGO_URL:", process.env.MONGO_URL); // Testing for database connection
@@ -49,13 +59,16 @@ Meteor.startup(async () => {
     console.log(`Client connected: ${socket.id}`);
     // Adds a default PlayerAccount to the playerAccounts map
     playerAccounts.set(socket.id, createDefaultPlayerAccountSchema());
-    console.log(`Player account created with socketID: ${socket.id}. PlayerAccounts size: ${playerAccounts.size}`);
+    console.log(
+      `Player account created with socketID: ${socket.id}. PlayerAccounts size: ${playerAccounts.size}`
+    );
 
     // for refresh
     socket.emit("new-connect", {});
     // handlers
-    loginHandler(io,socket);
-    registerHandler(io,socket)
+    loginHandler(io, socket);
+    accountHandler(io, socket);
+    registerHandler(io, socket);
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
     characterSelectHandler(io, socket);
@@ -84,7 +97,9 @@ Meteor.startup(async () => {
       // Remove player account from playerAccounts map
       if (playerAccounts.has(socket.id)) {
         playerAccounts.delete(socket.id);
-        console.log(`Player account with socketID: ${socket.id} deleted. PlayerAccounts size: ${playerAccounts.size}`);
+        console.log(
+          `Player account with socketID: ${socket.id} deleted. PlayerAccounts size: ${playerAccounts.size}`
+        );
       }
     });
   });

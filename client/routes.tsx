@@ -8,8 +8,9 @@ import PathNotFound from "./src/pages/Home/PathNotFound";
 import HostBattles from "./src/pages/Lobby/HostBattles";
 import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
-import Rules from './src/pages/Game/Rules';
-import MatchSummary from './src/pages/Host View/MatchSummary';
+import Rules from "./src/pages/Game/Rules";
+import MatchSummary from "./src/pages/Host View/MatchSummary";
+import { Account } from "./src/pages/Home/Account";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -53,17 +54,24 @@ FlowRouter.route("/join/:code?", {
   },
 });
 
+FlowRouter.route("/account", {
+  name: "Account",
+  action(params) {
+    mount(() => <Account />);
+  },
+});
+
 FlowRouter.route("/battle/:battleId?", {
   name: "Battle",
   action(params) {
-    mount(() => <Battle battleId={params.battleId}  />);
+    mount(() => <Battle battleId={params.battleId} />);
   },
 });
 
 FlowRouter.route("/session/:sessionId?", {
   name: "Session",
   action(params) {
-    mount(() => <Game gameSessionId={params.sessionId}  />);
+    mount(() => <Game gameSessionId={params.sessionId} />);
   },
 });
 
@@ -74,9 +82,8 @@ FlowRouter.route("/battles/:code?", {
   },
 });
 
-
-FlowRouter.route('/rules', {
-  name: 'Rules',
+FlowRouter.route("/rules", {
+  name: "Rules",
   action() {
     mount(Rules);
   },
