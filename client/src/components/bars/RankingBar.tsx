@@ -1,13 +1,13 @@
 import React from "react";
 import { OutlineText } from "../texts/OutlineText";
+import { PlayerState } from "/types/single/playerState";
 
 interface RankingBarProps {
-  playerName: string;
-  monsterName: string;
+  player: PlayerState;
   rank: number;
 }
 
-export const RankingBar = ({ playerName, monsterName, rank }: RankingBarProps) => {
+export const RankingBar = ({ player, rank }: RankingBarProps) => {
   const rankingBarStyleSets: Record<number, [string, string]> = {
     1: ["1st", "bg-schoolBusYellow"],
     2: ["2nd", "bg-brightsilver"],
@@ -16,7 +16,7 @@ export const RankingBar = ({ playerName, monsterName, rank }: RankingBarProps) =
 
   const rankToDisplay = rankingBarStyleSets[rank][0];
   const colourToDisplay = rankingBarStyleSets[rank][1];
-  const altText = "Image of " + monsterName;
+  const altText = "Image of " + player.monster?.name;
 
   const rankingBarProperties = `
     absolute
@@ -43,13 +43,13 @@ export const RankingBar = ({ playerName, monsterName, rank }: RankingBarProps) =
           <div className="flex justify-between items-center w-full px-3">
             <div className="flex flex-col leading-none pt-[0.25rem]">
               <OutlineText size="large">
-                {playerName.toUpperCase()}
+                {player.name.toUpperCase()}
               </OutlineText>
             </div>
 
             <div className="flex items-center leading-none max-w-[5rem] text-center justify-end break-words">
               <OutlineText size="small">
-                {monsterName}
+                {player.monster?.name}
               </OutlineText>
 
               <img

@@ -4,11 +4,9 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
-import { Player } from "/server/src/model/game/player";
 import { BaseCard } from "../../components/cards/BaseCard";
 import socket from "../../socket";
 import { RankingBar } from "../../components/bars/RankingBar";
-import { RockyRhino } from "/server/src/model/game/monster/rockyRhino";
 import { PlayerState } from "/types/single/playerState";
 
 interface FinalRankingsProps {
@@ -106,11 +104,11 @@ export const FinalRankings = ({ gameCode }: FinalRankingsProps) => {
 
           {/* TODO: Fix the bars not being evenly spaced on different-sized screens */}
           <div className="w-full flex flex-col gap-[1rem]">
-            <div className="w-7/10 m-[-0.15rem]"><RankingBar playerName={firstPlace.name} monsterName={firstPlace.monster!.name} rank={1} /></div>
-            <div className="w-6/10 m-[-0.15rem]"><RankingBar playerName={secondPlace.name} monsterName={secondPlace.monster!.name} rank={2} /></div>
+            <div className="w-7/10 m-[-0.15rem]"><RankingBar player={firstPlace} rank={1} /></div>
+            <div className="w-6/10 m-[-0.15rem]"><RankingBar player={secondPlace} rank={2} /></div>
             {/* Only show the 3rd place bar if there exists a 3rd place player in the lobby */}
             {thirdPlace ?
-              <div className="w-5/10 m-[-0.15rem]"><RankingBar playerName={thirdPlace.name} monsterName={thirdPlace.monster!.name} rank={3} /></div>
+              <div className="w-5/10 m-[-0.15rem]"><RankingBar player={thirdPlace} rank={3} /></div>
             : null}
           </div>
         </div>
