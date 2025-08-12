@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
@@ -8,18 +8,59 @@ import { Player } from "/server/src/model/game/player";
 import { BaseCard } from "../../components/cards/BaseCard";
 import socket from "../../socket";
 import { RankingBar } from "../../components/bars/RankingBar";
+import { RockyRhino } from "/server/src/model/game/monster/rockyRhino";
+import { PlayerState } from "/types/single/playerState";
 
 interface FinalRankingsProps {
   gameCode?: string;
 }
 
 export const FinalRankings = ({ gameCode }: FinalRankingsProps) => {
+  const code = gameCode;
+  const [players, setPlayers] = useState<PlayerState[] | null>(null);
+
+  // When the page loads, keep attempting to fetch the players
+  useEffect(() => {
+    if (!code) return;
+
+    interface UpdatePlayersProps {
+      message: string;
+      players: PlayerState[];
+    }
+
+    // Function handler for updating the 'players' array
+    const updatePlayers = ({ message, players }: UpdatePlayersProps) => {
+      console.log(message);
+      if (Array.isArray(players) && players.length > 0) {
+        setPlayers(players);
+        socket.off("update-players", updatePlayers);
+      } else {
+        console.log("'players' is empty or not an array", players);
+      }
+    };
+
+    socket.emit("get-players", { gameCode: code });
+    socket.on("update-players", updatePlayers);
+
+    return () => {
+      socket.off("update-players", updatePlayers);
+    };
+  }, [code]);
+
+  // Wait until players have been fetched
+  if (!players) {
+    console.log("Waiting for players to be fetched...");
+    return <div><OutlineText size="large">Loading final results...</OutlineText></div>;
+  }
+
+  /* TODO: Check if this is correct */
   // Button handler for restarting a new lobby
   const newLobby = () => {
     socket.emit("create-game", {});
     console.log("Game session created");
   };
 
+  /* TODO: Check if this is correct */
   // Takes user to 'Host Lobby' page
   // Will use the same tournament mode as the previous one
   socket.on("new-game", ({ code }) => {
@@ -27,6 +68,7 @@ export const FinalRankings = ({ gameCode }: FinalRankingsProps) => {
     FlowRouter.go(`/host/${codeString}`);
   });
 
+  /* TODO: Check if this is correct */
   // Button handler for exiting to home
   const exitToHome = () => {
     // Deletes game session and returns user to 'Home' page
@@ -34,10 +76,15 @@ export const FinalRankings = ({ gameCode }: FinalRankingsProps) => {
     FlowRouter.go("/");
   };
 
-  // Temp players
-  // const firstPlacePlayer = new Player("placeholder", "Aden")
-  // const secondPlacePlayer = new Player("placeholder", "Anika");
-  // const thirdPlacePlayer = new Player("placeholder", "Luna");
+  // Temporarily hardcoding the players' rankings
+  // Hardcoded to use the first 2-3 players
+  console.log(`Players fetched: ${players.length}\n`);
+  const firstPlace = players[0];
+  const secondPlace = players[1];
+  let thirdPlace: PlayerState | null = null;
+  if (players.length >= 3) {
+    thirdPlace = players[2];
+  }
 
   return (
     <BlankPage>
@@ -59,9 +106,12 @@ export const FinalRankings = ({ gameCode }: FinalRankingsProps) => {
 
           {/* TODO: Fix the bars not being evenly spaced on different-sized screens */}
           <div className="w-full flex flex-col gap-[1rem]">
-            <div className="w-7/10 m-[-0.15rem]"><RankingBar playerName="Aden" monsterName="Sparking Mouse" rank={1} /></div>
-            <div className="w-6/10 m-[-0.15rem]"><RankingBar playerName="Anika" monsterName="Flaming Lizard" rank={2} /></div>
-            <div className="w-5/10 m-[-0.15rem]"><RankingBar playerName="Luna" monsterName="Sparking Mouse" rank={3} /></div>
+            <div className="w-7/10 m-[-0.15rem]"><RankingBar playerName={firstPlace.name} monsterName={firstPlace.monster!.name} rank={1} /></div>
+            <div className="w-6/10 m-[-0.15rem]"><RankingBar playerName={secondPlace.name} monsterName={secondPlace.monster!.name} rank={2} /></div>
+            {/* Only show the 3rd place bar if there exists a 3rd place player in the lobby */}
+            {thirdPlace ?
+              <div className="w-5/10 m-[-0.15rem]"><RankingBar playerName={thirdPlace.name} monsterName={thirdPlace.monster!.name} rank={3} /></div>
+            : null}
           </div>
         </div>
       </div>
