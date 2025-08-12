@@ -21,6 +21,7 @@ import { registerHandler } from "./src/socket/backend/registerHandler";
 import {
   loginHandler,
   accountHandler,
+  startChecker,
 } from "./src/socket/backend/loginHandler";
 import { register } from "node:module";
 
@@ -67,6 +68,7 @@ Meteor.startup(async () => {
     socket.emit("new-connect", {});
     // handlers
     loginHandler(io, socket);
+    startChecker(io, socket);
     accountHandler(io, socket);
     registerHandler(io, socket);
     actionSelectedHandler(io, socket);
