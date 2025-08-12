@@ -1,8 +1,7 @@
 import { OutlineText } from "../texts/OutlineText";
 import React, { ReactNode } from "react";
-import { DialogChoiceButton, DialogChoiceButtonProp } from "../buttons/DialogChoiceButton";
 import { MonsterState } from "/types/single/monsterState";
-
+import { IconButton } from "../buttons/IconButton";
 
 export interface DialogueBoxProp{
     children?: ReactNode;
@@ -37,7 +36,6 @@ export const DialogueBox = ({children, onClick, monster} : DialogueBoxProp) => {
         fixed
         xl:h-[35%]
         h-[30%]
-        
         `
 
     const monsterName = 
@@ -50,8 +48,8 @@ export const DialogueBox = ({children, onClick, monster} : DialogueBoxProp) => {
         border-b-0
         place-items-center 
         px-[1rem]
-        pb-[75rem]
-        xl:pb-[36rem]
+        pb-[73rem]
+        xl:pb-[35rem]
         xl:px-[0.5rem]
         pl-[1rem]
         pr-[1rem]
@@ -71,6 +69,9 @@ export const DialogueBox = ({children, onClick, monster} : DialogueBoxProp) => {
                 </div>
                 <div className={`${dialogBox}`}>
                     {children}
+                </div>
+                <div className=" absolute bottom-[3rem] xl:bottom-[2rem] pl-[52rem] xl:pl-[52rem]">
+                    <IconButton buttonColour="blue" style="arrowright" iconColour="black" size="small" onClick={onClick}></IconButton>
                 </div>
             </div>
         </div>
