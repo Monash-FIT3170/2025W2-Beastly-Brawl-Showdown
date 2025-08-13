@@ -113,7 +113,7 @@ jobs:
       # Build Docker image
       - name: Build Docker Image
         run: |
-          docker build -t ghcr.io/monash-fit3170/2025w2-beastly-brawl-showdown/beastly-brawl:latest ./output/bundle
+          docker build -t ghcr.io/monash-fit3170/2025w2-beastly-brawl-showdown/beastly-brawl:latest -f deployment/Dockerfile .
 
       # Login to GitHub Container Registry (GHCR)
       - name: Log in to GHCR
