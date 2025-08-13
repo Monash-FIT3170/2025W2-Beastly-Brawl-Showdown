@@ -92,7 +92,37 @@ jobs:
           set -e
           terraform apply -auto-approve startup.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
 
-  # TODO: Add a docker build job here, which will build the Meteor app into a docker image and push it to the GitHub Container Registry.
+    # Builds all the Docker related stuff.
+    docker_build:
+    runs-on: ubuntu-latest
+    needs: startup
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install and build meteor
+      - name: Install Meteor
+        run: |
+          curl https://install.meteor.com/ | sh
+
+      - name: Build Meteor App
+        run: |
+          meteor npm install
+          meteor build ../output --directory
+
+      # Build Docker image
+      - name: Build Docker Image
+        run: |
+          docker build -t ghcr.io/${{ github.repository }}/beastly-brawl:latest ./output/bundle
+
+      # Login to GitHub Container Registry (GHCR)
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GHCR_PACKAGES_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      # Push image to GHCR
+      - name: Push Docker Image
+        run: |
+          docker push ghcr.io/${{ github.repository }}/beastly-brawl:latest
 
   deployment:
     runs-on: ubuntu-latest
