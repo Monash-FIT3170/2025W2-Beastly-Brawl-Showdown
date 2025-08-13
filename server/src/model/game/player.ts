@@ -2,6 +2,7 @@ import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
 import { Status } from "./status/status";
+import { Item } from "./item/item";
 
 export class Player {
   private id: string;
@@ -21,6 +22,8 @@ export class Player {
   private battleLogs: string[] = [];
   private successfulHit: number = 0;
   private successfulBlock: number = 0;
+
+  private inventory: Item[] = [];
 
   constructor(id: string, name: string) {
     this.name = name;
@@ -48,7 +51,7 @@ export class Player {
     return this.statuses;
   }
 
-  public addStatus(status: Status){
+  public addStatus(status: Status) {
     this.statuses.push(status);
   }
 
@@ -62,7 +65,7 @@ export class Player {
     return this.statuses.some((status) => status.getName() === name);
   }
 
-  public removeStatus(statusToRemove: Status){
+  public removeStatus(statusToRemove: Status) {
     this.statuses = this.statuses.filter((status) => status !== statusToRemove);
   }
 
@@ -199,6 +202,32 @@ export class Player {
 
   public clearActions(): void {
     this.actions = [];
+  }
+
+  public getInventory(): Item[] {
+    return this.inventory;
+  }
+
+  public checkInventory(item: Item): boolean {
+    //checks inventory for item
+    return this.inventory.some((i) => i.getName() === item.getName());
+  }
+
+  public addToInventory(item: Item): void {
+    this.inventory.push(item);
+  }
+
+  public removeFromInventory(item: Item): void {
+    //done like this incase you have multiple of the same item
+    //TODO: might be done incorrectly needs to be tested.
+    const i = this.inventory.indexOf(item);
+    if (i !== -1) {
+      this.inventory.splice(i, 1);
+    }
+  }
+
+  public clearInventory(): void {
+    this.inventory = [];
   }
 
   public getPlayerState(): PlayerState {
