@@ -21,5 +21,6 @@ services:
       # IDK ABOUT MONGO URL YET
     expose:
       - 3000
+      - 3002
     stdin_open: true
     tty: true
