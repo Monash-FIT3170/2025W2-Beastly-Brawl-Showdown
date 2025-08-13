@@ -113,7 +113,7 @@ jobs:
       # Build Docker image
       - name: Build Docker Image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/beastly-brawl:latest ./output/bundle
+          docker build -t ghcr.io/monash-fit3170/2025w2-beastly-brawl-showdown/beastly-brawl:latest ./output/bundle
 
       # Login to GitHub Container Registry (GHCR)
       - name: Log in to GHCR
@@ -122,7 +122,7 @@ jobs:
       # Push image to GHCR
       - name: Push Docker Image
         run: |
-          docker push ghcr.io/${{ github.repository }}/beastly-brawl:latest
+          docker push ghcr.io/monash-fit3170/2025w2-beastly-brawl-showdown/beastly-brawl:latest
 
   deployment:
     runs-on: ubuntu-latest

@@ -14,7 +14,7 @@ services:
 
   beastly-brawl:
     restart: always
-    image: ghcr.io/fit3170-beastly-brawl/beastly-brawl:latest
+    image: ghcr.io/monash-fit3170/2025w2-beastly-brawl-showdown/beastly-brawl:latest
     environment:
       - PORT: 3000
       - ROOT_URL: https://www.beastlybrawl.app/
