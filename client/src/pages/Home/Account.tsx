@@ -11,6 +11,7 @@ import { InputBox } from "../../components/inputs/InputBox";
 
 export const Account = () => {
   interface PlayerAccount {
+    _id: string;
     email?: string;
     username?: string;
     password?: string;

@@ -9,6 +9,7 @@ import { PouncingBandit } from '../model/game/monster/pouncingBandit';
 
 // Schema for a Player Account 
 export interface PlayerAccountSchema {
+  _id: string;
   email: string;
   username: string;
   password: string;
@@ -139,6 +140,7 @@ export async function getPlayerData(email: string): Promise<PlayerAccountSchema 
     }
     // Return the player data as JSON
     return {
+      _id: player._id?.toString(),
       email: player.email,
       username: player.username,
       password: player.password,
@@ -171,14 +173,14 @@ export async function deletePlayerAccount(email: string): Promise<void> {
 }
 
 export async function updatePlayerAccount(
-  email: string,
+  _id: string,
   updates: Partial<PlayerAccountSchema>
 ): Promise<void> {
   try {
     // Check if player exists
-    const existingPlayer = await PlayersCollection.findOneAsync({ email });
+    const existingPlayer = await PlayersCollection.findOneAsync({ _id });
     if (!existingPlayer) {
-      console.error(`No player found with email ${email}.`);
+      console.error(`No player found with email ${_id}.`);
       return;
     }
 
@@ -195,12 +197,12 @@ export async function updatePlayerAccount(
     };
 
     // Perform the update
-    await PlayersCollection.updateAsync(
-      { email },
-      { $set: mergedPlayer }
+   await PlayersCollection.updateAsync(
+    { _id },
+    { $set: mergedPlayer }
     );
 
-    console.log(`Player ${email} updated successfully.`);
+    console.log(`Player ${_id} updated successfully.`);
   } catch (error) {
     console.error(`Error updating player: ${error.message}`);
   }
