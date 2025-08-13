@@ -21,7 +21,7 @@ interface AdventureProps {
 
 const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   //TODO: determine enemy in here???? maybe from AdventureProps
-
+  const [dialogue, setDialogue] = useState<string | null>(null);
   const [battleState, setBattleState] = useState<BattleState | null>(null);
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
@@ -29,10 +29,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const battleId = "ADVENTURE";
 
   useEffect(() => {
-    socket.on("adventure_state", (battle: BattleState) => {
-      console.log("Attempting to update Battle State");
-      setBattleState(battle);
-      console.log(battle);
+    socket.emit("adventure_request", { stage });
+
+    socket.on("adventure_state", (state) => {
+      if (state.type === "battle") {
+        setBattleState(state);
+        setDialogue(null); // Clear dialogue
+      } else if (state.type === "dialogue") {
+        setDialogue(state.description);
+        setBattleState(null); // Clear battle
+      }
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -51,8 +57,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
 
     return () => {
       socket.off("possible_actions");
+      socket.off("adventure_state");
     };
-  });
+  }, [stage]);
 
   var fakeAction = {
     id: ActionIdentifier.ATTACK,
@@ -116,50 +123,60 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   //TODO: take player's monster
   return (
     <>
-      {/* ADD win/death results*/}
-      <>
-        <p>Hello</p>
-      </>
-      <>
-        {battleState && (
-          <div className="battle-state-parts item-center justify-center ">
-            <PlayerInfoPanel battleState={battleState} />
+      {dialogue && (
+        <div className="dialogue-screen flex flex-col items-center justify-center h-full">
+          <p className="text-xl mb-4">{dialogue}</p>
+          {/* Add a button to continue, go to next stage, etc. */}
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={() => {
+              // Example: emit next stage or close dialogue
+              setDialogue(null);
+              // socket.emit("adventure_next", { stage: stage + 1 });
+            }}
+          >
+            Continue
+          </button>
+        </div>
+      )}
+      {battleState && (
+        <div className="battle-state-parts item-center justify-center ">
+          <PlayerInfoPanel battleState={battleState} />
 
-            <BattleMonsterPanel battleState={battleState} />
+          <BattleMonsterPanel battleState={battleState} />
 
-            <div
-              className="battle-logs-stack mt-[60%] xl:mt-[15%]"
-              style={{ position: "relative", width: "100%", height: "120px" }}
-            >
-              {battleState.yourPlayer.logs.map((log, index) => (
-                <FadingBattleText
-                  key={index}
-                  size="medium-battle-text"
-                  style={{ top: `${index * 32}px` }}
-                >
-                  {log}
-                </FadingBattleText>
-              ))}
-            </div>
-
-            <div>
-              {
-                <BattleFooter
-                  possibleActions={possibleActions}
-                  battleId={battleId}
-                />
-              }
-            </div>
-
-            <DiceRollModal
-              show={showDiceModal}
-              onClose={() => setShowDiceModal(false)}
-              toRoll={diceValue}
-              battleState={battleState}
-            />
+          <div
+            className="battle-logs-stack mt-[60%] xl:mt-[15%]"
+            style={{ position: "relative", width: "100%", height: "120px" }}
+          >
+            {battleState.yourPlayer.logs.map((log, index) => (
+              <FadingBattleText
+                key={index}
+                size="medium-battle-text"
+                style={{ top: `${index * 32}px` }}
+              >
+                {log}
+              </FadingBattleText>
+            ))}
           </div>
-        )}
-      </>
+
+          <div>
+            {
+              <BattleFooter
+                possibleActions={possibleActions}
+                battleId={battleId}
+              />
+            }
+          </div>
+
+          <DiceRollModal
+            show={showDiceModal}
+            onClose={() => setShowDiceModal(false)}
+            toRoll={diceValue}
+            battleState={battleState}
+          />
+        </div>
+      )}
     </>
   );
 };

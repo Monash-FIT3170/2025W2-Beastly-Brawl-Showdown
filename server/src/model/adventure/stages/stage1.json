@@ -1,0 +1,18 @@
+{
+  "id": "slime_1",
+  "level": [1, 2, 3, 4, 5, 6, 7],
+  "description": "A small, green, gelatinous creature bounces around you.",
+  "outcomes": [
+    {
+      "choice": "fight",
+      "subOutcomes": [
+        {
+          "range": [1, 100],
+          "result": "blob. blob.. blob.",
+          "type": "FIGHT",
+          "enemyId": "slime_1"
+        }
+      ]
+    }
+  ]
+}
