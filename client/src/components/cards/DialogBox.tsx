@@ -8,12 +8,12 @@ type ScriptProps = {
   monster: MonsterState;
   lines: string[];
   onEnd: () => void; //call when last line is reached
-  onAdvance?: (nextIndex: number) => void;
+  onAdvance?: (nextIndex: number) => void; //can be used to change image or add stuff every click
 };
 
 // type for buttons
 type StaticProps = {
-  monster: MonsterState;
+  monster?: MonsterState; //Might be useful in future
   children: ReactNode;
 };
 
@@ -24,6 +24,10 @@ export function DialogueBox(props: DialogueBoxProps) {
     const { monster } = props;
 
     const isScript = "lines" in props;
+
+    //Check if input is script or button to show according name (monster name/your self)
+    const titleText = isScript ? (props as ScriptProps).monster.name
+                             : "Your self";
 
     const dialogBox = 
         `
@@ -76,7 +80,7 @@ export function DialogueBox(props: DialogueBoxProps) {
                 <div className="absolute top-0 left-8 sm:left-12 -translate-y-1/2 ">
                     <div className={`${monsterName}`}>
                         <OutlineText size="medium">
-                            {monster.name}
+                            {titleText}
                         </OutlineText>
                     </div>
                 </div>
