@@ -57,7 +57,8 @@ export const accountHandler = (io: Server, socket: Socket) => {
     console.log(`Updating player: ${user.username} with`, updates);
 
     try {
-      await updatePlayerAccount(user.email, updates);
+      await updatePlayerAccount(user._id, updates);
+      playerAccounts[socket.id] = user;
       console.log(`Player ${user.username} updated successfully.`);
     } catch (error) {
       console.error(`Error updating player ${user.username}: ${error.message}`);
