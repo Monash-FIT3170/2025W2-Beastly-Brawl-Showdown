@@ -100,6 +100,7 @@ export const Account = () => {
                   size="medium"
                   onClick={() => {
                     socket.emit("updatePlayer", formData); // send to server
+                    setUserData((prev) => ({ ...prev, ...formData }));
                     setEditing(false);
                   }}
                 >
