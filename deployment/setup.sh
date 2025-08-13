@@ -12,10 +12,11 @@ GITHUB_PACKAGES_TOKEN=$1
 
 echo "${GITHUB_PACKAGES_TOKEN}" | docker login ghcr.io -u fit3170-beastly-brawl --password-stdin 
 
+# Get the latest image from GHCR
+docker compose pull
+
+# Restart containers with updated image
 docker compose down
-
-docker pull ghcr.io/fit3170-beastly-brawl/sample-react-app:latest
-
 docker compose up -d
 
 # Disable debug mode
