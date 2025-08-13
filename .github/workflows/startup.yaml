@@ -108,7 +108,7 @@ jobs:
       - name: Build Meteor App
         run: |
           meteor npm install
-          meteor build ../output --directory
+          meteor build ./output --directory
 
       # Build Docker image
       - name: Build Docker Image
