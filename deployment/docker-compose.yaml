@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   nginx:
     restart: always
@@ -9,10 +11,15 @@ services:
       - ./default.conf:/etc/nginx/conf.d/default.conf
       - ./ssl.crt:/etc/nginx/ssl/ssl.crt
       - ./ssl.key:/etc/nginx/ssl/ssl.key
-  sample-react-app:
+
+  beastly-brawl:
     restart: always
-    image: ghcr.io/fit3170-beastly-brawl/sample-react-app:latest
-    ports:
-      - 3000:3000
+    image: ghcr.io/fit3170-beastly-brawl/beastly-brawl:latest
+    environment:
+      - PORT: 3000
+      - ROOT_URL: https://www.beastlybrawl.app/
+      # IDK ABOUT MONGO URL YET
+    expose:
+      - 3000
     stdin_open: true
     tty: true
