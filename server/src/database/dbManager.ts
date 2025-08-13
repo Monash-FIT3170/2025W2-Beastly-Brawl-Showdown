@@ -369,6 +369,8 @@ export async function updatePlayerAccount(
       { _id },
       { $set: mergedPlayer }
     );
+
+    console.log(`Player ${_id} updated successfully.`);
   } catch (error) {
     console.error(`Error updating player account: ${error.message}`);
   }
