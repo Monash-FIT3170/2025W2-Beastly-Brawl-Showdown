@@ -170,5 +170,40 @@ export async function deletePlayerAccount(email: string): Promise<void> {
   }
 }
 
+export async function updatePlayerAccount(
+  email: string,
+  updates: Partial<PlayerAccountSchema>
+): Promise<void> {
+  try {
+    // Check if player exists
+    const existingPlayer = await PlayersCollection.findOneAsync({ email });
+    if (!existingPlayer) {
+      console.error(`No player found with email ${email}.`);
+      return;
+    }
+
+    // Merge existing player data with updates to ensure all required fields stay filled
+    const mergedPlayer: PlayerAccountSchema = {
+      ...existingPlayer,
+      ...updates,
+      stats: {
+        ...existingPlayer.stats,
+        ...(updates.stats || {})
+      },
+      monstersStat: updates.monstersStat || existingPlayer.monstersStat,
+      achievments: updates.achievments || existingPlayer.achievments
+    };
+
+    // Perform the update
+    await PlayersCollection.updateAsync(
+      { email },
+      { $set: mergedPlayer }
+    );
+
+    console.log(`Player ${email} updated successfully.`);
+  } catch (error) {
+    console.error(`Error updating player: ${error.message}`);
+  }
+}
 
 

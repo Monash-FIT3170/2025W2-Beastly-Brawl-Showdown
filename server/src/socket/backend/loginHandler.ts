@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { getPlayerData } from "../../database/dbManager";
+import { getPlayerData, updatePlayerAccount } from "../../database/dbManager";
 import { playerAccounts } from "../../../main";
 
 export const loginHandler = (io: Server, socket: Socket) => {
@@ -40,10 +40,28 @@ export const loginHandler = (io: Server, socket: Socket) => {
 export const accountHandler = (io: Server, socket: Socket) => {
   socket.on("fetchUserData", async () => {
     const user = playerAccounts.get(socket.id);
-    console.log(`Emitting player: ${user.userNames} data`);
+    console.log(`Emitting player: ${user?.username} data`);
 
     // Emit event named "userData" with the user object in the payload
     socket.emit("userData", { user });
+  });
+
+  socket.on("updatePlayer", async (updates) => {
+    const user = playerAccounts.get(socket.id);
+
+    if (!user || !user.email) {
+      console.error(`No logged-in player found for socket ${socket.id}`);
+      return;
+    }
+
+    console.log(`Updating player: ${user.username} with`, updates);
+
+    try {
+      await updatePlayerAccount(user.email, updates);
+      console.log(`Player ${user.username} updated successfully.`);
+    } catch (error) {
+      console.error(`Error updating player ${user.username}: ${error.message}`);
+    }
   });
 };
 
