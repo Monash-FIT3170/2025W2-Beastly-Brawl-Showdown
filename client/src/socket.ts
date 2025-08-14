@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
+import { local_ipv4 } from "../IPtest";
 
-const socket = process.env.NODE_ENV === "development"
-  ? io("http://localhost:3000") // For local development
-  : io("/", { path: "/socket.io", transports: ["websocket", "polling"] }); // For production
+const local_port = "3000"; // socket port
+const socket = io(`${local_ipv4}:${local_port}`);
 
 export default socket;

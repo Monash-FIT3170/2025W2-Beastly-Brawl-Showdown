@@ -16,7 +16,6 @@ services:
     restart: always
     image: ghcr.io/fit3170-beastly-brawl/beastly-brawl:latest
     environment:
-      NODE_ENV: production
       PORT: 3000
       ROOT_URL: https://www.beastlybrawl.app/
       # IDK ABOUT MONGO URL YET
