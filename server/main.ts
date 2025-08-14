@@ -15,7 +15,7 @@ export const activeGameSessions = new Map<number, GameSession>();
 Meteor.startup(async () => {
   // Initialise socket
   const server = http.createServer();
-  const PORT = 3002;
+  const PORT = 3000;
   const io = new Server(server, {
     cors: {
       origin: "*",
