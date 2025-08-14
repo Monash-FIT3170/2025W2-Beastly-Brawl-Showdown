@@ -1,14 +1,26 @@
 {
   "id": "slime_1",
   "level": [1, 2, 3, 4, 5, 6, 7],
-  "description": "A small, green, gelatinous creature bounces around you.",
+  "description": "Stage 1, player fights slime 1.",
   "outcomes": [
+    {
+      "choice": "dialogue",
+      "subOutcomes": [
+        {
+          "range": [1, 100],
+          "result": [
+            "A small, green, gelatinous creature bounces around you.",
+            "It looks harmless enough."
+          ],
+          "type": "DIALOGUE"
+        }
+      ]
+    },
     {
       "choice": "fight",
       "subOutcomes": [
         {
           "range": [1, 100],
-          "result": "blob. blob.. blob.",
           "type": "FIGHT",
           "enemyId": "slime_1"
         }

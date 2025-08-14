@@ -13,6 +13,7 @@ import { ActionIdentifier, ActionState } from "/types/single/actionState";
 import { randomUUID } from "crypto";
 import React from "react";
 import socket from "../../socket";
+import { DialogueBox } from "../../components/cards/DialogueBox";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -21,7 +22,7 @@ interface AdventureProps {
 
 const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   //TODO: determine enemy in here???? maybe from AdventureProps
-  const [dialogue, setDialogue] = useState<string | null>(null);
+  const [dialogue, setDialogue] = useState<string[] | null>(null);
   const [battleState, setBattleState] = useState<BattleState | null>(null);
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
@@ -33,10 +34,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
 
     socket.on("adventure_state", (state) => {
       if (state.type === "battle") {
-        setBattleState(state);
+        setBattleState(state.battle);
         setDialogue(null); // Clear dialogue
       } else if (state.type === "dialogue") {
-        setDialogue(state.description);
+        setDialogue(state.dialogue);
         setBattleState(null); // Clear battle
       }
     });
@@ -124,20 +125,14 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   return (
     <>
       {dialogue && (
-        <div className="dialogue-screen flex flex-col items-center justify-center h-full">
-          <p className="text-xl mb-4">{dialogue}</p>
-          {/* Add a button to continue, go to next stage, etc. */}
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={() => {
-              // Example: emit next stage or close dialogue
-              setDialogue(null);
-              // socket.emit("adventure_next", { stage: stage + 1 });
-            }}
-          >
-            Continue
-          </button>
-        </div>
+        <DialogueBox
+          monster={tempMonsterState}
+          lines={dialogue}
+          onEnd={() => {
+            setDialogue(null);
+            socket.emit("adventure_next", { stage });
+          }}
+        />
       )}
       {battleState && (
         <div className="battle-state-parts item-center justify-center ">

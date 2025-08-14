@@ -14,19 +14,19 @@ export interface storyOutcomes {
 }
 
 export interface subOutcome {
-  range: [number, number];
-  result?: string;
-  type?: EncounterType;
+  range: number[];
+  result?: string[];
+  type?: string;
   statChange?: [string, number];
   enemyId?: string; // <-- NEW
-  enemy?: Monster;  // populated at runtime
-  itemId?: string;  // <-- NEW
-  item?: any;       // populated at runtime
+  enemy?: Monster; // populated at runtime
+  itemId?: string; // <-- NEW
+  item?: any; // populated at runtime
 }
 
 export enum EncounterType {
   FIGHT = "FIGHT",
   REWARD = "REWARD",
   STAT_CHANGE = "STAT_CHANGE",
-  OTHER = "OTHER"
+  DIALOGUE = "DIALOGUE",
 }
