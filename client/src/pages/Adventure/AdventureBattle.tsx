@@ -14,6 +14,11 @@ import { randomUUID } from "crypto";
 import React from "react";
 import socket from "../../socket";
 import { DialogueBox } from "../../components/cards/DialogueBox";
+import { option } from "/types/composite/storyTypes";
+import { DialogueChoiceButton } from "../../components/buttons/DialogueChoiceButton";
+import { PopupClean } from "../../components/popups/PopupClean";
+import { OutlineText } from "../../components/texts/OutlineText";
+import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -26,8 +31,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [battleState, setBattleState] = useState<BattleState | null>(null);
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
+  const [choices, setChoices] = useState<option[] | null>(null);
+  const [receivingItem, setReceivingItem] = useState<string | null>(null);
   // const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const battleId = "ADVENTURE";
+
+  const handleChoiceSelect = (choiceId: string) => {
+    socket.emit("adventure_choice", { stage, choiceId });
+    setChoices(null);
+  };
 
   useEffect(() => {
     socket.emit("adventure_request", { stage });
@@ -39,7 +51,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
       } else if (state.type === "dialogue") {
         setDialogue(state.dialogue);
         setBattleState(null); // Clear battle
+      } else if (state.type === "choice") {
+        // Handle choice state
+        setChoices(state.choices);
+        setBattleState(null); // Clear battle
       }
+    });
+
+    socket.on("adventure_item", (itemName) => {
+      setReceivingItem(itemName.name);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -124,6 +144,25 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   //TODO: take player's monster
   return (
     <>
+      {receivingItem && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+            <OutlineText size="extraLarge">{receivingItem}</OutlineText>
+            <div className="flex flex-row justify-between items-center">
+              <ButtonGeneric
+                size="large"
+                color="blue"
+                onClick={() => {
+                  setReceivingItem(null);
+                  socket.emit("adventure_next", { stage });
+                }}
+              >
+                TAKE!
+              </ButtonGeneric>
+            </div>
+          </div>
+        </PopupClean>
+      )}
       {dialogue && (
         <DialogueBox
           monster={tempMonsterState}
@@ -133,6 +172,17 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             socket.emit("adventure_next", { stage });
           }}
         />
+      )}
+      {choices && (
+        <>
+          {choices.map((choice, idx) => (
+            <DialogueChoiceButton
+              key={idx}
+              children={choice.text}
+              onClick={() => handleChoiceSelect(choice.next)}
+            />
+          ))}
+        </>
       )}
       {battleState && (
         <div className="battle-state-parts item-center justify-center ">

@@ -4,27 +4,75 @@
   "description": "Stage 1, player fights slime 1.",
   "outcomes": [
     {
-      "choice": "dialogue",
-      "subOutcomes": [
+      "id": "initial",
+      "result": [
+        "A small, green, gelatinous creature bounces around you.",
+        "It looks harmless enough."
+      ],
+      "type": "DIALOGUE",
+      "next": "lake_1"
+    },
+    {
+      "id": "random_1",
+      "result": ["Increase health"],
+      "type": "RANDOM",
+      "options": [
         {
-          "range": [1, 100],
-          "result": [
-            "A small, green, gelatinous creature bounces around you.",
-            "It looks harmless enough."
-          ],
-          "type": "DIALOGUE"
+          "id": "success",
+          "chance": 50,
+          "next": "dialogue_test"
+        },
+        {
+          "id": "fail",
+          "chance": 50,
+          "next": "dialogue_test_2"
         }
       ]
     },
     {
-      "choice": "fight",
-      "subOutcomes": [
+      "id": "dialogue_test",
+      "result": ["RANDOM SHIT"],
+      "type": "DIALOGUE",
+      "next": "initial"
+    },
+    {
+      "id": "dialogue_test_2",
+      "result": ["RANDOM SHIT 2"],
+      "type": "DIALOGUE",
+      "next": "choice_1"
+    },
+    {
+      "id": "lake_1",
+      "result": ["You see a lake. Do you..."],
+      "type": "DIALOGUE",
+      "next": "choice_1"
+    },
+    {
+      "id": "choice_1",
+      "type": "CHOICE",
+      "options": [
         {
-          "range": [1, 100],
-          "type": "FIGHT",
-          "enemyId": "slime_1"
+          "id": "approach_lake",
+          "text": "Approach the lake.",
+          "next": "item_1"
+        },
+        {
+          "id": "ignore_lake",
+          "text": "Ignore the lake.",
+          "next": "fight_1"
         }
       ]
+    },
+    {
+      "id": "item_1",
+      "type": "ITEM",
+      "itemId": "potion_basic",
+      "next": "choice_1"
+    },
+    {
+      "id": "fight_1",
+      "type": "FIGHT",
+      "enemyId": "slime_1"
     }
   ]
 }

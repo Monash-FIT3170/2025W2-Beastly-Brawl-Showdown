@@ -13,7 +13,7 @@ import { Battle } from "../model/game/battle";
 import proceedAdventureTurn from "./proceedAdventureTurn";
 import { ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
-import { resolveSubOutcome } from "../model/adventure/storyResolver";
+import { resolveOutcome } from "../model/adventure/storyResolver";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -35,7 +35,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       // Start adventure at stage 1
       const adventure = new Adventure(player, 1);
       // Track which outcome we're on
-      adventure.currentOutcomeIndex = 0;
+      adventure.currentOutcomeId = "initial";
       activeAdventures.set(socket.id, adventure);
 
       progressAdventure(io, socket, adventure, 1);
@@ -47,13 +47,28 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     const adventure = activeAdventures.get(socket.id);
     if (!adventure) return;
 
-    // Increment outcome index
-    if (adventure.currentOutcomeIndex === undefined) {
-      adventure.currentOutcomeIndex = 0;
+    // Otherwise, follow the "next" field from the last outcome
+    const stageData = await loadStage(stage);
+    const lastOutcome = stageData.outcomes.find(
+      (o) => o.id === adventure.currentOutcomeId
+    );
+    if (lastOutcome && lastOutcome.next) {
+      adventure.currentOutcomeId = lastOutcome.next;
     } else {
-      adventure.currentOutcomeIndex++;
+      // If no next, end or error
+      adventure.currentOutcomeId = "";
     }
 
+    progressAdventure(io, socket, adventure, stage);
+  });
+
+  //Handle choices
+  //TODO: ASSIGN TO CHOICE BUTTONS
+  socket.on("adventure_choice", async ({ stage, choiceId }) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+
+    adventure.currentOutcomeId = choiceId;
     progressAdventure(io, socket, adventure, stage);
   });
 
@@ -84,20 +99,21 @@ async function progressAdventure(
 ) {
   try {
     const stageData = await loadStage(stage);
-    const outcomeIndex = adventure.currentOutcomeIndex || 0;
-    const outcome = stageData.outcomes[outcomeIndex];
+    const outcome = stageData.outcomes.find(
+      (o) => o.id === adventure.currentOutcomeId
+    );
 
     if (!outcome) {
       // No more outcomes, maybe end the adventure or move to next stage
+      // TODO: Implement ending of adventure level
       socket.emit("adventure_state", {
         type: "dialogue",
-        description: "The adventure continues...",
+        description: "YOU COMPLETED THE LEVEL AND UNLOCKED A NEW MONSTER!",
       });
       return;
     }
 
-    const subOutcome = outcome.subOutcomes[0];
-    const resolved = resolveSubOutcome(subOutcome);
+    const resolved = resolveOutcome(outcome);
 
     if (resolved.type === "FIGHT") {
       // Create bot and battle
@@ -128,7 +144,31 @@ async function progressAdventure(
       socket.emit("adventure_state", {
         type: "dialogue",
         dialogue: resolved.result,
+        next: resolved.next,
       });
+    } else if (resolved.type === "RANDOM") {
+      const roll = Math.random() * 100;
+      var chanceTotal = 0;
+      if (resolved.options) {
+        for (const option of resolved.options) {
+          chanceTotal += option.chance!;
+          if (roll < chanceTotal) {
+            adventure.currentOutcomeId = option.next;
+            break;
+          }
+        }
+      }
+      progressAdventure(io, socket, adventure, stage);
+    } else if (resolved.type === "CHOICE") {
+      socket.emit("adventure_state", {
+        type: "choice",
+        choices: resolved.options,
+      });
+    } else if (resolved.type === "ITEM") {
+      socket.emit("adventure_item", {
+        name: resolved.item?.getName() || "Unknown Item",
+      });
+      adventure.getPlayer().addToInventory(resolved.item!);
     }
   } catch (err) {
     console.error("Adventure stage load error:", err);

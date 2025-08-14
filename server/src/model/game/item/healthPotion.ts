@@ -3,7 +3,7 @@ import { Item } from "./item";
 
 export class HealthPotion extends Item {
   constructor() {
-    super("health potion");
+    super("Health Potion");
   }
 
   public consume(player: Player): void {

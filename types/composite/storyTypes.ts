@@ -9,24 +9,30 @@ export interface storyStruct {
 }
 
 export interface storyOutcomes {
-  choice?: string;
-  subOutcomes: subOutcome[];
-}
-
-export interface subOutcome {
-  range: number[];
+  id: string;
+  type: string;
   result?: string[];
-  type?: string;
+  options?: option[]; // UPDATE
   statChange?: [string, number];
   enemyId?: string; // <-- NEW
   enemy?: Monster; // populated at runtime
   itemId?: string; // <-- NEW
   item?: any; // populated at runtime
+  next?: string;
+}
+
+export interface option {
+  id: string;
+  chance?: number;
+  text?: string;
+  next: string;
 }
 
 export enum EncounterType {
   FIGHT = "FIGHT",
-  REWARD = "REWARD",
+  ITEM = "ITEM",
   STAT_CHANGE = "STAT_CHANGE",
   DIALOGUE = "DIALOGUE",
+  RANDOM = "RANDOM",
+  CHOICE = "CHOICE",
 }

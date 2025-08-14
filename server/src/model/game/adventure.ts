@@ -8,7 +8,7 @@ export class Adventure {
   private levelMonster: MonsterIdentifier;
   private stage: number;
   private playerMonster: Monster | null;
-  public currentOutcomeIndex: number = 0;
+  public currentOutcomeId: string = "initial";
 
   constructor(player: Player, level: number) {
     this.player = player;

@@ -1,15 +1,15 @@
 import React, { ReactNode } from "react";
 
-
-export interface DialogChoiceButtonProp{
-    onClick?: () => void;
-    children?: ReactNode;
+export interface DialogueChoiceButtonProp {
+  onClick?: () => void | void;
+  children?: ReactNode;
 }
 
-export const DialogChoiceButton = ({children, onClick} : DialogChoiceButtonProp) => {
-
-    const button = 
-        `
+export const DialogueChoiceButton = ({
+  children,
+  onClick,
+}: DialogueChoiceButtonProp) => {
+  const button = `
         bg-pictonBlue
         outline-blackCurrant
         inline-flex
@@ -29,12 +29,11 @@ export const DialogChoiceButton = ({children, onClick} : DialogChoiceButtonProp)
         pl-[1rem]
         pr-[1rem]
         
-        `
+        `;
 
-    return(
-        <button className={`${button}`} onClick={onClick}>
-            {children}
-        </button>
-    )
-
-}
+  return (
+    <button className={`${button}`} onClick={onClick}>
+      {children}
+    </button>
+  );
+};
