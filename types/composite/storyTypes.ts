@@ -3,7 +3,6 @@ import { Monster } from "/server/src/model/game/monster/monster";
 export interface storyStruct {
   id: string | null;
   level: number[] | null;
-  stage: number;
   description: string;
   outcomes: storyOutcomes[];
 }

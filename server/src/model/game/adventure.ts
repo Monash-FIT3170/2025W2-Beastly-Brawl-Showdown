@@ -1,5 +1,6 @@
 import { Monster } from "./monster/monster";
 import { Player } from "./player";
+import { storyStruct } from "/types/composite/storyTypes";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
 export class Adventure {
@@ -9,6 +10,7 @@ export class Adventure {
   private stage: number;
   private playerMonster: Monster | null;
   public currentOutcomeId: string = "initial";
+  public currentStory: storyStruct | null;
 
   constructor(player: Player, level: number) {
     this.player = player;
@@ -16,6 +18,7 @@ export class Adventure {
     this.levelMonster = MonsterIdentifier.POUNCING_BANDIT; //update to map
     this.stage = 1;
     this.playerMonster = player.getMonster();
+    this.currentStory = null;
   }
 
   //TODO: REMOVE - FOR TESTING

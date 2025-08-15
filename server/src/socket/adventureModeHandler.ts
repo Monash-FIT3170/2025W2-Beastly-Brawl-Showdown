@@ -14,6 +14,7 @@ import proceedAdventureTurn from "./proceedAdventureTurn";
 import { ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
+import { storyStruct } from "/types/composite/storyTypes";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -48,8 +49,19 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     if (!adventure) return;
 
     // Otherwise, follow the "next" field from the last outcome
-    const stageData = await loadStage(stage);
-    const lastOutcome = stageData.outcomes.find(
+    let stageData = adventure.currentStory;
+    if (!adventure.currentStory) {
+      const loadNodes = await loadStage(stage);
+      const eligibleNodes = loadNodes.filter((node) => {
+        const match = node.level.includes(adventure.getLevel());
+        return match;
+      });
+      const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
+      console.log(randomNode);
+      stageData = eligibleNodes[randomNode];
+    }
+    //const stageData = await loadStage(stage);
+    const lastOutcome = stageData?.outcomes.find(
       (o) => o.id === adventure.currentOutcomeId
     );
     if (lastOutcome && lastOutcome.next) {
@@ -98,8 +110,18 @@ async function progressAdventure(
   stage: number
 ) {
   try {
-    const stageData = await loadStage(stage);
-    const outcome = stageData.outcomes.find(
+    let stageData = adventure.currentStory;
+    if (!adventure.currentStory) {
+      const loadNodes = await loadStage(stage);
+      const eligibleNodes = loadNodes.filter((node) => {
+        const match = node.level.includes(adventure.getLevel());
+        return match;
+      });
+      const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
+      console.log(randomNode);
+      stageData = eligibleNodes[randomNode];
+    }
+    const outcome = stageData?.outcomes.find(
       (o) => o.id === adventure.currentOutcomeId
     );
 
