@@ -236,7 +236,7 @@ export default function proceedBattleTurn(
           if (gameSession.areBattlesConcluded()) {
 
             //Handler after all battles have ended
-            gameSession.onBattlesEnded(io, socket)
+            // gameSession.onBattlesEnded(io, socket)
 
             console.log(
               `All battles are concluded in game session ${gameSession.getGameCode()}`

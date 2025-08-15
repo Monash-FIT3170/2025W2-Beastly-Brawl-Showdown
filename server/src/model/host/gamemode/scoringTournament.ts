@@ -70,16 +70,27 @@ export class ScoringTournament implements IGameMode{
 		const p1 = io.sockets.sockets.get(battle.getPlayers()[0].getId())
 		console.log("After battle p1: ", p1)
 
-		io.sockets.sockets.get(battle.getPlayers()[0].getId())?.on("ready_next_battle", () => {
+		io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
+			console.log("Server test 1", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
+			this.playerFinished += 1
+			console.log(this.playerFinished,session.getPlayers().getItems().length)
+			if ( this.playerFinished == session.getPlayers().getItems().length){
+				this.onBattlesEnded(session, io, socket)
+		}
+		})
+
+		io.sockets.sockets.get(battle.getPlayers()[1].getId())?.once("ready_next_battle", () => {
 			console.log("Server test 2", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
 			this.playerFinished += 1
+			console.log(this.playerFinished,session.getPlayers().getItems().length)
+			if (this.playerFinished == session.getPlayers().getItems().length){
+			this.onBattlesEnded(session, io, socket)
+		}
 		})
 
 
 
-		if (session.areBattlesConcluded()){
-			this.onBattlesEnded(session, io, socket)
-		}
+
 		
 	}
 
@@ -92,23 +103,24 @@ export class ScoringTournament implements IGameMode{
 
 		console.log("proceed to bext battle")
 
-		// setTimeout(() => {
-		// 	session.clearBattles();
-		// 	this.round += 1;
-		// 	session.createMatches();
+		setTimeout(() => {
+			this.playerFinished = 0
+			session.clearBattles();
+			this.round += 1;
+			session.createMatches();
 
-		// 	for (const battle of session.getBattles().getItems()) {
+			for (const battle of session.getBattles().getItems()) {
 
-		// 		for (const player of battle.getPlayers()) {
-		// 			player.prepareForNextBattle();
-		// 			const playerSocket = io.sockets.sockets.get(player.getId());
-		// 			playerSocket?.join(battle.getId());
-		// 		}
+				for (const player of battle.getPlayers()) {
+					player.prepareForNextBattle();
+					const playerSocket = io.sockets.sockets.get(player.getId());
+					playerSocket?.join(battle.getId());
+				}
 
-		// 		io.to(battle.getId()).emit("battle_started", battle.getId());
-		// 		proceedBattleTurn(io, socket, session, battle);
-		// 	}
-		// }, 10000)
+				io.to(battle.getId()).emit("battle_started", battle.getId());
+				proceedBattleTurn(io, socket, session, battle);
+			}
+		}, 10000)
 
 			
 		}
