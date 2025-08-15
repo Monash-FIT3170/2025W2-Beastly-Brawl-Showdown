@@ -20,6 +20,8 @@ import crypto from "crypto";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
 import { BotPlayer } from "../game/botplayer";
+import { IGameMode } from "./gamemode/gameMode";
+import { Server, Socket } from "socket.io";
 
 export default class GameSession {
   private hostUID: string;
