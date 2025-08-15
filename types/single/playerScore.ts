@@ -4,4 +4,12 @@ export interface PlayerScore{
 	playerId: string;
 	name: string;
 	points: number
+	bonuses: number;
+}
+
+//Bonus system interface
+export interface BonusSystem{
+	finishedWithHpAbove: {percentage: number; bonus: number};
+	inStreak: number;
+	debuff: number;
 }
