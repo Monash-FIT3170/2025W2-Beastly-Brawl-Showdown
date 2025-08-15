@@ -73,7 +73,7 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
       console.log("[SOCKET] Cleanup called")
       socket.off("waiting_screen_data", waitingScreenDataHandler);
     };
-  }, []);
+  });
 
   return (
     <div className="bg-peach lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">
