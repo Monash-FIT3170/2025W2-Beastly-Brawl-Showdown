@@ -2,21 +2,19 @@ import React, { useState, useEffect } from "react";
 // Update the import path and extension as needed; for example:
 import { BattleState } from "/types/composite/battleState";
 import socket from "../../socket";
-import { MostChosenMonsterState } from "/types/single/mostChosenMonsterState";
 import RoundNumberHeader from "../../components/match-summary/RoundNumberHeader";
 import LeftPanel from "../../components/match-summary/LeftPanel";
 import RightPanel from "../../components/match-summary/RightPanel";
 import MiddlePanel from "../../components/match-summary/MiddlePanel";
 import { GameSessionState } from "/types/composite/gameSessionState";
-
 import { PlayerStats } from "../../types/data";
 import { IconButton } from "../../components/buttons/IconButton";
-import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import { BlankPage } from "../../components/pagelayouts/BlankPage";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -24,8 +22,8 @@ interface HostBattlesProps {
 
 const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const code = gameCode; // Currently unused, used for potential page changes
+  const [gameMode, setGameMode] = useState<Mode>(null);
   const [gameSession, setGameSession] = useState<GameSessionState>();
-  // const [mostChosenMonster, setMostChosenMonster] = useState<MostChosenMonsterState | null>(null);
   const [playerStats, setPlayerStats] = useState<PlayerStats>();
   const [exit, setExit] = useState<Boolean>();
 
@@ -107,6 +105,9 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     socket.on("game-session-state", ({ session }) => {
       console.log("sessionData:", session);
       setGameSession(session);
+
+      const stats = extractPlayerStatistics(session.battleStates);
+      setPlayerStats(stats);
     });
 
     return () => {
@@ -120,91 +121,114 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   }, []);
 
   useEffect(() => {
-    if (gameSession) {
-      setPlayerStats(extractPlayerStatistics(gameSession.battleStates));
-    }
-  }, [gameSession]); // Only run when gameSession changes
+    const handleGameMode = ({ mode }: { mode: Mode }) => {
+      console.log("Received game mode:", mode);
+      setGameMode(mode);
+    };
 
-  return (
-    <div
-      style={{
-        backgroundColor: "rgba(255, 255, 255, 0.5)",
-        borderRadius: "1rem",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-        padding: "1rem",
-        margin: "0", // no margin because we'll control spacing by inset
-        position: "absolute",
-        top: "1rem",
-        left: "1rem",
-        right: "1rem",
-        bottom: "1rem",
-        overflow: "auto",
-      }}
-    >
-        {exit && (
-        <PopupClean>
-          <div className="flex flex-col justify-around">
-          <OutlineText size = 'extraLarge'>QUIT GAME?</OutlineText>
-          <BlackText size = 'large'>THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY</BlackText>
-          <BlackText size = 'large'>DO YOU WANT TO CONTINUE OR END THE GAME</BlackText>
-          <div className="flex flex-row justify-between items-center">
-            <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
-            <ButtonGeneric size="large" color="blue" onClick={closeGame}>CONFIRM</ButtonGeneric>
-          </div>
-          </div>
-        </PopupClean>)}
-      {gameSession && playerStats ? (
-        
+    socket.on("game-mode", handleGameMode);
+
+    socket.emit("request-game-mode", { gameCode });
+
+    return () => {
+      socket.off("game-mode", handleGameMode);
+    };
+  }, []);
 
 
-        <div>
-          <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
-            <IconButton
-              style="arrowleft"
-              iconColour="black"
-              buttonColour="red"
-              size="medium"
-              onClick={() => setExit(true)}
-            />
-          </div>
-          <RoundNumberHeader roundNumber={gameSession.round} />
-          {/* Main content area with grid layout */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "auto 1fr auto", // Left panel, Middle panel, Right panel. auto means take up as much space as you need and 1fr means take up the rest of the remaining space
-              gap: "1rem",
-              marginTop: "1rem",
-              height: "calc(100% - 8rem)", // Adjust based on header height
-              // border: '2px solid #403245',
-              position: "relative",
-            }}
-          >
-            {/* Left Panel */}
-            {/* <div className="left-panel"> */}
-            <LeftPanel
-              damageData={playerStats.damageData} // Use real damage data
-              blockData={playerStats.blockData} // Use real block data
-              popularMonster={gameSession.gameSessionData.mostChosenMonster}
-            />
-            {/* </div> */}
-
-            {/* Middle Panel */}
-            <div style={{ height: "100%", overflow: "auto" }}>
-              <MiddlePanel gameSession={gameSession} />
+  if (gameMode === null) {
+    return <div>Loading game mode...</div>;
+  }
+  else if (gameMode === "royale") {
+    return <BlankPage>
+      <BlackText children="This is the Battle Royale Lobby." size="large" />
+    </BlankPage>;
+  }
+  else if (gameMode === "scored") {
+    return <BlankPage>
+      <BlackText children="This is the Scored Game Lobby." size="large" />
+    </BlankPage>;
+  }
+  else {
+    return (
+      <div
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "1rem",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+          padding: "1rem",
+          margin: "0", // no margin because we'll control spacing by inset
+          position: "absolute",
+          top: "1rem",
+          left: "1rem",
+          right: "1rem",
+          bottom: "1rem",
+          overflow: "auto",
+        }}
+      >
+          {exit && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+            <OutlineText size = 'extraLarge'>QUIT GAME?</OutlineText>
+            <BlackText size = 'large'>THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY</BlackText>
+            <BlackText size = 'large'>DO YOU WANT TO CONTINUE OR END THE GAME</BlackText>
+            <div className="flex flex-row justify-between items-center">
+              <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
+              <ButtonGeneric size="large" color="blue" onClick={closeGame}>CONFIRM</ButtonGeneric>
             </div>
-
-            {/* Right Panel */}
+            </div>
+          </PopupClean>)}
+        {gameSession && playerStats ? (
+          
+          <div>
+            <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
+              <IconButton
+                style="arrowleft"
+                iconColour="black"
+                buttonColour="red"
+                size="medium"
+                onClick={() => setExit(true)}
+              />
+            </div>
+            <RoundNumberHeader roundNumber={gameSession.round} />
+            {/* Main content area with grid layout */}
             <div
-              style={{ minWidth: "260px", height: "100%", overflow: "auto" }}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "auto 1fr auto", // Left panel, Middle panel, Right panel. auto means take up as much space as you need and 1fr means take up the rest of the remaining space
+                gap: "1rem",
+                marginTop: "1rem",
+                height: "calc(100% - 8rem)", // Adjust based on header height
+                // border: '2px solid #403245',
+                position: "relative",
+              }}
             >
-              <RightPanel battleStates={gameSession.battleStates} />
+              {/* Left Panel */}
+              {/* <div className="left-panel"> */}
+              <LeftPanel
+                damageData={playerStats.damageData} // Use real damage data
+                blockData={playerStats.blockData} // Use real block data
+                popularMonster={gameSession.gameSessionData.mostChosenMonster}
+              />
+              {/* </div> */}
+
+              {/* Middle Panel */}
+              <div style={{ height: "100%", overflow: "auto" }}>
+                <MiddlePanel gameSession={gameSession} />
+              </div>
+
+              {/* Right Panel */}
+              <div
+                style={{ minWidth: "260px", height: "100%", overflow: "auto" }}
+              >
+                <RightPanel battleStates={gameSession.battleStates} />
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
-    </div>
-  );
+        ) : null}
+      </div>
+    );
+  };
 };
 
 export default HostBattles;

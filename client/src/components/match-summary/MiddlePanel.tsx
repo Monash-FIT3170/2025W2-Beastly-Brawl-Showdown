@@ -7,6 +7,7 @@ interface MiddlePanelProps {
 }
 
 const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
+  
   return (
     <div 
       style={{

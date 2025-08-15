@@ -6,8 +6,7 @@ import { GameSessionState } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
-import { PlayerState } from "/types/single/playerState";
-import { MonsterIdentifier } from "/types/single/monsterState";
+import { PlayerState } from "/types/single/playerState";``
 import { RockyRhino } from "../game/monster/rockyRhino";
 
 export default class GameSession {
@@ -15,6 +14,7 @@ export default class GameSession {
   private players: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
+  private gameMode: Mode;
   private round: number = 1; // Round number
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
@@ -25,8 +25,9 @@ export default class GameSession {
     mostChosenMonster: { monster: null, percentagePick: "0" },
   };
 
-  constructor(hostID: string, presetGameCode?: number) {
+  constructor(hostID: string, gameMode: Mode, presetGameCode?: number) {
     this.hostUID = hostID;
+    this.gameMode = gameMode;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
@@ -51,6 +52,8 @@ export default class GameSession {
 
   //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
+    if (!this.battles) return;
+
     this.battles.getItems().forEach((curBattle) => {
       curBattle.eliminateAllPlayers()
     })
@@ -71,6 +74,10 @@ export default class GameSession {
 
   public getGameCode() {
     return this.gameCode;
+  }
+
+  public getGameMode() {
+    return this.gameMode;
   }
 
   public getBattles() {

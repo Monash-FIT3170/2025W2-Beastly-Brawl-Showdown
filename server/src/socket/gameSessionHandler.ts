@@ -6,9 +6,9 @@ import proceedBattleTurn from "./battle/startBattleHandler";
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
-  socket.on("create-game", ({}) => {
+  socket.on("create-game", ({ mode }) => {
     console.log("Attempting game session creation...");
-    const session = new GameSession(socket.id);
+    const session = new GameSession(socket.id, mode);
     // Check if game code already exists, if so, generate a new one
     while (activeGameSessions.has(session.getGameCode())) {
       console.log("Game session already exists. Generating new code...");
@@ -22,7 +22,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
     socket.emit("new-game", {
       // UPDATE: change who this emits to because potentially two ppl clicking host at same time would call this
-      code: session.getGameCode(),
+      code: session.getGameCode()
     });
   });
 
@@ -192,6 +192,11 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       return;
     }
 
+    io.to(`game-${gameCode}`).emit("game-mode", {
+      mode: session.getGameMode()
+    });
+    console.log(`Emitting game mode...`);
+
     io.to(`game-${gameCode}`).emit("start-success", {});
 
     session.calculateMostChosenMonster();
@@ -205,12 +210,16 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       io.to(battle.getId()).emit("battle_started", battle.getId());
       proceedBattleTurn(io, socket, session, battle);
     }
+  });
 
-    //Comment out as host information are updated live in battleHandler
-    // Update host information
-    //   socket.emit("game-session-state", {
-    //     session: session.getGameSessionState(),
-    //   });
+  socket.on("request-game-mode", ({ gameCode }) => {
+    const gameCodeN = Number(gameCode);
+    const session = activeGameSessions.get(gameCodeN);
+    if (session) {
+      socket.emit("game-mode", {
+        mode: session.getGameMode(),
+      });
+    }
   });
 
   // Close game session
@@ -218,6 +227,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     console.log("Session cancelling...");
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
+
     session.closeAllBattles() //close all the ongoing battles in the current game session (host)
 
     //Notify all players that the host is closed
