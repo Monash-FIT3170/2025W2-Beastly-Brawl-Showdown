@@ -18,5 +18,9 @@ export class FeralStrikeAbilityAction extends Action {
 
   }
 
+  public prepareAnimation(): string | [string, number] {return "Feral_Strike_Animation"}
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {}
 }
+
+

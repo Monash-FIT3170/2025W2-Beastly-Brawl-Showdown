@@ -2,6 +2,7 @@ import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 import { AttackAction } from "../attack";
+import { get } from "http";
 
 export class TipTheScalesAbilityAction extends Action {
   private attackAction: AttackAction | null = null;
@@ -32,6 +33,14 @@ export class TipTheScalesAbilityAction extends Action {
       return this.attackAction.getDiceRoll();
     }
     return 0;
+  }
+
+  public prepareAnimation(): string | [string, number] {
+    if (this.attackAction) {
+      const diceRollNumber = this.getDiceRoll();
+      return ["roll_dice", diceRollNumber];
+    }
+    return "roll_dice";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {

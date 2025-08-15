@@ -53,6 +53,11 @@ export class AttackAction extends Action {
     );
   }
 
+  // relies on prepare() method being called to roll the dice first.
+  public prepareAnimation(): string | [string, number] {
+    return ["roll_dice", this.d20]; 
+  }
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
