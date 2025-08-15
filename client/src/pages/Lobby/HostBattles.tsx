@@ -2,16 +2,13 @@ import React, { useState, useEffect } from "react";
 // Update the import path and extension as needed; for example:
 import { BattleState } from "/types/composite/battleState";
 import socket from "../../socket";
-import { MostChosenMonsterState } from "/types/single/mostChosenMonsterState";
 import RoundNumberHeader from "../../components/match-summary/RoundNumberHeader";
 import LeftPanel from "../../components/match-summary/LeftPanel";
 import RightPanel from "../../components/match-summary/RightPanel";
 import MiddlePanel from "../../components/match-summary/MiddlePanel";
 import { GameSessionState } from "/types/composite/gameSessionState";
-
 import { PlayerStats } from "../../types/data";
 import { IconButton } from "../../components/buttons/IconButton";
-import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
@@ -108,6 +105,9 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     socket.on("game-session-state", ({ session }) => {
       console.log("sessionData:", session);
       setGameSession(session);
+
+      const stats = extractPlayerStatistics(session.battleStates);
+      setPlayerStats(stats);
     });
 
     return () => {
