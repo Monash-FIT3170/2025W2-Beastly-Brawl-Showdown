@@ -8,6 +8,8 @@ env:
   snapshot_name: bbs-snapshot-latest
   droplet_name: droplet-bbs-game-server
   droplet_user: root
+  ghcr_user: fit3170-beastly-brawl
+  image_name: beastly-brawl
 
 jobs:
   startup:
@@ -100,33 +102,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Install and build meteor
-      - name: Install Meteor
-        run: |
-          curl https://install.meteor.com/ | sh
-
-      - name: Build Meteor App
-        run: |
-          meteor npm install
-          meteor build ./output --directory
-
       # Build Docker image
       - name: Build Docker Image
         run: |
-          docker build -t ghcr.io/fit3170-beastly-brawl/beastly-brawl:latest -f deployment/Dockerfile .
+          docker build -t ghcr.io/${{ env.ghcr_user }}/${{ env.image_name }}:latest -f deployment/Dockerfile .
 
       # Login to GitHub Container Registry (GHCR)
       - name: Log in to GHCR
-        run: echo "${{ secrets.GHCR_PACKAGES_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GHCR_PACKAGES_TOKEN }}" | docker login ghcr.io -u ${{ env.ghcr_user }} --password-stdin
 
       # Push image to GHCR
       - name: Push Docker Image
         run: |
-          docker push ghcr.io/fit3170-beastly-brawl/beastly-brawl:latest
+          docker push ghcr.io/${{ env.ghcr_user }}/${{ env.image_name }}:latest
 
   deployment:
     runs-on: ubuntu-latest
-    needs: startup
+    needs:
+      - startup
+      - docker_build
     steps:
       - name: Checkout
         uses: actions/checkout@v4

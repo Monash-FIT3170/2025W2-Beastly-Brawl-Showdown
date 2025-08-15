@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import { local_url } from "/client/IPtest";
 import socket from "../../socket";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import LogoResizable from "../../components/logos/LogoResizable";
@@ -13,6 +12,7 @@ import { GenericIcon } from "../../components/icons/GenericIcon";
 import { PlayerState } from "/types/single/playerState";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { BlackText } from "../../components/texts/BlackText";
+import { Meteor } from "meteor/meteor";
 
 // Defines code for the game session
 interface HostLobbyProps {
@@ -278,14 +278,15 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
           <OutlineText size="large">
-            Join the game at {`${local_url}/join/${code}`}
+            Join the game at{" "}
+            {`${Meteor.settings.public.SERVER_URLS[0]}/join/${code}`}
           </OutlineText>
         </BaseCard>
 
         {/* QR code on the right */}
         <div className="flex p-1 outline-blackCurrant outline-[0.25rem] rounded-2xl bg-white mt-1">
           <QRCodeSVG
-            value={`${local_url}/join/${code}`}
+            value={`${Meteor.settings.public.SERVER_URLS[0]}/join/${code}`}
             size={100}
             bgColor="#FFFFFF"
             marginSize={2}

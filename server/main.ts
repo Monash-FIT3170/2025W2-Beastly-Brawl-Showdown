@@ -8,6 +8,7 @@ import { Battle } from "./src/model/game/battle";
 import GameSession from "./src/model/host/gameSession";
 import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataHandler";
+
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
@@ -15,10 +16,12 @@ export const activeGameSessions = new Map<number, GameSession>();
 Meteor.startup(async () => {
   // Initialise socket
   const server = http.createServer();
-  const PORT = 3000;
+  const PORT = 3002;
+  const allowedOrigins = Meteor.settings.public.SERVER_URLS;
+
   const io = new Server(server, {
     cors: {
-      origin: "*",
+      origin: allowedOrigins,
       methods: ["GET", "POST"],
     },
   });
