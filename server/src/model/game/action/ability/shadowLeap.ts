@@ -15,6 +15,8 @@ export class ShadowLeapAbilityAction extends Action {
         );
   }
 
+  public prepareAnimation(): string | [string, number] {return "Shadow_Leap_Animation";}
+
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
      // Set dodge to true
      actingPlayer.dodge();

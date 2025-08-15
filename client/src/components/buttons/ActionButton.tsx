@@ -49,7 +49,6 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   const adventureClicked = () => {
     socket.emit("adventure_action", {
       action: actionState,
-      battleId,
       playerId: socket.id,
     });
   };

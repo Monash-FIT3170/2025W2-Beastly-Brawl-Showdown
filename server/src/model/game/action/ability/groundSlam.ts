@@ -19,6 +19,9 @@ export class GroundSlamAbilityAction extends Action {
     // affectedPlayer.clearActions();
   }
 
+  public prepareAnimation(): string | [string, number] {return "Ground_Slam_Animation";}
+
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
 

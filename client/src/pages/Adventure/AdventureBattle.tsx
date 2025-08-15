@@ -33,7 +33,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
   const [choices, setChoices] = useState<option[] | null>(null);
   const [receivingItem, setReceivingItem] = useState<string | null>(null);
-  // const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
+  const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const battleId = "ADVENTURE";
 
   const handleChoiceSelect = (choiceId: string) => {
@@ -63,7 +63,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
-      // setPossibleActions(actions);
+      setPossibleActions(actions);
     });
 
     //insert socket for end of battle
@@ -89,7 +89,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     currentUse: 100,
     maxUse: 100,
   };
-  const possibleActions = [fakeAction];
 
   var tempMonsterState = {
     id: MonsterIdentifier.CINDER_TAIL,
@@ -192,7 +191,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
 
           <div
             className="battle-logs-stack mt-[60%] xl:mt-[15%]"
-            style={{ position: "relative", width: "100%", height: "120px" }}
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "120px",
+            }}
           >
             {battleState.yourPlayer.logs.map((log, index) => (
               <FadingBattleText
