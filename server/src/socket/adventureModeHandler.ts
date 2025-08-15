@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { activeAdventures, players } from "../../main";
+import { activeAdventures, players, battles } from "../../main";
 import { Adventure } from "../model/game/adventure";
 import { Player } from "../model/game/player";
 import { MonsterIdentifier } from "/types/single/monsterState";
@@ -15,6 +15,7 @@ import { ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
 import { storyStruct } from "/types/composite/storyTypes";
+import { NullAction } from "../model/game/action/null";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -87,18 +88,157 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Handle player actions in adventure
   socket.on(
     "adventure_action",
-    ({
-      action,
-      battleId,
-      playerId,
-    }: {
-      action: ActionState;
-      battleId: string;
-      playerId: string;
-    }) => {
-      // TODO: Implement action logic
-      console.log("action clicked VIA ADVENTURE WOO!!", action);
-      // You would update the battle/adventure state here and emit updates as needed
+    ({ action, playerId }: { action: ActionState; playerId: string }) => {
+      console.log("ADV: Attempting action addition...");
+
+      var battle = battles.get(playerId);
+      var player = battle?.getPlayer(playerId);
+      var actionToAdd = player?.getMonster()?.getAction(action.id);
+
+      if (actionToAdd) {
+        player?.addAction(actionToAdd);
+        console.log(
+          `ADV: Adding action ${actionToAdd.getName()} to Player ${player?.getName()}`
+        );
+        console.log(actionToAdd.getDescription());
+      } else {
+        console.error(
+          `Battle: ${playerId}, ${battle} \n Player: ${playerId}, ${player} \n Action: ${action.id}, ${actionToAdd}`
+        );
+      }
+
+      //TODO: set bots action
+      //because there's no timer - need to prepare / execute actions too!
+      let playersInBattle = battle?.getPlayers();
+      if (!playersInBattle) {
+        console.error(`ADV: battle players empty ${playersInBattle}`);
+      } else {
+        let player1 = playersInBattle[0];
+        let player2 = playersInBattle[1];
+
+        //if no selected action -> null action (this is a failsafe in case bot broken)
+        playersInBattle.forEach((p) => {
+          if (p.getActions().length === 0) {
+            p.addAction(new NullAction());
+          }
+        });
+
+        // Prepare method
+        player1.getActions().forEach((action) => {
+          action.prepare(player1, player2);
+        });
+
+        player2.getActions().forEach((action) => {
+          action.prepare(player2, player1);
+        });
+
+        // Emitting player1's action animations TO UPDATE
+        player1.getActions().forEach((action) => {
+          if (action.getName() === "Attack") {
+            // get the animation name and dice number from the prepareAnimation method
+            const animationInfo = action.prepareAnimation();
+            const animationType = animationInfo[0];
+            const diceRollNumber = animationInfo[1];
+            console.log(animationType, diceRollNumber);
+            io.to(player1.getId()).emit(String(animationType), diceRollNumber);
+          }
+
+          if (action.getName() === "Tip The Scales") {
+            const animationInfo = action.prepareAnimation();
+            const animationType = animationInfo[0];
+            const diceRoll = animationInfo[1];
+            io.to(player1.getId()).emit(animationType, diceRoll);
+            console.log(
+              `Player 1 used tip the scales and dice roll = ${diceRoll}`
+            );
+          }
+        });
+
+        // Emitting player2's action animations
+        player2.getActions().forEach((action) => {
+          if (action.getName() === "Attack") {
+            const animationInfo = action.prepareAnimation();
+            const animationType = animationInfo[0];
+            const diceRollNumber = animationInfo[1];
+            console.log(animationType, diceRollNumber);
+            io.to(player2.getId()).emit(String(animationType), diceRollNumber);
+          }
+
+          if (action.getName() === "Tip The Scales") {
+            const animationInfo = action.prepareAnimation();
+            const animationType = animationInfo[0];
+            const diceRoll = animationInfo[1];
+
+            console.log(
+              `Player 2 used tip the scales and dice roll = ${diceRoll}`
+            );
+            io.to(player2.getId()).emit(animationType, diceRoll);
+          }
+        });
+
+        setTimeout(() => {
+          // Execute method
+          player1.getActions().forEach((action) => {
+            action.execute(player1, player2);
+            if (action instanceof NullAction) {
+              console.log(`P1 - ${player1.getName()} did nothing.`);
+            }
+          });
+
+          player2.getActions().forEach((action) => {
+            action.execute(player2, player1);
+            if (action instanceof NullAction) {
+              console.log(`P2 - ${player2.getName()} did nothing.`);
+            }
+          });
+
+          io.to(playerId).emit("adventure_state", {
+            type: "battle",
+            battle: battle?.getBattleState(playerId),
+          });
+
+          playersInBattle.forEach((p) => {
+            p.resetStats();
+            p.resetActions();
+            p.getMonster()?.removeTemporaryActions();
+          });
+
+          if (battle?.isBattleOver()) {
+            console.log(`ADV: battle is over!`);
+            const winners = battle.getWinners();
+            console.log(winners);
+            const playerName = player?.getName();
+            if (playerName) {
+              if (winners?.includes(playerName)) {
+                console.log(`ADV: player won!`);
+                const adventure = activeAdventures.get(playerId);
+                const stage = adventure?.getStage();
+                //TODO: DO NEXT STAGE INSTEAD OF THIS STAGE
+
+                if (adventure && stage) {
+                  progressAdventure(io, socket, adventure, stage);
+                } else {
+                  console.error(
+                    `ADV: adventure or stage does not exist for player id: ${playerId} \n
+                    ${adventure}, ${stage}`
+                  );
+                }
+              } else {
+                console.log(`ADV: GAME OVER!`);
+                //TODO: implement
+              }
+            } else {
+              console.error(`ADV: Player does not have name... ${playerName}`);
+            }
+          } else {
+            playersInBattle.forEach((p) => {
+              p.tickStatuses();
+            });
+            let actions = player?.getMonster()?.getPossibleActionStates();
+            io.to(playerId).emit("possible_actions", actions);
+          }
+        }, 3000);
+      }
     }
   );
 };
@@ -154,11 +294,18 @@ async function progressAdventure(
         bot,
         socket.id
       );
+      battles.set(socket.id, battle);
+      console.log(`ADV: New Battle for ${socket.id}`);
       // Send battle state to client
       socket.emit("adventure_state", {
         type: "battle",
         battle: battle.getBattleState(socket.id),
       });
+      let actions = adventure
+        .getPlayer()
+        ?.getMonster()
+        ?.getPossibleActionStates();
+      socket.emit("possible_actions", actions);
       // Optionally, proceed with the battle logic
       proceedAdventureTurn(io, socket, adventure, battle);
     } else if (resolved.type === "DIALOGUE") {
@@ -200,6 +347,7 @@ async function progressAdventure(
   }
 }
 
+//todo: this is used in multiple files
 const monsterMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => new RockyRhino()],
   [MonsterIdentifier.POUNCING_BANDIT, () => new PouncingBandit()],
