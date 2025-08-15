@@ -19,7 +19,7 @@ export default class GameSession {
   private gameCode: number;
   private round: number = 1; // Round number
   private player_max: number = 8; // Max 8 players
-  private battle_max: number = 4; // Max 4 battles
+  private battle_max: number = this.player_max - 1; // Max battles will be the number of players - 1
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
 
   // Initialise sample data
@@ -31,7 +31,7 @@ export default class GameSession {
     this.hostUID = hostID;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
-    this.waitQueue = new Queue<Player>(2);
+    this.waitQueue = new Queue<Player>(4);
     this.battles = new Queue<Battle>(this.battle_max);
 
     if (presetGameCode !== undefined) {
@@ -284,6 +284,11 @@ export default class GameSession {
        
         let battleId = crypto.randomUUID();
 
+      // const healthReset1 = player1Indexed.getMonster()?.getMaxHealth();
+      // if (healthReset1 != undefined) {player1Indexed.setHealth(healthReset1);};
+      // const healthReset2 = player2Indexed.getMonster()?.getMaxHealth();
+      // if (healthReset2 != undefined) {player2Indexed.setHealth(healthReset2);};
+
         const battle = new Battle(
           battleId,
           player1Indexed,
@@ -343,22 +348,29 @@ export default class GameSession {
   }
 
   public areBattlesConcluded(): boolean {
-    return false;
-    // return this.battles.getItems().every((battle) => battle.isBattleOver());
+    // return false;
+    return this.battles.getItems().every((battle) => battle.isBattleOver());
   }
 
   public getGameSessionState(): GameSessionState {
     const allBattles = [];
     let remainingPlayers = 0;
-    let totalPlayers = this.battles.size() * 2;
+    // let totalPlayers = this.battles.size() * 2;
+    let totalPlayers = this.players.size();
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
       allBattles.push(battle.getBattleState(firstPlayer.getId()));
-      if (battle.isBattleOver()) {
+      // if (battle.isBattleOver()) {
+      //   remainingPlayers += 1;
+      // } else {
+      //   remainingPlayers += 2;
+      // }
+    }
+
+    for (const player of this.getPlayers().getItems()) {
+      if (player.getHealth() > 0) {
         remainingPlayers += 1;
-      } else {
-        remainingPlayers += 2;
       }
     }
 

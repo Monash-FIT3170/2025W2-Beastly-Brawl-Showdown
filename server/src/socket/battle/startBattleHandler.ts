@@ -151,9 +151,22 @@ export default function proceedBattleTurn(
 
         //
         setTimeout(() => {
-          if (gameSession.areBattlesConcluded()) {
+          // if (gameSession.areBattlesConcluded()) {
+          //   console.log(
+          //     `All battles are concluded in game session ${gameSession.getGameCode()}`
+          //   );
+
+          //   //TODO: for future, this can be used to handle what happens after a game session ends
+
+          //   socket.emit("game_session_ended", {
+          //     message: `Game session ${gameSession.getGameCode()} has ended.`,
+          //   });
+          //   return;
+          // }
+
+          if (gameSession.getGameSessionState().remainingPlayers <= 1) {
             console.log(
-              `All battles are concluded in game session ${gameSession.getGameCode()}`
+              `Only one player remains.`
             );
 
             //TODO: for future, this can be used to handle what happens after a game session ends
