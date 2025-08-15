@@ -20,6 +20,7 @@ export interface PlayerAccountSchema {
   }
   achievments: string[];
   monstersStat: PlayerMonsterStatSchema[]; 
+  adventureProgression: AdventureProgressionSchema
 }
 
 // Schema for the Player's monsters stats customization
@@ -28,6 +29,17 @@ export interface PlayerMonsterStatSchema {
   maxHealth: number,
   attackBonus: number,
   armourClass: number
+}
+
+// Schema for Adventure mode progression. 
+export interface AdventureProgressionSchema {
+  // {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
+  unlockedMonsters: Record<string, boolean>, 
+  level: number, 
+  stage: number,
+  achievments: string[],
+  savedGameState: {} // This will store the state of the game as players can pause single player mode and resume later. 
+
 }
 
 // Collections
@@ -66,8 +78,7 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
   };
 }
 
-// Used for initializing a Player Account that represents a Guest. Will be overwritten when users register/logins
-// NOTE: For now, default/guest accounts have blank fields. May need to refactor this. 
+// This is used when a player/socket connects to create a 'guest' account. 
 export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
   return {
     email: '',
