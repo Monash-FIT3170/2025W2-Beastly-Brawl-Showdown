@@ -84,8 +84,7 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
   };
 }
 
-// Used for initializing a Player Account that represents a Guest. Will be overwritten when users register/logins
-// NOTE: For now, default/guest accounts have blank fields. May need to refactor this. 
+// This is used when a player/socket connects to create a 'guest' account. 
 export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
   return {
     email: '',
