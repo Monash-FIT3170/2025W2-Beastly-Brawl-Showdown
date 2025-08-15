@@ -3,18 +3,26 @@ import { activeGameSessions, players } from "../../main";
 import { Player } from "../model/game/player";
 import GameSession from "../model/host/gameSession";
 import proceedBattleTurn from "./battle/startBattleHandler";
+import { ScoringTournament } from "../model/host/gamemode/scoringTournament";
+
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
   socket.on("create-game", ({}) => {
     console.log("Attempting game session creation...");
-    const session = new GameSession(socket.id);
+    //Setting the default to be ScoringTournament for now
+    const session = new GameSession(socket.id, {mode: new ScoringTournament({rounds : 3})});
     // Check if game code already exists, if so, generate a new one
     while (activeGameSessions.has(session.getGameCode())) {
       console.log("Game session already exists. Generating new code...");
       session.generateGameCode();
     }
     activeGameSessions.set(session.getGameCode(), session);
+
+    //Initialise game (based on game mode)
+    session.initGame(io, socket)
+
+
     console.log(
       `Game session created: ${session.getGameCode()} | hostId: ${socket.id}`
     );
@@ -201,6 +209,8 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     for (const battle of session.getBattles().getItems()) {
       for (const player of battle.getPlayers()) {
         io.sockets.sockets.get(player.getId())?.join(battle.getId());
+        //Get all players to join a common game session socket room
+        io.sockets.sockets.get(player.getId())?.join(`game-${gameCodeN}`);
       }
       io.to(battle.getId()).emit("battle_started", battle.getId());
       proceedBattleTurn(io, socket, session, battle);
