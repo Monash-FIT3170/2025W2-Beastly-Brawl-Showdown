@@ -136,90 +136,92 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   }, []);
 
 
-if (gameMode === null) {
-  return <div>Loading game mode...</div>;
-}
-if (gameMode === "royale") {
-  return <BlankPage />;
-}
-  return (
-    <div
-      style={{
-        backgroundColor: "rgba(255, 255, 255, 0.5)",
-        borderRadius: "1rem",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-        padding: "1rem",
-        margin: "0", // no margin because we'll control spacing by inset
-        position: "absolute",
-        top: "1rem",
-        left: "1rem",
-        right: "1rem",
-        bottom: "1rem",
-        overflow: "auto",
-      }}
-    >
-        {exit && (
-        <PopupClean>
-          <div className="flex flex-col justify-around">
-          <OutlineText size = 'extraLarge'>QUIT GAME?</OutlineText>
-          <BlackText size = 'large'>THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY</BlackText>
-          <BlackText size = 'large'>DO YOU WANT TO CONTINUE OR END THE GAME</BlackText>
-          <div className="flex flex-row justify-between items-center">
-            <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
-            <ButtonGeneric size="large" color="blue" onClick={closeGame}>CONFIRM</ButtonGeneric>
-          </div>
-          </div>
-        </PopupClean>)}
-      {gameSession && playerStats ? (
-        
-        <div>
-          <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
-            <IconButton
-              style="arrowleft"
-              iconColour="black"
-              buttonColour="red"
-              size="medium"
-              onClick={() => setExit(true)}
-            />
-          </div>
-          <RoundNumberHeader roundNumber={gameSession.round} />
-          {/* Main content area with grid layout */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "auto 1fr auto", // Left panel, Middle panel, Right panel. auto means take up as much space as you need and 1fr means take up the rest of the remaining space
-              gap: "1rem",
-              marginTop: "1rem",
-              height: "calc(100% - 8rem)", // Adjust based on header height
-              // border: '2px solid #403245',
-              position: "relative",
-            }}
-          >
-            {/* Left Panel */}
-            {/* <div className="left-panel"> */}
-            <LeftPanel
-              damageData={playerStats.damageData} // Use real damage data
-              blockData={playerStats.blockData} // Use real block data
-              popularMonster={gameSession.gameSessionData.mostChosenMonster}
-            />
-            {/* </div> */}
-
-            {/* Middle Panel */}
-            <div style={{ height: "100%", overflow: "auto" }}>
-              <MiddlePanel gameSession={gameSession} gameMode={gameMode}/>
+  if (gameMode === null) {
+    return <div>Loading game mode...</div>;
+  }
+  else if (gameMode === "royale") {
+    return <BlankPage />;
+  }
+  else {
+    return (
+      <div
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "1rem",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+          padding: "1rem",
+          margin: "0", // no margin because we'll control spacing by inset
+          position: "absolute",
+          top: "1rem",
+          left: "1rem",
+          right: "1rem",
+          bottom: "1rem",
+          overflow: "auto",
+        }}
+      >
+          {exit && (
+          <PopupClean>
+            <div className="flex flex-col justify-around">
+            <OutlineText size = 'extraLarge'>QUIT GAME?</OutlineText>
+            <BlackText size = 'large'>THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY</BlackText>
+            <BlackText size = 'large'>DO YOU WANT TO CONTINUE OR END THE GAME</BlackText>
+            <div className="flex flex-row justify-between items-center">
+              <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
+              <ButtonGeneric size="large" color="blue" onClick={closeGame}>CONFIRM</ButtonGeneric>
             </div>
-
-            {/* Right Panel */}
+            </div>
+          </PopupClean>)}
+        {gameSession && playerStats ? (
+          
+          <div>
+            <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
+              <IconButton
+                style="arrowleft"
+                iconColour="black"
+                buttonColour="red"
+                size="medium"
+                onClick={() => setExit(true)}
+              />
+            </div>
+            <RoundNumberHeader roundNumber={gameSession.round} />
+            {/* Main content area with grid layout */}
             <div
-              style={{ minWidth: "260px", height: "100%", overflow: "auto" }}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "auto 1fr auto", // Left panel, Middle panel, Right panel. auto means take up as much space as you need and 1fr means take up the rest of the remaining space
+                gap: "1rem",
+                marginTop: "1rem",
+                height: "calc(100% - 8rem)", // Adjust based on header height
+                // border: '2px solid #403245',
+                position: "relative",
+              }}
             >
-              <RightPanel battleStates={gameSession.battleStates} />
+              {/* Left Panel */}
+              {/* <div className="left-panel"> */}
+              <LeftPanel
+                damageData={playerStats.damageData} // Use real damage data
+                blockData={playerStats.blockData} // Use real block data
+                popularMonster={gameSession.gameSessionData.mostChosenMonster}
+              />
+              {/* </div> */}
+
+              {/* Middle Panel */}
+              <div style={{ height: "100%", overflow: "auto" }}>
+                <MiddlePanel gameSession={gameSession} />
+              </div>
+
+              {/* Right Panel */}
+              <div
+                style={{ minWidth: "260px", height: "100%", overflow: "auto" }}
+              >
+                <RightPanel battleStates={gameSession.battleStates} />
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
-    </div>
-  );
+        ) : null}
+      </div>
+    );
+  };
 };
 
 
