@@ -38,7 +38,7 @@ export class AttackAction extends Action {
     return d20;
   }
 
-  public getDiceRoll(): number {
+  private getDiceRoll(): number {
     return this.d20;
   }
 
@@ -51,6 +51,11 @@ export class AttackAction extends Action {
         this.attackBonus
       }`
     );
+  }
+
+  // relies on prepare() method being called to roll the dice first.
+  public prepareAnimation(): string | [string, number] {
+    return ["roll_dice", this.d20]; 
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {

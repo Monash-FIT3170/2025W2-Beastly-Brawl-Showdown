@@ -46,6 +46,8 @@ export abstract class Action {
 
   public abstract execute(actingPlayer: Player, affectedPlayer: Player): void;
 
+  public abstract prepareAnimation(): string | [string, number]; // returns the socket message that represents the animation name
+
   public getId(): ActionIdentifier {
     return this.id;
   }

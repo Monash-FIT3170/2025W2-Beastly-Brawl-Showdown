@@ -93,9 +93,12 @@ export default function proceedBattleTurn(
       // battle screen handle the type of animation to show
       player1.getActions().forEach((action) => {
         if (action.getName() === "Attack") {
-          const attackAction = action as AttackAction;
-          const diceRoll = attackAction.getDiceRoll();
-          io.to(player1.getId()).emit("roll_dice", diceRoll);
+          // get the animation name and dice number from the prepareAnimation method
+          const animationInfo = action.prepareAnimation();
+          const animationType = animationInfo[0];
+          const diceRollNumber = animationInfo[1];
+          console.log(animationType, diceRollNumber);
+          io.to(player1.getId()).emit(String(animationType), diceRollNumber);
         }
 
         if (action.getName() === "Tip The Scales") {
@@ -108,11 +111,19 @@ export default function proceedBattleTurn(
         }
       });
 
+      // player2.getActions().forEach((action) => {
+      //   if (action.getName() === "Attack") {
+      //     const attackAction = action as AttackAction;
+      //     const diceRoll = attackAction.getDiceRoll();
+      //     io.to(player2.getId()).emit("roll_dice", diceRoll);
+      //   }
       player2.getActions().forEach((action) => {
         if (action.getName() === "Attack") {
-          const attackAction = action as AttackAction;
-          const diceRoll = attackAction.getDiceRoll();
-          io.to(player2.getId()).emit("roll_dice", diceRoll);
+          const animationInfo = action.prepareAnimation();
+          const animationType = animationInfo[0];
+          const diceRollNumber = animationInfo[1];
+          console.log(animationType, diceRollNumber);
+          io.to(player2.getId()).emit(String(animationType), diceRollNumber);
         }
 
         if (action.getName() === "Tip The Scales") {
