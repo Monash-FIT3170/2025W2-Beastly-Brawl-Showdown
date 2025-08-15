@@ -253,7 +253,7 @@ export default class GameSession {
     return this.battles;
   }
 
-  public oddOneOutWinner(oddPlayer: Player): Player {
+  public oddOneOutWinner(oddPlayer: Player) {
     let battleId = crypto.randomUUID();
     const placeHolderPlayer = new BotPlayer()
     const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3)];
@@ -266,7 +266,7 @@ export default class GameSession {
     if (placerHolderMonster == "CinderTail"){
       placeHolderPlayer.setMonster(new CinderTail());
     }           
-    // placeHolderPlayer.setHealth(0);
+    placeHolderPlayer.setHealth(0);
     const battle = new Battle(
       battleId,
       oddPlayer,
