@@ -3,6 +3,7 @@ import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
 import { PlayerAccountSchema } from "../../database/dbManager";
 
+import { Status } from "./status/status";
 
 export class Player {
   private id: string;
@@ -10,12 +11,13 @@ export class Player {
   private monster: Monster | null;
   public currentGameCode: number;
   private score: number = 0;
-  private currentlyDodging = false
+  private currentlyDodging = false;
   private currentHealth: number;
   private currentAttackStat: number;
   private currentArmourClassStat: number;
 
   private actions: Action[] = [];
+  private statuses: Status[] = [];
 
   private logs: string[] = [];
   private battleLogs: string[] = [];
@@ -47,13 +49,35 @@ export class Player {
     return this.successfulHit;
   }
   //sets the player in a dodging position
-  public dodge(): void{
-    this.currentlyDodging= true
+  public dodge(): void {
+    this.currentlyDodging = true;
   }
-  //returns wheather or not the player was dodging 
-  public getDodgingPosition():boolean{
-    return this.currentlyDodging
-  }  
+  //returns wheather or not the player was dodging
+  public getDodgingPosition(): boolean {
+    return this.currentlyDodging;
+  }
+
+  public getStatuses(): Status[] {
+    return this.statuses;
+  }
+
+  public addStatus(status: Status) {
+    this.statuses.push(status);
+  }
+
+  public tickStatuses() {
+    this.statuses.forEach((status) => status.tick(this));
+    //removes statuses that have expired after the tick
+    this.statuses = this.statuses.filter((status) => !status.isExpired());
+  }
+
+  public hasStatus(name: String) {
+    return this.statuses.some((status) => status.getName() === name);
+  }
+
+  public removeStatus(statusToRemove: Status) {
+    this.statuses = this.statuses.filter((status) => status !== statusToRemove);
+  }
 
   public getSuccessfulBlock() {
     return this.successfulBlock;
@@ -84,6 +108,7 @@ export class Player {
   }
 
   public addBattleLog(log: string): void {
+    // match summary logs
     this.battleLogs.push(log);
   }
 
@@ -201,6 +226,8 @@ export class Player {
       // initialHealth: this.monster.getMaxHealth(),
       successBlock: this.successfulBlock,
       successHit: this.successfulHit,
+
+      statuses: this.statuses,
 
       monster: this.monster ? this.monster.getMonsterState() : null,
 

@@ -7,6 +7,7 @@ import socket from "../../socket";
 interface BattleFooterProp{
     possibleActions: ActionState[];
     battleId: string | null;
+
 }
 
 export const BattleFooter = ({possibleActions, battleId}: BattleFooterProp) => {

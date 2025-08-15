@@ -1,6 +1,6 @@
 import { Monster } from "./monster";
 import { MonsterIdentifier } from "/types/single/monsterState";
-import { Warrior } from "../archetype/warrior";
+import { Attacker } from "../archetype/attacker";
 import { ShadowLeapAbilityAction } from "../action/ability/shadowLeap";
 
 export class PouncingBandit extends Monster {
@@ -9,7 +9,7 @@ export class PouncingBandit extends Monster {
       MonsterIdentifier.POUNCING_BANDIT,
       "Pouncing Bandit",
       "A sleek, agile beast resembling a wolf or panther, cloaked in shadows. Its speed and ferocity make it a deadly opponent.",
-      new Warrior(),
+      new Attacker(),
       new ShadowLeapAbilityAction(),
       20,
       10,

@@ -15,9 +15,9 @@ export const actionSelectedHandler = (io: Server, socket: Socket) => {
       battleId: string;
       playerId: string;
     }) => {
-      console.log(
-        `Action received: ${action} for battleId: ${battleId} for playerId: ${playerId}`
-      );
+      // console.log(
+      //   `Action received: ${action.name} for battleId: ${battleId} for playerId: ${playerId}`
+      // );
 
       var battle = battles.get(battleId);
 
@@ -27,7 +27,11 @@ export const actionSelectedHandler = (io: Server, socket: Socket) => {
 
       if (actionToAdd) {
         player?.addAction(actionToAdd);
-        console.log("Adding action", actionToAdd);
+        console.log(
+          `Adding action ${actionToAdd.getName()} to Player ${player?.getName()}`
+        );
+        console.log(`${actionToAdd.getDescription()}`);
+        // console.log(`Action added.`);
       }
     }
   );
