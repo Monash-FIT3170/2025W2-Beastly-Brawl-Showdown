@@ -8,6 +8,7 @@ import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { ButtonResizableText } from "../../components/buttons/ButtonResizableText";
 import { GenericIcon } from "../../components/icons/GenericIcon";
 import { InputBox } from "../../components/inputs/InputBox";
+import { IconButton } from "../../components/buttons/IconButton";
 
 export const Account = () => {
   interface PlayerAccount {
@@ -55,16 +56,14 @@ export const Account = () => {
           <h1>Account Details</h1>
 
           {/* Exit Button */}
-          <div style={{ position: "absolute", top: "50px", left: "100px" }}>
-            <ButtonGeneric
-              color="red"
-              size="small"
-              onClick={() => FlowRouter.go(`/`)}
-            >
-              <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
-                <GenericIcon style="x" colour="stroked" />
-              </div>
-            </ButtonGeneric>
+          <div style={{ position: "absolute", top: "50px", left: "50px" }}>
+            <IconButton
+              style="arrowleft"
+              iconColour="black"
+              buttonColour="red"
+              size="medium"
+              onClick={() => FlowRouter.go("/")}
+            />
           </div>
 
           {/* Details */}
