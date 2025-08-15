@@ -246,7 +246,7 @@ export default function proceedBattleTurn(
             // gameSession.onBattlesEnded(io, socket)
 
             console.log(
-              `All battles are concluded in game session ${gameSession.getGameCode()}`
+              `Only one player remains.`
             );
 
             //TODO: for future, this can be used to handle what happens after a game session ends
