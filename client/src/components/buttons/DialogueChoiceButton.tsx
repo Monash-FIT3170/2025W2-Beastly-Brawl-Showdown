@@ -13,10 +13,10 @@ export const DialogueChoiceButton = ({
         bg-pictonBlue
         outline-blackCurrant
         inline-flex
-		items-center
-		justify-around
-		text-merino
-        outline-[0.5rem]
+        items-center
+        justify-around
+        text-merino
+        outline-[0.3rem]
         inline-block
         items-center
         font-[Jua]
