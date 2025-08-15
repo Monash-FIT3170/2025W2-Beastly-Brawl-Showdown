@@ -151,7 +151,14 @@
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_1"
+        "enemyId": "slime_1",
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": ["You defeated the slime!", "He had a family..."],
+        "type": "DIALOGUE",
+        "next": "initial"
       }
     ]
   }

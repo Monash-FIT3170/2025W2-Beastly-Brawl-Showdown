@@ -216,6 +216,33 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
                 //TODO: DO NEXT STAGE INSTEAD OF THIS STAGE
 
                 if (adventure && stage) {
+                  // Get current story node and outcome
+                  let stageData = adventure.currentStory;
+                  if (!stageData) {
+                    const loadNodes = loadStage(stage);
+                    const eligibleNodes = loadNodes.filter((node) =>
+                      node.level.includes(adventure.getLevel())
+                    );
+                    const randomNode = Math.floor(
+                      Math.random() * eligibleNodes?.length
+                    );
+                    stageData = eligibleNodes[randomNode];
+                  }
+                  const outcome = stageData?.outcomes.find(
+                    (o) => o.id === adventure.currentOutcomeId
+                  );
+
+                  // If outcome has a next, update currentOutcomeId
+                  if (outcome && outcome.next) {
+                    adventure.currentOutcomeId = outcome.next;
+                  } else {
+                    adventure.currentOutcomeId = ""; // Or handle end of adventure
+                  }
+
+                  console.log("stageData", stageData);
+                  console.log("outcome", outcome);
+                  console.log("outcome.next", outcome?.next);
+
                   progressAdventure(io, socket, adventure, stage);
                 } else {
                   console.error(
