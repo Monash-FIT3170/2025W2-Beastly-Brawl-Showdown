@@ -148,6 +148,16 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         </PopupClean>
       )}
 
+    {isBattleClosed && (
+    <PopupClean>
+      <div className="flex flex-col justify-around">
+      <OutlineText size = 'extraLarge'>BATTLE CLOSED</OutlineText>
+      <BlackText size = 'large'>BATTLE HAS ENDED</BlackText>
+      <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE WAITING ROOM IN {time} SECONDS</BlackText>
+      </div>
+    </PopupClean>)}
+
+
       <div
         className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
