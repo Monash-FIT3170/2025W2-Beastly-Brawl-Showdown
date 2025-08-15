@@ -16,6 +16,10 @@ export class TripleFishLaunch extends Action {
   // Clear the opponent's actions
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
+  public prepareAnimation(): string | [string, number] {
+    return "Triple_Fish_Launch_Animation";
+  }
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
 

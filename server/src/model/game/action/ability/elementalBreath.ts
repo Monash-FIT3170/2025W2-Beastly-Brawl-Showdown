@@ -16,6 +16,8 @@ export class ElementalBreathAbilityAction extends Action {
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
+  public prepareAnimation(): string | [string, number] {return "ElementalBreath_Animation";}
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
 

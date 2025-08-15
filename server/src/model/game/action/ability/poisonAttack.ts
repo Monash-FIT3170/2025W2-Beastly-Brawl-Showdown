@@ -19,6 +19,9 @@ export class PoisonAttack extends Action {
     // TOODO: Implement poison status effect
   }
 
+  public prepareAnimation(): string | [string, number] {return "Poison_Attack_Animation";}
+
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
     var numberOfTurns = 5;

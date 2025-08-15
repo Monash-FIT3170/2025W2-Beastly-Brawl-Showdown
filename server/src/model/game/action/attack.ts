@@ -38,7 +38,7 @@ export class AttackAction extends Action {
     return d20;
   }
 
-  private getDiceRoll(): number {
+  public getDiceRoll(): number {
     return this.d20;
   }
 
