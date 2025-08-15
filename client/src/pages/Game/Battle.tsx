@@ -27,7 +27,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [winner, setWinner] = useState<string | null>(null);
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
-  const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live 
+  const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live
   const [time, setTime] = useState<number>(5);
 
   useEffect(() => {
@@ -63,9 +63,9 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     });
 
     //Socket to handle the case where the host cancel the game sesion
-    socket.on("host-closed", () =>{
+    socket.on("host-closed", () => {
       setIsSessionCancelled(true);
-    })
+    });
 
     return () => {
       socket.off("possible_actions");
@@ -75,25 +75,26 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   }, []);
 
   useEffect(() => {
-    if (!isSessionCancelled){return}
+    if (!isSessionCancelled) {
+      return;
+    }
 
-    //Countdown before player get redirected 
+    //Countdown before player get redirected
     const countdown = setInterval(() => {
-      setTime((prev) => prev-1)
-    },1000) //1 second per interval
+      setTime((prev) => prev - 1);
+    }, 1000); //1 second per interval
 
     //Redirect after countdown is finished
-    const timeout = setTimeout(() =>{
-      FlowRouter.go("./")
-      setTime(-1)
-    }, 5000) // 5 seconds before user get directed to home page
-    
+    const timeout = setTimeout(() => {
+      FlowRouter.go("./");
+      setTime(-1);
+    }, 5000); // 5 seconds before user get directed to home page
+
     return () => {
       clearInterval(countdown); // interval cleanup
       clearTimeout(timeout); //timeout cleanup
-    }
-    
-  }, [isSessionCancelled])
+    };
+  }, [isSessionCancelled]);
 
   socket.on("new-connect", () => {
     FlowRouter.go("/");
@@ -101,42 +102,46 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
   return (
     <>
-    {isSessionCancelled && (
-    <PopupClean>
-      <div className="flex flex-col justify-around">
-      <OutlineText size = 'extraLarge'>CANCELLED SESSION</OutlineText>
-      <BlackText size = 'large'>YOUR GAME SESSION HAS BEEN CANCELLED</BlackText>
-      <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE HOME PAGE IN {time} SECONDS</BlackText>
-      </div>
-    </PopupClean>)}
+      {isSessionCancelled && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+            <OutlineText size="extraLarge">CANCELLED SESSION</OutlineText>
+            <BlackText size="large">
+              YOUR GAME SESSION HAS BEEN CANCELLED
+            </BlackText>
+            <BlackText size="large">
+              YOU WILL BE DIRECTED BACK TO THE HOME PAGE IN {time} SECONDS
+            </BlackText>
+          </div>
+        </PopupClean>
+      )}
 
-
-    <div className="inset-0 w-full h-screen bg-springLeaves overscroll-contain">
-      {/* Winner display if battle is over */}
-      {/*winner === "Draw" ? (
+      <div className="inset-0 w-full h-screen bg-springLeaves overscroll-contain">
+        {/* Winner display if battle is over */}
+        {/*winner === "Draw" ? (
           <DrawScreen />
         ) : */}
-      {winner ? (
-        winner === "Draw" ? (
-          <DrawScreen />
-        ) : battleState?.yourPlayer.name === winner ? (
-          <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
+        {winner ? (
+          winner === "Draw" ? (
+            <DrawScreen />
+          ) : battleState?.yourPlayer.name === winner ? (
+            <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
+          ) : (
+            <LoserScreen />
+          )
         ) : (
-          <LoserScreen />
-        )
-      ) : (
-        <>
-          {battleState && (
-            <div className="battle-state-parts item-center justify-center ">
-              <PlayerInfoPanel battleState={battleState} />
+          <>
+            {battleState && (
+              <div className="battle-state-parts item-center justify-center ">
+                <PlayerInfoPanel battleState={battleState} />
 
-              <div className="timer-box font-[Jua]">
-                <p>Timer: {timer}</p>
-              </div>
+                <div className="timer-box font-[Jua]">
+                  <p>Timer: {timer}</p>
+                </div>
 
-              <BattleMonsterPanel battleState={battleState} />
+                <BattleMonsterPanel battleState={battleState} />
 
-              {/* <div className="battle-logs">
+                {/* <div className="battle-logs">
                 <h3>Logs:</h3>
                 {battleState.yourPlayer.logs.map((log, index) => (
                   <p key={index}>{log}</p>
@@ -144,35 +149,44 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
               </div> */}
 
                 <div
-                className="battle-logs-stack mt-[60%] xl:mt-[15%]"
-                style={{ position: "relative", width: "100%", height: "120px" }}
-              >
-                {battleState.yourPlayer.logs.map((log, index) => (
-                  <FadingBattleText
-                    key={index}
-                    size="medium-battle-text"
-                    style={{ top: `${index * 32}px` }}
-                  >
-                    {log}
-                  </FadingBattleText>
-                ))}
-              </div>
-              
-              <DiceRollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} battleState={battleState}/>
-            </div>
-          )}
+                  className="battle-logs-stack mt-[60%] xl:mt-[15%]"
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "120px",
+                  }}
+                >
+                  {battleState.yourPlayer.logs.map((log, index) => (
+                    <FadingBattleText
+                      key={index}
+                      size="medium-battle-text"
+                      style={{ top: `${index * 32}px` }}
+                    >
+                      {log}
+                    </FadingBattleText>
+                  ))}
+                </div>
 
-          <div>
-            {timer > 0 && (
-              <BattleFooter
-                possibleActions={possibleActions}
-                battleId={battleId}
-              />
+                <DiceRollModal
+                  show={showDiceModal}
+                  onClose={() => setShowDiceModal(false)}
+                  toRoll={diceValue}
+                  battleState={battleState}
+                />
+              </div>
             )}
-          </div>
-        </>
-      )}
-    </div>
+
+            <div>
+              {timer > 0 && (
+                <BattleFooter
+                  possibleActions={possibleActions}
+                  battleId={battleId}
+                />
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 };

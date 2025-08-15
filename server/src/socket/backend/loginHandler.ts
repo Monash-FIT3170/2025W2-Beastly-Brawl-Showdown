@@ -65,6 +65,54 @@ export const accountHandler = (io: Server, socket: Socket) => {
       console.error(`Error updating player ${user.username}: ${error.message}`);
     }
   });
+
+  socket.on("updateWin", async () => {
+    const user = playerAccounts.get(socket.id);
+
+    if (!user || !user.email) {
+      console.error(`No logged-in player found for socket ${socket.id}`);
+      return;
+    }
+    const updates = {
+      stats: {
+        numGamesWon: user.stats.numGamesWon + 1,
+        numGamesPlayed: user.stats.numGamesPlayed + 1,
+      },
+    };
+
+    try {
+      await updatePlayerAccount(user._id, updates);
+      Object.assign(user, updates);
+      playerAccounts.set(socket.id, user);
+      console.log(`Player ${user.username} updated successfully.`);
+    } catch (error) {
+      console.error(`Error updating player ${user.username}: ${error.message}`);
+    }
+  });
+
+  socket.on("updateLoss", async () => {
+    const user = playerAccounts.get(socket.id);
+
+    if (!user || !user.email) {
+      console.error(`No logged-in player found for socket ${socket.id}`);
+      return;
+    }
+    const updates = {
+      stats: {
+        numGamesWon: user.stats.numGamesWon,
+        numGamesPlayed: user.stats.numGamesPlayed + 1,
+      },
+    };
+
+    try {
+      await updatePlayerAccount(user._id, updates);
+      Object.assign(user, updates);
+      playerAccounts.set(socket.id, user);
+      console.log(`Player ${user.username} updated successfully.`);
+    } catch (error) {
+      console.error(`Error updating player ${user.username}: ${error.message}`);
+    }
+  });
 };
 
 export const startChecker = (io: Server, socket: Socket) => {
