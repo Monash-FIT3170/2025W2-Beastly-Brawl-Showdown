@@ -28,6 +28,8 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
   const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live 
+  const [isBattleClosed, setIsBattleClosed] = useState<Boolean>(false); //indiate whether the battle is still live
+  const [gameCode, setGameCode] = useState<string>(); // game code for directing player back to game session
   const [time, setTime] = useState<number>(5);
 
   useEffect(() => {
@@ -67,6 +69,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setIsSessionCancelled(true);
     })
 
+    socket.on("battle-closed", (data) => {
+      setIsBattleClosed(true)
+      setGameCode(data.gameCode)
+    })
+
     return () => {
       socket.off("possible_actions");
       socket.off("timer");
@@ -95,6 +102,27 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     
   }, [isSessionCancelled])
 
+    useEffect(() => {
+    if (!isBattleClosed){return}
+
+    //Countdown before player get redirected 
+    const countdown = setInterval(() => {
+      setTime((prev) => prev-1)
+    },1000) //1 second per interval
+
+    //Redirect after countdown is finished
+    const timeout = setTimeout(() =>{
+      FlowRouter.go(`/session/${gameCode}`)
+      setTime(-1)
+    }, 5000) // 5 seconds before user get directed to home page
+    
+    return () => {
+      clearInterval(countdown); // interval cleanup
+      clearTimeout(timeout); //timeout cleanup
+    }
+    
+  }, [isBattleClosed])
+
   socket.on("new-connect", () => {
     FlowRouter.go("/");
   });
@@ -110,12 +138,18 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       </div>
     </PopupClean>)}
 
+    {isBattleClosed && (
+    <PopupClean>
+      <div className="flex flex-col justify-around">
+      <OutlineText size = 'extraLarge'>BATTLE CLOSED</OutlineText>
+      <BlackText size = 'large'>BATTLE HAS ENDED</BlackText>
+      <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE WAITING ROOM IN {time} SECONDS</BlackText>
+      </div>
+    </PopupClean>)}
+
 
     <div className="inset-0 w-full h-screen bg-springLeaves overscroll-contain">
       {/* Winner display if battle is over */}
-      {/*winner === "Draw" ? (
-          <DrawScreen />
-        ) : */}
       {winner ? (
         winner === "Draw" ? (
           <DrawScreen />
