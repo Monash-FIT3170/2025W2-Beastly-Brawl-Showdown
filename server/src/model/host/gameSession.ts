@@ -12,6 +12,8 @@ import { RockyRhino } from "../game/monster/rockyRhino";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
 import { BotPlayer } from "../game/botplayer";
+import { IGameMode } from "./gamemode/gameMode";
+import { Server, Socket } from "socket.io";
 
 export default class GameSession {
   private hostUID: string;
@@ -23,22 +25,24 @@ export default class GameSession {
   private battle_max: number = 4; // Max 4 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
   private monsters: Array<String>;
+  private mode: IGameMode;
   
   // Initialise sample data
   private gameSessionData: GameSessionData = {
     mostChosenMonster: { monster: null, percentagePick: "0" },
   };
 
-  constructor(hostID: string, presetGameCode?: number) {
+  constructor(hostID: string, addition: {mode: IGameMode, presetGameCode?: number}) {
     this.hostUID = hostID;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
     this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
+    this.mode = addition.mode
 
-    if (presetGameCode !== undefined) {
+    if (addition.presetGameCode !== undefined) {
       // Use preset game code if provided
-      this.gameCode = presetGameCode;
+      this.gameCode = addition.presetGameCode;
     } else {
       // Generate a new game code
       this.gameCode = this.generateGameCode();
@@ -91,6 +95,10 @@ export default class GameSession {
   }
   public getMonsters(){
     return this.monsters;
+  }
+
+  public clearBattles():void {
+    this.battles = new Queue<Battle>();
   }
 
   // Add player to Game Session queue
@@ -342,5 +350,29 @@ export default class GameSession {
       playerStates.push(player.getPlayerState());
     }
     return playerStates;
+  }
+
+  public initGame(io: Server, socket: Socket):void {
+    return this.mode.init(this, io, socket)
+  }
+
+  public onActionExecuted():void {
+    return this.mode.onActionExecuted(this);
+  }
+
+  public onBattleEnded(winner: Player | null,battle: Battle, io: Server, socket: Socket): void {
+    return this.mode.onBattleEnded(this, battle ,winner, io,socket);
+  }
+
+  public onBattlesEnded(io: Server, socket: Socket): void {
+    return this.mode.onBattlesEnded(this, io, socket);
+  }
+
+  public isSessionConcluded(): boolean {
+    return this.mode.isSessionConcluded(this);
+  }
+
+  public registerSocketHandler(io: Server, socket: Socket):void {
+    return this.mode.registerSocketHandler(io, socket, this)
   }
 }

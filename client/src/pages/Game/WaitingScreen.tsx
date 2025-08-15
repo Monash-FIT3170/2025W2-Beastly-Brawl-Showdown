@@ -55,16 +55,25 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
   // Listen to server to wait for a response with the player's monster name
   // We can use this to pass in more of the player's information for the lobby stats page later...
   useEffect(() => {
-    socket.on("waiting_screen_data", (data: { monsterName: string }) => {
+    socket.removeAllListeners("waiting_screen_data")
+    const waitingScreenDataHandler = (data: { monsterName: string }) => {
       const monsterName = data.monsterName.toUpperCase();
       console.log(`Received waiting screen data: ${monsterName}`);
       setPlayerMonster(monsterName);
-    });
 
+      socket.emit("ready_next_battle")
+    }
+
+    console.log("[SOCKET] Before .on(): ", socket.listeners("waiting_screen_data").length)
+    socket.off("waiting_screen_data", waitingScreenDataHandler)
+    socket.on("waiting_screen_data", waitingScreenDataHandler);
+
+    console.log("[SOCKET] After .on(): ", socket.listeners("waiting_screen_data").length)
     return () => {
-      socket.off("waiting_screen_data");
+      console.log("[SOCKET] Cleanup called")
+      socket.off("waiting_screen_data", waitingScreenDataHandler);
     };
-  });
+  }, []);
 
   return (
     <div className="bg-peach lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">

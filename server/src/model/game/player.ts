@@ -8,7 +8,6 @@ export class Player {
   private name: string;
   private monster: Monster | null;
   public currentGameCode: number;
-  private score: number = 0;
   private currentlyDodging = false;
   private currentHealth: number;
   private currentAttackStat: number;
@@ -114,6 +113,15 @@ export class Player {
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
       this.dodging = false;
+    }
+  }
+
+  //Similar to resetStats, but also restore player HP to full
+  public prepareForNextBattle(): void {
+    if (this.monster){
+      this.currentHealth = this.monster.getMaxHealth()
+      this.currentAttackStat = this.monster.getAttackBonus();
+      this.currentArmourClassStat = this.monster.getArmourClass();
     }
   }
 
