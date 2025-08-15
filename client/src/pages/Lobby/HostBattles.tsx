@@ -140,7 +140,14 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     return <div>Loading game mode...</div>;
   }
   else if (gameMode === "royale") {
-    return <BlankPage />;
+    return <BlankPage>
+      <BlackText children="This is the Battle Royale Lobby." size="large" />
+    </BlankPage>;
+  }
+  else if (gameMode === "scored") {
+    return <BlankPage>
+      <BlackText children="This is the Scored Game Lobby." size="large" />
+    </BlankPage>;
   }
   else {
     return (
