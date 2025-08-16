@@ -13,6 +13,7 @@ import MatchSummary from "./src/pages/Host View/MatchSummary";
 import LevelSelect from "./src/pages/Adventure/LevelSelect";
 import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
+import AdventureDefeated from "./src/pages/Adventure/Defeated";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -98,6 +99,13 @@ FlowRouter.route("/adventure/adventure-battle", {
     // TODO: Pass the stage as a prop
   },
 });
+
+FlowRouter.route("/adventure/defeated", {
+  name: "AdventureDefeated",
+  action(){
+    mount(AdventureDefeated);
+  },
+})
 
 FlowRouter.route("/rules", {
   name: "Rules",
