@@ -60,7 +60,7 @@ export default function proceedBattleTurn(
       let actions = player.getMonster().getPossibleActionStates();
       io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
-      const randomiser = new ActionRandomiser
+      const randomiser = new ActionRandomiser(player)
       randomiser.randomaction(player)
     }
   });
