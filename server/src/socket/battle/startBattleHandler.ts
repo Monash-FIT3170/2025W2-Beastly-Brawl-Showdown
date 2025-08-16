@@ -4,7 +4,6 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
-import { ActionIdentifier } from "/types/single/actionState";
 import { ActionRandomiser } from "../../model/game/actionrandomiser";
 export default function proceedBattleTurn(
   io: Server,
@@ -50,7 +49,7 @@ export default function proceedBattleTurn(
       let actions = player.getMonster().getPossibleActionStates();
       io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
-      const randomiser = new ActionRandomiser
+      const randomiser = new ActionRandomiser(player)
       randomiser.randomaction(player)
     }
   });
