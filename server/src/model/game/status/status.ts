@@ -42,3 +42,4 @@ export abstract class Status {
     return false;
   }
 }
+
