@@ -20,7 +20,6 @@ export class FeralStrikeAbilityAction extends Action {
 
   }
 
-
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     //Nothing happens here
     return {

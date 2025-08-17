@@ -29,11 +29,9 @@ export abstract class Status {
     return this.name;
   }
 
-
   public getType(): StatusType{
     return this.type
   }
-
 
   public isExpired(): boolean {
     //checks if countdown hit 0
