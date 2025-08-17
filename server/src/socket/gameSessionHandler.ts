@@ -19,8 +19,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
     activeGameSessions.set(session.getGameCode(), session);
 
-    //Initialise game (based on game mode)
-    session.initGame(io, socket)
 
 
     console.log(
@@ -191,6 +189,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Request failed. Invalid Code`);
       return;
     }
+
+    //Initialise game (based on game mode)
+    session.initGame(io, socket)
 
     if (!session.canStartGame()) {
       var errors = session.calculateErrors();

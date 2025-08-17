@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 export class AlluringLullaby extends Action {
   constructor() {
@@ -15,7 +15,7 @@ export class AlluringLullaby extends Action {
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     affectedPlayer.getActions().forEach((action) => {
@@ -44,5 +44,12 @@ export class AlluringLullaby extends Action {
         );
       }
     });
+
+    //Assuming Confusion is not a status...
+    return {
+      appliedStatus: {
+        success: false,
+      }
+    }
   }
 }

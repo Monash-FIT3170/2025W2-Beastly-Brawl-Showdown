@@ -1,6 +1,6 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import socket from "../../socket";
 
 export class AttackAction extends Action {
@@ -53,7 +53,7 @@ export class AttackAction extends Action {
     );
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
     if (this.attackHit > affectedPlayer.getMonster().getArmourClass()) {
@@ -117,6 +117,12 @@ export class AttackAction extends Action {
       );
       // Increment successful block for front end
       affectedPlayer.incSuccessfulBlock(1);
+    }
+
+    return {
+      appliedStatus: {
+        success: false
+      }
     }
   }
 }

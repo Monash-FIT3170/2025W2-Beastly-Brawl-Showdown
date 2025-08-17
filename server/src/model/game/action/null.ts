@@ -1,6 +1,6 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 export class NullAction extends Action {
   private actingMessage: string | null;
@@ -16,9 +16,15 @@ export class NullAction extends Action {
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     actingPlayer.addLog(`${this.actingMessage ? this.actingMessage + " " : ""}You did nothing.`);
     affectedPlayer.addLog(`${this.affectedMessage ? this.affectedMessage + " " : ""}${actingPlayer.getName()} did nothing.`);
     actingPlayer.addBattleLog(`${this.battleLogMessage ? this.battleLogMessage + " " : ""}${actingPlayer.getName()} did nothing.`);
+
+    return {
+      appliedStatus: {
+        success: false
+      }
+    }
   }
 }
