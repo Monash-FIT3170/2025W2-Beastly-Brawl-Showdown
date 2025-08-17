@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { Poison } from "../../status/poison";
 
 export class PoisonAttack extends Action {
@@ -19,12 +19,12 @@ export class PoisonAttack extends Action {
     // TOODO: Implement poison status effect
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
     var numberOfTurns = 5;
     
     // Poison the opponent
-    affectedPlayer.addStatus(new Poison(numberOfTurns));
+    affectedPlayer.addStatus(new Poison(numberOfTurns), 100);
 
     // Add logs
     actingPlayer.addLog(
@@ -36,5 +36,13 @@ export class PoisonAttack extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, ${affectedPlayer.getName()} is now poisoned for ${numberOfTurns} turns.`
     );
+
+    //Success evaluates true since the curren rate of poison for this ability is 100%...
+    return {
+      appliedStatus: {
+        success: true
+        
+      }
+    }
   }
 }

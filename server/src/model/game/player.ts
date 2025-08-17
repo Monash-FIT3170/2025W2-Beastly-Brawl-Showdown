@@ -49,8 +49,13 @@ export class Player {
     return this.statuses;
   }
 
-  public addStatus(status: Status){
+  public addStatus(status: Status, succesRate: number): {success: boolean; reason?: string; metadata?: unknown}{
+    const chance = Math.random() * 100;
+    if (chance >= succesRate){
+      return {success: false, reason: "Missed"}
+    }
     this.statuses.push(status);
+    return {success: true}
   }
 
   public tickStatuses() {

@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 
 export class FeralStrikeAbilityAction extends Action {
@@ -18,5 +18,12 @@ export class FeralStrikeAbilityAction extends Action {
 
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {}
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    //Nothing happens here
+    return {
+      appliedStatus: {
+        success: false
+      }
+    }
+  }
 }

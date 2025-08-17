@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 export class ElementalBreathAbilityAction extends Action {
   // Attack that always lands on your opponent, even if they attempt to dodge the attack.
@@ -16,7 +16,7 @@ export class ElementalBreathAbilityAction extends Action {
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     // Deal 10 damage if the opponent is dodging, 5 damage otherwise
@@ -36,5 +36,12 @@ export class ElementalBreathAbilityAction extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${affectedPlayer.getDodgingPosition() ? 10 : 5} damage to ${affectedPlayer.getName()}.`
     );
+
+    //No status applied in this action/ability
+    return {
+      appliedStatus: {
+        success: false
+      }
+    }
   }
 }

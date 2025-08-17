@@ -4,8 +4,9 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
-import { ActionIdentifier } from "/types/single/actionState";
+
 
 export default function proceedBattleTurn(
   io: Server,
@@ -155,15 +156,20 @@ export default function proceedBattleTurn(
 
       setTimeout(() => {
         // Execute method
+        let p1_result;
+        let p2_result;
+
+        //player list of actions will always be 1; hence p1_result can be used
         player1.getActions().forEach((action) => {
-          action.execute(player1, player2);
+          p1_result = action.execute(player1, player2);
           if (action instanceof NullAction) {
             console.log(`P1 - ${player1.getName()} did nothing.`);
           }
         });
 
+        //player list of actions will always be 1; hence p2_result can be used
         player2.getActions().forEach((action) => {
-          action.execute(player2, player1);
+          p2_result = action.execute(player2, player1);
           if (action instanceof NullAction) {
             console.log(`P2 - ${player2.getName()} did nothing.`);
           }
@@ -174,7 +180,7 @@ export default function proceedBattleTurn(
         console.log("P2: ", player2);
 
         //Handle logic after actions are executed (see GameMode)
-        gameSession.onActionExecuted()
+        gameSession.onActionExecuted(player1.getId(), p1_result, player2.getId(), p2_result)
 
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {

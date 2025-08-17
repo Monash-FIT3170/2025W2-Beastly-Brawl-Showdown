@@ -8,6 +8,8 @@ import { battles } from "/server/main";
 import { GameModeIdentifier } from "/types/single/gameMode";
 import { ScoringConfig } from "/types/single/scoringConfig";
 import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
+import { ActionResult } from "/types/single/actionState";
+import { BonusSystem, defaultBonus } from "/types/single/playerScore";
 
 export class ScoringTournament implements IGameMode{
 	name = GameModeIdentifier.SCORING as const;
@@ -15,6 +17,7 @@ export class ScoringTournament implements IGameMode{
 	private config: ScoringConfig;
 	private round = 1;
 	private playerFinished: number = 0;
+	private bonus: BonusSystem = defaultBonus ;
 
 	constructor(cfg: ScoringConfig){
 		this.config = cfg
@@ -25,36 +28,25 @@ export class ScoringTournament implements IGameMode{
 		for (const p of session.getPlayers().getItems()){
 			this.board.register(p.getId(), p.getName())
 		}
+		console.log("[INIT]: ",this.board.showBoard())
+		console.log("[INIT]: ",this.board.playerScores.size)
 
-		// socket.on("ready_next_battle", () => {
-		// 	console.log("Server test")
-		// 	this.playerFinished += 1
-			
-		// 	// //All players are ready for next battle; proceed 
-		// 	// if (this.playerFinished == session.getPlayers().getItems().length){
-		// 	// 	setTimeout(() => {}, )
-		// 	// 	session.clearBattles();
-		// 	// 	this.round += 1;
-		// 	// 	session.createMatches();
-
-		// 	// 	for (const battle of session.getBattles().getItems()) {
-
-		// 	// 		for (const player of battle.getPlayers()) {
-		// 	// 			player.prepareForNextBattle();
-		// 	// 			const playerSocket = io.sockets.sockets.get(player.getId());
-		// 	// 			playerSocket?.join(battle.getId());
-		// 	// 		}
-
-		// 	// 		io.to(battle.getId()).emit("battle_started", battle.getId());
-		// 	// 		proceedBattleTurn(io, socket, session, battle);
-		// 	// 	}
-		// 	// }
-
-		// })
 	}
 
 	//TODO: calculate bonus points for the previous turn
-	onActionExecuted(sesion: GameSession): void {
+	onActionExecuted(sesion: GameSession, player1Id: string, player1Result: ActionResult, player2Id: string, player2Result: ActionResult): void {
+		if (player1Result.appliedStatus.success){
+			this.board.setScore(player1Id, {
+				bonuses: this.bonus.debuff
+			})
+		}
+
+		if (player2Result.appliedStatus.success){
+			this.board.setScore(player2Id, {
+				bonuses: this.bonus.debuff
+			})
+		}
+		console.log("Scoreboard: ", this.board.showBoard())
 	}
 
 	
@@ -94,7 +86,7 @@ export class ScoringTournament implements IGameMode{
 		
 	}
 
-	//Redo the pairing for the next round
+	//All battles have been concluded, redo the pairing for the next round
 	onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
 		if (this.isSessionConcluded(session)){
 			//TODO: end session logic here
@@ -131,10 +123,6 @@ export class ScoringTournament implements IGameMode{
 	//Check whether the game session has ended
 	isSessionConcluded(session: GameSession): boolean {
 		return this.round > this.config.rounds
-	}
-
-	registerSocketHandler(io: Server, socket: Socket, session: GameSession):void {
-
 	}
 	
 }

@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 export class TripleFishLaunch extends Action {
   constructor() {
@@ -16,7 +16,7 @@ export class TripleFishLaunch extends Action {
   // Clear the opponent's actions
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     var hitFishes = 0;
@@ -41,5 +41,11 @@ export class TripleFishLaunch extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage to ${affectedPlayer.getName()}.`
     );
+
+    return {
+      appliedStatus:{
+        success: false
+      }
+    }
   }
 }

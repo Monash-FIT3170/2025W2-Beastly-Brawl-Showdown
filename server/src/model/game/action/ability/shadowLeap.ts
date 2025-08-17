@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 import { NullAction } from "../null";
 
@@ -33,7 +33,7 @@ export class ShadowLeapAbilityAction extends Action {
 
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     // Log the action
@@ -46,5 +46,11 @@ export class ShadowLeapAbilityAction extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, preparing to dodge an attack.`
     );
+
+    return {
+      appliedStatus:{
+        success: false
+      }
+    }
   }
 }
