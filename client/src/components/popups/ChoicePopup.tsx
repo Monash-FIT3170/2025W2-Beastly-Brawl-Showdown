@@ -3,12 +3,13 @@ import { DialogueChoiceButton } from '../buttons/DialogueChoiceButton';
 import { option } from '/types/composite/storyTypes';
 import { OutlineText } from '../texts/OutlineText';
 import socket from "../../socket";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 
 export interface ChoicePopupProp{
     question: string;
     choices: option[];
-    onClick?: () => void | void;
+    onClick: (choiceId: string) => void;
 }
 
 
@@ -56,6 +57,10 @@ export const ChoicePopup = ({question, choices, onClick}: ChoicePopupProp ) => {
         
         `;
 
+    const goNext = (next: string) => {
+        FlowRouter.go(next);
+    };
+
     return(
 
     <div className = {`${Layout}`}>
@@ -64,7 +69,7 @@ export const ChoicePopup = ({question, choices, onClick}: ChoicePopupProp ) => {
                 <OutlineText size ='choice-text'> {question} </OutlineText>
                 
                     {choices.map((choice, idx) => (
-                        <DialogueChoiceButton key={idx} onClick={() => handleChoiceSelect(choice.next)}> 
+                        <DialogueChoiceButton key={idx} onClick={() => onClick(choice.next)}> 
                             <OutlineText size ="medium"> {choice.text} </OutlineText> 
                         </DialogueChoiceButton>
                     ))}

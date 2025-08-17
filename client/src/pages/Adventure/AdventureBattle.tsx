@@ -19,6 +19,7 @@ import { DialogueChoiceButton } from "../../components/buttons/DialogueChoiceBut
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
+import { ChoicePopup } from "../../components/popups/ChoicePopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -145,7 +146,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     <>
       {receivingItem && (
         <PopupClean>
-          <div className="flex flex-col justify-around">
+          <div className="flex flex-col justify-around items-center">
             <OutlineText size="extraLarge">{receivingItem}</OutlineText>
             <div className="flex flex-row justify-between items-center">
               <ButtonGeneric
@@ -174,13 +175,14 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
       )}
       {choices && (
         <>
-          {choices.map((choice, idx) => (
+          {/* {choices.map((choice, idx) => (
             <DialogueChoiceButton
               key={idx}
               children={choice.text}
               onClick={() => handleChoiceSelect(choice.next)}
             />
-          ))}
+          ))} */}
+          <ChoicePopup question="question string where to get?" choices={choices} onClick={handleChoiceSelect}></ChoicePopup>
         </>
       )}
       {battleState && (
