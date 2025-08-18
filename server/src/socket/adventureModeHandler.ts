@@ -16,6 +16,7 @@ import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
 import { storyStruct } from "/types/composite/storyTypes";
 import { NullAction } from "../model/game/action/null";
+import { getMonster } from "../model/game/monster/monsterMap";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -372,19 +373,4 @@ async function progressAdventure(
       message: "Failed to load adventure stage.",
     });
   }
-}
-
-//todo: this is used in multiple files
-const monsterMap = new Map([
-  [MonsterIdentifier.ROCKY_RHINO, () => new RockyRhino()],
-  [MonsterIdentifier.POUNCING_BANDIT, () => new PouncingBandit()],
-  [MonsterIdentifier.CINDER_TAIL, () => new CinderTail()],
-  [MonsterIdentifier.FURIOUS_FLIPPER, () => new FuriousFlipper()],
-  [MonsterIdentifier.POISON_FROG, () => new PoisonFrog()],
-  [MonsterIdentifier.CHARMER_COBRA, () => new CharmerCobra()],
-]);
-
-function getMonster(monsterID: MonsterIdentifier) {
-  const createMonster = monsterMap.get(monsterID);
-  return createMonster ? createMonster() : null;
 }
