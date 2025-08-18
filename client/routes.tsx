@@ -14,6 +14,7 @@ import LevelSelect from "./src/pages/Adventure/LevelSelect";
 import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
+import AdventureWin from "./src/pages/Adventure/AdventureWin";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -102,10 +103,17 @@ FlowRouter.route("/adventure/adventure-battle", {
 
 FlowRouter.route("/adventure/defeated", {
   name: "AdventureDefeated",
-  action(){
+  action() {
     mount(AdventureDefeated);
   },
-})
+});
+
+FlowRouter.route("/adventure/win", {
+  name: "AdventureWin",
+  action() {
+    mount(AdventureWin);
+  },
+});
 
 FlowRouter.route("/rules", {
   name: "Rules",

@@ -38,6 +38,10 @@ export class Adventure {
     return this.stage;
   }
 
+  public incrementLevel(): void {
+    this.level += 1;
+  }
+
   public getPlayerMonster(): Monster | null {
     return this.playerMonster;
   }
