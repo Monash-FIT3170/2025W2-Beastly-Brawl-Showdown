@@ -92,10 +92,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   };
 
   var tempMonsterState = {
-    id: MonsterIdentifier.CINDER_TAIL,
-    archetypeId: ArchetypeIdentifier.BALANCED,
-    name: "Slime",
-    description: "",
+    id: MonsterIdentifier.SLIME,
+    archetypeId: ArchetypeIdentifier.NEUTRAL,
+    name: "Evil Slime",
+    description: "blob..blob",
 
     maxHealth: 10,
     attackBonus: 0,

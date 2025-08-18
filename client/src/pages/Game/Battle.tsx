@@ -51,7 +51,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       } else if (result === "concluded") {
         setWinner(winners[0]);
       }
-      console.log(winner);
+      console.log("Winner: ", winner);
     });
 
     // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier

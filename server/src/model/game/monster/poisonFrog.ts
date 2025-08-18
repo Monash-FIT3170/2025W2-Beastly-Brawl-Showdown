@@ -1,6 +1,6 @@
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Monster } from "./monster";
-import { PoisonAttack } from "./../action/ability/poisonAttack";
+import { ToxinTongue } from "./../action/ability/poisonAttack";
 import { Attacker } from "../archetype/attacker";
 
 export class PoisonFrog extends Monster {
@@ -10,7 +10,7 @@ export class PoisonFrog extends Monster {
       "Poison Frog",
       "A small frog with a toxic touch. It ensnares its foes in a web of poison, leaving them vulnerable to its venomous attacks.",
       new Attacker(),
-      new PoisonAttack(),
+      new ToxinTongue(),
       20,
       4,
       10

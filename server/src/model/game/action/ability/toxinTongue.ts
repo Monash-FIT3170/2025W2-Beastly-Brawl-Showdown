@@ -3,12 +3,12 @@ import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 import { Poison } from "../../status/poison";
 
-export class PoisonAttack extends Action {
+export class ToxinTongue extends Action {
   // Attack that always lands on your opponent, even if they attempt to dodge the attack.
   constructor() {
     super(
-      ActionIdentifier.POISON_ATTACK,
-      "Poison Attack",
+      ActionIdentifier.TOXIN_TONGUE,
+      "Toxin Tongue",
       "Poison your opponent, dealing damage over time.",
       2
     );
@@ -19,13 +19,14 @@ export class PoisonAttack extends Action {
     // TOODO: Implement poison status effect
   }
 
-  public prepareAnimation(): string | [string, number] {return "Poison_Attack_Animation";}
-
+  public prepareAnimation(): string | [string, number] {
+    return "Toxin_Tongue_Animation";
+  }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
     var numberOfTurns = 5;
-    
+
     // Poison the opponent
     affectedPlayer.addStatus(new Poison(numberOfTurns));
 

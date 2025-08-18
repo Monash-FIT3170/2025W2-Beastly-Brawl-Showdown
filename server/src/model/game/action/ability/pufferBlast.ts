@@ -2,11 +2,11 @@ import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier } from "/types/single/actionState";
 
-export class TripleFishLaunch extends Action {
+export class PufferBlast extends Action {
   constructor() {
     super(
-      ActionIdentifier.TRIPLE_FISH_LAUNCH,
-      "Triple Fish Launch",
+      ActionIdentifier.PUFFER_BLAST,
+      "Puffer Blast",
       "Launch three fish at your opponent, each having a chance to deal 2 damage.",
       1
     );
@@ -17,7 +17,7 @@ export class TripleFishLaunch extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public prepareAnimation(): string | [string, number] {
-    return "Triple_Fish_Launch_Animation";
+    return "Puffer_Blast_Animation";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
