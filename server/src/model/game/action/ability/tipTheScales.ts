@@ -11,7 +11,7 @@ export class TipTheScalesAbilityAction extends Action {
     super(
       ActionIdentifier.TIP_THE_SCALES,
       "Tip The Scales",
-      "Attack with a biased D20, increasing the odds of success.",
+      "Cheat fate itself. Attack with a loaded d20 where every roll is 10 or higher.",
       1
     );
   }

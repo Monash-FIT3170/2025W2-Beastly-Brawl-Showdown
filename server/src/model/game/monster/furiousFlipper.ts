@@ -8,7 +8,7 @@ export class FuriousFlipper extends Monster {
     super(
       MonsterIdentifier.FURIOUS_FLIPPER,
       "Furious Flipper",
-      "Just a little penguin with a penchant for destruction. It traps its enemies in a freezing grip, making them vulnerable to its icy onslaught.",
+      "Just a little penguin with a penchant for destruction. It unleashes its spiky pufferfish to jab and harrass, turning the tide in its favour.",
       new Balanced(),
       new PufferBlast(),
       23,

@@ -10,15 +10,17 @@ export class FortressStanceAbilityAction extends Action {
     super(
       ActionIdentifier.FORTRESS_STANCE,
       "Fortress Stance",
-      "Increase your AC by 10 for 1 turn.",
+      "Plant your feet and let nothing through. Gain +10 AC for 1 turn.",
       1
     );
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-  public prepareAnimation(): string | [string, number] {return "Fortress_Stance_Animation"}
-  
+  public prepareAnimation(): string | [string, number] {
+    return "Fortress_Stance_Animation";
+  }
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
 
@@ -30,10 +32,14 @@ export class FortressStanceAbilityAction extends Action {
       `You used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
+      `${actingPlayer.getName()} used ${this.getName()}, gaining ${
+        this.armourBonus
+      } AC for 1 turn.`
     );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
+      `${actingPlayer.getName()} used ${this.getName()}, gaining ${
+        this.armourBonus
+      } AC for 1 turn.`
     );
   }
 }

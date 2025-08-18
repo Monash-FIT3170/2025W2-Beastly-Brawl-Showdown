@@ -10,8 +10,8 @@ export class AlluringLullaby extends Action {
     super(
       ActionIdentifier.ALLURING_LULLABY,
       "Alluring Lullaby",
-      "Confuse your opponent, if they attack you, they will take 5 damage.",
-      10
+      "Sing a wicked little tune, confusing your opponent. If your opponent dares attack, they'll hit themselves instead",
+      1
     );
     this.setDodgeable(false);
   }

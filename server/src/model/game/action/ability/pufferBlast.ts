@@ -7,7 +7,7 @@ export class PufferBlast extends Action {
     super(
       ActionIdentifier.PUFFER_BLAST,
       "Puffer Blast",
-      "Launch three fish at your opponent, each having a chance to deal 2 damage.",
+      "Launch three spiky pufferfish at your foe. Each has a 50% chance to hit, dealing 2 damage per pop.",
       1
     );
     this.setDodgeable(false);
