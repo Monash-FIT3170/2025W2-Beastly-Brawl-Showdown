@@ -1,6 +1,6 @@
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Monster } from "./monster";
-import { ToxinTongue } from "./../action/ability/poisonAttack";
+import { ToxinTongue } from "../action/ability/toxinTongue";
 import { Attacker } from "../archetype/attacker";
 
 export class PoisonFrog extends Monster {
