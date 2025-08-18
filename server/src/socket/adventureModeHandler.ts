@@ -52,6 +52,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
     // Otherwise, follow the "next" field from the last outcome
     let stageData = adventure.currentStory;
+    console.log("test20", adventure.currentStory);
     if (!adventure.currentStory) {
       const loadNodes = await loadStage(stage);
       const eligibleNodes = loadNodes.filter((node) => {
@@ -61,6 +62,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
       console.log(randomNode);
       stageData = eligibleNodes[randomNode];
+      adventure.currentStory = stageData;
     }
     //const stageData = await loadStage(stage);
     const lastOutcome = stageData?.outcomes.find(
@@ -218,16 +220,23 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
                 if (adventure && stage) {
                   // Get current story node and outcome
+
                   let stageData = adventure.currentStory;
+                  console.log(
+                    "Adventure current story",
+                    adventure.currentStory
+                  );
                   if (!stageData) {
                     const loadNodes = loadStage(stage);
-                    const eligibleNodes = loadNodes.filter((node) =>
-                      node.level.includes(adventure.getLevel())
-                    );
+                    const eligibleNodes = loadNodes.filter((node) => {
+                      const match = node.level.includes(adventure.getLevel());
+                      return match;
+                    });
                     const randomNode = Math.floor(
                       Math.random() * eligibleNodes?.length
                     );
                     stageData = eligibleNodes[randomNode];
+                    adventure.currentStory = stageData;
                   }
                   const outcome = stageData?.outcomes.find(
                     (o) => o.id === adventure.currentOutcomeId
@@ -279,6 +288,7 @@ async function progressAdventure(
 ) {
   try {
     let stageData = adventure.currentStory;
+    console.log("test1", adventure.currentStory);
     if (!adventure.currentStory) {
       const loadNodes = await loadStage(stage);
       const eligibleNodes = loadNodes.filter((node) => {
@@ -288,6 +298,7 @@ async function progressAdventure(
       const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
       console.log(randomNode);
       stageData = eligibleNodes[randomNode];
+      adventure.currentStory = stageData;
     }
     const outcome = stageData?.outcomes.find(
       (o) => o.id === adventure.currentOutcomeId
