@@ -104,39 +104,13 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     possibleActions: [fakeAction, fakeAction, fakeAction, fakeAction],
   };
 
-  var tempPlayerState = {
-    id: "1",
-    name: "anik1a",
-
-    currentHealth: 10,
-    currentAttackStat: 0,
-    currentArmourClassStat: 8,
-    // initialHealth: number;
-    // monsterName: string;
-    successBlock: 0,
-    successHit: 0,
-
-    statuses: [],
-
-    monster: tempMonsterState,
-
-    logs: [],
-    battleLogs: [],
-  };
-
-  // const battleState = {
-  //   id: "vlPF5IeotxAllOzwAAAN",
-  //   turn: 1,
-  //   yourPlayer: tempPlayerState,
-  //   yourPlayerMonster: tempMonsterState,
-  //   opponentPlayer: tempPlayerState,
-  //   opponentPlayerMonster: tempMonsterState,
-  //   isOver: false,
-  // };
+  var backgroundLocation = "BASALT"; //TODO: change this to be based off level/monster?
+  var backgroundString =
+    "url('/assets/backgrounds/" + backgroundLocation + ".png')";
 
   //TODO: add exit button
   //TODO: add inventory button
-  //TODO: add background (based off level)
+
   //TODO: add status icons
   //TODO: add link to next *whatever* after winning
   //TODO: add link to defeat page if dead + end adventure
@@ -144,89 +118,98 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   //TODO: take player's monster
   return (
     <>
-      {receivingItem && (
-        <PopupClean>
-          <div className="flex flex-col justify-around items-center">
-            <OutlineText size="extraLarge">{receivingItem}</OutlineText>
-            <div className="flex flex-row justify-between items-center">
-              <ButtonGeneric
-                size="large"
-                color="blue"
-                onClick={() => {
-                  setReceivingItem(null);
-                  socket.emit("adventure_next", { stage });
-                }}
-              >
-                TAKE!
-              </ButtonGeneric>
+      <div
+        className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
+        style={{ backgroundImage: backgroundString }}
+      >
+        {receivingItem && (
+          <PopupClean>
+            <div className="flex flex-col justify-around items-center">
+              <OutlineText size="extraLarge">{receivingItem}</OutlineText>
+              <div className="flex flex-row justify-between items-center">
+                <ButtonGeneric
+                  size="large"
+                  color="blue"
+                  onClick={() => {
+                    setReceivingItem(null);
+                    socket.emit("adventure_next", { stage });
+                  }}
+                >
+                  TAKE!
+                </ButtonGeneric>
+              </div>
             </div>
-          </div>
-        </PopupClean>
-      )}
-      {dialogue && (
-        <DialogueBox
-          monster={tempMonsterState}
-          lines={dialogue}
-          onEnd={() => {
-            setDialogue(null);
-            socket.emit("adventure_next", { stage });
-          }}
-        />
-      )}
-      {choices && (
-        <>
-          {/* {choices.map((choice, idx) => (
+          </PopupClean>
+        )}
+        {dialogue && (
+          <DialogueBox
+            monster={tempMonsterState}
+            lines={dialogue}
+            onEnd={() => {
+              setDialogue(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
+        )}
+        {choices && (
+          <>
+            {/* {choices.map((choice, idx) => (
             <DialogueChoiceButton
               key={idx}
               children={choice.text}
               onClick={() => handleChoiceSelect(choice.next)}
             />
           ))} */}
-          <ChoicePopup question="question string where to get?" choices={choices} onClick={handleChoiceSelect}></ChoicePopup>
-        </>
-      )}
-      {battleState && (
-        <div className="battle-state-parts item-center justify-center ">
-          <PlayerInfoPanel battleState={battleState} />
+            <ChoicePopup
+              question="question string where to get?"
+              choices={choices}
+              onClick={handleChoiceSelect}
+            ></ChoicePopup>
+          </>
+        )}
+        {battleState && (
+          <div className="battle-state-parts item-center justify-center ">
+            <PlayerInfoPanel battleState={battleState} />
 
-          <BattleMonsterPanel battleState={battleState} />
+            <BattleMonsterPanel battleState={battleState} />
 
-          <div
-            className="battle-logs-stack mt-[60%] xl:mt-[15%]"
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "120px",
-            }}
-          >
-            {battleState.yourPlayer.logs.map((log, index) => (
-              <FadingBattleText
-                key={index}
-                size="medium-battle-text"
-                style={{ top: `${index * 32}px` }}
-              >
-                {log}
-              </FadingBattleText>
-            ))}
+            <div
+              className="battle-logs-stack mt-[60%] xl:mt-[15%]"
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "120px",
+              }}
+            >
+              {battleState.yourPlayer.logs.map((log, index) => (
+                <FadingBattleText
+                  key={index}
+                  size="medium-battle-text"
+                  style={{ top: `${index * 32}px` }}
+                >
+                  {log}
+                </FadingBattleText>
+              ))}
+            </div>
+
+            <div>
+              {
+                <BattleFooter
+                  possibleActions={possibleActions}
+                  battleId={battleId}
+                />
+              }
+            </div>
+
+            <DiceRollModal
+              show={showDiceModal}
+              onClose={() => setShowDiceModal(false)}
+              toRoll={diceValue}
+              battleState={battleState}
+            />
           </div>
-
-          <div>
-            {
-              <BattleFooter
-                possibleActions={possibleActions}
-                battleId={battleId}
-              />
-            }
-          </div>
-
-          <DiceRollModal
-            show={showDiceModal}
-            onClose={() => setShowDiceModal(false)}
-            toRoll={diceValue}
-            battleState={battleState}
-          />
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

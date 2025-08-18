@@ -18,6 +18,8 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   const renderAdventureMonsterSelect = () => {
     FlowRouter.go("/adventure/monster-select");
   };
+  const monster = "None";
+  const monsterImage = "/assets/characters/" + monster + ".png";
 
   return (
     <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">
@@ -42,7 +44,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
       >
         {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
         <OutlineText size="extraLarge">NEXT CHAPTER</OutlineText>
-        <div>monster image</div>
+        <img src={monsterImage} />
         <ButtonGeneric
           color={UNLOCKED_LEVELS.includes(observedLevel) ? `ronchi` : `alto`}
           size="large"
@@ -69,7 +71,11 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         </div>
 
         <div className="w-min">
-          <ButtonGeneric color="red" size="large">
+          <ButtonGeneric
+            color="red"
+            size="large"
+            onClick={() => FlowRouter.go("/")}
+          >
             BACK
           </ButtonGeneric>
         </div>
