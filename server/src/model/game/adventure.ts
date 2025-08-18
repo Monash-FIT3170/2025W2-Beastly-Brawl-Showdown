@@ -9,7 +9,7 @@ export class Adventure {
   private levelMonster: MonsterIdentifier;
   private stage: number;
   private playerMonster: Monster | null;
-  public currentOutcomeId: string = "initial";
+  public currentOutcomeId: string | null = "initial";
   public currentStory: storyStruct | null;
 
   constructor(player: Player, level: number) {

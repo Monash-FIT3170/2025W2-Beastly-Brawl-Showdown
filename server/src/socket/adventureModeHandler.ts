@@ -47,7 +47,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     // Otherwise, follow the "next" field from the last outcome
     let stageData = adventure.currentStory;
     console.log("test20", adventure.currentStory);
-    if (!adventure.currentStory) {
+    if (!adventure.currentStory || !adventure.currentOutcomeId) {
+      adventure.currentOutcomeId = "initial";
       const loadNodes = await loadStage(stage);
       const eligibleNodes = loadNodes.filter((node) => {
         const match = node.level.includes(adventure.getLevel());
@@ -220,7 +221,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
                     "Adventure current story",
                     adventure.currentStory
                   );
-                  if (!stageData) {
+                  if (!adventure.currentOutcomeId || !adventure.currentStory) {
+                    adventure.currentOutcomeId = "initial";
                     const loadNodes = loadStage(stage);
                     const eligibleNodes = loadNodes.filter((node) => {
                       const match = node.level.includes(adventure.getLevel());
@@ -235,12 +237,12 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
                   const outcome = stageData?.outcomes.find(
                     (o) => o.id === adventure.currentOutcomeId
                   );
-
                   // If outcome has a next, update currentOutcomeId
                   if (outcome && outcome.next) {
                     adventure.currentOutcomeId = outcome.next;
                   } else {
-                    adventure.currentOutcomeId = ""; // Or handle end of adventure
+                    adventure.currentOutcomeId = null;
+                    adventure.currentStory = null; // Or handle end of adventure
                   }
 
                   console.log("stageData", stageData);
@@ -283,7 +285,8 @@ async function progressAdventure(
   try {
     let stageData = adventure.currentStory;
     console.log("test1", adventure.currentStory);
-    if (!adventure.currentStory) {
+    if (!adventure.currentStory || !adventure.currentOutcomeId) {
+      adventure.currentOutcomeId = "initial";
       const loadNodes = await loadStage(stage);
       const eligibleNodes = loadNodes.filter((node) => {
         const match = node.level.includes(adventure.getLevel());
@@ -292,11 +295,13 @@ async function progressAdventure(
       const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
       console.log(randomNode);
       stageData = eligibleNodes[randomNode];
+      console.log(stageData);
       adventure.currentStory = stageData;
     }
     const outcome = stageData?.outcomes.find(
       (o) => o.id === adventure.currentOutcomeId
     );
+    console.log(outcome);
 
     if (!outcome) {
       // No more outcomes, maybe end the adventure or move to next stage
