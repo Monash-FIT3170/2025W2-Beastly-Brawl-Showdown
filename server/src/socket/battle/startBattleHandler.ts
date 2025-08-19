@@ -18,17 +18,15 @@ export default function proceedBattleTurn(
   let playersInBattle = battle.getPlayers();
 
   if (battle.isBattleOver()) {
-    const winners = battle.getWinnerIDs();
+    const winners = battle.getWinners();
     if (winners.length == 0) {
       //if battle is over, the array length is guaranteed to be either 0 or 1
       io.to(battle.getId()).emit("battle_end", {
-        gameCode: gameSession.getGameCode(),
         result: "draw",
         winners: winners,
       });
     } else {
       io.to(battle.getId()).emit("battle_end", {
-        gameCode: gameSession.getGameCode(),
         result: "concluded",
         winners: winners,
       });
@@ -128,17 +126,15 @@ export default function proceedBattleTurn(
         });
 
         if (battle.isBattleOver()) {
-          const winners = battle.getWinnerIDs();
+          const winners = battle.getWinners();
           if (winners.length == 0) {
             //if battle is over, the array length is guaranteed to be either 0 or 1
             io.to(battle.getId()).emit("battle_end", {
-              gameCode: gameSession.getGameCode(),
               result: "draw",
               winners: winners,
             });
           } else {
             io.to(battle.getId()).emit("battle_end", {
-              gameCode: gameSession.getGameCode(),
               result: "concluded",
               winners: winners,
             });

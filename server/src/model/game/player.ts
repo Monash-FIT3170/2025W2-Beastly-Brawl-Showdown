@@ -176,14 +176,6 @@ export class Player {
     this.actions = [];
   }
 
-  public incScore(scoreGained: number): void {
-    this.score += scoreGained;
-  }
-
-  public getScore(): number {
-    return this.score;
-  }
-
   public getPlayerState(): PlayerState {
     return {
       id: this.id,
@@ -198,8 +190,6 @@ export class Player {
       successHit: this.successfulHit,
 
       monster: this.monster ? this.monster.getMonsterState() : null,
-
-      score: this.score,
 
       logs: this.logs,
       battleLogs: this.battleLogs,

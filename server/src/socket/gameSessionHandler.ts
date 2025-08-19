@@ -249,34 +249,4 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Game ${gameCodeN} is cancelled.`);
     }, 100);
   });
-
-  interface BattleEndData {
-    gameCode: number;
-    result: string;
-    winners: string[];
-  }
-
-  // Handle setting scores to players as each battle ends
-  socket.on("modify-score", ({ gameCode, result, winners }: BattleEndData) => {
-    const session = activeGameSessions.get(gameCode);
-    if (result === "draw") {
-      session?.setNextDrawRankScore(winners[0], winners[1]);
-      
-      // console.log("Player states before emit", session?.getPlayerStates());
-      // io.emit("update-players", {
-      //   message: `${winners[0]} and ${winners[1]} ranks were updated.`,
-      //   players: session?.getPlayerStates()
-      // });
-
-    } else if (result === "concluded") {
-      session?.setNextRankScore(winners[0]);
-
-      // console.log("Player states before emit", session?.getPlayerStates());
-      // io.emit("update-players", {
-      //   message: `${winners[0]} rank was updated.`,
-      //   players: session?.getPlayerStates()
-      // });
-      
-    }
-  });
 };

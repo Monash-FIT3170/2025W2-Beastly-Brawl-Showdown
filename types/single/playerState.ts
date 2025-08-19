@@ -14,8 +14,6 @@ export interface PlayerState {
 
   monster: MonsterState | null;
 
-  score: number;
-
   logs: string[];
   battleLogs: string[];
 }
