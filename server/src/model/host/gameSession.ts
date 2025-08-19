@@ -19,6 +19,7 @@ export default class GameSession {
   private player_max: number = 8; // Max 8 players
   private battle_max: number = 4; // Max 4 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
+  private nextRankScore: number = 1;
 
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -326,5 +327,24 @@ export default class GameSession {
       playerStates.push(player.getPlayerState());
     }
     return playerStates;
+  }
+
+  public setNextRankScore(playerId: string): void {
+    const player = this.players.getItems().find((player) => player.getId() == playerId);
+    if ((player) && player.getScore() == 0) {
+      player.incScore(this.nextRankScore)
+      this.nextRankScore += 1;
+    }
+  }
+
+  // TODO: Make sure draw ranks are correct
+  public setNextDrawRankScore(player1Id: string, player2Id: string): void {
+    const player1 = this.players.getItems().find((player) => player.getId() == player1Id);
+    const player2 = this.players.getItems().find((player) => player.getId() == player2Id);
+    if (player1 && player2 && player1.getScore() == 0 && player2.getScore() == 0) {
+      player1.incScore(this.nextRankScore);
+      player2.incScore(this.nextRankScore);
+      this.nextRankScore += 2;
+    }
   }
 }

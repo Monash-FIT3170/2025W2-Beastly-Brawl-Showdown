@@ -44,7 +44,8 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setTimer(time);
     });
 
-    socket.on("battle_end", ({ result, winners }) => {
+    // TODO: Change 'winner' and 'winners' to 'winnerID' and 'winnerIDs'
+    socket.on("battle_end", ({ gameCode, result, winners }) => {
       console.log(result, winners);
       if (result === "draw") {
         setWinner("Draw");
@@ -52,6 +53,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         setWinner(winners[0]);
       }
       console.log(winner);
+      socket.emit("modify-score", { gameCode: gameCode, result: result, winners: winners });
     });
 
     // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
@@ -119,7 +121,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       {winner ? (
         winner === "Draw" ? (
           <DrawScreen />
-        ) : battleState?.yourPlayer.name === winner ? (
+        ) : battleState?.yourPlayer.id === winner ? (
           <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
         ) : (
           <LoserScreen />

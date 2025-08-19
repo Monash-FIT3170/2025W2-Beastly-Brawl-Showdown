@@ -85,7 +85,7 @@ export class Battle {
       (player) => player.getHealth() == 0
     );
   }
-  public getWinners(): string[] | null {
+  public getWinnerIDs(): string[] | null {
     const alivePlayers = Array.from(this.players.values()).filter(
       (player) => player.getHealth() > 0
     );
@@ -94,7 +94,7 @@ export class Battle {
       // If no players are alive, it's a draw
       return alivePlayers.length === 0
         ? [] // draw: no survivors
-        : alivePlayers.map((player) => player.getName()); 
+        : alivePlayers.map((player) => player.getId());
     }
   
     return null;
