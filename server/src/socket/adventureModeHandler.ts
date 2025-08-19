@@ -46,7 +46,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
     // Otherwise, follow the "next" field from the last outcome
     let stageData = adventure.currentStory;
-    console.log("test20", adventure.currentStory);
+    // console.log("test20", adventure.currentStory);
     if (!adventure.currentStory) {
       const loadNodes = await loadStage(stage);
       const eligibleNodes = loadNodes.filter((node) => {
@@ -54,7 +54,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         return match;
       });
       const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
-      console.log(randomNode);
+      // console.log(randomNode);
       stageData = eligibleNodes[randomNode];
       adventure.currentStory = stageData;
     }
@@ -216,10 +216,10 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
                   // Get current story node and outcome
 
                   let stageData = adventure.currentStory;
-                  console.log(
-                    "Adventure current story",
-                    adventure.currentStory
-                  );
+                  // console.log(
+                  //   "Adventure current story",
+                  //   adventure.currentStory
+                  // );
                   if (!stageData) {
                     const loadNodes = loadStage(stage);
                     const eligibleNodes = loadNodes.filter((node) => {
@@ -282,7 +282,7 @@ async function progressAdventure(
 ) {
   try {
     let stageData = adventure.currentStory;
-    console.log("test1", adventure.currentStory);
+    // console.log("test1", adventure.currentStory);
     if (!adventure.currentStory) {
       const loadNodes = await loadStage(stage);
       const eligibleNodes = loadNodes.filter((node) => {
@@ -290,7 +290,7 @@ async function progressAdventure(
         return match;
       });
       const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
-      console.log(randomNode);
+      // console.log(randomNode);
       stageData = eligibleNodes[randomNode];
       adventure.currentStory = stageData;
     }
@@ -364,6 +364,7 @@ async function progressAdventure(
     } else if (resolved.type === "CHOICE") {
       socket.emit("adventure_state", {
         type: "choice",
+        result: resolved.result,
         choices: resolved.options,
       });
     } else if (resolved.type === "ITEM") {

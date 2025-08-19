@@ -40,17 +40,12 @@
         "id": "dialogue_test_2",
         "result": ["RANDOM SHIT 2"],
         "type": "DIALOGUE",
-        "next": "choice_1"
+        "next": "lake_1"
       },
       {
         "id": "lake_1",
-        "result": ["You see a lake. Do you..."],
-        "type": "DIALOGUE",
-        "next": "choice_1"
-      },
-      {
-        "id": "choice_1",
         "type": "CHOICE",
+        "result": ["You see a lake. Do you..."],
         "options": [
           {
             "id": "approach_lake",
@@ -68,7 +63,7 @@
         "id": "item_1",
         "type": "ITEM",
         "itemId": "potion_basic",
-        "next": "choice_1"
+        "next": "lake_1"
       },
       {
         "id": "fight_1",
@@ -118,17 +113,12 @@
         "id": "dialogue_test_2",
         "result": ["RANDOM SHIT 2"],
         "type": "DIALOGUE",
-        "next": "choice_1"
+        "next": "lake_1"
       },
       {
         "id": "lake_1",
         "result": ["You see a lake. Do you..."],
         "type": "DIALOGUE",
-        "next": "choice_1"
-      },
-      {
-        "id": "choice_1",
-        "type": "CHOICE",
         "options": [
           {
             "id": "approach_lake",
@@ -146,7 +136,7 @@
         "id": "item_1",
         "type": "ITEM",
         "itemId": "potion_basic",
-        "next": "choice_1"
+        "next": "lake_1"
       },
       {
         "id": "fight_1",

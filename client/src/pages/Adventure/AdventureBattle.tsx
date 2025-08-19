@@ -32,6 +32,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [battleState, setBattleState] = useState<BattleState | null>(null);
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
+  const [question, setQuestion] = useState<string[] | null>(null);
   const [choices, setChoices] = useState<option[] | null>(null);
   const [receivingItem, setReceivingItem] = useState<string | null>(null);
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
@@ -55,6 +56,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
       } else if (state.type === "choice") {
         // Handle choice state
         setChoices(state.choices);
+        setQuestion(state.result);
         setBattleState(null); // Clear battle
       }
     });
@@ -161,7 +163,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             />
           ))} */}
             <ChoicePopup
-              question="question string where to get?"
+              question={question![0]}
               choices={choices}
               onClick={handleChoiceSelect}
             ></ChoicePopup>
