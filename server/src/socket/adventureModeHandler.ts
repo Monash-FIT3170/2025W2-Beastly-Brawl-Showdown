@@ -8,7 +8,7 @@ import proceedAdventureTurn from "./proceedAdventureTurn";
 import { ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
-import { storyStruct } from "/types/composite/storyTypes";
+import { storyOutcomes, storyStruct } from "/types/composite/storyTypes";
 import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
 
@@ -30,7 +30,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       players.set(socket.id, player);
 
       // Start adventure at stage 1
-      const adventure = new Adventure(player, 1);
+      const adventure = new Adventure(player, 0);
       // Track which outcome we're on
       adventure.currentOutcomeId = "initial";
       activeAdventures.set(socket.id, adventure);
@@ -44,24 +44,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     const adventure = activeAdventures.get(socket.id);
     if (!adventure) return;
 
-    // Otherwise, follow the "next" field from the last outcome
-    let stageData = adventure.currentStory;
-    // console.log("test20", adventure.currentStory);
-    if (!adventure.currentStory) {
-      const loadNodes = await loadStage(stage);
-      const eligibleNodes = loadNodes.filter((node) => {
-        const match = node.level.includes(adventure.getLevel());
-        return match;
-      });
-      const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
-      // console.log(randomNode);
-      stageData = eligibleNodes[randomNode];
-      adventure.currentStory = stageData;
-    }
-    //const stageData = await loadStage(stage);
-    const lastOutcome = stageData?.outcomes.find(
-      (o) => o.id === adventure.currentOutcomeId
-    );
+    const lastOutcome = loadNextStory(adventure, stage, socket);
+
     if (lastOutcome && lastOutcome.next) {
       adventure.currentOutcomeId = lastOutcome.next;
     } else {
@@ -211,39 +195,22 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
                 const adventure = activeAdventures.get(playerId);
                 const stage = adventure?.getStage();
                 //TODO: DO NEXT STAGE INSTEAD OF THIS STAGE
-
+                console.log("stage: ", stage);
+                console.log("adventure", adventure);
                 if (adventure && stage) {
                   // Get current story node and outcome
 
-                  let stageData = adventure.currentStory;
-                  // console.log(
-                  //   "Adventure current story",
-                  //   adventure.currentStory
-                  // );
-                  if (!stageData) {
-                    const loadNodes = loadStage(stage);
-                    const eligibleNodes = loadNodes.filter((node) => {
-                      const match = node.level.includes(adventure.getLevel());
-                      return match;
-                    });
-                    const randomNode = Math.floor(
-                      Math.random() * eligibleNodes?.length
-                    );
-                    stageData = eligibleNodes[randomNode];
-                    adventure.currentStory = stageData;
-                  }
-                  const outcome = stageData?.outcomes.find(
-                    (o) => o.id === adventure.currentOutcomeId
-                  );
+                  const outcome = loadNextStory(adventure, stage, socket);
 
                   // If outcome has a next, update currentOutcomeId
                   if (outcome && outcome.next) {
                     adventure.currentOutcomeId = outcome.next;
                   } else {
-                    adventure.currentOutcomeId = ""; // Or handle end of adventure
+                    adventure.currentOutcomeId = null;
+                    adventure.currentStory = null; // Or handle end of adventure
                   }
 
-                  console.log("stageData", stageData);
+                  //console.log("stageData", stageData);
                   console.log("outcome", outcome);
                   console.log("outcome.next", outcome?.next);
 
@@ -281,22 +248,7 @@ async function progressAdventure(
   stage: number
 ) {
   try {
-    let stageData = adventure.currentStory;
-    // console.log("test1", adventure.currentStory);
-    if (!adventure.currentStory) {
-      const loadNodes = await loadStage(stage);
-      const eligibleNodes = loadNodes.filter((node) => {
-        const match = node.level.includes(adventure.getLevel());
-        return match;
-      });
-      const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
-      // console.log(randomNode);
-      stageData = eligibleNodes[randomNode];
-      adventure.currentStory = stageData;
-    }
-    const outcome = stageData?.outcomes.find(
-      (o) => o.id === adventure.currentOutcomeId
-    );
+    const outcome = loadNextStory(adventure, stage, socket);
 
     if (!outcome) {
       // No more outcomes, maybe end the adventure or move to next stage
@@ -379,4 +331,31 @@ async function progressAdventure(
       message: "Failed to load adventure stage.",
     });
   }
+}
+
+function loadNextStory(
+  adventure: Adventure,
+  stage: number,
+  socket: Socket
+): storyOutcomes | undefined {
+  let stageData = adventure.currentStory;
+  if (!adventure.currentStory || !adventure.currentOutcomeId) {
+    adventure.currentOutcomeId = "initial";
+    adventure.incrementLevel();
+    if (adventure.getLevel() > 7) {
+      socket.emit("adventure_win", { stage });
+    }
+    const loadNodes = loadStage(stage);
+    const eligibleNodes = loadNodes.filter((node) => {
+      const match = node.level.includes(adventure.getLevel());
+      return match;
+    });
+    const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
+    stageData = eligibleNodes[randomNode];
+    adventure.currentStory = stageData;
+  }
+  const outcome = stageData?.outcomes.find(
+    (o) => o.id === adventure.currentOutcomeId
+  );
+  return outcome;
 }

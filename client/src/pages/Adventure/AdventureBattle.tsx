@@ -20,6 +20,7 @@ import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { ChoicePopup } from "../../components/popups/ChoicePopup";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -42,6 +43,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     socket.emit("adventure_choice", { stage, choiceId });
     setChoices(null);
   };
+
+  socket.on("adventure_win", (stage) => {
+    FlowRouter.go("/adventure/win");
+  });
 
   useEffect(() => {
     socket.emit("adventure_request", { stage });
