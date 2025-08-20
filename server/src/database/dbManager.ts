@@ -8,6 +8,8 @@ import { CharmerCobra } from '../model/game/monster/charmerCobra';
 import { PoisonFrog } from '../model/game/monster/poisonFrog';
 import { FuriousFlipper } from '../model/game/monster/furiousFlipper';
 
+import bcrypt from 'bcrypt';
+
 
 
 // Schema for a Player Account 
