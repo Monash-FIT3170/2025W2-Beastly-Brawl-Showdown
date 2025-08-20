@@ -59,7 +59,7 @@ export const PlayersCollection = new Mongo.Collection('players');
  * retrieves information/data locally 
  * creates new instances of monsters or players
  * */
-const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit()];
+const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit(), new PoisonFrog(), new CharmerCobra(), new FuriousFlipper()];
 
 // Gets default stats of monsters
 function getBaseMonsterStats(monsterId: string): { maxHealth: number, attackBonus: number, armourClass: number } {
@@ -100,6 +100,9 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       createPlayerMonsterStatSchema('ROCKY_RHINO'),
       createPlayerMonsterStatSchema('CINDER_TAIL'),
       createPlayerMonsterStatSchema('POUNCING_BANDIT'),
+      createPlayerMonsterStatSchema('POISON_FROG'),
+      createPlayerMonsterStatSchema('CHARMER_COBRA'),
+      createPlayerMonsterStatSchema('FURIOUS_FLIPPER'),
     ],
   };
 }
