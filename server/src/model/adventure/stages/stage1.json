@@ -85,14 +85,14 @@
         "id": "initial",
         "result": [
           "Off in the distance you hear squelches",
-          "Whatever creature is making these noises sounds as though it is small and helpless",
-          "Do you go and investigate?"
+          "Whatever creature is making these noises sounds as though it is small and helpless"
         ],
         "type": "DIALOGUE",
         "next": "choice_1"
       },
       {
         "id": "choice_1",
+        "result": ["Do you go and investigate?"],
         "type": "CHOICE",
         "options": [
           {
@@ -119,6 +119,7 @@
       },
       {
         "id": "slime_choice",
+        "result": ["Do you engage it in combat or try to befriend it?"],
         "type": "CHOICE",
         "options": [
           {
@@ -193,6 +194,7 @@
       },
       {
         "id": "choice_1",
+        "result": ["Do you..?"],
         "type": "CHOICE",
         "options": [
           {
@@ -354,14 +356,14 @@
       {
         "id": "initial",
         "result": [
-          "After your tiring encounter you reach a lake that is blocking your path.",
-          "Do you...?"
+          "After your tiring encounter you reach a lake that is blocking your path."
         ],
         "type": "DIALOGUE",
         "next": "choice_1"
       },
       {
         "id": "choice_1",
+        "result": ["Do you...?"],
         "type": "CHOICE",
         "options": [
           {
@@ -495,14 +497,14 @@
         "result": [
           "You come across a cute green cottage that smells of freshly baked cookies.",
           "You knock on the door and large slime slowly oozes out to meet you",
-          "Within the slime you notice a rolling pin, an apron and glasses",
-          "You feel something in your backpack shift in excitement."
+          "Within the slime you notice a rolling pin, an apron and glasses"
         ],
         "type": "DIALOGUE",
         "next": "choice_1"
       },
       {
         "id": "choice_1",
+        "result": ["You feel something in your backpack shift in excitement."],
         "type": "CHOICE",
         "options": [
           {
