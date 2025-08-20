@@ -51,6 +51,20 @@ export interface AdventureProgressionSchema {
 // Collections
 export const PlayersCollection = new Mongo.Collection('players');
 
+/**
+ * Helper functions for encrypting/decrypting passwords
+ */
+
+// Returns a hashed password
+export async function hashPassword(password: string): Promise<string> {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
+}
+
+// Returns boolean if password matches hashed password
+export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
+  return bcrypt.compare(password, hashedPassword);
+}
 
 
 
