@@ -57,15 +57,39 @@ export const PlayersCollection = new Mongo.Collection('players');
 
 // Returns a hashed password
 export async function hashPassword(password: string): Promise<string> {
-  const salt = await bcrypt.genSalt(10);
-  return bcrypt.hash(password, salt);
+  try {
+    const salt = await bcrypt.genSalt(10); 
+    const hashedPassword = await bcrypt.hash(password, salt); 
+    console.log(`Password hashed: ${hashedPassword}`);
+    return hashedPassword;
+  } catch (error) {
+    console.error('Error hashing password:', error);
+    throw error;
+  }
 }
 
 // Returns boolean if password matches hashed password
-export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
-  return bcrypt.compare(password, hashedPassword);
-}
+export async function verifyPassword(inputPassword: string, hashedPassword: string): Promise<boolean> {
+  try {
+    // Validate inputs
+    if (typeof inputPassword !== 'string' || typeof hashedPassword !== 'string') {
+      throw new Error('Password and hashed password must be strings');
+    }
 
+    // Debug inputs
+    console.log(` --- Verifying Password --- `);
+    console.log('Verifying password:', inputPassword);
+    console.log('With hashed password:', hashedPassword);
+
+    // Compare passwords
+    const res = await bcrypt.compare(inputPassword, hashedPassword);
+    console.log(`Password verification result: ${res}\n`);
+    return res
+  } catch (error) {
+    console.error('Error verifying password:', error);
+    throw error; // Re-throw the error for proper handling
+  }
+}
 
 
 
@@ -98,7 +122,7 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
   };
 }
 
-// This is used when a player/socket connects to create a 'guest' account. 
+// This is used to create a Guest account - Used when a new socket connection is made
 export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
   return {
     email: '',
@@ -385,8 +409,6 @@ export async function updatePlayerAccount(
       { _id },
       { $set: mergedPlayer }
     );
-
-    console.log(`Player ${_id} updated successfully.`);
   } catch (error) {
     console.error(`Error updating player account: ${error.message}`);
   }
