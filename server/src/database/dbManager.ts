@@ -1,10 +1,13 @@
 import { Mongo } from 'meteor/mongo';
-import SimpleSchema from 'simpl-schema';
 import { Monster } from '../model/game/monster/monster';
-// Import the 3 monster types
+
 import { RockyRhino } from '../model/game/monster/rockyRhino';
 import { CinderTail } from '../model/game/monster/cinderTail';
 import { PouncingBandit } from '../model/game/monster/pouncingBandit';
+import { CharmerCobra } from '../model/game/monster/charmerCobra';
+import { PoisonFrog } from '../model/game/monster/poisonFrog';
+import { FuriousFlipper } from '../model/game/monster/furiousFlipper';
+
 
 
 // Schema for a Player Account 
@@ -53,7 +56,7 @@ export const PlayersCollection = new Mongo.Collection('players');
  * retrieves information/data locally 
  * creates new instances of monsters or players
  * */
-const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit()];
+const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit(), new PoisonFrog(), new CharmerCobra(), new FuriousFlipper()];
 
 // Gets default stats of monsters
 function getBaseMonsterStats(monsterId: string): { maxHealth: number, attackBonus: number, armourClass: number } {
@@ -94,6 +97,9 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       createPlayerMonsterStatSchema('ROCKY_RHINO'),
       createPlayerMonsterStatSchema('CINDER_TAIL'),
       createPlayerMonsterStatSchema('POUNCING_BANDIT'),
+      createPlayerMonsterStatSchema('POISON_FROG'),
+      createPlayerMonsterStatSchema('CHARMER_COBRA'),
+      createPlayerMonsterStatSchema('FURIOUS_FLIPPER'),
     ],
   };
 }
