@@ -71,23 +71,20 @@ export async function hashPassword(password: string): Promise<string> {
 // Returns boolean if password matches hashed password
 export async function verifyPassword(inputPassword: string, hashedPassword: string): Promise<boolean> {
   try {
-    // Validate inputs
     if (typeof inputPassword !== 'string' || typeof hashedPassword !== 'string') {
       throw new Error('Password and hashed password must be strings');
     }
 
-    // Debug inputs
     console.log(` --- Verifying Password --- `);
     console.log('Verifying password:', inputPassword);
     console.log('With hashed password:', hashedPassword);
 
-    // Compare passwords
     const res = await bcrypt.compare(inputPassword, hashedPassword);
     console.log(`Password verification result: ${res}\n`);
     return res
   } catch (error) {
     console.error('Error verifying password:', error);
-    throw error; // Re-throw the error for proper handling
+    throw error; 
   }
 }
 
