@@ -5,7 +5,7 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { IconButton } from "../../components/buttons/IconButton";
 
-interface LevelSelectProps {}
+interface LevelSelectProps {} 
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(0);
