@@ -2,7 +2,11 @@ import { Archetype } from "../archetype/archetype";
 import { Action } from "../action/action";
 import { AttackAction } from "../action/attack";
 import { DefendAction } from "../action/defend";
-import { ArchetypeIdentifier, MonsterIdentifier, MonsterState } from "/types/single/monsterState";
+import {
+  ArchetypeIdentifier,
+  MonsterIdentifier,
+  MonsterState,
+} from "/types/single/monsterState";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
 
 export abstract class Monster {
@@ -118,5 +122,21 @@ export abstract class Monster {
 
       possibleActions: this.getPossibleActionStates(),
     };
+  }
+
+  public pveScaling(stage: number): void {
+    if (stage === 4) {
+      this.maxHealth = Math.ceil(this.maxHealth * 1.5);
+      this.attackBonus = Math.ceil(this.maxHealth * 1.5);
+      this.armourClass = Math.ceil(this.maxHealth * 1.5);
+    } else if (stage === 8) {
+      this.maxHealth = Math.ceil(this.maxHealth * 2);
+      this.attackBonus = Math.ceil(this.maxHealth * 2);
+      this.armourClass = Math.ceil(this.maxHealth * 2);
+    } else {
+      this.maxHealth = Math.ceil(this.maxHealth * (stage * 0.1));
+      this.attackBonus = Math.ceil(this.maxHealth * (stage * 0.1));
+      this.armourClass = Math.ceil(this.maxHealth * (stage * 0.1));
+    }
   }
 }

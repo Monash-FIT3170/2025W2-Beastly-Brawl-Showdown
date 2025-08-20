@@ -260,6 +260,7 @@ async function progressAdventure(
         resolved.enemy!.getId(),
         resolved.enemy?.getName()!
       ); // Eventually use bot class
+      resolved.enemy?.pveScaling(adventure.getStage());
       bot.setMonster(resolved.enemy!);
       players.set(resolved.enemy!.getId(), bot);
 

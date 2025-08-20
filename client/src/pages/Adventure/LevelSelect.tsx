@@ -9,7 +9,7 @@ interface LevelSelectProps {}
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(0);
-  const UNLOCKED_LEVELS = [0];
+  const UNLOCKED_LEVELS = [0, 1];
 
   const alterLevel = (val: number) => {
     setObservedLevel(observedLevel + val);
