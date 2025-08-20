@@ -4,6 +4,7 @@ import { Player } from "../model/game/player";
 import GameSession from "../model/host/gameSession";
 import proceedBattleTurn from "./battle/startBattleHandler";
 import { ScoringTournament } from "../model/host/gamemode/scoringTournament";
+import { BattleRoyale } from "../model/host/gamemode/battleRoyale";
 
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
@@ -12,6 +13,8 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     console.log("Attempting game session creation...");
     //Setting the default to be ScoringTournament for now
     const session = new GameSession(socket.id, {mode: new ScoringTournament({rounds : 3})});
+    // Uncomment below to test BattleRoyale
+    // const session = new GameSession(socket.id, {mode: new BattleRoyale()});
     // Check if game code already exists, if so, generate a new one
     while (activeGameSessions.has(session.getGameCode())) {
       console.log("Game session already exists. Generating new code...");
