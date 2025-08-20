@@ -111,7 +111,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     possibleActions: [fakeAction, fakeAction, fakeAction, fakeAction],
   };
 
-  var backgroundLocation = "BASALT"; //TODO: change this to be based off level/monster?
+  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster? 
   var backgroundString =
     "url('/assets/backgrounds/" + backgroundLocation + ".png')";
 
