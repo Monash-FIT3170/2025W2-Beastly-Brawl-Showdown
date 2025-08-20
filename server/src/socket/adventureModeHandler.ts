@@ -29,7 +29,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       player.setMonster(monster);
       players.set(socket.id, player);
 
-      // Start adventure at stage 1
+      // Adventure starts at level 0
       const adventure = new Adventure(player, 0);
       // Track which outcome we're on
       adventure.currentOutcomeId = "initial";
@@ -249,18 +249,10 @@ async function progressAdventure(
 ) {
   try {
     const outcome = loadNextStory(adventure, stage, socket);
-
     if (!outcome) {
-      // No more outcomes, maybe end the adventure or move to next stage
-      // TODO: Implement ending of adventure level
-      socket.emit("adventure_state", {
-        type: "dialogue",
-        description: "YOU COMPLETED THE LEVEL AND UNLOCKED A NEW MONSTER!",
-      });
       return;
     }
-
-    const resolved = resolveOutcome(outcome);
+    const resolved = resolveOutcome(outcome!);
 
     if (resolved.type === "FIGHT") {
       // Create bot and battle
@@ -342,7 +334,7 @@ function loadNextStory(
   if (!adventure.currentStory || !adventure.currentOutcomeId) {
     adventure.currentOutcomeId = "initial";
     adventure.incrementLevel();
-    if (adventure.getLevel() > 7) {
+    if (adventure.getLevel() > 8) {
       socket.emit("adventure_win", { stage });
     }
     const loadNodes = loadStage(stage);
@@ -357,5 +349,6 @@ function loadNextStory(
   const outcome = stageData?.outcomes.find(
     (o) => o.id === adventure.currentOutcomeId
   );
+  console.log(outcome);
   return outcome;
 }

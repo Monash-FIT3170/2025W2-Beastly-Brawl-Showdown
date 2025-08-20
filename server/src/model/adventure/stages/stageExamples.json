@@ -1,0 +1,213 @@
+[
+  {
+    "id": "slime_1",
+    "level": [1],
+    "description": "Stage 1, player fights slime 1.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "A small, green, gelatinous creature bounces around you.",
+          "It looks harmless enough."
+        ],
+        "type": "DIALOGUE",
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": "slime_1",
+        "next": "dialogue_2"
+      },
+      {
+        "id": "dialogue_test",
+        "result": ["RANDOM SHIT"],
+        "type": "DIALOGUE",
+        "next": "initial"
+      },
+      {
+        "id": "dialogue_test_2",
+        "result": ["RANDOM SHIT 2"],
+        "type": "DIALOGUE",
+        "next": "choice_1"
+      },
+      {
+        "id": "lake_1",
+        "result": ["You see a lake. Do you..."],
+        "type": "DIALOGUE",
+        "next": "choice_1"
+      },
+      {
+        "id": "choice_1",
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "approach_lake",
+            "text": "Approach the lake.",
+            "next": "item_1"
+          },
+          {
+            "id": "ignore_lake",
+            "text": "Ignore the lake.",
+            "next": "fight_1"
+          }
+        ]
+      },
+      {
+        "id": "item_1",
+        "type": "ITEM",
+        "itemId": "potion_basic",
+        "next": "choice_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": "slime_1"
+      }
+    ]
+  },
+  {
+    "id": "slime_2",
+    "level": [1, 2],
+    "description": "Stage 1, player fights slime 1.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "A large, green, gelatinous creature bounces around you.",
+          "It looks harmless enough."
+        ],
+        "type": "DIALOGUE",
+        "next": "lake_1"
+      },
+      {
+        "id": "random_1",
+        "result": ["Increase health"],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 50,
+            "next": "dialogue_test"
+          },
+          {
+            "id": "fail",
+            "chance": 50,
+            "next": "dialogue_test_2"
+          }
+        ]
+      },
+      {
+        "id": "dialogue_test",
+        "result": ["RANDOM SHIT"],
+        "type": "DIALOGUE",
+        "next": "initial"
+      },
+      {
+        "id": "dialogue_test_2",
+        "result": ["RANDOM SHIT 2"],
+        "type": "DIALOGUE",
+        "next": "choice_1"
+      },
+      {
+        "id": "lake_1",
+        "result": ["You see a lake. Do you..."],
+        "type": "DIALOGUE",
+        "next": "choice_1"
+      },
+      {
+        "id": "choice_1",
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "approach_lake",
+            "text": "Approach the lake.",
+            "next": "item_1"
+          },
+          {
+            "id": "ignore_lake",
+            "text": "Ignore the lake.",
+            "next": "fight_1"
+          }
+        ]
+      },
+      {
+        "id": "item_1",
+        "type": "ITEM",
+        "itemId": "potion_basic",
+        "next": "choice_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": "slime_1",
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": ["You defeated the slime!", "He had a family..."],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "test_1",
+    "level": [3],
+    "description": "This is demo level 3",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is dialogue for demo level 3"],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "test_2",
+    "level": [3, 4],
+    "description": "This is demo level 3 or 4",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is dialogue for demo level 3 or 4"],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "test_3",
+    "level": [4, 5],
+    "description": "This is demo level 4 or 5",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is dialogue for demo level 4 or 5"],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "test_4",
+    "level": [5, 6],
+    "description": "This is demo level 5 or 6",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is dialogue for demo level 5 or 6"],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "test_1",
+    "level": [6, 7],
+    "description": "This is demo level 6 or 7",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is dialogue for demo level 6 or 7"],
+        "type": "DIALOGUE"
+      }
+    ]
+  }
+]
