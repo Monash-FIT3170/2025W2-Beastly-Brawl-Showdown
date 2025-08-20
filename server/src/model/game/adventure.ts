@@ -16,7 +16,7 @@ export class Adventure {
     this.player = player;
     this.level = level;
     this.levelMonster = MonsterIdentifier.POUNCING_BANDIT; //update to map
-    this.stage = 1;
+    this.stage = 0;
     this.playerMonster = player.getMonster();
     this.currentStory = null;
   }
@@ -38,8 +38,8 @@ export class Adventure {
     return this.stage;
   }
 
-  public incrementLevel(): void {
-    this.level += 1;
+  public incrementStage(): void {
+    this.stage += 1;
   }
 
   public getPlayerMonster(): Monster | null {

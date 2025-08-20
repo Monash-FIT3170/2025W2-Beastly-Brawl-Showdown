@@ -29,8 +29,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       player.setMonster(monster);
       players.set(socket.id, player);
 
-      // Adventure starts at level 0
-      const adventure = new Adventure(player, 0);
+      // Adventure starts at level 1
+      const adventure = new Adventure(player, 1);
       // Track which outcome we're on
       adventure.currentOutcomeId = "initial";
       activeAdventures.set(socket.id, adventure);
@@ -44,7 +44,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     const adventure = activeAdventures.get(socket.id);
     if (!adventure) return;
 
-    const lastOutcome = loadNextStory(adventure, stage, socket);
+    const lastOutcome = loadNextStory(adventure, socket);
 
     if (lastOutcome && lastOutcome.next) {
       adventure.currentOutcomeId = lastOutcome.next;
@@ -200,7 +200,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
                 if (adventure && stage) {
                   // Get current story node and outcome
 
-                  const outcome = loadNextStory(adventure, stage, socket);
+                  const outcome = loadNextStory(adventure, socket);
 
                   // If outcome has a next, update currentOutcomeId
                   if (outcome && outcome.next) {
@@ -248,7 +248,7 @@ async function progressAdventure(
   stage: number
 ) {
   try {
-    const outcome = loadNextStory(adventure, stage, socket);
+    const outcome = loadNextStory(adventure, socket);
     if (!outcome) {
       return;
     }
@@ -327,14 +327,16 @@ async function progressAdventure(
 
 function loadNextStory(
   adventure: Adventure,
-  stage: number,
   socket: Socket
 ): storyOutcomes | undefined {
   let stageData = adventure.currentStory;
+
   if (!adventure.currentStory || !adventure.currentOutcomeId) {
     adventure.currentOutcomeId = "initial";
-    adventure.incrementLevel();
-    if (adventure.getLevel() > 8) {
+    adventure.incrementStage();
+    console.log("test");
+    const stage = adventure.getStage();
+    if (adventure.getStage() > 8) {
       socket.emit("adventure_win", { stage });
     }
     const loadNodes = loadStage(stage);
@@ -349,6 +351,5 @@ function loadNextStory(
   const outcome = stageData?.outcomes.find(
     (o) => o.id === adventure.currentOutcomeId
   );
-  console.log(outcome);
   return outcome;
 }
