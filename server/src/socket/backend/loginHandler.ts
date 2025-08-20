@@ -15,7 +15,9 @@ export const loginHandler = (io: Server, socket: Socket) => {
 
     // Verify user credentials
     const user = await getPlayerData(email);
-    if (!user || verifyPassword(user.password, password) === false) {
+    console.log(`From loginHandler: Attempted pwd: ${password} for email: ${email} | Hashed pwd: ${user?.password}`);
+
+    if ((await verifyPassword(password, user?.password)) === false) {
       socket.emit("loginResponse", {
         success: false,
         message: "Invalid Email or Password",
@@ -37,6 +39,7 @@ export const loginHandler = (io: Server, socket: Socket) => {
   });
 };
 
+// 
 export const accountHandler = (io: Server, socket: Socket) => {
   socket.on("fetchUserData", async () => {
     const user = playerAccounts.get(socket.id);
