@@ -56,15 +56,39 @@ export const PlayersCollection = new Mongo.Collection('players');
 
 // Returns a hashed password
 export async function hashPassword(password: string): Promise<string> {
-  const salt = await bcrypt.genSalt(10);
-  return bcrypt.hash(password, salt);
+  try {
+    const salt = await bcrypt.genSalt(10); 
+    const hashedPassword = await bcrypt.hash(password, salt); 
+    console.log(`Password hashed: ${hashedPassword}`);
+    return hashedPassword;
+  } catch (error) {
+    console.error('Error hashing password:', error);
+    throw error;
+  }
 }
 
 // Returns boolean if password matches hashed password
-export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
-  return bcrypt.compare(password, hashedPassword);
-}
+export async function verifyPassword(inputPassword: string, hashedPassword: string): Promise<boolean> {
+  try {
+    // Validate inputs
+    if (typeof inputPassword !== 'string' || typeof hashedPassword !== 'string') {
+      throw new Error('Password and hashed password must be strings');
+    }
 
+    // Debug inputs
+    console.log(` --- Verifying Password --- `);
+    console.log('Verifying password:', inputPassword);
+    console.log('With hashed password:', hashedPassword);
+
+    // Compare passwords
+    const res = await bcrypt.compare(inputPassword, hashedPassword);
+    console.log(`Password verification result: ${res}\n`);
+    return res
+  } catch (error) {
+    console.error('Error verifying password:', error);
+    throw error; // Re-throw the error for proper handling
+  }
+}
 
 
 
@@ -97,7 +121,7 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
   };
 }
 
-// This is used when a player/socket connects to create a 'guest' account. 
+// This is used to create a Guest account - Used when a new socket connection is made
 export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
   return {
     email: '',
@@ -117,6 +141,20 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       createPlayerMonsterStatSchema('CHARMER_COBRA'),
       createPlayerMonsterStatSchema('FURIOUS_FLIPPER'),
     ],
+    adventureProgression: {
+      unlockedMonsters: {
+        'ROCKY_RHINO': true,
+        'CINDER_TAIL': false,
+        'POUNCING_BANDIT': false,
+        'POISON_FROG': false,
+        'CHARMER_COBRA': false,
+        'FURIOUS_FLIPPER': false,
+      },
+      level: 1,
+      stage: 1,
+      achievments: [],
+      savedGameState: {},
+    }
   };
 }
 
@@ -155,7 +193,24 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
         createPlayerMonsterStatSchema('ROCKY_RHINO'), 
         createPlayerMonsterStatSchema('CINDER_TAIL'), 
         createPlayerMonsterStatSchema('POUNCING_BANDIT'),
+        createPlayerMonsterStatSchema('POISON_FROG'),
+        createPlayerMonsterStatSchema('CHARMER_COBRA'),
+        createPlayerMonsterStatSchema('FURIOUS_FLIPPER'),
       ], 
+      adventureProgression: {
+        unlockedMonsters: {
+          'ROCKY_RHINO': true,
+          'CINDER_TAIL': false,
+          'POUNCING_BANDIT': false,
+          'POISON_FROG': false,
+          'CHARMER_COBRA': false,
+          'FURIOUS_FLIPPER': false,
+        },
+        level: 1,
+        stage: 1,
+        achievments: [],
+        savedGameState: {},
+      }
     };
 
     // Insert the new player into the collection
@@ -220,6 +275,11 @@ export async function updatePlayerAccount(
       return;
     }
 
+    // If a new password is provided, hash it
+    if (updates.password) {
+      updates.password = await hashPassword(updates.password);
+    }
+
     // Merge existing player data with updates to ensure all required fields stay filled
     const mergedPlayer: PlayerAccountSchema = {
       ...existingPlayer,
@@ -233,14 +293,12 @@ export async function updatePlayerAccount(
     };
 
     // Perform the update
-   await PlayersCollection.updateAsync(
-    { _id },
-    { $set: mergedPlayer }
+    await PlayersCollection.updateAsync(
+      { _id },
+      { $set: mergedPlayer }
     );
-
-    console.log(`Player ${_id} updated successfully.`);
   } catch (error) {
-    console.error(`Error updating player: ${error.message}`);
+    console.error(`Error updating player account: ${error.message}`);
   }
 }
 
