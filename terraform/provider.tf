@@ -12,7 +12,6 @@ terraform {
     }
 
     bucket = "spaces-bbs"
-    key    = "terraform.tfstate"
 
     # This deactivates some AWS S3 features that are not needed for DigitalOcean Spaces.
     skip_credentials_validation = true
