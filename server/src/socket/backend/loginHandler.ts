@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { getPlayerData, updatePlayerAccount } from "../../database/dbManager";
+import { getPlayerData, updatePlayerAccount, verifyPassword } from "../../database/dbManager";
 import { playerAccounts } from "../../../main";
 
 export const loginHandler = (io: Server, socket: Socket) => {
@@ -15,7 +15,7 @@ export const loginHandler = (io: Server, socket: Socket) => {
 
     // Verify user credentials
     const user = await getPlayerData(email);
-    if (!user || user.password !== password) {
+    if (!user || verifyPassword(user.password, password) === false) {
       socket.emit("loginResponse", {
         success: false,
         message: "Invalid Email or Password",

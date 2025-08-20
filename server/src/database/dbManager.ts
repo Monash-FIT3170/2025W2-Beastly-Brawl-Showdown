@@ -50,6 +50,20 @@ export interface AdventureProgressionSchema {
 // Collections
 export const PlayersCollection = new Mongo.Collection('players');
 
+/**
+ * Helper functions for encrypting/decrypting passwords
+ */
+
+// Returns a hashed password
+export async function hashPassword(password: string): Promise<string> {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
+}
+
+// Returns boolean if password matches hashed password
+export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
+  return bcrypt.compare(password, hashedPassword);
+}
 
 
 
@@ -123,11 +137,14 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
       return;
     }
 
+    // Hash the password before storing it
+    const hashedPassword = await hashPassword(password);
+
     // Create a new player object with default values
     const newPlayer: PlayerAccountSchema = {
       email,
       username,
-      password,
+      password: hashedPassword,
       level: 1, 
       stats: {
         numGamesPlayed: 0, 
