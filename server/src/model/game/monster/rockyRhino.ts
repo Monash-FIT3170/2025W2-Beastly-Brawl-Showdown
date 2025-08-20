@@ -11,7 +11,7 @@ export class RockyRhino extends Monster {
       "A beast that lives to rumble and crush. With one mighty stomp, it shakes the ground, stunning foes before crushing them beneath its weight.",
       new Defender(),
       new GroundSlamAbilityAction(),
-      30,
+      300,
       4,
       16
     );

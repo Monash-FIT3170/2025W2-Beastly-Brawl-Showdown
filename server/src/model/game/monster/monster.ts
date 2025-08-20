@@ -128,15 +128,12 @@ export abstract class Monster {
     if (stage === 4) {
       this.maxHealth = Math.ceil(this.maxHealth * 1.5);
       this.attackBonus = Math.ceil(this.maxHealth * 1.5);
-      this.armourClass = Math.ceil(this.maxHealth * 1.5);
     } else if (stage === 8) {
       this.maxHealth = Math.ceil(this.maxHealth * 2);
       this.attackBonus = Math.ceil(this.maxHealth * 2);
-      this.armourClass = Math.ceil(this.maxHealth * 2);
     } else {
       this.maxHealth = Math.ceil(this.maxHealth * (stage * 0.1));
       this.attackBonus = Math.ceil(this.maxHealth * (stage * 0.1));
-      this.armourClass = Math.ceil(this.maxHealth * (stage * 0.1));
     }
   }
 }
