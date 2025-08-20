@@ -68,15 +68,15 @@ export function DialogueBox(props: DialogueBoxProps) {
         flex 
         xl:px-[1rem]
         px-[2rem]
-        fixed
+        relative
         xl:h-[43%]
-        h-[36%]
+        h-[37%]
         outline-offset-0
         `
 
         return(
-        <div className="inset-x-0 flex justify-center ">
-            <div className="w-[95%] xl:w-[60%]">
+        <div className="inset-x-0 flex justify-center fixed bottom-0 h-[36%] xl:h-[41%]">
+            <div className="relative w-[95%] xl:w-[60%]">
                 <div className = 'pl-[5rem]'>
                   <div className={`${name}`}>
                     <div className = 'top-0'>
@@ -116,13 +116,14 @@ function ScriptContent({ lines, onEnd, onAdvance }: ScriptProps) {
   };
 
   return (
-    <>
-        <div className="leading-tight">
-            <OutlineText size='choice-text'>{lines[i] ?? ""}</OutlineText>
-        </div>
+    <>  <div className = "flex-col item-center relative pt-[5%] xl:pt-[5%] w-full h-full">
+          <div className="leading-tight">
+              <OutlineText size='choice-text'>{lines[i] ?? ""}</OutlineText>
+          </div>
 
-        <div className=" absolute bottom-[3rem] xl:bottom-[2rem] pl-[45rem] xl:pl-[52rem]">
-            <IconButton buttonColour="blue" style="arrowright" iconColour="black" size="small" onClick={nextOrEnd}></IconButton>
+          <div className=" xl:pl-[95%] absolute pl-[90%] bottom-0">
+              <IconButton buttonColour="blue" style="arrowright" iconColour="black" size="small" onClick={nextOrEnd}></IconButton>
+          </div>
         </div>
     </>
   );
