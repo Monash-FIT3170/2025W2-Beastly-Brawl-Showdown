@@ -21,6 +21,7 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { ChoicePopup } from "../../components/popups/ChoicePopup";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import { StatChangePopup } from "../../components/popups/statChangePopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -35,6 +36,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
   const [question, setQuestion] = useState<string[] | null>(null);
   const [choices, setChoices] = useState<option[] | null>(null);
+  const [statChange, setStatChange] = useState<string[] | null>(null);
   const [receivingItem, setReceivingItem] = useState<string | null>(null);
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const battleId = "ADVENTURE";
@@ -62,6 +64,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         // Handle choice state
         setChoices(state.choices);
         setQuestion(state.result);
+        setBattleState(null); // Clear battle
+      } else if (state.type === "stat_change") {
+        setStatChange(state.result);
         setBattleState(null); // Clear battle
       }
     });
@@ -154,6 +159,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             lines={dialogue}
             onEnd={() => {
               setDialogue(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
+        )}
+        {statChange && (
+          <StatChangePopup
+            messages={statChange}
+            onClose={() => {
+              setStatChange(null);
               socket.emit("adventure_next", { stage });
             }}
           />

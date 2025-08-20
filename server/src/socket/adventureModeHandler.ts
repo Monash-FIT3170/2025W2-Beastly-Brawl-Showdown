@@ -317,6 +317,16 @@ async function progressAdventure(
         name: resolved.item?.getName() || "Unknown Item",
       });
       adventure.getPlayer().addToInventory(resolved.item!);
+    } else if (resolved.type === "STAT_CHANGE") {
+      // Handle stat change
+      const [stat, change] = resolved.statChange!;
+      adventure.getPlayer().changeStat(stat, change);
+
+      socket.emit("adventure_state", {
+        type: "stat_change",
+        result: resolved.result,
+        next: resolved.next,
+      });
     }
   } catch (err) {
     console.error("Adventure stage load error:", err);
