@@ -9,14 +9,14 @@ export class Adventure {
   private levelMonster: MonsterIdentifier;
   private stage: number;
   private playerMonster: Monster | null;
-  public currentOutcomeId: string = "initial";
+  public currentOutcomeId: string | null = "initial";
   public currentStory: storyStruct | null;
 
   constructor(player: Player, level: number) {
     this.player = player;
     this.level = level;
     this.levelMonster = MonsterIdentifier.POUNCING_BANDIT; //update to map
-    this.stage = 1;
+    this.stage = 0;
     this.playerMonster = player.getMonster();
     this.currentStory = null;
   }
@@ -36,6 +36,10 @@ export class Adventure {
 
   public getStage(): number {
     return this.stage;
+  }
+
+  public incrementStage(): void {
+    this.stage += 1;
   }
 
   public getPlayerMonster(): Monster | null {

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "Final Encounter",
+    "level": [1],
+    "description": "the final encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You feel a familiar presence.",
+          "In the distance you see a familiar face.",
+          "He looks a lot stronger than before",
+          "You prepare for battle"
+        ],
+        "type": "DIALOGUE",
+        "next": "stranger_fight"
+      },
+      {
+        "id": "stranger_fight",
+        "type": "FIGHT",
+        "enemyId": "pouncing_bandit",
+        "next": "victory"
+      },
+      {
+        "id": "victory",
+        "type": "DIALOGUE",
+        "result": [
+          "I concede defeat. You have well and truly bested me.",
+          "If you'd allow, I would like to join you.",
+          "Maybe I could learn a thing or two"
+        ]
+      }
+    ]
+  }
+]

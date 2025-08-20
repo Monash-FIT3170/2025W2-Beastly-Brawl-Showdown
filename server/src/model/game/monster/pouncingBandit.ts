@@ -8,7 +8,7 @@ export class PouncingBandit extends Monster {
     super(
       MonsterIdentifier.POUNCING_BANDIT,
       "Pouncing Bandit",
-      "A sleek, agile beast resembling a wolf or panther, cloaked in shadows. Its speed and ferocity make it a deadly opponent.",
+      "An agile, purple beast with a knack for slipping away. It darts past attacks with ease, then pounces with ferocity to land its blow.",
       new Attacker(),
       new ShadowLeapAbilityAction(),
       20,

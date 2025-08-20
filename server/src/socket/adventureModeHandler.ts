@@ -3,19 +3,14 @@ import { activeAdventures, players, battles } from "../../main";
 import { Adventure } from "../model/game/adventure";
 import { Player } from "../model/game/player";
 import { MonsterIdentifier } from "/types/single/monsterState";
-import { RockyRhino } from "../model/game/monster/rockyRhino";
-import { PouncingBandit } from "../model/game/monster/pouncingBandit";
-import { CinderTail } from "../model/game/monster/cinderTail";
-import { PoisonFrog } from "../model/game/monster/poisonFrog";
-import { FuriousFlipper } from "../model/game/monster/furiousFlipper";
-import { CharmerCobra } from "../model/game/monster/charmerCobra";
 import { Battle } from "../model/game/battle";
 import proceedAdventureTurn from "./proceedAdventureTurn";
 import { ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
-import { storyStruct } from "/types/composite/storyTypes";
+import { storyOutcomes, storyStruct } from "/types/composite/storyTypes";
 import { NullAction } from "../model/game/action/null";
+import { getMonster } from "../model/game/monster/monsterMap";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -34,7 +29,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       player.setMonster(monster);
       players.set(socket.id, player);
 
-      // Start adventure at stage 1
+      // Adventure starts at level 1
       const adventure = new Adventure(player, 1);
       // Track which outcome we're on
       adventure.currentOutcomeId = "initial";
@@ -49,22 +44,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     const adventure = activeAdventures.get(socket.id);
     if (!adventure) return;
 
-    // Otherwise, follow the "next" field from the last outcome
-    let stageData = adventure.currentStory;
-    if (!adventure.currentStory) {
-      const loadNodes = await loadStage(stage);
-      const eligibleNodes = loadNodes.filter((node) => {
-        const match = node.level.includes(adventure.getLevel());
-        return match;
-      });
-      const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
-      console.log(randomNode);
-      stageData = eligibleNodes[randomNode];
-    }
-    //const stageData = await loadStage(stage);
-    const lastOutcome = stageData?.outcomes.find(
-      (o) => o.id === adventure.currentOutcomeId
-    );
+    const lastOutcome = loadNextStory(adventure, socket);
+
     if (lastOutcome && lastOutcome.next) {
       adventure.currentOutcomeId = lastOutcome.next;
     } else {
@@ -214,32 +195,22 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
                 const adventure = activeAdventures.get(playerId);
                 const stage = adventure?.getStage();
                 //TODO: DO NEXT STAGE INSTEAD OF THIS STAGE
-
+                console.log("stage: ", stage);
+                console.log("adventure", adventure);
                 if (adventure && stage) {
                   // Get current story node and outcome
-                  let stageData = adventure.currentStory;
-                  if (!stageData) {
-                    const loadNodes = loadStage(stage);
-                    const eligibleNodes = loadNodes.filter((node) =>
-                      node.level.includes(adventure.getLevel())
-                    );
-                    const randomNode = Math.floor(
-                      Math.random() * eligibleNodes?.length
-                    );
-                    stageData = eligibleNodes[randomNode];
-                  }
-                  const outcome = stageData?.outcomes.find(
-                    (o) => o.id === adventure.currentOutcomeId
-                  );
+
+                  const outcome = loadNextStory(adventure, socket);
 
                   // If outcome has a next, update currentOutcomeId
                   if (outcome && outcome.next) {
                     adventure.currentOutcomeId = outcome.next;
                   } else {
-                    adventure.currentOutcomeId = ""; // Or handle end of adventure
+                    adventure.currentOutcomeId = null;
+                    adventure.currentStory = null; // Or handle end of adventure
                   }
 
-                  console.log("stageData", stageData);
+                  //console.log("stageData", stageData);
                   console.log("outcome", outcome);
                   console.log("outcome.next", outcome?.next);
 
@@ -277,32 +248,11 @@ async function progressAdventure(
   stage: number
 ) {
   try {
-    let stageData = adventure.currentStory;
-    if (!adventure.currentStory) {
-      const loadNodes = await loadStage(stage);
-      const eligibleNodes = loadNodes.filter((node) => {
-        const match = node.level.includes(adventure.getLevel());
-        return match;
-      });
-      const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
-      console.log(randomNode);
-      stageData = eligibleNodes[randomNode];
-    }
-    const outcome = stageData?.outcomes.find(
-      (o) => o.id === adventure.currentOutcomeId
-    );
-
+    const outcome = loadNextStory(adventure, socket);
     if (!outcome) {
-      // No more outcomes, maybe end the adventure or move to next stage
-      // TODO: Implement ending of adventure level
-      socket.emit("adventure_state", {
-        type: "dialogue",
-        description: "YOU COMPLETED THE LEVEL AND UNLOCKED A NEW MONSTER!",
-      });
       return;
     }
-
-    const resolved = resolveOutcome(outcome);
+    const resolved = resolveOutcome(outcome!);
 
     if (resolved.type === "FIGHT") {
       // Create bot and battle
@@ -310,6 +260,7 @@ async function progressAdventure(
         resolved.enemy!.getId(),
         resolved.enemy?.getName()!
       ); // Eventually use bot class
+      resolved.enemy?.pveScaling(adventure.getStage());
       bot.setMonster(resolved.enemy!);
       players.set(resolved.enemy!.getId(), bot);
 
@@ -358,6 +309,7 @@ async function progressAdventure(
     } else if (resolved.type === "CHOICE") {
       socket.emit("adventure_state", {
         type: "choice",
+        result: resolved.result,
         choices: resolved.options,
       });
     } else if (resolved.type === "ITEM") {
@@ -365,6 +317,16 @@ async function progressAdventure(
         name: resolved.item?.getName() || "Unknown Item",
       });
       adventure.getPlayer().addToInventory(resolved.item!);
+    } else if (resolved.type === "STAT_CHANGE") {
+      // Handle stat change
+      const [stat, change] = resolved.statChange!;
+      adventure.getPlayer().changeStat(stat, change);
+
+      socket.emit("adventure_state", {
+        type: "stat_change",
+        result: resolved.result,
+        next: resolved.next,
+      });
     }
   } catch (err) {
     console.error("Adventure stage load error:", err);
@@ -374,17 +336,31 @@ async function progressAdventure(
   }
 }
 
-//todo: this is used in multiple files
-const monsterMap = new Map([
-  [MonsterIdentifier.ROCKY_RHINO, () => new RockyRhino()],
-  [MonsterIdentifier.POUNCING_BANDIT, () => new PouncingBandit()],
-  [MonsterIdentifier.CINDER_TAIL, () => new CinderTail()],
-  [MonsterIdentifier.FURIOUS_FLIPPER, () => new FuriousFlipper()],
-  [MonsterIdentifier.POISON_FROG, () => new PoisonFrog()],
-  [MonsterIdentifier.CHARMER_COBRA, () => new CharmerCobra()],
-]);
+function loadNextStory(
+  adventure: Adventure,
+  socket: Socket
+): storyOutcomes | undefined {
+  let stageData = adventure.currentStory;
 
-function getMonster(monsterID: MonsterIdentifier) {
-  const createMonster = monsterMap.get(monsterID);
-  return createMonster ? createMonster() : null;
+  if (!adventure.currentStory || !adventure.currentOutcomeId) {
+    adventure.currentOutcomeId = "initial";
+    adventure.incrementStage();
+    console.log("test");
+    const stage = adventure.getStage();
+    if (adventure.getStage() > 8) {
+      socket.emit("adventure_win", { stage });
+    }
+    const loadNodes = loadStage(stage);
+    const eligibleNodes = loadNodes.filter((node) => {
+      const match = node.level.includes(adventure.getLevel());
+      return match;
+    });
+    const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
+    stageData = eligibleNodes[randomNode];
+    adventure.currentStory = stageData;
+  }
+  const outcome = stageData?.outcomes.find(
+    (o) => o.id === adventure.currentOutcomeId
+  );
+  return outcome;
 }

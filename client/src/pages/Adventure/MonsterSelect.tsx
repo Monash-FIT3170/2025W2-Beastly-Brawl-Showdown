@@ -124,6 +124,10 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
     setAbilities([]);
   };
 
+  //TODO: placeholder text
+  // - right now if balanced/attacker are empty it looks a bit cooked
+  // - we should have some text like "Play levels to unlock more!"
+
   return (
     <div>
       <GenericHeader color="purple">

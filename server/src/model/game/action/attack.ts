@@ -55,7 +55,7 @@ export class AttackAction extends Action {
 
   // relies on prepare() method being called to roll the dice first.
   public prepareAnimation(): string | [string, number] {
-    return ["roll_dice", this.d20]; 
+    return ["roll_dice", this.d20];
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
@@ -73,6 +73,7 @@ export class AttackAction extends Action {
       // Set the crit range starting from the maximum dice value and going down
       // Check if the dice roll is within the crit range
       // E.g. normal d20 roll is 1-20, with a crit rate of 10%, you need to roll 19 or 20 to crit
+      let tmpDamage = this.damageDealt;
       const isCrit =
         this.d20 >
         this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
@@ -105,6 +106,7 @@ export class AttackAction extends Action {
           this.damageDealt
         } damage.`
       );
+      this.damageDealt = tmpDamage;
       // Increment successful hit for front end
       actingPlayer.incSuccessfulHit(1);
     } else {
