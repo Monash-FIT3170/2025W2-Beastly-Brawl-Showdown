@@ -4,7 +4,7 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 
 // Should type these instead of 'any' but we don't know if an enemy is a monster or player yet.
 const enemyFactory: Record<string, () => any> = {
-  slime_1: () => new Slime("PAPA SLIME", 1, MonsterIdentifier.SLIME),
+  slime_1: () => new Slime("PAPA SLIME", 1),
   pouncing_bandit: () => new PouncingBandit(),
 };
 

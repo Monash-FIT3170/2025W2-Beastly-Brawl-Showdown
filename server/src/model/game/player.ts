@@ -109,6 +109,22 @@ export class Player {
     }
   }
 
+  public changeStat(stat: string, change: number): void {
+    switch (stat) {
+      case "health":
+        this.incHealth(change);
+        break;
+      case "attack":
+        this.incAttackStat(change);
+        break;
+      case "armour":
+        this.incArmourClassStat(change);
+        break;
+      default:
+        console.error(`Unknown stat: ${stat}`);
+    }
+  }
+
   //STATUS METHODS:
   public getStatuses(): Status[] {
     return this.statuses;

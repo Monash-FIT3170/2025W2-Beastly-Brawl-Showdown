@@ -11,6 +11,13 @@
           "It looks harmless enough."
         ],
         "type": "DIALOGUE",
+        "next": "test_change"
+      },
+      {
+        "id": "test_change",
+        "result": ["You slipped on a rock!", "You lose 1 health."],
+        "statChange": ["health", -1],
+        "type": "STAT_CHANGE",
         "next": "fight_1"
       },
       {
