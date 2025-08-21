@@ -22,6 +22,8 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { ChoicePopup } from "../../components/popups/ChoicePopup";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { StatChangePopup } from "../../components/popups/statChangePopup";
+import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
+import { IconButton } from "../../components/buttons/IconButton";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -45,6 +47,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     socket.emit("adventure_choice", { stage, choiceId });
     setChoices(null);
   };
+
+  const [showLeave, setShowLeave] = useState(false);
 
   socket.on("adventure_win", (stage) => {
     FlowRouter.go("/adventure/win");
@@ -88,6 +92,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
       console.log(`From socket in Battle: dps ${diceRoll}`);
       setShowDiceModal(true);
     });
+
 
     return () => {
       socket.off("possible_actions");
@@ -134,43 +139,65 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
+        {/* <div className="pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+          <IconButton style="arrowleft" iconColour="black" buttonColour="red" size="small" onClick={() => setShowLeave(true)}></IconButton>
+          <LeavePopup open={showLeave} onClose={() => setShowLeave(false)}></LeavePopup>
+        </div> */}
         {receivingItem && (
-          <PopupClean>
-            <div className="flex flex-col justify-around items-center">
-              <OutlineText size="extraLarge">{receivingItem}</OutlineText>
-              <div className="flex flex-row justify-between items-center">
-                <ButtonGeneric
-                  size="large"
-                  color="blue"
-                  onClick={() => {
-                    setReceivingItem(null);
-                    socket.emit("adventure_next", { stage });
-                  }}
-                >
-                  TAKE!
-                </ButtonGeneric>
-              </div>
+          <div>
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+              <IconButton style="arrowleft" iconColour="black" buttonColour="red" size="small" onClick={() => setShowLeave(true)}></IconButton>
+              <LeavePopup open={showLeave} onClose={() => setShowLeave(false)}></LeavePopup>
             </div>
-          </PopupClean>
+            <PopupClean>
+              <div className="flex flex-col justify-around items-center">
+                <OutlineText size="extraLarge">{receivingItem}</OutlineText>
+                <div className="flex flex-row justify-between items-center">
+                  <ButtonGeneric
+                    size="large"
+                    color="blue"
+                    onClick={() => {
+                      setReceivingItem(null);
+                      socket.emit("adventure_next", { stage });
+                    }}
+                  >
+                    TAKE!
+                  </ButtonGeneric>
+                </div>
+              </div>
+            </PopupClean>
+          </div>
         )}
         {dialogue && (
-          <DialogueBox
-            monster={tempMonsterState}
-            lines={dialogue}
-            onEnd={() => {
-              setDialogue(null);
-              socket.emit("adventure_next", { stage });
-            }}
-          />
+          <div>
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+              <IconButton style="arrowleft" iconColour="black" buttonColour="red" size="small" onClick={() => setShowLeave(true)}></IconButton>
+              <LeavePopup open={showLeave} onClose={() => setShowLeave(false)}></LeavePopup>
+            </div>
+            <DialogueBox
+              monster={tempMonsterState}
+              lines={dialogue}
+              onEnd={() => {
+                setDialogue(null);
+                socket.emit("adventure_next", { stage });
+              }}
+            />
+          </div>
         )}
         {statChange && (
-          <StatChangePopup
-            messages={statChange}
-            onClose={() => {
-              setStatChange(null);
-              socket.emit("adventure_next", { stage });
-            }}
-          />
+          <div>
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+              <IconButton style="arrowleft" iconColour="black" buttonColour="red" size="small" onClick={() => setShowLeave(true)}></IconButton>
+              <LeavePopup open={showLeave} onClose={() => setShowLeave(false)}></LeavePopup>
+            </div>
+            <StatChangePopup
+              messages={statChange}
+              onClose={() => {
+                setStatChange(null);
+                socket.emit("adventure_next", { stage });
+              }}
+            />
+          </div>
         )}
         {choices && (
           <>
@@ -181,17 +208,26 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
               onClick={() => handleChoiceSelect(choice.next)}
             />
           ))} */}
+          <div>
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+              <IconButton style="arrowleft" iconColour="black" buttonColour="red" size="small" onClick={() => setShowLeave(true)}></IconButton>
+              <LeavePopup open={showLeave} onClose={() => setShowLeave(false)}></LeavePopup>
+            </div>
             <ChoicePopup
               question={question![0]}
               choices={choices}
               onClick={handleChoiceSelect}
             ></ChoicePopup>
+          </div>
           </>
         )}
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
             <PlayerInfoPanel battleState={battleState} />
-
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+              <IconButton style="arrowleft" iconColour="black" buttonColour="red" size="small" onClick={() => setShowLeave(true)}></IconButton>
+              <LeavePopup open={showLeave} onClose={() => setShowLeave(false)}></LeavePopup>
+            </div>
             <BattleMonsterPanel battleState={battleState} />
 
             <div
