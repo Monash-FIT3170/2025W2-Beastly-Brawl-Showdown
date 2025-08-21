@@ -11,12 +11,23 @@
           "You do not feel as though it is within your power to deny your opponent this challenge"
         ],
         "type": "DIALOGUE",
+        "next": "pre_fight_dialogue"
+      },
+      {
+        "id": "pre_fight_dialogue",
+        "result": [
+          "Hey you!",
+          "I challenge you to a duel!",
+          "Prepare yourself!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": "pouncing_bandit_4",
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "pouncing_bandit",
+        "enemyId": "pouncing_bandit_4",
         "next": "victory"
       },
       {

@@ -22,6 +22,8 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { ChoicePopup } from "../../components/popups/ChoicePopup";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { StatChangePopup } from "../../components/popups/statChangePopup";
+import { MonsterState } from "/types/single/monsterState";
+import MonsterDisplay from "../../components/player-screen/MonsterDisplay";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -39,6 +41,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [statChange, setStatChange] = useState<string[] | null>(null);
   const [receivingItem, setReceivingItem] = useState<string | null>(null);
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
+  const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const battleId = "ADVENTURE";
 
   const handleChoiceSelect = (choiceId: string) => {
@@ -57,17 +60,21 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
       if (state.type === "battle") {
         setBattleState(state.battle);
         setDialogue(null); // Clear dialogue
+        setCurrentEnemy(null);
       } else if (state.type === "dialogue") {
         setDialogue(state.dialogue);
+        setCurrentEnemy(state.enemy ?? null);
         setBattleState(null); // Clear battle
       } else if (state.type === "choice") {
         // Handle choice state
         setChoices(state.choices);
         setQuestion(state.result);
         setBattleState(null); // Clear battle
+        setCurrentEnemy(null);
       } else if (state.type === "stat_change") {
         setStatChange(state.result);
         setBattleState(null); // Clear battle
+        setCurrentEnemy(null);
       }
     });
 
@@ -94,27 +101,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
       socket.off("adventure_state");
     };
   }, [stage]);
-
-  var fakeAction = {
-    id: ActionIdentifier.ATTACK,
-    name: "attack",
-    description: "pp",
-    currentUse: 100,
-    maxUse: 100,
-  };
-
-  var tempMonsterState = {
-    id: MonsterIdentifier.SLIME,
-    archetypeId: ArchetypeIdentifier.NEUTRAL,
-    name: "Evil Slime",
-    description: "blob..blob",
-
-    maxHealth: 10,
-    attackBonus: 0,
-    armourClass: 8,
-
-    possibleActions: [fakeAction, fakeAction, fakeAction, fakeAction],
-  };
 
   var backgroundLocation = "BASALT"; //TODO: change this to be based off level/monster?
   var backgroundString =
@@ -154,14 +140,18 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
           </PopupClean>
         )}
         {dialogue && (
-          <DialogueBox
-            monster={tempMonsterState}
-            lines={dialogue}
-            onEnd={() => {
-              setDialogue(null);
-              socket.emit("adventure_next", { stage });
-            }}
-          />
+          <>
+            {currentEnemy && <MonsterDisplay monster={currentEnemy} />}
+            <DialogueBox
+              monster={currentEnemy ?? undefined}
+              lines={dialogue}
+              onEnd={() => {
+                setDialogue(null);
+                setCurrentEnemy(null);
+                socket.emit("adventure_next", { stage });
+              }}
+            />
+          </>
         )}
         {statChange && (
           <StatChangePopup
