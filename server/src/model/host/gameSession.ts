@@ -9,6 +9,7 @@ import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
+import crypto from "crypto";
 
 export default class GameSession {
   private hostUID: string;
@@ -52,8 +53,8 @@ export default class GameSession {
   //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
     this.battles.getItems().forEach((curBattle) => {
-      curBattle.eliminateAllPlayers()
-    })
+      curBattle.eliminateAllPlayers();
+    });
   }
 
   // Getters and setters
