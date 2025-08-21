@@ -10,7 +10,7 @@ export class FortressStanceAbilityAction extends Action {
     super(
       ActionIdentifier.FORTRESS_STANCE,
       "Fortress Stance",
-      "Plant your feet and let nothing through. Gain +10 AC for 1 turn.",
+      "Stand fortified... Gain +10 AC for 1 turn.",
       1
     );
   }

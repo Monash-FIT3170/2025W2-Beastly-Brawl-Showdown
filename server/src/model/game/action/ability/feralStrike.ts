@@ -8,7 +8,7 @@ export class FeralStrikeAbilityAction extends Action {
     super(
       ActionIdentifier.FERAL_STRIKE,
       "Feral Strike",
-      "Fight like a beast unleashed — your critical hit chance is permanently boosted to 15%.",
+      "Fight like a beast unleashed, your critical hit chance is permanently boosted to 15%.",
       0 // Passive abilities do not have uses
     );
   }
