@@ -8,18 +8,7 @@ import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";``
 import { RockyRhino } from "../game/monster/rockyRhino";
-import { PouncingBandit } from "../game/monster/pouncingBandit";
-import { CinderTail } from "../game/monster/cinderTail";
-import { BotPlayer } from "../game/botplayer";
-import { IGameMode } from "./gamemode/gameMode";
-import { Server, Socket } from "socket.io";
-import { ActionResult } from "/types/single/actionState";
 import crypto from "crypto";
-import { PouncingBandit } from "../game/monster/pouncingBandit";
-import { CinderTail } from "../game/monster/cinderTail";
-import { BotPlayer } from "../game/botplayer";
-import { IGameMode } from "./gamemode/gameMode";
-import { Server, Socket } from "socket.io";
 
 export default class GameSession {
   private hostUID: string;
