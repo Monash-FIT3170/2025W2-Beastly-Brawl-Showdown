@@ -11,7 +11,9 @@ export class DefendAction extends Action {
     this.armourBonus = armourBonus;
   }
 
-  public prepareAnimation(): string | [string, number] {return "defend"}
+  public prepareAnimation(): string | [string, number] {
+    return "defend";
+  }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.incArmourClassStat(this.armourBonus);

@@ -11,6 +11,7 @@ import { resolveOutcome } from "../model/adventure/storyResolver";
 import { storyOutcomes, storyStruct } from "/types/composite/storyTypes";
 import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
+import { Action } from "../model/game/action/action";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -125,47 +126,24 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
         // Emitting player1's action animations TO UPDATE
         player1.getActions().forEach((action) => {
-          if (action.getName() === "Attack") {
-            // get the animation name and dice number from the prepareAnimation method
-            const animationInfo = action.prepareAnimation();
-            const animationType = animationInfo[0];
-            const diceRollNumber = animationInfo[1];
-            console.log(animationType, diceRollNumber);
-            io.to(player1.getId()).emit(String(animationType), diceRollNumber);
-          }
-
-          if (action.getName() === "Tip The Scales") {
-            const animationInfo = action.prepareAnimation();
-            const animationType = animationInfo[0];
-            const diceRoll = animationInfo[1];
-            io.to(player1.getId()).emit(animationType, diceRoll);
-            console.log(
-              `Player 1 used tip the scales and dice roll = ${diceRoll}`
-            );
-          }
+          const animationInfo = action.prepareAnimation();
+          const animationType = animationInfo[0];
+          const diceRollNumber = animationInfo[1];
+          console.log(animationType, diceRollNumber);
+          io.to(player1.getId()).emit(String(animationType), diceRollNumber);
         });
 
         // Emitting player2's action animations
         player2.getActions().forEach((action) => {
-          if (action.getName() === "Attack") {
-            const animationInfo = action.prepareAnimation();
-            const animationType = animationInfo[0];
-            const diceRollNumber = animationInfo[1];
-            console.log(animationType, diceRollNumber);
-            io.to(player2.getId()).emit(String(animationType), diceRollNumber);
-          }
-
-          if (action.getName() === "Tip The Scales") {
-            const animationInfo = action.prepareAnimation();
-            const animationType = animationInfo[0];
-            const diceRoll = animationInfo[1];
-
-            console.log(
-              `Player 2 used tip the scales and dice roll = ${diceRoll}`
-            );
-            io.to(player2.getId()).emit(animationType, diceRoll);
-          }
+          const animationInfo = action.prepareAnimation();
+          const animationType = animationInfo[0];
+          const diceRollNumber = animationInfo[1];
+          console.log(animationType, diceRollNumber);
+          io.to(player2.getId()).emit(String(animationType), diceRollNumber);
         });
+
+        // Remove possible actions essentially hiding the battle footer until animations and calculations are done.
+        io.to(playerId).emit("possible_actions", []);
 
         setTimeout(() => {
           // Execute method
@@ -294,6 +272,9 @@ async function progressAdventure(
         ?.getMonster()
         ?.getPossibleActionStates();
       socket.emit("possible_actions", actions);
+      //Clear logs from previous battle.
+      adventure.getPlayer().clearLogs();
+      adventure.getPlayer().clearBattleLogs(); //um note i did this but it didn't clear lmfaoo??
       // Optionally, proceed with the battle logic
       proceedAdventureTurn(io, socket, adventure, battle);
     } else if (resolved.type === "DIALOGUE") {

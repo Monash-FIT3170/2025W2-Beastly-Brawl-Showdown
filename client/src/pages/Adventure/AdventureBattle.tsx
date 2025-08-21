@@ -57,12 +57,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     FlowRouter.go("/adventure/win");
   });
 
+  console.log(battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
+
   useEffect(() => {
     socket.emit("adventure_request", { stage });
 
     socket.on("adventure_state", (state) => {
       if (state.type === "battle") {
         setBattleState(state.battle);
+        console.log("STARTING LOGS...", battleState?.yourPlayer.battleLogs);
         setDialogue(null); // Clear dialogue
         setCurrentEnemy(null);
       } else if (state.type === "dialogue") {

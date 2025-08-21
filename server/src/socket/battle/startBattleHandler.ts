@@ -89,42 +89,20 @@ export default function proceedBattleTurn(
 
       // Emitting player1's action animations
       player1.getActions().forEach((action) => {
-        if (action.getName() === "Attack") {
-          // get the animation name and dice number from the prepareAnimation method
-          const animationInfo = action.prepareAnimation();
-          const animationType = animationInfo[0];
-          const diceRollNumber = animationInfo[1];
-          console.log(animationType, diceRollNumber);
-          io.to(player1.getId()).emit(String(animationType), diceRollNumber);
-        }
-
-        if (action.getName() === "Tip The Scales") {
-          const animationInfo = action.prepareAnimation();
-          const animationType = animationInfo[0];
-          const diceRoll = animationInfo[1];
-          io.to(player1.getId()).emit(animationType, diceRoll);
-          console.log(`Player 1 used tip the scales and dice roll = ${diceRoll}`);
-        }
+        const animationInfo = action.prepareAnimation();
+        const animationType = animationInfo[0];
+        const diceRollNumber = animationInfo[1];
+        console.log(animationType, diceRollNumber);
+        io.to(player1.getId()).emit(String(animationType), diceRollNumber);
       });
 
       // Emitting player2's action animations
       player2.getActions().forEach((action) => {
-        if (action.getName() === "Attack") {
-          const animationInfo = action.prepareAnimation();
-          const animationType = animationInfo[0];
-          const diceRollNumber = animationInfo[1];
-          console.log(animationType, diceRollNumber);
-          io.to(player2.getId()).emit(String(animationType), diceRollNumber);
-        }
-
-        if (action.getName() === "Tip The Scales") {
-          const animationInfo = action.prepareAnimation();
-          const animationType = animationInfo[0];
-          const diceRoll = animationInfo[1];
-        
-          console.log(`Player 2 used tip the scales and dice roll = ${diceRoll}`);
-          io.to(player2.getId()).emit(animationType, diceRoll);
-        }
+        const animationInfo = action.prepareAnimation();
+        const animationType = animationInfo[0];
+        const diceRollNumber = animationInfo[1];
+        console.log(animationType, diceRollNumber);
+        io.to(player2.getId()).emit(String(animationType), diceRollNumber);
       });
 
       setTimeout(() => {
