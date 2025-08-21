@@ -301,6 +301,7 @@ async function progressAdventure(
       socket.emit("adventure_state", {
         type: "dialogue",
         dialogue: resolved.result,
+        enemy: resolved.enemy,
         next: resolved.next,
       });
     } else if (resolved.type === "RANDOM") {
@@ -355,7 +356,6 @@ function loadNextStory(
   if (!adventure.currentStory || !adventure.currentOutcomeId) {
     adventure.currentOutcomeId = "initial";
     adventure.incrementStage();
-    console.log("test");
     const stage = adventure.getStage();
     if (adventure.getStage() > 8) {
       socket.emit("adventure_win", { stage });

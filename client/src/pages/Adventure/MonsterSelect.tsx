@@ -23,6 +23,7 @@ import { AttackBonusBar } from "../../components/bars/AttackBonusBar";
 import { BlackText } from "../../components/texts/BlackText";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { IconButton } from "../../components/buttons/IconButton";
+import { HeaderWithLeave } from "../../components/cards/HeaderWithLeave";
 
 interface MonsterSelectProps {}
 
@@ -130,9 +131,11 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
 
   return (
     <div>
-      <GenericHeader color="purple">
-        <OutlineText size="extraLarge">SELECT YOUR MONSTER</OutlineText>
-      </GenericHeader>
+      <div className="pl=[5rem]">
+      <HeaderWithLeave color="purple">
+        <OutlineText size="monsterSelect">SELECT YOUR MONSTER</OutlineText>
+      </HeaderWithLeave>
+      </div>
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-40 lg:pt-35">
         <div className="w-full flex items-center flex-col">

@@ -20,6 +20,13 @@
         "next": "dialogue_2"
       },
       {
+        "id": "test_change",
+        "result": ["You slipped on a rock!", "You lose 1 health."],
+        "statChange": ["health", -1],
+        "type": "STAT_CHANGE",
+        "next": "slime_dialogue_1"
+      },
+      {
         "id": "dialogue_test",
         "result": ["RANDOM SHIT"],
         "type": "DIALOGUE",
