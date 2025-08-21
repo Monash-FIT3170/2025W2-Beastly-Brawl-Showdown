@@ -14,10 +14,18 @@ import { getMonster } from "../model/game/monster/monsterMap";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
+
+  socket.on("adventure_level_selected", async ({ level }) => {
+    const player = new Player(socket.id, "Anika"); // TODO: Use real player name
+    players.set(socket.id, player);
+    const adventure = new Adventure(player, level);
+    // Track which outcome we're on
+    adventure.currentOutcomeId = "initial";
+    activeAdventures.set(socket.id, adventure);
+  });
   socket.on(
     "adventure_monster_selected",
     async ({ monsterID }: { monsterID: MonsterIdentifier }) => {
-      const player = new Player(socket.id, "Anika"); // TODO: Use real player name
       const monster = getMonster(monsterID);
       if (!monster) {
         console.error(`Invalid monster name: ${monsterID}`);
@@ -26,16 +34,18 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         });
         return;
       }
+      const adventure = activeAdventures.get(socket.id);
+
+      if (!adventure) {
+        console.error(`Invalid adventure: ${socket.id}`);
+        socket.emit("adventure_error", {
+          message: "Invalid adventure",
+        });
+        return;
+      }
+      const player = adventure.getPlayer();
       player.setMonster(monster);
-      players.set(socket.id, player);
-
-      // Adventure starts at level 1
-      const adventure = new Adventure(player, 1);
-      // Track which outcome we're on
-      adventure.currentOutcomeId = "initial";
-      activeAdventures.set(socket.id, adventure);
-
-      progressAdventure(io, socket, adventure, 1);
+      progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );
 

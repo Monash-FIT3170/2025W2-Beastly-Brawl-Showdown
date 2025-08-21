@@ -4,6 +4,7 @@ import { GenericHeader } from "../../components/cards/GenericHeader";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { IconButton } from "../../components/buttons/IconButton";
+import socket from "../../socket";
 
 interface LevelSelectProps {}
 
@@ -16,6 +17,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   };
 
   const renderAdventureMonsterSelect = () => {
+    socket.emit("adventure_level_selected", { level: observedLevel + 1 });
     FlowRouter.go("/adventure/monster-select");
   };
   const monster = "None";
