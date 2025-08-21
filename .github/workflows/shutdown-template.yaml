@@ -1,16 +1,33 @@
-name: Shutdown Droplet (Snapshot & Destroy)
+name: Shutdown Droplet
 
 on:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+    secrets:
+      DIGITAL_OCEAN_PAT:
+        required: true
+      DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID:
+        required: true
+      DIGITAL_OCEAN_SPACES_SECRET_KEY:
+        required: true
+      DIGITAL_OCEAN_DROPLET_IP:
+        required: true
+      DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY:
+        required: true
 
 env:
   working_directory: ./terraform
-  snapshot_name: bbs-snapshot-latest
+  snapshot_name: bbs-snapshot-latest-${{ inputs.env }}
   max_num_snapshots: 2
   droplet_user: root
+  droplet_name: droplet-bbs-game-server-${{ inputs.env }}
 
 jobs:
   shutdown:
+    name: Take a snapshot of the droplet and shut it down
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,14 +46,14 @@ jobs:
           curl -sL https://github.com/digitalocean/doctl/releases/download/v1.135.0/doctl-1.135.0-linux-amd64.tar.gz | tar -xz
           sudo mv doctl /usr/local/bin
           doctl version
-          doctl auth init -t $DIGITALOCEAN_ACCESS_TOKEN
+          doctl auth init -t ${{ secrets.DIGITAL_OCEAN_PAT }}
 
       # Use doctl to check if the droplet is already running.
       - name: Get Droplet ID
         id: get_droplet
         run: |
           set -e
-          DROPLET_ID=$(doctl compute droplet list --format ID,Name --no-header | grep "${{ vars.droplet_name }}" | awk '{print $1}')
+          DROPLET_ID=$(doctl compute droplet list --format ID,Name --no-header | grep "${{ env.droplet_name }}" | awk '{print $1}')
           if [ -z "$DROPLET_ID" ]; then
             echo "found=false" >> $GITHUB_OUTPUT
             exit 0
@@ -44,19 +61,25 @@ jobs:
           echo "DROPLET_ID=$DROPLET_ID" >> $GITHUB_ENV
           echo "found=true" >> $GITHUB_OUTPUT
 
-      # Bring down the docker services on the droplet
-      - name: Bring down the Docker services on the Droplet
-        if: steps.get_droplet.outputs.found == 'true'
+      # This script is needed to shutdown the docker containers
+      - name: Copy shutdown script to Droplet
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: ${{ env.droplet_user }}
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          source: "./deployment/shutdown.sh"
+          target: "~/deployment"
+          strip_components: 2
+
+      - name: Run the shutdown script on Droplet
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
           username: ${{ env.droplet_user }}
           key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
           script: |
-            set -e
-
-            cd ~/deployment
-            docker compose down
+            source ~/deployment/shutdown.sh ${{ inputs.env }}
 
       # We need to take a snapshot (image) of the droplet before destroying it as this will be used to create new droplets in the future.
       # This helps us save money as simply "shutting down" the droplet does not stop billing. It needs to be destroyed.
@@ -108,18 +131,18 @@ jobs:
       - name: Terraform Init
         if: steps.get_droplet.outputs.found == 'true'
         working-directory: ${{ env.working_directory }}
-        run: terraform init
+        run: terraform init -backend-config="key=terraform.${{ inputs.env }}.tfstate"
 
       - name: Terraform Destroy Plan
         if: steps.get_droplet.outputs.found == 'true'
         working-directory: ${{ env.working_directory }}
         run: |
           set -e
-          terraform plan -destroy -target=digitalocean_droplet.droplet_bbs_game_server -out=destroy.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
+          terraform plan -var-file="terraform.${{ inputs.env }}.tfvars" -destroy -target=digitalocean_droplet.droplet_bbs_game_server -out=destroy.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
 
       - name: Terraform Destroy
         if: steps.get_droplet.outputs.found == 'true'
         working-directory: ${{ env.working_directory }}
         run: |
           set -e
-          terraform apply -auto-approve destroy.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'
+          terraform apply -var-file="terraform.${{ inputs.env }}.tfvars" -auto-approve destroy.tfplan 2>&1 | sed -E 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/***.***.***.***/g'

@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
-import { local_ipv4 } from "../IPtest";
+import { Meteor } from "meteor/meteor";
 
-const local_port = "3002"; // socket port
-const socket = io(`${local_ipv4}:${local_port}`);
+console.log("SOCKET URL: ", Meteor.settings.public.SOCKET_URL);
+const socket = io(Meteor.settings.public.SOCKET_URL);
 
 export default socket;
