@@ -29,16 +29,16 @@ export const GameConfiguration = () => {
         </div>
         <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-10 sm:space-y-30">
             <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
-              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('battle')}>
+              {/*<ButtonGeneric color="ronchi" size="large" onClick={() => createGame('battle')}>
                   <OutlineText size="large">SINGLE ROUND</OutlineText>
-              </ButtonGeneric>
+              </ButtonGeneric>*/}
               <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('royale')}>
                   <OutlineText size="large">BATTLE ROYALE</OutlineText>
               </ButtonGeneric>
             </div>
             <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
               <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('scored')} isDisabled>
-                  <OutlineText size="large">ROUND ROBIN</OutlineText>
+                  <OutlineText size="large">SCORED GAME</OutlineText>
               </ButtonGeneric>
             </div>
         </div>
