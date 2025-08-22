@@ -1,0 +1,27 @@
+name: Test - Startup Droplet & Deploy Game
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  call-startup-template:
+    name: Startup Droplet & Deploy Game
+    uses: ./.github/workflows/startup-template.yaml
+    with:
+      env: test
+    secrets:
+      DIGITAL_OCEAN_PAT: ${{ secrets.DIGITAL_OCEAN_PAT }}
+      DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID: ${{ secrets.DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID }}
+      DIGITAL_OCEAN_SPACES_SECRET_KEY: ${{ secrets.DIGITAL_OCEAN_SPACES_SECRET_KEY }}
+      DIGITAL_OCEAN_DROPLET_IP: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP_TEST }}
+      DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY_TEST }}
+      BEASTLYBRAWL_APP_SSL_CERT: ${{ secrets.BEASTLYBRAWL_APP_SSL_CERT_TEST }}
+      BEASTLYBRAWL_APP_SSL_KEY: ${{ secrets.BEASTLYBRAWL_APP_SSL_KEY_TEST }}
+      GHCR_PACKAGES_TOKEN: ${{ secrets.GHCR_PACKAGES_TOKEN }}
+      BEASTLYBRAWL_APP_ROOT_URL: ${{ secrets.BEASTLYBRAWL_APP_ROOT_URL_TEST }}

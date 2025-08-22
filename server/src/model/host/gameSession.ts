@@ -9,6 +9,7 @@ import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
+import crypto from "crypto";
 
 export default class GameSession {
   private hostUID: string;
@@ -16,8 +17,8 @@ export default class GameSession {
   private battles: Queue<Battle>;
   private gameCode: number;
   private round: number = 1; // Round number
-  private player_max: number = 8; // Max 8 players
-  private battle_max: number = 4; // Max 4 battles
+  private player_max: number = 120; // Max 120 players
+  private battle_max: number = 60; // Max 60 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
 
   // Initialise sample data
@@ -52,8 +53,8 @@ export default class GameSession {
   //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
     this.battles.getItems().forEach((curBattle) => {
-      curBattle.eliminateAllPlayers()
-    })
+      curBattle.eliminateAllPlayers();
+    });
   }
 
   // Getters and setters

@@ -1,15 +1,40 @@
 # 2025W2-Beastly-Brawl-Showdown
 
-### Instructions To Run Application
+The application is hosted in 3 ways
 
-1. For MVP, the application is locally hosted from one computer but external devices can join IF both devices are under the same network.
-2. To get your local ipv4 address, open up a command prompt and enter `ipconfig` and scroll to the bottom and see the IPv4 Address under\
-   the `Wireless LAN adapter Wi-Fi` heading.
-3. Replace the address in `client\IPtest.ts` and with your address and leave the port as 3000. E.g. `const local_ipv4 = "http://192.168.x.x";`
-4. Now when you host a lobby, the QR code should take the player through the local ip, instead of localhost.
-5. Open up a new terminal in your VSCode, making sure you're in the `2025W2-Beastly-Brawl-Showdown` directory.
-6. Run `npm i`
-7. Run `meteor run`
+- On a production site https://www.beastlybrawl.app/
+  - This will only be up during Milestone presentations where we need to handle increased demand/load
+- On a test site https://www.beastlybrawl-test.app/
+  - This is generally up 24/7
+- Locally hosted. See details instructions below
+
+## Instructions To Locally Run Application
+
+1. Install node.js
+   - Check node.js version > v22.14.0, run `node -v`
+   - Check npm version > v10.9.2, run `npm -v`
+2. Install meteor using node,js
+   - Run `npx meteor` (ensure to run in admin terminal)
+   - Check meteor version == v3.2, run `meteor --version`, downgrade if needed
+3. Open up a new terminal in your IDE, ensuring you're in the `2025W2-Beastly-Brawl-Showdown` directory.
+4. Run `meteor npm i` to install dependencies
+5. Run `meteor run --settings settings.dev.json`
+
+## Deployment Infrastructure and Management
+
+The application is deployed on two DigitalOcean droplets (TEST: 1 vCPU, 1GB RAM - PROD: 4 vCPU, 8GB RAM).
+Docker is used to run both a container of the Meteor application and an Nginx container for the web server.
+
+There are four GitHub Actions Workflows to manage application deployment.
+
+- Test - Startup Droplet & Deploy Game
+  - Can be run manually on any branch. Automatically triggered on PR creation/update and merge to main
+- Prod - Startup Droplet & Deploy Game
+  - Can only be run manually on the **main branch**.
+- Test - Shutdown Droplet
+  - Can be run manually on any branch. No automatic triggers.
+- Prod - Shutdown Droplet
+  - Can be run manually on the **main branch**. Automatically triggered every night at around 11:55PM AEST.
 
 ## System Architects:
 
@@ -19,7 +44,6 @@
 
 ## Product Managers:
 
-- Mubashar Ali Doostizadah (mdoo0013@student.monash.edu - mubashardoostizadah@gmail.com)
 - Naveen (nsel0009@student.monash.edu)
 - Meng (hsia0003@student.monash.edu)
 - Tinesia (tyuu0023@student.monash.edu)
