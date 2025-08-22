@@ -126,6 +126,7 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
     username: 'Default',
     password: '',
     level: 1,
+    online: false,
     stats: {
       numGamesPlayed: 0,
       numGamesWon: 0,
