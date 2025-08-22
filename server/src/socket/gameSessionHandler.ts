@@ -12,9 +12,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
   socket.on("create-game", ({}) => {
     console.log("Attempting game session creation...");
     //Setting the default to be ScoringTournament for now
-    const session = new GameSession(socket.id, {mode: new ScoringTournament({rounds : 3})});
+    // const session = new GameSession(socket.id, {mode: new ScoringTournament({rounds : 3})});
     // Uncomment below to test BattleRoyale
-    // const session = new GameSession(socket.id, {mode: new BattleRoyale()});
+    const session = new GameSession(socket.id, {mode: new BattleRoyale()});
     // Check if game code already exists, if so, generate a new one
     while (activeGameSessions.has(session.getGameCode())) {
       console.log("Game session already exists. Generating new code...");
@@ -177,21 +177,21 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
     const winningPlayer = players.get(userID);
 
-    if (winningPlayer != undefined) {
-      const newBattleCreated = session.nextBattle(winningPlayer);
-      console.log(``)
-      console.log(`Player ${winningPlayer.getName()} Returning to Queue in Session ${gameCodeN}`)
-      console.log(``)
-      console.log(`Current Battles: ${session.getBattles().getItems()}`)
-      console.log(`Players Remaining: ${session.getGameSessionState().remainingPlayers}`)
-      console.log(``)
-      socket.emit("route_next", { gameCode, newBattleCreated })
-      if (newBattleCreated) {
-        console.log(``)
-        console.log(`New Battle Added (Current Battle Count: ${session.getBattles().size()})`)
-        console.log(``)
-      }
-    }
+    // if (winningPlayer != undefined) {
+    //   const newBattleCreated = session.nextBattle(winningPlayer);
+    //   console.log(``)
+    //   console.log(`Player ${winningPlayer.getName()} Returning to Queue in Session ${gameCodeN}`)
+    //   console.log(``)
+    //   console.log(`Current Battles: ${session.getBattles().getItems()}`)
+    //   console.log(`Players Remaining: ${session.getGameSessionState().remainingPlayers}`)
+    //   console.log(``)
+    //   socket.emit("route_next", { gameCode, newBattleCreated })
+    //   if (newBattleCreated) {
+    //     console.log(``)
+    //     console.log(`New Battle Added (Current Battle Count: ${session.getBattles().size()})`)
+    //     console.log(``)
+    //   }
+    // }
 
   });
 

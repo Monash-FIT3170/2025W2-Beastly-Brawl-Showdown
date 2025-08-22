@@ -10,6 +10,7 @@ export class BattleRoyale implements IGameMode {
 	public name = GameModeIdentifier.BATTLE_ROYALE as const;
 	private placements = new RoyalePlacements();
   private nextPlacement = 0;
+  private playerFinished = 0;
   private nextWinPlacement = 1;  // TODO: This is temporary for now so that we get nice rankings for single-round mode
 
   // Register each existing player into the RoyalePlacements instance
@@ -25,7 +26,7 @@ export class BattleRoyale implements IGameMode {
 	public onActionExecuted(sesion: GameSession): void { }
 
   // TODO: Is this the correct way to handle draws?
-	public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null) {
+	public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket) {
     // Case 1: There is a winner
     if (winner) {
       let loser = battle.getPlayers().filter((player) => player.getId() != winner.getId())[0];
@@ -46,10 +47,47 @@ export class BattleRoyale implements IGameMode {
       this.nextPlacement -= 2;
     }
     console.log("[CURRENT STANDINGS]: ", this.placements.getCurrentOrderedRoyalePlacements());
+
+      io.to(battle.getId()).emit("battle-closed", {gameCode : session.getGameCode().toString()})
+      const p1 = io.sockets.sockets.get(battle.getPlayers()[0].getId())
+      console.log("After battle p1: ", p1)
+
+      io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
+        console.log("Server test 1 (Royale)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
+        if (winner != null) {
+          session.getWaitQueue().enqueue(winner);
+          console.log(`Add player ${winner} to waitQueue`)
+          if (session.getWaitQueue().size() > 1) {
+            console.log("waitQueue Size large enough")
+          }
+        }
+        this.playerFinished += 1
+        console.log(this.playerFinished,session.getPlayers().getItems().length)
+        if ( this.playerFinished == session.getPlayers().getItems().length){
+          this.onBattlesEnded(session, io, socket)
+      }
+      })
+  
+      io.sockets.sockets.get(battle.getPlayers()[1].getId())?.once("ready_next_battle", () => {
+        console.log("Server test 2 (Royale)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
+        if (winner != null) {
+          session.getWaitQueue().enqueue(winner);
+          console.log(`Add player ${winner} to waitQueue`)
+          if (session.getWaitQueue().size() > 1) {
+            console.log("waitQueue Size large enough")
+          }
+        }
+        this.playerFinished += 1
+        console.log(this.playerFinished,session.getPlayers().getItems().length)
+        if (this.playerFinished == session.getPlayers().getItems().length){
+        this.onBattlesEnded(session, io, socket)
+      }
+      })
+
   }
 
   // TODO: Maybe this needs to be be moved somewhere else...
-	public onBattlesEnded(session: GameSession): void {
+	public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
     // Need to set the first place player's placement
     // This should be the only player without a placement currently
     let firstPlacePlacement = this.placements.getCurrentOrderedRoyalePlacements()[0];

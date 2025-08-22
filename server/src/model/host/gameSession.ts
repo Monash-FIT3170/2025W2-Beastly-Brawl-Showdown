@@ -97,6 +97,10 @@ export default class GameSession {
     return this.players;
   }
 
+  public getWaitQueue() {
+    return this.waitQueue;
+  }
+
   // Add player to Game Session queue
   public addPlayer(player: Player): { success: boolean; reason?: string } {
     if (!this.canSocketJoin(player.getId())) {
@@ -284,39 +288,39 @@ export default class GameSession {
   }
 
   // Call every time a player needs to be added into the waitQueue
-  public nextBattle(winningPlayer: Player) {
-    if (this.getPlayerWaiting(winningPlayer.getId()) == null) {
-      this.waitQueue.enqueue(winningPlayer);
-    }
-    // Check if there are currently at least 2 players waiting to be matched up and match them together
-    if (this.waitQueue.size() >= 2) {
-      const player1Indexed = this.waitQueue.dequeue();
-      const player2Indexed = this.waitQueue.dequeue();
+  // public nextBattle(winningPlayer: Player) {
+  //   if (this.getPlayerWaiting(winningPlayer.getId()) == null) {
+  //     this.waitQueue.enqueue(winningPlayer);
+  //   }
+  //   // Check if there are currently at least 2 players waiting to be matched up and match them together
+  //   if (this.waitQueue.size() >= 2) {
+  //     const player1Indexed = this.waitQueue.dequeue();
+  //     const player2Indexed = this.waitQueue.dequeue();
 
-      if (player1Indexed != undefined && player2Indexed != undefined) {
+  //     if (player1Indexed != undefined && player2Indexed != undefined) {
        
-        let battleId = crypto.randomUUID();
+  //       let battleId = crypto.randomUUID();
 
-      // const healthReset1 = player1Indexed.getMonster()?.getMaxHealth();
-      // if (healthReset1 != undefined) {player1Indexed.setHealth(healthReset1);};
-      // const healthReset2 = player2Indexed.getMonster()?.getMaxHealth();
-      // if (healthReset2 != undefined) {player2Indexed.setHealth(healthReset2);};
+  //     // const healthReset1 = player1Indexed.getMonster()?.getMaxHealth();
+  //     // if (healthReset1 != undefined) {player1Indexed.setHealth(healthReset1);};
+  //     // const healthReset2 = player2Indexed.getMonster()?.getMaxHealth();
+  //     // if (healthReset2 != undefined) {player2Indexed.setHealth(healthReset2);};
 
-        const battle = new Battle(
-          battleId,
-          player1Indexed,
-          player2Indexed,
-          this.hostUID
-        );
+  //       const battle = new Battle(
+  //         battleId,
+  //         player1Indexed,
+  //         player2Indexed,
+  //         this.hostUID
+  //       );
 
-        battles.set(battleId, battle);
-        this.battles.enqueuefront(battle);
-        return true;
-      }
+  //       battles.set(battleId, battle);
+  //       this.battles.enqueuefront(battle);
+  //       return true;
+  //     }
 
-    }
-    return false;
-  }
+  //   }
+  //   return false;
+  // }
 
   public calculateMostChosenMonster() {
     // Map from monster name to { monster: Monster, count: number }
