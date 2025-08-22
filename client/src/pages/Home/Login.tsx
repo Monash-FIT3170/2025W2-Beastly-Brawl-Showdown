@@ -57,6 +57,7 @@ export function LoginPopup({
 
     return () => {
       socket.off("loginResponse", loginListener);
+      socket.emit("set-login");
       socket.off("registerResponse", registerListener);
     };
   }, [onLoginSuccess]);

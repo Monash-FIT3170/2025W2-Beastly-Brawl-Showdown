@@ -8,6 +8,7 @@ import { Battle } from "./src/model/game/battle";
 import GameSession from "./src/model/host/gameSession";
 import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataHandler";
+import { LogBool } from "./src/socket/backend/loginHandler";
 
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
@@ -24,7 +25,7 @@ import {
   startChecker,
 } from "./src/socket/backend/loginHandler";
 import { register } from "node:module";
-
+import { updatePlayerAccount } from "./src/database/dbManager";
 import {
   PlayerAccountSchema,
   createDefaultPlayerAccountSchema,
@@ -75,11 +76,14 @@ Meteor.startup(async () => {
     gameSessionHandler(io, socket);
     characterSelectHandler(io, socket);
     waitingScreenDataHandler(io, socket);
+    LogBool(io, socket);
 
     // deletePlayerAccount("asd@gmail.com")
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);
+      const user = playerAccounts.get(socket.id);
+      updatePlayerAccount(user?._id, { online: false });
       // Remove player from game session
       if (players.has(socket.id)) {
         const player = players.get(socket.id);
