@@ -63,6 +63,7 @@ jobs:
 
       # This script is needed to shutdown the docker containers
       - name: Copy shutdown script to Droplet
+        if: steps.get_droplet.outputs.found == 'true'
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
@@ -73,6 +74,7 @@ jobs:
           strip_components: 2
 
       - name: Run the shutdown script on Droplet
+        if: steps.get_droplet.outputs.found == 'true'
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}

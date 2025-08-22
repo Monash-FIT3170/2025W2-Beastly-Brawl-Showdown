@@ -1,5 +1,5 @@
 # Stage 1: Build Meteor bundle
-FROM node:18-bullseye-slim AS builder
+FROM node:22-bullseye-slim AS builder
 
 # Install curl for Meteor installation
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
@@ -18,7 +18,7 @@ RUN METEOR_ALLOW_SUPERUSER=true meteor npm install && \
     METEOR_ALLOW_SUPERUSER=true meteor build ../output --directory --server-only
 
 # Stage 2: Production image
-FROM node:18-bullseye-slim
+FROM node:22-bullseye-slim
 
 WORKDIR /app
 
