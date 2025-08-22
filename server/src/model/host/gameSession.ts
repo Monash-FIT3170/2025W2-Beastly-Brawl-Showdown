@@ -245,8 +245,13 @@ export default class GameSession {
 
   public oddOneOutWinner(oddPlayer: Player) {
     let battleId = crypto.randomUUID();
+<<<<<<< HEAD
     const placeHolderPlayer = new botplayer()
     const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3) + 1];
+=======
+    const placeHolderPlayer = new BotPlayer()
+    const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3)];
+>>>>>>> ad30c17 (Feature/1008:scoring-tournament-backend: fixed minor index error for the bot player)
     if (placerHolderMonster == "RockyRhino"){
       placeHolderPlayer.setMonster(new RockyRhino());
     }
