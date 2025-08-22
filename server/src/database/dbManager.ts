@@ -40,7 +40,7 @@ export interface PlayerMonsterStatSchema {
 export interface AdventureProgressionSchema {
   // {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
   unlockedMonsters: Record<string, boolean>, 
-  level: number, 
+  unlockedLevels: number[], 
   stage: number,
   achievments: string[],
   savedGameState: {} // This will store the state of the game as players can pause single player mode and resume later. 
@@ -147,7 +147,7 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
         'CHARMER_COBRA': false,
         'FURIOUS_FLIPPER': false,
       },
-      level: 1,
+      unlockedLevels: [1],
       stage: 1,
       achievments: [],
       savedGameState: {},
@@ -203,7 +203,7 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
           'CHARMER_COBRA': false,
           'FURIOUS_FLIPPER': false,
         },
-        level: 1,
+        unlockedLevels: [1],
         stage: 1,
         achievments: [],
         savedGameState: {},
