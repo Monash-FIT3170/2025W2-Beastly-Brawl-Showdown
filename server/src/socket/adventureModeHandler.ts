@@ -12,6 +12,7 @@ import { storyOutcomes, storyStruct } from "/types/composite/storyTypes";
 import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
 import { Action } from "../model/game/action/action";
+import { AttackAction } from "../model/game/action/attack";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start

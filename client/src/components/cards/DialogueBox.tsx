@@ -2,6 +2,7 @@ import { OutlineText } from "../texts/OutlineText";
 import React, { ReactNode, useEffect, useState } from "react";
 import { MonsterState } from "/types/single/monsterState";
 import { IconButton } from "../buttons/IconButton";
+import { BlackText } from "../texts/BlackText";
 
 // type for dialog
 type ScriptProps = {
@@ -123,7 +124,7 @@ function ScriptContent({ lines, onEnd, onAdvance }: ScriptProps) {
       {" "}
       <div className="flex-col item-center relative pt-[5%] xl:pt-[5%] w-full h-full">
         <div className="leading-tight">
-          <OutlineText size="choice-text">{lines[i] ?? ""}</OutlineText>
+          <BlackText size="choice-text">{lines[i] ?? ""}</BlackText>
         </div>
 
         <div className=" xl:pl-[95%] absolute pl-[90%] bottom-0">
