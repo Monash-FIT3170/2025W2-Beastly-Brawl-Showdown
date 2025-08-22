@@ -6,7 +6,8 @@ import { GameSessionState } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
-import { PlayerState } from "/types/single/playerState";``
+import { PlayerState } from "/types/single/playerState";
+import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
 import crypto from "crypto";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
@@ -15,19 +16,12 @@ import { BotPlayer } from "../game/botplayer";
 import { IGameMode } from "./gamemode/gameMode";
 import { Server, Socket } from "socket.io";
 import { ActionResult } from "/types/single/actionState";
-import crypto from "crypto";
-import { PouncingBandit } from "../game/monster/pouncingBandit";
-import { CinderTail } from "../game/monster/cinderTail";
-import { BotPlayer } from "../game/botplayer";
-import { IGameMode } from "./gamemode/gameMode";
-import { Server, Socket } from "socket.io";
 
 export default class GameSession {
   private hostUID: string;
   private players: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
-  private gameMode: Mode;
   private round: number = 1; // Round number
   private player_max: number = 120; // Max 120 players
   private battle_max: number = 60; // Max 60 battles
@@ -39,9 +33,8 @@ export default class GameSession {
     mostChosenMonster: { monster: null, percentagePick: "0" },
   };
 
-  constructor(hostID: string, gameMode: Mode, presetGameCode?: number) {
+  constructor(hostID: string, presetGameCode?: number) {
     this.hostUID = hostID;
-    this.gameMode = gameMode;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
@@ -67,8 +60,6 @@ export default class GameSession {
 
   //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
-    if (!this.battles) return;
-
     this.battles.getItems().forEach((curBattle) => {
       curBattle.eliminateAllPlayers();
     });
@@ -89,10 +80,6 @@ export default class GameSession {
 
   public getGameCode() {
     return this.gameCode;
-  }
-
-  public getGameMode() {
-    return this.gameMode;
   }
 
   public getBattles() {
@@ -258,13 +245,8 @@ export default class GameSession {
 
   public oddOneOutWinner(oddPlayer: Player) {
     let battleId = crypto.randomUUID();
-<<<<<<< HEAD
-    const placeHolderPlayer = new botplayer()
-    const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3) + 1];
-=======
     const placeHolderPlayer = new BotPlayer()
     const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3)];
->>>>>>> ad30c17 (Feature/1008:scoring-tournament-backend: fixed minor index error for the bot player)
     if (placerHolderMonster == "RockyRhino"){
       placeHolderPlayer.setMonster(new RockyRhino());
     }
