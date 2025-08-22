@@ -18,7 +18,7 @@
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "pouncing_bandit",
+        "enemyId": "pouncing_bandit_4",
         "next": "victory"
       },
       {
