@@ -24,6 +24,8 @@ Meteor.startup(async () => {
   const PORT = 3002;
   const allowedOrigins = Meteor.settings.public.SERVER_URLS;
 
+  console.log(allowedOrigins);
+
   const io = new Server(server, {
     cors: {
       origin: (origin, callback) => {
@@ -47,20 +49,22 @@ Meteor.startup(async () => {
       `Player account created with socketID: ${socket.id}. PlayerAccounts size: ${playerAccounts.size}`
     );
 
+    // Adds a default PlayerAccount to the playerAccounts map
+    playerAccounts.set(socket.id, createDefaultPlayerAccountSchema());
+    console.log(
+      `Player account created with socketID: ${socket.id}. PlayerAccounts size: ${playerAccounts.size}`
+    );
+
     // for refresh
     socket.emit("new-connect", {});
     // handlers
     loginHandler(io, socket);
     startChecker(io, socket);
-    accountHandler(io, socket);
-    registerHandler(io, socket);
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
     characterSelectHandler(io, socket);
     waitingScreenDataHandler(io, socket);
     LogBool(io, socket);
-
-    // deletePlayerAccount("asd@gmail.com")
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);
