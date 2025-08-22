@@ -19,6 +19,7 @@ export interface PlayerAccountSchema {
   username: string;
   password: string;
   level: number;
+  online: boolean;
   stats: {
     numGamesPlayed: number;
     numGamesWon: number;
@@ -125,6 +126,7 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
     username: 'Default',
     password: '',
     level: 1,
+    online: false,
     stats: {
       numGamesPlayed: 0,
       numGamesWon: 0,
@@ -181,6 +183,7 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
       username,
       password: hashedPassword,
       level: 1, 
+      online: false,
       stats: {
         numGamesPlayed: 0, 
         numGamesWon: 0,
@@ -233,6 +236,7 @@ export async function getPlayerData(email: string): Promise<PlayerAccountSchema 
       username: player.username,
       password: player.password,
       level: player.level,
+      online: player.online,
       stats: {
         numGamesPlayed: player.stats.numGamesPlayed,
         numGamesWon: player.stats.numGamesWon,

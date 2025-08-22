@@ -1,5 +1,9 @@
 import { Server, Socket } from "socket.io";
-import { getPlayerData, updatePlayerAccount, verifyPassword } from "../../database/dbManager";
+import {
+  getPlayerData,
+  updatePlayerAccount,
+  verifyPassword,
+} from "../../database/dbManager";
 import { playerAccounts } from "../../../main";
 
 export const loginHandler = (io: Server, socket: Socket) => {
@@ -15,7 +19,17 @@ export const loginHandler = (io: Server, socket: Socket) => {
 
     // Verify user credentials
     const user = await getPlayerData(email);
-    console.log(`From loginHandler: Attempted pwd: ${password} for email: ${email} | Hashed pwd: ${user?.password}`);
+    console.log(
+      `From loginHandler: Attempted pwd: ${password} for email: ${email} | Hashed pwd: ${user?.password}`
+    );
+
+    if (user?.online === true) {
+      socket.emit("loginResponse", {
+        success: false,
+        message: "Player already online",
+      });
+      return;
+    }
 
     if ((await verifyPassword(password, user?.password)) === false) {
       socket.emit("loginResponse", {
@@ -39,7 +53,7 @@ export const loginHandler = (io: Server, socket: Socket) => {
   });
 };
 
-// 
+//
 export const accountHandler = (io: Server, socket: Socket) => {
   socket.on("fetchUserData", async () => {
     const user = playerAccounts.get(socket.id);
@@ -123,5 +137,12 @@ export const startChecker = (io: Server, socket: Socket) => {
     const user = playerAccounts.get(socket.id);
     const check = user?.username !== "Default";
     socket.emit("login-status", { loggedIn: Boolean(check) });
+  });
+};
+
+export const LogBool = (io: Server, socket: Socket) => {
+  socket.on("set-login", async () => {
+    const user = playerAccounts.get(socket.id);
+    updatePlayerAccount(user?._id, { online: true });
   });
 };
