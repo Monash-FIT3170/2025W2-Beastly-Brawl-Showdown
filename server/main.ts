@@ -9,6 +9,7 @@ import GameSession from "./src/model/host/gameSession";
 import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataHandler";
 import { LogBool } from "./src/socket/backend/loginHandler";
+
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
@@ -37,11 +38,12 @@ export const playerAccounts = new Map<string, PlayerAccountSchema>();
 Meteor.startup(async () => {
   console.log("MONGO_URL:", process.env.MONGO_URL); // Testing for database connection
 
-
   // Initialise socket
   const server = http.createServer();
   const PORT = 3002;
   const allowedOrigins = Meteor.settings.public.SERVER_URLS;
+
+  console.log(allowedOrigins);
 
   const io = new Server(server, {
     cors: {
@@ -66,24 +68,25 @@ Meteor.startup(async () => {
       `Player account created with socketID: ${socket.id}. PlayerAccounts size: ${playerAccounts.size}`
     );
 
+    // Adds a default PlayerAccount to the playerAccounts map
+    playerAccounts.set(socket.id, createDefaultPlayerAccountSchema());
+    console.log(
+      `Player account created with socketID: ${socket.id}. PlayerAccounts size: ${playerAccounts.size}`
+    );
+
     // for refresh
     socket.emit("new-connect", {});
     // handlers
-    loginHandler(io, socket);
     startChecker(io, socket);
     accountHandler(io, socket);
     registerHandler(io, socket);
     loginHandler(io, socket);
     startChecker(io, socket);
-    accountHandler(io, socket);
-    registerHandler(io, socket);
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
     characterSelectHandler(io, socket);
     waitingScreenDataHandler(io, socket);
     LogBool(io, socket);
-
-    // deletePlayerAccount("asd@gmail.com")
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);
@@ -112,7 +115,6 @@ Meteor.startup(async () => {
           `Player account with socketID: ${socket.id} deleted. PlayerAccounts size: ${playerAccounts.size}`
         );
       }
-
     });
   });
 
