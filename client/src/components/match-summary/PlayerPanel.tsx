@@ -8,7 +8,6 @@ interface PlayerPanelProps {
   playerIndex: number;
   isLeftPlayer?: boolean; // Add this to control layout direction
   winner: boolean;
-  isScored?: boolean
 }
 
 const PlayerPanel: React.FC<PlayerPanelProps> = ({ 
@@ -194,7 +193,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
           </OutlineText> 
           </div>
       </div>
-      };
+      }
     </div>
   );
 };

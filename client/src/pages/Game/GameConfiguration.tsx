@@ -37,7 +37,7 @@ export const GameConfiguration = () => {
               </ButtonGeneric>
             </div>
             <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
-              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('scored')} isDisabled>
+              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('scored')}>
                   <OutlineText size="large">SCORED GAME</OutlineText>
               </ButtonGeneric>
             </div>
