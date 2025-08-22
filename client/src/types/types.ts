@@ -1,2 +1,2 @@
 
-type Mode = 'battle' | 'royale' | 'scored' | null;
+type Mode = 'royale' | 'scored' | null; // 'battle' |
