@@ -259,6 +259,7 @@ export default class GameSession {
     let battleId = crypto.randomUUID();
     const placeHolderPlayer = new BotPlayer()
     const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3)];
+
     if (placerHolderMonster == "RockyRhino"){
       placeHolderPlayer.setMonster(new RockyRhino());
     }
