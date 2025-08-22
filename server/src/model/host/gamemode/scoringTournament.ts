@@ -29,7 +29,6 @@ export class ScoringTournament implements IGameMode{
 			this.board.register(p.getId(), p.getName())
 		}
 		console.log("[INIT]: ",this.board.showBoard())
-		console.log("[INIT]: ",this.board.playerScores.size)
 
 	}
 
@@ -54,7 +53,6 @@ export class ScoringTournament implements IGameMode{
 	//Update the scoreboard
 	//TODO: Add Player to waiting room 
 	onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void {
-		console.log("[WINNER]: ", winner)
 		if (winner){
 			this.board.setScore(winner.getId(), {
 				bonuses: this.bonus.win

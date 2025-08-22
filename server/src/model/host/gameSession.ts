@@ -251,7 +251,7 @@ export default class GameSession {
   public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
     const placeHolderPlayer = new BotPlayer()
-    const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3) + 1];
+    const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3)];
     if (placerHolderMonster == "RockyRhino"){
       placeHolderPlayer.setMonster(new RockyRhino());
     }
