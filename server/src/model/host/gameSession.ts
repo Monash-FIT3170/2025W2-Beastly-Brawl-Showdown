@@ -239,30 +239,35 @@ export default class GameSession {
     return this.battles;
   }
 
-  public oddOneOutWinner(oddPlayer: Player): Player {
+public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
-    const placeHolderPlayer = new BotPlayer()
-    const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3) + 1];
-    if (placerHolderMonster == "RockyRhino"){
-      placeHolderPlayer.setMonster(new RockyRhino());
+
+    const botPlayer = new BotPlayer();
+
+
+    const monsterName = this.monsters[Math.floor(Math.random() * this.monsters.length)];
+    if (monsterName === "RockyRhino") {
+        botPlayer.setMonster(new RockyRhino());
+    } else if (monsterName === "PouncingBandit") {
+        botPlayer.setMonster(new PouncingBandit());
+    } else if (monsterName === "CinderTail") {
+        botPlayer.setMonster(new CinderTail());
     }
-    if (placerHolderMonster == "PouncingBandit"){
-      placeHolderPlayer.setMonster(new PouncingBandit());
-    } 
-    if (placerHolderMonster == "CinderTail"){
-      placeHolderPlayer.setMonster(new CinderTail());
-    }           
-    // placeHolderPlayer.setHealth(0);
+
+    this.players.enqueue(botPlayer);
+
     const battle = new Battle(
-      battleId,
-      oddPlayer,
-      placeHolderPlayer,
-      this.hostUID
+        battleId,
+        oddPlayer,
+        botPlayer,
+        this.hostUID
     );
+
     battles.set(battleId, battle);
     this.battles.enqueue(battle);
+
     return oddPlayer;
-  }
+}
 
   public calculateMostChosenMonster() {
     // Map from monster name to { monster: Monster, count: number }

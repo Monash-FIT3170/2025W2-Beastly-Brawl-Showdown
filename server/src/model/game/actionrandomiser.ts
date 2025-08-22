@@ -3,24 +3,26 @@ import { Player } from "./player";
 import { Action } from "./action/action";
 
 export class ActionRandomiser {
-    private possibleActions: Action[];
-
-    constructor(player: BotPlayer) {
-        const monster = player.getMonster();
-        this.possibleActions = monster?.getPossibleActions() ?? [];
-    }
+    constructor(private botPlayer: BotPlayer) {}
 
     public randomaction(player: Player) {
-        if (!player || this.possibleActions.length === 0) return;
+        if (!player) return;
 
-        // Filter only actions that can still be used
-        const usableActions = this.possibleActions.filter(
-            action => action.getCurrentUse() < action.getMaxUse()
+        const monster = this.botPlayer.getMonster();
+        if (!monster) return;
+
+        // Get the current possible actions
+        const possibleActions: Action[] = monster.getPossibleActions() ?? [];
+        if (possibleActions.length === 0) return;
+
+        // Filter usable actions
+        const usableActions = possibleActions.filter(
+            action => action.getCurrentUse() > 0
         );
-
-        if (usableActions.length === 0) return; // no actions available
+        if (usableActions.length === 0) return;
 
         // Pick a random usable action
+        console.log("erjnfikjeunfikeujn")
         const randomIndex = Math.floor(Math.random() * usableActions.length);
         const actionToAdd = usableActions[randomIndex];
 
