@@ -175,24 +175,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       return;
     }
 
-    const winningPlayer = players.get(userID);
-
-    // if (winningPlayer != undefined) {
-    //   const newBattleCreated = session.nextBattle(winningPlayer);
-    //   console.log(``)
-    //   console.log(`Player ${winningPlayer.getName()} Returning to Queue in Session ${gameCodeN}`)
-    //   console.log(``)
-    //   console.log(`Current Battles: ${session.getBattles().getItems()}`)
-    //   console.log(`Players Remaining: ${session.getGameSessionState().remainingPlayers}`)
-    //   console.log(``)
-    //   socket.emit("route_next", { gameCode, newBattleCreated })
-    //   if (newBattleCreated) {
-    //     console.log(``)
-    //     console.log(`New Battle Added (Current Battle Count: ${session.getBattles().size()})`)
-    //     console.log(``)
-    //   }
-    // }
-
   });
 
   // Emits current player list on request

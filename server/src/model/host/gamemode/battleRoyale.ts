@@ -1,10 +1,12 @@
 import { Server, Socket } from "socket.io";
 import { Battle } from "../../game/battle";
 import { Player } from "../../game/player";
+import { battles } from "../../../../main";
 import GameSession from "../gameSession";
 import { IGameMode } from "./gameMode";
 import { RoyalePlacements } from "./royalePlacements";
 import { GameModeIdentifier } from "/types/single/gameMode";
+import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
 
 export class BattleRoyale implements IGameMode {
 	public name = GameModeIdentifier.BATTLE_ROYALE as const;
@@ -48,42 +50,97 @@ export class BattleRoyale implements IGameMode {
     }
     console.log("[CURRENT STANDINGS]: ", this.placements.getCurrentOrderedRoyalePlacements());
 
-      io.to(battle.getId()).emit("battle-closed", {gameCode : session.getGameCode().toString()})
-      const p1 = io.sockets.sockets.get(battle.getPlayers()[0].getId())
-      console.log("After battle p1: ", p1)
+    io.to(battle.getId()).emit("battle-closed", {gameCode : session.getGameCode().toString()})
+    const p1 = io.sockets.sockets.get(battle.getPlayers()[0].getId())
+    console.log("After battle p1: ", p1)
 
-      io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
-        console.log("Server test 1 (Royale)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
-        if (winner != null) {
-          session.getWaitQueue().enqueue(winner);
-          console.log(`Add player ${winner} to waitQueue`)
-          if (session.getWaitQueue().size() > 1) {
-            console.log("waitQueue Size large enough")
+    io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
+      console.log("Server test 1 (Royale)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
+      if (winner != null) {
+        session.getWaitQueue().enqueue(winner);
+        console.log(`Add player ${winner} to waitQueue`)
+        if (session.getWaitQueue().size() > 1) {
+          console.log("waitQueue Size large enough")
+
+          const player1Indexed = session.getWaitQueue().dequeue();
+          const player2Indexed = session.getWaitQueue().dequeue();
+
+          if (player1Indexed != undefined && player2Indexed != undefined) {
+          
+            let battleId = crypto.randomUUID();
+
+            const battle = new Battle(
+              battleId,
+              player1Indexed,
+              player2Indexed,
+              session.getHost()
+            );
+            battles.set(battleId, battle);
+            session.getBattles().enqueuefront(battle);
+
+            const gameCodeN = session.getGameCode();
+
+            console.log(`Connecting to ${socket.id}`)
+            for (const player of battle.getPlayers()) {
+              io.sockets.sockets.get(player.getId())?.join(battle.getId());
+            }
+            console.log(`Check to start battle ${battle.getId()}`)
+            io.to(battle.getId()).emit("battle_started", battle.getId());
+            proceedBattleTurn(io, socket, session, battle);
           }
+
         }
-        this.playerFinished += 1
-        console.log(this.playerFinished,session.getPlayers().getItems().length)
-        if ( this.playerFinished == session.getPlayers().getItems().length){
-          this.onBattlesEnded(session, io, socket)
       }
-      })
-  
-      io.sockets.sockets.get(battle.getPlayers()[1].getId())?.once("ready_next_battle", () => {
-        console.log("Server test 2 (Royale)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
-        if (winner != null) {
-          session.getWaitQueue().enqueue(winner);
-          console.log(`Add player ${winner} to waitQueue`)
-          if (session.getWaitQueue().size() > 1) {
-            console.log("waitQueue Size large enough")
-          }
-        }
-        this.playerFinished += 1
-        console.log(this.playerFinished,session.getPlayers().getItems().length)
-        if (this.playerFinished == session.getPlayers().getItems().length){
+      this.playerFinished += 1
+      console.log(this.playerFinished,session.getPlayers().getItems().length)
+      if ( this.playerFinished == session.getPlayers().getItems().length){
         this.onBattlesEnded(session, io, socket)
       }
-      })
+    })
 
+    io.sockets.sockets.get(battle.getPlayers()[1].getId())?.once("ready_next_battle", () => {
+      console.log("Server test 2 (Royale)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
+      if (winner != null) {
+        session.getWaitQueue().enqueue(winner);
+        console.log(`Add player ${winner} to waitQueue`)
+        if (session.getWaitQueue().size() > 1) {
+          console.log("waitQueue Size large enough")
+
+          const player1Indexed = session.getWaitQueue().dequeue();
+          const player2Indexed = session.getWaitQueue().dequeue();
+
+          if (player1Indexed != undefined && player2Indexed != undefined) {
+          
+            let battleId = crypto.randomUUID();
+
+            const battle = new Battle(
+              battleId,
+              player1Indexed,
+              player2Indexed,
+              session.getHost()
+            );
+            battles.set(battleId, battle);
+            session.getBattles().enqueuefront(battle);
+
+            const gameCodeN = session.getGameCode();
+
+            console.log(`Connecting to ${socket.id}`)
+            for (const player of battle.getPlayers()) {
+              io.sockets.sockets.get(player.getId())?.join(battle.getId());
+            }
+            console.log(`Check to start battle ${battle.getId()}`)
+            io.to(battle.getId()).emit("battle_started", battle.getId());
+            proceedBattleTurn(io, socket, session, battle);
+
+          }
+        }
+      }
+      this.playerFinished += 1
+      console.log(this.playerFinished,session.getPlayers().getItems().length)
+      if (this.playerFinished == session.getPlayers().getItems().length){
+      this.onBattlesEnded(session, io, socket)
+      }
+    })
   }
 
   // TODO: Maybe this needs to be be moved somewhere else...

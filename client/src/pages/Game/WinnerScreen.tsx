@@ -31,16 +31,6 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({playerMonster}) => {
     // FlowRouter.go(`/session/${returningSessionId}`);
   };
 
-  socket.on("route_next", ({ gameCode, newBattleCreated }) => {
-    FlowRouter.go(`/session/${gameCode}`);
-    if (newBattleCreated == true) {
-      socket.emit("start-new-battle", { gameCode });
-    }
-    // } else {
-    //   FlowRouter.go(`/session/${gameCode}`);
-    // }
-  });
-
   // const leave = () => {
   //   socket.emit('leave-game', {userID:socket.id})
   //   FlowRouter.go("/")
