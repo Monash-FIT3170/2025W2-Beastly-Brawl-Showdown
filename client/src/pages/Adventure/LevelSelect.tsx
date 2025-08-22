@@ -42,11 +42,13 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             rounded-[20px]
             w-[60%]
             box-border
-            flex flex-col items-center`}
+            flex flex-col  justify-center items-center`}
       >
         {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
-        <OutlineText size="extraLarge">NEXT CHAPTER</OutlineText>
-        <img src={monsterImage} />
+        <img
+          src={monsterImage}
+          className="sm:w-[20rem] sm:h-[20rem] lg:w-[15rem] lg:h-[15rem]"
+        />
         <ButtonGeneric
           color={UNLOCKED_LEVELS.includes(observedLevel) ? `ronchi` : `alto`}
           size="large"
