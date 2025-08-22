@@ -12,6 +12,8 @@ export interface PlayerState {
   successBlock: number;
   successHit: number; 
 
+  score: number | null;
+
   monster: MonsterState | null;
 
   logs: string[];
