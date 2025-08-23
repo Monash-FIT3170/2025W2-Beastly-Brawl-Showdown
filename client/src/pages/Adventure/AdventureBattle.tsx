@@ -1,6 +1,7 @@
 import {
   ArchetypeIdentifier,
   getMonsterBiome,
+  getPersistedMonsterBiome,
   MonsterIdentifier,
 } from "/types/single/monsterState";
 import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
@@ -112,7 +113,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     possibleActions: [fakeAction, fakeAction, fakeAction, fakeAction],
   };
   
-  var background = getMonsterBiome(battleState?.opponentPlayerMonster?.id)
+  var background = getPersistedMonsterBiome(battleState?.opponentPlayerMonster?.id);
   var backgroundLocation = background; //TODO: change this to be based off level/monster? 
   var backgroundString =
     "url('/assets/backgrounds/" + backgroundLocation + ".png')";

@@ -48,6 +48,10 @@ export interface ArchetypeInfo {
   abilityDesc: string;
 }
 
+
+// Background persistence state
+let lastValidBackground: string | null = null;
+
 /**
  * Gets the biome for a given monster
  * @param monsterId The monster identifier (can be undefined)
@@ -60,6 +64,49 @@ export function getMonsterBiome(monsterId: MonsterIdentifier | undefined): strin
   
   const biomeFunction = biomeMap.get(monsterId);
   return biomeFunction?.();
+}
+
+/**
+ * Gets the biome for a monster and persists it for future use when monster is defeated
+ * @param monsterId The monster identifier (can be undefined)
+ * @param defaultBiome The default biome to use if no monster and no previously saved background
+ * @returns The current monster's biome, or the last valid biome, or the default
+ */
+export function getPersistedMonsterBiome(
+  monsterId: MonsterIdentifier | undefined, 
+  defaultBiome: string = "FOREST"
+): string {
+  const currentBiome = getMonsterBiome(monsterId);
+  
+  // If we have a current biome, save it and return it
+  if (currentBiome) {
+    lastValidBackground = currentBiome;
+    return currentBiome;
+  }
+  
+  // If no current biome, return the last valid one or default
+  return lastValidBackground || defaultBiome;
+}
+
+/**
+ * Resets the persisted background (useful for starting new adventures)
+ */
+export function resetPersistedBackground(): void {
+  lastValidBackground = null;
+}
+
+/**
+ * Gets the biome for a given monster with a fallback default
+ * @param monsterId The monster identifier (can be undefined)
+ * @param defaultBiome The default biome to return if monster ID is undefined or not found (default: "FOREST")
+ * @returns The biome string for the monster, or the default biome
+ */
+export function getMonsterBiomeWithDefault(
+  monsterId: MonsterIdentifier | undefined, 
+  defaultBiome: string = "FOREST"
+): string {
+  const biome = getMonsterBiome(monsterId);
+  return biome ?? defaultBiome;
 }
 
 // Alternative version that throws an error for missing monsters
