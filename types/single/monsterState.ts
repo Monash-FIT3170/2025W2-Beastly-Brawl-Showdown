@@ -25,6 +25,7 @@ export const biomeMap = new Map([
   [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
   [MonsterIdentifier.POISON_FROG, () => "MARSH"],
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
+  [MonsterIdentifier.SLIME, () => "DESERT"],
 ]);
 
 export interface MonsterState {
@@ -45,4 +46,29 @@ export interface ArchetypeInfo {
   name: string;
   ability: string;
   abilityDesc: string;
+}
+
+/**
+ * Gets the biome for a given monster
+ * @param monsterId The monster identifier (can be undefined)
+ * @returns The biome string for the monster, or undefined if monster ID is undefined or not found
+ */
+export function getMonsterBiome(monsterId: MonsterIdentifier | undefined): string | undefined {
+  if (!monsterId) {
+    return undefined;
+  }
+  
+  const biomeFunction = biomeMap.get(monsterId);
+  return biomeFunction?.();
+}
+
+// Alternative version that throws an error for missing monsters
+export function getMonsterBiomeStrict(monsterId: MonsterIdentifier): string {
+  const biomeFunction = biomeMap.get(monsterId);
+  
+  if (!biomeFunction) {
+    throw new Error(`Biome not found for monster: ${monsterId}`);
+  }
+  
+  return biomeFunction();
 }

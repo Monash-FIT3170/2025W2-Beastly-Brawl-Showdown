@@ -1,5 +1,6 @@
 import {
   ArchetypeIdentifier,
+  getMonsterBiome,
   MonsterIdentifier,
 } from "/types/single/monsterState";
 import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
@@ -21,7 +22,6 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { ChoicePopup } from "../../components/popups/ChoicePopup";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -111,9 +111,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
 
     possibleActions: [fakeAction, fakeAction, fakeAction, fakeAction],
   };
-  const currentMonster = battleState?.opponentPlayerMonster?.id;
   
-  var backgroundLocation ="BASALT"; //TODO: change this to be based off level/monster? 
+  var background = getMonsterBiome(battleState?.opponentPlayerMonster?.id)
+  var backgroundLocation = background; //TODO: change this to be based off level/monster? 
   var backgroundString =
     "url('/assets/backgrounds/" + backgroundLocation + ".png')";
 
