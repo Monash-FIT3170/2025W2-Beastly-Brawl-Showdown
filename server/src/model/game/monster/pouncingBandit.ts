@@ -4,10 +4,10 @@ import { Attacker } from "../archetype/attacker";
 import { ShadowLeapAbilityAction } from "../action/ability/shadowLeap";
 
 export class PouncingBandit extends Monster {
-  constructor() {
+  constructor(name: string = "Pouncing Bandit") {
     super(
       MonsterIdentifier.POUNCING_BANDIT,
-      "Pouncing Bandit",
+      name,
       "An agile, purple beast with a knack for slipping away. It darts past attacks with ease, then pounces with ferocity to land its blow.",
       new Attacker(),
       new ShadowLeapAbilityAction(),

@@ -4,18 +4,20 @@ import { GenericHeader } from "../../components/cards/GenericHeader";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { IconButton } from "../../components/buttons/IconButton";
+import socket from "../../socket";
 
 interface LevelSelectProps {} 
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(0);
-  const UNLOCKED_LEVELS = [0];
+  const UNLOCKED_LEVELS = [0, 1];
 
   const alterLevel = (val: number) => {
     setObservedLevel(observedLevel + val);
   };
 
   const renderAdventureMonsterSelect = () => {
+    socket.emit("adventure_level_selected", { level: observedLevel + 1 });
     FlowRouter.go("/adventure/monster-select");
   };
   const monster = "None";
@@ -40,11 +42,13 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             rounded-[20px]
             w-[60%]
             box-border
-            flex flex-col items-center`}
+            flex flex-col  justify-center items-center`}
       >
         {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
-        <OutlineText size="extraLarge">NEXT CHAPTER</OutlineText>
-        <img src={monsterImage} />
+        <img
+          src={monsterImage}
+          className="sm:w-[20rem] sm:h-[20rem] lg:w-[15rem] lg:h-[15rem]"
+        />
         <ButtonGeneric
           color={UNLOCKED_LEVELS.includes(observedLevel) ? `ronchi` : `alto`}
           size="large"

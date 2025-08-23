@@ -11,13 +11,23 @@ import { resolveOutcome } from "../model/adventure/storyResolver";
 import { storyOutcomes, storyStruct } from "/types/composite/storyTypes";
 import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
+import { Action } from "../model/game/action/action";
+import { AttackAction } from "../model/game/action/attack";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
+
+  socket.on("adventure_level_selected", async ({ level }) => {
+    const player = new Player(socket.id, "Anika"); // TODO: Use real player name
+    players.set(socket.id, player);
+    const adventure = new Adventure(player, level);
+    // Track which outcome we're on
+    adventure.currentOutcomeId = "initial";
+    activeAdventures.set(socket.id, adventure);
+  });
   socket.on(
     "adventure_monster_selected",
     async ({ monsterID }: { monsterID: MonsterIdentifier }) => {
-      const player = new Player(socket.id, "Anika"); // TODO: Use real player name
       const monster = getMonster(monsterID);
       if (!monster) {
         console.error(`Invalid monster name: ${monsterID}`);
@@ -26,16 +36,18 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         });
         return;
       }
+      const adventure = activeAdventures.get(socket.id);
+
+      if (!adventure) {
+        console.error(`Invalid adventure: ${socket.id}`);
+        socket.emit("adventure_error", {
+          message: "Invalid adventure",
+        });
+        return;
+      }
+      const player = adventure.getPlayer();
       player.setMonster(monster);
-      players.set(socket.id, player);
-
-      // Adventure starts at level 1
-      const adventure = new Adventure(player, 1);
-      // Track which outcome we're on
-      adventure.currentOutcomeId = "initial";
-      activeAdventures.set(socket.id, adventure);
-
-      progressAdventure(io, socket, adventure, 1);
+      progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );
 
@@ -115,47 +127,24 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
         // Emitting player1's action animations TO UPDATE
         player1.getActions().forEach((action) => {
-          if (action.getName() === "Attack") {
-            // get the animation name and dice number from the prepareAnimation method
-            const animationInfo = action.prepareAnimation();
-            const animationType = animationInfo[0];
-            const diceRollNumber = animationInfo[1];
-            console.log(animationType, diceRollNumber);
-            io.to(player1.getId()).emit(String(animationType), diceRollNumber);
-          }
-
-          if (action.getName() === "Tip The Scales") {
-            const animationInfo = action.prepareAnimation();
-            const animationType = animationInfo[0];
-            const diceRoll = animationInfo[1];
-            io.to(player1.getId()).emit(animationType, diceRoll);
-            console.log(
-              `Player 1 used tip the scales and dice roll = ${diceRoll}`
-            );
-          }
+          const animationInfo = action.prepareAnimation();
+          const animationType = animationInfo[0];
+          const diceRollNumber = animationInfo[1];
+          console.log(animationType, diceRollNumber);
+          io.to(player1.getId()).emit(String(animationType), diceRollNumber);
         });
 
         // Emitting player2's action animations
         player2.getActions().forEach((action) => {
-          if (action.getName() === "Attack") {
-            const animationInfo = action.prepareAnimation();
-            const animationType = animationInfo[0];
-            const diceRollNumber = animationInfo[1];
-            console.log(animationType, diceRollNumber);
-            io.to(player2.getId()).emit(String(animationType), diceRollNumber);
-          }
-
-          if (action.getName() === "Tip The Scales") {
-            const animationInfo = action.prepareAnimation();
-            const animationType = animationInfo[0];
-            const diceRoll = animationInfo[1];
-
-            console.log(
-              `Player 2 used tip the scales and dice roll = ${diceRoll}`
-            );
-            io.to(player2.getId()).emit(animationType, diceRoll);
-          }
+          const animationInfo = action.prepareAnimation();
+          const animationType = animationInfo[0];
+          const diceRollNumber = animationInfo[1];
+          console.log(animationType, diceRollNumber);
+          io.to(player2.getId()).emit(String(animationType), diceRollNumber);
         });
+
+        // Remove possible actions essentially hiding the battle footer until animations and calculations are done.
+        io.to(playerId).emit("possible_actions", []);
 
         setTimeout(() => {
           // Execute method
@@ -260,6 +249,7 @@ async function progressAdventure(
         resolved.enemy!.getId(),
         resolved.enemy?.getName()!
       ); // Eventually use bot class
+      resolved.enemy?.pveScaling(adventure.getStage());
       bot.setMonster(resolved.enemy!);
       players.set(resolved.enemy!.getId(), bot);
 
@@ -283,6 +273,9 @@ async function progressAdventure(
         ?.getMonster()
         ?.getPossibleActionStates();
       socket.emit("possible_actions", actions);
+      //Clear logs from previous battle.
+      adventure.getPlayer().clearLogs();
+      adventure.getPlayer().clearBattleLogs(); //um note i did this but it didn't clear lmfaoo??
       // Optionally, proceed with the battle logic
       proceedAdventureTurn(io, socket, adventure, battle);
     } else if (resolved.type === "DIALOGUE") {
@@ -290,6 +283,7 @@ async function progressAdventure(
       socket.emit("adventure_state", {
         type: "dialogue",
         dialogue: resolved.result,
+        enemy: resolved.enemy,
         next: resolved.next,
       });
     } else if (resolved.type === "RANDOM") {
@@ -316,6 +310,16 @@ async function progressAdventure(
         name: resolved.item?.getName() || "Unknown Item",
       });
       adventure.getPlayer().addToInventory(resolved.item!);
+    } else if (resolved.type === "STAT_CHANGE") {
+      // Handle stat change
+      const [stat, change] = resolved.statChange!;
+      adventure.getPlayer().changeStat(stat, change);
+
+      socket.emit("adventure_state", {
+        type: "stat_change",
+        result: resolved.result,
+        next: resolved.next,
+      });
     }
   } catch (err) {
     console.error("Adventure stage load error:", err);
@@ -334,7 +338,6 @@ function loadNextStory(
   if (!adventure.currentStory || !adventure.currentOutcomeId) {
     adventure.currentOutcomeId = "initial";
     adventure.incrementStage();
-    console.log("test");
     const stage = adventure.getStage();
     if (adventure.getStage() > 8) {
       socket.emit("adventure_win", { stage });

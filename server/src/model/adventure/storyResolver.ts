@@ -14,6 +14,10 @@ export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
       return raw;
 
     case EncounterType.DIALOGUE:
+      // If enemyId is present, attach the enemy object
+      if (raw.enemyId) {
+        return { ...raw, enemy: createEnemy(raw.enemyId) };
+      }
       return raw;
 
     default:

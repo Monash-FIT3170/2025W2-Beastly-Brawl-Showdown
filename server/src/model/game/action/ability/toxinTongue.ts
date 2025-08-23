@@ -9,7 +9,7 @@ export class ToxinTongue extends Action {
     super(
       ActionIdentifier.TOXIN_TONGUE,
       "Toxin Tongue",
-      "Poison your opponent, dealing damage over time.",
+      "Whip out your grotesque tongue. Your foe is poisoned, taking 1 damage each turn for 5 turns.",
       2
     );
     this.setDodgeable(false);

@@ -11,7 +11,7 @@ export class TipTheScalesAbilityAction extends Action {
     super(
       ActionIdentifier.TIP_THE_SCALES,
       "Tip The Scales",
-      "Cheat fate itself. Attack with a loaded d20 where every roll is 10 or higher.",
+      "Cheat fate itself. Attack with a loaded d20 where this roll is 10 or higher.",
       1
     );
   }

@@ -11,6 +11,13 @@
           "It looks harmless enough."
         ],
         "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["blob. blob.. blob...", "b l o b ."],
+        "type": "DIALOGUE",
+        "enemyId": "slime_1",
         "next": "fight_1"
       },
       {
