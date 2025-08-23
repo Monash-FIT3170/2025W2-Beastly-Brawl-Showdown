@@ -17,6 +17,16 @@ export enum ArchetypeIdentifier {
   NEUTRAL = "NEUTRAL",
 }
 
+
+export const biomeMap = new Map([
+  [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
+  [MonsterIdentifier.POUNCING_BANDIT, () => "FOREST"],
+  [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],
+  [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
+  [MonsterIdentifier.POISON_FROG, () => "MARSH"],
+  [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
+]);
+
 export interface MonsterState {
   id: MonsterIdentifier;
   archetypeId: ArchetypeIdentifier;

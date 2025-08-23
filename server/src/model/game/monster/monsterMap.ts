@@ -29,11 +29,6 @@ export const biomeMap = new Map([
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
 ]);
 
-export function getBiomeString(monsterID: MonsterIdentifier) {
-  const biomeName = biomeMap.get(monsterID);
-  return biomeName ? biomeName() : null;
-}
-
 export function getSlimeString(monsterID: MonsterIdentifier) {
   const biomeName = biomeMap.get(monsterID);
   if (!biomeName) {
