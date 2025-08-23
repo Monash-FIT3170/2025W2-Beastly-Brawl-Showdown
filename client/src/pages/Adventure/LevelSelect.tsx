@@ -6,7 +6,7 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { IconButton } from "../../components/buttons/IconButton";
 import socket from "../../socket";
 
-interface LevelSelectProps {} 
+interface LevelSelectProps {}
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(0);

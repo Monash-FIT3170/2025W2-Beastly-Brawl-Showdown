@@ -21,7 +21,6 @@ export class Adventure {
     this.currentStory = null;
   }
 
-
   //TODO: REMOVE - FOR TESTING
   public getId(): string {
     return this.player.getId();

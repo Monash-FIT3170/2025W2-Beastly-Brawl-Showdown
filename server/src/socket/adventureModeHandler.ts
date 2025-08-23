@@ -130,7 +130,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           const animationInfo = action.prepareAnimation();
           const animationType = animationInfo[0];
           const diceRollNumber = animationInfo[1];
-          console.log(animationType, diceRollNumber);
+          // console.log(animationType, diceRollNumber);
           io.to(player1.getId()).emit(String(animationType), diceRollNumber);
         });
 
@@ -139,7 +139,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           const animationInfo = action.prepareAnimation();
           const animationType = animationInfo[0];
           const diceRollNumber = animationInfo[1];
-          console.log(animationType, diceRollNumber);
+          // console.log(animationType, diceRollNumber);
           io.to(player2.getId()).emit(String(animationType), diceRollNumber);
         });
 

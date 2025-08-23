@@ -111,19 +111,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     };
   }, [stage]);
 
-  var fakeAction = {
-    id: ActionIdentifier.ATTACK,
-    name: "attack",
-    description: "pp",
-    currentUse: 100,
-    maxUse: 100,
-  };
-
   var backgroundLocation = getPersistedMonsterBiome(
     battleState?.opponentPlayerMonster?.id
   );
   var backgroundString =
-    "url('/assets/backgrounds/" + backgroundLocation + ".png')";
+    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
 
   //TODO: add exit button
   //TODO: add inventory button

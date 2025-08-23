@@ -17,13 +17,12 @@ export enum ArchetypeIdentifier {
   NEUTRAL = "NEUTRAL",
 }
 
-
 export const biomeMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
   [MonsterIdentifier.POUNCING_BANDIT, () => "FOREST"],
   [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],
   [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
-  [MonsterIdentifier.POISON_FROG, () => "MARSH"],
+  [MonsterIdentifier.POISON_POGO, () => "MARSH"],
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
   [MonsterIdentifier.SLIME, () => "DESERT"],
 ]);
@@ -48,7 +47,6 @@ export interface ArchetypeInfo {
   abilityDesc: string;
 }
 
-
 // Background persistence state
 let lastValidBackground: string | null = null;
 
@@ -57,11 +55,13 @@ let lastValidBackground: string | null = null;
  * @param monsterId The monster identifier (can be undefined)
  * @returns The biome string for the monster, or undefined if monster ID is undefined or not found
  */
-export function getMonsterBiome(monsterId: MonsterIdentifier | undefined): string | undefined {
+export function getMonsterBiome(
+  monsterId: MonsterIdentifier | undefined
+): string | undefined {
   if (!monsterId) {
     return undefined;
   }
-  
+
   const biomeFunction = biomeMap.get(monsterId);
   return biomeFunction?.();
 }
@@ -73,17 +73,17 @@ export function getMonsterBiome(monsterId: MonsterIdentifier | undefined): strin
  * @returns The current monster's biome, or the last valid biome, or the default
  */
 export function getPersistedMonsterBiome(
-  monsterId: MonsterIdentifier | undefined, 
+  monsterId: MonsterIdentifier | undefined,
   defaultBiome: string = "FOREST"
 ): string {
   const currentBiome = getMonsterBiome(monsterId);
-  
+
   // If we have a current biome, save it and return it
   if (currentBiome) {
     lastValidBackground = currentBiome;
     return currentBiome;
   }
-  
+
   // If no current biome, return the last valid one or default
   return lastValidBackground || defaultBiome;
 }
@@ -102,7 +102,7 @@ export function resetPersistedBackground(): void {
  * @returns The biome string for the monster, or the default biome
  */
 export function getMonsterBiomeWithDefault(
-  monsterId: MonsterIdentifier | undefined, 
+  monsterId: MonsterIdentifier | undefined,
   defaultBiome: string = "FOREST"
 ): string {
   const biome = getMonsterBiome(monsterId);
@@ -112,10 +112,10 @@ export function getMonsterBiomeWithDefault(
 // Alternative version that throws an error for missing monsters
 export function getMonsterBiomeStrict(monsterId: MonsterIdentifier): string {
   const biomeFunction = biomeMap.get(monsterId);
-  
+
   if (!biomeFunction) {
     throw new Error(`Biome not found for monster: ${monsterId}`);
   }
-  
+
   return biomeFunction();
 }
