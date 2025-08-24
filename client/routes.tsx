@@ -8,8 +8,13 @@ import PathNotFound from "./src/pages/Home/PathNotFound";
 import { GameConfiguration } from "./src/pages/Game/GameConfiguration";
 import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
-import Rules from './src/pages/Game/Rules';
-import MatchSummary from './src/pages/Host View/MatchSummary';
+import Rules from "./src/pages/Game/Rules";
+import MatchSummary from "./src/pages/Host View/MatchSummary";
+import LevelSelect from "./src/pages/Adventure/LevelSelect";
+import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
+import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
+import AdventureDefeated from "./src/pages/Adventure/Defeated";
+import AdventureWin from "./src/pages/Adventure/AdventureWin";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -64,14 +69,14 @@ FlowRouter.route("/join/:code?", {
 FlowRouter.route("/battle/:battleId?", {
   name: "Battle",
   action(params) {
-    mount(() => <Battle battleId={params.battleId}  />);
+    mount(() => <Battle battleId={params.battleId} />);
   },
 });
 
 FlowRouter.route("/session/:sessionId?", {
   name: "Session",
   action(params) {
-    mount(() => <Game gameSessionId={params.sessionId}  />);
+    mount(() => <Game gameSessionId={params.sessionId} />);
   },
 });
 
@@ -83,11 +88,44 @@ FlowRouter.route("/battles/:code?", {
   },
 });
 
+FlowRouter.route("/adventure/level-select", {
+  name: "LevelSelect",
+  action() {
+    mount(LevelSelect);
+  },
+});
 
+FlowRouter.route("/adventure/monster-select", {
+  name: "MonsterSelect",
+  action() {
+    mount(MonsterSelect);
+  },
+});
 
+FlowRouter.route("/adventure/adventure-battle", {
+  name: "AdventureBattle",
+  action() {
+    mount(() => <AdventureBattle stage={1} />);
+    // TODO: Pass the stage as a prop
+  },
+});
 
-FlowRouter.route('/rules', {
-  name: 'Rules',
+FlowRouter.route("/adventure/defeated", {
+  name: "AdventureDefeated",
+  action() {
+    mount(AdventureDefeated);
+  },
+});
+
+FlowRouter.route("/adventure/win", {
+  name: "AdventureWin",
+  action() {
+    mount(AdventureWin);
+  },
+});
+
+FlowRouter.route("/rules", {
+  name: "Rules",
   action() {
     mount(Rules);
   },

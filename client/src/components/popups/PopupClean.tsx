@@ -37,7 +37,8 @@ export const PopupClean = ({children}:PopupProp) => {
         border-[#403245]
         rounded-[20px]
         text-center
-        w-[60%]
+        xl:w-[60%]
+        w-[80%]
         items-stretch
         box-border 
         flex
