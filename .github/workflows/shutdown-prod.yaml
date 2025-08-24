@@ -1,0 +1,20 @@
+name: Prod - Shutdown Droplet
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "55 13 * * *"
+
+jobs:
+  call-shutdown-template:
+    name: Shutdown Droplet
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/shutdown-template.yaml
+    with:
+      env: prod
+    secrets:
+      DIGITAL_OCEAN_PAT: ${{ secrets.DIGITAL_OCEAN_PAT }}
+      DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID: ${{ secrets.DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID }}
+      DIGITAL_OCEAN_SPACES_SECRET_KEY: ${{ secrets.DIGITAL_OCEAN_SPACES_SECRET_KEY }}
+      DIGITAL_OCEAN_DROPLET_IP: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP_PROD }}
+      DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY_PROD }}
