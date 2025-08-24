@@ -1,10 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-<<<<<<< HEAD
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
-=======
-import { ActionIdentifier } from "/types/single/actionState";
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 import { Stun } from "../../status/stun";
 
 export class GroundSlamAbilityAction extends Action {
@@ -13,8 +9,8 @@ export class GroundSlamAbilityAction extends Action {
     super(
       ActionIdentifier.GROUND_SLAM,
       "Ground Slam",
-      "Deal 3 damage and stun your opponent, preventing them from acting for 1 turn.",
-      1
+      "Stomp the earth with brutal force. Deal 3 damage and leave your opponent stunned, unable to act next turn.",
+      2
     );
   }
 
@@ -23,16 +19,17 @@ export class GroundSlamAbilityAction extends Action {
     // affectedPlayer.clearActions();
   }
 
+    public prepareAnimation(): string | [string, number] {
+    return "Ground_Slam_Animation";
+  }
+
+
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     // Deal 3 damage + Stun
     affectedPlayer.incHealth(-3);
-<<<<<<< HEAD
     affectedPlayer.addStatus(new Stun(1), 100);
-=======
-    affectedPlayer.addStatus(new Stun(1));
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 
     // Add logs
     actingPlayer.addLog(

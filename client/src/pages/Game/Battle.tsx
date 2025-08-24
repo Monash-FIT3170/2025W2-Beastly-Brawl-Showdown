@@ -32,6 +32,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [gameCode, setGameCode] = useState<string>(); // game code for directing player back to game session
   const [time, setTime] = useState<number>(5);
 
+  var backgroundLocation = "ARCTIC"; //TODO: change this to be based off level/monster?
+  var backgroundString =
+    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
+
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
       setBattleState(battle);
@@ -53,7 +57,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       } else if (result === "concluded") {
         setWinner(winners[0]);
       }
-      console.log(winner);
+      console.log("Winner: ", winner);
     });
 
     // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
@@ -65,9 +69,9 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     });
 
     //Socket to handle the case where the host cancel the game sesion
-    socket.on("host-closed", () =>{
+    socket.on("host-closed", () => {
       setIsSessionCancelled(true);
-    })
+    });
 
     socket.on("battle-closed", (data) => {
       setIsBattleClosed(true)
@@ -82,25 +86,26 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   }, []);
 
   useEffect(() => {
-    if (!isSessionCancelled){return}
+    if (!isSessionCancelled) {
+      return;
+    }
 
-    //Countdown before player get redirected 
+    //Countdown before player get redirected
     const countdown = setInterval(() => {
-      setTime((prev) => prev-1)
-    },1000) //1 second per interval
+      setTime((prev) => prev - 1);
+    }, 1000); //1 second per interval
 
     //Redirect after countdown is finished
-    const timeout = setTimeout(() =>{
-      FlowRouter.go("./")
-      setTime(-1)
-    }, 5000) // 5 seconds before user get directed to home page
-    
+    const timeout = setTimeout(() => {
+      FlowRouter.go("./");
+      setTime(-1);
+    }, 5000); // 5 seconds before user get directed to home page
+
     return () => {
       clearInterval(countdown); // interval cleanup
       clearTimeout(timeout); //timeout cleanup
-    }
-    
-  }, [isSessionCancelled])
+    };
+  }, [isSessionCancelled]);
 
     useEffect(() => {
     if (!isBattleClosed){return}
@@ -129,48 +134,49 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
   return (
     <>
-    {isSessionCancelled && (
-    <PopupClean>
-      <div className="flex flex-col justify-around">
-      <OutlineText size = 'extraLarge'>CANCELLED SESSION</OutlineText>
-      <BlackText size = 'large'>YOUR GAME SESSION HAS BEEN CANCELLED</BlackText>
-      <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE HOME PAGE IN {time} SECONDS</BlackText>
-      </div>
-    </PopupClean>)}
+      {isSessionCancelled && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+            <OutlineText size="extraLarge">CANCELLED SESSION</OutlineText>
+            <BlackText size="large">
+              YOUR GAME SESSION HAS BEEN CANCELLED
+            </BlackText>
+            <BlackText size="large">
+              YOU WILL BE DIRECTED BACK TO THE HOME PAGE IN {time} SECONDS
+            </BlackText>
+          </div>
+        </PopupClean>
+      )}
 
-    {isBattleClosed && (
-    <PopupClean>
-      <div className="flex flex-col justify-around">
-      <OutlineText size = 'extraLarge'>BATTLE CLOSED</OutlineText>
-      <BlackText size = 'large'>BATTLE HAS ENDED</BlackText>
-      <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE WAITING ROOM IN {time} SECONDS</BlackText>
-      </div>
-    </PopupClean>)}
-
-
-    <div className="inset-0 w-full h-screen bg-springLeaves overscroll-contain">
-      {/* Winner display if battle is over */}
-      {winner ? (
-        winner === "Draw" ? (
+      <div
+        className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
+        style={{ backgroundImage: backgroundString }}
+      >
+        {/* Winner display if battle is over */}
+        {/*winner === "Draw" ? (
           <DrawScreen />
-        ) : battleState?.yourPlayer.name === winner ? (
-          <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
+        ) : */}
+        {winner ? (
+          winner === "Draw" ? (
+            <DrawScreen />
+          ) : battleState?.yourPlayer.name === winner ? (
+            <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
+          ) : (
+            <LoserScreen />
+          )
         ) : (
-          <LoserScreen />
-        )
-      ) : (
-        <>
-          {battleState && (
-            <div className="battle-state-parts item-center justify-center ">
-              <PlayerInfoPanel battleState={battleState} />
+          <>
+            {battleState && (
+              <div className="battle-state-parts item-center justify-center ">
+                <PlayerInfoPanel battleState={battleState} />
 
-              <div className="timer-box font-[Jua]">
-                <p>Timer: {timer}</p>
-              </div>
+                <div className="timer-box font-[Jua]">
+                  <p>Timer: {timer}</p>
+                </div>
 
-              <BattleMonsterPanel battleState={battleState} />
+                <BattleMonsterPanel battleState={battleState} />
 
-              {/* <div className="battle-logs">
+                {/* <div className="battle-logs">
                 <h3>Logs:</h3>
                 {battleState.yourPlayer.logs.map((log, index) => (
                   <p key={index}>{log}</p>
@@ -178,35 +184,44 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
               </div> */}
 
                 <div
-                className="battle-logs-stack mt-[60%] xl:mt-[15%]"
-                style={{ position: "relative", width: "100%", height: "120px" }}
-              >
-                {battleState.yourPlayer.logs.map((log, index) => (
-                  <FadingBattleText
-                    key={index}
-                    size="medium-battle-text"
-                    style={{ top: `${index * 32}px` }}
-                  >
-                    {log}
-                  </FadingBattleText>
-                ))}
-              </div>
-              
-              <DiceRollModal show={showDiceModal} onClose={() => setShowDiceModal(false)} toRoll={diceValue} battleState={battleState}/>
-            </div>
-          )}
+                  className="battle-logs-stack mt-[60%] xl:mt-[15%]"
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "120px",
+                  }}
+                >
+                  {battleState.yourPlayer.logs.map((log, index) => (
+                    <FadingBattleText
+                      key={index}
+                      size="medium-battle-text"
+                      style={{ top: `${index * 32}px` }}
+                    >
+                      {log}
+                    </FadingBattleText>
+                  ))}
+                </div>
 
-          <div>
-            {timer > 0 && (
-              <BattleFooter
-                possibleActions={possibleActions}
-                battleId={battleId}
-              />
+                <DiceRollModal
+                  show={showDiceModal}
+                  onClose={() => setShowDiceModal(false)}
+                  toRoll={diceValue}
+                  battleState={battleState}
+                />
+              </div>
             )}
-          </div>
-        </>
-      )}
-    </div>
+
+            <div>
+              {timer > 0 && (
+                <BattleFooter
+                  possibleActions={possibleActions}
+                  battleId={battleId}
+                />
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 };

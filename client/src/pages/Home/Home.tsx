@@ -16,9 +16,14 @@ export const Home = () => {
     FlowRouter.go("/join");
   };
 
+  // Called on 'Adventure' button press
+  const renderAdventure = () => {
+    FlowRouter.go("/adventure/level-select");
+  };
+
   return (
     console.log("Home"),
-    ( 
+    (
       <BlankPage>
         <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
           <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full"></LogoResizable>
@@ -34,6 +39,9 @@ export const Home = () => {
           </ButtonGeneric>
           <ButtonGeneric color="ronchi" size="large" onClick={renderJoinLobby}>
             <OutlineText size="large">JOIN GAME</OutlineText>
+          </ButtonGeneric>
+          <ButtonGeneric color="ronchi" size="large" onClick={renderAdventure}>
+            <OutlineText size="large">ADVENTURE</OutlineText>
           </ButtonGeneric>
         </div>
       </BlankPage>

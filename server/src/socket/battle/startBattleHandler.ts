@@ -6,6 +6,7 @@ import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
+import { ActionRandomiser } from "../../model/game/actionRandomiser";
 
 
 export default function proceedBattleTurn(
@@ -61,13 +62,7 @@ export default function proceedBattleTurn(
       let actions = player.getMonster().getPossibleActionStates();
       io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
-      //TODO: Bot action logic here
-      //Hardcoded to be attack action for now
-      var actionToAdd = player?.getMonster().getAction(ActionIdentifier.ATTACK);
-
-      if (actionToAdd) {
-        player?.addAction(actionToAdd);
-      }
+      ActionRandomiser.randomAction(player)
     }
   });
 
@@ -99,54 +94,23 @@ export default function proceedBattleTurn(
         action.prepare(player2, player1);
       });
 
-      // Animations, For the future, we need to handle animations in a more centralised manner with no hard coding.
-      // Handles the dice roll - For now, typecasting to send the damage so dice can roll it
-      // TODO: For the future, actions should trigger their own animations themselves. Perhaps add a feature that emits animation type and let the
-      // battle screen handle the type of animation to show
+      // Emitting player1's action animations
       player1.getActions().forEach((action) => {
-        if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
-          if (action.getName() === "Attack") {
-            const attackAction = action as AttackAction;
-            const diceRoll = attackAction.getDiceRoll();
-            io.to(player1.getId()).emit("roll_dice", diceRoll);
-          }
+        const animationInfo = action.prepareAnimation();
+        const animationType = animationInfo[0];
+        const diceRollNumber = animationInfo[1];
+        console.log(animationType, diceRollNumber);
+        io.to(player1.getId()).emit(String(animationType), diceRollNumber);
+      });
 
-
-        if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
-          if (action.getName() === "Tip The Scales") {
-            const tipTheScalesAction = action as TipTheScalesAbilityAction;
-            const diceRoll = tipTheScalesAction.getDiceRoll();
-            io.to(player1.getId()).emit("roll_dice", diceRoll);
-            console.log(
-              `Player 1 used tip the scales and dice roll = ${diceRoll}`
-            );
-          }
-        }
-      }});
-    
-
-
+      // Emitting player2's action animations
       player2.getActions().forEach((action) => {
-        if (!player2.isBotPlayer()){ //only emit to socket if the player is a human
-          if (action.getName() === "Attack") {
-            const attackAction = action as AttackAction;
-            const diceRoll = attackAction.getDiceRoll();
-            io.to(player2.getId()).emit("roll_dice", diceRoll);
-          }
-
-        if (action.getName() === "Tip The Scales") {
-          const tipTheScalesAction = action as TipTheScalesAbilityAction;
-          const diceRoll = tipTheScalesAction.getDiceRoll();
-          console.log(
-            `Player 2 used tip the scales and dice roll = ${diceRoll}`
-          );
-          io.to(player2.getId()).emit("roll_dice", diceRoll);
-        }
-
-
-      
-      }
-    });
+        const animationInfo = action.prepareAnimation();
+        const animationType = animationInfo[0];
+        const diceRollNumber = animationInfo[1];
+        console.log(animationType, diceRollNumber);
+        io.to(player2.getId()).emit(String(animationType), diceRollNumber);
+      });
 
       setTimeout(() => {
         // Execute method
