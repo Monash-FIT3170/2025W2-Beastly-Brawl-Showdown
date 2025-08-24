@@ -290,6 +290,7 @@ export async function progressAdventure(
         dialogue: resolved.result,
         enemy: resolved.enemy,
         next: resolved.next,
+        player: adventure.getPlayer().getPlayerState(),
       });
     } else if (resolved.type === "RANDOM") {
       const roll = Math.random() * 100;

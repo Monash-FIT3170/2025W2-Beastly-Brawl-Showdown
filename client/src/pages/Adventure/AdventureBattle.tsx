@@ -26,6 +26,8 @@ import { MonsterState } from "/types/single/monsterState";
 import MonsterDisplay from "../../components/player-screen/MonsterDisplay";
 import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { IconButton } from "../../components/buttons/IconButton";
+import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfoPanel";
+import { PlayerState } from "/types/single/playerState";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -45,6 +47,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const battleId = "ADVENTURE";
+  //TODO: set player state
+  const [playerState, setPlayerState] = useState<PlayerState | null>();
 
   const handleChoiceSelect = (choiceId: string) => {
     socket.emit("adventure_choice", { stage, choiceId });
@@ -72,6 +76,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         setDialogue(state.dialogue);
         setCurrentEnemy(state.enemy ?? null);
         setBattleState(null); // Clear battle
+        setPlayerState(state.player);
       } else if (state.type === "choice") {
         // Handle choice state
         setChoices(state.choices);
@@ -112,20 +117,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
 
   //TODO: add inventory button
-  //TODO: add status icons
   return (
     <>
       <div
         className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
-        {/* <div className="pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-          <IconButton style="arrowleft" iconColour="black" buttonColour="red" size="small" onClick={() => setShowLeave(true)}></IconButton>
-          <LeavePopup open={showLeave} onClose={() => setShowLeave(false)}></LeavePopup>
-        </div> */}
         {receivingItem && (
           <div>
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+            {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
               <IconButton
                 style="arrowleft"
                 iconColour="black"
@@ -136,8 +136,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
               <LeavePopup
                 open={showLeave}
                 onClose={() => setShowLeave(false)}
-              ></LeavePopup>
-            </div>
+              ></LeavePopup> */}
+            {/* </div> */}
             <PopupClean>
               <div className="flex flex-col justify-around items-center">
                 <OutlineText size="extraLarge">{receivingItem}</OutlineText>
@@ -159,19 +159,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         )}
         {dialogue && (
           <>
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              />
-              <LeavePopup
-                open={showLeave}
-                onClose={() => setShowLeave(false)}
-              />
-            </div>
             {currentEnemy && <MonsterDisplay monster={currentEnemy} />}
             <DialogueBox
               monster={currentEnemy ?? undefined}
@@ -186,7 +173,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         )}
         {statChange && (
           <div>
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+            {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
               <IconButton
                 style="arrowleft"
                 iconColour="black"
@@ -198,7 +185,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                 open={showLeave}
                 onClose={() => setShowLeave(false)}
               ></LeavePopup>
-            </div>
+            </div> */}
             <StatChangePopup
               messages={statChange}
               onClose={() => {
@@ -218,7 +205,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             />
           ))} */}
             <div>
-              <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+              {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
                 <IconButton
                   style="arrowleft"
                   iconColour="black"
@@ -230,13 +217,38 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                   open={showLeave}
                   onClose={() => setShowLeave(false)}
                 ></LeavePopup>
-              </div>
+              </div> */}
               <ChoicePopup
                 question={question![0]}
                 choices={choices}
                 onClick={handleChoiceSelect}
               ></ChoicePopup>
             </div>
+          </>
+        )}
+        {!battleState && playerState && (
+          <>
+            <AdventureInfoPanel playerState={playerState} />
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
+              <IconButton
+                style="arrowleft"
+                iconColour="black"
+                buttonColour="red"
+                size="small"
+                onClick={() => setShowLeave(true)}
+              />
+              <LeavePopup
+                open={showLeave}
+                onClose={() => setShowLeave(false)}
+              />
+              <ButtonGeneric color={"ronchi"} size={"tiny"}>
+                INVENTORY
+              </ButtonGeneric>
+              <ButtonGeneric color={"blue"} size={"tiny"}>
+                INFO
+              </ButtonGeneric>
+            </div>
+            {/* INSERT INVENTORY */}
           </>
         )}
         {battleState && (
