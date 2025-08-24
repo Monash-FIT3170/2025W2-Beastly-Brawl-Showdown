@@ -1,6 +1,6 @@
 import { Player } from "../player";
 
-export abstract class Item {
+export abstract class Consumable {
   protected name: string;
 
   constructor(name: string) {

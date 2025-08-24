@@ -2,7 +2,8 @@ import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
 import { Status } from "./status/status";
-import { Item } from "./item/item";
+import { Consumable } from "./item/consumable";
+import { Equipment } from "./item/equipment";
 
 export class Player {
   private id: string;
@@ -23,7 +24,8 @@ export class Player {
   private successfulHit: number = 0;
   private successfulBlock: number = 0;
 
-  private inventory: Item[] = [];
+  private consumables: Consumable[] = [];
+  private equipment: Equipment[] = [];
 
   constructor(id: string, name: string) {
     this.name = name;
@@ -105,7 +107,7 @@ export class Player {
     if (this.monster) {
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
-      this.dodging = false;
+      this.dodging = false; //TODO: fix
     }
   }
 
@@ -227,30 +229,66 @@ export class Player {
   }
 
   //INVENTORY METHODS:
-  public getInventory(): Item[] {
-    return this.inventory;
+  public getConsumables(): Consumable[] {
+    return this.consumables;
   }
 
-  public checkInventory(item: Item): boolean {
+  public hasConsumable(consumable: Consumable): boolean {
     //checks inventory for item
-    return this.inventory.some((i) => i.getName() === item.getName());
+    return this.consumables.some((c) => c.getName() === consumable.getName());
   }
 
-  public addToInventory(item: Item): void {
-    this.inventory.push(item);
+  public giveConsumable(item: Consumable): void {
+    this.consumables.push(item);
   }
 
-  public removeFromInventory(item: Item): void {
+  public removeConsumable(item: Consumable): void {
     //done like this incase you have multiple of the same item
     //TODO: might be done incorrectly needs to be tested.
-    const i = this.inventory.indexOf(item);
+    const i = this.consumables.indexOf(item);
     if (i !== -1) {
-      this.inventory.splice(i, 1);
+      this.consumables.splice(i, 1);
     }
   }
 
-  public clearInventory(): void {
-    this.inventory = [];
+  public clearConsumables(): void {
+    this.consumables = [];
+  }
+
+  public getEquipment(): Equipment[] {
+    return this.equipment;
+  }
+
+  public hasEquipment(equipment: Equipment): boolean {
+    return this.equipment.some((e) => e.getName() == equipment.getName());
+  }
+
+  public giveEquipment(equip: Equipment): boolean {
+    if (this.equipment.length >= 3) {
+      return false; // means that equipment is full
+    }
+
+    this.equipment.push(equip);
+    equip.equip(this);
+    return true;
+  }
+
+  public isEquipmentFull(): boolean {
+    return this.equipment.length >= 3;
+  }
+
+  public removeEquipment(equip: Equipment): void {
+    //done like this incase you have multiple of the same item
+    //TODO: might be done incorrectly needs to be tested.
+    const i = this.equipment.indexOf(equip);
+    if (i !== -1) {
+      this.equipment.splice(i, 1);
+    }
+    equip.unequip(this);
+  }
+
+  public clearEquipment(): void {
+    this.equipment = [];
   }
 
   //PLAYER STATE:

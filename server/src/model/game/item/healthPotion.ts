@@ -1,7 +1,7 @@
 import { Player } from "../player";
-import { Item } from "./item";
+import { Consumable } from "./consumable";
 
-export class HealthPotion extends Item {
+export class HealthPotion extends Consumable {
   constructor() {
     super("Health Potion");
   }
