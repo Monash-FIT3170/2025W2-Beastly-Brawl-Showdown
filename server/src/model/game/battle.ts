@@ -76,7 +76,7 @@ export class Battle {
       yourPlayerMonster: currentPlayer!.getMonster().getMonsterState(),
 
       opponentPlayer: opponentPlayer!.getPlayerState(),
-      opponentPlayerMonster: opponentPlayer!.getMonster().getMonsterState(),
+      opponentPlayerMonster: opponentPlayer?.getMonster()?.getMonsterState() ?? null,
       isOver: this.isBattleOver();
     };
   }
