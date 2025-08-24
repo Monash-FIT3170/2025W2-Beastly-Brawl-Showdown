@@ -4,14 +4,15 @@ import { Player } from "../../game/player";
 import GameSession from "../gameSession";
 import { IGameMode } from "./gameMode";
 import { GameModeIdentifier } from "/types/single/gameMode";
-import socket from "/client/src/socket";
 
 export class BattleRoyale implements IGameMode {
 	public name = GameModeIdentifier.BATTLE_ROYALE as const;
   private elimiatedPlayers: Player[] = [];  // Earlier elimiated players are closer to the front of the array
   private remainingPlayers: Player[] = [];
+  private socket: Socket | null = null;
 
   public init(session: GameSession, io: Server, socket: Socket): void {
+    this.socket = socket;
     for (let player of session.getPlayers().getItems()) {
 		  this.remainingPlayers.push(player);
 	  }
@@ -56,7 +57,7 @@ export class BattleRoyale implements IGameMode {
 	public isSessionConcluded(session: GameSession): boolean {
     let isSessionConcluded = this.remainingPlayers.length == 1;
     if (isSessionConcluded) {
-      socket.emit("top-3-players", {gameCode: session.getGameCode(), top3: [
+      this.socket?.emit("top-3-players", {gameCode: session.getGameCode(), top3: [
         this.remainingPlayers[0],                               // 1st place
         this.elimiatedPlayers[this.elimiatedPlayers.length-1],  // 2nd place
         this.elimiatedPlayers[this.elimiatedPlayers.length-2]   // 3rd place
