@@ -3,79 +3,77 @@ import { Battle } from "../../game/battle";
 import { Player } from "../../game/player";
 import GameSession from "../gameSession";
 import { IGameMode } from "./gameMode";
-import { RoyalePlacements } from "./royalePlacements";
 import { GameModeIdentifier } from "/types/single/gameMode";
+import socket from "/client/src/socket";
 
 export class BattleRoyale implements IGameMode {
 	public name = GameModeIdentifier.BATTLE_ROYALE as const;
-	private placements = new RoyalePlacements();
-  private nextPlacement = 0;
-  private nextWinPlacement = 1;  // TODO: This is temporary for now so that we get nice rankings for single-round mode
+  private elimiatedPlayers: Player[] = [];  // Earlier elimiated players are closer to the front of the array
+  private remainingPlayers: Player[] = [];
 
-  // Register each existing player into the RoyalePlacements instance
-	public init(session: GameSession, io: Server, socket: Socket): void {
-    for (const p of session.getPlayers().getItems()) {
-			this.placements.register(p.getId(), p.getName());
-      this.nextPlacement += 1;
-		}
-		console.log("[INIT]: ", this.placements.getPlayerRoyalePlacements());
-    console.log("[INIT]: ", this.nextPlacement);
+  public init(session: GameSession, io: Server, socket: Socket): void {
+    for (let player of session.getPlayers().getItems()) {
+		  this.remainingPlayers.push(player);
+	  }
+	  console.log("[INIT]: ", this.remainingPlayers.map(player => player.getName()));
   }
 
-	public onActionExecuted(sesion: GameSession): void { }
+	public onActionExecuted(session: GameSession): void { }
 
-  // TODO: Is this the correct way to handle draws?
 	public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null) {
     // Case 1: There is a winner
     if (winner) {
-      let loser = battle.getPlayers().filter((player) => player.getId() != winner.getId())[0];
-      this.placements.setPlayerPlacement(loser.getId(), this.nextPlacement);
-      this.nextPlacement -= 1;
-
-      // TODO: Temp setting winner placement (remove later when multi-round is implemented)
-      this.placements.setPlayerPlacement(winner.getId(), this.nextWinPlacement);
-      this.nextWinPlacement += 1;
+      let loser = battle.getPlayers().filter(player => player.getId() != winner.getId())[0];
+      this.elimiatedPlayers.push(loser);
+      let loserIndex = this.remainingPlayers.findIndex(player => player === loser);
+      if (loserIndex != 1) {
+        this.elimiatedPlayers.splice(loserIndex, 1);
+      }
     }
 
     // Case 2: It is a draw - there are no winners
     else {
       let player1 = battle.getPlayers()[0];
-      this.placements.setPlayerPlacement(player1.getId(), this.nextPlacement);
+      this.elimiatedPlayers.push(player1);
+      let player1Index = this.remainingPlayers.findIndex(player => player === player1);
+      if (player1Index != 1) {
+        this.elimiatedPlayers.splice(player1Index, 1);
+      }
+
       let player2 = battle.getPlayers()[1];
-      this.placements.setPlayerPlacement(player2.getId(), this.nextPlacement);
-      this.nextPlacement -= 2;
+      this.elimiatedPlayers.push(player2);
+      let player2Index = this.remainingPlayers.findIndex(player => player === player2);
+      if (player2Index != 1) {
+        this.elimiatedPlayers.splice(player2Index, 1);
+      }
     }
-    console.log("[CURRENT STANDINGS]: ", this.placements.getCurrentOrderedRoyalePlacements());
+
+    console.log("[ELIMIATED PLAYERS SO FAR]: ", this.elimiatedPlayers.map(player => player.getName()));
   }
 
-  // TODO: Maybe this needs to be be moved somewhere else...
-	public onBattlesEnded(session: GameSession): void {
-    // Need to set the first place player's placement
-    // This should be the only player without a placement currently
-    let firstPlacePlacement = this.placements.getCurrentOrderedRoyalePlacements()[0];
-    firstPlacePlacement.placement = this.nextPlacement--;  // This should be 1
-    console.log("[FINAL PLACEMENTS]: ", this.placements.getCurrentOrderedRoyalePlacements());
-  }
+	public onBattlesEnded(session: GameSession): void { }
 
 	public isSessionConcluded(session: GameSession): boolean {
-    return session.areBattlesConcluded();
-	}
-
-  public addPlayer(playerId: string, name: string): void {
-    let prevNumPlayers = this.placements.getPlayerRoyalePlacements().size;
-    this.placements.register(playerId, name);
-    let currNumPlayers = this.placements.getPlayerRoyalePlacements().size;
-    if (currNumPlayers > prevNumPlayers) {
-      this.placements.numPlayersChanged(1);
+    let isSessionConcluded = this.remainingPlayers.length == 1;
+    if (isSessionConcluded) {
+      socket.emit("top-3-players", {gameCode: session.getGameCode(), top3: [
+        this.remainingPlayers[0],                               // 1st place
+        this.elimiatedPlayers[this.elimiatedPlayers.length-1],  // 2nd place
+        this.elimiatedPlayers[this.elimiatedPlayers.length-2]   // 3rd place
+      ]});
     }
+    return isSessionConcluded;
   }
 
-  // TODO: Thought - should a player that leaves mid-session just be treated
-  //                 as an instant loss instead, and we simply keep them in
-  //                 the final placement standings?
-  public removePlayer(playerId: string): void {
-    if (this.placements.removePlayer(playerId)) {
-      this.placements.numPlayersChanged(-1);
-    }
+  // This is if a player gets added to the lobby/game in the middle of a session,
+  // such as a bot player.
+  public addPlayer(player: Player): void {
+    this.remainingPlayers.push(player);
+  }
+
+  // If a player leaves the lobby/game in the middle of a session for whatever reason,
+  // this will be treated as an instant elimination.
+  public removePlayer(player: Player): void {
+    this.elimiatedPlayers.push(player);
   }
 }
