@@ -12,10 +12,12 @@ export interface BonusSystem{
 	finishedWithHpAbove: {percentage: number; bonus: number};
 	inStreak: number;
 	debuff: number;
+	win: number
 }
 
 export const defaultBonus: BonusSystem = {
 	finishedWithHpAbove: {percentage: 40, bonus: 1},
 	inStreak: 1,
-	debuff: 1
+	debuff: 1,
+	win: 1
 }

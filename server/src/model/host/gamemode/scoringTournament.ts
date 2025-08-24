@@ -29,7 +29,6 @@ export class ScoringTournament implements IGameMode{
 			this.board.register(p.getId(), p.getName())
 		}
 		console.log("[INIT]: ",this.board.showBoard())
-		console.log("[INIT]: ",this.board.playerScores.size)
 
 	}
 
@@ -55,12 +54,15 @@ export class ScoringTournament implements IGameMode{
 	//TODO: Add Player to waiting room 
 	onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void {
 		if (winner){
-			this.board.setScore(winner.getId(), {})
+			this.board.setScore(winner.getId(), {
+				bonuses: this.bonus.win
+			})
 		}
 
+		console.log("[GAME ENDED] Scoreboard: ", this.board.showBoard())
+
 		io.to(battle.getId()).emit("battle-closed", {gameCode : session.getGameCode().toString()})
-		const p1 = io.sockets.sockets.get(battle.getPlayers()[0].getId())
-		console.log("After battle p1: ", p1)
+
 
 		io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
 			console.log("Server test 1", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)

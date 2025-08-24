@@ -22,6 +22,8 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 
 # Checklist (only check off the applicable):
 
+- [ ] **IMPORTANT: Have you ran the `Test - Startup Droplet & Deploy Game` GitHub Actions Workflow on your branch OR waited for the automatic trigger of the `Test - Startup Droplet & Deploy Game` GitHub Actions Workflow to complete after making the PR or completing any PR updates? Has it passed? Once it passed have you went on https://beastlybrawl-test.app and verified your changes have been successfully implemented and works?**
+  > Reviewers, you might need to retrigger the workflow manually if another PR or someone else has ran the workflow after the PR was created to test the changes made on the PR.
 - [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my code
 - [ ] I have commented my code, particularly in hard-to-understand areas

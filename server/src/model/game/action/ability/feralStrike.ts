@@ -3,6 +3,7 @@ import { Player } from "../../player";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 
+
 export class FeralStrikeAbilityAction extends Action {
   // Passive ability that increases critical hit rate by 15%
   constructor() {
@@ -15,6 +16,11 @@ export class FeralStrikeAbilityAction extends Action {
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+<<<<<<< HEAD
+=======
+
+  }
+>>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 
   }
 

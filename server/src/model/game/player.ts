@@ -127,6 +127,7 @@ export class Player {
       this.currentHealth = this.monster.getMaxHealth()
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
+      this.statuses = [];
     }
   }
 

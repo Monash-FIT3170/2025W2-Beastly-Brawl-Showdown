@@ -15,6 +15,12 @@ import { BotPlayer } from "../game/botplayer";
 import { IGameMode } from "./gamemode/gameMode";
 import { Server, Socket } from "socket.io";
 import { ActionResult } from "/types/single/actionState";
+import crypto from "crypto";
+import { PouncingBandit } from "../game/monster/pouncingBandit";
+import { CinderTail } from "../game/monster/cinderTail";
+import { BotPlayer } from "../game/botplayer";
+import { IGameMode } from "./gamemode/gameMode";
+import { Server, Socket } from "socket.io";
 
 export default class GameSession {
   private hostUID: string;
@@ -22,8 +28,8 @@ export default class GameSession {
   private battles: Queue<Battle>;
   private gameCode: number;
   private round: number = 1; // Round number
-  private player_max: number = 8; // Max 8 players
-  private battle_max: number = 4; // Max 4 battles
+  private player_max: number = 120; // Max 120 players
+  private battle_max: number = 60; // Max 60 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
   private monsters: Array<String>;
   private mode: IGameMode;
@@ -62,8 +68,8 @@ export default class GameSession {
   //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
     this.battles.getItems().forEach((curBattle) => {
-      curBattle.eliminateAllPlayers()
-    })
+      curBattle.eliminateAllPlayers();
+    });
   }
 
   // Getters and setters
@@ -251,7 +257,7 @@ export default class GameSession {
   public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
     const placeHolderPlayer = new BotPlayer()
-    const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3) + 1];
+    const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3)];
     if (placerHolderMonster == "RockyRhino"){
       placeHolderPlayer.setMonster(new RockyRhino());
     }

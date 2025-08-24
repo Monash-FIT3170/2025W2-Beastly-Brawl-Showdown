@@ -1,6 +1,10 @@
 import { Action } from "../action";
 import { Player } from "../../player";
+<<<<<<< HEAD
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
+=======
+import { ActionIdentifier } from "/types/single/actionState";
+>>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 
 export class TripleFishLaunch extends Action {
   constructor() {
@@ -16,7 +20,11 @@ export class TripleFishLaunch extends Action {
   // Clear the opponent's actions
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
+<<<<<<< HEAD
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+=======
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+>>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
     this.incCurrentUse(-1);
 
     var hitFishes = 0;
@@ -41,11 +49,14 @@ export class TripleFishLaunch extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage to ${affectedPlayer.getName()}.`
     );
+<<<<<<< HEAD
 
     return {
       appliedStatus:{
         success: false
       }
     }
+=======
+>>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
   }
 }
