@@ -4,7 +4,6 @@ import { Adventure } from "../model/game/adventure";
 import { Player } from "../model/game/player";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Battle } from "../model/game/battle";
-import proceedAdventureTurn from "./proceedAdventureTurn";
 import { ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
@@ -17,6 +16,7 @@ import { AttackAction } from "../model/game/action/attack";
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
 
+  //LEVEL SELECT SOCKET
   socket.on("adventure_level_selected", async ({ level }) => {
     const player = new Player(socket.id, "Anika"); // TODO: Use real player name
     players.set(socket.id, player);
@@ -25,6 +25,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     adventure.currentOutcomeId = "initial";
     activeAdventures.set(socket.id, adventure);
   });
+
+  //MONSTER SELECT SOCKET
   socket.on(
     "adventure_monster_selected",
     async ({ monsterID }: { monsterID: MonsterIdentifier }) => {
@@ -78,159 +80,162 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     progressAdventure(io, socket, adventure, stage);
   });
 
-  // Handle player actions in adventure
-  socket.on(
-    "adventure_action",
-    ({ action, playerId }: { action: ActionState; playerId: string }) => {
-      console.log("ADV: Attempting action addition...");
+  // // Handle player actions in adventure
+  // socket.on(
+  //   "adventure_action",
+  //   ({ action, playerId }: { action: ActionState; playerId: string }) => {
+  //     console.log("ADV: Attempting action addition...");
 
-      var battle = battles.get(playerId);
-      var player = battle?.getPlayer(playerId);
-      var actionToAdd = player?.getMonster()?.getAction(action.id);
+  //     var battle = battles.get(playerId);
+  //     var player = battle?.getPlayer(playerId);
+  //     var actionToAdd = player?.getMonster()?.getAction(action.id);
 
-      if (actionToAdd) {
-        player?.addAction(actionToAdd);
-        console.log(
-          `ADV: Adding action ${actionToAdd.getName()} to Player ${player?.getName()}`
-        );
-        console.log(actionToAdd.getDescription());
-      } else {
-        console.error(
-          `Battle: ${playerId}, ${battle} \n Player: ${playerId}, ${player} \n Action: ${action.id}, ${actionToAdd}`
-        );
-      }
+  //     //ADDING ACTION TO PLAYER
+  //     if (actionToAdd) {
+  //       player?.addAction(actionToAdd);
+  //       console.log(
+  //         `ADV: Adding action ${actionToAdd.getName()} to Player ${player?.getName()}`
+  //       );
+  //       console.log(actionToAdd.getDescription());
+  //     } else {
+  //       console.error(
+  //         `Battle: ${playerId}, ${battle} \n Player: ${playerId}, ${player} \n Action: ${action.id}, ${actionToAdd}`
+  //       );
+  //     }
 
-      //TODO: set bots action
-      //because there's no timer - need to prepare / execute actions too!
-      let playersInBattle = battle?.getPlayers();
-      if (!playersInBattle) {
-        console.error(`ADV: battle players empty ${playersInBattle}`);
-      } else {
-        let player1 = playersInBattle[0];
-        let player2 = playersInBattle[1];
+  //     //ADDING ACTION TO BOT
+  //     //TODO: set bots action
 
-        //if no selected action -> null action (this is a failsafe in case bot broken)
-        playersInBattle.forEach((p) => {
-          if (p.getActions().length === 0) {
-            p.addAction(new NullAction());
-          }
-        });
+  //     //PREPARE/EXECUTE ACTIONS
+  //     let playersInBattle = battle?.getPlayers();
+  //     if (!playersInBattle) {
+  //       console.error(`ADV: battle players empty ${playersInBattle}`);
+  //     } else {
+  //       let player1 = playersInBattle[0];
+  //       let player2 = playersInBattle[1];
 
-        // Prepare method
-        player1.getActions().forEach((action) => {
-          action.prepare(player1, player2);
-        });
+  //       //if no selected action -> null action (this is a failsafe in case bot broken)
+  //       playersInBattle.forEach((p) => {
+  //         if (p.getActions().length === 0) {
+  //           p.addAction(new NullAction());
+  //         }
+  //       });
 
-        player2.getActions().forEach((action) => {
-          action.prepare(player2, player1);
-        });
+  //       // Prepare method
+  //       player1.getActions().forEach((action) => {
+  //         action.prepare(player1, player2);
+  //       });
 
-        // Emitting player1's action animations TO UPDATE
-        player1.getActions().forEach((action) => {
-          const animationInfo = action.prepareAnimation();
-          const animationType = animationInfo[0];
-          const diceRollNumber = animationInfo[1];
-          console.log(animationType, diceRollNumber);
-          io.to(player1.getId()).emit(String(animationType), diceRollNumber);
-        });
+  //       player2.getActions().forEach((action) => {
+  //         action.prepare(player2, player1);
+  //       });
 
-        // Emitting player2's action animations
-        player2.getActions().forEach((action) => {
-          const animationInfo = action.prepareAnimation();
-          const animationType = animationInfo[0];
-          const diceRollNumber = animationInfo[1];
-          console.log(animationType, diceRollNumber);
-          io.to(player2.getId()).emit(String(animationType), diceRollNumber);
-        });
+  //       // Emitting player1's action animations TO UPDATE
+  //       player1.getActions().forEach((action) => {
+  //         const animationInfo = action.prepareAnimation();
+  //         const animationType = animationInfo[0];
+  //         const diceRollNumber = animationInfo[1];
+  //         console.log(animationType, diceRollNumber);
+  //         io.to(player1.getId()).emit(String(animationType), diceRollNumber);
+  //       });
 
-        // Remove possible actions essentially hiding the battle footer until animations and calculations are done.
-        io.to(playerId).emit("possible_actions", []);
+  //       // Emitting player2's action animations
+  //       player2.getActions().forEach((action) => {
+  //         const animationInfo = action.prepareAnimation();
+  //         const animationType = animationInfo[0];
+  //         const diceRollNumber = animationInfo[1];
+  //         console.log(animationType, diceRollNumber);
+  //         io.to(player2.getId()).emit(String(animationType), diceRollNumber);
+  //       });
 
-        setTimeout(() => {
-          // Execute method
-          player1.getActions().forEach((action) => {
-            action.execute(player1, player2);
-            if (action instanceof NullAction) {
-              console.log(`P1 - ${player1.getName()} did nothing.`);
-            }
-          });
+  //       // Remove possible actions essentially hiding the battle footer until animations and calculations are done.
+  //       io.to(playerId).emit("possible_actions", []);
 
-          player2.getActions().forEach((action) => {
-            action.execute(player2, player1);
-            if (action instanceof NullAction) {
-              console.log(`P2 - ${player2.getName()} did nothing.`);
-            }
-          });
+  //       setTimeout(() => {
+  //         // Execute method
+  //         player1.getActions().forEach((action) => {
+  //           action.execute(player1, player2);
+  //           if (action instanceof NullAction) {
+  //             console.log(`P1 - ${player1.getName()} did nothing.`);
+  //           }
+  //         });
 
-          io.to(playerId).emit("adventure_state", {
-            type: "battle",
-            battle: battle?.getBattleState(playerId),
-          });
+  //         player2.getActions().forEach((action) => {
+  //           action.execute(player2, player1);
+  //           if (action instanceof NullAction) {
+  //             console.log(`P2 - ${player2.getName()} did nothing.`);
+  //           }
+  //         });
 
-          playersInBattle.forEach((p) => {
-            p.resetStats();
-            p.resetActions();
-            p.getMonster()?.removeTemporaryActions();
-          });
+  //         io.to(playerId).emit("adventure_state", {
+  //           type: "battle",
+  //           battle: battle?.getBattleState(playerId),
+  //         });
 
-          if (battle?.isBattleOver()) {
-            console.log(`ADV: battle is over!`);
-            const winners = battle.getWinners();
-            console.log(winners);
-            const playerName = player?.getName();
-            if (playerName) {
-              if (winners?.includes(playerName)) {
-                console.log(`ADV: player won!`);
-                const adventure = activeAdventures.get(playerId);
-                const stage = adventure?.getStage();
-                //TODO: DO NEXT STAGE INSTEAD OF THIS STAGE
-                console.log("stage: ", stage);
-                console.log("adventure", adventure);
-                if (adventure && stage) {
-                  // Get current story node and outcome
+  //         playersInBattle.forEach((p) => {
+  //           p.resetStats();
+  //           p.resetActions();
+  //           p.getMonster()?.removeTemporaryActions();
+  //         });
 
-                  const outcome = loadNextStory(adventure, socket);
+  //         if (battle?.isBattleOver()) {
+  //           console.log(`ADV: battle is over!`);
+  //           const winners = battle.getWinners();
+  //           console.log(winners);
+  //           const playerName = player?.getName();
+  //           if (playerName) {
+  //             if (winners?.includes(playerName)) {
+  //               console.log(`ADV: player won!`);
+  //               const adventure = activeAdventures.get(playerId);
+  //               const stage = adventure?.getStage();
+  //               //TODO: DO NEXT STAGE INSTEAD OF THIS STAGE
+  //               console.log("stage: ", stage);
+  //               console.log("adventure", adventure);
+  //               if (adventure && stage) {
+  //                 // Get current story node and outcome
 
-                  // If outcome has a next, update currentOutcomeId
-                  if (outcome && outcome.next) {
-                    adventure.currentOutcomeId = outcome.next;
-                  } else {
-                    adventure.currentOutcomeId = null;
-                    adventure.currentStory = null; // Or handle end of adventure
-                  }
+  //                 const outcome = loadNextStory(adventure, socket);
 
-                  //console.log("stageData", stageData);
-                  console.log("outcome", outcome);
-                  console.log("outcome.next", outcome?.next);
+  //                 // If outcome has a next, update currentOutcomeId
+  //                 if (outcome && outcome.next) {
+  //                   adventure.currentOutcomeId = outcome.next;
+  //                 } else {
+  //                   adventure.currentOutcomeId = null;
+  //                   adventure.currentStory = null; // Or handle end of adventure
+  //                 }
 
-                  progressAdventure(io, socket, adventure, stage);
-                } else {
-                  console.error(
-                    `ADV: adventure or stage does not exist for player id: ${playerId} \n
-                    ${adventure}, ${stage}`
-                  );
-                }
-              } else {
-                console.log(`ADV: GAME OVER!`);
-                //TODO: implement
-              }
-            } else {
-              console.error(`ADV: Player does not have name... ${playerName}`);
-            }
-          } else {
-            playersInBattle.forEach((p) => {
-              p.tickStatuses();
-            });
-            let actions = player?.getMonster()?.getPossibleActionStates();
-            io.to(playerId).emit("possible_actions", actions);
-          }
-        }, 3000);
-      }
-    }
-  );
+  //                 //console.log("stageData", stageData);
+  //                 console.log("outcome", outcome);
+  //                 console.log("outcome.next", outcome?.next);
+
+  //                 progressAdventure(io, socket, adventure, stage);
+  //               } else {
+  //                 console.error(
+  //                   `ADV: adventure or stage does not exist for player id: ${playerId} \n
+  //                   ${adventure}, ${stage}`
+  //                 );
+  //               }
+  //             } else {
+  //               console.log(`ADV: GAME OVER!`);
+  //               //TODO: implement
+  //             }
+  //           } else {
+  //             console.error(`ADV: Player does not have name... ${playerName}`);
+  //           }
+  //         } else {
+  //           playersInBattle.forEach((p) => {
+  //             p.tickStatuses();
+  //           });
+  //           let actions = player?.getMonster()?.getPossibleActionStates();
+  //           io.to(playerId).emit("possible_actions", actions);
+  //         }
+  //       }, 3000);
+  //     }
+  //   }
+  // );
 };
 // Helper function to progress adventure outcomes
-async function progressAdventure(
+export async function progressAdventure(
   io: Server,
   socket: Socket,
   adventure: Adventure,
@@ -277,7 +282,7 @@ async function progressAdventure(
       adventure.getPlayer().clearLogs();
       adventure.getPlayer().clearBattleLogs(); //um note i did this but it didn't clear lmfaoo??
       // Optionally, proceed with the battle logic
-      proceedAdventureTurn(io, socket, adventure, battle);
+      // proceedAdventureTurn(io, socket, adventure, battle);
     } else if (resolved.type === "DIALOGUE") {
       // Dialogue or other event
       socket.emit("adventure_state", {
@@ -309,7 +314,8 @@ async function progressAdventure(
       socket.emit("adventure_item", {
         name: resolved.item?.getName() || "Unknown Item",
       });
-      adventure.getPlayer().addToInventory(resolved.item!);
+      //TODO: update
+      // adventure.getPlayer().addToInventory(resolved.item!);
     } else if (resolved.type === "STAT_CHANGE") {
       // Handle stat change
       const [stat, change] = resolved.statChange!;
@@ -329,7 +335,7 @@ async function progressAdventure(
   }
 }
 
-function loadNextStory(
+export function loadNextStory(
   adventure: Adventure,
   socket: Socket
 ): storyOutcomes | undefined {

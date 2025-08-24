@@ -95,8 +95,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
 
     //insert socket for end of battle
 
-    // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
-    // to handle all types of animations triggered by actions
     socket.on("roll_dice", (diceRoll: number) => {
       setDiceValue(diceRoll);
       console.log(`From socket in Battle: dps ${diceRoll}`);
@@ -113,14 +111,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   var backgroundString =
     "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
 
-  //TODO: add exit button
   //TODO: add inventory button
-
   //TODO: add status icons
-  //TODO: add link to next *whatever* after winning
-  //TODO: add link to defeat page if dead + end adventure
-  //TODO: update socket info to connect and update
-  //TODO: take player's monster
   return (
     <>
       <div
