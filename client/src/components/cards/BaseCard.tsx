@@ -28,7 +28,7 @@ export const BaseCard = ({
     bandit: "bg-banditPurple",
     cinderTail: "bg-cinderTailRed",
     bluey: "bg-blueyBlue",
-    frog: "bg-frogGreen",
+    pogo: "bg-pogoGreen",
     cobra: "bg-cobraYellow",
   };
 

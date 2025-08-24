@@ -1,18 +1,12 @@
 import { Server, Socket } from "socket.io";
 import { players, activeGameSessions } from "../../../main";
-
+import { getMonster } from "../../model/game/monster/monsterMap";
+import { monsterMap } from "../../model/game/monster/monsterMap";
 import {
   ArchetypeIdentifier,
   MonsterIdentifier,
   MonsterState,
 } from "../../../../types/single/monsterState";
-
-import { RockyRhino } from "../../model/game/monster/rockyRhino";
-import { PouncingBandit } from "../../model/game/monster/pouncingBandit";
-import { CinderTail } from "../../model/game/monster/cinderTail";
-import { FuriousFlipper } from "../../model/game/monster/furiousFlipper";
-import { PoisonFrog } from "../../model/game/monster/poisonFrog";
-import { CharmerCobra } from "../../model/game/monster/charmerCobra";
 import { Defender } from "../../model/game/archetype/defender";
 import { Attacker } from "../../model/game/archetype/attacker";
 import { Balanced } from "../../model/game/archetype/balanced";
@@ -84,23 +78,8 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
   });
 };
 
-// Function to create a monster by its name
-const monsterMap = new Map([
-  [MonsterIdentifier.ROCKY_RHINO, () => new RockyRhino()],
-  [MonsterIdentifier.POUNCING_BANDIT, () => new PouncingBandit()],
-  [MonsterIdentifier.CINDER_TAIL, () => new CinderTail()],
-  [MonsterIdentifier.FURIOUS_FLIPPER, () => new FuriousFlipper()],
-  [MonsterIdentifier.POISON_FROG, () => new PoisonFrog()],
-  [MonsterIdentifier.CHARMER_COBRA, () => new CharmerCobra()],
-]);
-
 const archetypeArray: Array<() => Archetype> = [
   () => new Defender(),
   () => new Attacker(),
   () => new Balanced(),
 ];
-
-function getMonster(monsterID: MonsterIdentifier) {
-  const createMonster = monsterMap.get(monsterID);
-  return createMonster ? createMonster() : null;
-}
