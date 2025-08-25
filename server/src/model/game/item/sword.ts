@@ -7,9 +7,9 @@ export class Sword extends Equipment {
   }
 
   public equip(player: Player): void {
-    player.incAttackStat(this.strength);
+    player.getMonster()?.incAttackBonus(this.strength);
   }
   public unequip(player: Player): void {
-    player.incAttackStat(-this.strength);
+    player.getMonster()?.incAttackBonus(-this.strength);
   }
 }

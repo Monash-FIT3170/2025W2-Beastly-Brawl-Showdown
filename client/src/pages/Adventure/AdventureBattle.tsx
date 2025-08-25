@@ -28,6 +28,7 @@ import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { IconButton } from "../../components/buttons/IconButton";
 import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfoPanel";
 import { PlayerState } from "/types/single/playerState";
+import { Equipment } from "/server/src/model/game/item/equipment";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -46,6 +47,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [receivingItem, setReceivingItem] = useState<string | null>(null);
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
+  const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
+    null
+  );
   const battleId = "ADVENTURE";
   //TODO: set player state
   const [playerState, setPlayerState] = useState<PlayerState | null>();
@@ -92,6 +96,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
 
     socket.on("adventure_item", (itemName) => {
       setReceivingItem(itemName.name);
+    });
+
+    socket.on("adventure_equipment", (equipmentName) => {
+      setReceivingEquipment(equipmentName.name);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -151,6 +159,29 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                     }}
                   >
                     TAKE!
+                  </ButtonGeneric>
+                </div>
+              </div>
+            </PopupClean>
+          </div>
+        )}
+        {receivingEquipment && (
+          <div>
+            <PopupClean>
+              <div className="flex flex-col justify-around items-center">
+                <OutlineText size="extraLarge">
+                  {receivingEquipment}
+                </OutlineText>
+                <div className="flex flex-row justify-between items-center">
+                  <ButtonGeneric
+                    size="large"
+                    color="blue"
+                    onClick={() => {
+                      setReceivingEquipment(null);
+                      socket.emit("adventure_next", { stage });
+                    }}
+                  >
+                    EQUIP!
                   </ButtonGeneric>
                 </div>
               </div>

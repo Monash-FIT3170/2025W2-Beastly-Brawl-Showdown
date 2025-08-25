@@ -124,6 +124,18 @@ export abstract class Monster {
     };
   }
 
+  public incMaxHealth(health: number): void {
+    this.maxHealth += health;
+  }
+
+  public incAttackBonus(attack: number): void {
+    this.attackBonus += attack;
+  }
+
+  public incArmourClass(armour: number): void {
+    this.armourClass += armour;
+  }
+
   public pveScaling(stage: number): void {
     if (stage === 4) {
       this.maxHealth = Math.ceil(this.maxHealth * 1.5);

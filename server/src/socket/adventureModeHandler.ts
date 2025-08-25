@@ -242,6 +242,8 @@ export async function progressAdventure(
   stage: number
 ) {
   try {
+    console.log("After", adventure.getPlayer().getAttackStat());
+    console.log("After", adventure.getPlayer().getArmourClassStat());
     const outcome = loadNextStory(adventure, socket);
     if (!outcome) {
       return;
@@ -327,6 +329,14 @@ export async function progressAdventure(
         result: resolved.result,
         next: resolved.next,
       });
+    } else if (resolved.type === "EQUIPMENT") {
+      console.log("Before", adventure.getPlayer().getAttackStat());
+      adventure.getPlayer().giveEquipment(resolved.equipment);
+      console.log("After", adventure.getPlayer().getAttackStat());
+      socket.emit("adventure_equipment", {
+        name: resolved.equipment?.getName() || "Unknown Equipment",
+      });
+      //TODO: Make a socket call for players to show added equipment/Equipment to remove
     }
   } catch (err) {
     console.error("Adventure stage load error:", err);

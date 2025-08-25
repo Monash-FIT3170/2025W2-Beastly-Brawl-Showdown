@@ -7,9 +7,9 @@ export class MagicShield extends Equipment {
   }
 
   public equip(player: Player): void {
-    player.incArmourClassStat(this.strength);
+    player.getMonster()?.incArmourClass(this.strength);
   }
   public unequip(player: Player): void {
-    player.incArmourClassStat(-this.strength);
+    player.getMonster()?.incArmourClass(-this.strength);
   }
 }

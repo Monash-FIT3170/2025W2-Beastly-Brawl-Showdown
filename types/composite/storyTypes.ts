@@ -1,3 +1,4 @@
+import { Equipment } from "/server/src/model/game/item/equipment";
 import { Monster } from "/server/src/model/game/monster/monster";
 
 export interface storyStruct {
@@ -17,6 +18,8 @@ export interface storyOutcomes {
   enemy?: Monster; // populated at runtime
   itemId?: string; // <-- NEW
   item?: any; // populated at runtime
+  equipmentId?: string;
+  equipment?: any; //populated at runtime
   next?: string;
 }
 
@@ -30,6 +33,7 @@ export interface option {
 export enum EncounterType {
   FIGHT = "FIGHT",
   ITEM = "ITEM",
+  EQUIPMENT = "EQUIPMENT",
   STAT_CHANGE = "STAT_CHANGE",
   DIALOGUE = "DIALOGUE",
   RANDOM = "RANDOM",

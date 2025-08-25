@@ -1,6 +1,7 @@
 import { EncounterType, storyOutcomes } from "/types/composite/storyTypes";
 import { createEnemy } from "./factories/enemyFactory";
 import { createItem } from "./factories/itemFactory";
+import { createEquipment } from "./factories/equipmentFactory";
 
 export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
   switch (raw.type) {
@@ -19,6 +20,9 @@ export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
         return { ...raw, enemy: createEnemy(raw.enemyId) };
       }
       return raw;
+
+    case EncounterType.EQUIPMENT:
+      return { ...raw, equipment: createEquipment(raw.equipmentId!) };
 
     default:
       return raw; // purely descriptive outcome

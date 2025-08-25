@@ -38,8 +38,8 @@
       },
       {
         "id": "slime_stench",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "EQUIPMENT",
+        "equipmentId": "sword"
       }
     ]
   }

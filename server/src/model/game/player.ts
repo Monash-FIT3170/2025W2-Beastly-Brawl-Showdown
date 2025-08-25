@@ -270,6 +270,7 @@ export class Player {
 
     this.equipment.push(equip);
     equip.equip(this);
+    this.resetStats();
     return true;
   }
 
@@ -285,6 +286,7 @@ export class Player {
       this.equipment.splice(i, 1);
     }
     equip.unequip(this);
+    this.resetStats();
   }
 
   public clearEquipment(): void {
