@@ -136,6 +136,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                   // If outcome has a next, update currentOutcomeId
                   if (outcome && outcome.next) {
                     adventure.currentOutcomeId = outcome.next;
+                    adventure.pastEncounters.push(adventure.currentOutcomeId);
                   } else {
                     adventure.currentOutcomeId = null;
                     adventure.currentStory = null; // Or handle end of adventure

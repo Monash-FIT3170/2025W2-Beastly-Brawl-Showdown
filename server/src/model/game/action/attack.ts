@@ -9,7 +9,7 @@ export class AttackAction extends Action {
   private d20: number = 0;
   private diceMin: number;
   private diceMax: number;
-  private damageDealt: number = 5; // Damage on a non-crit is 5
+  private damageDealt: number = 50; // Damage on a non-crit is 5
   private critRate: number; // % Chance to crit
   private rollRange: number = 0;
 
@@ -45,6 +45,7 @@ export class AttackAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     // Rolling a d20 dice
     this.d20 = this.rollDice();
+    this.attackBonus = actingPlayer.getAttackStat();
     this.attackHit = this.d20 + this.attackBonus;
     console.log(
       `${actingPlayer.getName()} Dice roll: ${this.d20} | Attack bonus: ${

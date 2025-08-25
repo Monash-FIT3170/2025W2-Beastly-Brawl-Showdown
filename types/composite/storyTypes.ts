@@ -27,6 +27,7 @@ export interface option {
   id: string;
   chance?: number;
   text?: string;
+  prerequisite?: string[];
   next: string;
 }
 
@@ -38,4 +39,5 @@ export enum EncounterType {
   DIALOGUE = "DIALOGUE",
   RANDOM = "RANDOM",
   CHOICE = "CHOICE",
+  PREREQUISITE = "PREREQUISITE",
 }

@@ -7,6 +7,6 @@ export class HealthPotion extends Consumable {
   }
 
   public consume(player: Player): void {
-    player.incHealth(5);
+    player.getMonster().incHealth(5);
   }
 }

@@ -62,6 +62,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
     if (lastOutcome && lastOutcome.next) {
       adventure.currentOutcomeId = lastOutcome.next;
+      adventure.pastEncounters.push(adventure.currentOutcomeId);
     } else {
       // If no next, end or error
       adventure.currentOutcomeId = "";
@@ -77,6 +78,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     if (!adventure) return;
 
     adventure.currentOutcomeId = choiceId;
+    adventure.pastEncounters.push(choiceId);
     progressAdventure(io, socket, adventure, stage);
   });
 
@@ -242,8 +244,6 @@ export async function progressAdventure(
   stage: number
 ) {
   try {
-    console.log("After", adventure.getPlayer().getAttackStat());
-    console.log("After", adventure.getPlayer().getArmourClassStat());
     const outcome = loadNextStory(adventure, socket);
     if (!outcome) {
       return;
@@ -302,6 +302,7 @@ export async function progressAdventure(
           chanceTotal += option.chance!;
           if (roll < chanceTotal) {
             adventure.currentOutcomeId = option.next;
+            adventure.pastEncounters.push(adventure.currentOutcomeId);
             break;
           }
         }
@@ -330,13 +331,29 @@ export async function progressAdventure(
         next: resolved.next,
       });
     } else if (resolved.type === "EQUIPMENT") {
-      console.log("Before", adventure.getPlayer().getAttackStat());
       adventure.getPlayer().giveEquipment(resolved.equipment);
-      console.log("After", adventure.getPlayer().getAttackStat());
       socket.emit("adventure_equipment", {
         name: resolved.equipment?.getName() || "Unknown Equipment",
       });
       //TODO: Make a socket call for players to show added equipment/Equipment to remove
+    } else if (resolved.type === "PREREQUISITE") {
+      console.log("hey", resolved.options);
+      for (const option of resolved.options!) {
+        if (!option.prerequisite) {
+          adventure.currentOutcomeId = option.next;
+          adventure.pastEncounters.push(adventure.currentOutcomeId);
+          console.log("Am I see this");
+          break;
+        }
+        const setB = new Set(adventure.pastEncounters);
+        const allPresent = option.prerequisite?.every((item) => setB.has(item));
+        if (allPresent) {
+          adventure.currentOutcomeId = option.next;
+          adventure.pastEncounters.push(adventure.currentOutcomeId);
+          break;
+        }
+      }
+      progressAdventure(io, socket, adventure, stage);
     }
   } catch (err) {
     console.error("Adventure stage load error:", err);

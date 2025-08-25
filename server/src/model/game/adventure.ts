@@ -11,6 +11,7 @@ export class Adventure {
   private playerMonster: Monster | null;
   public currentOutcomeId: string | null = "initial";
   public currentStory: storyStruct | null;
+  public pastEncounters: string[] = [];
 
   constructor(player: Player, level: number) {
     this.player = player;
