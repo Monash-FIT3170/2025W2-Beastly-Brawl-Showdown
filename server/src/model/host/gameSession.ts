@@ -11,7 +11,7 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
-import { BotPlayer } from "../game/botplayer";
+import { BotPlayer } from "../game/botPlayer";
 import crypto from "crypto";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
@@ -251,10 +251,21 @@ export default class GameSession {
 
 public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
-    const placeHolderPlayer = new Player("placeHolder", "Big Bum Loser");
-    const placerHolderMonster = new RockyRhino();
-    placeHolderPlayer.setMonster(placerHolderMonster);
-    placeHolderPlayer.setHealth(0);
+
+    const botPlayer = new BotPlayer("");
+
+
+    const monsterName = this.monsters[Math.floor(Math.random() * this.monsters.length)];
+    if (monsterName === "RockyRhino") {
+        botPlayer.setMonster(new RockyRhino());
+    } else if (monsterName === "PouncingBandit") {
+        botPlayer.setMonster(new PouncingBandit());
+    } else if (monsterName === "CinderTail") {
+        botPlayer.setMonster(new CinderTail());
+    }
+
+    this.players.enqueue(botPlayer);
+
     const battle = new Battle(
         battleId,
         oddPlayer,
@@ -267,7 +278,6 @@ public oddOneOutWinner(oddPlayer: Player): Player {
 
     return oddPlayer;
 }
-
   public calculateMostChosenMonster() {
     // Map from monster name to { monster: Monster, count: number }
     const monsterCount: Record<string, { monster: Monster; count: number }> =
