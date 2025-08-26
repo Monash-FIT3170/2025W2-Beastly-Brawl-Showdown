@@ -4,7 +4,7 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
-import { ActionRandomiser } from "../../model/game/actionrandomiser";
+import { ActionRandomiser } from "../../model/game/actionRandomiser";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
 import { ActionIdentifier } from "/types/single/actionState";
 export default function proceedBattleTurn(
@@ -51,25 +51,27 @@ export default function proceedBattleTurn(
   });
 
   playersInBattle.forEach((player) => {
-    if (!player.isBotPlayer()){ //only emit to socket if the player is a human
+    if (!player.isBotPlayer()) {
+      //only emit to socket if the player is a human
       io.to(player.getId()).emit(
         "battle_state",
         battle.getBattleState(player.getId())
       ); // Emit the battle state to each player
-    if (!player.isBotPlayer()){ //only emit to socket if the player is a human
-      io.to(player.getId()).emit(
-        "battle_state",
-        battle.getBattleState(player.getId())
-      ); // Emit the battle state to each player
+      if (!player.isBotPlayer()) {
+        //only emit to socket if the player is a human
+        io.to(player.getId()).emit(
+          "battle_state",
+          battle.getBattleState(player.getId())
+        ); // Emit the battle state to each player
 
-      let actions = player.getMonster().getPossibleActionStates();
-      io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+        let actions = player.getMonster().getPossibleActionStates();
+        io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+      } else {
+        let actions = player.getMonster().getPossibleActionStates();
+        io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+      }
     } else {
-      let actions = player.getMonster().getPossibleActionStates();
-      io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
-    } else {
-      const randomiser = new ActionRandomiser(player)
-      randomiser.randomaction(player)
+      ActionRandomiser.randomAction(player);
     }
   });
 
@@ -106,7 +108,8 @@ export default function proceedBattleTurn(
       // TODO: For the future, actions should trigger their own animations themselves. Perhaps add a feature that emits animation type and let the
       // battle screen handle the type of animation to show
       player1.getActions().forEach((action) => {
-        if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
+        if (!player1.isBotPlayer()) {
+          //only emit to socket if the player is a human
           if (action.getName() === "Attack") {
             const attackAction = action as AttackAction;
             const diceRoll = attackAction.getDiceRoll();
@@ -125,7 +128,8 @@ export default function proceedBattleTurn(
       });
 
       player2.getActions().forEach((action) => {
-        if (!player2.isBotPlayer()){ //only emit to socket if the player is a human
+        if (!player2.isBotPlayer()) {
+          //only emit to socket if the player is a human
           if (action.getName() === "Attack") {
             const attackAction = action as AttackAction;
             const diceRoll = attackAction.getDiceRoll();
@@ -161,11 +165,12 @@ export default function proceedBattleTurn(
 
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
-          if (!player.isBotPlayer()){ // Only emit the battle state of human player
+          if (!player.isBotPlayer()) {
+            // Only emit the battle state of human player
             io.to(player.getId()).emit(
-            "battle_state",
-            battle.getBattleState(player.getId())
-          );
+              "battle_state",
+              battle.getBattleState(player.getId())
+            );
           }
         });
 
