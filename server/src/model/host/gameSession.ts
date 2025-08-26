@@ -12,7 +12,7 @@ import { RockyRhino } from "../game/monster/rockyRhino";
 import crypto from "crypto";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
-import { BotPlayer } from "../game/botplayer";
+import { BotPlayer } from "../game/botPlayer";
 
 export default class GameSession {
   private hostUID: string;
@@ -243,7 +243,7 @@ export default class GameSession {
 public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
 
-    const botPlayer = new BotPlayer();
+    const botPlayer = new BotPlayer("");
 
 
     const monsterName = this.monsters[Math.floor(Math.random() * this.monsters.length)];

@@ -1,4 +1,4 @@
-import { BotPlayer } from "./botplayer";
+import { BotPlayer } from "./botPlayer";
 import { Player } from "./player";
 import { Action } from "./action/action";
 
@@ -19,10 +19,8 @@ export class ActionRandomiser {
         const usableActions = possibleActions.filter(
             action => action.getCurrentUse() > 0
         );
-        if (usableActions.length === 0) return;
 
         // Pick a random usable action
-        console.log("erjnfikjeunfikeujn")
         const randomIndex = Math.floor(Math.random() * usableActions.length);
         const actionToAdd = usableActions[randomIndex];
 

@@ -15,8 +15,16 @@ export class BotPlayer extends Player {
     return BotPlayer.nameList[index];
   }
 
-  constructor() {
-    const randomName = BotPlayer.getRandomName();
-    super("placeholder",randomName,true);
+  constructor(name: string) {
+    var botName = "";
+    if(name == ""){
+      var botName = botName = BotPlayer.getRandomName();;
+    }
+    else{
+      var botName = name;
+    }
+
+    
+    super("placeholder",botName,true);
   }
 }
