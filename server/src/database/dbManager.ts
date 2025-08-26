@@ -5,7 +5,7 @@ import { RockyRhino } from '../model/game/monster/rockyRhino';
 import { CinderTail } from '../model/game/monster/cinderTail';
 import { PouncingBandit } from '../model/game/monster/pouncingBandit';
 import { CharmerCobra } from '../model/game/monster/charmerCobra';
-import { PoisonFrog } from '../model/game/monster/poisonFrog';
+import { PoisonPogo } from '../model/game/monster/poisonPogo';
 import { FuriousFlipper } from '../model/game/monster/furiousFlipper';
 
 import bcrypt from 'bcrypt';
@@ -94,7 +94,7 @@ export async function verifyPassword(inputPassword: string, hashedPassword: stri
  * retrieves information/data locally 
  * creates new instances of monsters or players
  * */
-const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit(), new PoisonFrog(), new CharmerCobra(), new FuriousFlipper()];
+const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit(), new PoisonPogo(), new CharmerCobra(), new FuriousFlipper()];
 
 // Gets default stats of monsters
 function getBaseMonsterStats(monsterId: string): { maxHealth: number, attackBonus: number, armourClass: number } {
@@ -136,7 +136,7 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       createPlayerMonsterStatSchema('ROCKY_RHINO'),
       createPlayerMonsterStatSchema('CINDER_TAIL'),
       createPlayerMonsterStatSchema('POUNCING_BANDIT'),
-      createPlayerMonsterStatSchema('POISON_FROG'),
+      createPlayerMonsterStatSchema('POISON_POGO'),
       createPlayerMonsterStatSchema('CHARMER_COBRA'),
       createPlayerMonsterStatSchema('FURIOUS_FLIPPER'),
     ],
@@ -182,7 +182,7 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
         createPlayerMonsterStatSchema('ROCKY_RHINO'), 
         createPlayerMonsterStatSchema('CINDER_TAIL'), 
         createPlayerMonsterStatSchema('POUNCING_BANDIT'),
-        createPlayerMonsterStatSchema('POISON_FROG'),
+        createPlayerMonsterStatSchema('POISON_POGO'),
         createPlayerMonsterStatSchema('CHARMER_COBRA'),
         createPlayerMonsterStatSchema('FURIOUS_FLIPPER'),
       ], 
@@ -191,7 +191,7 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
           'ROCKY_RHINO': true,
           'CINDER_TAIL': false,
           'POUNCING_BANDIT': false,
-          'POISON_FROG': false,
+          'POISON_POGO': false,
           'CHARMER_COBRA': false,
           'FURIOUS_FLIPPER': false,
         },

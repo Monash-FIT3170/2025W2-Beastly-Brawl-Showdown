@@ -19,11 +19,21 @@ export const loginHandler = (io: Server, socket: Socket) => {
 
     // Verify user credentials
     const user = await getPlayerData(email);
+
+    if (!user) {
+      console.warn(`Login failed: no user found for email ${email}`);
+      socket.emit("loginResponse", {
+        success: false,
+        message: "Invalid Email or Password",
+      });
+      return;
+    }
+
     console.log(
-      `From loginHandler: Attempted pwd: ${password} for email: ${email} | Hashed pwd: ${user?.password}`
+      `From loginHandler: Attempting login for email: ${email} | Hashed pwd: ${user.password}`
     );
 
-    if (user?.online === true) {
+    if (user.online === true) {
       socket.emit("loginResponse", {
         success: false,
         message: "Player already online",
@@ -31,7 +41,19 @@ export const loginHandler = (io: Server, socket: Socket) => {
       return;
     }
 
-    if ((await verifyPassword(password, user?.password)) === false) {
+    let valid = false;
+    try {
+      valid = await verifyPassword(password, user.password);
+    } catch (err) {
+      console.error("Error verifying password:", err);
+      socket.emit("loginResponse", {
+        success: false,
+        message: "Server error during login",
+      });
+      return;
+    }
+
+    if (!valid) {
       socket.emit("loginResponse", {
         success: false,
         message: "Invalid Email or Password",
@@ -45,11 +67,17 @@ export const loginHandler = (io: Server, socket: Socket) => {
       message: "Login Successful",
     });
 
-    // Update the player account in the playerAccounts{socketID: PlayerAccount} map with the logged-in user data
-    playerAccounts.set(socket.id, user);
-    console.log(
-      `Login Successful: Player account updated for socket ID: ${socket.id} with email: ${user.email}`
-    );
+    // Mark user online and update playerAccounts map
+    try {
+      await updatePlayerAccount(user._id, { online: true });
+      user.online = true;
+      playerAccounts.set(socket.id, user);
+      console.log(
+        `Login Successful: Player account updated for socket ID: ${socket.id} with email: ${user.email}`
+      );
+    } catch (err) {
+      console.error(`Failed to mark user ${user.email} online:`, err);
+    }
   });
 };
 
@@ -59,7 +87,6 @@ export const accountHandler = (io: Server, socket: Socket) => {
     const user = playerAccounts.get(socket.id);
     console.log(`Emitting player: ${user?.username} data`);
 
-    // Emit event named "userData" with the user object in the payload
     socket.emit("userData", { user });
   });
 
@@ -78,7 +105,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
       Object.assign(user, updates);
       playerAccounts.set(socket.id, user);
       console.log(`Player ${user.username} updated successfully.`);
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error updating player ${user.username}: ${error.message}`);
     }
   });
@@ -102,7 +129,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
       Object.assign(user, updates);
       playerAccounts.set(socket.id, user);
       console.log(`Player ${user.username} updated successfully.`);
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error updating player ${user.username}: ${error.message}`);
     }
   });
@@ -126,7 +153,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
       Object.assign(user, updates);
       playerAccounts.set(socket.id, user);
       console.log(`Player ${user.username} updated successfully.`);
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error updating player ${user.username}: ${error.message}`);
     }
   });
@@ -143,6 +170,8 @@ export const startChecker = (io: Server, socket: Socket) => {
 export const LogBool = (io: Server, socket: Socket) => {
   socket.on("set-login", async () => {
     const user = playerAccounts.get(socket.id);
-    updatePlayerAccount(user?._id, { online: true });
+    if (user?._id) {
+      await updatePlayerAccount(user._id, { online: true });
+    }
   });
 };
