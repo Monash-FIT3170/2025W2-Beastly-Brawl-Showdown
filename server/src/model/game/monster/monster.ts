@@ -75,6 +75,9 @@ export abstract class Monster {
   }
 
   public getPossibleActions(): Action[] {
+    if (this.useTemporaryActions == true) {
+      return this.temporaryActions;
+    }
     return this.possibleActions;
   }
 

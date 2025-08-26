@@ -15,6 +15,7 @@ export class Player {
   private currentHealth: number;
   private currentAttackStat: number;
   private currentArmourClassStat: number;
+  private botPlayer: boolean;
 
   private actions: Action[] = [];
   private statuses: Status[] = [];
@@ -27,7 +28,7 @@ export class Player {
   private consumables: Consumable[] = [];
   private equipment: Equipment[] = [];
 
-  constructor(id: string, name: string) {
+  constructor(id: string, name: string, botPlayer?: boolean) {
     this.name = name;
     this.id = id;
     this.monster = null;
@@ -35,6 +36,7 @@ export class Player {
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
     this.currentGameCode = 0;
+    this.botPlayer = botPlayer ?? false;
   }
 
   public getMonster(): Monster | null {
@@ -167,6 +169,10 @@ export class Player {
 
   public getSuccessfulBlock() {
     return this.successfulBlock;
+  }
+
+  public isBotPlayer(): boolean {
+    return this.botPlayer;
   }
 
   public incSuccessfulHit(number: number): void {
