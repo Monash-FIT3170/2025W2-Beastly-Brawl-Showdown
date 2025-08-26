@@ -14,7 +14,6 @@ import { CinderTail } from "../game/monster/cinderTail";
 import { BotPlayer } from "../game/botPlayer";
 import crypto from "crypto";
 
-
 export default class GameSession {
   private hostUID: string;
   private players: Queue<Player>;
@@ -24,10 +23,8 @@ export default class GameSession {
   private player_max: number = 120; // Max 120 players
   private battle_max: number = 60; // Max 60 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
-  private monsters: Array<String>;
-  
+  // private monsters: Array<String>;
 
-  
   // Initialise sample data
   private gameSessionData: GameSessionData = {
     mostChosenMonster: { monster: null, percentagePick: "0" },
@@ -38,8 +35,7 @@ export default class GameSession {
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
-    this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
-
+    // this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
 
     if (presetGameCode !== undefined) {
       // Use preset game code if provided
@@ -94,10 +90,9 @@ export default class GameSession {
   public getPlayers() {
     return this.players;
   }
-  public getMonsters(){
-    return this.monsters;
-  }
-
+  // public getMonsters() {
+  //   return this.monsters;
+  // }
 
   // Add player to Game Session queue
   public addPlayer(player: Player): { success: boolean; reason?: string } {
@@ -245,35 +240,21 @@ export default class GameSession {
     return this.battles;
   }
 
-public oddOneOutWinner(oddPlayer: Player): Player {
+  public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
 
-    const botPlayer = new BotPlayer("");
-
-
-    const monsterName = this.monsters[Math.floor(Math.random() * this.monsters.length)];
-    if (monsterName === "RockyRhino") {
-        botPlayer.setMonster(new RockyRhino());
-    } else if (monsterName === "PouncingBandit") {
-        botPlayer.setMonster(new PouncingBandit());
-    } else if (monsterName === "CinderTail") {
-        botPlayer.setMonster(new CinderTail());
-    }
+    const botPlayer = new BotPlayer();
+    botPlayer.setRandomMonster(); //moved original code inside bot player
 
     this.players.enqueue(botPlayer);
 
-    const battle = new Battle(
-        battleId,
-        oddPlayer,
-        botPlayer,
-        this.hostUID
-    );
+    const battle = new Battle(battleId, oddPlayer, botPlayer, this.hostUID);
 
     battles.set(battleId, battle);
     this.battles.enqueue(battle);
 
     return oddPlayer;
-}
+  }
   public calculateMostChosenMonster() {
     // Map from monster name to { monster: Monster, count: number }
     const monsterCount: Record<string, { monster: Monster; count: number }> =

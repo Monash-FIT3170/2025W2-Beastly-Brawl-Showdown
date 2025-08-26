@@ -1,4 +1,8 @@
+import { CinderTail } from "./monster/cinderTail";
+import { PouncingBandit } from "./monster/pouncingBandit";
+import { RockyRhino } from "./monster/rockyRhino";
 import { Player } from "./player";
+import { monsterMap } from "./monster/monsterMap";
 
 export class BotPlayer extends Player {
   private static nameList = [
@@ -14,14 +18,20 @@ export class BotPlayer extends Player {
     return BotPlayer.nameList[index];
   }
 
-  constructor(name: string) {
-    var botName = "";
-    if (name == "") {
-      var botName = (botName = BotPlayer.getRandomName());
-    } else {
-      var botName = name;
-    }
+  constructor(name?: string) {
+    var botName = name ?? BotPlayer.getRandomName();
 
     super("placeholder", botName, true); //TODO: give proper id??? - i guess id is never used properly??? - adding a TODO in case...
+  }
+
+  public setRandomMonster(): void {
+    const monsters = Array.from(monsterMap.values());
+
+    const randomMonsterFactory =
+      monsters[Math.floor(Math.random() * monsters.length)];
+
+    const monster = randomMonsterFactory();
+
+    this.setMonster(monster);
   }
 }
