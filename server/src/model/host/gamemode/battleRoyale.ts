@@ -7,7 +7,7 @@ import { GameModeIdentifier } from "/types/single/gameMode";
 
 export class BattleRoyale implements IGameMode {
 	public name = GameModeIdentifier.BATTLE_ROYALE as const;
-  private elimiatedPlayers: Player[] = [];  // Earlier elimiated players are closer to the front of the array
+  private eliminatedPlayers: Player[] = [];  // Earlier eliminated players are closer to the front of the array
   private remainingPlayers: Player[] = [];
   private socket: Socket | null = null;
 
@@ -25,31 +25,19 @@ export class BattleRoyale implements IGameMode {
     // Case 1: There is a winner
     if (winner) {
       let loser = battle.getPlayers().filter(player => player.getId() != winner.getId())[0];
-      this.elimiatedPlayers.push(loser);
-      let loserIndex = this.remainingPlayers.findIndex(player => player === loser);
-      if (loserIndex != 1) {
-        this.elimiatedPlayers.splice(loserIndex, 1);
-      }
+      this.eliminatePlayer(loser);
     }
 
     // Case 2: It is a draw - there are no winners
     else {
       let player1 = battle.getPlayers()[0];
-      this.elimiatedPlayers.push(player1);
-      let player1Index = this.remainingPlayers.findIndex(player => player === player1);
-      if (player1Index != 1) {
-        this.elimiatedPlayers.splice(player1Index, 1);
-      }
-
+      this.eliminatePlayer(player1);
       let player2 = battle.getPlayers()[1];
-      this.elimiatedPlayers.push(player2);
-      let player2Index = this.remainingPlayers.findIndex(player => player === player2);
-      if (player2Index != 1) {
-        this.elimiatedPlayers.splice(player2Index, 1);
-      }
+      this.eliminatePlayer(player2);
     }
 
-    console.log("[ELIMIATED PLAYERS SO FAR]: ", this.elimiatedPlayers.map(player => player.getName()));
+    console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
+    console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
   }
 
 	public onBattlesEnded(session: GameSession): void { }
@@ -57,24 +45,47 @@ export class BattleRoyale implements IGameMode {
 	public isSessionConcluded(session: GameSession): boolean {
     let isSessionConcluded = this.remainingPlayers.length == 1;
     if (isSessionConcluded) {
-      this.socket?.emit("top-3-players", {gameCode: session.getGameCode(), top3: [
-        this.remainingPlayers[0],                               // 1st place
-        this.elimiatedPlayers[this.elimiatedPlayers.length-1],  // 2nd place
-        this.elimiatedPlayers[this.elimiatedPlayers.length-2]   // 3rd place
-      ]});
+      let firstPlace = this.remainingPlayers[0];
+      let secondPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
+      let thirdPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-2];
+      this.socket?.emit("top-3-battle-royale", {
+        gameCode: session.getGameCode(),
+        top3: [firstPlace, secondPlace, thirdPlace]
+      });
+      console.log(
+        "[FINAL RESULTS]: 1st: ", firstPlace.getName(),
+        ", 2nd: ", secondPlace.getName(),
+        ", 3rd: ", thirdPlace.getName()
+      );
     }
     return isSessionConcluded;
+  }
+
+  private eliminatePlayer(player: Player): void {
+    let playerIndex = this.remainingPlayers.findIndex(p => p.getId() == player.getId());
+    if (playerIndex != -1) {
+      this.eliminatedPlayers.push(player);
+      this.remainingPlayers.splice(playerIndex, 1);
+    } else {
+      console.log(`[ERROR]: Could not find player with name '${player.getName()}' in array.`);
+    }
   }
 
   // This is if a player gets added to the lobby/game in the middle of a session,
   // such as a bot player.
   public addPlayer(player: Player): void {
     this.remainingPlayers.push(player);
+
+    console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
+    console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
   }
 
   // If a player leaves the lobby/game in the middle of a session for whatever reason,
   // this will be treated as an instant elimination.
   public removePlayer(player: Player): void {
-    this.elimiatedPlayers.push(player);
+    this.eliminatePlayer(player);
+
+    console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
+    console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
   }
 }
