@@ -145,6 +145,8 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                   //console.log("stageData", stageData);
                   console.log("outcome", outcome);
                   console.log("outcome.next", outcome?.next);
+                  adventure.getPlayer().clearLogs();
+                  adventure.getPlayer().clearBattleLogs();
 
                   progressAdventure(io, socket, adventure, stage);
                 } else {
