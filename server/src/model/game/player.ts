@@ -22,7 +22,9 @@ export class Player {
   private battleLogs: string[] = [];
   private successfulHit: number = 0;
   private successfulBlock: number = 0;
+  
   private inventory: Item[] = [];
+
   constructor(id: string, name: string, botPlayer?: boolean) {
     this.name = name;
     this.id = id;
