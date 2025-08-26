@@ -43,7 +43,7 @@ const LoserScreen: React.FC = () => {
         {/* <img style={{ width: `${40}rem xl:${30}rem`, height: `${40}rem xl:${30}rem` }} src={`/GRAVE.png`} alt={`GRAVE image`} /> */}
         <img
           className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]"
-          src={`/GRAVE.png`}
+          src={`/assets/trophies/GRAVE.png`}
           alt={`GRAVE image`}
         />
 

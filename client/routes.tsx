@@ -10,6 +10,11 @@ import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
 import Rules from "./src/pages/Game/Rules";
 import MatchSummary from "./src/pages/Host View/MatchSummary";
+import LevelSelect from "./src/pages/Adventure/LevelSelect";
+import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
+import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
+import AdventureDefeated from "./src/pages/Adventure/Defeated";
+import AdventureWin from "./src/pages/Adventure/AdventureWin";
 import { Account } from "./src/pages/Home/Account";
 
 function mount(Component: React.FC) {
@@ -79,6 +84,42 @@ FlowRouter.route("/battles/:code?", {
   name: "MatchSummary",
   action(params) {
     mount(() => <MatchSummary gameCode={params.code} />);
+  },
+});
+
+FlowRouter.route("/adventure/level-select", {
+  name: "LevelSelect",
+  action() {
+    mount(LevelSelect);
+  },
+});
+
+FlowRouter.route("/adventure/monster-select", {
+  name: "MonsterSelect",
+  action() {
+    mount(MonsterSelect);
+  },
+});
+
+FlowRouter.route("/adventure/adventure-battle", {
+  name: "AdventureBattle",
+  action() {
+    mount(() => <AdventureBattle stage={1} />);
+    // TODO: Pass the stage as a prop
+  },
+});
+
+FlowRouter.route("/adventure/defeated", {
+  name: "AdventureDefeated",
+  action() {
+    mount(AdventureDefeated);
+  },
+});
+
+FlowRouter.route("/adventure/win", {
+  name: "AdventureWin",
+  action() {
+    mount(AdventureWin);
   },
 });
 

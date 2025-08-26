@@ -30,6 +30,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live
   const [time, setTime] = useState<number>(5);
 
+  var backgroundLocation = "ARCTIC"; //TODO: change this to be based off level/monster?
+  var backgroundString =
+    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
+
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
       setBattleState(battle);
@@ -51,7 +55,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       } else if (result === "concluded") {
         setWinner(winners[0]);
       }
-      console.log(winner);
+      console.log("Winner: ", winner);
     });
 
     // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
@@ -116,7 +120,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         </PopupClean>
       )}
 
-      <div className="inset-0 w-full h-screen bg-springLeaves overscroll-contain">
+      <div
+        className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
+        style={{ backgroundImage: backgroundString }}
+      >
         {/* Winner display if battle is over */}
         {/*winner === "Draw" ? (
           <DrawScreen />

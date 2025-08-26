@@ -34,7 +34,7 @@ export class AttackAction extends Action {
     );
 
     const d20 = Math.floor(Math.random() * this.rollRange) + this.diceMin;
-    console.log(`Dice roll: ${d20}`);
+    // console.log(`Dice roll: ${d20}`);
     return d20;
   }
 
@@ -53,6 +53,11 @@ export class AttackAction extends Action {
     );
   }
 
+  // relies on prepare() method being called to roll the dice first.
+  public prepareAnimation(): string | [string, number] {
+    return ["roll_dice", this.d20];
+  }
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
@@ -68,6 +73,7 @@ export class AttackAction extends Action {
       // Set the crit range starting from the maximum dice value and going down
       // Check if the dice roll is within the crit range
       // E.g. normal d20 roll is 1-20, with a crit rate of 10%, you need to roll 19 or 20 to crit
+      let tmpDamage = this.damageDealt;
       const isCrit =
         this.d20 >
         this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
@@ -100,6 +106,7 @@ export class AttackAction extends Action {
           this.damageDealt
         } damage.`
       );
+      this.damageDealt = tmpDamage;
       // Increment successful hit for front end
       actingPlayer.incSuccessfulHit(1);
     } else {

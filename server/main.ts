@@ -8,6 +8,8 @@ import { Battle } from "./src/model/game/battle";
 import GameSession from "./src/model/host/gameSession";
 import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataHandler";
+import { adventureModeHandler } from "./src/socket/adventureModeHandler";
+import { Adventure } from "./src/model/game/adventure";
 import { LogBool } from "./src/socket/backend/loginHandler";
 
 export const players = new Map<string, Player>();
@@ -35,6 +37,7 @@ export const playerAccounts = new Map<string, PlayerAccountSchema>();
 
 // Helper function that
 import { insertPlayer } from "./src/database/dbManager";
+export const activeAdventures = new Map<string, Adventure>();
 
 Meteor.startup(async () => {
   console.log("MONGO_URL:", process.env.MONGO_URL); // Testing for database connection
@@ -88,6 +91,7 @@ Meteor.startup(async () => {
     characterSelectHandler(io, socket);
     waitingScreenDataHandler(io, socket);
     LogBool(io, socket);
+    adventureModeHandler(io, socket);
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);

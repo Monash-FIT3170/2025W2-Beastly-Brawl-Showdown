@@ -1,0 +1,38 @@
+# Ignore version control
+.git
+.gitignore
+
+# Node modules (if you install inside the container)
+node_modules
+
+# Meteor local build/cache
+.meteor/local
+
+# Logs and temp files
+*.log
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.DS_Store
+*.swp
+*.swo
+
+# OS or editor files
+.vscode
+.idea
+
+# Test and documentation files
+coverage
+docs
+
+# Prettier files
+.prettierignore
+.prettierrc
+.prettierrc.json
+.prettierrc.js
+.prettierrc.yml
+.prettierrc.yaml
+.prettierrc.toml
+
+terraform
+.github
