@@ -5,6 +5,7 @@ import { ActionState } from "/types/single/actionState";
 import { NullAction } from "../model/game/action/null";
 
 import { loadNextStory, progressAdventure } from "./adventureModeHandler";
+import { ActionRandomiser } from "../model/game/actionRandomiser";
 
 export const adventureTurnHandler = (io: Server, socket: Socket) => {
   // Handle player actions in adventure
@@ -40,6 +41,8 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
       } else {
         let player1 = playersInBattle[0];
         let player2 = playersInBattle[1];
+        let bot = player2.isBotPlayer() ? player2 : player1;
+        ActionRandomiser.randomAction(bot);
 
         //if no selected action -> null action (this is a failsafe in case bot broken)
         playersInBattle.forEach((p) => {

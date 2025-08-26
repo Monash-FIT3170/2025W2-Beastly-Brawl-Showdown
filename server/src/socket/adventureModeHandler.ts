@@ -254,7 +254,8 @@ export async function progressAdventure(
       // Create bot and battle
       const bot = new Player(
         resolved.enemy!.getId(),
-        resolved.enemy?.getName()!
+        resolved.enemy?.getName()!,
+        true
       ); // Eventually use bot class
       resolved.enemy?.pveScaling(adventure.getStage());
       bot.setMonster(resolved.enemy!);
@@ -281,8 +282,7 @@ export async function progressAdventure(
         ?.getPossibleActionStates();
       socket.emit("possible_actions", actions);
       //Clear logs from previous battle.
-      adventure.getPlayer().clearLogs();
-      adventure.getPlayer().clearBattleLogs(); //um note i did this but it didn't clear lmfaoo??
+      //um note i did this but it didn't clear lmfaoo??
       // Optionally, proceed with the battle logic
       // proceedAdventureTurn(io, socket, adventure, battle);
     } else if (resolved.type === "DIALOGUE") {
