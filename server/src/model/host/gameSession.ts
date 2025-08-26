@@ -13,9 +13,7 @@ import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
 import { BotPlayer } from "../game/botPlayer";
 import crypto from "crypto";
-import { PouncingBandit } from "../game/monster/pouncingBandit";
-import { CinderTail } from "../game/monster/cinderTail";
-import { BotPlayer } from "../game/botPlayer";
+
 
 export default class GameSession {
   private hostUID: string;
@@ -28,7 +26,7 @@ export default class GameSession {
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
   private monsters: Array<String>;
   
-  private monsters: Array<String>;
+
   
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -41,7 +39,7 @@ export default class GameSession {
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
     this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
-    this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
+
 
     if (presetGameCode !== undefined) {
       // Use preset game code if provided
@@ -99,9 +97,7 @@ export default class GameSession {
   public getMonsters(){
     return this.monsters;
   }
-  public getMonsters(){
-    return this.monsters;
-  }
+
 
   // Add player to Game Session queue
   public addPlayer(player: Player): { success: boolean; reason?: string } {
