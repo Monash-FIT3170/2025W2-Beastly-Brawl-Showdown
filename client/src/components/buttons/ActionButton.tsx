@@ -1,66 +1,93 @@
 import React from "react";
 import { ButtonGeneric } from "./ButtonGeneric";
 import { OutlineText } from "../texts/OutlineText";
-import { ActionState, ActionIdentifier } from "../../../../types/single/actionState";
+import {
+  ActionState,
+  ActionIdentifier,
+} from "../../../../types/single/actionState";
 import socket from "../../socket";
 import { ButtonGenericProps } from "./ButtonGeneric";
 import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 
 interface ActionButtonProps {
-    actionState: ActionState;
-    battleId: string;
-    isActive: boolean;
-    onClick: () => void;
+  actionState: ActionState;
+  battleId: string;
+  isActive: boolean;
+  onClick: () => void;
 }
 
-const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId, isActive, onClick }) => {
-    const imagePath = "/assets/actions/" + actionState.id + ".png";
-    const name = actionState.name.toUpperCase();
-    const availableUses = actionState.currentUse; // How many REMAINING uses
-    const isPassive = actionState.maxUse == 0; // Action is a passive ability if it can't be used
+const ActionButton: React.FC<ActionButtonProps> = ({
+  actionState,
+  battleId,
+  isActive,
+  onClick,
+}) => {
+  const imagePath = "/assets/actions/" + actionState.id + ".png";
+  const name = actionState.name.toUpperCase();
+  const availableUses = actionState.currentUse; // How many REMAINING uses
+  const isPassive = actionState.maxUse == 0; // Action is a passive ability if it can't be used
 
-    const colorLoader: Record<string, ButtonGenericProps["color"]> = {
-        [ActionIdentifier.ATTACK]: 'red',
-        [ActionIdentifier.DEFEND]: 'blue',
-        [ActionIdentifier.NULL]: 'ronchi',
-    };
+  const colorLoader: Record<string, ButtonGenericProps["color"]> = {
+    [ActionIdentifier.ATTACK]: "red",
+    [ActionIdentifier.DEFEND]: "blue",
+    [ActionIdentifier.NULL]: "ronchi",
+  };
 
-    // Check if we still have available uses
-    const isDisabled = availableUses == 0;
+  // Check if we still have available uses
+  const isDisabled = availableUses == 0;
 
-    const handleClick = () => {
-        if (isDisabled) return;
-        // Do the action stuff
-        socket.emit("action_selected", { action: actionState, battleId, playerId: socket.id });
-    };
+  const actionClicked = () => {
+    if (isDisabled) return;
+    // Do the action stuff
+    socket.emit("action_selected", {
+      action: actionState,
+      battleId,
+      playerId: socket.id,
+    });
+  };
 
-    const allClickHandlers = () => {
-        if (onClick) onClick();
-        handleClick();
-    }
+  const adventureClicked = () => {
+    socket.emit("adventure_action", {
+      action: actionState,
+      playerId: socket.id,
+    });
+  };
 
-    const image =
-        `
+  const image = `
         w-[30%]
         h-[auto%]
         object-contain
         ml-auto
         `;
 
-    return(
-        <div className="relative group">
-        <ButtonGeneric color={colorLoader[actionState.id] ?? 'purple'} size='battle' isDisabled={isDisabled} onClick={allClickHandlers} isPassive={isPassive}>
-            <div className="w-[50%] h-auto leading-[0.8]">
-                { (name === "ATTACK" || name === "DEFEND")
-                ? (<OutlineText size="medium">{name}</OutlineText>)
-                :(<OutlineTextResizable max1 = {5} max2 = {7} max3 = {10} size="medium">{name}</OutlineTextResizable>
-                )}
-            </div>
-            <img className = {`${image} rounded-md`} src={`${imagePath}`} alt={`${actionState.id} image`}/>
-        </ButtonGeneric>
+  return (
+    <div className="relative group">
+      <ButtonGeneric
+        color={colorLoader[actionState.id] ?? "purple"}
+        size="battle"
+        isDisabled={isDisabled}
+        onClick={battleId === "ADVENTURE" ? adventureClicked : actionClicked}
+        isPassive={isPassive}
+      >
+        <div className="w-[50%] h-auto leading-[0.8]">
+          {name === "ATTACK" || name === "DEFEND" ? (
+            <OutlineText size="medium">{name}</OutlineText>
+          ) : (
+            <OutlineTextResizable max1={5} max2={7} max3={10} size="medium">
+              {name}
+            </OutlineTextResizable>
+          )}
+        </div>
+        <img
+          className={`${image} rounded-md`}
+          src={`${imagePath}`}
+          alt={`${actionState.id} image`}
+        />
+      </ButtonGeneric>
 
-        {availableUses != null && !isPassive && (
-            <div className={`
+      {availableUses != null && !isPassive && (
+        <div
+          className={`
                 absolute
                 top-14
                 right-18
@@ -78,27 +105,29 @@ const ActionButton: React.FC<ActionButtonProps> = ({ actionState, battleId, isAc
                 font-jua
                 overflow-hidden
                 ${!isDisabled ? "group-hover:brightness-85" : ""}
-                ${isDisabled ? "\
+                ${
+                  isDisabled
+                    ? "\
                     grayscale\
                     cursor-not-allowed\
-                " : ""}
-            `}>
-                <OutlineText size="medium">
-                    {availableUses}
-                </OutlineText>
-            
-                {isActive && (
-                    <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/30 rounded-b pointer-events-none h-[50%]" />
-                )}
-            </div>
-        )}
+                "
+                    : ""
+                }
+            `}
+        >
+          <OutlineText size="medium">{availableUses}</OutlineText>
 
-        {isActive && (
-            <div className="absolute inset-0 z-10 bg-black/30 rounded pointer-events-none" />
-        )}
+          {isActive && (
+            <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/30 rounded-b pointer-events-none h-[50%]" />
+          )}
+        </div>
+      )}
 
+      {isActive && (
+        <div className="absolute inset-0 z-10 bg-black/30 rounded pointer-events-none" />
+      )}
     </div>
-    );
+  );
 };
 
 export default ActionButton;

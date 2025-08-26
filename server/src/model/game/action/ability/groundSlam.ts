@@ -9,14 +9,18 @@ export class GroundSlamAbilityAction extends Action {
     super(
       ActionIdentifier.GROUND_SLAM,
       "Ground Slam",
-      "Deal 3 damage and stun your opponent, preventing them from acting for 1 turn.",
-      1
+      "Stomp the earth with brutal force. Deal 3 damage and leave your opponent stunned, unable to act next turn.",
+      2
     );
   }
 
   // Clear the opponent's actions
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     // affectedPlayer.clearActions();
+  }
+
+  public prepareAnimation(): string | [string, number] {
+    return "Ground_Slam_Animation";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {

@@ -8,7 +8,7 @@ export class RockyRhino extends Monster {
     super(
       MonsterIdentifier.ROCKY_RHINO,
       "Rocky Rhino",
-      "A massive, armored creature resembling a rhinoceros with rocky skin. Known for its incredible defense and resilience, it can withstand powerful attacks.",
+      "A beast that lives to rumble and crush. With one mighty stomp, it shakes the ground, stunning foes before crushing them beneath its weight.",
       new Defender(),
       new GroundSlamAbilityAction(),
       30,

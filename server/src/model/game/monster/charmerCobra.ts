@@ -9,7 +9,7 @@ export class CharmerCobra extends Monster {
     super(
       MonsterIdentifier.CHARMER_COBRA,
       "Charmer Cobra",
-      "A sleek, serpentine creature with mesmerizing patterns on its scales. It can charm its foes, leaving them vulnerable to its attacks.",
+      "A serpent with a hypnotic sway and haunting lullaby. Those who hear its song soon find themselves striking their own instead.",
       new Defender(),
       new AlluringLullaby(),
       30,
