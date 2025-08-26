@@ -9,6 +9,9 @@ import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
+import { PouncingBandit } from "../game/monster/pouncingBandit";
+import { CinderTail } from "../game/monster/cinderTail";
+import { BotPlayer } from "../game/botplayer";
 import crypto from "crypto";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
@@ -25,6 +28,8 @@ export default class GameSession {
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
   private monsters: Array<String>;
   
+  private monsters: Array<String>;
+  
   // Initialise sample data
   private gameSessionData: GameSessionData = {
     mostChosenMonster: { monster: null, percentagePick: "0" },
@@ -35,6 +40,7 @@ export default class GameSession {
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
+    this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
     this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
 
     if (presetGameCode !== undefined) {
@@ -89,6 +95,9 @@ export default class GameSession {
 
   public getPlayers() {
     return this.players;
+  }
+  public getMonsters(){
+    return this.monsters;
   }
   public getMonsters(){
     return this.monsters;
@@ -242,21 +251,10 @@ export default class GameSession {
 
 public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
-
-    const botPlayer = new BotPlayer("");
-
-
-    const monsterName = this.monsters[Math.floor(Math.random() * this.monsters.length)];
-    if (monsterName === "RockyRhino") {
-        botPlayer.setMonster(new RockyRhino());
-    } else if (monsterName === "PouncingBandit") {
-        botPlayer.setMonster(new PouncingBandit());
-    } else if (monsterName === "CinderTail") {
-        botPlayer.setMonster(new CinderTail());
-    }
-
-    this.players.enqueue(botPlayer);
-
+    const placeHolderPlayer = new Player("placeHolder", "Big Bum Loser");
+    const placerHolderMonster = new RockyRhino();
+    placeHolderPlayer.setMonster(placerHolderMonster);
+    placeHolderPlayer.setHealth(0);
     const battle = new Battle(
         battleId,
         oddPlayer,
