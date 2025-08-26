@@ -9,7 +9,7 @@ export class AttackAction extends Action {
   private d20: number = 0;
   private diceMin: number;
   private diceMax: number;
-  private damageDealt: number = 50; // Damage on a non-crit is 5
+  private damageDealt: number = 5; // Damage on a non-crit is 5
   private critRate: number; // % Chance to crit
   private rollRange: number = 0;
 

@@ -34,7 +34,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             border-blackCurrant w-min h-min rounded-xl
             bg-[#FFE8B1]
             sm:h-min
-            sm:w-[95dvw]
+            sm:w-[80dvw]
             lg:h-min
             lg:w-[40dvw]
             border-[3px]
@@ -42,7 +42,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             rounded-[20px]
             w-[60%]
             box-border
-            flex flex-col  justify-center items-center`}
+            flex flex-col  justify-evenly items-center gap-y-10 py-10`}
       >
         {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
         <img
@@ -51,7 +51,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         />
         <ButtonGeneric
           color={UNLOCKED_LEVELS.includes(observedLevel) ? `ronchi` : `alto`}
-          size="large"
+          size="battle"
           onClick={
             UNLOCKED_LEVELS.includes(observedLevel)
               ? renderAdventureMonsterSelect
@@ -68,7 +68,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
               style="arrowleft"
               buttonColour="blue"
               iconColour="black"
-              size="large"
+              size="medium"
               onClick={() => alterLevel(-1)}
             />
           )}
@@ -77,7 +77,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         <div className="w-min">
           <ButtonGeneric
             color="red"
-            size="large"
+            size="battle"
             onClick={() => FlowRouter.go("/")}
           >
             BACK
@@ -90,7 +90,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
               style="arrowright"
               buttonColour="blue"
               iconColour="black"
-              size="large"
+              size="medium"
               onClick={() => alterLevel(1)}
             />
           )}
