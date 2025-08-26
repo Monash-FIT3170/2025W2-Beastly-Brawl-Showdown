@@ -8,7 +8,7 @@ import { GameModeIdentifier } from "/types/single/gameMode";
 import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
 
 export class BattleRoyale implements IGameMode {
-	public name = GameModeIdentifier.BATTLE_ROYALE as const;
+  public name = GameModeIdentifier.BATTLE_ROYALE as const;
   private eliminatedPlayers: Player[] = [];  // Earlier eliminated players are closer to the front of the array
   private remainingPlayers: Player[] = [];
   private socket: Socket | null = null;
@@ -17,14 +17,14 @@ export class BattleRoyale implements IGameMode {
   public init(session: GameSession, io: Server, socket: Socket): void {
     this.socket = socket;
     for (let player of session.getPlayers().getItems()) {
-		  this.remainingPlayers.push(player);
-	  }
-	  console.log("[INIT]: ", this.remainingPlayers.map(player => player.getName()));
+      this.remainingPlayers.push(player);
+    }
+    console.log("[INIT]: ", this.remainingPlayers.map(player => player.getName()));
   }
 
-	public onActionExecuted(session: GameSession): void { }
+  public onActionExecuted(session: GameSession): void { }
 
-	public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void {
+  public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void {
     // Case 1: There is a winner
     if (winner) {
       let loser = battle.getPlayers().filter(player => player.getId() != winner.getId())[0];
