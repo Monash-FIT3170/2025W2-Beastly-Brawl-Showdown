@@ -9,16 +9,10 @@ import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
 
 export class BattleRoyale implements IGameMode {
 	public name = GameModeIdentifier.BATTLE_ROYALE as const;
-<<<<<<< HEAD
-	private placements = new RoyalePlacements();
-  private nextPlacement = 0;
-  private playerFinished = 0;
-  private nextWinPlacement = 1;  // TODO: This is temporary for now so that we get nice rankings for single-round mode
-=======
   private eliminatedPlayers: Player[] = [];  // Earlier eliminated players are closer to the front of the array
   private remainingPlayers: Player[] = [];
   private socket: Socket | null = null;
->>>>>>> 58e1b56f04d1d98d72c2bf8dff90d53bbe2cf88f
+  private playerFinished = 0;
 
   public init(session: GameSession, io: Server, socket: Socket): void {
     this.socket = socket;
@@ -30,12 +24,7 @@ export class BattleRoyale implements IGameMode {
 
 	public onActionExecuted(session: GameSession): void { }
 
-<<<<<<< HEAD
-  // TODO: Is this the correct way to handle draws?
-	public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket) {
-=======
-	public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null) {
->>>>>>> 58e1b56f04d1d98d72c2bf8dff90d53bbe2cf88f
+	public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void {
     // Case 1: There is a winner
     if (winner) {
       let loser = battle.getPlayers().filter(player => player.getId() != winner.getId())[0];
@@ -49,8 +38,9 @@ export class BattleRoyale implements IGameMode {
       let player2 = battle.getPlayers()[1];
       this.eliminatePlayer(player2);
     }
-<<<<<<< HEAD
-    console.log("[CURRENT STANDINGS]: ", this.placements.getCurrentOrderedRoyalePlacements());
+
+    console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
+    console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
 
     io.to(battle.getId()).emit("battle-closed", {gameCode : session.getGameCode().toString()})
     const p1 = io.sockets.sockets.get(battle.getPlayers()[0].getId())
@@ -145,24 +135,9 @@ export class BattleRoyale implements IGameMode {
     })
   }
 
-  // TODO: Maybe this needs to be be moved somewhere else...
-	public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
-    // Need to set the first place player's placement
-    // This should be the only player without a placement currently
-    let firstPlacePlacement = this.placements.getCurrentOrderedRoyalePlacements()[0];
-    firstPlacePlacement.placement = this.nextPlacement--;  // This should be 1
-    console.log("[FINAL PLACEMENTS]: ", this.placements.getCurrentOrderedRoyalePlacements());
-  }
-=======
+  public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void { }
 
-    console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
-    console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
-  }
-
-	public onBattlesEnded(session: GameSession): void { }
->>>>>>> 58e1b56f04d1d98d72c2bf8dff90d53bbe2cf88f
-
-	public isSessionConcluded(session: GameSession): boolean {
+  public isSessionConcluded(session: GameSession): boolean {
     let isSessionConcluded = this.remainingPlayers.length == 1;
     if (isSessionConcluded) {
       let firstPlace = this.remainingPlayers[0];
