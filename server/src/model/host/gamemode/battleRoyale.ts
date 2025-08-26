@@ -4,50 +4,52 @@ import { Player } from "../../game/player";
 import { battles } from "../../../../main";
 import GameSession from "../gameSession";
 import { IGameMode } from "./gameMode";
-import { RoyalePlacements } from "./royalePlacements";
 import { GameModeIdentifier } from "/types/single/gameMode";
 import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
 
 export class BattleRoyale implements IGameMode {
 	public name = GameModeIdentifier.BATTLE_ROYALE as const;
+<<<<<<< HEAD
 	private placements = new RoyalePlacements();
   private nextPlacement = 0;
   private playerFinished = 0;
   private nextWinPlacement = 1;  // TODO: This is temporary for now so that we get nice rankings for single-round mode
+=======
+  private eliminatedPlayers: Player[] = [];  // Earlier eliminated players are closer to the front of the array
+  private remainingPlayers: Player[] = [];
+  private socket: Socket | null = null;
+>>>>>>> 58e1b56f04d1d98d72c2bf8dff90d53bbe2cf88f
 
-  // Register each existing player into the RoyalePlacements instance
-	public init(session: GameSession, io: Server, socket: Socket): void {
-    for (const p of session.getPlayers().getItems()) {
-			this.placements.register(p.getId(), p.getName());
-      this.nextPlacement += 1;
-		}
-		console.log("[INIT]: ", this.placements.getPlayerRoyalePlacements());
-    console.log("[INIT]: ", this.nextPlacement);
+  public init(session: GameSession, io: Server, socket: Socket): void {
+    this.socket = socket;
+    for (let player of session.getPlayers().getItems()) {
+		  this.remainingPlayers.push(player);
+	  }
+	  console.log("[INIT]: ", this.remainingPlayers.map(player => player.getName()));
   }
 
-	public onActionExecuted(sesion: GameSession): void { }
+	public onActionExecuted(session: GameSession): void { }
 
+<<<<<<< HEAD
   // TODO: Is this the correct way to handle draws?
 	public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket) {
+=======
+	public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null) {
+>>>>>>> 58e1b56f04d1d98d72c2bf8dff90d53bbe2cf88f
     // Case 1: There is a winner
     if (winner) {
-      let loser = battle.getPlayers().filter((player) => player.getId() != winner.getId())[0];
-      this.placements.setPlayerPlacement(loser.getId(), this.nextPlacement);
-      this.nextPlacement -= 1;
-
-      // TODO: Temp setting winner placement (remove later when multi-round is implemented)
-      this.placements.setPlayerPlacement(winner.getId(), this.nextWinPlacement);
-      this.nextWinPlacement += 1;
+      let loser = battle.getPlayers().filter(player => player.getId() != winner.getId())[0];
+      this.eliminatePlayer(loser);
     }
 
     // Case 2: It is a draw - there are no winners
     else {
       let player1 = battle.getPlayers()[0];
-      this.placements.setPlayerPlacement(player1.getId(), this.nextPlacement);
+      this.eliminatePlayer(player1);
       let player2 = battle.getPlayers()[1];
-      this.placements.setPlayerPlacement(player2.getId(), this.nextPlacement);
-      this.nextPlacement -= 2;
+      this.eliminatePlayer(player2);
     }
+<<<<<<< HEAD
     console.log("[CURRENT STANDINGS]: ", this.placements.getCurrentOrderedRoyalePlacements());
 
     io.to(battle.getId()).emit("battle-closed", {gameCode : session.getGameCode().toString()})
@@ -151,26 +153,59 @@ export class BattleRoyale implements IGameMode {
     firstPlacePlacement.placement = this.nextPlacement--;  // This should be 1
     console.log("[FINAL PLACEMENTS]: ", this.placements.getCurrentOrderedRoyalePlacements());
   }
+=======
+
+    console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
+    console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
+  }
+
+	public onBattlesEnded(session: GameSession): void { }
+>>>>>>> 58e1b56f04d1d98d72c2bf8dff90d53bbe2cf88f
 
 	public isSessionConcluded(session: GameSession): boolean {
-    return session.areBattlesConcluded();
-	}
+    let isSessionConcluded = this.remainingPlayers.length == 1;
+    if (isSessionConcluded) {
+      let firstPlace = this.remainingPlayers[0];
+      let secondPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
+      let thirdPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-2];
+      this.socket?.emit("top-3-battle-royale", {
+        gameCode: session.getGameCode(),
+        top3: [firstPlace, secondPlace, thirdPlace]
+      });
+      console.log(
+        "[FINAL RESULTS]: 1st: ", firstPlace.getName(),
+        ", 2nd: ", secondPlace.getName(),
+        ", 3rd: ", thirdPlace.getName()
+      );
+    }
+    return isSessionConcluded;
+  }
 
-  public addPlayer(playerId: string, name: string): void {
-    let prevNumPlayers = this.placements.getPlayerRoyalePlacements().size;
-    this.placements.register(playerId, name);
-    let currNumPlayers = this.placements.getPlayerRoyalePlacements().size;
-    if (currNumPlayers > prevNumPlayers) {
-      this.placements.numPlayersChanged(1);
+  private eliminatePlayer(player: Player): void {
+    let playerIndex = this.remainingPlayers.findIndex(p => p.getId() == player.getId());
+    if (playerIndex != -1) {
+      this.eliminatedPlayers.push(player);
+      this.remainingPlayers.splice(playerIndex, 1);
+    } else {
+      console.log(`[ERROR]: Could not find player with name '${player.getName()}' in array.`);
     }
   }
 
-  // TODO: Thought - should a player that leaves mid-session just be treated
-  //                 as an instant loss instead, and we simply keep them in
-  //                 the final placement standings?
-  public removePlayer(playerId: string): void {
-    if (this.placements.removePlayer(playerId)) {
-      this.placements.numPlayersChanged(-1);
-    }
+  // This is if a player gets added to the lobby/game in the middle of a session,
+  // such as a bot player.
+  public addPlayer(player: Player): void {
+    this.remainingPlayers.push(player);
+
+    console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
+    console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
+  }
+
+  // If a player leaves the lobby/game in the middle of a session for whatever reason,
+  // this will be treated as an instant elimination.
+  public removePlayer(player: Player): void {
+    this.eliminatePlayer(player);
+
+    console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
+    console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
   }
 }
