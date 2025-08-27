@@ -1,8 +1,8 @@
 import { Equipment } from "../../game/equipment/equipment";
-import { Sword } from "../../game/consumables/sword";
+import { OozingBlade } from "../../game/equipment/oozingBlade";
 
 const equipmentFactory: Record<string, () => Equipment> = {
-  sword: () => new Sword(30),
+  oozingBlade: () => new OozingBlade(30),
 };
 
 export function createEquipment(id: string): Equipment {
