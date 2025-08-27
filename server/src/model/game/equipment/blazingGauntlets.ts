@@ -2,11 +2,10 @@ import { Player } from "../player";
 import { Equipment } from "./equipment";
 
 export class BlazingGauntlets extends Equipment {
-  constructor(stage: number) {
+  constructor() {
     super(
       "Blazing Gauntlets",
-      "The burning flames on this weapon burns enemies for extra damage.",
-      BlazingGauntlets.calculateStrength(stage)
+      "The burning flames on this weapon burns enemies for extra damage."
     );
   }
 
@@ -22,8 +21,8 @@ export class BlazingGauntlets extends Equipment {
     return "+" + this.strength + " Attack Damage";
   }
 
-  private static calculateStrength(stage: number): number {
+  public calculateStrength(stage: number): void {
     //TODO: update formula - currently strength = stage
-    return stage;
+    this.strength = stage;
   }
 }

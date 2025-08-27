@@ -2,11 +2,10 @@ import { Player } from "../player";
 import { Equipment } from "./equipment";
 
 export class MagicShield extends Equipment {
-  constructor(stage: number) {
+  constructor() {
     super(
       "Magic Shield",
-      "This sparkling shield holds magic that could defend you from any foe.",
-      MagicShield.calculateStrength(stage)
+      "This sparkling shield holds magic that could defend you from any foe."
     );
     //BRUZZ I WROTE FOE AGAIN...
   }
@@ -22,8 +21,8 @@ export class MagicShield extends Equipment {
     return "+" + this.strength + " Armour Class";
   }
 
-  private static calculateStrength(stage: number): number {
+  public calculateStrength(stage: number): void {
     //TODO: update formula - currently strength = stage
-    return stage * 2;
+    this.strength = stage * 2;
   }
 }

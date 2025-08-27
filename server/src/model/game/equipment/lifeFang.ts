@@ -2,11 +2,10 @@ import { Player } from "../player";
 import { Equipment } from "./equipment";
 
 export class LifeFang extends Equipment {
-  constructor(stage: number) {
+  constructor() {
     super(
       "Life Fang",
-      "Rumoured to be a fallen tooth from the greatest Bandit to roam the lands, this equipment gifts extra life.",
-      LifeFang.calculateStrength(stage)
+      "Rumoured to be a fallen tooth from the greatest Bandit to roam the lands, this equipment gifts extra life."
     );
   }
 
@@ -21,9 +20,9 @@ export class LifeFang extends Equipment {
     return "+" + this.strength + " Max HP";
   }
 
-  private static calculateStrength(stage: number): number {
+  public calculateStrength(stage: number): void {
     //TODO: update formula - currently strength = playerHealth
 
-    return stage * 5;
+    this.strength = stage;
   }
 }

@@ -2,11 +2,10 @@ import { Player } from "../player";
 import { Equipment } from "./equipment";
 
 export class SharpenedClaws extends Equipment {
-  constructor(stage: number) {
+  constructor() {
     super(
       "Sharpened Claws",
-      "These claws give an extra sting on every attack.",
-      SharpenedClaws.calculateStrength(stage)
+      "These claws give an extra sting on every attack."
     );
   }
 
@@ -21,8 +20,8 @@ export class SharpenedClaws extends Equipment {
     return "+" + this.strength + " Attack Bonus";
   }
 
-  private static calculateStrength(stage: number): number {
+  public calculateStrength(stage: number): void {
     //TODO: update formula - currently strength = stage
-    return stage;
+    this.strength = stage;
   }
 }

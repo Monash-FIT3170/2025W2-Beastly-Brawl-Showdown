@@ -3,15 +3,11 @@ import { Player } from "../player";
 export abstract class Equipment {
   protected name: string;
   protected description: string;
-  protected strength: number;
+  protected strength: number = 1;
 
-  //TODO: need to consider scaling - will it be by stage ?
-  //do i add strength to equipment or to each individual one? because maybe not all scale??
-
-  constructor(name: string, description: string, strength?: number) {
+  constructor(name: string, description: string) {
     this.name = name;
     this.description = description;
-    this.strength = strength ?? 1;
   }
 
   public getName(): string {
@@ -26,13 +22,11 @@ export abstract class Equipment {
     return this.strength;
   }
 
-  public setStrength(strength: number): void {
-    this.strength = strength;
-  }
-
   public abstract getStatDescription(): string;
 
   public abstract equip(player: Player): void;
 
   public abstract unequip(player: Player): void;
+
+  public abstract calculateStrength(stage: number): void;
 }

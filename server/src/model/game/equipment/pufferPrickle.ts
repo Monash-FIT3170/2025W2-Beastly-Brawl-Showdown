@@ -2,11 +2,10 @@ import { Player } from "../player";
 import { Equipment } from "./equipment";
 
 export class PufferPrickle extends Equipment {
-  constructor(stage: number) {
+  constructor() {
     super(
       "Puffer Prickle",
-      "Let enemies feel the wrath of a once furious pufferfish..",
-      PufferPrickle.calculateStrength(stage)
+      "Let enemies feel the wrath of a once furious pufferfish.."
     );
   }
 
@@ -21,8 +20,8 @@ export class PufferPrickle extends Equipment {
     return "+" + this.strength + "% Critical Hit Chance";
   }
 
-  private static calculateStrength(stage: number): number {
+  public calculateStrength(stage: number): void {
     //TODO: update formula - currently strength = stage
-    return stage * 3;
+    this.strength = stage * 3;
   }
 }

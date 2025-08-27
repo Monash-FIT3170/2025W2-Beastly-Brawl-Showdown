@@ -2,11 +2,10 @@ import { Player } from "../player";
 import { Equipment } from "./equipment";
 
 export class OozingBlade extends Equipment {
-  constructor(stage: number) {
+  constructor() {
     super(
       "Oozing Blade",
-      "Forged from slime residue and covered in a constant slick of ooze. This blade reeks of muck, yet its slimy edge is clean to the cut.",
-      OozingBlade.calculateStrength(stage)
+      "Forged from slime residue and covered in a constant slick of ooze. This blade reeks of muck, yet its slimy edge is clean to the cut."
     );
   }
 
@@ -21,8 +20,7 @@ export class OozingBlade extends Equipment {
     return "Increase Attack Bonus by +" + this.strength;
   }
 
-  private static calculateStrength(stage: number): number {
-    //TODO: update formula - currently strength = stage
-    return stage;
+  public calculateStrength(stage: number): void {
+    this.strength = stage;
   }
 }
