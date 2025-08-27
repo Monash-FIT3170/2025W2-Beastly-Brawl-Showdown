@@ -1,5 +1,6 @@
 import { BattlePhase, BattleState } from "./battleState";
 import { GameSessionData } from "../other/gameSessionData";
+import { Player } from "server/src/model/game/player"
 
 export interface GameSessionState {
   id: string;
@@ -9,4 +10,5 @@ export interface GameSessionState {
   currentPhase: BattlePhase;
   totalPlayers: number;
   remainingPlayers: number;
+  waitingPlayers: Player[];
 }

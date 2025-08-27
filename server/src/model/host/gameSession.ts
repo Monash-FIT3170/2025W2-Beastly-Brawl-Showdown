@@ -6,8 +6,7 @@ import { GameSessionState } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
-import { PlayerState } from "/types/single/playerState";
-import { MonsterIdentifier } from "/types/single/monsterState";
+import { PlayerState } from "/types/single/playerState";``
 import { RockyRhino } from "../game/monster/rockyRhino";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
@@ -27,6 +26,7 @@ export default class GameSession {
   private players: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
+  private gameMode: Mode;
   private round: number = 1; // Round number
   private player_max: number = 120; // Max 120 players
   private battle_max: number = 60; // Max 60 battles
@@ -39,8 +39,13 @@ export default class GameSession {
     mostChosenMonster: { monster: null, percentagePick: "0" },
   };
 
+<<<<<<< HEAD
   constructor(hostID: string, addition: {mode: IGameMode, presetGameCode?: number}) {
+=======
+  constructor(hostID: string, gameMode: Mode, presetGameCode?: number) {
+>>>>>>> feature/1001.8-battle-royale-host-screen
     this.hostUID = hostID;
+    this.gameMode = gameMode;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
@@ -67,6 +72,8 @@ export default class GameSession {
 
   //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
+    if (!this.battles) return;
+
     this.battles.getItems().forEach((curBattle) => {
       curBattle.eliminateAllPlayers();
     });
@@ -87,6 +94,10 @@ export default class GameSession {
 
   public getGameCode() {
     return this.gameCode;
+  }
+
+  public getGameMode() {
+    return this.gameMode;
   }
 
   public getBattles() {
@@ -328,7 +339,7 @@ export default class GameSession {
   public getGameSessionState(): GameSessionState {
     const allBattles = [];
     let remainingPlayers = 0;
-    let totalPlayers = this.battles.size() * 2;
+    let totalPlayers = this.battles.size() * 2;''
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
@@ -348,6 +359,7 @@ export default class GameSession {
       currentPhase: this.currentPhase,
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
+      waitingPlayers: this.getPlayersNotInBattle(),
     };
   }
 
@@ -359,6 +371,7 @@ export default class GameSession {
     return playerStates;
   }
 
+<<<<<<< HEAD
   public initGame(io: Server, socket: Socket):void {
     return this.mode.init(this, io, socket)
   }
@@ -378,4 +391,25 @@ export default class GameSession {
   public isSessionConcluded(): boolean {
     return this.mode.isSessionConcluded(this);
   }
+=======
+  public getPlayersNotInBattle(): Player[] {
+    const allPlayers = this.players.getItems(); // All players in the session
+    const playersInBattles = new Set<string>();
+
+    // Gather IDs of all players currently in battles
+    for (const battle of this.battles.getItems()) {
+      for (const player of battle.getPlayers()) {
+        playersInBattles.add(player.getId());
+      }
+    }
+
+    // Filter players not in the playersInBattles set
+    const playersNotInBattle = allPlayers.filter(
+      (player) => !playersInBattles.has(player.getId())
+    );
+
+    return playersNotInBattle;
+  }
+
+>>>>>>> feature/1001.8-battle-royale-host-screen
 }
