@@ -2,8 +2,8 @@ import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
 import { Status } from "./status/status";
-import { Consumable } from "./item/consumable";
-import { Equipment } from "./item/equipment";
+import { Consumable } from "./consumables/consumable";
+import { Equipment } from "./equipment/equipment";
 
 export class Player {
   private id: string;

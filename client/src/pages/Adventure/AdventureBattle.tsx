@@ -28,7 +28,7 @@ import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { IconButton } from "../../components/buttons/IconButton";
 import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfoPanel";
 import { PlayerState } from "/types/single/playerState";
-import { Equipment } from "/server/src/model/game/item/equipment";
+import { Equipment } from "../../../../server/src/model/game/equipment/equipment";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process

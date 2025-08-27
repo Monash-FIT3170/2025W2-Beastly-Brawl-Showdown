@@ -1,4 +1,4 @@
-import { Equipment } from "/server/src/model/game/item/equipment";
+import { Equipment } from "../../server/src/model/game/equipment/equipment";
 import { Monster } from "/server/src/model/game/monster/monster";
 
 export interface storyStruct {

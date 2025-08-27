@@ -1,5 +1,5 @@
-import { Equipment } from "../../game/item/equipment";
-import { Sword } from "../../game/item/sword";
+import { Equipment } from "../../game/equipment/equipment";
+import { Sword } from "../../game/consumables/sword";
 
 const equipmentFactory: Record<string, () => Equipment> = {
   sword: () => new Sword(30),

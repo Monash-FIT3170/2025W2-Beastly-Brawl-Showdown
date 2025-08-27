@@ -4,6 +4,7 @@ export abstract class Equipment {
   protected name: string;
   protected description: string;
   protected strength: number;
+
   //TODO: need to consider scaling - will it be by stage ?
   //do i add strength to equipment or to each individual one? because maybe not all scale??
 
@@ -25,9 +26,11 @@ export abstract class Equipment {
     return this.strength;
   }
 
-  public updateStrength(strength: number): void {
+  public setStrength(strength: number): void {
     this.strength = strength;
   }
+
+  public abstract getStatDescription(): string;
 
   public abstract equip(player: Player): void;
 
