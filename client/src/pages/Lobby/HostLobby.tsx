@@ -287,7 +287,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         <div className="flex p-1 outline-blackCurrant outline-[0.25rem] rounded-2xl bg-white mt-1">
           <QRCodeSVG
             value={`${Meteor.settings.public.SERVER_URLS[0]}/join/${code}`}
-            size={100}
+            size={150}
             bgColor="#FFFFFF"
             marginSize={2}
           />
