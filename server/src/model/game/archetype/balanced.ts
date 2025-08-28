@@ -8,7 +8,7 @@ export class Balanced extends Archetype {
     //this is disgusting code please forgive me....
     super(
       "Balanced",
-      new TipTheScalesAbilityAction(10),
+      new TipTheScalesAbilityAction(),
       ArchetypeIdentifier.BALANCED
     );
   }

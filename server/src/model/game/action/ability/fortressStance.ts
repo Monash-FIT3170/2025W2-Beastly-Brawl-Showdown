@@ -10,9 +10,14 @@ export class FortressStanceAbilityAction extends Action {
     super(
       ActionIdentifier.FORTRESS_STANCE,
       "Fortress Stance",
-      "Increase your AC by 10 for 1 turn.",
+      "Stand fortified... Gain +10 AC for 1 turn.",
       1
     );
+  }
+
+
+  public prepareAnimation(): string | [string, number] {
+    return "Fortress_Stance_Animation";
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
@@ -28,10 +33,14 @@ export class FortressStanceAbilityAction extends Action {
       `You used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
+      `${actingPlayer.getName()} used ${this.getName()}, gaining ${
+        this.armourBonus
+      } AC for 1 turn.`
     );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
+      `${actingPlayer.getName()} used ${this.getName()}, gaining ${
+        this.armourBonus
+      } AC for 1 turn.`
     );
 
     //Increasing AC should be a self-buff (as in Status) but with our current design I dont think it is...

@@ -1,0 +1,104 @@
+[
+  {
+    "id": "slime_child",
+    "level": [1],
+    "description": "Slime child encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Off in the distance you hear squelches",
+          "Whatever creature is making these noises sounds as though it is small and helpless"
+        ],
+        "type": "DIALOGUE",
+        "next": "choice_1"
+      },
+      {
+        "id": "choice_1",
+        "result": ["Do you go and investigate?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "approach_slime",
+            "text": "Investigate",
+            "next": "encounter_child"
+          },
+          {
+            "id": "ignore",
+            "text": "Ignore it",
+            "next": "no_investigation"
+          }
+        ]
+      },
+      {
+        "id": "encounter_child",
+        "type": "DIALOGUE",
+        "result": [
+          "A small slime looks up at you helplessly",
+          "It seems harmless enough",
+          "Do you engage it in combat or try to befriend it?"
+        ],
+        "next": "slime_choice"
+      },
+      {
+        "id": "slime_choice",
+        "result": ["Do you engage it in combat or try to befriend it?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "befriend",
+            "text": "Befriend",
+            "next": "befriend_slime"
+          },
+          {
+            "id": "attack",
+            "text": "Attack",
+            "next": "slime_fight"
+          }
+        ]
+      },
+      {
+        "id": "befriend_slime",
+        "type": "DIALOGUE",
+        "result": [
+          "You reach your hand out to the slime",
+          "It oozes happily and crawls from your hand to your bag"
+        ],
+        "next": "friendship_conclusion"
+      },
+      {
+        "id": "friendship_conclusion",
+        "type": "ITEM",
+        "itemId": "potion_basic"
+      },
+      {
+        "id": "slime_fight",
+        "type": "FIGHT",
+        "enemyId": "slime_1",
+        "next": "battle_conclusion"
+      },
+      {
+        "id": "battle_conclusion",
+        "type": "DIALOGUE",
+        "result": [
+          "You aren't entirely sure why you felt you had to fight the young slime but nevertheless you emerged victorious",
+          "A faint smell wafts from the lifeless pool of ooze"
+        ],
+        "next": "slime_scent"
+      },
+      {
+        "id": "slime_scent",
+        "type": "ITEM",
+        "itemId": "potion_basic"
+      },
+      {
+        "id": "no_investigation",
+        "type": "DIALOGUE",
+        "result": [
+          "Trusting your gut you march onwards",
+          "You've already seen enough combat to be taking unnecessary risks."
+        ]
+      }
+    ]
+  }
+]
