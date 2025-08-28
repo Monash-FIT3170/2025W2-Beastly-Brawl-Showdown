@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { PopupClean } from "./PopupClean";
 import { ChoicePopup } from "./ChoicePopup";
 import socket from "../../socket";
@@ -11,6 +11,7 @@ import { Status } from "/server/src/model/game/status/status";
 import { IconButton } from "../buttons/IconButton";
 import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 import { PopupAdventure } from "./PopupAdventure";
+import { ActionIdentifier, ActionState } from "/types/single/actionState";
 
 export interface AdventureInfoPopupProp {
   playerState: PlayerState | null | undefined;
@@ -22,8 +23,19 @@ export const AdventureInfoPopup = ({
   onClose,
 }: AdventureInfoPopupProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
+  const [currentAbilities, setCurrentAbilities] = useState<ActionState[]>([]);
   const currentlyViewing = ["MONSTER STATS", "CURRENT STATUSES"];
 
+  useEffect(() => {
+    for (const action of playerState?.monster?.possibleActions!) {
+      if (
+        action.id !== ActionIdentifier.ATTACK &&
+        action.id !== ActionIdentifier.DEFEND
+      ) {
+        setCurrentAbilities((prevAbilities) => [...prevAbilities, action]);
+      }
+    }
+  }, [playerState?.monster?.possibleActions]);
   const monsterImgPath =
     "/assets/characters/" + playerState?.monster?.id + ".png";
 
@@ -59,9 +71,33 @@ export const AdventureInfoPopup = ({
             </OutlineText>
           </div>
           {viewingTab === 0 && (
-            <div className="bg-[#EDAF55] outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
-              <OutlineText size="choice-text">ABILITIES</OutlineText>
-            </div>
+            <>
+              <div className="bg-[#EDAF55] outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
+                <OutlineText size="choice-text">ABILITIES</OutlineText>
+              </div>
+
+              {currentAbilities.map((ability, idx) => (
+                <div
+                  key={ability.id || idx}
+                  className="flex flex-row items-center grow-1 justify-left"
+                >
+                  <img
+                    src={"/assets/actions/" + ability.id + ".png"}
+                    alt="ability icon"
+                    className="w-[7rem] h-[7rem]"
+                  />
+                  <div>
+                    <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
+                      {ability.name}
+                    </p>
+                    {/**<BlackText size="medium">{ability.description}</BlackText>*/}
+                    <p className="text-black font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">
+                      {ability.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </>
           )}
         </div>
         <div className="grid grid-cols-3 justify-items-center">
