@@ -2,16 +2,13 @@ import React, { useState, useEffect } from "react";
 // Update the import path and extension as needed; for example:
 import { BattleState } from "/types/composite/battleState";
 import socket from "../../socket";
-import { MostChosenMonsterState } from "/types/single/mostChosenMonsterState";
 import RoundNumberHeader from "../../components/match-summary/RoundNumberHeader";
 import LeftPanel from "../../components/match-summary/LeftPanel";
 import RightPanel from "../../components/match-summary/RightPanel";
 import MiddlePanel from "../../components/match-summary/MiddlePanel";
 import { GameSessionState } from "/types/composite/gameSessionState";
-
 import { PlayerStats } from "../../types/data";
 import { IconButton } from "../../components/buttons/IconButton";
-import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
@@ -24,8 +21,8 @@ interface HostBattlesProps {
 
 const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const code = gameCode; // Currently unused, used for potential page changes
+  const [gameMode, setGameMode] = useState<Mode>(null);
   const [gameSession, setGameSession] = useState<GameSessionState>();
-  // const [mostChosenMonster, setMostChosenMonster] = useState<MostChosenMonsterState | null>(null);
   const [playerStats, setPlayerStats] = useState<PlayerStats>();
   const [exit, setExit] = useState<Boolean>();
 
@@ -107,6 +104,9 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     socket.on("game-session-state", ({ session }) => {
       console.log("sessionData:", session);
       setGameSession(session);
+
+      const stats = extractPlayerStatistics(session.battleStates);
+      setPlayerStats(stats);
     });
 
     return () => {
@@ -120,10 +120,19 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   }, []);
 
   useEffect(() => {
-    if (gameSession) {
-      setPlayerStats(extractPlayerStatistics(gameSession.battleStates));
-    }
-  }, [gameSession]); // Only run when gameSession changes
+    const handleGameMode = ({ mode }: { mode: Mode }) => {
+      console.log("Received game mode:", mode);
+      setGameMode(mode);
+    };
+
+    socket.on("game-mode", handleGameMode);
+
+    socket.emit("request-game-mode", { gameCode });
+
+    return () => {
+      socket.off("game-mode", handleGameMode);
+    };
+  }, []);
 
   return (
     <div
@@ -155,8 +164,6 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
         </PopupClean>)}
       {gameSession && playerStats ? (
         
-
-
         <div>
           <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
             <IconButton
@@ -191,7 +198,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
 
             {/* Middle Panel */}
             <div style={{ height: "100%", overflow: "auto" }}>
-              <MiddlePanel gameSession={gameSession} />
+              <MiddlePanel gameSession={gameSession} gameMode={gameMode}/>
             </div>
 
             {/* Right Panel */}
@@ -206,5 +213,6 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     </div>
   );
 };
+
 
 export default HostBattles;

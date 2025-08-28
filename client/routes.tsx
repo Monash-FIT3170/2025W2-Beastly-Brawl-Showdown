@@ -5,7 +5,7 @@ import { Home } from "./src/pages/Home/Home";
 import HostLobby from "./src/pages/Lobby/HostLobby";
 import JoinLobby from "./src/pages/Lobby/JoinLobby";
 import PathNotFound from "./src/pages/Home/PathNotFound";
-import HostBattles from "./src/pages/Lobby/HostBattles";
+import { GameConfiguration } from "./src/pages/Game/GameConfiguration";
 import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
 import Rules from './src/pages/Game/Rules';
@@ -29,6 +29,14 @@ FlowRouter.route("/host", {
   name: "HostLobby",
   action() {
     mount(HostLobby);
+  },
+});
+
+
+FlowRouter.route('/host/choose-mode', {
+  name: 'GameConfiguration',
+  action() {
+    mount(GameConfiguration);
   },
 });
 
@@ -67,12 +75,14 @@ FlowRouter.route("/session/:sessionId?", {
   },
 });
 
+
 FlowRouter.route("/battles/:code?", {
   name: "MatchSummary",
   action(params) {
     mount(() => <MatchSummary gameCode={params.code} />);
   },
 });
+
 
 
 FlowRouter.route('/rules', {

@@ -21,8 +21,6 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
   const player1Win = player1State.currentHealth != 0 && player2State.currentHealth == 0;
   const player2Win = player2State.currentHealth != 0 && player1State.currentHealth == 0;
 
-
-
   return (
     <div 
       style={{

@@ -6,8 +6,7 @@ import { GameSessionState } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
-import { PlayerState } from "/types/single/playerState";
-import { MonsterIdentifier } from "/types/single/monsterState";
+import { PlayerState } from "/types/single/playerState";``
 import { RockyRhino } from "../game/monster/rockyRhino";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
@@ -27,6 +26,7 @@ export default class GameSession {
   private players: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
+  private gameMode: Mode;
   private round: number = 1; // Round number
   private player_max: number = 120; // Max 120 players
   private battle_max: number = 60; // Max 60 battles
@@ -67,6 +67,8 @@ export default class GameSession {
 
   //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
+    if (!this.battles) return;
+
     this.battles.getItems().forEach((curBattle) => {
       curBattle.eliminateAllPlayers();
     });
@@ -87,6 +89,10 @@ export default class GameSession {
 
   public getGameCode() {
     return this.gameCode;
+  }
+
+  public getGameMode() {
+    return this.gameMode;
   }
 
   public getBattles() {
@@ -328,7 +334,7 @@ export default class GameSession {
   public getGameSessionState(): GameSessionState {
     const allBattles = [];
     let remainingPlayers = 0;
-    let totalPlayers = this.battles.size() * 2;
+    let totalPlayers = this.battles.size() * 2;''
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
@@ -348,6 +354,7 @@ export default class GameSession {
       currentPhase: this.currentPhase,
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
+      waitingPlayers: this.getPlayersNotInBattle(),
     };
   }
 
@@ -359,23 +366,23 @@ export default class GameSession {
     return playerStates;
   }
 
-  public initGame(io: Server, socket: Socket):void {
-    return this.mode.init(this, io, socket)
+  public getPlayersNotInBattle(): Player[] {
+    const allPlayers = this.players.getItems(); // All players in the session
+    const playersInBattles = new Set<string>();
+
+    // Gather IDs of all players currently in battles
+    for (const battle of this.battles.getItems()) {
+      for (const player of battle.getPlayers()) {
+        playersInBattles.add(player.getId());
+      }
+    }
+
+    // Filter players not in the playersInBattles set
+    const playersNotInBattle = allPlayers.filter(
+      (player) => !playersInBattles.has(player.getId())
+    );
+
+    return playersNotInBattle;
   }
 
-  public onActionExecuted(player1Id:string,  player1Result: ActionResult, player2Id: string, player2Result:ActionResult):void {
-    return this.mode.onActionExecuted(this, player1Id, player1Result, player2Id, player2Result);
-  }
-
-  public onBattleEnded(winner: Player | null,battle: Battle, io: Server, socket: Socket): void {
-    return this.mode.onBattleEnded(this, battle ,winner, io,socket);
-  }
-
-  public onBattlesEnded(io: Server, socket: Socket): void {
-    return this.mode.onBattlesEnded(this, io, socket);
-  }
-
-  public isSessionConcluded(): boolean {
-    return this.mode.isSessionConcluded(this);
-  }
 }
