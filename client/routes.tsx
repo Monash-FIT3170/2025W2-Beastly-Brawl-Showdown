@@ -33,7 +33,7 @@ FlowRouter.route("/host", {
 });
 
 
-FlowRouter.route('/host/choose-mode', {
+FlowRouter.route('/host/gamesettings', {
   name: 'GameConfiguration',
   action() {
     mount(GameConfiguration);

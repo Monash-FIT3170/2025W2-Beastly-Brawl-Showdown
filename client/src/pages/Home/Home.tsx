@@ -8,7 +8,7 @@ import { BlankPage } from "../../components/pagelayouts/BlankPage";
 export const Home = () => {
   // Called on 'Host Lobby' button press
   const renderConfigPage = () => {
-    FlowRouter.go("/host/choose-mode");
+    FlowRouter.go("/host/gamesettings");
   };
 
   // Called on 'Join Lobby' button press
