@@ -1,0 +1,6 @@
+{
+  "public": {
+    "SERVER_URLS": ["https://beastlybrawl.app", "https://www.beastlybrawl.app"],
+    "SOCKET_URL": "https://beastlybrawl.app"
+  }
+}

@@ -1,12 +1,15 @@
 import React from 'react';
 import BattlePanel from './BattlePanel';
 import { GameSessionState } from '/types/composite/gameSessionState';
+import { OutlineText } from '../texts/OutlineText';
 
 interface MiddlePanelProps {
-  gameSession?: GameSessionState | null;
+  gameSession: GameSessionState;
+  gameMode: Mode;
 }
 
-const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
+const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession, gameMode }) => {
+  
   return (
     <div 
       style={{
@@ -33,7 +36,7 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
           padding: '0.5rem'     // Add this
         }}
       >
-        {'Remaining: ' + gameSession?.remainingPlayers+ '/' + gameSession?.totalPlayers}
+        {'Remaining: ' + gameSession.remainingPlayers+ '/' + gameSession.totalPlayers}
       </h2>
       
       {/* Display battle states data */}
@@ -66,6 +69,42 @@ const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession }) => {
           ))}
         </div>
       )}
+      {gameMode != 'royale' ? <div/> : 
+      <div>
+        <h2 
+          style={{
+            fontSize: '2rem',
+            fontFamily: 'Jua, sans-serif',
+            fontWeight: 'bold',
+            color: '#FFFFFF',
+            textAlign: 'left',
+            margin: '0 0 1rem 0',
+            textTransform: 'uppercase',
+            WebkitTextStroke: '0.1px black',  // Add this
+            textShadow: 'none',   
+            padding: '0.5rem'     // Add this
+          }}
+        >
+          Waiting
+        </h2>
+        <div className='all-battle-panels-holder'
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr', // Two equal columns
+              gap: '1rem', // Space between battles
+              alignItems: 'start', // Align battles to the top of their grid cells
+              width: '100%',
+              // border: '2px solid'
+            }}
+          >
+            {gameSession.waitingPlayers.map((player) => (
+              <div>
+                {player.getName()}
+              </div>
+            ))}
+        </div>
+      </div>
+      }
     </div>
   );
 };

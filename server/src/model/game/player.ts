@@ -1,26 +1,28 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
+import { Status } from "./status/status";
 
 export class Player {
   private id: string;
   private name: string;
   private monster: Monster | null;
   public currentGameCode: number;
-  private score: number = 0;
-  private currentlyDodging = false
+  private currentlyDodging = false;
   private currentHealth: number;
   private currentAttackStat: number;
   private currentArmourClassStat: number;
+  private botPlayer: boolean;
 
   private actions: Action[] = [];
+  private statuses: Status[] = [];
 
   private logs: string[] = [];
   private battleLogs: string[] = [];
   private successfulHit: number = 0;
   private successfulBlock: number = 0;
 
-  constructor(id: string, name: string) {
+  constructor(id: string, name: string, botPlayer?: boolean) {
     this.name = name;
     this.id = id;
     this.monster = null;
@@ -28,22 +30,54 @@ export class Player {
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
     this.currentGameCode = 0;
+    this.botPlayer = botPlayer ?? false;
   }
 
   public getSuccessfulHit() {
     return this.successfulHit;
   }
   //sets the player in a dodging position
-  public dodge(): void{
-    this.currentlyDodging= true
+  public dodge(): void {
+    this.currentlyDodging = true;
   }
-  //returns wheather or not the player was dodging 
-  public getDodgingPosition():boolean{
-    return this.currentlyDodging
-  }  
+  //returns wheather or not the player was dodging
+  public getDodgingPosition(): boolean {
+    return this.currentlyDodging;
+  }
+
+  public getStatuses(): Status[] {
+    return this.statuses;
+  }
+
+  public addStatus(status: Status, succesRate: number): {success: boolean; reason?: string; metadata?: unknown}{
+    const chance = Math.random() * 100;
+    if (chance >= succesRate){
+      return {success: false, reason: "Missed"}
+    }
+    this.statuses.push(status);
+    return {success: true}
+  }
+
+  public tickStatuses() {
+    this.statuses.forEach((status) => status.tick(this));
+    //removes statuses that have expired after the tick
+    this.statuses = this.statuses.filter((status) => !status.isExpired());
+  }
+
+  public hasStatus(name: String) {
+    return this.statuses.some((status) => status.getName() === name);
+  }
+
+  public removeStatus(statusToRemove: Status){
+    this.statuses = this.statuses.filter((status) => status !== statusToRemove);
+  }
 
   public getSuccessfulBlock() {
     return this.successfulBlock;
+  }
+
+  public isBotPlayer(): boolean{
+    return this.botPlayer;
   }
 
   public incSuccessfulHit(number: number): void {
@@ -71,6 +105,7 @@ export class Player {
   }
 
   public addBattleLog(log: string): void {
+    // match summary logs
     this.battleLogs.push(log);
   }
 
@@ -83,6 +118,16 @@ export class Player {
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
       this.dodging = false;
+    }
+  }
+
+  //Similar to resetStats, but also restore player HP to full
+  public prepareForNextBattle(): void {
+    if (this.monster){
+      this.currentHealth = this.monster.getMaxHealth()
+      this.currentAttackStat = this.monster.getAttackBonus();
+      this.currentArmourClassStat = this.monster.getArmourClass();
+      this.statuses = [];
     }
   }
 
@@ -188,6 +233,8 @@ export class Player {
       // initialHealth: this.monster.getMaxHealth(),
       successBlock: this.successfulBlock,
       successHit: this.successfulHit,
+
+      statuses: this.statuses,
 
       monster: this.monster ? this.monster.getMonsterState() : null,
 

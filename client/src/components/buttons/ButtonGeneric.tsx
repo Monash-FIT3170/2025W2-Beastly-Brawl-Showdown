@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 export interface ButtonGenericProps{
-    color: 'ronchi' | 'blue' | 'red' | 'purple';
+    color: 'ronchi' | 'blue' | 'red' | 'purple'| 'alto';
 	size: ButtonSize;
 	isDisabled?: boolean;
 	children?: ReactNode
@@ -16,7 +16,8 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidd
 		'ronchi': 'bg-ronchi',
 		'blue': 'bg-pictonBlue',
 		'red': 'bg-burntSienna',
-		'purple': 'bg-heliotrope'
+		'purple': 'bg-heliotrope',
+		'alto': 'bg-alto',
 		}
 
 	const sizeToDisplay = {

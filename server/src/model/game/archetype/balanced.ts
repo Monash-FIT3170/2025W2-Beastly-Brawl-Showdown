@@ -1,8 +1,15 @@
 import { Archetype } from "./archetype";
-import { ArcaneShieldAbilityAction } from "../action/ability/arcaneShield";
+import { TipTheScalesAbilityAction } from "../action/ability/tipTheScales";
+import { ArchetypeIdentifier } from "/types/single/monsterState";
 
 export class Balanced extends Archetype {
   constructor() {
-    super("Balanced", new ArcaneShieldAbilityAction());
+    //i've set crit rate as the default in the action
+    //this is disgusting code please forgive me....
+    super(
+      "Balanced",
+      new TipTheScalesAbilityAction(10),
+      ArchetypeIdentifier.BALANCED
+    );
   }
 }

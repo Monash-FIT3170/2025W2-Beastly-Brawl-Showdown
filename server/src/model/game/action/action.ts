@@ -1,5 +1,5 @@
 import { Player } from "../player";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult, ActionState } from "/types/single/actionState";
 
 export abstract class Action {
   private id: ActionIdentifier;
@@ -44,7 +44,8 @@ export abstract class Action {
 
   public abstract prepare(actingPlayer: Player, affectedPlayer: Player): void;
 
-  public abstract execute(actingPlayer: Player, affectedPlayer: Player): void;
+  //Return the "effects" caused by action
+  public abstract execute(actingPlayer: Player, affectedPlayer: Player): ActionResult;
 
   public getId(): ActionIdentifier {
     return this.id;

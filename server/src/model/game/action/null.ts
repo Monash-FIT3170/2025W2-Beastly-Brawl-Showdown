@@ -1,14 +1,14 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 export class NullAction extends Action {
   private actingMessage: string | null;
   private affectedMessage: string | null;
   private battleLogMessage: string | null;
 
-  constructor(actingMessage: string | null = null, affectedMessage: string | null = null, battleLogMessage: string | null = null) {
-    super(ActionIdentifier.NULL, "Null", "No action", Infinity);
+  constructor(name: string = "Null", actionIdentifier: ActionIdentifier = ActionIdentifier.NULL, actingMessage: string | null = null, affectedMessage: string | null = null, battleLogMessage: string | null = null) {
+    super(actionIdentifier, name, "No action", 0);
     this.actingMessage = actingMessage;
     this.affectedMessage = affectedMessage;
     this.battleLogMessage = battleLogMessage;
@@ -16,9 +16,15 @@ export class NullAction extends Action {
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     actingPlayer.addLog(`${this.actingMessage ? this.actingMessage + " " : ""}You did nothing.`);
     affectedPlayer.addLog(`${this.affectedMessage ? this.affectedMessage + " " : ""}${actingPlayer.getName()} did nothing.`);
     actingPlayer.addBattleLog(`${this.battleLogMessage ? this.battleLogMessage + " " : ""}${actingPlayer.getName()} did nothing.`);
+
+    return {
+      appliedStatus: {
+        success: false
+      }
+    }
   }
 }

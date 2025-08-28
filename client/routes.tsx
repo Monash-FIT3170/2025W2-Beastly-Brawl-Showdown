@@ -33,6 +33,14 @@ FlowRouter.route("/host", {
   },
 });
 
+
+FlowRouter.route('/host/choose-mode', {
+  name: 'GameConfiguration',
+  action() {
+    mount(GameConfiguration);
+  },
+});
+
 FlowRouter.route("/host/:code?", {
   name: "HostLobby",
   action(params) {
@@ -68,6 +76,7 @@ FlowRouter.route("/session/:sessionId?", {
   },
 });
 
+
 FlowRouter.route("/battles/:code?", {
   name: "MatchSummary",
   action(params) {
@@ -88,6 +97,7 @@ FlowRouter.route('/config', {
     mount(GameConfiguration);
   },
 });
+
 
 
 FlowRouter.route('/rules', {
