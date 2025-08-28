@@ -21,6 +21,7 @@ import { TotalHealthBar } from "../../components/bars/TotalHealthBar";
 import { ArmourClassBar } from "../../components/bars/ArmourClassBar";
 import { AttackBonusBar } from "../../components/bars/AttackBonusBar";
 import { BlackText } from "../../components/texts/BlackText";
+import { OutlineTextResizable } from "../../components/texts/ResizableOutlineText";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { IconButton } from "../../components/buttons/IconButton";
 import { HeaderWithLeave } from "../../components/cards/HeaderWithLeave";
@@ -154,9 +155,13 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
         {monsters.filter(
           (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
         ).length === 0 ? (
-          <BlackText size="large">
-            NO DEFENDERS UNLOCKED. PLAY MORE ADVENTURE MODE TO UNLOCK.
-          </BlackText>
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full text-center">
+              <BlackText size="medium">
+                NO DEFENDERS UNLOCKED. PLAY MORE ADVENTURE MODE TO UNLOCK.
+              </BlackText>
+            </div>
+          </div>
         ) : (
           monsters
             .filter(
@@ -190,9 +195,13 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
         {monsters.filter(
           (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
         ).length === 0 ? (
-          <BlackText size="large">
-            NO BALANCED MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE TO UNLOCK.
-          </BlackText>
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full text-center">
+              <BlackText size="medium">
+                NO BALANCED UNLOCKED. PLAY MORE ADVENTURE MODE TO UNLOCK.
+              </BlackText>
+            </div>
+          </div>
         ) : (
           monsters
             .filter(
@@ -226,9 +235,13 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
         {monsters.filter(
           (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
         ).length === 0 ? (
-          <BlackText size="large">
-            NO ATTACKERS UNLOCKED. PLAY MORE ADVENTURE MODE TO UNLOCK.
-          </BlackText>
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full text-center">
+              <BlackText size="medium">
+                NO ATTACKERS UNLOCKED. PLAY MORE ADVENTURE MODE TO UNLOCK.
+              </BlackText>
+            </div>
+          </div>
         ) : (
           monsters
             .filter(
