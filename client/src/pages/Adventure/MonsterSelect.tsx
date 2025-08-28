@@ -151,18 +151,26 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters
-          .filter(
-            (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
-          )
-          .map((monster) => (
-            <MonsterSelectionCard
-              key={monster.id}
-              monster={monster}
-              type={monster.archetypeId}
-              onClick={() => handleSelectMonster(monster)}
-            />
-          ))}
+        {monsters.filter(
+          (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
+        ).length === 0 ? (
+          <BlackText size="large">
+            NO DEFENDERS UNLOCKED. PLAY MORE ADVENTURE MODE TO UNLOCK.
+          </BlackText>
+        ) : (
+          monsters
+            .filter(
+              (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
+            )
+            .map((monster) => (
+              <MonsterSelectionCard
+                key={monster.id}
+                monster={monster}
+                type={monster.archetypeId}
+                onClick={() => handleSelectMonster(monster)}
+              />
+            ))
+        )}
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
@@ -179,18 +187,26 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters
-          .filter(
-            (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
-          )
-          .map((monster) => (
-            <MonsterSelectionCard
-              key={monster.id}
-              monster={monster}
-              type={monster.archetypeId}
-              onClick={() => handleSelectMonster(monster)}
-            />
-          ))}
+        {monsters.filter(
+          (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
+        ).length === 0 ? (
+          <BlackText size="large">
+            NO BALANCED MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE TO UNLOCK.
+          </BlackText>
+        ) : (
+          monsters
+            .filter(
+              (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
+            )
+            .map((monster) => (
+              <MonsterSelectionCard
+                key={monster.id}
+                monster={monster}
+                type={monster.archetypeId}
+                onClick={() => handleSelectMonster(monster)}
+              />
+            ))
+        )}
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
@@ -207,18 +223,26 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters
-          .filter(
-            (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
-          )
-          .map((monster) => (
-            <MonsterSelectionCard
-              key={monster.id}
-              monster={monster}
-              type={monster.archetypeId}
-              onClick={() => handleSelectMonster(monster)}
-            />
-          ))}
+        {monsters.filter(
+          (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
+        ).length === 0 ? (
+          <BlackText size="large">
+            NO ATTACKERS UNLOCKED. PLAY MORE ADVENTURE MODE TO UNLOCK.
+          </BlackText>
+        ) : (
+          monsters
+            .filter(
+              (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
+            )
+            .map((monster) => (
+              <MonsterSelectionCard
+                key={monster.id}
+                monster={monster}
+                type={monster.archetypeId}
+                onClick={() => handleSelectMonster(monster)}
+              />
+            ))
+        )}
       </div>
 
       {selectedArchetype && (
