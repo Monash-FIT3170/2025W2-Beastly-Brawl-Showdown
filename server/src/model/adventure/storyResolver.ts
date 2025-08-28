@@ -9,8 +9,8 @@ export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
     case EncounterType.FIGHT:
       return { ...raw, enemy: createEnemy(raw.enemyId!) };
 
-    case EncounterType.ITEM:
-      return { ...raw, item: createConsumable(raw.itemId!) };
+    case EncounterType.CONSUMABLE:
+      return { ...raw, consumable: createConsumable(raw.consumableId!) };
 
     case EncounterType.STAT_CHANGE:
       return raw;

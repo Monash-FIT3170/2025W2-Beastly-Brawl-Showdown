@@ -80,8 +80,8 @@
       },
       {
         "id": "eel_attack",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "caught_strength",
@@ -94,8 +94,8 @@
       },
       {
         "id": "gain_strength",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "caught_healing",
@@ -108,8 +108,8 @@
       },
       {
         "id": "gain_healing",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "pirahna_swarm",
@@ -124,8 +124,8 @@
       },
       {
         "id": "lose_health",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "nothing_happens",
@@ -219,8 +219,8 @@
       },
       {
         "id": "drink_reward",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "drink_curse",
@@ -233,8 +233,8 @@
       },
       {
         "id": "drink_punishment",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "swim_power",
@@ -248,8 +248,8 @@
       },
       {
         "id": "swim_reward",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "swim_curse",
@@ -263,8 +263,8 @@
       },
       {
         "id": "swim_punishment",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "no_investigation",

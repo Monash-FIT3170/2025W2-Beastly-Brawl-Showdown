@@ -97,8 +97,8 @@
       },
       {
         "id": "slime_cookie",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       }
     ]
   }

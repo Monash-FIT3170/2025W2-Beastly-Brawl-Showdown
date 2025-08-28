@@ -69,8 +69,8 @@
       },
       {
         "id": "item_1",
-        "type": "ITEM",
-        "itemId": "potion_basic",
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion",
         "next": "choice_1"
       },
       {
@@ -147,8 +147,8 @@
       },
       {
         "id": "item_1",
-        "type": "ITEM",
-        "itemId": "potion_basic",
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion",
         "next": "choice_1"
       },
       {
