@@ -29,6 +29,7 @@ import { IconButton } from "../../components/buttons/IconButton";
 import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfoPanel";
 import { PlayerState } from "/types/single/playerState";
 import { Equipment } from "../../../../server/src/model/game/equipment/equipment";
+import { AdventureInfoPopup } from "../../components/popups/AdventureInfo";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -50,6 +51,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
     null
   );
+  const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
+
   const battleId = "ADVENTURE";
   //TODO: set player state
   const [playerState, setPlayerState] = useState<PlayerState | null>();
@@ -131,6 +134,12 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
+        {viewingInventory && (
+          <AdventureInfoPopup
+            playerState={playerState}
+            onClose={() => setViewingInventory(false)}
+          ></AdventureInfoPopup>
+        )}
         {receivingItem && (
           <div>
             {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
@@ -275,7 +284,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
               <ButtonGeneric color={"ronchi"} size={"tiny"}>
                 INVENTORY
               </ButtonGeneric>
-              <ButtonGeneric color={"blue"} size={"tiny"}>
+              <ButtonGeneric
+                color={"blue"}
+                size={"tiny"}
+                onClick={() => setViewingInventory(true)}
+              >
                 INFO
               </ButtonGeneric>
             </div>
