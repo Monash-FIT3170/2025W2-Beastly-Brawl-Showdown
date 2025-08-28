@@ -30,6 +30,7 @@ import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfo
 import { PlayerState } from "/types/single/playerState";
 import { Equipment } from "../../../../server/src/model/game/equipment/equipment";
 import { AdventureInfoPopup } from "../../components/popups/AdventureInfo";
+import { AdventureBagPopup } from "../../components/popups/AdventureBag";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -52,6 +53,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     null
   );
   const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
+  const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
 
   const battleId = "ADVENTURE";
   //TODO: set player state
@@ -134,11 +136,17 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
-        {viewingInventory && (
+        {viewingInfo && (
           <AdventureInfoPopup
             playerState={playerState}
-            onClose={() => setViewingInventory(false)}
+            onClose={() => setViewingInfo(false)}
           ></AdventureInfoPopup>
+        )}
+        {viewingInventory && (
+          <AdventureBagPopup
+            playerState={playerState}
+            onClose={() => setViewingInventory(false)}
+          ></AdventureBagPopup>
         )}
         {receivingItem && (
           <div>
@@ -281,13 +289,17 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                 open={showLeave}
                 onClose={() => setShowLeave(false)}
               />
-              <ButtonGeneric color={"ronchi"} size={"tiny"}>
+              <ButtonGeneric
+                color={"ronchi"}
+                size={"tiny"}
+                onClick={() => setViewingInventory(true)}
+              >
                 INVENTORY
               </ButtonGeneric>
               <ButtonGeneric
                 color={"blue"}
                 size={"tiny"}
-                onClick={() => setViewingInventory(true)}
+                onClick={() => setViewingInfo(true)}
               >
                 INFO
               </ButtonGeneric>
