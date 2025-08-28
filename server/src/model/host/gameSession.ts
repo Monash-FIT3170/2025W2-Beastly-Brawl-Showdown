@@ -29,6 +29,7 @@ export default class GameSession {
   // private monsters: Array<String>;
   private mode: IGameMode;
   private monsters: Array<String>;
+  private finalResults: (PlayerState | null)[] = [];
   
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -389,4 +390,11 @@ export default class GameSession {
     return playersNotInBattle;
   }
 
+  public setFinalResults(top3: (PlayerState | null)[]) {
+    this.finalResults = top3;
+  }
+
+  public getFinalResults(): (PlayerState | null)[] {
+    return this.finalResults;
+  }
 }

@@ -264,4 +264,19 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Game ${gameCodeN} is cancelled.`);
     }, 100);
   });
+
+  // Get final results
+  socket.on("get-final-results", ({ gameCode }) => {
+    const gameCodeN = Number(gameCode);
+    const session = activeGameSessions.get(gameCodeN);
+    const top3 = session?.getFinalResults();
+
+    if (top3) {
+      console.log("Successfully retrieved final results");
+      socket.emit("final-results-response", { top3 });
+    } else {
+      console.log(`Failed to retrieve final results for game code ${gameCode}`);
+      socket.emit("final-results-response", { top3: [] });
+    }
+  });
 };

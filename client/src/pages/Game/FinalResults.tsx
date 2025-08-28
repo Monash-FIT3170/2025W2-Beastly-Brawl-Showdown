@@ -15,38 +15,26 @@ interface FinalResultsProps {
 
 export const FinalResults = ({ gameCode }: FinalResultsProps) => {
   const code = gameCode;
-  const [players, setPlayers] = useState<PlayerState[] | null>(null);
+  // const [players, setPlayers] = useState<Player[] | null>(null);
+  const [top3, setTop3] = useState<PlayerState[] | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // When the page loads, keep attempting to fetch the players
   useEffect(() => {
-    if (!code) return;
+    if (!socket) return;
 
-    interface UpdatePlayersProps {
-      message: string;
-      players: PlayerState[];
-    }
-
-    // Function handler for updating the 'players' array
-    const updatePlayers = ({ message, players }: UpdatePlayersProps) => {
-      console.log(message);
-      if (Array.isArray(players) && players.length > 0) {
-        setPlayers(players);
-        socket.off("update-players", updatePlayers);
-      } else {
-        console.log("'players' is empty or not an array", players);
-      }
-    };
-
-    socket.emit("get-players", { gameCode: code });
-    socket.on("update-players", updatePlayers);
+    socket.emit('get-final-results', { gameCode: code });
+    socket.on('final-results-response', ({ top3 }) => {
+      setTop3(top3);
+      setLoading(false);
+    });
 
     return () => {
-      socket.off("update-players", updatePlayers);
+      socket.off('final-results-response');
     };
   }, [code]);
 
-  // Wait until players have been fetched
-  if (!players) {
+  // Show loading UI until results are available
+  if (loading || top3 === null) {
     console.log("Waiting for players to be fetched...");
     return <div><OutlineText size="large">Loading final results...</OutlineText></div>;
   }
@@ -70,18 +58,18 @@ export const FinalResults = ({ gameCode }: FinalResultsProps) => {
   // Button handler for exiting to home
   const exitToHome = () => {
     // Deletes game session and returns user to 'Home' page
-    socket.emit("cancel-game", { gameCode: gameCode });
+    socket.emit("cancel-game", { gameCode: code });
     FlowRouter.go("/");
   };
 
   // Temporarily hardcoding the players' rankings
   // Hardcoded to use the first 2-3 players
-  console.log(`Players fetched: ${players.length}\n`);
-  const firstPlace = players[0];
-  const secondPlace = players[1];
+  console.log(`Players fetched: ${top3.length}\n`);
+  const firstPlace = top3[0];
+  const secondPlace = top3[1];
   let thirdPlace: PlayerState | null = null;
-  if (players.length >= 3) {
-    thirdPlace = players[2];
+  if (top3.length >= 3) {
+    thirdPlace = top3[2];
   }
 
   return (

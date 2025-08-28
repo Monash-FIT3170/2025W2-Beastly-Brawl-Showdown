@@ -9,10 +9,10 @@ export class BattleRoyale implements IGameMode {
 	public name = GameModeIdentifier.BATTLE_ROYALE as const;
   private eliminatedPlayers: Player[] = [];  // Earlier eliminated players are closer to the front of the array
   private remainingPlayers: Player[] = [];
-  private socket: Socket | null = null;
+  private io: Server | null = null;
 
   public init(session: GameSession, io: Server, socket: Socket): void {
-    this.socket = socket;
+    this.io = io;
     for (let player of session.getPlayers().getItems()) {
 		  this.remainingPlayers.push(player);
 	  }
@@ -50,10 +50,15 @@ export class BattleRoyale implements IGameMode {
       if (this.eliminatePlayer.length > 1) {
         thirdPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-2];
       }
-      this.socket?.emit("top-3-battle-royale", {
-        gameCode: session.getGameCode(),
-        top3: [firstPlace, secondPlace, thirdPlace]
-      });
+      const top3 = [
+        firstPlace.getPlayerState(),
+        secondPlace.getPlayerState(),
+        thirdPlace?.getPlayerState() ?? null
+      ];
+      const gameCode = session.getGameCode();
+      this.io?.to(`game-${gameCode}`).emit("final-results-response", { top3 });
+      session.setFinalResults(top3);
+
       console.log(
         "[FINAL RESULTS]: 1st: ", firstPlace.getName(),
         ", 2nd: ", secondPlace.getName(),
