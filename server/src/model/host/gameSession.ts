@@ -6,7 +6,8 @@ import { GameSessionState } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
-import { PlayerState } from "/types/single/playerState";``
+import { PlayerState } from "/types/single/playerState";
+import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
 import crypto from "crypto";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
@@ -21,7 +22,6 @@ export default class GameSession {
   private players: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
-  private gameMode: Mode;
   private round: number = 1; // Round number
   private player_max: number = 120; // Max 120 players
   private battle_max: number = 60; // Max 60 battles
@@ -62,8 +62,6 @@ export default class GameSession {
 
   //Eliminate all the players presented in each battle
   public closeAllBattles(): void {
-    if (!this.battles) return;
-
     this.battles.getItems().forEach((curBattle) => {
       curBattle.eliminateAllPlayers();
     });
@@ -84,10 +82,6 @@ export default class GameSession {
 
   public getGameCode() {
     return this.gameCode;
-  }
-
-  public getGameMode() {
-    return this.gameMode;
   }
 
   public getBattles() {
@@ -251,7 +245,7 @@ export default class GameSession {
     return this.battles;
   }
 
-  public oddOneOutWinner(oddPlayer: Player): Player {
+  public oddOneOutWinner(oddPlayer: Player) {
     let battleId = crypto.randomUUID();
     const placeHolderPlayer = new BotPlayer()
     const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3)];
@@ -325,7 +319,7 @@ export default class GameSession {
   public getGameSessionState(): GameSessionState {
     const allBattles = [];
     let remainingPlayers = 0;
-    let totalPlayers = this.battles.size() * 2;''
+    let totalPlayers = this.battles.size() * 2;
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
@@ -345,7 +339,6 @@ export default class GameSession {
       currentPhase: this.currentPhase,
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
-      waitingPlayers: this.getPlayersNotInBattle(),
     };
   }
 

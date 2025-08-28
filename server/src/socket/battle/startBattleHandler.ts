@@ -7,6 +7,7 @@ import { AttackAction } from "../../model/game/action/attack";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
 
+
 export default function proceedBattleTurn(
   io: Server,
   socket: Socket,
