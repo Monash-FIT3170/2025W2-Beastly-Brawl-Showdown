@@ -50,6 +50,7 @@ export default class GameSession {
       // Generate a new game code
       this.gameCode = this.generateGameCode();
     }
+    this.mode = addition.mode
   }
 
   // Generate game code
