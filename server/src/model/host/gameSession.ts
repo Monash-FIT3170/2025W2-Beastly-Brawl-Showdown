@@ -39,13 +39,8 @@ export default class GameSession {
     mostChosenMonster: { monster: null, percentagePick: "0" },
   };
 
-<<<<<<< HEAD
   constructor(hostID: string, addition: {mode: IGameMode, presetGameCode?: number}) {
-=======
-  constructor(hostID: string, gameMode: Mode, presetGameCode?: number) {
->>>>>>> feature/1001.8-battle-royale-host-screen
     this.hostUID = hostID;
-    this.gameMode = gameMode;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
@@ -371,27 +366,6 @@ export default class GameSession {
     return playerStates;
   }
 
-<<<<<<< HEAD
-  public initGame(io: Server, socket: Socket):void {
-    return this.mode.init(this, io, socket)
-  }
-
-  public onActionExecuted(player1Id:string,  player1Result: ActionResult, player2Id: string, player2Result:ActionResult):void {
-    return this.mode.onActionExecuted(this, player1Id, player1Result, player2Id, player2Result);
-  }
-
-  public onBattleEnded(winner: Player | null,battle: Battle, io: Server, socket: Socket): void {
-    return this.mode.onBattleEnded(this, battle ,winner, io,socket);
-  }
-
-  public onBattlesEnded(io: Server, socket: Socket): void {
-    return this.mode.onBattlesEnded(this, io, socket);
-  }
-
-  public isSessionConcluded(): boolean {
-    return this.mode.isSessionConcluded(this);
-  }
-=======
   public getPlayersNotInBattle(): Player[] {
     const allPlayers = this.players.getItems(); // All players in the session
     const playersInBattles = new Set<string>();
@@ -411,5 +385,4 @@ export default class GameSession {
     return playersNotInBattle;
   }
 
->>>>>>> feature/1001.8-battle-royale-host-screen
 }
