@@ -1,16 +1,16 @@
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Monster } from "./monster";
 import { Balanced } from "../archetype/balanced";
-import { ElementalBreathAbilityAction } from "../action/ability/elementalBreath";
+import { FlameLashAbilityAction } from "../action/ability/flameLash";
 
 export class CinderTail extends Monster {
   constructor() {
     super(
       MonsterIdentifier.CINDER_TAIL,
       "Cinder Tail",
-      "A dragon-like creature with vibrant scales and a balanced physique. It possesses both offensive and defensive capabilities, making it versatile in battle.",
+      "A blazing dragon whose tail burns brighter than the sun. Its fiery lash sears through even the quickest dodges, leaving no escape from the flames.",
       new Balanced(),
-      new ElementalBreathAbilityAction(),
+      new FlameLashAbilityAction(),
       25,
       7,
       14

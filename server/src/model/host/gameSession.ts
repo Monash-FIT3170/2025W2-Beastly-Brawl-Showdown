@@ -9,10 +9,10 @@ import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
-import crypto from "crypto";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
 import { BotPlayer } from "../game/botplayer";
+import crypto from "crypto";
 import { IGameMode } from "./gamemode/gameMode";
 import { Server, Socket } from "socket.io";
 import { ActionResult } from "/types/single/actionState";
@@ -26,8 +26,9 @@ export default class GameSession {
   private player_max: number = 120; // Max 120 players
   private battle_max: number = 60; // Max 60 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
-  private monsters: Array<String>;
+  // private monsters: Array<String>;
   private mode: IGameMode;
+  private monsters: Array<String>;
   
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -267,9 +268,9 @@ export default class GameSession {
     );
     battles.set(battleId, battle);
     this.battles.enqueue(battle);
+
     return oddPlayer;
   }
-
   public calculateMostChosenMonster() {
     // Map from monster name to { monster: Monster, count: number }
     const monsterCount: Record<string, { monster: Monster; count: number }> =

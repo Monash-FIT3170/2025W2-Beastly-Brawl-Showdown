@@ -1,31 +1,28 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-<<<<<<< HEAD
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
-=======
-import { ActionIdentifier } from "/types/single/actionState";
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
 import { AttackAction } from "../attack";
+import { get } from "http";
 
 export class TipTheScalesAbilityAction extends Action {
   private attackAction: AttackAction | null = null;
-  private critRate: number;
 
-  constructor(critRate: number) {
+  constructor() {
     super(
       ActionIdentifier.TIP_THE_SCALES,
       "Tip The Scales",
-      "Attack with a biased D20, increasing the odds of success.",
+      "Cheat fate itself. Attack with a loaded d20 where this roll is 10 or higher.",
       1
     );
-    this.critRate = critRate;
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     //initiates an attack with a biased d20
+    var critrate =
+      actingPlayer.getMonster()?.getArchetype().getCritRate() ?? 10;
     this.attackAction = new AttackAction(
       actingPlayer.getAttackStat(),
-      this.critRate,
+      critrate,
       10
     );
     this.attackAction.prepare(actingPlayer, affectedPlayer);
@@ -38,11 +35,15 @@ export class TipTheScalesAbilityAction extends Action {
     return 0;
   }
 
-<<<<<<< HEAD
+  public prepareAnimation(): string | [string, number] {
+    if (this.attackAction) {
+      const diceRollNumber = this.getDiceRoll();
+      return ["roll_dice", diceRollNumber];
+    }
+    return "roll_dice";
+  }
+
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
-=======
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
     this.incCurrentUse(-1);
 
     // Log actions
@@ -59,14 +60,11 @@ export class TipTheScalesAbilityAction extends Action {
     );
 
     this.attackAction?.execute(actingPlayer, affectedPlayer);
-<<<<<<< HEAD
 
     return {
       appliedStatus: {
         success: false
       }
     }
-=======
->>>>>>> 2171564 (3001+3002: new monsters & bugfixes on initial monsters (#50))
   }
 }

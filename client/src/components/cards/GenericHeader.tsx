@@ -1,23 +1,21 @@
 import React, { ReactElement, ReactNode } from "react";
 
-interface HeaderProps{
-    children: ReactNode;
-    color: 'blue' | 'purple' | 'lightYellow' | 'green' | 'red' | 'cream';
+interface HeaderProps {
+  children: ReactNode;
+  color: "blue" | "purple" | "lightYellow" | "green" | "red" | "cream";
 }
 
-export const GenericHeader = ({children, color}: HeaderProps) => {
+export const GenericHeader = ({ children, color }: HeaderProps) => {
+  const colorToDisplay = {
+    blue: "bg-[#55A9ED]",
+    purple: "bg-[#BD55ED]",
+    lightYellow: "bg-[#EDAF55]",
+    green: "bg-[#7EED55]",
+    red: "bg-[#ED5A55]",
+    cream: "bg-[#FFE8B1]",
+  };
 
-    const colorToDisplay = {
-        'blue': 'bg-[#55A9ED]',
-        'purple': 'bg-[#BD55ED]',
-        'lightYellow': 'bg-[#FFE8B1]',
-        'green': 'bg-[#7EED55]',
-        'red': 'bg-[#ED5A55]',
-        'cream': 'bg-[#FFE8B1]'
-    };
-
-    const header = 
-        `
+  const header = `
         ${colorToDisplay[color]}
         mx-auto
         text-large
@@ -40,9 +38,5 @@ export const GenericHeader = ({children, color}: HeaderProps) => {
         top-0
         `;
 
-    return(
-    <div className={`${header}`}>
-        {children}
-    </div>
-    );
-}
+  return <div className={`${header}`}>{children}</div>;
+};

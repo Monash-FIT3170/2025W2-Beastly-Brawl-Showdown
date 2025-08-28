@@ -25,9 +25,10 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidd
 		'large': 'lg:w-[16rem] sm:w-[40rem] lg:h-[4.75rem] sm:h-[15rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]',
 		'medium': 'lg:w-[12rem] sm:w-[25rem] lg:h-[3.75rem] sm:h-[10rem] px-[1.5rem] py-[0.75rem] text-[1.5625rem]',
 		'tiny': 'lg:w-[8.125rem] lg:h-[2.5rem] px-[1.5rem] py-[0.75rem] text-[0.9375rem]',
-		'square': 'w-[2rem] h-[2rem]',
+		'square': 'lg:w-[2rem] lg:h-[2rem] w-[5rem] h-[5rem]',
 		'squaremedium': 'lg:w-[4rem] lg:h-[4rem] sm:w-[8rem] sm:h-[8rem]',
-		'scaling': 'sm:w-min-[40vw] h-[7dvh] md:w-min-[20dvw] lg:w-min-[10dvw] sm:text-[2.1875rem] md:text-[1.5625] lg:text-[0.9375]'
+		'scaling': 'sm:w-min-[40vw] h-[7dvh] md:w-min-[20dvw] lg:w-min-[10dvw] sm:text-[2.1875rem] md:text-[1.5625] lg:text-[0.9375]',
+		'adventure': 'lg:w-[12rem] sm:w-[16rem] lg:h-[3.75rem] sm:h-[8rem] px-[1.5rem] py-[0.75rem]'
 	}
 
 	const mobile = {

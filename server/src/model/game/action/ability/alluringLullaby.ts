@@ -1,24 +1,35 @@
 import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
+import { AttackAction } from "../attack";
 
 export class AlluringLullaby extends Action {
+  private affectedPlayerActions: Action[] = [];
+
   constructor() {
     super(
       ActionIdentifier.ALLURING_LULLABY,
       "Alluring Lullaby",
-      "Confuse your opponent, if they attack you, they will take 5 damage.",
+      "Sing a wicked little tune, confusing your opponent. If your opponent dares attack, they'll hit themselves instead",
       1
     );
     this.setDodgeable(false);
   }
 
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+    this.affectedPlayerActions = affectedPlayer.getActions();
+    const action = new AttackAction(1, 1, 1, 1);
+    affectedPlayer.removeAction(action); //remove attack action - any other action can continue
+  }
+
+  public prepareAnimation(): string | [string, number] {
+    return "AlluringLullaby_Animation";
+  }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
-    affectedPlayer.getActions().forEach((action) => {
+    this.affectedPlayerActions.forEach((action) => {
       // If the action is an attack, apply confusion
       if (action.getActionState().id === ActionIdentifier.ATTACK) {
         affectedPlayer.incHealth(-5);

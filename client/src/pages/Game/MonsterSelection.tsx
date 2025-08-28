@@ -38,7 +38,8 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
   const [selectedMonster, setSelectedMonster] = useState<MonsterState | null>(
     null
   );
-  const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeInfo | null> (null);
+  const [selectedArchetype, setSelectedArchetype] =
+    useState<ArchetypeInfo | null>(null);
   const [abilities, setAbilities] = useState<ActionState[]>([]);
   const [exitPopup, setExitPopup] = useState<Boolean>();
 
@@ -101,13 +102,15 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
   };
 
   const handleCheckInfo = (archetype: ArchetypeIdentifier) => {
-    const chosenArchetype: ArchetypeInfo | null = archetypes.find(archetypeInfo => archetypeInfo.id === archetype) ?? null;
+    const chosenArchetype: ArchetypeInfo | null =
+      archetypes.find((archetypeInfo) => archetypeInfo.id === archetype) ??
+      null;
     setSelectedArchetype(chosenArchetype);
-  }
+  };
 
   const handleCancelInfo = () => {
     setSelectedArchetype(null);
-  }
+  };
 
   const handleConfirmSelection = () => {
     if (selectedMonster) {
@@ -158,83 +161,97 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-40 lg:pt-35">
         <div className="w-full flex items-center flex-col">
           <div className="flex flex-row items-center space-x-5">
-            <OutlineText size = "extraLarge">DEFENDER</OutlineText>
-            <IconButton 
-              size = "small" 
-              style = "info" 
-              buttonColour="alto" 
-              iconColour="black" 
-              onClick={() => handleCheckInfo(ArchetypeIdentifier.DEFENDER)}/>
+            <OutlineText size="extraLarge">DEFENDER</OutlineText>
+            <IconButton
+              size="small"
+              style="info"
+              buttonColour="alto"
+              iconColour="black"
+              onClick={() => handleCheckInfo(ArchetypeIdentifier.DEFENDER)}
+            />
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters.filter(monster => monster.archetypeId === ArchetypeIdentifier.DEFENDER).map((monster) => (
-          <MonsterSelectionCard
-            key={monster.id}
-            monster={monster}
-            type= {monster.archetypeId}
-            onClick={() => handleSelectMonster(monster)}
-          />
-        ))}
+        {monsters
+          .filter(
+            (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
+          )
+          .map((monster) => (
+            <MonsterSelectionCard
+              key={monster.id}
+              monster={monster}
+              type={monster.archetypeId}
+              onClick={() => handleSelectMonster(monster)}
+            />
+          ))}
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
         <div className="w-full flex items-center flex-col">
           <div className="flex flex-row items-center space-x-5">
-            <OutlineText size = "extraLarge">BALANCED</OutlineText>
-            <IconButton 
-              size = "small" 
-              style = "info" 
-              buttonColour="alto" 
-              iconColour="black" 
-              onClick={() => handleCheckInfo(ArchetypeIdentifier.BALANCED)}/>
+            <OutlineText size="extraLarge">BALANCED</OutlineText>
+            <IconButton
+              size="small"
+              style="info"
+              buttonColour="alto"
+              iconColour="black"
+              onClick={() => handleCheckInfo(ArchetypeIdentifier.BALANCED)}
+            />
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters.filter(monster => monster.archetypeId === ArchetypeIdentifier.BALANCED).map((monster) => (
-          <MonsterSelectionCard
-            key={monster.id}
-            monster={monster}
-            type= {monster.archetypeId}
-            onClick={() => handleSelectMonster(monster)}
-          />
-        ))}
+        {monsters
+          .filter(
+            (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
+          )
+          .map((monster) => (
+            <MonsterSelectionCard
+              key={monster.id}
+              monster={monster}
+              type={monster.archetypeId}
+              onClick={() => handleSelectMonster(monster)}
+            />
+          ))}
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
         <div className="w-full flex items-center flex-col">
           <div className="flex flex-row items-center space-x-5">
-            <OutlineText size = "extraLarge">ATTACKER</OutlineText>
-            <IconButton 
-              size = "small" 
-              style = "info" 
-              buttonColour="alto" 
-              iconColour="black" 
-              onClick={() => handleCheckInfo(ArchetypeIdentifier.ATTACKER)}/>
+            <OutlineText size="extraLarge">ATTACKER</OutlineText>
+            <IconButton
+              size="small"
+              style="info"
+              buttonColour="alto"
+              iconColour="black"
+              onClick={() => handleCheckInfo(ArchetypeIdentifier.ATTACKER)}
+            />
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters.filter(monster => monster.archetypeId === ArchetypeIdentifier.ATTACKER).map((monster) => (
-          <MonsterSelectionCard
-            key={monster.id}
-            monster={monster}
-            type= {monster.archetypeId}
-            onClick={() => handleSelectMonster(monster)}
-          />
-        ))}
+        {monsters
+          .filter(
+            (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
+          )
+          .map((monster) => (
+            <MonsterSelectionCard
+              key={monster.id}
+              monster={monster}
+              type={monster.archetypeId}
+              onClick={() => handleSelectMonster(monster)}
+            />
+          ))}
       </div>
-      
+
       {selectedArchetype && (
         <PopupClean>
           <div className="top-0 left-0">
-              <IconButton
-                size="small"
-                style="x"
-                buttonColour="red"
-                iconColour="black"
-                onClick={() => handleCancelInfo()}
-              />
-                
+            <IconButton
+              size="small"
+              style="x"
+              buttonColour="red"
+              iconColour="black"
+              onClick={() => handleCancelInfo()}
+            />
           </div>
           <div className="flex flex-col">
             <OutlineText size="extraLarge">
@@ -345,9 +362,9 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                       className="flex flex-row items-center grow-1 justify-left"
                     >
                       <img
-                        src="/assets/logo/logo.png"
+                        src={"/assets/actions/" + ability.id + ".png"}
                         alt="ability icon"
-                        className="w-[7rem] h-[7rem]"
+                        className="w-[7rem] h-[7rem] rounded-md"
                       />
                       <div>
                         <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
