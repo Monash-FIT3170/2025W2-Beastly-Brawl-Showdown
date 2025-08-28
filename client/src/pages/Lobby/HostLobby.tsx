@@ -88,7 +88,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     // UPDATE: popup asking if they are sure before returning to game setup screen
     socket.emit("cancel-game", { gameCode: code });
     // return game setup screen
-    FlowRouter.go("/gamesettings");
+    FlowRouter.go("/host/gamesettings");
   };
 
   return (
