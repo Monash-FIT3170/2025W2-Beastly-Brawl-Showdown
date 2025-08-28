@@ -5,11 +5,12 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
+import { GameModeIdentifier } from "/types/single/gameMode";
 
 
 export const GameConfiguration = () => {
   // Called on 'Host Lobby' button press
-  const createGame = (mode: Mode) => {
+  const createGame = (mode: GameModeIdentifier) => {
     socket.emit("create-game", { mode });
     console.log("Game session created");
   };
@@ -21,8 +22,7 @@ export const GameConfiguration = () => {
   });
 
   return (
-    console.log("Home"),
-    ( 
+    (
       <BlankPage>
         <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
           <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full"></LogoResizable>
@@ -32,12 +32,12 @@ export const GameConfiguration = () => {
               {/*<ButtonGeneric color="ronchi" size="large" onClick={() => createGame('battle')}>
                   <OutlineText size="large">SINGLE ROUND</OutlineText>
               </ButtonGeneric>*/}
-              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('royale')}>
+              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame(GameModeIdentifier.BATTLE_ROYALE)}>
                   <OutlineText size="large">BATTLE ROYALE</OutlineText>
               </ButtonGeneric>
             </div>
             <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
-              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame('scored')}>
+              <ButtonGeneric color="ronchi" size="large" onClick={() => createGame(GameModeIdentifier.SCORING)}>
                   <OutlineText size="large">SCORED GAME</OutlineText>
               </ButtonGeneric>
             </div>
