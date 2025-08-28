@@ -394,4 +394,23 @@ export default class GameSession {
   public isSessionConcluded(): boolean {
     return this.mode.isSessionConcluded(this);
   }
+  public getPlayersNotInBattle(): Player[] {
+    const allPlayers = this.players.getItems(); // All players in the session
+    const playersInBattles = new Set<string>();
+
+    // Gather IDs of all players currently in battles
+    for (const battle of this.battles.getItems()) {
+      for (const player of battle.getPlayers()) {
+        playersInBattles.add(player.getId());
+      }
+    }
+
+    // Filter players not in the playersInBattles set
+    const playersNotInBattle = allPlayers.filter(
+      (player) => !playersInBattles.has(player.getId())
+    );
+
+    return playersNotInBattle;
+  }
+
 }

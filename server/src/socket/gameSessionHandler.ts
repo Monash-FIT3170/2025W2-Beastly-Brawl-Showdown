@@ -210,11 +210,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       return;
     }
 
-    io.to(`game-${gameCode}`).emit("game-mode", {
-      mode: session.getGameMode()
-    });
-    console.log(`Emitting game mode...`);
-
     io.to(`game-${gameCode}`).emit("start-success", {});
 
     session.calculateMostChosenMonster();
@@ -230,16 +225,12 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       io.to(battle.getId()).emit("battle_started", battle.getId());
       proceedBattleTurn(io, socket, session, battle);
     }
-  });
 
-  socket.on("request-game-mode", ({ gameCode }) => {
-    const gameCodeN = Number(gameCode);
-    const session = activeGameSessions.get(gameCodeN);
-    if (session) {
-      socket.emit("game-mode", {
-        mode: session.getGameMode(),
-      });
-    }
+    //Comment out as host information are updated live in battleHandler
+    // Update host information
+    //   socket.emit("game-session-state", {
+    //     session: session.getGameSessionState(),
+    //   });
   });
 
   // Close game session
