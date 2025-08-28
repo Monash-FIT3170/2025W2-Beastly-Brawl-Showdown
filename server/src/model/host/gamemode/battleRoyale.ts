@@ -38,13 +38,18 @@ export class BattleRoyale implements IGameMode {
 
     console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
     console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
+
+    this.onBattlesEnded(session);
   }
 
 	public onBattlesEnded(session: GameSession): void {
     if (this.isSessionConcluded(session)) {
       let firstPlace = this.remainingPlayers[0];
       let secondPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
-      let thirdPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-2];
+      let thirdPlace: Player | null = null;
+      if (this.eliminatePlayer.length > 1) {
+        thirdPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-2];
+      }
       this.socket?.emit("top-3-battle-royale", {
         gameCode: session.getGameCode(),
         top3: [firstPlace, secondPlace, thirdPlace]
@@ -52,7 +57,7 @@ export class BattleRoyale implements IGameMode {
       console.log(
         "[FINAL RESULTS]: 1st: ", firstPlace.getName(),
         ", 2nd: ", secondPlace.getName(),
-        ", 3rd: ", thirdPlace.getName()
+        ", 3rd: ", thirdPlace?.getName()
       );
 		}
   }
