@@ -10,7 +10,7 @@ import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
 import Rules from "./src/pages/Game/Rules";
 import MatchSummary from "./src/pages/Host View/MatchSummary";
-import { FinalRankings } from "./src/pages/Game/FinalRankings";
+import { FinalResults } from "./src/pages/Game/FinalResults";
 import LevelSelect from "./src/pages/Adventure/LevelSelect";
 import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
@@ -89,10 +89,10 @@ FlowRouter.route("/battles/:code?", {
   },
 });
 
-FlowRouter.route("/rankings/:code?", {
-  name: "FinalRankings",
+FlowRouter.route("/results/:code?", {
+  name: "FinalResults",
     action(params) {
-      mount(() => <FinalRankings gameCode={params.code} />);
+      mount(() => <FinalResults gameCode={params.code} />);
     },
 });
 

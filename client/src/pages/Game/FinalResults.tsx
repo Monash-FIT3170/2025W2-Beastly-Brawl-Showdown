@@ -9,11 +9,11 @@ import socket from "../../socket";
 import { RankingBar } from "../../components/bars/RankingBar";
 import { PlayerState } from "/types/single/playerState";
 
-interface FinalRankingsProps {
+interface FinalResultsProps {
   gameCode?: string;
 }
 
-export const FinalRankings = ({ gameCode }: FinalRankingsProps) => {
+export const FinalResults = ({ gameCode }: FinalResultsProps) => {
   const code = gameCode;
   const [players, setPlayers] = useState<PlayerState[] | null>(null);
 
