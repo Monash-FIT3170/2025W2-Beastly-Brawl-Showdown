@@ -36,12 +36,9 @@ import {
 export const playerAccounts = new Map<string, PlayerAccountSchema>();
 
 // Helper function that
-import { insertPlayer } from "./src/database/dbManager";
 export const activeAdventures = new Map<string, Adventure>();
 
 Meteor.startup(async () => {
-  console.log("MONGO_URL:", process.env.MONGO_URL); // Testing for database connection
-
   // Initialise socket
   const server = http.createServer();
   const PORT = 3002;
