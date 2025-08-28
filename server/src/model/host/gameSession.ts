@@ -8,18 +8,13 @@ import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { PlayerState } from "/types/single/playerState";``
 import { RockyRhino } from "../game/monster/rockyRhino";
-import { PouncingBandit } from "../game/monster/pouncingBandit";
-import { CinderTail } from "../game/monster/cinderTail";
-import { BotPlayer } from "../game/botplayer";
-import { IGameMode } from "./gamemode/gameMode";
-import { Server, Socket } from "socket.io";
-import { ActionResult } from "/types/single/actionState";
 import crypto from "crypto";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
 import { BotPlayer } from "../game/botplayer";
 import { IGameMode } from "./gamemode/gameMode";
 import { Server, Socket } from "socket.io";
+import { ActionResult } from "/types/single/actionState";
 
 export default class GameSession {
   private hostUID: string;
@@ -45,7 +40,6 @@ export default class GameSession {
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
     this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
-    this.mode = addition.mode
 
     if (addition.presetGameCode !== undefined) {
       // Use preset game code if provided
@@ -54,6 +48,7 @@ export default class GameSession {
       // Generate a new game code
       this.gameCode = this.generateGameCode();
     }
+    this.mode = addition.mode
   }
 
   // Generate game code
@@ -108,10 +103,6 @@ export default class GameSession {
   }
   public getMonsters(){
     return this.monsters;
-  }
-
-  public clearBattles():void {
-    this.battles = new Queue<Battle>();
   }
 
   // Add player to Game Session queue
@@ -273,7 +264,7 @@ export default class GameSession {
     if (placerHolderMonster == "CinderTail"){
       placeHolderPlayer.setMonster(new CinderTail());
     }           
-    // placeHolderPlayer.setHealth(0);
+    placeHolderPlayer.setHealth(0);
     const battle = new Battle(
       battleId,
       oddPlayer,
@@ -366,6 +357,25 @@ export default class GameSession {
     return playerStates;
   }
 
+  public initGame(io: Server, socket: Socket):void {
+    return this.mode.init(this, io, socket)
+  }
+
+  public onActionExecuted(player1Id:string,  player1Result: ActionResult, player2Id: string, player2Result:ActionResult):void {
+    return this.mode.onActionExecuted(this, player1Id, player1Result, player2Id, player2Result);
+  }
+
+  public onBattleEnded(winner: Player | null,battle: Battle, io: Server, socket: Socket): void {
+    return this.mode.onBattleEnded(this, battle ,winner, io,socket);
+  }
+
+  public onBattlesEnded(io: Server, socket: Socket): void {
+    return this.mode.onBattlesEnded(this, io, socket);
+  }
+
+  public isSessionConcluded(): boolean {
+    return this.mode.isSessionConcluded(this);
+  }
   public getPlayersNotInBattle(): Player[] {
     const allPlayers = this.players.getItems(); // All players in the session
     const playersInBattles = new Set<string>();
