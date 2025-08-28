@@ -19,8 +19,8 @@ export interface storyOutcomes {
   status: Status; // populated at runtime
   enemyId?: string; // <-- NEW
   enemy?: Monster; // populated at runtime
-  itemId?: string; // <-- NEW
-  item?: any; // populated at runtime
+  consumableId?: string; // <-- NEW
+  consumable?: any; // populated at runtime
   equipmentId?: string;
   equipment?: any; //populated at runtime
   next?: string;
@@ -36,7 +36,7 @@ export interface option {
 
 export enum EncounterType {
   FIGHT = "FIGHT",
-  ITEM = "ITEM",
+  CONSUMABLE = "CONSUMABLE",
   EQUIPMENT = "EQUIPMENT",
   STAT_CHANGE = "STAT_CHANGE",
   DIALOGUE = "DIALOGUE",

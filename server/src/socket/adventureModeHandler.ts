@@ -314,12 +314,12 @@ export async function progressAdventure(
         result: resolved.result,
         choices: resolved.options,
       });
-    } else if (resolved.type === "ITEM") {
-      socket.emit("adventure_item", {
-        name: resolved.item?.getName() || "Unknown Item",
+    } else if (resolved.type === "CONSUMABLE") {
+      socket.emit("adventure_consumable", {
+        name: resolved.consumable?.getName() || "Unknown Consumable",
       });
       //TODO: update
-      // adventure.getPlayer().addToInventory(resolved.item!);
+      // adventure.getPlayer().addToInventory(resolved.consumable!);
     } else if (resolved.type === "STAT_CHANGE") {
       // Handle stat change
       const [stat, change] = resolved.statChange!;

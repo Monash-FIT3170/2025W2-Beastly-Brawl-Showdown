@@ -1,6 +1,6 @@
 import { EncounterType, storyOutcomes } from "/types/composite/storyTypes";
 import { createEnemy } from "./factories/enemyFactory";
-import { createItem } from "./factories/itemFactory";
+import { createConsumable } from "./factories/consumableFactory";
 import { createEquipment } from "./factories/equipmentFactory";
 import { createStatus } from "./factories/statusFactory";
 
@@ -10,7 +10,7 @@ export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
       return { ...raw, enemy: createEnemy(raw.enemyId!) };
 
     case EncounterType.ITEM:
-      return { ...raw, item: createItem(raw.itemId!) };
+      return { ...raw, item: createConsumable(raw.itemId!) };
 
     case EncounterType.STAT_CHANGE:
       return raw;
