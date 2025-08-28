@@ -40,11 +40,8 @@ export class BattleRoyale implements IGameMode {
     console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
   }
 
-	public onBattlesEnded(session: GameSession): void { }
-
-	public isSessionConcluded(session: GameSession): boolean {
-    let isSessionConcluded = this.remainingPlayers.length == 1;
-    if (isSessionConcluded) {
+	public onBattlesEnded(session: GameSession): void {
+    if (this.isSessionConcluded(session)) {
       let firstPlace = this.remainingPlayers[0];
       let secondPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
       let thirdPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-2];
@@ -57,8 +54,11 @@ export class BattleRoyale implements IGameMode {
         ", 2nd: ", secondPlace.getName(),
         ", 3rd: ", thirdPlace.getName()
       );
-    }
-    return isSessionConcluded;
+		}
+  }
+
+	public isSessionConcluded(session: GameSession): boolean {
+    return this.remainingPlayers.length <= 1;
   }
 
   private eliminatePlayer(player: Player): void {
