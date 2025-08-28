@@ -13,11 +13,7 @@ export interface PlayerState {
   successBlock: number;
   successHit: number; 
 
-<<<<<<< HEAD
   statuses: Status[];
-=======
-  score: number | null;
->>>>>>> 258e14f (1001.8: Add score cards to scored game lobby.)
 
   monster: MonsterState | null;
 

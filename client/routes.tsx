@@ -83,12 +83,6 @@ FlowRouter.route("/battles/:code?", {
   },
 });
 
-FlowRouter.route('/config', {
-  name: 'GameConfiguraion',
-  action() {
-    mount(GameConfiguration);
-  },
-});
 
 
 
