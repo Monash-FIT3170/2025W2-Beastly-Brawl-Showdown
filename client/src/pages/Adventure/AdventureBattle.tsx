@@ -50,6 +50,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
     null
   );
+  const [statusResult, setStatusResult] = useState<string[] | null>(null);
   const battleId = "ADVENTURE";
   //TODO: set player state
   const [playerState, setPlayerState] = useState<PlayerState | null>();
@@ -89,6 +90,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         setCurrentEnemy(null);
       } else if (state.type === "stat_change") {
         setStatChange(state.result);
+        setBattleState(null); // Clear battle
+        setCurrentEnemy(null);
+      } else if (state.type === "status") {
+        setStatusResult(state.result);
         setBattleState(null); // Clear battle
         setCurrentEnemy(null);
       }
@@ -221,6 +226,17 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
               messages={statChange}
               onClose={() => {
                 setStatChange(null);
+                socket.emit("adventure_next", { stage });
+              }}
+            />
+          </div>
+        )}
+        {statusResult && (
+          <div>
+            <StatChangePopup
+              messages={statusResult}
+              onClose={() => {
+                setStatusResult(null);
                 socket.emit("adventure_next", { stage });
               }}
             />

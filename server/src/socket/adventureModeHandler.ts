@@ -337,12 +337,10 @@ export async function progressAdventure(
       });
       //TODO: Make a socket call for players to show added equipment/Equipment to remove
     } else if (resolved.type === "PREREQUISITE") {
-      console.log("hey", resolved.options);
       for (const option of resolved.options!) {
         if (!option.prerequisite) {
           adventure.currentOutcomeId = option.next;
           adventure.pastEncounters.push(adventure.currentOutcomeId);
-          console.log("Am I see this");
           break;
         }
         const setB = new Set(adventure.pastEncounters);
@@ -354,6 +352,15 @@ export async function progressAdventure(
         }
       }
       progressAdventure(io, socket, adventure, stage);
+    } else if (resolved.type === "STATUS") {
+      // Handle status
+      adventure.getPlayer().addStatus(resolved.status!);
+
+      socket.emit("adventure_state", {
+        type: "status",
+        result: resolved.result,
+        next: resolved.next,
+      });
     }
   } catch (err) {
     console.error("Adventure stage load error:", err);
