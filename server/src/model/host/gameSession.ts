@@ -27,6 +27,7 @@ export default class GameSession {
   private battle_max: number = 60; // Max 60 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
   private monsters: Array<String>;
+  private mode: IGameMode;
   
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -40,13 +41,14 @@ export default class GameSession {
     this.battles = new Queue<Battle>(this.battle_max);
     this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
 
-    if (presetGameCode !== undefined) {
+    if (addition.presetGameCode !== undefined) {
       // Use preset game code if provided
-      this.gameCode = presetGameCode;
+      this.gameCode = addition.presetGameCode;
     } else {
       // Generate a new game code
       this.gameCode = this.generateGameCode();
     }
+    this.mode = addition.mode
   }
 
   // Generate game code
