@@ -13,11 +13,7 @@ export interface PlayerState {
   successBlock: number;
   successHit: number; 
 
-<<<<<<< HEAD
   statuses: Status[];
-=======
-  score: number | null;
->>>>>>> feature/1001.8-battle-royale-host-screen
 
   monster: MonsterState | null;
 
