@@ -76,6 +76,8 @@ export async function verifyPassword(inputPassword: string, hashedPassword: stri
     }
 
     console.log(` --- Verifying Password --- `);
+    console.log('Verifying password:', inputPassword);
+    console.log('With hashed password:', hashedPassword);
 
     const res = await bcrypt.compare(inputPassword, hashedPassword);
     console.log(`Password verification result: ${res}\n`);
