@@ -3,11 +3,14 @@ import { OutlineText } from "../texts/OutlineText";
 
 // Add `isDisabled` prop type
 interface SliderProps {
+  max?: number, 
+  min?: number,
+  selectedValue: number;
+  setSelectedValue: (index: number) => void;
   isDisabled?: boolean;
 }
 
-export const Slider: React.FC<SliderProps> = ({ isDisabled = false }) => {
-  const [value, setValue] = useState<number>(5);
+export const Slider: React.FC<SliderProps> = ({ max = 100, min = 0, selectedValue, setSelectedValue, isDisabled = false }) => {
 
   return (
     <div
@@ -16,16 +19,16 @@ export const Slider: React.FC<SliderProps> = ({ isDisabled = false }) => {
     >
       <input
         type="range"
-        min="1"
-        max="10"
-        value={value}
-        onChange={(e) => setValue(Number(e.target.value))}
+        min={min}
+        max={max}
+        value={selectedValue}
+        onChange={(e) => setSelectedValue(Number(e.target.value))}
         disabled={isDisabled}
         className={`w-full h-2 bg-gray-200 rounded-lg appearance-none border-[2px] border-blackCurrant 
           ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       />
       <span className="text-lg font-medium">
-        <OutlineText size="large">{value}</OutlineText>
+        <OutlineText size="large">{selectedValue}</OutlineText>
       </span>
     </div>
   );
