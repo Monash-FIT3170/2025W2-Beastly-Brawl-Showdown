@@ -21,6 +21,7 @@ import { TotalHealthBar } from "../../components/bars/TotalHealthBar";
 import { ArmourClassBar } from "../../components/bars/ArmourClassBar";
 import { AttackBonusBar } from "../../components/bars/AttackBonusBar";
 import { BlackText } from "../../components/texts/BlackText";
+import { OutlineTextResizable } from "../../components/texts/ResizableOutlineText";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { IconButton } from "../../components/buttons/IconButton";
 import { HeaderWithLeave } from "../../components/cards/HeaderWithLeave";
@@ -151,18 +152,30 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters
-          .filter(
-            (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
-          )
-          .map((monster) => (
-            <MonsterSelectionCard
-              key={monster.id}
-              monster={monster}
-              type={monster.archetypeId}
-              onClick={() => handleSelectMonster(monster)}
-            />
-          ))}
+        {monsters.filter(
+          (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
+        ).length === 0 ? (
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full text-center">
+              <BlackText size="medium">
+                NO DEFENDER MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE.
+              </BlackText>
+            </div>
+          </div>
+        ) : (
+          monsters
+            .filter(
+              (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
+            )
+            .map((monster) => (
+              <MonsterSelectionCard
+                key={monster.id}
+                monster={monster}
+                type={monster.archetypeId}
+                onClick={() => handleSelectMonster(monster)}
+              />
+            ))
+        )}
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
@@ -179,18 +192,30 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters
-          .filter(
-            (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
-          )
-          .map((monster) => (
-            <MonsterSelectionCard
-              key={monster.id}
-              monster={monster}
-              type={monster.archetypeId}
-              onClick={() => handleSelectMonster(monster)}
-            />
-          ))}
+        {monsters.filter(
+          (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
+        ).length === 0 ? (
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full text-center">
+              <BlackText size="medium">
+                NO BALANCED MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE.
+              </BlackText>
+            </div>
+          </div>
+        ) : (
+          monsters
+            .filter(
+              (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
+            )
+            .map((monster) => (
+              <MonsterSelectionCard
+                key={monster.id}
+                monster={monster}
+                type={monster.archetypeId}
+                onClick={() => handleSelectMonster(monster)}
+              />
+            ))
+        )}
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
@@ -207,18 +232,30 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters
-          .filter(
-            (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
-          )
-          .map((monster) => (
-            <MonsterSelectionCard
-              key={monster.id}
-              monster={monster}
-              type={monster.archetypeId}
-              onClick={() => handleSelectMonster(monster)}
-            />
-          ))}
+        {monsters.filter(
+          (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
+        ).length === 0 ? (
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full text-center">
+              <BlackText size="medium">
+                NO ATTACKER MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE.
+              </BlackText>
+            </div>
+          </div>
+        ) : (
+          monsters
+            .filter(
+              (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
+            )
+            .map((monster) => (
+              <MonsterSelectionCard
+                key={monster.id}
+                monster={monster}
+                type={monster.archetypeId}
+                onClick={() => handleSelectMonster(monster)}
+              />
+            ))
+        )}
       </div>
 
       {selectedArchetype && (

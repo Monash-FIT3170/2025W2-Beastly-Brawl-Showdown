@@ -1,12 +1,12 @@
 import React, { ReactNode, useState } from "react";
 import { IconButton } from "../buttons/IconButton";
 
-interface PopupProp {
+interface PopupAdventureProp {
   colour?: string;
   children?: ReactNode;
 }
 
-export const PopupClean = ({ colour, children }: PopupProp) => {
+export const PopupAdventure = ({ colour, children }: PopupAdventureProp) => {
   const [visible, setVisible] = useState(true);
   if (!visible) return null;
   const colourLoader: Record<string, string> = {
@@ -52,18 +52,12 @@ export const PopupClean = ({ colour, children }: PopupProp) => {
         flex-col
         break-words
         z-50  
+        h-[95%]
         `;
-
-  const popupText = `
-        py-[5rem]
-        px-[3rem]
-      `;
 
   return (
     <div className={`${popupLayout}`}>
-      <div className={`${popup}`}>
-        <div className={`${popupText}`}>{children}</div>
-      </div>
+      <div className={`${popup}`}>{children}</div>
     </div>
   );
 };

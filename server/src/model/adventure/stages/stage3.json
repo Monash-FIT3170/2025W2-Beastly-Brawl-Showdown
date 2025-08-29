@@ -68,8 +68,8 @@
       },
       {
         "id": "friendship_conclusion",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "slime_fight",
@@ -88,8 +88,8 @@
       },
       {
         "id": "slime_scent",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "no_investigation",

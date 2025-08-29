@@ -1,12 +1,18 @@
 import { Player } from "../player";
 import { Consumable } from "./consumable";
 
-export class HealthPotion extends Consumable {
-  constructor() {
-    super("Health Potion");
+export class PercentageHealthPotion extends Consumable {
+  private percent: number;
+
+  constructor(name: string, percent: number) {
+    super(name);
+    this.percent = percent;
   }
 
   public consume(player: Player): void {
-    player.getMonster().incHealth(5);
+    const healAmount = Math.ceil(
+      player.getMonster()!.getMaxHealth() * this.percent
+    );
+    player.incHealth(healAmount);
   }
 }

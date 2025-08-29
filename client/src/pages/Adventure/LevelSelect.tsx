@@ -5,12 +5,21 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { IconButton } from "../../components/buttons/IconButton";
 import socket from "../../socket";
+import { MonsterIdentifier } from "/types/single/monsterState";
 
 interface LevelSelectProps {}
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(0);
-  const UNLOCKED_LEVELS = [0, 1];
+  const UNLOCKED_LEVELS = [0];
+
+  const levelMap: Record<number, MonsterIdentifier> = {
+    0: MonsterIdentifier.POUNCING_BANDIT,
+    1: MonsterIdentifier.CINDER_TAIL,
+    2: MonsterIdentifier.FURIOUS_FLIPPER,
+    3: MonsterIdentifier.POISON_POGO,
+    4: MonsterIdentifier.CHARMER_COBRA,
+  };
 
   const alterLevel = (val: number) => {
     setObservedLevel(observedLevel + val);
@@ -20,8 +29,11 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     socket.emit("adventure_level_selected", { level: observedLevel + 1 });
     FlowRouter.go("/adventure/monster-select");
   };
-  const monster = "None";
-  const monsterImage = "/assets/characters/" + monster + ".png";
+  const monster = levelMap[observedLevel] ?? "None";
+
+  const monsterImage = UNLOCKED_LEVELS.includes(observedLevel)
+    ? "/assets/characters/" + monster + ".png"
+    : "/assets/characters/silhouettes/" + monster + "_SILHOUETTE.png";
 
   return (
     <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">
@@ -85,7 +97,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         </div>
 
         <div className="flex justify-center items-center">
-          {observedLevel != 5 && (
+          {observedLevel != 4 && (
             <IconButton
               style="arrowright"
               buttonColour="blue"
