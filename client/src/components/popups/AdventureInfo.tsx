@@ -13,6 +13,7 @@ import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 import { PopupAdventure } from "./PopupAdventure";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
 import { BlackText } from "../texts/BlackText";
+import { StatInfoIcon } from "../cards/StatInfoIcon";
 
 export interface AdventureInfoPopupProp {
   playerState: PlayerState | null | undefined;
@@ -71,10 +72,24 @@ export const AdventureInfoPopup = ({
             <OutlineText size="choice-text">
               {currentlyViewing[viewingTab]}
             </OutlineText>
-            <div className="flex flex-row"></div>
           </div>
           {viewingTab === 0 && (
             <>
+              <div className="flex flex-row justify-evenly">
+                <StatInfoIcon
+                  stat="ac"
+                  statVal={playerState?.currentArmourClassStat!}
+                ></StatInfoIcon>
+                <StatInfoIcon
+                  stat="hp"
+                  statVal={playerState?.currentHealth!}
+                ></StatInfoIcon>
+                <StatInfoIcon
+                  stat="atk+"
+                  statVal={playerState?.currentAttackStat!}
+                ></StatInfoIcon>
+              </div>
+
               <div className="bg-[#EDAF55] outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
                 <OutlineText size="choice-text">ABILITIES</OutlineText>
               </div>
