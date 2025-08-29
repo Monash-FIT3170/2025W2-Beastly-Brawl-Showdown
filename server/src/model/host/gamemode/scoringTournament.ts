@@ -10,6 +10,7 @@ import { ScoringConfig } from "/types/single/scoringConfig";
 import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
 import { ActionResult } from "/types/single/actionState";
 import { BonusSystem, defaultBonus } from "/types/single/playerScore";
+import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 
 export class ScoringTournament implements IGameMode{
 	name = GameModeIdentifier.SCORING as const;
@@ -68,7 +69,7 @@ export class ScoringTournament implements IGameMode{
 			console.log("Server test 1", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
 			this.playerFinished += 1
 			console.log(this.playerFinished,session.getPlayers().getItems().length)
-			if ( this.playerFinished == session.getPlayers().getItems().length){
+			if ( this.playerFinished == session.getEffectivePlayer()){
 				this.onBattlesEnded(session, io, socket)
 		}
 		})
@@ -77,7 +78,7 @@ export class ScoringTournament implements IGameMode{
 			console.log("Server test 2", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
 			this.playerFinished += 1
 			console.log(this.playerFinished,session.getPlayers().getItems().length)
-			if (this.playerFinished == session.getPlayers().getItems().length){
+			if (this.playerFinished == session.getEffectivePlayer()){
 			this.onBattlesEnded(session, io, socket)
 		}
 		})
@@ -119,12 +120,19 @@ export class ScoringTournament implements IGameMode{
 			
 		}
 
-
+	//Provide metadata of scoring tournament
+	getMetadata(): GameSessionStateMetaData {
+		return {
+			round: this.round
+		}
+	}
 	
 
 	//Check whether the game session has ended
 	isSessionConcluded(session: GameSession): boolean {
 		return this.round > this.config.rounds
 	}
+
+	
 	
 }

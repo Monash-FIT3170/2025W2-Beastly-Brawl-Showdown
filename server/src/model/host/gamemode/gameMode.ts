@@ -4,6 +4,7 @@ import { Player } from "../../game/player";
 import GameSession from "../gameSession";
 import { GameModeIdentifier } from "/types/single/gameMode";
 import { ActionResult } from "/types/single/actionState";
+import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 
 export interface IGameMode {
 	name: GameModeIdentifier
@@ -12,4 +13,5 @@ export interface IGameMode {
 	onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void //handle logic after a (single) battle ends
 	onBattlesEnded(session: GameSession, io: Server, socket: Socket):void //handle logic after all the battle instances end
 	isSessionConcluded(session: GameSession): boolean; //check the end condition for the game mode
+	getMetadata(): GameSessionStateMetaData; //any meta data that is specifically passed on certain game mode
 }

@@ -14,6 +14,7 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import { GameModeIdentifier } from "/types/single/gameMode";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -21,7 +22,7 @@ interface HostBattlesProps {
 
 const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const code = gameCode; // Currently unused, used for potential page changes
-  const [gameMode, setGameMode] = useState<Mode>(null);
+  const [gameMode, setGameMode] = useState<GameModeIdentifier|null>(null);
   const [gameSession, setGameSession] = useState<GameSessionState>();
   const [playerStats, setPlayerStats] = useState<PlayerStats>();
   const [exit, setExit] = useState<Boolean>();
@@ -174,7 +175,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
               onClick={() => setExit(true)}
             />
           </div>
-          <RoundNumberHeader roundNumber={gameSession.round} />
+          <RoundNumberHeader roundNumber={gameSession.metadata.round} />
           {/* Main content area with grid layout */}
           <div
             style={{

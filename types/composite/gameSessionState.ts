@@ -11,4 +11,9 @@ export interface GameSessionState {
   totalPlayers: number;
   remainingPlayers: number;
   waitingPlayers: Player[];
+  metadata: GameSessionStateMetaData
+}
+
+export interface GameSessionStateMetaData{
+  round?: number
 }

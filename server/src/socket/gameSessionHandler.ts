@@ -10,12 +10,8 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
   socket.on("create-game", ({ mode }) => {
     console.log("Attempting game session creation...");
-<<<<<<< HEAD
     //Setting the default to be ScoringTournament for now
     const session = new GameSession(socket.id, {mode: new ScoringTournament({rounds : 3})});
-=======
-    const session = new GameSession(socket.id, mode);
->>>>>>> c2cc8c2 (1001.7: Add Mode type and add it as a parameter to GameSession.)
     // Check if game code already exists, if so, generate a new one
     while (activeGameSessions.has(session.getGameCode())) {
       console.log("Game session already exists. Generating new code...");
