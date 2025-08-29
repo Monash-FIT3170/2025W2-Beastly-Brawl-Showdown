@@ -49,6 +49,12 @@ export class BattleRoyale implements IGameMode {
     const p1 = io.sockets.sockets.get(battle.getPlayers()[0].getId())
     console.log("After battle p1: ", p1)
 
+    if (this.isSessionConcluded(session)) {
+      console.log("")
+      console.log(`Only ${this.remainingPlayers.length} remains. Session ends here.`)
+      console.log("")
+    }
+
     io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
       console.log("Server test 1 (Royale)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
       if (winner != null) {
