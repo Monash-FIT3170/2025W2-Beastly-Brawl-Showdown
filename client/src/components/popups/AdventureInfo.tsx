@@ -12,6 +12,7 @@ import { IconButton } from "../buttons/IconButton";
 import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 import { PopupAdventure } from "./PopupAdventure";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import { BlackText } from "../texts/BlackText";
 
 export interface AdventureInfoPopupProp {
   playerState: PlayerState | null | undefined;
@@ -27,6 +28,7 @@ export const AdventureInfoPopup = ({
   const currentlyViewing = ["MONSTER STATS", "CURRENT STATUSES"];
 
   useEffect(() => {
+    setCurrentAbilities([]);
     for (const action of playerState?.monster?.possibleActions!) {
       if (
         action.id !== ActionIdentifier.ATTACK &&
@@ -79,7 +81,7 @@ export const AdventureInfoPopup = ({
               {currentAbilities.map((ability, idx) => (
                 <div
                   key={ability.id || idx}
-                  className="flex flex-row items-center grow-1 justify-left"
+                  className="flex flex-row items-center justify-left"
                 >
                   <img
                     src={"/assets/actions/" + ability.id + ".png"}
@@ -87,13 +89,9 @@ export const AdventureInfoPopup = ({
                     className="w-[7rem] h-[7rem]"
                   />
                   <div>
-                    <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
-                      {ability.name}
-                    </p>
+                    <OutlineText size="medium">{ability.name}</OutlineText>
                     {/**<BlackText size="medium">{ability.description}</BlackText>*/}
-                    <p className="text-black font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">
-                      {ability.description}
-                    </p>
+                    <BlackText size="medium">{ability.description}</BlackText>
                   </div>
                 </div>
               ))}

@@ -1,5 +1,5 @@
-import { PercentageHealthPotion } from "../../game/item/healthPotion";
-import { Consumable } from "../../game/item/consumable";
+import { PercentageHealthPotion } from "../../game/consumables/healthPotion";
+import { Consumable } from "../../game/consumables/consumable";
 
 const ConsumableFactory: Record<string, () => Consumable> = {
   mini_health_potion: () =>
