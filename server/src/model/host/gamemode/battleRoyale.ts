@@ -44,26 +44,17 @@ export class BattleRoyale implements IGameMode {
 
 	public onBattlesEnded(session: GameSession): void {
     if (this.isSessionConcluded(session)) {
-      let firstPlace = this.remainingPlayers[0];
-      let secondPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
-      let thirdPlace: Player | null = null;
-      if (this.eliminatePlayer.length > 1) {
-        thirdPlace = this.eliminatedPlayers[this.eliminatedPlayers.length-2];
-      }
-      const top3 = [
-        firstPlace.getPlayerState(),
-        secondPlace.getPlayerState(),
-        thirdPlace?.getPlayerState() ?? null
+      let winner = this.remainingPlayers[0];
+      let runnerUp = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
+      const top2 = [  // Top 2 are the winner and runner up
+        winner.getPlayerState(),
+        runnerUp.getPlayerState()
       ];
       const gameCode = session.getGameCode();
-      this.io?.to(`game-${gameCode}`).emit("final-results-response", { top3 });
-      session.setFinalResults(top3);
+      this.io?.to(`game-${gameCode}`).emit("final-results-response", { playersToDisplay: top2 });
+      session.setFinalResults(top2);
 
-      console.log(
-        "[FINAL RESULTS]: 1st: ", firstPlace.getName(),
-        ", 2nd: ", secondPlace.getName(),
-        ", 3rd: ", thirdPlace?.getName()
-      );
+      console.log(`[FINAL RESULTS]: Winner: ${winner.getName()}, Runner up: ${runnerUp.getName()}`);
 		}
   }
 

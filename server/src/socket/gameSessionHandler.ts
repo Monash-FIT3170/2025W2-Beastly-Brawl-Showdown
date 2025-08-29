@@ -269,14 +269,14 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
   socket.on("get-final-results", ({ gameCode }) => {
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
-    const top3 = session?.getFinalResults();
+    const finalResults = session?.getFinalResults();
 
-    if (top3) {
-      console.log("Successfully retrieved final results");
-      socket.emit("final-results-response", { top3 });
+    if (finalResults) {
+      console.log(`Successfully retrieved final results for game code ${gameCode}`);
+      socket.emit("final-results-response", { playersToDisplay: finalResults });
     } else {
       console.log(`Failed to retrieve final results for game code ${gameCode}`);
-      socket.emit("final-results-response", { top3: [] });
+      socket.emit("final-results-response", { playersToDisplay: [] });
     }
   });
 };

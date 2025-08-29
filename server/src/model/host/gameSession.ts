@@ -390,8 +390,8 @@ export default class GameSession {
     return playersNotInBattle;
   }
 
-  public setFinalResults(top3: (PlayerState | null)[]) {
-    this.finalResults = top3;
+  public setFinalResults(finalResults: (PlayerState | null)[]) {
+    this.finalResults = finalResults;
   }
 
   public getFinalResults(): (PlayerState | null)[] {
