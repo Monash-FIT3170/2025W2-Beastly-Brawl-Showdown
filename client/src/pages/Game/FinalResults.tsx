@@ -13,10 +13,11 @@ interface FinalResultsProps {
   gameCode?: string;
 }
 
+// TODO: Update UI to handle draws!!!
+
 export const FinalResults = ({ gameCode }: FinalResultsProps) => {
   const code = gameCode;
-  // const [players, setPlayers] = useState<Player[] | null>(null);
-  const [top3, setTop3] = useState<PlayerState[] | null>(null);
+  const [playersToDisplay, setPlayersToDisplay] = useState<PlayerState[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export const FinalResults = ({ gameCode }: FinalResultsProps) => {
 
     socket.emit('get-final-results', { gameCode: code });
     socket.on('final-results-response', ({ top3 }) => {
-      setTop3(top3);
+      setPlayersToDisplay(top3);
       setLoading(false);
     });
 
@@ -34,10 +35,12 @@ export const FinalResults = ({ gameCode }: FinalResultsProps) => {
   }, [code]);
 
   // Show loading UI until results are available
-  if (loading || top3 === null) {
+  if (loading || playersToDisplay === null) {
     console.log("Waiting for players to be fetched...");
     return <div><OutlineText size="large">Loading final results...</OutlineText></div>;
   }
+
+  console.log(`Players fetched: ${playersToDisplay.length}\n`);
 
   /* TODO: Check if this is correct */
   // Button handler for restarting a new lobby
@@ -62,14 +65,11 @@ export const FinalResults = ({ gameCode }: FinalResultsProps) => {
     FlowRouter.go("/");
   };
 
-  // Temporarily hardcoding the players' rankings
-  // Hardcoded to use the first 2-3 players
-  console.log(`Players fetched: ${top3.length}\n`);
-  const firstPlace = top3[0];
-  const secondPlace = top3[1];
+  const firstPlace = playersToDisplay[0];
+  const secondPlace = playersToDisplay[1];
   let thirdPlace: PlayerState | null = null;
-  if (top3.length >= 3) {
-    thirdPlace = top3[2];
+  if (playersToDisplay.length >= 3) {
+    thirdPlace = playersToDisplay[2];
   }
 
   return (
