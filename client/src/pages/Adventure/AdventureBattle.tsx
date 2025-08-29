@@ -29,6 +29,7 @@ import { IconButton } from "../../components/buttons/IconButton";
 import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfoPanel";
 import { PlayerState } from "/types/single/playerState";
 import { Equipment } from "../../../../server/src/model/game/equipment/equipment";
+import { BackpackButton } from "../../components/buttons/BackpackButton";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -259,7 +260,26 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         )}
         {!battleState && playerState && (
           <>
-            <AdventureInfoPanel playerState={playerState} />
+            <div class="flex items-center gap-4 px-[20px]">
+              <div class="flex-1">
+                <div class="panel">
+                  <AdventureInfoPanel
+                    playerState={playerState}
+                    level={0}
+                    stage={0}
+                  />
+                </div>
+              </div>
+              <div class="py-[12px]">
+                <ButtonGeneric color={"ronchi"} size={"backpack"}>
+                  <img
+                    src={"/assets/backpack.png"}
+                    class={"w-[80%] h-[80%] object-contain mx-auto"}
+                  ></img>
+                </ButtonGeneric>
+              </div>
+            </div>
+
             <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
               <IconButton
                 style="arrowleft"
@@ -272,9 +292,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                 open={showLeave}
                 onClose={() => setShowLeave(false)}
               />
-              <ButtonGeneric color={"ronchi"} size={"tiny"}>
-                INVENTORY
-              </ButtonGeneric>
+
               <ButtonGeneric color={"blue"} size={"tiny"}>
                 INFO
               </ButtonGeneric>
@@ -282,6 +300,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             {/* INSERT INVENTORY */}
           </>
         )}
+
+        {/* DURING BATTLE UI */}
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
             <PlayerInfoPanel battleState={battleState} />

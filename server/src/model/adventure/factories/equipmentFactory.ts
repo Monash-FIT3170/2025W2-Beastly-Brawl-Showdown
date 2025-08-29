@@ -9,9 +9,9 @@ import { SharpenedClaws } from "../../game/equipment/sharpenedClaws";
 const equipmentFactory: Record<string, () => Equipment> = {
   oozingBlade: () => new OozingBlade(),
   lifeFang: () => new LifeFang(),
-  magicShield: () => new MagicShield(1),
-  pufferPrickle: () => new PufferPrickle(1),
-  sharpenedClaws: () => new SharpenedClaws(1),
+  magicShield: () => new MagicShield(),
+  pufferPrickle: () => new PufferPrickle(),
+  sharpenedClaws: () => new SharpenedClaws(),
   blazingGauntlets: () => new BlazingGauntlets(),
 };
 
