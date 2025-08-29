@@ -46,7 +46,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const [question, setQuestion] = useState<string[] | null>(null);
   const [choices, setChoices] = useState<option[] | null>(null);
   const [statChange, setStatChange] = useState<string[] | null>(null);
-  const [receivingItem, setReceivingItem] = useState<string | null>(null);
+  const [receivingConsumable, setReceivingConsumable] = useState<string | null>(
+    null
+  );
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
   const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
@@ -54,7 +56,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   );
   const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
   const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
-
+  const [statusResult, setStatusResult] = useState<string[] | null>(null);
   const battleId = "ADVENTURE";
   //TODO: set player state
   const [playerState, setPlayerState] = useState<PlayerState | null>();
@@ -96,11 +98,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         setStatChange(state.result);
         setBattleState(null); // Clear battle
         setCurrentEnemy(null);
+      } else if (state.type === "status") {
+        setStatusResult(state.result);
+        setBattleState(null); // Clear battle
+        setCurrentEnemy(null);
       }
     });
 
-    socket.on("adventure_item", (itemName) => {
-      setReceivingItem(itemName.name);
+    socket.on("adventure_consumable", (consumableName) => {
+      setReceivingConsumable(consumableName.name);
     });
 
     socket.on("adventure_equipment", (equipmentName) => {
@@ -148,7 +154,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             onClose={() => setViewingInventory(false)}
           ></AdventureBagPopup>
         )}
-        {receivingItem && (
+        {receivingConsumable && (
           <div>
             {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
               <IconButton
@@ -165,13 +171,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             {/* </div> */}
             <PopupClean>
               <div className="flex flex-col justify-around items-center">
-                <OutlineText size="extraLarge">{receivingItem}</OutlineText>
+                <OutlineText size="extraLarge">
+                  {receivingConsumable}
+                </OutlineText>
                 <div className="flex flex-row justify-between items-center">
                   <ButtonGeneric
                     size="large"
                     color="blue"
                     onClick={() => {
-                      setReceivingItem(null);
+                      setReceivingConsumable(null);
                       socket.emit("adventure_next", { stage });
                     }}
                   >
@@ -238,6 +246,17 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
               messages={statChange}
               onClose={() => {
                 setStatChange(null);
+                socket.emit("adventure_next", { stage });
+              }}
+            />
+          </div>
+        )}
+        {statusResult && (
+          <div>
+            <StatChangePopup
+              messages={statusResult}
+              onClose={() => {
+                setStatusResult(null);
                 socket.emit("adventure_next", { stage });
               }}
             />
