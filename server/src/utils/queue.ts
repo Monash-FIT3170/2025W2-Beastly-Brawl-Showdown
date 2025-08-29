@@ -31,4 +31,11 @@ export default class Queue<T> implements IQueue<T> {
   getItems(): T[] {
     return [...this.storage];
   }
+  getFrontItem(): T | undefined {
+    const returningItem =  this.storage.shift();
+    if (returningItem != undefined) {
+      this.storage.unshift(returningItem);
+    }
+    return returningItem;
+  }
 }

@@ -8,6 +8,7 @@ import PathNotFound from "./src/pages/Home/PathNotFound";
 import { GameConfiguration } from "./src/pages/Game/GameConfiguration";
 import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
+<<<<<<< HEAD
 import Rules from "./src/pages/Game/Rules";
 import MatchSummary from "./src/pages/Host View/MatchSummary";
 import { FinalResults } from "./src/pages/Game/FinalResults";
@@ -16,6 +17,11 @@ import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
+=======
+import Rules from './src/pages/Game/Rules';
+import MatchSummary from './src/pages/Host View/MatchSummary';
+import { FinalRankings } from "./src/pages/Game/FinalRankings";
+>>>>>>> feature/1007.2-next-battles-battle-royale
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");

@@ -38,6 +38,8 @@ export default function proceedBattleTurn(
         winners: winners,
       });
     } else {
+      const winningPlayer = battle.getWinner();
+      console.log(`Player ${winningPlayer.getName()} added to the Waiting Queue`);
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
         winners: winners,
@@ -126,6 +128,13 @@ export default function proceedBattleTurn(
             const diceRoll = attackAction.getDiceRoll();
             io.to(player2.getId()).emit("roll_dice", diceRoll);
           }
+        if (!player2.isBotPlayer()){ //only emit to socket if the player is a human
+          if (action.getName() === "Attack") {
+            const attackAction = action as AttackAction;
+            const diceRoll = attackAction.getDiceRoll();
+            io.to(player2.getId()).emit("roll_dice", diceRoll);
+          }
+        }
 
 
         if (action.getName() === "Tip The Scales") {
@@ -228,7 +237,7 @@ export default function proceedBattleTurn(
             gameSession.onBattlesEnded(io, socket)
 
             console.log(
-              `All battles are concluded in game session ${gameSession.getGameCode()}`
+              `Only one player remains.`
             );
 
             //TODO: for future, this can be used to handle what happens after a game session ends
@@ -236,6 +245,11 @@ export default function proceedBattleTurn(
             socket.emit("game_session_ended", {
               message: `Game session ${gameSession.getGameCode()} has ended.`,
             });
+            return;
+          }
+
+          if (battle.isBattleOver()) {
+            console.log(`Battle ${battle.getId} has ended`);
             return;
           }
 

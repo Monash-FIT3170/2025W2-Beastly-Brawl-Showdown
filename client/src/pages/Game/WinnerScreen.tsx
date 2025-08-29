@@ -24,6 +24,12 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
     FlowRouter.go("/");
   };
 
+  const backToWaitingRoom = () => {
+    socket.emit("return-to-waiting-room", {userID:socket.id})
+    // const returningSessionId = 
+    // FlowRouter.go(`/session/${returningSessionId}`);
+  };
+
   // const leave = () => {
   //   socket.emit('leave-game', {userID:socket.id})
   //   FlowRouter.go("/")
