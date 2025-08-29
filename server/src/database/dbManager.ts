@@ -1,6 +1,4 @@
 import { Mongo } from 'meteor/mongo';
-import { Monster } from '../model/game/monster/monster';
-
 import { RockyRhino } from '../model/game/monster/rockyRhino';
 import { CinderTail } from '../model/game/monster/cinderTail';
 import { PouncingBandit } from '../model/game/monster/pouncingBandit';
