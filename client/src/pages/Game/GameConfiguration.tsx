@@ -5,21 +5,13 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
-<<<<<<< HEAD
 import { GameModeIdentifier } from "/types/single/gameMode";
-=======
->>>>>>> feature/1007.2-next-battles-battle-royale
 
 
 export const GameConfiguration = () => {
   // Called on 'Host Lobby' button press
-<<<<<<< HEAD
   const createGame = (mode: GameModeIdentifier) => {
     socket.emit("create-game", { mode });
-=======
-  const createGame = () => {
-    socket.emit("create-game", {});
->>>>>>> feature/1007.2-next-battles-battle-royale
     console.log("Game session created");
   };
 
