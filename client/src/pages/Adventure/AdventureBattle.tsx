@@ -34,10 +34,11 @@ import { AdventureBagPopup } from "../../components/popups/AdventureBag";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
+  levelMonster: MonsterIdentifier;
   stage: number;
 }
 
-const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
+const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
   //TODO: determine enemy in here???? maybe from AdventureProps
   const [dialogue, setDialogue] = useState<string[] | null>(null);
   const [battleState, setBattleState] = useState<BattleState | null>(null);
@@ -72,7 +73,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     FlowRouter.go("/adventure/win");
   });
 
-  console.log(battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
+  console.log("Battle State Player Logs", battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
 
   useEffect(() => {
     socket.emit("adventure_request", { stage });
@@ -131,7 +132,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     };
   }, [stage]);
 
-  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
+  //biome variable setup
+  const backgroundLocation = getBiomeString(levelMonster);
+  const slimeString = "SLIME_" + backgroundLocation;
   var backgroundString =
     "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
 
@@ -215,7 +218,12 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         )}
         {dialogue && (
           <>
-            {currentEnemy && <MonsterDisplay monster={currentEnemy} />}
+            {currentEnemy && (
+              <MonsterDisplay
+                biomeString={slimeString}
+                monster={currentEnemy}
+              />
+            )}
             <DialogueBox
               monster={currentEnemy ?? undefined}
               lines={dialogue}
@@ -342,7 +350,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                 onClose={() => setShowLeave(false)}
               ></LeavePopup>
             </div>
-            <BattleMonsterPanel battleState={battleState} />
+            <BattleMonsterPanel
+              battleState={battleState}
+              slimeString={slimeString}
+            />
 
             <div
               className="battle-logs-stack mt-[60%] xl:mt-[15%]"
@@ -384,5 +395,20 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
     </>
   );
 };
+
+const biomeMap = new Map([
+  [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
+  [MonsterIdentifier.POUNCING_BANDIT, () => "BASALT"],
+  [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],
+  [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
+  [MonsterIdentifier.POISON_POGO, () => "MARSH"],
+  [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
+]);
+
+function getBiomeString(monsterID: MonsterIdentifier) {
+  //default return is forest :)
+  const biomeName = biomeMap.get(monsterID);
+  return biomeName ? biomeName() : "FOREST";
+}
 
 export default AdventureBattle;

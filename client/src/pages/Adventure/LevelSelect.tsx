@@ -13,6 +13,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(0);
   const UNLOCKED_LEVELS = [0];
 
+  //a levelMap exists in back end too - so update both appropriately
   const levelMap: Record<number, MonsterIdentifier> = {
     0: MonsterIdentifier.POUNCING_BANDIT,
     1: MonsterIdentifier.CINDER_TAIL,
@@ -29,6 +30,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     socket.emit("adventure_level_selected", { level: observedLevel + 1 });
     FlowRouter.go("/adventure/monster-select");
   };
+
   const monster = levelMap[observedLevel] ?? "None";
 
   const monsterImage = UNLOCKED_LEVELS.includes(observedLevel)
