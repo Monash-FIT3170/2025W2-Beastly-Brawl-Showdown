@@ -10,7 +10,6 @@ import { MonsterState } from "/types/single/monsterState";
 
 //
 const DrawScreen: React.FC = () => {
-  socket.emit("updateLoss");
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
     // UPDATE: add pop up when kicked
