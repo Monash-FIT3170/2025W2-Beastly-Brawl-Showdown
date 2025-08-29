@@ -60,7 +60,7 @@ export const Home = () => {
       <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
         <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
       </div>
-      <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-10 sm:space-y-30">
+      <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-5 sm:space-y-30">
         {!loggedInUser ? (
           <ButtonGeneric
             color="ronchi"
