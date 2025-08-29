@@ -255,17 +255,18 @@ export default class GameSession {
 
     // Taking into account the case where there's an odd number of players. The odd one out automatically wins and is added back to the queue, as they cannot be put into a battle
     if (tempPlayerQueue.size() != 0) {
-      const autoWinPlayer = tempPlayerQueue.dequeue();
-      if (autoWinPlayer != undefined) {
-        this.oddOneOutWinner(autoWinPlayer);
-        this.players.enqueue(autoWinPlayer);
+      const oddPlayer = tempPlayerQueue.dequeue();
+      if (oddPlayer != undefined) {
+        this.oddOneOutWinner(oddPlayer);
+
       }
+
     }
 
     return this.battles;
   }
 
-  public oddOneOutWinner(oddPlayer: Player) {
+  public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
     const placeHolderPlayer = new BotPlayer()
     const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3) + 1];
@@ -278,7 +279,7 @@ export default class GameSession {
     if (placerHolderMonster == "CinderTail"){
       placeHolderPlayer.setMonster(new CinderTail());
     }           
-    placeHolderPlayer.setHealth(0);
+    // placeHolderPlayer.setHealth(0);
     const battle = new Battle(
       battleId,
       oddPlayer,
@@ -287,9 +288,9 @@ export default class GameSession {
     );
     battles.set(battleId, battle);
     this.battles.enqueue(battle);
-
     return oddPlayer;
   }
+  
   public calculateMostChosenMonster() {
     // Map from monster name to { monster: Monster, count: number }
     const monsterCount: Record<string, { monster: Monster; count: number }> =
@@ -397,7 +398,7 @@ export default class GameSession {
   public isSessionConcluded(): boolean {
     return this.mode.isSessionConcluded(this);
   }
-  public getPlayersNotInBattle(): Player[] {
+    public getPlayersNotInBattle(): Player[] {
     const allPlayers = this.players.getItems(); // All players in the session
     const playersInBattles = new Set<string>();
 
