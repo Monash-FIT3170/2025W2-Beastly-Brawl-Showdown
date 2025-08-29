@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { actionSelectedHandler } from "./src/socket/battle/actionSelectedHandler";
 import { characterSelectHandler } from "./src/socket/battle/characterSelectHandler";
-import http from "node:http";
+import http, { get } from "node:http";
 import { Server } from "socket.io";
 import { Player } from "./src/model/game/player";
 import { Battle } from "./src/model/game/battle";
@@ -10,9 +10,32 @@ import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataHandler";
 import { adventureModeHandler } from "./src/socket/adventureModeHandler";
 import { Adventure } from "./src/model/game/adventure";
+import { LogBool } from "./src/socket/backend/loginHandler";
+
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
+// Helper function that
+import {
+  insertNewPlayerAccount,
+  getPlayerData,
+  deletePlayerAccount,
+} from "./src/database/dbManager";
+import { registerHandler } from "./src/socket/backend/registerHandler";
+import {
+  loginHandler,
+  accountHandler,
+  startChecker,
+} from "./src/socket/backend/loginHandler";
+import { register } from "node:module";
+import { updatePlayerAccount } from "./src/database/dbManager";
+import {
+  PlayerAccountSchema,
+  createDefaultPlayerAccountSchema,
+} from "./src/database/dbManager";
+export const playerAccounts = new Map<string, PlayerAccountSchema>();
+
+// Helper function that
 export const activeAdventures = new Map<string, Adventure>();
 
 Meteor.startup(async () => {
@@ -20,6 +43,8 @@ Meteor.startup(async () => {
   const server = http.createServer();
   const PORT = 3002;
   const allowedOrigins = Meteor.settings.public.SERVER_URLS;
+
+  console.log(allowedOrigins);
 
   const io = new Server(server, {
     cors: {
@@ -38,17 +63,37 @@ Meteor.startup(async () => {
   io.on("connection", (socket) => {
     // startBattleHandler(io, socket);
     console.log(`Client connected: ${socket.id}`);
+    // Adds a default PlayerAccount to the playerAccounts map
+    playerAccounts.set(socket.id, createDefaultPlayerAccountSchema());
+    console.log(
+      `Player account created with socketID: ${socket.id}. PlayerAccounts size: ${playerAccounts.size}`
+    );
+
+    // Adds a default PlayerAccount to the playerAccounts map
+    playerAccounts.set(socket.id, createDefaultPlayerAccountSchema());
+    console.log(
+      `Player account created with socketID: ${socket.id}. PlayerAccounts size: ${playerAccounts.size}`
+    );
+
     // for refresh
     socket.emit("new-connect", {});
     // handlers
+    startChecker(io, socket);
+    accountHandler(io, socket);
+    registerHandler(io, socket);
+    loginHandler(io, socket);
+    startChecker(io, socket);
     actionSelectedHandler(io, socket);
     gameSessionHandler(io, socket);
     characterSelectHandler(io, socket);
     waitingScreenDataHandler(io, socket);
+    LogBool(io, socket);
     adventureModeHandler(io, socket);
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);
+      const user = playerAccounts.get(socket.id);
+      updatePlayerAccount(user?._id, { online: false });
       // Remove player from game session
       if (players.has(socket.id)) {
         const player = players.get(socket.id);
@@ -64,6 +109,13 @@ Meteor.startup(async () => {
           });
         }
         players.delete(socket.id);
+      }
+      // Remove player account from playerAccounts map
+      if (playerAccounts.has(socket.id)) {
+        playerAccounts.delete(socket.id);
+        console.log(
+          `Player account with socketID: ${socket.id} deleted. PlayerAccounts size: ${playerAccounts.size}`
+        );
       }
     });
   });
