@@ -143,16 +143,19 @@ export default function proceedBattleTurn(
     });
 
       setTimeout(() => {
+        let p1_result
+        let p2_result;
+
         // Execute method
         player1.getActions().forEach((action) => {
-          action.execute(player1, player2);
+          p1_result = action.execute(player1, player2);
           if (action instanceof NullAction) {
             console.log(`P1 - ${player1.getName()} did nothing.`);
           }
         });
 
         player2.getActions().forEach((action) => {
-          action.execute(player2, player1);
+          p2_result = action.execute(player2, player1);
           if (action instanceof NullAction) {
             console.log(`P2 - ${player2.getName()} did nothing.`);
           }
@@ -163,7 +166,10 @@ export default function proceedBattleTurn(
         console.log("P2: ", player2);
 
         //Handle logic after actions are executed (see GameMode)
-        gameSession.onActionExecuted()
+        gameSession.onActionExecuted(player1.getId(), p1_result, player2.getId(), p2_result)
+
+        //clear previous battlelogs
+        battle.clearBattleLogs();
 
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {

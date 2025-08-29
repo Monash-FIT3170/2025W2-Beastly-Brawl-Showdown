@@ -11,11 +11,11 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
-import { BotPlayer } from "../game/botplayer";
 import crypto from "crypto";
 import { IGameMode } from "./gamemode/gameMode";
 import { Server, Socket } from "socket.io";
 import { ActionResult } from "/types/single/actionState";
+import { BotPlayer } from "../game/botPlayer";
 
 export default class GameSession {
   private hostUID: string;
@@ -29,6 +29,7 @@ export default class GameSession {
   // private monsters: Array<String>;
   private mode: IGameMode;
   private monsters: Array<String>;
+  private botInLobby: boolean = false; // whether has been added to this session or not
   
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -66,6 +67,22 @@ export default class GameSession {
     this.battles.getItems().forEach((curBattle) => {
       curBattle.eliminateAllPlayers();
     });
+  }
+
+  public getBotInLobby():boolean {
+    return this.botInLobby
+  }
+
+  public setBotInLobby(hasBot: boolean): void{
+    this.botInLobby = hasBot
+  }
+
+  //Get the actual number of players (bot is excluded)
+  public getEffectivePlayer(): number{
+    if (this.botInLobby){
+      return this.players.getItems().length -1
+    }
+    return this.players.getItems().length
   }
 
   // Getters and setters
@@ -252,27 +269,18 @@ export default class GameSession {
 
   public oddOneOutWinner(oddPlayer: Player) {
     let battleId = crypto.randomUUID();
-    const placeHolderPlayer = new BotPlayer()
-    const placerHolderMonster = this.monsters[Math.floor(Math.random() * 3)];
-    if (placerHolderMonster == "RockyRhino"){
-      placeHolderPlayer.setMonster(new RockyRhino());
-    }
-    if (placerHolderMonster == "PouncingBandit"){
-      placeHolderPlayer.setMonster(new PouncingBandit());
-    } 
-    if (placerHolderMonster == "CinderTail"){
-      placeHolderPlayer.setMonster(new CinderTail());
-    }           
-    placeHolderPlayer.setHealth(0);
-    const battle = new Battle(
-      battleId,
-      oddPlayer,
-      placeHolderPlayer,
-      this.hostUID
-    );
-    battles.set(battleId, battle);
-    this.battles.enqueue(battle);
 
+    const botPlayer = new BotPlayer();
+    botPlayer.setRandomMonster();
+
+    this.players.enqueue(botPlayer);
+
+    const battle = new Battle(battleId, oddPlayer, botPlayer, this.hostUID)
+
+    battles.set(battleId, battle);
+    this.battles.enqueue(battle)
+
+    this.botInLobby = true
     return oddPlayer;
   }
   public calculateMostChosenMonster() {
@@ -336,6 +344,9 @@ export default class GameSession {
       }
     }
 
+    console.log("[CURRENTMODE]: ", this.mode)
+    let metadata = this.mode.getMetadata()
+
     return {
       id: this.gameCode.toString(),
       round: this.round,
@@ -345,6 +356,7 @@ export default class GameSession {
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
       waitingPlayers: this.getPlayersNotInBattle(),
+      metadata: metadata
     };
   }
 
@@ -356,24 +368,6 @@ export default class GameSession {
     return playerStates;
   }
 
-  public getPlayersNotInBattle(): Player[] {
-    const allPlayers = this.players.getItems(); // All players in the session
-    const playersInBattles = new Set<string>();
-
-    // Gather IDs of all players currently in battles
-    for (const battle of this.battles.getItems()) {
-      for (const player of battle.getPlayers()) {
-        playersInBattles.add(player.getId());
-      }
-    }
-
-    // Filter players not in the playersInBattles set
-    const playersNotInBattle = allPlayers.filter(
-      (player) => !playersInBattles.has(player.getId())
-    );
-
-    return playersNotInBattle;
-  }
 
   public initGame(io: Server, socket: Socket):void {
     return this.mode.init(this, io, socket)

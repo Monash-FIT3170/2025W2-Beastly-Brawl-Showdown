@@ -137,7 +137,9 @@ export class Player {
 
 
   public clearBattleLogs(): void {
-    this.battleLogs = [];
+    if (this.battleLogs.length !== 1){
+      this.battleLogs.shift()
+    }
   }
 
   public getMonster(): Monster | null {

@@ -2,6 +2,7 @@ import { Battle } from "../../game/battle";
 import { Player } from "../../game/player";
 import GameSession from "../gameSession";
 import { IGameMode } from "./gameMode";
+import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { GameModeIdentifier } from "/types/single/gameMode";
 
 export class BattleRoyale implements IGameMode{
@@ -14,5 +15,9 @@ export class BattleRoyale implements IGameMode{
 	}
 	public isSessionConcluded(session: GameSession): boolean {
 		return session.areBattlesConcluded()
+	}
+
+	public getMetadata(): GameSessionStateMetaData {
+		return {}
 	}
 }
