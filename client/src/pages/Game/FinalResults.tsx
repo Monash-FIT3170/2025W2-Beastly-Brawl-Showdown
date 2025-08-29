@@ -24,8 +24,8 @@ export const FinalResults = ({ gameCode }: FinalResultsProps) => {
     if (!socket) return;
 
     socket.emit('get-final-results', { gameCode: code });
-    socket.on('final-results-response', ({ top3 }) => {
-      setPlayersToDisplay(top3);
+    socket.on('final-results-response', ({ playersToDisplay }) => {
+      setPlayersToDisplay(playersToDisplay);
       setLoading(false);
     });
 
