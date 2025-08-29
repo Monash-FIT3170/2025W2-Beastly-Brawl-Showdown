@@ -28,6 +28,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const [startPopup, setStartPopup] = useState<Boolean>();
   const [kickPopup, setKickPopup] = useState<string>();
   const [kickName, setKickName] = useState<string>();
+  const [qrPopup, setQrPopup] = useState<Boolean>();
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -275,6 +276,30 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           </PopupClean>
         )}
 
+        {qrPopup && (
+          <PopupClean>
+            <div className="flex flex-col justify-center items-center">
+              <div className="outline-blackCurrant outline-[0.25rem] rounded-2xl">
+                <QRCodeSVG
+                  value={`${Meteor.settings.public.SERVER_URLS[0]}/join/${code}`}
+                  size={400}
+                  bgColor="#FFFFFF"
+                  marginSize={2}
+                />
+              </div>
+              <div className="mt-8">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setQrPopup(false)}
+                >
+                  CLOSE
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
+
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
           <OutlineText size="large">
@@ -284,10 +309,13 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </BaseCard>
 
         {/* QR code on the right */}
-        <div className="flex p-1 outline-blackCurrant outline-[0.25rem] rounded-2xl bg-white mt-1">
+        <div
+          className="flex p-1 outline-blackCurrant outline-[0.25rem] rounded-2xl bg-white mt-1"
+          onClick={() => setQrPopup(true)}
+        >
           <QRCodeSVG
             value={`${Meteor.settings.public.SERVER_URLS[0]}/join/${code}`}
-            size={150}
+            size={135}
             bgColor="#FFFFFF"
             marginSize={2}
           />
@@ -307,7 +335,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
               }}
             />
           ))}
-          {/* UPDATE: Add pop up for : Do you want to kick this player? */}
           {/* UPDATE: Add pop up for : Do you want to kick this player? */}
         </div>
       </div>
