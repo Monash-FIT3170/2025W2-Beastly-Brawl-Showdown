@@ -67,7 +67,7 @@ export const Home = () => {
             size="large"
             onClick={() => setShowLogin(true)}
           >
-            <OutlineText size="medium">LOGIN</OutlineText>
+            <OutlineText size="large">LOGIN</OutlineText>
           </ButtonGeneric>
         ) : (
           <ButtonGeneric
@@ -75,7 +75,7 @@ export const Home = () => {
             size="large"
             onClick={() => FlowRouter.go("/account")}
           >
-            <OutlineText size="medium">ACCOUNT</OutlineText>
+            <OutlineText size="large">ACCOUNT</OutlineText>
           </ButtonGeneric>
         )}
 
@@ -92,8 +92,8 @@ export const Home = () => {
           <OutlineText size="large">JOIN GAME</OutlineText>
         </ButtonGeneric>
         <ButtonGeneric color="ronchi" size="large" onClick={renderAdventure}>
-            <OutlineText size="large">ADVENTURE</OutlineText>
-          </ButtonGeneric>
+          <OutlineText size="large">ADVENTURE</OutlineText>
+        </ButtonGeneric>
       </div>
 
       {showLogin && (
@@ -102,6 +102,6 @@ export const Home = () => {
           setExitPopup={handleExitLogin}
         />
       )}
-      
     </BlankPage>
+  );
 };
