@@ -50,17 +50,26 @@ export class BattleRoyale implements IGameMode {
     console.log("After battle p1: ", p1)
 
     if (this.isSessionConcluded(session)) {
-      let winner = this.remainingPlayers[0];
-      let runnerUp = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
-      const top2 = [  // Top 2 are the winner and runner up
-        winner.getPlayerState(),
-        runnerUp.getPlayerState()
-      ];
+      // Handle if it is a draw or not
+      let top2;
+      if (this.remainingPlayers.length != 0) {  // Is not a draw (i.e., 1 remaining payer - the winner)
+        let winner = this.remainingPlayers[0];
+        let runnerUp = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
+        top2 = [  // Top 2 are the winner and runner up
+          winner.getPlayerState(),
+          runnerUp.getPlayerState()
+        ];
+        console.log(`[FINAL RESULTS]: Winner: ${winner.getName()}, Runner up: ${runnerUp.getName()}`);
+      } else {  // Is a draw
+        console.log(this.eliminatedPlayers.map(p => p.getName()))
+        let player1 = battle.getPlayers()[0].getPlayerState();
+        let player2 = battle.getPlayers()[1].getPlayerState();
+        top2 = [player1, player2];
+        console.log(`[FINAL RESULTS]: Draw between: ${top2[0].name} and ${top2[1].name}`);
+      }
       const gameCode = session.getGameCode();
       this.io?.to(`game-${gameCode}`).emit("final-results-response", { playersToDisplay: top2 });
       session.setFinalResults(top2);
-
-      console.log(`[FINAL RESULTS]: Winner: ${winner.getName()}, Runner up: ${runnerUp.getName()}`);
     }
 
     io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
