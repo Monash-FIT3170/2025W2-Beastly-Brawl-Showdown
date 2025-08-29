@@ -16,6 +16,7 @@ export class Player {
   private currentHealth: number;
   private currentAttackStat: number;
   private currentArmourClassStat: number;
+  private botPlayer: boolean;
 
   private actions: Action[] = [];
   private statuses: Status[] = [];
@@ -273,6 +274,10 @@ export class Player {
 
   public getSuccessfulBlock() {
     return this.successfulBlock;
+  }
+
+  public isBotPlayer(): boolean {
+    return this.botPlayer;
   }
 
   public incSuccessfulHit(number: number): void {
