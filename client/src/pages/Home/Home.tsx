@@ -64,7 +64,7 @@ export const Home = () => {
         {!loggedInUser ? (
           <ButtonGeneric
             color="ronchi"
-            size="medium"
+            size="large"
             onClick={() => setShowLogin(true)}
           >
             <OutlineText size="medium">LOGIN</OutlineText>
@@ -72,7 +72,7 @@ export const Home = () => {
         ) : (
           <ButtonGeneric
             color="ronchi"
-            size="medium"
+            size="large"
             onClick={() => FlowRouter.go("/account")}
           >
             <OutlineText size="medium">ACCOUNT</OutlineText>
