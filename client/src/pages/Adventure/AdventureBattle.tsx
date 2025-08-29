@@ -52,10 +52,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   };
 
   const [showLeave, setShowLeave] = useState(false);
-
-  socket.on("adventure_win", (stage) => {
-    FlowRouter.go("/adventure/win");
-  });
+ 
+  useEffect(() => {
+    const onAdventureWin = ({ monsterId }: { monsterId: string }) => {
+      FlowRouter.go(`/adventure/win/${monsterId}`);
+    };
+    socket.on("adventure_win", onAdventureWin);
+    return () => {
+      socket.off("adventure_win", onAdventureWin);
+    };
+  }, [stage]);
 
   console.log(battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
 
