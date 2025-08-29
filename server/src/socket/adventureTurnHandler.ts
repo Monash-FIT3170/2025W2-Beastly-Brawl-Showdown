@@ -168,7 +168,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
           } else {
             playersInBattle.forEach((p) => {
               p.tickStatuses();
-            });
+            }); //i dont think van move it here maybe mobe in multipla
             let actions = player?.getMonster()?.getPossibleActionStates();
             io.to(playerId).emit("possible_actions", actions);
           }

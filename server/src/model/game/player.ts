@@ -139,6 +139,13 @@ export class Player {
   }
 
   public tickStatuses() {
+    console.log("TICKING STATUSES...");
+    console.log(this.name);
+    console.log("pre-tick statuses:", this.statuses);
+    console.log(
+      "names",
+      this.statuses.forEach((status) => status.getName())
+    );
     this.statuses.forEach((status) => status.tick(this));
     //removes statuses that have expired after the tick
     this.statuses = this.statuses.filter((status) => !status.isExpired());

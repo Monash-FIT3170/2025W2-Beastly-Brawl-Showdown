@@ -71,6 +71,7 @@ export const AdventureInfoPopup = ({
             <OutlineText size="choice-text">
               {currentlyViewing[viewingTab]}
             </OutlineText>
+            <div className="flex flex-row"></div>
           </div>
           {viewingTab === 0 && (
             <>
