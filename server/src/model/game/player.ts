@@ -30,7 +30,12 @@ export class Player {
 
   private playerAccount: PlayerAccountSchema;
 
-  constructor(id: string, name: string, playerAccount: PlayerAccountSchema) {
+  constructor(
+    id: string,
+    name: string,
+    playerAccount: PlayerAccountSchema,
+    botPlayer?: boolean
+  ) {
     this.name = name;
     this.id = id;
     this.monster = null;
@@ -39,6 +44,7 @@ export class Player {
     this.currentArmourClassStat = 0;
     this.currentGameCode = 0;
     this.playerAccount = playerAccount;
+    this.botPlayer = botPlayer ?? false;
   }
 
   public getPlayerAccountEmail() {
