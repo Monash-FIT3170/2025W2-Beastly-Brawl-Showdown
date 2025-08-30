@@ -101,6 +101,7 @@ export async function progressAdventure(
       const bot = new Player(
         resolved.enemy!.getId(),
         resolved.enemy?.getName()!,
+        null,
         true
       ); // Eventually use bot class
       resolved.enemy?.pveScaling(adventure.getStage());

@@ -35,7 +35,7 @@ export class Player {
   constructor(
     id: string,
     name: string,
-    playerAccount: PlayerAccountSchema,
+    playerAccount: PlayerAccountSchema | null,
     botPlayer?: boolean
   ) {
     this.name = name;
