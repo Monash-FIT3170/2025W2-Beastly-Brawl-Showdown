@@ -6,6 +6,7 @@ import GameSession from "../gameSession";
 import { IGameMode } from "./gameMode";
 import { GameModeIdentifier } from "/types/single/gameMode";
 import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
+import { PlayerState } from "/types/single/playerState";
 
 export class BattleRoyale implements IGameMode {
   public name = GameModeIdentifier.BATTLE_ROYALE as const;
@@ -131,36 +132,45 @@ export class BattleRoyale implements IGameMode {
     });
   }
 
-  /*
-   * TODO: Need to handle the rare case where every single ongoing battle ends in a draw
-   */
 	public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
     if (this.isSessionConcluded(session)) {
-      // Handle if the final results are a draw or not
-      let top2;
-      if (this.remainingPlayers.length != 0) {  // Is not a draw (i.e., 1 remaining player - the winner)
+      let finalResults: PlayerState[];
+
+      // Is not a draw (i.e., 1 remaining player - the winner)
+      if (this.remainingPlayers.length != 0) {
         let winner = this.remainingPlayers[0];
         let runnerUp = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
-        top2 = [  // Top 2 are the winner and runner up
-          winner.getPlayerState(),
-          runnerUp.getPlayerState()
-        ];
+        finalResults = [winner.getPlayerState(), runnerUp.getPlayerState()];
         console.log(`[FINAL RESULTS]: Winner: ${winner.getName()}, Runner up: ${runnerUp.getName()}`);
-      } else {  // Is a draw (i.e., 0 remaining players)
-        let drawP1 = this.eliminatedPlayers[this.eliminatedPlayers.length-2];
-        let drawP2 = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
-        top2 = [
-          drawP1.getPlayerState(),
-          drawP2.getPlayerState()
-        ];
-        console.log(`[FINAL RESULTS]: Draw between: ${drawP1.getName()} and ${drawP2.getName()}`);
       }
+
+      // Is a draw (i.e., 0 remaining players)
+      else {
+        // Need to handle the case where the all the final battles ended up in a draw
+        let battles = session.getBattles().getItems();
+        finalResults = [];
+        for (const battle of battles) {
+          if (battle.getWinners() == null) {  // Check if battle is a draw
+            finalResults.push(battle.getPlayers()[0].getPlayerState());
+            finalResults.push(battle.getPlayers()[1].getPlayerState());
+          } else {
+            break;
+          }
+        }
+        console.log(`[FINAL RESULTS]: Draw between: ${finalResults.map(player => player.name)}`);
+      }
+
       const gameCode = session.getGameCode();
-      this.io?.to(`game-${gameCode}`).emit("final-results-response", { playersToDisplay: top2 });
-      session.setFinalResults(top2);
+      this.io?.to(`game-${gameCode}`).emit("final-results-response", { finalResults });
+      session.setFinalResults(finalResults);
     }
   }
 
+  /*
+   * TODO: Need to consider the case where when a player is waiting in a lobby, and all
+   *       other battles end in a draw - that waiting player would be the overall winner
+   *       in that situation.
+   */
 	public isSessionConcluded(session: GameSession): boolean {
     return this.remainingPlayers.length <= 1;
   }

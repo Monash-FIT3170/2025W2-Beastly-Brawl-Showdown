@@ -329,10 +329,10 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
     if (finalResults) {
       console.log(`Successfully retrieved final results for game code ${gameCode}`);
-      socket.emit("final-results-response", { playersToDisplay: finalResults });
+      socket.emit("final-results-response", { finalResults });
     } else {
       console.log(`Failed to retrieve final results for game code ${gameCode}`);
-      socket.emit("final-results-response", { playersToDisplay: [] });
+      socket.emit("final-results-response", { finalResults: [] });
     }
   });
 };
