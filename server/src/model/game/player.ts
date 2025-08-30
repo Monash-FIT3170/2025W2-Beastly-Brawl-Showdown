@@ -327,6 +327,8 @@ export class Player {
 
       logs: this.logs,
       battleLogs: this.battleLogs,
+      equipment: this.equipment.map((e) => e.getState()),
+      consumables: this.consumables.map((c) => c.getState()),
     };
   }
 }
