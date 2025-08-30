@@ -43,6 +43,8 @@ export class BattleRoyale implements IGameMode {
     console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
     console.log("[REMAINING PLAYERS]: ", this.remainingPlayers.map(player => player.getName()));
 
+    this.onBattlesEnded(session, io, socket);
+
     if (winner != null && !this.isSessionConcluded(session)) {
       io.sockets.sockets.get(winner.getId())?.emit("battle-closed", {gameCode : session.getGameCode().toString()})
     }
