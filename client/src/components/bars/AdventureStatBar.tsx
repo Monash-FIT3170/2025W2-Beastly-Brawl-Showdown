@@ -14,38 +14,25 @@ export const AdventureStatBar = ({ stat, statVal }: AdventureStatBarProps) => {
         "Dice Roll Range": "bg-[#BD55ED]"
     }
 
-        const baseBackBarProperties = `
-      
-        w-[60%]
-        border-3
-        border-blackCurrant
-        bg-alto
-        rounded-xl
-    `;
+    const statDisplay: Record<string, string> = {
+        "Attack Damage":" HP",
+        "Critical Hit Rate": "%",
+        "Dice Roll Range": "-20"
+    }
 
-    let baseFrontBarProperties = `
-        bg-goldenRod
-        border-3
-        flex
-        items-center
-        justify-center
-        transition-[width]
-        duration-300
-        ease-in-out
-        rounded-xl
-    `;
+
 
 
     return (
         <div className="w-full flex flex-row justify-center">
-            <div className={`w-[30%] border-3 border-blackCurrant bg-alto rounded-l-xl`}>
+            <div className={`sm:w-[60%] lg:w-[30%] border-3 border-blackCurrant bg-alto rounded-l-xl`}>
                 <OutlineTextResizable size="small">
                     {stat}
                 </OutlineTextResizable>
             </div>
-            <div className={`w-[8%] ${statColour[stat]} border-3 border-blackCurrant rounded-r-xl`}>
+            <div className={`sm:w-[16%] lg:w-[8%] ${statColour[stat]} border-3 border-blackCurrant rounded-r-xl`}>
                 <OutlineTextResizable size="small">
-                    {`${statVal}`}
+                    {`${statVal}${statDisplay[stat]}`}
                 </OutlineTextResizable>
             </div>
             
