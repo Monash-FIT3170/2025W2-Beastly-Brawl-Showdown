@@ -9,7 +9,11 @@ import DiceRollModal from "../Game/DiceRollModal";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { useEffect, useState } from "react";
 import { BattleState } from "/types/composite/battleState";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionState,
+  AttackState,
+} from "/types/single/actionState";
 import { randomUUID } from "crypto";
 import React from "react";
 import socket from "../../socket";
@@ -60,7 +64,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   const battleId = "ADVENTURE";
   //TODO: set player state
   const [playerState, setPlayerState] = useState<PlayerState | null>();
-
+  const [attackState, setAttackState] = useState<AttackState | null>();
   const handleChoiceSelect = (choiceId: string) => {
     socket.emit("adventure_choice", { stage, choiceId });
     setChoices(null);
@@ -87,6 +91,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         setDialogue(state.dialogue);
         setCurrentEnemy(state.enemy ?? null);
         setBattleState(null); // Clear battle
+        setAttackState(state.attack);
         setPlayerState(state.player);
       } else if (state.type === "choice") {
         // Handle choice state
@@ -145,6 +150,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         {viewingInfo && (
           <AdventureInfoPopup
             playerState={playerState}
+            attackState={attackState}
             onClose={() => setViewingInfo(false)}
           ></AdventureInfoPopup>
         )}

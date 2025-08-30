@@ -4,7 +4,7 @@ import { Adventure } from "../model/game/adventure";
 import { Player } from "../model/game/player";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Battle } from "../model/game/battle";
-import { ActionState } from "/types/single/actionState";
+import { ActionIdentifier, ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
 import { storyOutcomes, storyStruct } from "/types/composite/storyTypes";
@@ -132,13 +132,19 @@ export async function progressAdventure(
       // Optionally, proceed with the battle logic
       // proceedAdventureTurn(io, socket, adventure, battle);
     } else if (resolved.type === "DIALOGUE") {
-      // Dialogue or other event
+      //Used for monster info
+
       socket.emit("adventure_state", {
         type: "dialogue",
         dialogue: resolved.result,
         enemy: resolved.enemy,
         next: resolved.next,
         player: adventure.getPlayer().getPlayerState(),
+        attack: adventure
+          .getPlayer()
+          .getMonster()
+          ?.getAttackAction()
+          .getAttackState(),
       });
     } else if (resolved.type === "RANDOM") {
       const roll = Math.random() * 100;

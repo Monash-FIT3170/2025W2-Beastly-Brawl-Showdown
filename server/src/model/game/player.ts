@@ -316,6 +316,7 @@ export class Player {
       currentHealth: this.currentHealth,
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
+
       // initialHealth: this.monster.getMaxHealth(),
       successBlock: this.successfulBlock,
       successHit: this.successfulHit,

@@ -11,17 +11,24 @@ import { Status } from "/server/src/model/game/status/status";
 import { IconButton } from "../buttons/IconButton";
 import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 import { PopupAdventure } from "./PopupAdventure";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionState,
+  AttackState,
+} from "/types/single/actionState";
 import { BlackText } from "../texts/BlackText";
 import { StatInfoIcon } from "../cards/StatInfoIcon";
+import { AdventureStatBar } from "../bars/AdventureStatBar";
 
 export interface AdventureInfoPopupProp {
   playerState: PlayerState | null | undefined;
+  attackState: AttackState | null | undefined;
   onClose?: () => void;
 }
 
 export const AdventureInfoPopup = ({
   playerState,
+  attackState,
   onClose,
 }: AdventureInfoPopupProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
@@ -88,6 +95,21 @@ export const AdventureInfoPopup = ({
                   stat="atk+"
                   statVal={playerState?.currentAttackStat!}
                 ></StatInfoIcon>
+              </div>
+
+              <div className="flex flex-col w-full">
+                <AdventureStatBar
+                  stat="Attack Damage"
+                  statVal={attackState?.attackDamage!}
+                ></AdventureStatBar>
+                <AdventureStatBar
+                  stat="Critical Hit Rate"
+                  statVal={attackState?.critRate!}
+                ></AdventureStatBar>
+                <AdventureStatBar
+                  stat="Dice Roll Range"
+                  statVal={attackState?.diceRange!}
+                ></AdventureStatBar>
               </div>
 
               <div className="bg-[#EDAF55] outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">

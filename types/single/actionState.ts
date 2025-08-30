@@ -21,3 +21,9 @@ export interface ActionState {
   currentUse: number;
   maxUse: number;
 }
+
+export interface AttackState {
+  attackDamage: number;
+  critRate: number;
+  diceRange: number;
+}
