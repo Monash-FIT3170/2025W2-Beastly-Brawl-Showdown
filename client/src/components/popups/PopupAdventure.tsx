@@ -36,23 +36,25 @@ export const PopupAdventure = ({ colour, children }: PopupAdventureProp) => {
         `;
 
   const popup = `
-        top-[20%]
-        py-[1rem]
-        px-[1rem]
+        
         ${bgcolour}
         border-[3px]
         border-[#403245]
         rounded-[20px]
-        text-center
-        xl:w-[60%]
-        w-[80%]
-        items-stretch
-        box-border 
         flex
         flex-col
+        text-center
+        items-stretch
+        box-border 
         break-words
         z-50  
-        h-[95%]
+        top-[20%]
+        py-[1rem]
+        px-[1rem]
+        lg:w-[50%]
+        sm:w-[90%]
+        lg:h-[90%]
+        sm:h-[80%]
         `;
 
   return (
