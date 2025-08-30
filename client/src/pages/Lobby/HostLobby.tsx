@@ -166,14 +166,14 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
               <div className="flex flex-row justify-between items-center">
                 <ButtonGeneric
                   size="large"
-                  color="blue"
+                  color="red"
                   onClick={() => setStartPopup(false)}
                 >
                   BACK
                 </ButtonGeneric>
                 <ButtonGeneric
                   size="large"
-                  color="red"
+                  color="blue"
                   onClick={() => {
                     setStartPopup(false);
                     startGame();
