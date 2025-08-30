@@ -94,6 +94,7 @@ export async function progressAdventure(
     if (!outcome) {
       return;
     }
+    console.log(outcome);
     const resolved = resolveOutcome(outcome!);
 
     if (resolved.type === "FIGHT") {
@@ -212,7 +213,7 @@ export async function progressAdventure(
     } else if (resolved.type === "STATUS") {
       // Handle status
       adventure.getPlayer().addStatus(resolved.status!);
-
+      console.log(resolved.statusId);
       socket.emit("adventure_state", {
         type: "status",
         result: resolved.result,

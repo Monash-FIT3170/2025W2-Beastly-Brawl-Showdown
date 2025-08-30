@@ -104,7 +104,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         setBattleState(null); // Clear battle
         setCurrentEnemy(null);
       } else if (state.type === "status") {
+        console.log("test", state);
         setStatusResult(state.result);
+        console.log("test", statusResult);
         setBattleState(null); // Clear battle
         setCurrentEnemy(null);
       }
@@ -257,7 +259,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             />
           </div>
         )}
-        {statusResult && (
+        {/**{statusResult && (
           <div>
             <StatChangePopup
               messages={statusResult}
@@ -266,6 +268,27 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                 socket.emit("adventure_next", { stage });
               }}
             />
+          </div>
+        )}*/}
+        {statusResult && (
+          <div>
+            <PopupClean>
+              <div className="flex flex-col justify-around items-center">
+                <OutlineText size="extraLarge">{statusResult}</OutlineText>
+                <div className="flex flex-row justify-between items-center">
+                  <ButtonGeneric
+                    size="large"
+                    color="blue"
+                    onClick={() => {
+                      setStatusResult(null);
+                      socket.emit("adventure_next", { stage });
+                    }}
+                  >
+                    CONFIRM
+                  </ButtonGeneric>
+                </div>
+              </div>
+            </PopupClean>
           </div>
         )}
         {choices && (
@@ -301,9 +324,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         )}
         {!battleState && playerState && (
           <>
-            <div class="flex items-center gap-4 px-[20px]">
-              <div class="flex-1">
-                <div class="panel">
+            <div className="flex items-center gap-4 px-[20px]">
+              <div className="flex-1">
+                <div className="panel">
                   <AdventureInfoPanel
                     playerState={playerState}
                     level={0}
@@ -311,7 +334,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                   />
                 </div>
               </div>
-              <div class="py-[12px]">
+              <div className="py-[12px]">
                 <ButtonGeneric
                   color={"ronchi"}
                   size={"backpack"}
@@ -319,7 +342,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                 >
                   <img
                     src={"/assets/backpack.png"}
-                    class={"w-[80%] h-[80%] object-contain mx-auto"}
+                    className={"w-[80%] h-[80%] object-contain mx-auto"}
                   ></img>
                 </ButtonGeneric>
               </div>

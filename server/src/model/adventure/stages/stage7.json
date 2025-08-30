@@ -263,8 +263,10 @@
       },
       {
         "id": "swim_punishment",
-        "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "type": "STATUS",
+        "result": ["The lake has left its mark on you."],
+        "next": "slime_dialogue_1",
+        "statusId": "lake_curse"
       },
       {
         "id": "no_investigation",
