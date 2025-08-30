@@ -86,13 +86,6 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       FlowRouter.go("/");
     };
 
-  // Take host to 'Final Results' page
-  const showFinalResults = () => {
-    // socket.emit("cancel-game", { gameCode: code });
-    // socket.emit("final-results", { gameCode: code });
-    FlowRouter.go(`/results/${code}`);
-  };
-
   useEffect(() => {
     {
       /*Listens for the "host_battle_summary" message from the server via Socket.IO.
@@ -217,15 +210,6 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
           </div>
         </div>
       ) : null}
-      <ButtonGeneric
-        size="tiny"
-        color="blue"
-        // isDisabled={
-        //   gameSession ? gameSession?.remainingPlayers > 1 : false
-        // } onClick={showFinalResults}>
-        onClick={showFinalResults}>
-          SHOW FINAL RESULTS
-      </ButtonGeneric>
     </div>
   );
 };
