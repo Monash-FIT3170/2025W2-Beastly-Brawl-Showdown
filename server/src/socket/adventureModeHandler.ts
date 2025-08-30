@@ -12,6 +12,10 @@ import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
 import { Action } from "../model/game/action/action";
 import { AttackAction } from "../model/game/action/attack";
+import { PercentageHealthPotion } from "../model/game/consumables/healthPotion";
+import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
+import { MagicShield } from "../model/game/equipment/magicShield";
+import { OozingBlade } from "../model/game/equipment/oozingBlade";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -50,6 +54,19 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       const player = adventure.getPlayer();
       player.setMonster(monster);
       progressAdventure(io, socket, adventure, adventure.getStage());
+
+      //TESTING ITEMS PLEASE DELETE:
+      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
+      player.giveConsumable(new PercentageHealthPotion("Mini", 10));
+      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
+      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
+      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
+      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
+      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
+
+      player.giveEquipment(new BlazingGauntlets());
+      console.log("ADV TEST: CONSUMABLES", player.getConsumables());
+      console.log("ADV TEST: EQUIPMENT", player.getEquipment());
     }
   );
 
@@ -121,6 +138,7 @@ export async function progressAdventure(
       socket.emit("adventure_state", {
         type: "battle",
         battle: battle.getBattleState(socket.id),
+        stage: adventure.getStage(),
       });
       let actions = adventure
         .getPlayer()
@@ -145,6 +163,7 @@ export async function progressAdventure(
           .getMonster()
           ?.getAttackAction()
           .getAttackState(),
+        stage: adventure.getStage(),
       });
     } else if (resolved.type === "RANDOM") {
       const roll = Math.random() * 100;
@@ -165,6 +184,7 @@ export async function progressAdventure(
         type: "choice",
         result: resolved.result,
         choices: resolved.options,
+        stage: adventure.getStage(),
       });
     } else if (resolved.type === "CONSUMABLE") {
       socket.emit("adventure_consumable", {
@@ -181,6 +201,7 @@ export async function progressAdventure(
         type: "stat_change",
         result: resolved.result,
         next: resolved.next,
+        stage: adventure.getStage(),
       });
     } else if (resolved.type === "EQUIPMENT") {
       const equipment = resolved.equipment;
@@ -216,6 +237,7 @@ export async function progressAdventure(
         type: "status",
         result: resolved.result,
         next: resolved.next,
+        stage: adventure.getStage(),
       });
     }
   } catch (err) {

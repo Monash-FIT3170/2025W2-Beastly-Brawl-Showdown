@@ -128,9 +128,8 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                 console.log(`ADV: player won!`);
                 const adventure = activeAdventures.get(playerId);
                 const stage = adventure?.getStage();
-                //TODO: DO NEXT STAGE INSTEAD OF THIS STAGE
                 console.log("stage: ", stage);
-                console.log("adventure", adventure);
+                // console.log("adventure", adventure);
                 if (adventure && stage) {
                   // Get current story node and outcome
 
