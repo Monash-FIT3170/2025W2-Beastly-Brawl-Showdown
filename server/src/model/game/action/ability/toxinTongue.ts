@@ -23,7 +23,7 @@ export class ToxinTongue extends Action {
     return "Toxin_Tongue_Animation";
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
     var numberOfTurns = 5;
 

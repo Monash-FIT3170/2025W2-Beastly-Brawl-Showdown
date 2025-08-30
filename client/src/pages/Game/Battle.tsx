@@ -58,6 +58,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         setWinner(winners[0]);
       }
       console.log("Winner: ", winner);
+      if (battleState?.yourPlayer.name === winner) {
+        socket.emit("updateWin");
+      } else {
+        socket.emit("updateLoss");
+      }
     });
 
     // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
@@ -86,9 +91,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   }, []);
 
   useEffect(() => {
-    if (!isSessionCancelled) {
-      return;
-    }
+    if (!isBattleClosed){return}
 
     //Countdown before player get redirected
     const countdown = setInterval(() => {
@@ -105,28 +108,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       clearInterval(countdown); // interval cleanup
       clearTimeout(timeout); //timeout cleanup
     };
-  }, [isSessionCancelled]);
-
-    useEffect(() => {
-    if (!isBattleClosed){return}
-
-    //Countdown before player get redirected 
-    const countdown = setInterval(() => {
-      setTime((prev) => prev-1)
-    },1000) //1 second per interval
-
-    //Redirect after countdown is finished
-    const timeout = setTimeout(() =>{
-      FlowRouter.go(`/session/${gameCode}`)
-      setTime(-1)
-    }, 5000) // 5 seconds before user get directed to home page
-    
-    return () => {
-      clearInterval(countdown); // interval cleanup
-      clearTimeout(timeout); //timeout cleanup
-    }
-    
-  }, [isBattleClosed])
+  }, [isBattleClosed]);
 
   socket.on("new-connect", () => {
     FlowRouter.go("/");
@@ -134,29 +116,14 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
   return (
     <>
-      {isSessionCancelled && (
+      {isBattleClosed && (
         <PopupClean>
           <div className="flex flex-col justify-around">
-            <OutlineText size="extraLarge">CANCELLED SESSION</OutlineText>
-            <BlackText size="large">
-              YOUR GAME SESSION HAS BEEN CANCELLED
-            </BlackText>
-            <BlackText size="large">
-              YOU WILL BE DIRECTED BACK TO THE HOME PAGE IN {time} SECONDS
-            </BlackText>
+          <OutlineText size = 'extraLarge'>BATTLE CLOSED</OutlineText>
+          <BlackText size = 'large'>BATTLE HAS ENDED</BlackText>
+          <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE WAITING ROOM IN {time} SECONDS</BlackText>
           </div>
-        </PopupClean>
-      )}
-
-    {isBattleClosed && (
-    <PopupClean>
-      <div className="flex flex-col justify-around">
-      <OutlineText size = 'extraLarge'>BATTLE CLOSED</OutlineText>
-      <BlackText size = 'large'>BATTLE HAS ENDED</BlackText>
-      <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE WAITING ROOM IN {time} SECONDS</BlackText>
-      </div>
-    </PopupClean>)}
-
+        </PopupClean>)}
 
       <div
         className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"

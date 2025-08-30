@@ -1,6 +1,8 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
+import { PlayerAccountSchema } from "../../database/dbManager";
+
 import { Status } from "./status/status";
 import { Item } from "./item/item";
 
@@ -25,7 +27,16 @@ export class Player {
   
   private inventory: Item[] = [];
 
-  constructor(id: string, name: string, botPlayer?: boolean) {
+  private inventory: Item[] = [];
+
+  private playerAccount: PlayerAccountSchema;
+
+  constructor(
+    id: string,
+    name: string,
+    playerAccount: PlayerAccountSchema,
+    botPlayer?: boolean
+  ) {
     this.name = name;
     this.id = id;
     this.monster = null;
@@ -33,110 +44,16 @@ export class Player {
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
     this.currentGameCode = 0;
+    this.playerAccount = playerAccount;
     this.botPlayer = botPlayer ?? false;
   }
 
-  public getSuccessfulHit() {
-    return this.successfulHit;
-  }
-  //sets the player in a dodging position
-  public dodge(): void {
-    this.currentlyDodging = true;
-  }
-  //returns wheather or not the player was dodging
-  public getDodgingPosition(): boolean {
-    return this.currentlyDodging;
+  public getPlayerAccountEmail() {
+    return this.playerAccount.email;
   }
 
-  public getStatuses(): Status[] {
-    return this.statuses;
-  }
-
-  public addStatus(status: Status, succesRate: number): {success: boolean; reason?: string; metadata?: unknown}{
-    const chance = Math.random() * 100;
-    if (chance >= succesRate){
-      return {success: false, reason: "Missed"}
-    }
-    this.statuses.push(status);
-    return {success: true}
-  }
-
-  public tickStatuses() {
-    this.statuses.forEach((status) => status.tick(this));
-    //removes statuses that have expired after the tick
-    this.statuses = this.statuses.filter((status) => !status.isExpired());
-  }
-
-  public hasStatus(name: String) {
-    return this.statuses.some((status) => status.getName() === name);
-  }
-
-  public removeStatus(statusToRemove: Status){
-    this.statuses = this.statuses.filter((status) => status !== statusToRemove);
-  }
-
-  public getSuccessfulBlock() {
-    return this.successfulBlock;
-  }
-
-  public isBotPlayer(): boolean{
-    return this.botPlayer;
-  }
-
-  public incSuccessfulHit(number: number): void {
-    this.successfulHit += number;
-  }
-
-  public incSuccessfulBlock(number: number): void {
-    this.successfulBlock += number;
-  }
-
-  public getGameCode() {
-    return this.currentGameCode;
-  }
-
-  public updateGameCode(newCode: number) {
-    this.currentGameCode = newCode;
-  }
-
-  public getLogs(): string[] {
-    return this.logs;
-  }
-
-  public addLog(log: string): void {
-    this.logs.push(log);
-  }
-
-  public addBattleLog(log: string): void {
-    // match summary logs
-    this.battleLogs.push(log);
-  }
-
-  public clearLogs(): void {
-    this.logs = [];
-  }
-
-  public resetStats(): void {
-    if (this.monster) {
-      this.currentAttackStat = this.monster.getAttackBonus();
-      this.currentArmourClassStat = this.monster.getArmourClass();
-      this.dodging = false;
-    }
-  }
-
-  //Similar to resetStats, but also restore player HP to full
-  public prepareForNextBattle(): void {
-    if (this.monster){
-      this.currentHealth = this.monster.getMaxHealth()
-      this.currentAttackStat = this.monster.getAttackBonus();
-      this.currentArmourClassStat = this.monster.getArmourClass();
-    }
-  }
-
-
-
-  public clearBattleLogs(): void {
-    this.battleLogs = [];
+  public getPlayerAccountUsername() {
+    return this.playerAccount.username;
   }
 
   public getMonster(): Monster | null {
@@ -229,6 +146,90 @@ export class Player {
     }
   }
 
+  //STATUS METHODS:
+  public getStatuses(): Status[] {
+    return this.statuses;
+  }
+
+  public addStatus(status: Status) {
+    this.statuses.push(status);
+  }
+
+  public tickStatuses() {
+    this.statuses.forEach((status) => status.tick(this));
+    //removes statuses that have expired after the tick
+    this.statuses = this.statuses.filter((status) => !status.isExpired());
+  }
+
+  public hasStatus(name: String) {
+    return this.statuses.some((status) => status.getName() === name);
+  }
+
+  public removeStatus(statusToRemove: Status) {
+    this.statuses = this.statuses.filter((status) => status !== statusToRemove);
+  }
+
+  //HIT/BLOCK METHODS:
+  public getSuccessfulHit() {
+    return this.successfulHit;
+  }
+
+  public dodge(): void {
+    //sets the player in a dodging position
+    this.currentlyDodging = true;
+  }
+
+  public getDodgingPosition(): boolean {
+    //returns wheather or not the player was dodging
+    return this.currentlyDodging;
+  }
+
+  public getSuccessfulBlock() {
+    return this.successfulBlock;
+  }
+
+  public isBotPlayer(): boolean {
+    return this.botPlayer;
+  }
+
+  public incSuccessfulHit(number: number): void {
+    this.successfulHit += number;
+  }
+
+  public incSuccessfulBlock(number: number): void {
+    this.successfulBlock += number;
+  }
+
+  //GAMECODE METHODS:
+  public getGameCode() {
+    return this.currentGameCode;
+  }
+
+  public updateGameCode(newCode: number) {
+    this.currentGameCode = newCode;
+  }
+
+  //LOG METHODS:
+  public getLogs(): string[] {
+    return this.logs;
+  }
+
+  public addLog(log: string): void {
+    this.logs.push(log);
+  }
+
+  public addBattleLog(log: string): void {
+    // match summary logs
+    this.battleLogs.push(log);
+  }
+
+  public clearLogs(): void {
+    this.logs = [];
+  }
+
+  public clearBattleLogs(): void {
+    this.battleLogs = [];
+  }
 
   //ACTION METHODS:
   public getActions(): Action[] {

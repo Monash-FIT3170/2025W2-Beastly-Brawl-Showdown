@@ -58,7 +58,7 @@ export class AttackAction extends Action {
     return ["roll_dice", this.d20];
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
     if (this.attackHit > affectedPlayer.getMonster().getArmourClass()) {

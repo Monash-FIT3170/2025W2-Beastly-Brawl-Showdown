@@ -21,8 +21,12 @@ export class FortressStanceAbilityAction extends Action {
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
-  
-  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+
+  public prepareAnimation(): string | [string, number] {
+    return "Fortress_Stance_Animation";
+  }
+
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
 
     // Increase the AC of the player

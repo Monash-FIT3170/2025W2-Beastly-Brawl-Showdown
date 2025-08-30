@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier, ActionResult } from "/types/single/actionState";
+import { ActionIdentifier } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 
 export class AlluringLullaby extends Action {
@@ -20,6 +20,10 @@ export class AlluringLullaby extends Action {
     this.affectedPlayerActions = affectedPlayer.getActions();
     const action = new AttackAction(1, 1, 1, 1);
     affectedPlayer.removeAction(action); //remove attack action - any other action can continue
+  }
+
+  public prepareAnimation(): string | [string, number] {
+    return "AlluringLullaby_Animation";
   }
 
   public prepareAnimation(): string | [string, number] {

@@ -43,7 +43,7 @@ export class TipTheScalesAbilityAction extends Action {
     return "roll_dice";
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
 
     // Log actions

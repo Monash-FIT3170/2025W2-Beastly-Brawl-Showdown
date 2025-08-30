@@ -16,12 +16,11 @@ export class PufferBlast extends Action {
   // Clear the opponent's actions
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-
   public prepareAnimation(): string | [string, number] {
     return "Puffer_Blast_Animation";
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
 
     var hitFishes = 0;

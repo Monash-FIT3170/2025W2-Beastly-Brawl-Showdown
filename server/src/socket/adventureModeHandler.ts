@@ -175,7 +175,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
           if (battle?.isBattleOver()) {
             console.log(`ADV: battle is over!`);
-            const winners = battle.getWinners();
+            const winners = battle.getWinners()?.map((player) => player.getName());
             console.log(winners);
             const playerName = player?.getName();
             if (playerName) {

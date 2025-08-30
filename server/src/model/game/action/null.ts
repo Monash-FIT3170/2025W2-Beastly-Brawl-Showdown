@@ -26,7 +26,7 @@ export class NullAction extends Action {
     return "NullAction_Animation";
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+  public execute(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.addLog(
       `${this.actingMessage ? this.actingMessage + " " : ""}You did nothing.`
     );
@@ -40,11 +40,5 @@ export class NullAction extends Action {
         this.battleLogMessage ? this.battleLogMessage + " " : ""
       }${actingPlayer.getName()} did nothing.`
     );
-
-    return {
-      appliedStatus: {
-        success: false
-      }
-    }
   }
 }

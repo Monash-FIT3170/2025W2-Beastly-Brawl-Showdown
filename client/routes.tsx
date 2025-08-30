@@ -15,6 +15,7 @@ import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
+import { Account } from "./src/pages/Home/Account";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -66,6 +67,13 @@ FlowRouter.route("/join/:code?", {
   },
 });
 
+FlowRouter.route("/account", {
+  name: "Account",
+  action(params) {
+    mount(() => <Account />);
+  },
+});
+
 FlowRouter.route("/battle/:battleId?", {
   name: "Battle",
   action(params) {
@@ -94,14 +102,6 @@ FlowRouter.route("/adventure/level-select", {
     mount(LevelSelect);
   },
 });
-FlowRouter.route('/config', {
-  name: 'GameConfiguraion',
-  action() {
-    mount(GameConfiguration);
-  },
-});
-
-
 FlowRouter.route("/adventure/monster-select", {
   name: "MonsterSelect",
   action() {
