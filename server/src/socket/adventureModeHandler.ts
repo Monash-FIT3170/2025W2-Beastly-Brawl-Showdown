@@ -111,6 +111,7 @@ export async function progressAdventure(
     if (!outcome) {
       return;
     }
+    console.log(outcome);
     const resolved = resolveOutcome(outcome!);
 
     if (resolved.type === "FIGHT") {
@@ -118,6 +119,7 @@ export async function progressAdventure(
       const bot = new Player(
         resolved.enemy!.getId(),
         resolved.enemy?.getName()!,
+        null,
         true
       ); // Eventually use bot class
       resolved.enemy?.pveScaling(adventure.getStage());
@@ -232,7 +234,7 @@ export async function progressAdventure(
     } else if (resolved.type === "STATUS") {
       // Handle status
       adventure.getPlayer().addStatus(resolved.status!);
-
+      console.log(resolved.statusId);
       socket.emit("adventure_state", {
         type: "status",
         result: resolved.result,

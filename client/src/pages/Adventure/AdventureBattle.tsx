@@ -121,7 +121,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         //TODO: setPlayerState(state.player);
         setCurrentEnemy(null);
       } else if (state.type === "status") {
+        console.log("test", state);
         setStatusResult(state.result);
+        console.log("test", statusResult);
         setBattleState(null); // Clear battle
         //TODO: setPlayerState(state.player);
         setCurrentEnemy(null);
@@ -272,7 +274,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           </div>
         )}
-        {statusResult && (
+        {/**{statusResult && (
           <div>
             <StatChangePopup
               messages={statusResult}
@@ -281,6 +283,27 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                 socket.emit("adventure_next", { stage });
               }}
             />
+          </div>
+        )}*/}
+        {statusResult && (
+          <div>
+            <PopupClean>
+              <div className="flex flex-col justify-around items-center">
+                <OutlineText size="extraLarge">{statusResult}</OutlineText>
+                <div className="flex flex-row justify-between items-center">
+                  <ButtonGeneric
+                    size="large"
+                    color="blue"
+                    onClick={() => {
+                      setStatusResult(null);
+                      socket.emit("adventure_next", { stage });
+                    }}
+                  >
+                    CONFIRM
+                  </ButtonGeneric>
+                </div>
+              </div>
+            </PopupClean>
           </div>
         )}
         {choices && (
@@ -337,6 +360,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                 >
                   <img
                     src={"/assets/backpack.png"}
+                    className={"w-[80%] h-[80%] object-contain mx-auto"}
                     className={"w-[80%] h-[80%] object-contain mx-auto"}
                   ></img>
                 </ButtonGeneric>

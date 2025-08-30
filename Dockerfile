@@ -27,6 +27,7 @@ COPY --from=builder /output/bundle /app
 
 ARG ENV
 ARG ROOT_URL
+ARG MONGO_URL
 
 # Copy settings.json into the image
 COPY settings.${ENV}.json /app/settings.json
@@ -41,6 +42,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV ROOT_URL=${ROOT_URL}
+ENV MONGO_URL=${MONGO_URL}
 
 # Expose ports for Meteor and Socket.IO
 EXPOSE 3000
