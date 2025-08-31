@@ -252,50 +252,26 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       io.to(battle.getId()).emit("battle_started", battle.getId());
       proceedBattleTurn(io, socket, session, battle);
     }
-
-    //Comment out as host information are updated live in battleHandler
-    // Update host information
-    //   socket.emit("game-session-state", {
-    //     session: session.getGameSessionState(),
-    //   });
   });
 
   // Starting a recently added battle
   socket.on("start-new-battle", ({ gameCode }) => {
-    console.log(`Start request for Code: ${gameCode}`);
-    const gameCodeN = Number(gameCode);
 
+    const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
+    const battle = session?.getBattles().getFrontItem();
+
     if (!session) {
       // If session of given game code doesnt exist
       console.log(`Request failed. Invalid Code`);
       return;
     }
-
-    if (!session.canStartGame()) {
-      var errors = session.calculateErrors();
-      // UPDATE: Need to change how this is returned
-      io.to(`game-${gameCode}`).emit("start-failed", errors);
-      console.log(`Request failed.`);
+    if (!battle) {
+      console.log(`Request failed. Invalid Battle`);
       return;
     }
-
-    io.to(`game-${gameCode}`).emit("start-success", {});
-
-    session.calculateMostChosenMonster();
-
-    const battle = session.getBattles().getFrontItem();
-    for (const player of battle.getPlayers()) {
-      io.sockets.sockets.get(player.getId())?.join(battle.getId());
-    }
-    io.to(battle.getId()).emit("battle_started", battle.getId());
+    socket.emit("battle_started", battle.getId());
     proceedBattleTurn(io, socket, session, battle);
-
-    //Comment out as host information are updated live in battleHandler
-    // Update host information
-    //   socket.emit("game-session-state", {
-    //     session: session.getGameSessionState(),
-    //   });
   });
 
   // Close game session

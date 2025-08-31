@@ -79,9 +79,9 @@ export class BattleRoyale implements IGameMode {
             for (const player of battle.getPlayers()) {
               io.sockets.sockets.get(player.getId())?.join(battle.getId());
             }
-            console.log(`Check to start battle ${battle.getId()}`);
-            io.to(battle.getId()).emit("battle_started", battle.getId());
-            proceedBattleTurn(io, socket, session, battle);
+            console.log(`Check to start battle ${battle.getId()}`)
+            io.sockets.sockets.get(player1Indexed.getId())?.emit("battle-found", {gameCode : session.getGameCode().toString()})
+            io.sockets.sockets.get(player2Indexed.getId())?.emit("battle-found", {gameCode : session.getGameCode().toString()})
           }
         }
       }
@@ -120,9 +120,10 @@ export class BattleRoyale implements IGameMode {
             for (const player of battle.getPlayers()) {
               io.sockets.sockets.get(player.getId())?.join(battle.getId());
             }
-            console.log(`Check to start battle ${battle.getId()}`);
-            io.to(battle.getId()).emit("battle_started", battle.getId());
-            proceedBattleTurn(io, socket, session, battle);
+            console.log(`Check to start battle ${battle.getId()}`)
+            io.sockets.sockets.get(player1Indexed.getId())?.emit("battle-found", {gameCode : session.getGameCode().toString()})
+            io.sockets.sockets.get(player2Indexed.getId())?.emit("battle-found", {gameCode : session.getGameCode().toString()})
+
           }
         }
       }
