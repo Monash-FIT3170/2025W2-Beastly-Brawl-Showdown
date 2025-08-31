@@ -1,12 +1,11 @@
 import React from 'react';
 import BattlePanel from './BattlePanel';
 import { GameSessionState } from '/types/composite/gameSessionState';
-import { OutlineText } from '../texts/OutlineText';
 import { GameModeIdentifier } from '/types/single/gameMode';
 
 interface MiddlePanelProps {
   gameSession: GameSessionState;
-  gameMode: GameModeIdentifier;
+  gameMode: GameModeIdentifier | null;
 }
 
 const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession, gameMode }) => {

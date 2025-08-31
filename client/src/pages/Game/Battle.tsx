@@ -13,7 +13,6 @@ import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
-import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 
 interface BattleProps {
@@ -177,11 +176,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         ) : (
           <>
             {battleState && (
-              <div className="flex flex-col h-full w-full items-start space-y-10 bg-red-700">
-                <div className="flex flex-row h-1/2 w-full items-start justify-center bg-amber-600">
+              <div className="flex flex-col h-full w-full items-start space-y-10 ">
+                <div className="flex flex-row h-1/2 w-full items-start justify-center">
                   <BattleHeader battleState={battleState} timer={timer} />
                 </div>
-                <div className="flex flex-row h-1/4 w-full items-center justify-around bg-amber-400">
+                <div className="flex flex-row h-1/4 w-full items-center justify-around">
                   
 
                   <BattleMonsterPanel battleState={battleState} />

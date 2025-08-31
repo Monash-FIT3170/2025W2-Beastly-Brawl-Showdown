@@ -72,7 +72,8 @@ export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer }
         </div>
       </div>
 
-      <div className="flex flex-col w-1/12 p-[1rem] h-full items-center justify-around font-[Jua]">
+      <div className="flex flex-col w-1/12 h-full items-center justify-around font-[Jua]
+      sm:p-[0.5rem] md:p-[0.6rem] lg:p-[0.8rem] xl:p-[1rem] 2xl:p-[1.2rem]">
          
           <p>Time: </p>
           <OutlineTextBP size="extraLarge">{timer}</OutlineTextBP>

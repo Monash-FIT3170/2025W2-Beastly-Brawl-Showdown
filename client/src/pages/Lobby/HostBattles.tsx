@@ -15,6 +15,7 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { GameModeIdentifier } from "/types/single/gameMode";
+import ScoringLeaderboard from "../../components/match-summary/ScoringLeaderboard";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -121,7 +122,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   }, []);
 
   useEffect(() => {
-    const handleGameMode = ({ mode }: { mode: Mode }) => {
+    const handleGameMode = (mode: GameModeIdentifier) => {
       console.log("Received game mode:", mode);
       setGameMode(mode);
     };
@@ -206,7 +207,10 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
             <div
               style={{ minWidth: "260px", height: "100%", overflow: "auto" }}
             >
-              <RightPanel battleStates={gameSession.battleStates} />
+              {gameMode == GameModeIdentifier.SCORING ? 
+                <ScoringLeaderboard battleStates={gameSession.battleStates}/> :
+                <RightPanel battleStates={gameSession.battleStates} /> 
+              }
             </div>
           </div>
         </div>
