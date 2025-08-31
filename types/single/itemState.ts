@@ -2,11 +2,12 @@ export interface EquipmentState {
   name: string;
   description: string;
   statDescription: string;
-  image: string;
+  imageString: string;
 }
 
 export interface ConsumableState {
   name: string;
   description: string;
-  image: string;
+  statDescription: string;
+  imageString: string;
 }

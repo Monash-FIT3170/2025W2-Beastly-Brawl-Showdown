@@ -13,6 +13,7 @@ export enum ActionIdentifier {
   TOXIN_TONGUE = "TOXIN_TONGUE",
   ALLURING_LULLABY = "ALLURING_LULLABY",
   FLAME_LASH = "FLAME_LASH",
+  CONSUME = "CONSUME",
 }
 
 export interface ActionState {

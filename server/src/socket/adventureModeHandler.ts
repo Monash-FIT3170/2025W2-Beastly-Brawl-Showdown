@@ -16,6 +16,8 @@ import { PercentageHealthPotion } from "../model/game/consumables/healthPotion";
 import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
 import { MagicShield } from "../model/game/equipment/magicShield";
 import { OozingBlade } from "../model/game/equipment/oozingBlade";
+import { ConsumableState } from "/types/single/itemState";
+import { ConsumeAction } from "../model/game/action/consume";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -56,14 +58,15 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       progressAdventure(io, socket, adventure, adventure.getStage());
 
       //TESTING ITEMS PLEASE DELETE:
-      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
-      player.giveConsumable(new PercentageHealthPotion("Mini", 10));
-      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
-      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
-      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
-      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
-      player.giveConsumable(new PercentageHealthPotion("Mega", 100));
-
+      player.giveConsumable(
+        new PercentageHealthPotion("Super Health Potion", 1)
+      );
+      player.giveConsumable(
+        new PercentageHealthPotion("Mini Health Potion", 0.1)
+      );
+      player.giveConsumable(
+        new PercentageHealthPotion("Large Health Potion", 0.5)
+      );
       player.giveEquipment(new BlazingGauntlets());
       console.log("ADV TEST: CONSUMABLES", player.getConsumables());
       console.log("ADV TEST: EQUIPMENT", player.getEquipment());
@@ -98,6 +101,25 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     adventure.pastEncounters.push(choiceId);
     progressAdventure(io, socket, adventure, stage);
   });
+
+  //
+  socket.on(
+    "adventure_consume",
+    ({
+      consumable,
+      playerId,
+    }: {
+      consumable: ConsumableState;
+      playerId: string;
+    }) => {
+      console.log(
+        `ADV: Player - ${playerId}, Adding Consumable - ${consumable.name}`
+      );
+      const player = players.get(playerId);
+      const action = new ConsumeAction(consumable.name);
+      player?.addAction(action);
+    }
+  );
 };
 // Helper function to progress adventure outcomes
 export async function progressAdventure(
@@ -141,6 +163,7 @@ export async function progressAdventure(
         type: "battle",
         battle: battle.getBattleState(socket.id),
         stage: adventure.getStage(),
+        player: adventure.getPlayer().getPlayerState(),
       });
       let actions = adventure
         .getPlayer()
@@ -187,6 +210,7 @@ export async function progressAdventure(
         result: resolved.result,
         choices: resolved.options,
         stage: adventure.getStage(),
+        player: adventure.getPlayer().getPlayerState(),
       });
     } else if (resolved.type === "CONSUMABLE") {
       socket.emit("adventure_consumable", {
@@ -204,6 +228,7 @@ export async function progressAdventure(
         result: resolved.result,
         next: resolved.next,
         stage: adventure.getStage(),
+        player: adventure.getPlayer().getPlayerState(),
       });
     } else if (resolved.type === "EQUIPMENT") {
       const equipment = resolved.equipment;
@@ -240,6 +265,7 @@ export async function progressAdventure(
         result: resolved.result,
         next: resolved.next,
         stage: adventure.getStage(),
+        player: adventure.getPlayer().getPlayerState(),
       });
     }
   } catch (err) {

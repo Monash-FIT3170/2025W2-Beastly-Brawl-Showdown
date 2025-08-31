@@ -29,7 +29,7 @@ export const ButtonGeneric = ({
 
   const sizeToDisplay = {
     battle:
-      "w-[20rem] h-[7rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem] xl:w-[12rem] xl:h-[4.75rem]",
+      "w-[20rem] h-[7rem] px-[1rem] py-[0.75rem] text-[2.1875rem] xl:w-[12rem] xl:h-[4.75rem]",
     large:
       "lg:w-[16rem] sm:w-[40rem] lg:h-[4.75rem] sm:h-[15rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]",
     medium:

@@ -87,6 +87,17 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   });
 
   useEffect(() => {
+    console.log("playerState updated:", playerState);
+  }, [playerState]);
+
+  useEffect(() => {
+    console.log("BATTLE STATE UPDATED");
+    if (battleState !== null) {
+      setPlayerState(battleState.yourPlayer);
+    }
+  }, [battleState]);
+
+  useEffect(() => {
     socket.emit("adventure_request", { stage }); //TODO: WHO IS THIS, WHY IS SHE HERE?
 
     socket.on("adventure_state", (state) => {
@@ -113,19 +124,19 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         setChoices(state.choices);
         setQuestion(state.result);
         setBattleState(null); // Clear battle
-        //TODO: setPlayerState(state.player);
+        setPlayerState(state.player);
         setCurrentEnemy(null);
       } else if (state.type === "stat_change") {
         setStatChange(state.result);
         setBattleState(null); // Clear battle
-        //TODO: setPlayerState(state.player);
+        setPlayerState(state.player);
         setCurrentEnemy(null);
       } else if (state.type === "status") {
         console.log("test", state);
         setStatusResult(state.result);
         console.log("test", statusResult);
         setBattleState(null); // Clear battle
-        //TODO: setPlayerState(state.player);
+        setPlayerState(state.player);
         setCurrentEnemy(null);
       }
     });
@@ -175,6 +186,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
           <AdventureBagPopup
             playerState={playerState}
             onClose={() => setViewingInventory(false)}
+            inBattle={battleState !== null}
           ></AdventureBagPopup>
         )}
         {receivingConsumable && (
@@ -398,7 +410,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
             <PlayerInfoPanel battleState={battleState} />
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto">
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10">
               <div className="flex lg:gap-5 sm:gap-10">
                 <IconButton
                   style="arrowleft"
