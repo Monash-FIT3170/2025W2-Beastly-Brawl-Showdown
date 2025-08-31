@@ -20,7 +20,7 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   //checks if enemy is a slime - then uses biome specific variant
   //note: slimes can only be enemies
   if (battleState.opponentPlayerMonster.id == MonsterIdentifier.SLIME) {
-    pathRightMon = "/assets/characters/" + slimeString + ".png";
+    pathRightMon = "/assets/characters/SLIME_" + slimeString + ".png";
   }
 
   // console.log("Left Monster Path: ", pathLeftMon);

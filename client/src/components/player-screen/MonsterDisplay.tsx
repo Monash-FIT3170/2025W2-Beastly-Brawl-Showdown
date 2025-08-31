@@ -17,7 +17,7 @@ const MonsterDisplay: React.FC<MonsterDisplayProps> = ({
 
   //checks if monster is a slime - then uses biome specific variant
   if (monster.id == MonsterIdentifier.SLIME) {
-    imagePath = `/assets/characters/${biomeString}.png`;
+    imagePath = `/assets/characters/SLIME_${biomeString}.png`;
   }
 
   return (

@@ -41,12 +41,11 @@ import { EquipmentCard } from "../../components/cards/EquipmentCard";
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
   levelMonster: MonsterIdentifier;
-  stage: number;
 }
 
-const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
+const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const battleId = "ADVENTURE";
-  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
+  var backgroundLocation = getBiomeString(levelMonster); //TODO: change this to be based off level/monster?
   var backgroundString =
     "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
 
@@ -95,7 +94,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
   socket.on("adventure_win", (stage) => {
     FlowRouter.go("/adventure/win");
   });
-
 
   useEffect(() => {
     console.log("playerState updated:", playerState);
@@ -189,7 +187,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
       socket.off("adventure_equipment_full");
     };
   });
-
 
   console.log("PLAYER LOGS:", battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
 
@@ -346,7 +343,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
           <>
             {currentEnemy && (
               <MonsterDisplay
-                biomeString={slimeString}
+                biomeString={getBiomeString(levelMonster)}
                 monster={currentEnemy}
               />
             )}
@@ -546,7 +543,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
             </div>
             <BattleMonsterPanel
               battleState={battleState}
-              slimeString={slimeString}
+              slimeString={backgroundLocation}
             />
 
             <div
@@ -592,7 +589,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
 
 const biomeMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
-  [MonsterIdentifier.POUNCING_BANDIT, () => "BASALT"],
+  [MonsterIdentifier.POUNCING_BANDIT, () => "DESERT"],
   [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],
   [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
   [MonsterIdentifier.POISON_POGO, () => "MARSH"],
