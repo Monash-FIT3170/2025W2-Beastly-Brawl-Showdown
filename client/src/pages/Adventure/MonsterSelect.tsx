@@ -116,10 +116,15 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
       console.log(
         `Adventure Monster ${selectedMonster.name} selected for player`
       );
-      // TODO: Update the page, might be dialogue page
-      FlowRouter.go("/adventure/adventure-battle");
     }
   };
+
+  //need flow routing to be done via socket inorder to fetch monster level
+  socket.on("start_adventure", (levelMonster: MonsterIdentifier) => {
+    console.log("START ADVENTURE", levelMonster);
+
+    FlowRouter.go(`/adventure/adventure-${levelMonster.toLowerCase()}`);
+  });
 
   const handleCancelSelection = () => {
     setSelectedMonster(null);

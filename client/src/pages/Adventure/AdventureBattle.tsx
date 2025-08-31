@@ -39,10 +39,12 @@ import { EquipmentState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
 
 interface AdventureProps {
+  //so i am adding this without actually knowing why just trust the process
   levelMonster: MonsterIdentifier;
+  stage: number;
 }
 
-const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
+const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
   const battleId = "ADVENTURE";
   var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   var backgroundString =
@@ -93,6 +95,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   socket.on("adventure_win", (stage) => {
     FlowRouter.go("/adventure/win");
   });
+
 
   useEffect(() => {
     console.log("playerState updated:", playerState);
@@ -186,6 +189,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       socket.off("adventure_equipment_full");
     };
   });
+
 
   console.log("PLAYER LOGS:", battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
 
@@ -340,7 +344,12 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         )}
         {dialogue && (
           <>
-            {currentEnemy && <MonsterDisplay monster={currentEnemy} />}
+            {currentEnemy && (
+              <MonsterDisplay
+                biomeString={slimeString}
+                monster={currentEnemy}
+              />
+            )}
             <DialogueBox
               monster={currentEnemy ?? undefined}
               lines={dialogue}
@@ -535,7 +544,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                 </ButtonGeneric>
               </div>
             </div>
-            <BattleMonsterPanel battleState={battleState} />
+            <BattleMonsterPanel
+              battleState={battleState}
+              slimeString={slimeString}
+            />
 
             <div
               className="battle-logs-stack mt-[60%] xl:mt-[15%]"
@@ -577,5 +589,20 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     </>
   );
 };
+
+const biomeMap = new Map([
+  [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
+  [MonsterIdentifier.POUNCING_BANDIT, () => "BASALT"],
+  [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],
+  [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
+  [MonsterIdentifier.POISON_POGO, () => "MARSH"],
+  [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
+]);
+
+function getBiomeString(monsterID: MonsterIdentifier) {
+  //default return is forest :)
+  const biomeName = biomeMap.get(monsterID);
+  return biomeName ? biomeName() : "FOREST";
+}
 
 export default AdventureBattle;

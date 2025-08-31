@@ -33,20 +33,13 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     // Track which outcome we're on
     adventure.currentOutcomeId = "initial";
     activeAdventures.set(socket.id, adventure);
+    console.log(`ADV: Level ${level} Selected for ${socket.id}`);
   });
 
   //MONSTER SELECT SOCKET
   socket.on(
     "adventure_monster_selected",
     async ({ monsterID }: { monsterID: MonsterIdentifier }) => {
-      const monster = getMonster(monsterID);
-      if (!monster) {
-        console.error(`Invalid monster name: ${monsterID}`);
-        socket.emit("adventure_error", {
-          message: "Invalid monster selected.",
-        });
-        return;
-      }
       const adventure = activeAdventures.get(socket.id);
 
       if (!adventure) {
@@ -56,6 +49,17 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         });
         return;
       }
+      socket.emit("start_adventure", adventure.getLevelMonster());
+
+      const monster = getMonster(monsterID);
+      if (!monster) {
+        console.error(`Invalid monster name: ${monsterID}`);
+        socket.emit("adventure_error", {
+          message: "Invalid monster selected.",
+        });
+        return;
+      }
+
       const player = adventure.getPlayer();
       player.setMonster(monster);
       progressAdventure(io, socket, adventure, adventure.getStage());

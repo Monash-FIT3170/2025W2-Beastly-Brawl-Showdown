@@ -1,17 +1,24 @@
 import React from "react";
-import { MonsterState } from "/types/single/monsterState";
+import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 import "./MonsterDisplay.css";
 
 interface MonsterDisplayProps {
   monster: MonsterState;
   className?: string;
+  biomeString: string;
 }
 
 const MonsterDisplay: React.FC<MonsterDisplayProps> = ({
   monster,
   className,
+  biomeString,
 }) => {
-  const imagePath = `/assets/characters/${monster.id}.png`;
+  var imagePath = `/assets/characters/${monster.id}.png`;
+
+  //checks if monster is a slime - then uses biome specific variant
+  if (monster.id == MonsterIdentifier.SLIME) {
+    imagePath = `/assets/characters/${biomeString}.png`;
+  }
 
   return (
     <div className={`monster-display-container ${className ?? ""}`}>

@@ -1,18 +1,27 @@
 import React from "react";
 import "./BattleMonsterPanel.css";
 import { BattleState } from "/types/composite/battleState";
+import { MonsterIdentifier } from "/types/single/monsterState";
 
 interface BattleMonsterPanelProps {
   battleState: BattleState;
+  slimeString: string;
 }
 
 const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   battleState,
+  slimeString,
 }) => {
   const pathLeftMon =
     "/assets/characters/" + battleState.yourPlayerMonster.id + ".png";
-  const pathRightMon =
+  var pathRightMon =
     "/assets/characters/" + battleState.opponentPlayerMonster.id + ".png";
+
+  //checks if enemy is a slime - then uses biome specific variant
+  //note: slimes can only be enemies
+  if (battleState.opponentPlayerMonster.id == MonsterIdentifier.SLIME) {
+    pathRightMon = "/assets/characters/" + slimeString + ".png";
+  }
 
   // console.log("Left Monster Path: ", pathLeftMon);
   // console.log("Right Monster Path: ", pathRightMon);
