@@ -28,6 +28,14 @@ export abstract class Status {
     return this.name;
   }
 
+  public getDescription(): string{
+    return this.description;
+  }
+
+  public getRemaningTurn(): number{
+    return this.countDown
+  }
+
   public isExpired(): boolean {
     //checks if countdown hit 0
     if (this.countDown == 0) {
