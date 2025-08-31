@@ -1,4 +1,5 @@
 import { Player } from "../player";
+import { EquipmentState } from "/types/single/itemState";
 
 export abstract class Equipment {
   protected name: string;
@@ -29,4 +30,13 @@ export abstract class Equipment {
   public abstract unequip(player: Player): void;
 
   public abstract calculateStrength(stage: number): void;
+
+  public getState(): EquipmentState {
+    return {
+      name: this.name,
+      description: this.description,
+      statDescription: this.getStatDescription(),
+      image: "OOZING_BLADE", //TO-DO: UPDATE IMAGE!
+    };
+  }
 }

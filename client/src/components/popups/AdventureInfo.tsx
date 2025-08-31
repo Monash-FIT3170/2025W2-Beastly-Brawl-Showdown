@@ -11,17 +11,24 @@ import { Status } from "/server/src/model/game/status/status";
 import { IconButton } from "../buttons/IconButton";
 import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 import { PopupAdventure } from "./PopupAdventure";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionState,
+  AttackState,
+} from "/types/single/actionState";
 import { BlackText } from "../texts/BlackText";
 import { StatInfoIcon } from "../cards/StatInfoIcon";
+import { AdventureStatBar } from "../bars/AdventureStatBar";
 
 export interface AdventureInfoPopupProp {
   playerState: PlayerState | null | undefined;
+  attackState: AttackState | null | undefined;
   onClose?: () => void;
 }
 
 export const AdventureInfoPopup = ({
   playerState,
+  attackState,
   onClose,
 }: AdventureInfoPopupProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
@@ -66,7 +73,9 @@ export const AdventureInfoPopup = ({
             box-border
             bg-[#FFE8B1]
             flex-col
-            items-center py-[2rem] xl:py-[1rem]`}
+            gap-[1%]
+            items-center
+            py-1 overflow-y-auto`}
         >
           <div className="bg-[#EDAF55] outline-blackCurrant px-[2rem] lg:outline-[0.20rem] sm:outline-[0.6rem] rounded-2xl flex flex-col items-center justify-center">
             <OutlineText size="medium">
@@ -75,7 +84,7 @@ export const AdventureInfoPopup = ({
           </div>
           {viewingTab === 0 && (
             <>
-              <div className="flex flex-row justify-evenly">
+              <div className="flex flex-row w-full">
                 <StatInfoIcon
                   stat="ac"
                   statVal={playerState?.currentArmourClassStat!}
@@ -90,27 +99,45 @@ export const AdventureInfoPopup = ({
                 ></StatInfoIcon>
               </div>
 
-              <div className="bg-[#EDAF55] outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
-                <OutlineText size="choice-text">ABILITIES</OutlineText>
+              <div className="flex flex-col w-full">
+                <AdventureStatBar
+                  stat="Attack Damage"
+                  statVal={attackState?.attackDamage!}
+                ></AdventureStatBar>
+                <AdventureStatBar
+                  stat="Critical Hit Rate"
+                  statVal={attackState?.critRate!}
+                ></AdventureStatBar>
+                <AdventureStatBar
+                  stat="Dice Roll Range"
+                  statVal={attackState?.diceRange!}
+                ></AdventureStatBar>
               </div>
 
-              {currentAbilities.map((ability, idx) => (
-                <div
-                  key={ability.id || idx}
-                  className="flex flex-row items-center justify-left"
-                >
-                  <img
-                    src={"/assets/actions/" + ability.id + ".png"}
-                    alt="ability icon"
-                    className="w-[7rem] h-[7rem]"
-                  />
-                  <div>
-                    <OutlineText size="medium">{ability.name}</OutlineText>
-                    {/**<BlackText size="medium">{ability.description}</BlackText>*/}
-                    <BlackText size="medium">{ability.description}</BlackText>
+              <div className="bg-[#EDAF55] border-blackCurrant lg:border-[0.25rem] sm:border-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
+                <OutlineText size="choice-text">ABILITIES</OutlineText>
+              </div>
+              <div className="sm:w-[95%] lg:w-full flex sm:flex-col lg:flex-row justify-evenly">
+                {currentAbilities.map((ability, idx) => (
+                  <div
+                    key={ability.id || idx}
+                    className="flex flex-row items-center gap-[2%] lg:w-[45%]"
+                  >
+                    <img
+                      src={"/assets/actions/" + ability.id + ".png"}
+                      alt="ability icon"
+                      className="w-[5rem] h-[5rem]"
+                    />
+                    <div className="flex flex-col items-start text-justify">
+                      <OutlineTextResizable size="medium">
+                        {ability.name}
+                      </OutlineTextResizable>
+                      {/**<BlackText size="medium">{ability.description}</BlackText>*/}
+                      <BlackText size="tiny">{ability.description}</BlackText>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </>
           )}
           {viewingTab ===1 &&(

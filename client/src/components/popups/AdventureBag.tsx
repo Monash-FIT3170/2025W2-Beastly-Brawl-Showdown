@@ -12,6 +12,13 @@ import { IconButton } from "../buttons/IconButton";
 import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 import { PopupAdventure } from "./PopupAdventure";
 import { Equipment } from "/server/src/model/game/equipment/equipment";
+import { EquipmentCard } from "../cards/EquipmentCard";
+import { EmptyEquipmentCard } from "../cards/EmptyEquipmentCard";
+import { BlackText } from "../texts/BlackText";
+import { ConsumableCard } from "../cards/ConsumableCard";
+import { ConsumablePopup } from "./ConsumablePopup";
+import { ConsumableState, EquipmentState } from "/types/single/itemState";
+import { EquipmentPopup } from "./EquipmentPopup";
 
 export interface AdventureBagProp {
   playerState: PlayerState | null | undefined;
@@ -24,71 +31,150 @@ export const AdventureBagPopup = ({
 }: AdventureBagProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
   const currentlyViewing = ["EQUIPMENT", "CONSUMABLES"];
+  const [viewingConsumable, setViewingConsumable] = useState<Boolean>(false);
+  const [viewingEquipment, setViewingEquipment] = useState<Boolean>(false);
+  const [consumable, setConsumable] = useState<ConsumableState | null>(null);
+  const [equipment, setEquipment] = useState<EquipmentState | null>(null);
 
   const monsterImgPath =
     "/assets/characters/" + playerState?.monster?.id + ".png";
 
+  console.log(playerState);
+
+  console.log("consumables", playerState?.consumables);
+  console.log("equipment", playerState?.equipment);
+
+  const handleCancelSelection = () => {
+    setConsumable(null);
+    setEquipment(null);
+  };
+
   return (
-    <PopupAdventure colour="goldenRod">
-      <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-full h-full">
-        <OutlineTextResizable size="large" max1={3}>
-          BACKPACK
-        </OutlineTextResizable>
-        <div
-          className={`flex  
+    <>
+      {equipment && (
+        <EquipmentPopup
+          equipment={equipment}
+          onClose={() => handleCancelSelection()}
+        ></EquipmentPopup>
+      )}
+      {consumable && (
+        <ConsumablePopup
+          consumable={consumable}
+          onClose={() => handleCancelSelection()}
+        ></ConsumablePopup>
+      )}
+      <PopupAdventure colour="goldenRod">
+        <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-[100%] h-full">
+          <OutlineText size="choice-text">BACKPACK</OutlineText>
+          {/* SECTION */}
+          <div
+            className={`flex  
             border-[4px] 
             border-blackCurrant rounded-xl
             grow
             sm:min-h-[20vh]
             sm:w-[90%]
             lg:min-h-[20vh]
-            lg:w-[80%]
+            lg:w-[90%]
             border-[3px]
             border-[#403245]
             rounded-[20px]
             box-border
             bg-[#FFE8B1]
             flex-col
-            items-center py-2`}
-        >
-          <div className="bg-[#EDAF55] outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
-            <OutlineText size="choice-text">
-              {currentlyViewing[viewingTab]}
-            </OutlineText>
-          </div>
-        </div>
-        <div className="grid grid-cols-3 justify-items-center">
-          <div className="flex justify-center items-center">
+            items-center py-2
+            p-[2rem]
+            space-y-4
+            overflow-y-auto
+            `}
+          >
+            {/* SECTION HEADING */}
+            <div className="w-[90%] bg-[#EDAF55] outline-blackCurrant outline-[0.25rem] rounded-full flex flex-col items-center justify-center">
+              <OutlineText size="medium">
+                {currentlyViewing[viewingTab]}
+              </OutlineText>
+            </div>
+            {/* CONSUMABLES CONTENTS */}
             {viewingTab !== 0 && (
-              <IconButton
-                style="arrowleft"
-                buttonColour="blue"
-                iconColour="black"
-                size="medium"
-                onClick={() => setViewingTab(viewingTab - 1)}
-              />
+              <>
+                {/* if no consumables */}
+                {playerState?.consumables[0] ? (
+                  <></>
+                ) : (
+                  <BlackText size="tiny">
+                    Continue adventuring to find consumables!!
+                  </BlackText>
+                )}
+                {/* map of consumables */}
+                <div className="h-full w-full p-[1rem] flex flex-wrap gap-4">
+                  {playerState?.consumables.map((c) => (
+                    <>
+                      <ConsumableCard
+                        onClick={() => setConsumable(c)}
+                        consumable={c}
+                      ></ConsumableCard>
+                    </>
+                  ))}
+                </div>
+              </>
             )}
-          </div>
 
-          <div className="w-min">
-            <ButtonGeneric color="red" size="battle" onClick={onClose}>
-              <OutlineText size="choice-text">Back</OutlineText>
-            </ButtonGeneric>
-          </div>
-
-          <div className="flex justify-center items-center">
+            {/* EQUIPMENT CONTENTS */}
             {viewingTab !== 1 && (
-              <IconButton
-                style="arrowright"
-                buttonColour="blue"
-                iconColour="black"
-                size="medium"
-                onClick={() => setViewingTab(viewingTab + 1)}
-              />
+              <>
+                <div className="grid grid-flow-row h-full w-full auto-rows-auto">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="py-2 bg-green-200">
+                      <OutlineText size="medium">Slot {i + 1}</OutlineText>
+                      <div className="h-[2px] bg-blackCurrant mb-4 w-[90%] mx-auto" />
+                      {playerState?.equipment[i] ? (
+                        <EquipmentCard
+                          onClick={() => setEquipment(playerState.equipment[i])}
+                          equipment={playerState.equipment[i]}
+                        />
+                      ) : (
+                        <EmptyEquipmentCard />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
+          </div>
+
+          <div className="grid grid-cols-3 justify-items-center bg-blue-200 p-[1rem]">
+            <div className="flex justify-center items-center">
+              {viewingTab !== 0 && (
+                <IconButton
+                  style="arrowleft"
+                  buttonColour="blue"
+                  iconColour="black"
+                  size="medium"
+                  onClick={() => setViewingTab(viewingTab - 1)}
+                />
+              )}
+            </div>
+
+            <div className="w-min">
+              <ButtonGeneric color="red" size="battle" onClick={onClose}>
+                <OutlineText size="choice-text">Back</OutlineText>
+              </ButtonGeneric>
+            </div>
+
+            <div className="flex justify-center items-center">
+              {viewingTab !== 1 && (
+                <IconButton
+                  style="arrowright"
+                  buttonColour="blue"
+                  iconColour="black"
+                  size="medium"
+                  onClick={() => setViewingTab(viewingTab + 1)}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </PopupAdventure>
+      </PopupAdventure>
+    </>
   );
 };

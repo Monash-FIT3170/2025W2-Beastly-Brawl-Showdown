@@ -9,7 +9,11 @@ import DiceRollModal from "../Game/DiceRollModal";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { useEffect, useState } from "react";
 import { BattleState } from "/types/composite/battleState";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionState,
+  AttackState,
+} from "/types/single/actionState";
 import { randomUUID } from "crypto";
 import React from "react";
 import socket from "../../socket";
@@ -33,51 +37,66 @@ import { AdventureInfoPopup } from "../../components/popups/AdventureInfo";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
 
 interface AdventureProps {
-  //so i am adding this without actually knowing why just trust the process
-  stage: number;
+  levelMonster: MonsterIdentifier;
 }
 
-const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
-  //TODO: determine enemy in here???? maybe from AdventureProps
+const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
+  const battleId = "ADVENTURE";
+  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
+  var backgroundString =
+    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
+
+  //ADVENTURE PAGE:
   const [dialogue, setDialogue] = useState<string[] | null>(null);
+  const [attackState, setAttackState] = useState<AttackState | null>();
+  const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
+  const [stage, setStage] = useState<number>(1);
+
+  const [playerState, setPlayerState] = useState<PlayerState | null>();
+
   const [battleState, setBattleState] = useState<BattleState | null>(null);
-  const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
-  const [diceValue, setDiceValue] = useState<number>(0); // result of dice
-  const [question, setQuestion] = useState<string[] | null>(null);
-  const [choices, setChoices] = useState<option[] | null>(null);
-  const [statChange, setStatChange] = useState<string[] | null>(null);
+  const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
+
+  //POPUPS
+  const [showLeave, setShowLeave] = useState(false);
+  const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
+  const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
   const [receivingConsumable, setReceivingConsumable] = useState<string | null>(
     null
   );
-  const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
-  const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
     null
   );
-  const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
-  const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
+  const [question, setQuestion] = useState<string[] | null>(null);
+  const [choices, setChoices] = useState<option[] | null>(null);
+
+  const [statChange, setStatChange] = useState<string[] | null>(null);
   const [statusResult, setStatusResult] = useState<string[] | null>(null);
-  const battleId = "ADVENTURE";
-  //TODO: set player state
-  const [playerState, setPlayerState] = useState<PlayerState | null>();
+
+  //DICE
+  const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
+  const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
   const handleChoiceSelect = (choiceId: string) => {
     socket.emit("adventure_choice", { stage, choiceId });
     setChoices(null);
   };
 
-  const [showLeave, setShowLeave] = useState(false);
-
   socket.on("adventure_win", (stage) => {
     FlowRouter.go("/adventure/win");
   });
 
-  console.log(battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
-
   useEffect(() => {
-    socket.emit("adventure_request", { stage });
+    socket.emit("adventure_request", { stage }); //TODO: WHO IS THIS, WHY IS SHE HERE?
 
     socket.on("adventure_state", (state) => {
+      if (state.stage) {
+        setStage(state.stage);
+      } else {
+        console.log("stage", stage);
+        // setStage(1000);
+      }
+      console.log(state.stage);
       if (state.type === "battle") {
         setBattleState(state.battle);
         console.log("STARTING LOGS...", battleState?.yourPlayer.battleLogs);
@@ -87,20 +106,26 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         setDialogue(state.dialogue);
         setCurrentEnemy(state.enemy ?? null);
         setBattleState(null); // Clear battle
+        setAttackState(state.attack);
         setPlayerState(state.player);
       } else if (state.type === "choice") {
         // Handle choice state
         setChoices(state.choices);
         setQuestion(state.result);
         setBattleState(null); // Clear battle
+        //TODO: setPlayerState(state.player);
         setCurrentEnemy(null);
       } else if (state.type === "stat_change") {
         setStatChange(state.result);
         setBattleState(null); // Clear battle
+        //TODO: setPlayerState(state.player);
         setCurrentEnemy(null);
       } else if (state.type === "status") {
+        console.log("test", state);
         setStatusResult(state.result);
+        console.log("test", statusResult);
         setBattleState(null); // Clear battle
+        //TODO: setPlayerState(state.player);
         setCurrentEnemy(null);
       }
     });
@@ -129,13 +154,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
       socket.off("possible_actions");
       socket.off("adventure_state");
     };
-  }, [stage]);
+  });
 
-  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
-  var backgroundString =
-    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
+  console.log("PLAYER LOGS:", battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
 
-  //TODO: add inventory button
   return (
     <>
       <div
@@ -145,6 +167,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         {viewingInfo && (
           <AdventureInfoPopup
             playerState={playerState}
+            attackState={attackState}
             onClose={() => setViewingInfo(false)}
           ></AdventureInfoPopup>
         )}
@@ -251,7 +274,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             />
           </div>
         )}
-        {statusResult && (
+        {/**{statusResult && (
           <div>
             <StatChangePopup
               messages={statusResult}
@@ -260,6 +283,27 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                 socket.emit("adventure_next", { stage });
               }}
             />
+          </div>
+        )}*/}
+        {statusResult && (
+          <div>
+            <PopupClean>
+              <div className="flex flex-col justify-around items-center">
+                <OutlineText size="extraLarge">{statusResult}</OutlineText>
+                <div className="flex flex-row justify-between items-center">
+                  <ButtonGeneric
+                    size="large"
+                    color="blue"
+                    onClick={() => {
+                      setStatusResult(null);
+                      socket.emit("adventure_next", { stage });
+                    }}
+                  >
+                    CONFIRM
+                  </ButtonGeneric>
+                </div>
+              </div>
+            </PopupClean>
           </div>
         )}
         {choices && (
@@ -293,19 +337,22 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
             </div>
           </>
         )}
+        {/* ADVENTURE HEADER (DURING NON-BATTLE) */}
         {!battleState && playerState && (
           <>
-            <div class="flex items-center gap-4 px-[20px]">
-              <div class="flex-1">
-                <div class="panel">
+            <div className="flex items-center gap-4 px-[20px]">
+              {/* Header */}
+              <div className="flex-1">
+                <div className="panel">
                   <AdventureInfoPanel
                     playerState={playerState}
-                    level={0}
-                    stage={0}
+                    level={levelMonster}
+                    stage={stage}
                   />
                 </div>
               </div>
-              <div class="py-[12px]">
+              {/* Inventory Button */}
+              <div className="py-[12px]">
                 <ButtonGeneric
                   color={"ronchi"}
                   size={"backpack"}
@@ -313,31 +360,35 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
                 >
                   <img
                     src={"/assets/backpack.png"}
-                    class={"w-[80%] h-[80%] object-contain mx-auto"}
+                    className={"w-[80%] h-[80%] object-contain mx-auto"}
+                    className={"w-[80%] h-[80%] object-contain mx-auto"}
                   ></img>
                 </ButtonGeneric>
               </div>
             </div>
+            {/* Exit/Info Buttons */}
+            <div className="flex justify-between xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem]  pointer-events-auto">
+              <div className="flex lg:gap-5 sm:gap-10">
+                <IconButton
+                  style="arrowleft"
+                  iconColour="black"
+                  buttonColour="red"
+                  size="small"
+                  onClick={() => setShowLeave(true)}
+                />
+                <IconButton
+                  style="info"
+                  iconColour="black"
+                  buttonColour="blue"
+                  size="small"
+                  onClick={() => setViewingInfo(true)}
+                />
+              </div>
 
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              />
               <LeavePopup
                 open={showLeave}
                 onClose={() => setShowLeave(false)}
               />
-              <ButtonGeneric
-                color={"blue"}
-                size={"tiny"}
-                onClick={() => setViewingInfo(true)}
-              >
-                INFO
-              </ButtonGeneric>
             </div>
             {/* INSERT INVENTORY */}
           </>
@@ -347,18 +398,41 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
             <PlayerInfoPanel battleState={battleState} />
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              ></IconButton>
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto">
+              <div className="flex lg:gap-5 sm:gap-10">
+                <IconButton
+                  style="arrowleft"
+                  iconColour="black"
+                  buttonColour="red"
+                  size="small"
+                  onClick={() => setShowLeave(true)}
+                />
+                <IconButton
+                  style="info"
+                  iconColour="black"
+                  buttonColour="blue"
+                  size="small"
+                  onClick={() => setViewingInfo(true)}
+                />
+              </div>
+
               <LeavePopup
                 open={showLeave}
                 onClose={() => setShowLeave(false)}
               ></LeavePopup>
+              {/* Inventory Button */}
+              <div className="py-[12px]">
+                <ButtonGeneric
+                  color={"ronchi"}
+                  size={"squaremedium"}
+                  onClick={() => setViewingInventory(true)}
+                >
+                  <img
+                    src={"/assets/backpack.png"}
+                    className={"w-[80%] h-[80%] object-contain mx-auto"}
+                  ></img>
+                </ButtonGeneric>
+              </div>
             </div>
             <BattleMonsterPanel battleState={battleState} />
 

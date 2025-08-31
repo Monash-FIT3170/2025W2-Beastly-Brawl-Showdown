@@ -1,6 +1,6 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, AttackState } from "/types/single/actionState";
 import socket from "../../socket";
 
 export class AttackAction extends Action {
@@ -126,5 +126,13 @@ export class AttackAction extends Action {
       // Increment successful block for front end
       affectedPlayer.incSuccessfulBlock(1);
     }
+  }
+
+  public getAttackState(): AttackState {
+    return {
+      attackDamage: this.damageDealt,
+      critRate: this.critRate,
+      diceRange: this.diceMin,
+    };
   }
 }

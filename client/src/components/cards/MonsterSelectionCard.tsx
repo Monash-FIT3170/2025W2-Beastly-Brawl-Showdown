@@ -21,6 +21,7 @@ export const MonsterSelectionCard = ({
     [ArchetypeIdentifier.ATTACKER]: "bg-[#DC7466]",
     [ArchetypeIdentifier.DEFENDER]: "bg-[#7EACD5]",
     [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
+    [ArchetypeIdentifier.NEUTRAL]: "bg-[#DC7466]",
   };
 
   return (

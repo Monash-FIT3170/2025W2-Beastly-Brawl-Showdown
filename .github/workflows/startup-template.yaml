@@ -25,6 +25,8 @@ on:
         required: true
       BEASTLYBRAWL_APP_ROOT_URL:
         required: true
+      MONGO_URL:
+        required: true
 
 env:
   working_directory: ./terraform
@@ -158,6 +160,7 @@ jobs:
           build-args: |
             ENV=${{ inputs.env }}
             ROOT_URL=${{ secrets.BEASTLYBRAWL_APP_ROOT_URL }}
+            MONGO_URL=${{ secrets.MONGO_URL }}
 
       - name: Delete old package versions
         uses: actions/delete-package-versions@v5
