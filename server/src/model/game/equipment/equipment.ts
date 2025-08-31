@@ -36,7 +36,7 @@ export abstract class Equipment {
       name: this.name,
       description: this.description,
       statDescription: this.getStatDescription(),
-      image: "OOZING_BLADE", //TO-DO: UPDATE IMAGE!
+      imageString: "OOZING_BLADE", //TO-DO: UPDATE IMAGE!
     };
   }
 }

@@ -5,7 +5,6 @@ import { BlackText } from "../texts/BlackText";
 
 interface ConsumableProps {
   consumable: ConsumableState;
-
   onClick: () => void;
 }
 
@@ -29,7 +28,7 @@ export const ConsumableCard = ({ consumable, onClick }: ConsumableProps) => {
         {/* Left column (always square) */}
         <div
           className="lg:h-[5rem] aspect-square bg-[#FBD474] outline-blackCurrant 
-                  lg:outline-[0.25rem] sm:outline-[0.75rem] 
+                  lg:outline-[0.25rem] sm:outline-[0.25rem] 
                   rounded-2xl flex justify-center items-center p-2"
         >
           <img
@@ -40,11 +39,13 @@ export const ConsumableCard = ({ consumable, onClick }: ConsumableProps) => {
 
         {/* Right column */}
         <div
-          className="flex flex-col justify-center items-center bg-blue-200 
+          className="flex flex-col justify-center items-center 
                   rounded-2xl p-2 h-full"
         >
-          <OutlineText size="medium">{consumable.name}</OutlineText>
-          <BlackText size="tiny">{consumable.description}</BlackText>
+          <OutlineText size="inventory">
+            {consumable.name.toUpperCase()}
+          </OutlineText>
+          <BlackText size="tiny">{consumable.statDescription}</BlackText>
         </div>
       </div>
     </button>

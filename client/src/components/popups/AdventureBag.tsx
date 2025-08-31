@@ -19,15 +19,18 @@ import { ConsumableCard } from "../cards/ConsumableCard";
 import { ConsumablePopup } from "./ConsumablePopup";
 import { ConsumableState, EquipmentState } from "/types/single/itemState";
 import { EquipmentPopup } from "./EquipmentPopup";
+import { ActionIdentifier } from "../../../../types/single/actionState";
 
 export interface AdventureBagProp {
   playerState: PlayerState | null | undefined;
-  onClose?: () => void;
+  onClose: () => void;
+  inBattle: boolean;
 }
 
 export const AdventureBagPopup = ({
   playerState,
   onClose,
+  inBattle,
 }: AdventureBagProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
   const currentlyViewing = ["EQUIPMENT", "CONSUMABLES"];
@@ -49,6 +52,22 @@ export const AdventureBagPopup = ({
     setEquipment(null);
   };
 
+  function handleConsumption(consumable: ConsumableState) {
+    socket.emit("adventure_consume", {
+      consumable: consumable,
+      playerId: socket.id,
+    });
+    //TODO: INITIATE NEXT TURN...?
+    const actionState = {
+      name: ActionIdentifier.CONSUME,
+    };
+    socket.emit("adventure_action", {
+      action: actionState,
+      playerId: socket.id,
+    });
+    onClose();
+  }
+
   return (
     <>
       {equipment && (
@@ -61,6 +80,8 @@ export const AdventureBagPopup = ({
         <ConsumablePopup
           consumable={consumable}
           onClose={() => handleCancelSelection()}
+          onConsume={() => handleConsumption(consumable)}
+          isDisabled={!inBattle}
         ></ConsumablePopup>
       )}
       <PopupAdventure colour="goldenRod">
@@ -106,7 +127,7 @@ export const AdventureBagPopup = ({
                   </BlackText>
                 )}
                 {/* map of consumables */}
-                <div className="h-full w-full p-[1rem] flex flex-wrap gap-4">
+                <div className="w-full p-[1rem] flex flex-wrap gap-4">
                   {playerState?.consumables.map((c) => (
                     <>
                       <ConsumableCard
@@ -157,7 +178,7 @@ export const AdventureBagPopup = ({
 
             <div className="w-min">
               <ButtonGeneric color="red" size="battle" onClick={onClose}>
-                <OutlineText size="choice-text">Back</OutlineText>
+                <OutlineText size="choice-text">BACK</OutlineText>
               </ButtonGeneric>
             </div>
 

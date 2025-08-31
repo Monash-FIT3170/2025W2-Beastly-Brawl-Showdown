@@ -5,7 +5,10 @@ export class PercentageHealthPotion extends Consumable {
   private percent: number;
 
   constructor(name: string, percent: number) {
-    super(name);
+    //btw feel free to change descriptions this is just for now
+    const description =
+      "A vibrant liquid stored in an unsuspecting vial, there are rumours this red liquid cures even the toughest wounds.";
+    super(name, description);
     this.percent = percent;
   }
 
@@ -14,5 +17,9 @@ export class PercentageHealthPotion extends Consumable {
       player.getMonster()!.getMaxHealth() * this.percent
     );
     player.incHealth(healAmount);
+  }
+
+  public getStatDescription(): string {
+    return "Heal " + this.percent * 100 + "% of your HP";
   }
 }

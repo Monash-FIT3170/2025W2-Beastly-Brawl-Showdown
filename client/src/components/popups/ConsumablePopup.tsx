@@ -7,10 +7,17 @@ import { BlackText } from "../texts/BlackText";
 
 export interface ConsumableProp {
   consumable: ConsumableState;
-  onClose?: () => void;
+  onClose: () => void;
+  onConsume: () => void;
+  isDisabled: boolean;
 }
 
-export const ConsumablePopup = ({ consumable, onClose }: ConsumableProp) => {
+export const ConsumablePopup = ({
+  consumable,
+  onClose,
+  onConsume,
+  isDisabled,
+}: ConsumableProp) => {
   const popupLayout = `z-100  items-center
         justify-center
         box-border
@@ -43,40 +50,70 @@ export const ConsumablePopup = ({ consumable, onClose }: ConsumableProp) => {
         lg:h-[85%]
         sm:h-[75%]`;
 
-  //TODO: make confirm actually consume it :o
-  //TODO: format
+  const consume = () => {
+    console.log("CONSUME CLICKED");
+    onClose();
+    onConsume();
+  };
+
+  //TODO: centre the rest of this poop
+  //TODO: can't click
   return (
     <>
       <div className={`${popupLayout}`}>
         <div className={`${popup}`}>
-          <OutlineText size="large">
-            {consumable.name.toUpperCase()}
-          </OutlineText>
           <div
-            className="h-[4rem] aspect-square bg-[#FB7EAB] outline-blackCurrant 
-                  lg:outline-[0.25rem] sm:outline-[0.75rem] 
-                  rounded-2xl flex justify-center items-center p-2"
+            className=" flex-row items-center flex-col outline-offset-0 relative gap-2 w-[100%] h-full
+          bg-blue-200  justify-center xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem]  pointer-events-auto"
           >
-            <img
-              className="w-full h-full object-contain"
-              src={`/assets/items/item.png`}
-            />
-          </div>
-          <BlackText size="medium">
-            Here is a lengthy description about this beautiful consumable, damn
-            you wanna consume it soo bad don't you, ooh i know you want to.
-          </BlackText>
-          <BlackText size="medium">
-            Are you sure you want to consume this?
-          </BlackText>
+            {/* Name */}
+            <OutlineText size="large">
+              {consumable.name.toUpperCase()}
+            </OutlineText>
+            {/* Image */}
+            <div className="bg-green-200 justify-center items-center">
+              <div
+                className="h-[10rem] lg:outline-[0.25rem] sm:outline-[0.75rem] 
+                  rounded-2xl  bg-[#FB7EAB] outline-blackCurrant aspect-square mx-auto"
+              >
+                <img
+                  className="w-full h-full object-contain"
+                  src={`/assets/items/item.png`}
+                />
+              </div>
+            </div>
 
-          <div className="w-min">
-            <ButtonGeneric color="blue" size="battle">
-              <OutlineText size="choice-text">Consume</OutlineText>
-            </ButtonGeneric>
-            <ButtonGeneric color="red" size="battle" onClick={onClose}>
-              <OutlineText size="choice-text">Back</OutlineText>
-            </ButtonGeneric>
+            {/* Description */}
+            <div className="bg-purple-200">
+              <BlackText size="medium">{consumable.description}</BlackText>
+              <div className="w-[90%] bg-[#EDAF55] outline-blackCurrant outline-[0.25rem] rounded-full flex flex-col items-center justify-center">
+                <OutlineText size="medium">
+                  {consumable.statDescription}
+                </OutlineText>
+              </div>
+              <BlackText size="medium">
+                Are you sure you want to consume this?
+              </BlackText>
+            </div>
+
+            {/* Buttons */}
+            <div className="bg-yellow-200 justify-center items-center flex lg:gap-5 sm:gap-10">
+              <ButtonGeneric color="red" size="battle" onClick={onClose}>
+                <div className="items-center">
+                  <OutlineText size="choice-text">BACK</OutlineText>
+                </div>
+              </ButtonGeneric>
+              <ButtonGeneric
+                color="blue"
+                size="battle"
+                isDisabled={isDisabled}
+                onClick={consume}
+              >
+                <div className="items-center">
+                  <OutlineText size="choice-text">CONSUME</OutlineText>
+                </div>
+              </ButtonGeneric>
+            </div>
           </div>
         </div>
       </div>

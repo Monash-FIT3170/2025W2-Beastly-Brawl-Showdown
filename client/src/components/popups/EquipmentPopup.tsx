@@ -47,25 +47,45 @@ export const EquipmentPopup = ({ equipment, onClose }: EquipmentProp) => {
     <>
       <div className={`${popupLayout}`}>
         <div className={`${popup}`}>
-          <OutlineText size="large">{equipment.name.toUpperCase()}</OutlineText>
           <div
-            className="h-[4rem] aspect-square bg-[#BD55ED] outline-blackCurrant 
-                      lg:outline-[0.25rem] sm:outline-[0.75rem] 
-                      rounded-2xl flex justify-center items-center p-2"
+            className=" flex-row items-center flex-col outline-offset-0 relative gap-2 w-[100%] h-full
+                bg-blue-200  justify-center xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem]  pointer-events-auto"
           >
-            <img
-              className="w-full h-full object-contain"
-              src={`/assets/items/item.png`}
-            />
-          </div>
-          <BlackText size="medium">{equipment.description}</BlackText>
-          <div className="w-[90%] bg-[#EDAF55] outline-blackCurrant outline-[0.25rem] rounded-full flex flex-col items-center justify-center">
-            <OutlineText size="medium">{equipment.statDescription}</OutlineText>
-          </div>
-          <div className="w-min">
-            <ButtonGeneric color="red" size="battle" onClick={onClose}>
-              <OutlineText size="choice-text">Back</OutlineText>
-            </ButtonGeneric>
+            {/* Name */}
+            <OutlineText size="large">
+              {equipment.name.toUpperCase()}
+            </OutlineText>
+            {/* Image */}
+            <div className="bg-green-200 justify-center items-center">
+              <div
+                className="h-[10rem] lg:outline-[0.25rem] sm:outline-[0.75rem] 
+                        rounded-2xl  bg-[#FB7EAB] outline-blackCurrant aspect-square mx-auto"
+              >
+                <img
+                  className="w-full h-full object-contain"
+                  src={`/assets/items/item.png`}
+                />
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="bg-purple-200">
+              <BlackText size="medium">{equipment.description}</BlackText>
+              <div className="w-[90%] bg-[#EDAF55] outline-blackCurrant outline-[0.25rem] rounded-full flex flex-col items-center justify-center">
+                <OutlineText size="medium">
+                  {equipment.statDescription}
+                </OutlineText>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="bg-yellow-200 justify-center items-center flex lg:gap-5 sm:gap-10">
+              <ButtonGeneric color="red" size="battle" onClick={onClose}>
+                <div className="items-center">
+                  <OutlineText size="choice-text">BACK</OutlineText>
+                </div>
+              </ButtonGeneric>
+            </div>
           </div>
         </div>
       </div>

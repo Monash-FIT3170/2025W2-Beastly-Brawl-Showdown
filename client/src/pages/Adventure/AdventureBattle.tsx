@@ -35,6 +35,8 @@ import { PlayerState } from "/types/single/playerState";
 import { Equipment } from "../../../../server/src/model/game/equipment/equipment";
 import { AdventureInfoPopup } from "../../components/popups/AdventureInfo";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
+import { EquipmentState } from "/types/single/itemState";
+import { EquipmentCard } from "../../components/cards/EquipmentCard";
 
 interface AdventureProps {
   levelMonster: MonsterIdentifier;
@@ -67,6 +69,12 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
     null
   );
+  const [equipmentInventoryFull, setEquipmentInventoryFull] = useState(false);
+  const [currentEquipment, setCurrentEquipment] = useState<EquipmentState[]>(
+    []
+  );
+  const [incomingEquipment, setIncomingEquipment] =
+    useState<EquipmentState | null>(null);
   const [question, setQuestion] = useState<string[] | null>(null);
   const [choices, setChoices] = useState<option[] | null>(null);
 
@@ -85,6 +93,17 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   socket.on("adventure_win", (stage) => {
     FlowRouter.go("/adventure/win");
   });
+
+  useEffect(() => {
+    console.log("playerState updated:", playerState);
+  }, [playerState]);
+
+  useEffect(() => {
+    console.log("BATTLE STATE UPDATED");
+    if (battleState !== null) {
+      setPlayerState(battleState.yourPlayer);
+    }
+  }, [battleState]);
 
   useEffect(() => {
     socket.emit("adventure_request", { stage }); //TODO: WHO IS THIS, WHY IS SHE HERE?
@@ -113,20 +132,25 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         setChoices(state.choices);
         setQuestion(state.result);
         setBattleState(null); // Clear battle
-        //TODO: setPlayerState(state.player);
+        setPlayerState(state.player);
         setCurrentEnemy(null);
       } else if (state.type === "stat_change") {
         setStatChange(state.result);
         setBattleState(null); // Clear battle
-        //TODO: setPlayerState(state.player);
+        setPlayerState(state.player);
         setCurrentEnemy(null);
       } else if (state.type === "status") {
         console.log("test", state);
         setStatusResult(state.result);
         console.log("test", statusResult);
         setBattleState(null); // Clear battle
-        //TODO: setPlayerState(state.player);
+        setPlayerState(state.player);
         setCurrentEnemy(null);
+      } else if (state.type === "update_player") {
+        setPlayerState(state.player);
+        setEquipmentInventoryFull(false);
+        setIncomingEquipment(null);
+        setCurrentEquipment([]);
       }
     });
 
@@ -136,6 +160,12 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
     socket.on("adventure_equipment", (equipmentName) => {
       setReceivingEquipment(equipmentName.name);
+    });
+
+    socket.on("adventure_equipment_full", (data) => {
+      setCurrentEquipment(data.currentEquipment); // array of 3 equipment that player has
+      setIncomingEquipment(data.incomingEquipment); // a new equipment item
+      setEquipmentInventoryFull(true);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -153,6 +183,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     return () => {
       socket.off("possible_actions");
       socket.off("adventure_state");
+      socket.off("adventure_equipment_full");
     };
   });
 
@@ -175,6 +206,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
           <AdventureBagPopup
             playerState={playerState}
             onClose={() => setViewingInventory(false)}
+            inBattle={battleState !== null}
           ></AdventureBagPopup>
         )}
         {receivingConsumable && (
@@ -213,28 +245,98 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             </PopupClean>
           </div>
         )}
-        {receivingEquipment && (
-          <div>
-            <PopupClean>
-              <div className="flex flex-col justify-around items-center">
-                <OutlineText size="extraLarge">
-                  {receivingEquipment}
-                </OutlineText>
-                <div className="flex flex-row justify-between items-center">
+        {receivingEquipment &&
+          !equipmentInventoryFull &&
+          !incomingEquipment && (
+            <div>
+              <PopupClean>
+                <div className="flex flex-col justify-around items-center">
+                  <OutlineText size="extraLarge">
+                    {receivingEquipment}
+                  </OutlineText>
+                  <div className="flex flex-row justify-between items-center">
+                    <ButtonGeneric
+                      size="large"
+                      color="blue"
+                      onClick={() => {
+                        setReceivingEquipment(null);
+                        socket.emit("adventure_next", { stage });
+                      }}
+                    >
+                      EQUIP!
+                    </ButtonGeneric>
+                  </div>
+                </div>
+              </PopupClean>
+            </div>
+          )}
+        {equipmentInventoryFull && incomingEquipment && (
+          <PopupClean>
+            <div className="flex flex-col items-center gap-4">
+              <OutlineText size="large">YOUR BAG IS TOO HEAVY!</OutlineText>
+              <OutlineText size="medium">REMOVE AN ITEM!</OutlineText>
+              <div className="grid grid-flow-row h-full w-full auto-rows-auto gap-2 my-4">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="flex items-center bg-gray-100 rounded p-2"
+                  >
+                    <div className="flex-1">
+                      {currentEquipment[i] ? (
+                        <EquipmentCard
+                          equipment={currentEquipment[i]}
+                          onClick={() => {}} // Optional: show details if you want
+                        />
+                      ) : (
+                        <span className="text-gray-400">Empty Slot</span>
+                      )}
+                    </div>
+                    {currentEquipment[i] && (
+                      <ButtonGeneric
+                        color="red"
+                        size="small"
+                        onClick={() => {
+                          setEquipmentInventoryFull(false);
+                          setIncomingEquipment(null);
+                          setCurrentEquipment([]);
+                          setReceivingEquipment(null);
+                          socket.emit("adventure_replace_equipment", {
+                            removeIndex: i,
+                            newEquipment: incomingEquipment,
+                          });
+                        }}
+                      >
+                        🗑️
+                      </ButtonGeneric>
+                    )}
+                  </div>
+                ))}
+                {/* Incoming equipment */}
+                <div className="flex items-center bg-yellow-100 rounded p-2">
+                  <div className="flex-1">
+                    <EquipmentCard
+                      equipment={incomingEquipment}
+                      onClick={() => {}} // Optional: show details if you want
+                    />
+                  </div>
                   <ButtonGeneric
-                    size="large"
-                    color="blue"
+                    color="red"
+                    size="small"
                     onClick={() => {
+                      // Reject the new equipment
+                      setEquipmentInventoryFull(false);
+                      setIncomingEquipment(null);
+                      setCurrentEquipment([]);
                       setReceivingEquipment(null);
                       socket.emit("adventure_next", { stage });
                     }}
                   >
-                    EQUIP!
+                    🗑️
                   </ButtonGeneric>
                 </div>
               </div>
-            </PopupClean>
-          </div>
+            </div>
+          </PopupClean>
         )}
         {dialogue && (
           <>
@@ -361,7 +463,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   <img
                     src={"/assets/backpack.png"}
                     className={"w-[80%] h-[80%] object-contain mx-auto"}
-                    className={"w-[80%] h-[80%] object-contain mx-auto"}
                   ></img>
                 </ButtonGeneric>
               </div>
@@ -398,7 +499,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
             <PlayerInfoPanel battleState={battleState} />
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto">
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10">
               <div className="flex lg:gap-5 sm:gap-10">
                 <IconButton
                   style="arrowleft"

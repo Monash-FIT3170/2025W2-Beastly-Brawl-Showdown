@@ -6,6 +6,8 @@ import { NullAction } from "../model/game/action/null";
 
 import { loadNextStory, progressAdventure } from "./adventureModeHandler";
 import { ActionRandomiser } from "../model/game/actionRandomiser";
+import { ActionIdentifier } from "../../../types/single/actionState";
+import { Action } from "../model/game/action/action";
 
 export const adventureTurnHandler = (io: Server, socket: Socket) => {
   // Handle player actions in adventure
@@ -16,19 +18,27 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
 
       var battle = battles.get(playerId);
       var player = battle?.getPlayer(playerId);
-      var actionToAdd = player?.getMonster()?.getAction(action.id);
+      var actionToAdd: Action | undefined = undefined;
 
-      //ADDING ACTION TO PLAYER
-      if (actionToAdd) {
-        player?.addAction(actionToAdd);
-        console.log(
-          `ADV: Adding action ${actionToAdd.getName()} to Player ${player?.getName()}`
-        );
-        console.log(actionToAdd.getDescription());
+      if (action.name == ActionIdentifier.CONSUME) {
+        //CHECK IF CONSUME ACTION and just continue???
+        //TODO: fix my methods because its ew just tryna get it to work lol...
+        //COS ALREADY ADDED...
+        console.log(`ADV: CONSUME COMSRNG CONSUME CONSUM`);
       } else {
-        console.error(
-          `Battle: ${playerId}, ${battle} \n Player: ${playerId}, ${player} \n Action: ${action.id}, ${actionToAdd}`
-        );
+        actionToAdd = player?.getMonster()?.getAction(action.id);
+        //ADDING ACTION TO PLAYER
+        if (actionToAdd) {
+          player?.addAction(actionToAdd);
+          console.log(
+            `ADV: Adding action ${actionToAdd.getName()} to Player ${player?.getName()}`
+          );
+          console.log(actionToAdd.getDescription());
+        } else {
+          console.error(
+            `Battle: ${playerId}, ${battle} \n Player: ${playerId}, ${player} \n Action: ${action.id}, ${actionToAdd}`
+          );
+        }
       }
 
       //ADDING ACTION TO BOT
