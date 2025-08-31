@@ -18,6 +18,7 @@ import { MagicShield } from "../model/game/equipment/magicShield";
 import { OozingBlade } from "../model/game/equipment/oozingBlade";
 import { ConsumableState } from "/types/single/itemState";
 import { ConsumeAction } from "../model/game/action/consume";
+import { createEquipment } from "../model/adventure/factories/equipmentFactory";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -120,7 +121,37 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       player?.addAction(action);
     }
   );
+
+  socket.on("adventure_replace_equipment", ({ removeIndex, newEquipment }) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+
+    const player = adventure.getPlayer();
+    const equipmentList = player.getEquipment();
+
+    // Remove the equipment at the selected index
+    if (removeIndex >= 0 && removeIndex < equipmentList.length) {
+      equipmentList.splice(removeIndex, 1);
+
+      // Reconstruct the Equipment instance using your factory
+      // newEquipment should have an id property
+      if (newEquipment && newEquipment.id) {
+        const newEquipInstance = createEquipment(newEquipment.id);
+        equipmentList.splice(removeIndex, 0, newEquipInstance);
+      }
+    }
+
+    // Send updated player state to client
+    socket.emit("adventure_state", {
+      type: "update_player",
+      player: player.getPlayerState(),
+    });
+
+    // Continue the adventure
+    progressAdventure(io, socket, adventure, adventure.getStage());
+  });
 };
+
 // Helper function to progress adventure outcomes
 export async function progressAdventure(
   io: Server,
@@ -234,12 +265,21 @@ export async function progressAdventure(
       const equipment = resolved.equipment;
       equipment.calculateStrength(adventure.getStage());
       console.log("ADV: given equipment", equipment);
-      adventure.getPlayer().giveEquipment(equipment);
+      const success = adventure.getPlayer().giveEquipment(equipment);
 
-      socket.emit("adventure_equipment", {
-        name: resolved.equipment?.getName() || "Unknown Equipment",
-      });
-      //TODO: Make a socket call for players to show added equipment/Equipment to remove
+      if (success) {
+        socket.emit("adventure_equipment", {
+          name: equipment.getName() || "Unknown Equipment",
+        });
+      } else {
+        socket.emit("adventure_equipment_full", {
+          currentEquipment: adventure
+            .getPlayer()
+            .getEquipment()
+            .map((e) => e.getState()),
+          incomingEquipment: equipment.getState(),
+        });
+      }
     } else if (resolved.type === "PREREQUISITE") {
       for (const option of resolved.options!) {
         if (!option.prerequisite) {

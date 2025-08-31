@@ -67,7 +67,7 @@ export const AdventureInfoPopup = ({
             sm:w-[90%]
             lg:min-h-[20vh]
             lg:w-[80%]
-            border-[3px]
+            border-[5px]
             border-[#403245]
             rounded-[20px]
             box-border
@@ -75,10 +75,10 @@ export const AdventureInfoPopup = ({
             flex-col
             gap-[1%]
             items-center
-            py-1`}
+            py-1 overflow-y-auto`}
         >
-          <div className="bg-[#EDAF55] border-blackCurrant lg:border-[0.25rem] sm:border-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
-            <OutlineText size="choice-text">
+          <div className="bg-[#EDAF55] outline-blackCurrant px-[2rem] lg:outline-[0.20rem] sm:outline-[0.6rem] rounded-2xl flex flex-col items-center justify-center">
+            <OutlineText size="medium">
               {currentlyViewing[viewingTab]}
             </OutlineText>
           </div>
@@ -138,6 +138,15 @@ export const AdventureInfoPopup = ({
                   </div>
                 ))}
               </div>
+            </>
+          )}
+          {viewingTab ===1 &&(
+            <>
+              <div className="min-h-0 flex-1 w-full overflow-y-auto overscroll-y-contain px-3" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}>
+                <BlackText size="large" >dcksdncksd  smnd wwjjedbwek ejdnbwesjk ckfndskdk nkjxn knkjxc xcjkj nkjjjcxn xnxcn xkznm nxcjknmfds djdfds dcnjsdkc sdnc cxxc xckxnn nkjnkjnknknk nkn kcsmdcvsnvbkjs kc jkdfn dk x sdkj nkc dc djcnbdsjkcsdkcbnsdkcbdskjcbskdjc dsjkcbsdkjcckdskc dk d</BlackText>
+              </div>
+            
+            
             </>
           )}
         </div>
