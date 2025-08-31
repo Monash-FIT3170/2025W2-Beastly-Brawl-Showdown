@@ -19,6 +19,7 @@ import {
 import { BlackText } from "../texts/BlackText";
 import { StatInfoIcon } from "../cards/StatInfoIcon";
 import { AdventureStatBar } from "../bars/AdventureStatBar";
+import { StatusButton} from "../buttons/StatusButton"
 
 export interface AdventureInfoPopupProp {
   playerState: PlayerState | null | undefined;
@@ -52,7 +53,7 @@ export const AdventureInfoPopup = ({
   return (
     <PopupAdventure colour="goldenRod">
       <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-full h-full">
-        <div className="bg-pictonBlue outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
+        <div className="mt-[1rem] xl:mt-[0.5rem] bg-pictonBlue outline-blackCurrant lg:outline-[0.2rem] sm:outline-[0.3rem] rounded-2xl flex flex-col px-[1rem] items-center justify-center">
           <OutlineTextResizable size="large" max1={3}>
             {`${playerState?.name}'s ${playerState?.monster?.name}`}
           </OutlineTextResizable>
@@ -69,15 +70,19 @@ export const AdventureInfoPopup = ({
             lg:w-[80%]
             border-[5px]
             border-[#403245]
-            rounded-[20px]
+            rounded-[5rem] 
+            mb-[3rem]
+            xl:mb-[1rem]
             box-border
             bg-[#FFE8B1]
             flex-col
             gap-[1%]
             items-center
-            py-1 overflow-y-auto`}
+            py-[2rem] xl:py-[0.5rem]
+            overflow-y-auto
+            [scrollbar-width:none]`}
         >
-          <div className="bg-[#EDAF55] outline-blackCurrant px-[2rem] lg:outline-[0.20rem] sm:outline-[0.6rem] rounded-2xl flex flex-col items-center justify-center">
+          <div className="bg-[#EDAF55] outline-blackCurrant px-[2rem] lg:outline-[0.20rem] sm:outline-[0.4rem] rounded-2xl flex flex-col items-center justify-center">
             <OutlineText size="medium">
               {currentlyViewing[viewingTab]}
             </OutlineText>
@@ -142,8 +147,25 @@ export const AdventureInfoPopup = ({
           )}
           {viewingTab ===1 &&(
             <>
-              <div className="min-h-0 flex-1 w-full overflow-y-auto overscroll-y-contain px-3" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}>
-                <BlackText size="large" >dcksdncksd  smnd wwjjedbwek ejdnbwesjk ckfndskdk nkjxn knkjxc xcjkj nkjjjcxn xnxcn xkznm nxcjknmfds djdfds dcnjsdkc sdnc cxxc xckxnn nkjnkjnknknk nkn kcsmdcvsnvbkjs kc jkdfn dk x sdkj nkc dc djcnbdsjkcsdkcbnsdkcbdskjcbskdjc dsjkcbsdkjcckdskc dk d</BlackText>
+              {/* <div className="min-h-0 flex flex-row justify-center w-full items-center px-3 " style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}> */}
+              <div className=" flex flex-row justify-center w-full items-center px-3 " >
+                {playerState?.statuses[0] ? (
+                  <></>
+                ) : (
+                  <BlackText size="medium">
+                    You are normal...
+                  </BlackText>
+                )}
+                <div className = "xl:mt-[1rem] mt-[2rem] columns-3 gap-[2rem] xl:gap-[3rem] space-y-[2rem] items-center justify-center">
+                  {playerState?.statuses.map((c) =>(
+                    <>
+                      <StatusButton status={c}></StatusButton>
+                    </>
+                  ))}
+
+                </div>
+              
+              
               </div>
             
             

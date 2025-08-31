@@ -16,6 +16,8 @@ import { PercentageHealthPotion } from "../model/game/consumables/healthPotion";
 import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
 import { MagicShield } from "../model/game/equipment/magicShield";
 import { OozingBlade } from "../model/game/equipment/oozingBlade";
+import { Poison } from "../model/game/status/poison";
+import { Stun } from "../model/game/status/stun";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -63,10 +65,28 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       player.giveConsumable(new PercentageHealthPotion("Mega", 100));
       player.giveConsumable(new PercentageHealthPotion("Mega", 100));
       player.giveConsumable(new PercentageHealthPotion("Mega", 100));
-
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      
       player.giveEquipment(new BlazingGauntlets());
       console.log("ADV TEST: CONSUMABLES", player.getConsumables());
       console.log("ADV TEST: EQUIPMENT", player.getEquipment());
+      console.log("ADV TEST: EQUIPMENT", player.getStatuses());
     }
   );
 

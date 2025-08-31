@@ -10,14 +10,14 @@ export interface StatusButtonProp{
 export const StatusButton = ({status}: StatusButtonProp) => {
 
     const [showStatus, setShowStatus] = useState(false);
-    const path = `/assets/statuses/${status.getName()}.png`;
+    const path = `/assets/statuses/${status.name.toUpperCase()}.png`;
     const Button =
         `
         bg-pictonBlue
-        w-[10rem]
-        h-[10rem]
-        xl:w-[5rem]
-        xl:h-[5rem]
+        w-[12rem]
+        h-[12rem]
+        xl:w-[7rem]
+        xl:h-[7rem]
         rounded-[1rem]
         items-center
         outline-blackCurrant
