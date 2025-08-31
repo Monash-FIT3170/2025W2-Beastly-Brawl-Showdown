@@ -11,10 +11,15 @@ export class BlazingGauntlets extends Equipment {
 
   public equip(player: Player): void {
     //TODO: implement
-    console.error("Equip Not Implemented - Blazing Gauntlets");
+    const attack = player.getMonster()?.getAttackAction();
+    attack?.incrementDamageDealt(this.strength);
+
+    console.error("Damage dealt incremented", this.strength);
   }
   public unequip(player: Player): void {
-    console.error("Un-Equip Not Implemented - Blazing Gauntlets");
+    const attack = player.getMonster()?.getAttackAction();
+    attack?.incrementDamageDealt(-this.strength);
+    console.error("Damage dealt decreased", this.strength);
   }
 
   public getStatDescription(): string {

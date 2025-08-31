@@ -38,6 +38,17 @@ export class AttackAction extends Action {
     return d20;
   }
 
+  public incrementDamageDealt(number: number): void {
+    this.damageDealt += number;
+  }
+
+  public incrementMinRoll(number: number): void {
+    this.diceMin += number;
+  }
+
+  public incrementCritRate(number: number): void {
+    this.critRate += number;
+  }
   public getDiceRoll(): number {
     return this.d20;
   }
