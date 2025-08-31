@@ -29,7 +29,7 @@ export default class GameSession {
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
   // private monsters: Array<String>;
   private mode: IGameMode;
-  private finalResults: (PlayerState | null)[] = [];
+  private finalWinner: PlayerState | null = null;
   
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -409,11 +409,11 @@ export default class GameSession {
     return playersNotInBattle;
   }
 
-  public setFinalResults(finalResults: (PlayerState | null)[]) {
-    this.finalResults = finalResults;
+  public setFinalWinner(finalWinner: PlayerState | null) {
+    this.finalWinner = finalWinner;
   }
 
-  public getFinalResults(): (PlayerState | null)[] {
-    return this.finalResults;
+  public getFinalWinner(): PlayerState | null {
+    return this.finalWinner;
   }
 }

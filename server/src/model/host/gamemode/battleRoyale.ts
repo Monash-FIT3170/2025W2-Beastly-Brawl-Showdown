@@ -137,35 +137,23 @@ export class BattleRoyale implements IGameMode {
 
 	public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
     if (this.isSessionConcluded(session)) {
-      let finalResults: PlayerState[];
+      let finalWinner: PlayerState | null;
 
-      // Is not a draw (i.e., 1 remaining player - the winner)
+      // There is a clear winner (i.e., 1 player remaining)
       if (this.remainingPlayers.length != 0) {
-        let winner = this.remainingPlayers[0];
-        let runnerUp = this.eliminatedPlayers[this.eliminatedPlayers.length-1];
-        finalResults = [winner.getPlayerState(), runnerUp.getPlayerState()];
-        console.log(`[FINAL RESULTS]: Winner: ${winner.getName()}, Runner up: ${runnerUp.getName()}`);
+        finalWinner = this.remainingPlayers[0].getPlayerState();
+        console.log(`[FINAL RESULTS]: Winner: ${finalWinner.name}`);
       }
 
-      // Is a draw (i.e., 0 remaining players)
+      // There is no clear winner (i.e., 0 players remaining, everyone got eliminated at the same time)
       else {
-        // Need to handle the case where the all the final battles ended up in a draw
-        let battles = session.getBattles().getItems();
-        finalResults = [];
-        for (const battle of battles) {
-          if (battle.getWinners() == null) {  // Check if battle is a draw
-            finalResults.push(battle.getPlayers()[0].getPlayerState());
-            finalResults.push(battle.getPlayers()[1].getPlayerState());
-          } else {
-            break;
-          }
-        }
-        console.log(`[FINAL RESULTS]: Draw between: ${finalResults.map(player => player.name)}`);
+        finalWinner = null;
+        console.log("[FINAL RESULTS]: There are no winners, everyone got eliminated");
       }
 
       const gameCode = session.getGameCode();
-      this.io?.to(`game-${gameCode}`).emit("final-results-response", { finalResults });
-      session.setFinalResults(finalResults);
+      this.io?.to(`game-${gameCode}`).emit("final-winner-response", { finalWinner });
+      session.setFinalWinner(finalWinner);
     }
   }
 

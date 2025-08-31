@@ -312,18 +312,18 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }, 100);
   });
 
-  // Get final results
-  socket.on("get-final-results", ({ gameCode }) => {
+  // Get final winner
+  socket.on("get-final-winner", ({ gameCode }) => {
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
-    const finalResults = session?.getFinalResults();
+    const finalWinner = session?.getFinalWinner();
 
-    if (finalResults) {
-      console.log(`Successfully retrieved final results for game code ${gameCode}`);
-      socket.emit("final-results-response", { finalResults });
+    if (finalWinner) {
+      console.log(`Successfully retrieved final winner for game code ${gameCode}`);
+      socket.emit("final-winner-response", { finalWinner });
     } else {
-      console.log(`Failed to retrieve final results for game code ${gameCode}`);
-      socket.emit("final-results-response", { finalResults: [] });
+      console.log(`Failed to retrieve final winner for game code ${gameCode}`);
+      socket.emit("final-winner-response", { finalWinner: null });
     }
   });
 };
