@@ -1,6 +1,8 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
 import { PlayerState } from "/types/single/playerState";
+import { PlayerAccountSchema } from "../../database/dbManager";
+
 import { Status } from "./status/status";
 import { Item } from "./item/item";
 
@@ -25,7 +27,16 @@ export class Player {
   
   private inventory: Item[] = [];
 
-  constructor(id: string, name: string, botPlayer?: boolean) {
+  private inventory: Item[] = [];
+
+  private playerAccount: PlayerAccountSchema;
+
+  constructor(
+    id: string,
+    name: string,
+    playerAccount: PlayerAccountSchema,
+    botPlayer?: boolean
+  ) {
     this.name = name;
     this.id = id;
     this.monster = null;
@@ -33,19 +44,12 @@ export class Player {
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
     this.currentGameCode = 0;
+    this.playerAccount = playerAccount;
     this.botPlayer = botPlayer ?? false;
   }
 
-  public getSuccessfulHit() {
-    return this.successfulHit;
-  }
-  //sets the player in a dodging position
-  public dodge(): void {
-    this.currentlyDodging = true;
-  }
-  //returns wheather or not the player was dodging
-  public getDodgingPosition(): boolean {
-    return this.currentlyDodging;
+  public getPlayerAccountEmail() {
+    return this.playerAccount.email;
   }
 
   public getStatuses(): Status[] {
@@ -140,6 +144,9 @@ export class Player {
     if (this.battleLogs.length !== 1){
       this.battleLogs.shift()
     }
+    
+  public getPlayerAccountUsername() {
+    return this.playerAccount.username;
   }
 
   public getMonster(): Monster | null {
@@ -230,6 +237,22 @@ export class Player {
       default:
         console.error(`Unknown stat: ${stat}`);
     }
+  }
+
+
+  //HIT/BLOCK METHODS:
+  public getSuccessfulHit() {
+    return this.successfulHit;
+  }
+
+  public dodge(): void {
+    //sets the player in a dodging position
+    this.currentlyDodging = true;
+  }
+
+  public getDodgingPosition(): boolean {
+    //returns wheather or not the player was dodging
+    return this.currentlyDodging;
   }
 
 

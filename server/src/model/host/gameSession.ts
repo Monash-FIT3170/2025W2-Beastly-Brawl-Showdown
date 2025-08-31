@@ -41,7 +41,7 @@ export default class GameSession {
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
-    this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
+    // this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
 
     if (addition.presetGameCode !== undefined) {
       // Use preset game code if provided
@@ -275,7 +275,7 @@ export default class GameSession {
     return this.battles;
   }
 
-  public oddOneOutWinner(oddPlayer: Player) {
+  public oddOneOutWinner(oddPlayer: Player): Player {
     let battleId = crypto.randomUUID();
 
     const botPlayer = new BotPlayer();

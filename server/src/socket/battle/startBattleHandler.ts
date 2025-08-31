@@ -127,7 +127,6 @@ export default function proceedBattleTurn(
             io.to(player2.getId()).emit("roll_dice", diceRoll);
           }
 
-
         if (action.getName() === "Tip The Scales") {
           const tipTheScalesAction = action as TipTheScalesAbilityAction;
           const diceRoll = tipTheScalesAction.getDiceRoll();

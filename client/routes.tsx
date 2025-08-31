@@ -15,6 +15,7 @@ import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
+import { Account } from "./src/pages/Home/Account";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -63,6 +64,13 @@ FlowRouter.route("/join/:code?", {
   name: "JoinLobby",
   action(params) {
     mount(() => <JoinLobby gameCode={params.code} />);
+  },
+});
+
+FlowRouter.route("/account", {
+  name: "Account",
+  action(params) {
+    mount(() => <Account />);
   },
 });
 

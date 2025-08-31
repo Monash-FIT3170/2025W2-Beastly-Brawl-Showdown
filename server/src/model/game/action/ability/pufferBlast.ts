@@ -16,7 +16,6 @@ export class PufferBlast extends Action {
   // Clear the opponent's actions
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
-
   public prepareAnimation(): string | [string, number] {
     return "Puffer_Blast_Animation";
   }

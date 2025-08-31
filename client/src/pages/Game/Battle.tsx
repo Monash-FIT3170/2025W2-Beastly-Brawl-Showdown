@@ -58,6 +58,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         setWinner(winners[0]);
       }
       console.log("Winner: ", winner);
+      if (battleState?.yourPlayer.name === winner) {
+        socket.emit("updateWin");
+      } else {
+        socket.emit("updateLoss");
+      }
     });
 
     // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
@@ -110,10 +115,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     useEffect(() => {
     if (!isBattleClosed){return}
 
-    //Countdown before player get redirected 
+    //Countdown before player get redirected
     const countdown = setInterval(() => {
-      setTime((prev) => prev-1)
-    },1000) //1 second per interval
+      setTime((prev) => prev - 1);
+    }, 1000); //1 second per interval
 
     //Redirect after countdown is finished
     const timeout = setTimeout(() =>{
