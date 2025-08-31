@@ -4,7 +4,7 @@ import { Adventure } from "../model/game/adventure";
 import { Player } from "../model/game/player";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Battle } from "../model/game/battle";
-import { ActionState } from "/types/single/actionState";
+import { ActionIdentifier, ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
 import { storyOutcomes, storyStruct } from "/types/composite/storyTypes";
@@ -12,6 +12,15 @@ import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
 import { Action } from "../model/game/action/action";
 import { AttackAction } from "../model/game/action/attack";
+import { PercentageHealthPotion } from "../model/game/consumables/healthPotion";
+import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
+import { MagicShield } from "../model/game/equipment/magicShield";
+import { OozingBlade } from "../model/game/equipment/oozingBlade";
+import { ConsumableState } from "/types/single/itemState";
+import { ConsumeAction } from "../model/game/action/consume";
+import { createEquipment } from "../model/adventure/factories/equipmentFactory";
+import { Poison } from "../model/game/status/poison";
+import { Stun } from "../model/game/status/stun";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -54,6 +63,38 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       const player = adventure.getPlayer();
       player.setMonster(monster);
       progressAdventure(io, socket, adventure, adventure.getStage());
+
+      //TESTING ITEMS PLEASE DELETE:
+      player.giveConsumable(
+        new PercentageHealthPotion("Super Health Potion", 1)
+      );
+      player.giveConsumable(
+        new PercentageHealthPotion("Mini Health Potion", 0.1)
+      );
+      player.giveConsumable(
+        new PercentageHealthPotion("Large Health Potion", 0.5)
+      );
+      player.giveEquipment(new BlazingGauntlets());
+      console.log("ADV TEST: CONSUMABLES", player.getConsumables());
+      console.log("ADV TEST: EQUIPMENT", player.getEquipment());
+      console.log("ADV TEST: EQUIPMENT", player.getStatuses());
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
+      player.addStatus(new Poison)
     }
   );
 
@@ -85,7 +126,56 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     adventure.pastEncounters.push(choiceId);
     progressAdventure(io, socket, adventure, stage);
   });
+
+  //
+  socket.on(
+    "adventure_consume",
+    ({
+      consumable,
+      playerId,
+    }: {
+      consumable: ConsumableState;
+      playerId: string;
+    }) => {
+      console.log(
+        `ADV: Player - ${playerId}, Adding Consumable - ${consumable.name}`
+      );
+      const player = players.get(playerId);
+      const action = new ConsumeAction(consumable.name);
+      player?.addAction(action);
+    }
+  );
+
+  socket.on("adventure_replace_equipment", ({ removeIndex, newEquipment }) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+
+    const player = adventure.getPlayer();
+    const equipmentList = player.getEquipment();
+
+    // Remove the equipment at the selected index
+    if (removeIndex >= 0 && removeIndex < equipmentList.length) {
+      equipmentList.splice(removeIndex, 1);
+
+      // Reconstruct the Equipment instance using your factory
+      // newEquipment should have an id property
+      if (newEquipment && newEquipment.id) {
+        const newEquipInstance = createEquipment(newEquipment.id);
+        equipmentList.splice(removeIndex, 0, newEquipInstance);
+      }
+    }
+
+    // Send updated player state to client
+    socket.emit("adventure_state", {
+      type: "update_player",
+      player: player.getPlayerState(),
+    });
+
+    // Continue the adventure
+    progressAdventure(io, socket, adventure, adventure.getStage());
+  });
 };
+
 // Helper function to progress adventure outcomes
 export async function progressAdventure(
   io: Server,
@@ -98,6 +188,7 @@ export async function progressAdventure(
     if (!outcome) {
       return;
     }
+    console.log(outcome);
     const resolved = resolveOutcome(outcome!);
 
     if (resolved.type === "FIGHT") {
@@ -105,6 +196,7 @@ export async function progressAdventure(
       const bot = new Player(
         resolved.enemy!.getId(),
         resolved.enemy?.getName()!,
+        null,
         true
       ); // Eventually use bot class
       resolved.enemy?.pveScaling(adventure.getStage());
@@ -125,6 +217,8 @@ export async function progressAdventure(
       socket.emit("adventure_state", {
         type: "battle",
         battle: battle.getBattleState(socket.id),
+        stage: adventure.getStage(),
+        player: adventure.getPlayer().getPlayerState(),
       });
       let actions = adventure
         .getPlayer()
@@ -136,13 +230,20 @@ export async function progressAdventure(
       // Optionally, proceed with the battle logic
       // proceedAdventureTurn(io, socket, adventure, battle);
     } else if (resolved.type === "DIALOGUE") {
-      // Dialogue or other event
+      //Used for monster info
+
       socket.emit("adventure_state", {
         type: "dialogue",
         dialogue: resolved.result,
         enemy: resolved.enemy,
         next: resolved.next,
         player: adventure.getPlayer().getPlayerState(),
+        attack: adventure
+          .getPlayer()
+          .getMonster()
+          ?.getAttackAction()
+          .getAttackState(),
+        stage: adventure.getStage(),
       });
     } else if (resolved.type === "RANDOM") {
       const roll = Math.random() * 100;
@@ -163,6 +264,8 @@ export async function progressAdventure(
         type: "choice",
         result: resolved.result,
         choices: resolved.options,
+        stage: adventure.getStage(),
+        player: adventure.getPlayer().getPlayerState(),
       });
     } else if (resolved.type === "CONSUMABLE") {
       socket.emit("adventure_consumable", {
@@ -179,17 +282,28 @@ export async function progressAdventure(
         type: "stat_change",
         result: resolved.result,
         next: resolved.next,
+        stage: adventure.getStage(),
+        player: adventure.getPlayer().getPlayerState(),
       });
     } else if (resolved.type === "EQUIPMENT") {
       const equipment = resolved.equipment;
       equipment.calculateStrength(adventure.getStage());
       console.log("ADV: given equipment", equipment);
-      adventure.getPlayer().giveEquipment(equipment);
+      const success = adventure.getPlayer().giveEquipment(equipment);
 
-      socket.emit("adventure_equipment", {
-        name: resolved.equipment?.getName() || "Unknown Equipment",
-      });
-      //TODO: Make a socket call for players to show added equipment/Equipment to remove
+      if (success) {
+        socket.emit("adventure_equipment", {
+          name: equipment.getName() || "Unknown Equipment",
+        });
+      } else {
+        socket.emit("adventure_equipment_full", {
+          currentEquipment: adventure
+            .getPlayer()
+            .getEquipment()
+            .map((e) => e.getState()),
+          incomingEquipment: equipment.getState(),
+        });
+      }
     } else if (resolved.type === "PREREQUISITE") {
       for (const option of resolved.options!) {
         if (!option.prerequisite) {
@@ -209,11 +323,13 @@ export async function progressAdventure(
     } else if (resolved.type === "STATUS") {
       // Handle status
       adventure.getPlayer().addStatus(resolved.status!);
-
+      console.log(resolved.statusId);
       socket.emit("adventure_state", {
         type: "status",
         result: resolved.result,
         next: resolved.next,
+        stage: adventure.getStage(),
+        player: adventure.getPlayer().getPlayerState(),
       });
     }
   } catch (err) {

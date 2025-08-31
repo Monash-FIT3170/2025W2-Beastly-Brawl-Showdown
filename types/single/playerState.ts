@@ -1,3 +1,4 @@
+import { ConsumableState, EquipmentState } from "./itemState";
 import { MonsterState } from "./monsterState";
 import { Status } from "/server/src/model/game/status/status";
 
@@ -10,8 +11,9 @@ export interface PlayerState {
   currentArmourClassStat: number;
   // initialHealth: number;
   // monsterName: string;
+
   successBlock: number;
-  successHit: number; 
+  successHit: number;
 
   statuses: Status[];
 
@@ -19,4 +21,7 @@ export interface PlayerState {
 
   logs: string[];
   battleLogs: string[];
+
+  equipment: EquipmentState[];
+  consumables: ConsumableState[];
 }

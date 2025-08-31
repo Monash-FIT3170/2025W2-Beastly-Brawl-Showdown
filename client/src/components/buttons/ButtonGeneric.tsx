@@ -1,43 +1,55 @@
 import React, { ReactNode } from "react";
 
-export interface ButtonGenericProps{
-    color: 'ronchi' | 'blue' | 'red' | 'purple'| 'alto';
-	size: ButtonSize;
-	isDisabled?: boolean;
-	children?: ReactNode
-	onClick?: () => void;
-	mobileHidden?: 'false' | 'true'
-	isPassive?: boolean;
+export interface ButtonGenericProps {
+  color: "ronchi" | "blue" | "red" | "purple" | "alto";
+  size: ButtonSize;
+  isDisabled?: boolean;
+  children?: ReactNode;
+  onClick?: () => void;
+  mobileHidden?: "false" | "true";
+  isPassive?: boolean;
 }
 
-export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidden='false',isPassive=false}: ButtonGenericProps) => {
+export const ButtonGeneric = ({
+  color,
+  size,
+  isDisabled,
+  children,
+  onClick,
+  mobileHidden = "false",
+  isPassive = false,
+}: ButtonGenericProps) => {
+  const colorToDisplay = {
+    ronchi: "bg-ronchi",
+    blue: "bg-pictonBlue",
+    red: "bg-burntSienna",
+    purple: "bg-heliotrope",
+    alto: "bg-alto",
+  };
 
-	const colorToDisplay = {
-		'ronchi': 'bg-ronchi',
-		'blue': 'bg-pictonBlue',
-		'red': 'bg-burntSienna',
-		'purple': 'bg-heliotrope',
-		'alto': 'bg-alto',
-		}
+  const sizeToDisplay = {
+    battle:
+      "w-[20rem] h-[7rem] px-[1rem] py-[0.75rem] text-[2.1875rem] xl:w-[12rem] xl:h-[4.75rem]",
+    large:
+      "lg:w-[16rem] sm:w-[40rem] lg:h-[4.75rem] sm:h-[15rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]",
+    medium:
+      "lg:w-[12rem] sm:w-[25rem] lg:h-[3.75rem] sm:h-[10rem] px-[1.5rem] py-[0.75rem] text-[1.5625rem]",
+    tiny: "lg:w-[8.125rem] lg:h-[2.5rem] px-[1.5rem] py-[0.75rem] text-[0.9375rem]",
+    square: "lg:w-[2rem] lg:h-[2rem] w-[5rem] h-[5rem]",
+    squaremedium: "lg:w-[4rem] lg:h-[4rem] sm:w-[8rem] sm:h-[8rem]",
+    scaling:
+      "sm:w-min-[40vw] h-[7dvh] md:w-min-[20dvw] lg:w-min-[10dvw] sm:text-[2.1875rem] md:text-[1.5625] lg:text-[0.9375]",
+    adventure:
+      "lg:w-[12rem] sm:w-[16rem] lg:h-[3.75rem] sm:h-[8rem] px-[1.5rem] py-[0.75rem]",
+    backpack: "lg:w-[8rem] lg:h-[8rem] sm:w-[16rem] sm:h-[16rem]",
+  };
 
-	const sizeToDisplay = {
-		'battle': 'w-[20rem] h-[7rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem] xl:w-[12rem] xl:h-[4.75rem]',
-		'large': 'lg:w-[16rem] sm:w-[40rem] lg:h-[4.75rem] sm:h-[15rem] px-[1.5rem] py-[0.75rem] text-[2.1875rem]',
-		'medium': 'lg:w-[12rem] sm:w-[25rem] lg:h-[3.75rem] sm:h-[10rem] px-[1.5rem] py-[0.75rem] text-[1.5625rem]',
-		'tiny': 'lg:w-[8.125rem] lg:h-[2.5rem] px-[1.5rem] py-[0.75rem] text-[0.9375rem]',
-		'square': 'lg:w-[2rem] lg:h-[2rem] w-[5rem] h-[5rem]',
-		'squaremedium': 'lg:w-[4rem] lg:h-[4rem] sm:w-[8rem] sm:h-[8rem]',
-		'scaling': 'sm:w-min-[40vw] h-[7dvh] md:w-min-[20dvw] lg:w-min-[10dvw] sm:text-[2.1875rem] md:text-[1.5625] lg:text-[0.9375]',
-		'adventure': 'lg:w-[12rem] sm:w-[16rem] lg:h-[3.75rem] sm:h-[8rem] px-[1.5rem] py-[0.75rem]'
-	}
+  const mobile = {
+    true: "sm:hidden lg:block",
+    false: "block",
+  };
 
-	const mobile = {
-		'true': 'sm:hidden lg:block',
-		'false': 'block',
-	}
-
-	const baseButton =
-		`
+  const baseButton = `
 		${colorToDisplay[color]}
 		${mobile[mobileHidden]}
 		flex
@@ -55,8 +67,7 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidd
 		sm:rounded-[2rem]
 		`;
 
-	const enabledButton = 
-		`
+  const enabledButton = `
 		group-hover:brightness-85
 		active:outline-blackCurrant
 		active:ring-[0.3125rem]
@@ -64,29 +75,28 @@ export const ButtonGeneric = ({color,size,isDisabled,children,onClick,mobileHidd
 		outline-blackCurrant
 		`;
 
-	const disabledButton = 
-		`
+  const disabledButton = `
 		grayscale
 		cursor-not-allowed 
 		outline-blackCurrant
 		`;
 
-	const passiveButton = 
-		`
+  const passiveButton = `
 		outline-[#43bf37]
 		cursor-not-allowed
-		`
+		`;
 
-    return(
-		<button
-		disabled={isDisabled}
-		className={`
+  return (
+    <button
+      disabled={isDisabled}
+      className={`
 			${baseButton}
 			${isDisabled ? (isPassive ? passiveButton : disabledButton) : enabledButton}
 			${sizeToDisplay[size]}
 		`}
-		onClick={onClick}> 
-			{children}
-		</button>
-  	);
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
 };

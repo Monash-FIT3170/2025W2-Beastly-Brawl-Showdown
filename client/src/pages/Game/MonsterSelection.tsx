@@ -371,7 +371,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                           {ability.name}
                         </p>
                         {/**<BlackText size="medium">{ability.description}</BlackText>*/}
-                        <p className="text-black font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">
+                        <p className="text-blackCurrant font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">
                           {ability.description}
                         </p>
                       </div>

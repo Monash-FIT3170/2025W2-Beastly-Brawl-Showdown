@@ -3,6 +3,7 @@ import { activeGameSessions, players } from "../../main";
 import { Player } from "../model/game/player";
 import GameSession from "../model/host/gameSession";
 import proceedBattleTurn from "./battle/startBattleHandler";
+import { playerAccounts } from "../../main";
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
@@ -42,7 +43,22 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
         return;
       }
 
-      const newPlayer = new Player(socket.id, name);
+      // Retrieve playerAccount by socketID. PlayerAccount is binded to a Player via socketID
+      // Ensure that playerAccount exists
+      if (!playerAccounts.has(socket.id)) {
+        console.log(`Player account not found for socket ID: ${socket.id}`);
+        socket.emit("join-reject", ["Player account not found. Please register or login."]);
+        return;
+      }
+      // Ensure that playerAccount is valid (socket maps correctly to PlayerAccount)
+      const playerAccount = playerAccounts.get(socket.id);
+      if (!playerAccount) {
+        console.log(`Player account not found for socket ID: ${socket.id}`);
+        socket.emit("join-reject", ["Player account not found. Please register or login."]);
+        return;
+      }
+
+      const newPlayer = new Player(socket.id, name, playerAccount);
       const addResult = session.addPlayer(newPlayer);
       if (!addResult.success) {
         // Join request rejected
@@ -60,12 +76,12 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
       // Update host information
       io.to(`game-${gameCode}`).emit("update-players", {
-        message: `Player ${name} - ${socket.id} added to current game session.`,
+        message: `Player ${name} - PlayerEmail ${newPlayer.getPlayerAccountEmail()} - ${socket.id} added to current game session.`,
         players: session.getPlayerStates(),
       });
 
       // Player is accepted
-      console.log(`Join request accepted. UserID: ${socket.id}`);
+      console.log(`Join request accepted. UserID: ${socket.id} | UserAcc email: ${newPlayer.getPlayerAccountEmail()} | UserAcc name: ${newPlayer.getPlayerAccountUsername()}.`);
 
       // Update player success message
       socket.emit("join-accept", {

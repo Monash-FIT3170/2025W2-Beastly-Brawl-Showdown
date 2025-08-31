@@ -6,6 +6,8 @@ import { NullAction } from "../model/game/action/null";
 
 import { loadNextStory, progressAdventure } from "./adventureModeHandler";
 import { ActionRandomiser } from "../model/game/actionRandomiser";
+import { ActionIdentifier } from "../../../types/single/actionState";
+import { Action } from "../model/game/action/action";
 
 export const adventureTurnHandler = (io: Server, socket: Socket) => {
   // Handle player actions in adventure
@@ -16,19 +18,27 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
 
       var battle = battles.get(playerId);
       var player = battle?.getPlayer(playerId);
-      var actionToAdd = player?.getMonster()?.getAction(action.id);
+      var actionToAdd: Action | undefined = undefined;
 
-      //ADDING ACTION TO PLAYER
-      if (actionToAdd) {
-        player?.addAction(actionToAdd);
-        console.log(
-          `ADV: Adding action ${actionToAdd.getName()} to Player ${player?.getName()}`
-        );
-        console.log(actionToAdd.getDescription());
+      if (action.name == ActionIdentifier.CONSUME) {
+        //CHECK IF CONSUME ACTION and just continue???
+        //TODO: fix my methods because its ew just tryna get it to work lol...
+        //COS ALREADY ADDED...
+        console.log(`ADV: CONSUME COMSRNG CONSUME CONSUM`);
       } else {
-        console.error(
-          `Battle: ${playerId}, ${battle} \n Player: ${playerId}, ${player} \n Action: ${action.id}, ${actionToAdd}`
-        );
+        actionToAdd = player?.getMonster()?.getAction(action.id);
+        //ADDING ACTION TO PLAYER
+        if (actionToAdd) {
+          player?.addAction(actionToAdd);
+          console.log(
+            `ADV: Adding action ${actionToAdd.getName()} to Player ${player?.getName()}`
+          );
+          console.log(actionToAdd.getDescription());
+        } else {
+          console.error(
+            `Battle: ${playerId}, ${battle} \n Player: ${playerId}, ${player} \n Action: ${action.id}, ${actionToAdd}`
+          );
+        }
       }
 
       //ADDING ACTION TO BOT
@@ -128,9 +138,8 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                 console.log(`ADV: player won!`);
                 const adventure = activeAdventures.get(playerId);
                 const stage = adventure?.getStage();
-                //TODO: DO NEXT STAGE INSTEAD OF THIS STAGE
                 console.log("stage: ", stage);
-                console.log("adventure", adventure);
+                // console.log("adventure", adventure);
                 if (adventure && stage) {
                   // Get current story node and outcome
 
@@ -168,7 +177,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
           } else {
             playersInBattle.forEach((p) => {
               p.tickStatuses();
-            });
+            }); //i dont think van move it here maybe mobe in multipla
             let actions = player?.getMonster()?.getPossibleActionStates();
             io.to(playerId).emit("possible_actions", actions);
           }

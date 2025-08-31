@@ -26,6 +26,7 @@ export abstract class Monster {
 
   private useTemporaryActions: boolean = false;
   private temporaryActions: Action[] = [];
+  private attackAction: AttackAction;
 
   constructor(
     id: MonsterIdentifier,
@@ -46,7 +47,8 @@ export abstract class Monster {
     this.armourClass = armourClass;
     this.critRate = archetype.getCritRate();
 
-    this.possibleActions.push(new AttackAction(attackBonus, this.critRate));
+    this.attackAction = new AttackAction(attackBonus, this.critRate);
+    this.possibleActions.push(this.attackAction);
     this.possibleActions.push(new DefendAction(armourClass));
     this.possibleActions.push(ability);
     this.possibleActions.push(archetype.getAbility());
@@ -79,6 +81,10 @@ export abstract class Monster {
       return this.temporaryActions;
     }
     return this.possibleActions;
+  }
+
+  public getAttackAction(): AttackAction {
+    return this.attackAction;
   }
 
   public getPossibleActionStates(): ActionState[] {

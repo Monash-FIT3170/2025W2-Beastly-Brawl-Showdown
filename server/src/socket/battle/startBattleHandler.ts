@@ -20,13 +20,13 @@ export default function proceedBattleTurn(
   let playersInBattle = battle.getPlayers();
 
   // checks/ticks statuses for each player
-  playersInBattle.forEach((player) => {
-    player.tickStatuses();
-    // let statuses = player.getStatuses();
-    // statuses.forEach((status) => {
-    //   status.tick(player);
-    // })
-  });
+  //playersInBattle.forEach((player) => {
+  //player.tickStatuses();
+  // let statuses = player.getStatuses();
+  // statuses.forEach((status) => {
+  //   status.tick(player);
+  // })
+  //});
 
   if (battle.isBattleOver()) {
     const winners = battle.getWinners();
@@ -51,6 +51,7 @@ export default function proceedBattleTurn(
   });
 
   playersInBattle.forEach((player) => {
+    // player.tickStatuses();
     if (!player.isBotPlayer()) {
       //only emit to socket if the player is a human
       io.to(player.getId()).emit(
@@ -195,6 +196,10 @@ export default function proceedBattleTurn(
               winners: winners,
             });
           }
+        } else {
+          playersInBattle.forEach((player) => {
+            player.tickStatuses();
+          });
         }
         // TODO: ONLY update the current battle to be more memory efficient...
         //Players' states after the turn ends

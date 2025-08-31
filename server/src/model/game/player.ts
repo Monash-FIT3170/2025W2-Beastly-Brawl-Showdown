@@ -1,6 +1,9 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
+import { ConsumeAction } from "./action/consume";
 import { PlayerState } from "/types/single/playerState";
+import { PlayerAccountSchema } from "../../database/dbManager";
+
 import { Status } from "./status/status";
 import { Consumable } from "./consumables/consumable";
 import { Equipment } from "./equipment/equipment";
@@ -26,9 +29,17 @@ export class Player {
   private successfulBlock: number = 0;
 
   private consumables: Consumable[] = [];
+  private consumableActions: Action[] = [];
   private equipment: Equipment[] = [];
 
-  constructor(id: string, name: string, botPlayer?: boolean) {
+  private playerAccount: PlayerAccountSchema;
+
+  constructor(
+    id: string,
+    name: string,
+    playerAccount: PlayerAccountSchema | null,
+    botPlayer?: boolean
+  ) {
     this.name = name;
     this.id = id;
     this.monster = null;
@@ -36,7 +47,16 @@ export class Player {
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
     this.currentGameCode = 0;
+    this.playerAccount = playerAccount;
     this.botPlayer = botPlayer ?? false;
+  }
+
+  public getPlayerAccountEmail() {
+    return this.playerAccount.email;
+  }
+
+  public getPlayerAccountUsername() {
+    return this.playerAccount.username;
   }
 
   public getMonster(): Monster | null {
@@ -139,6 +159,13 @@ export class Player {
   }
 
   public tickStatuses() {
+    console.log("TICKING STATUSES...");
+    console.log(this.name);
+    console.log("pre-tick statuses:", this.statuses);
+    console.log(
+      "names",
+      this.statuses.forEach((status) => status.getName())
+    );
     this.statuses.forEach((status) => status.tick(this));
     //removes statuses that have expired after the tick
     this.statuses = this.statuses.filter((status) => !status.isExpired());
@@ -239,13 +266,32 @@ export class Player {
     return this.consumables;
   }
 
-  public hasConsumable(consumable: Consumable): boolean {
+  public hasConsumable(name: string): boolean {
     //checks inventory for item
-    return this.consumables.some((c) => c.getName() === consumable.getName());
+    return this.consumables.some((c) => c.getName() === name);
   }
 
   public giveConsumable(item: Consumable): void {
     this.consumables.push(item);
+    const action = new ConsumeAction(item.getName());
+    //um for now this action list will just kind of keep growing T-T
+    this.consumableActions.push(action);
+  }
+
+  public useConsumable(name: string): void {
+    if (this.hasConsumable(name)) {
+      const consumable = this.consumables.find((c) => c.getName() === name);
+      if (consumable) {
+        console.log("TESTING CONSUMABLE", consumable);
+        consumable?.consume(this);
+        this.removeConsumable(consumable);
+        console.log(`${this.name} has consumed ${consumable.getName()}`);
+      } else {
+        console.error(`${this.name} cannot find consumable of name ${name}`);
+      }
+    } else {
+      console.error(`${this.name} does not own consumable of name ${name}`);
+    }
   }
 
   public removeConsumable(item: Consumable): void {
@@ -309,6 +355,7 @@ export class Player {
       currentHealth: this.currentHealth,
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
+
       // initialHealth: this.monster.getMaxHealth(),
       successBlock: this.successfulBlock,
       successHit: this.successfulHit,
@@ -319,6 +366,8 @@ export class Player {
 
       logs: this.logs,
       battleLogs: this.battleLogs,
+      equipment: this.equipment.map((e) => e.getState()),
+      consumables: this.consumables.map((c) => c.getState()),
     };
   }
 }

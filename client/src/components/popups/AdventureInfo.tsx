@@ -11,16 +11,25 @@ import { Status } from "/server/src/model/game/status/status";
 import { IconButton } from "../buttons/IconButton";
 import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 import { PopupAdventure } from "./PopupAdventure";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionState,
+  AttackState,
+} from "/types/single/actionState";
 import { BlackText } from "../texts/BlackText";
+import { StatInfoIcon } from "../cards/StatInfoIcon";
+import { AdventureStatBar } from "../bars/AdventureStatBar";
+import { StatusButton} from "../buttons/StatusButton"
 
 export interface AdventureInfoPopupProp {
   playerState: PlayerState | null | undefined;
+  attackState: AttackState | null | undefined;
   onClose?: () => void;
 }
 
 export const AdventureInfoPopup = ({
   playerState,
+  attackState,
   onClose,
 }: AdventureInfoPopupProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
@@ -44,7 +53,7 @@ export const AdventureInfoPopup = ({
   return (
     <PopupAdventure colour="goldenRod">
       <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-full h-full">
-        <div className="bg-pictonBlue outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
+        <div className="mt-[1rem] xl:mt-[0.5rem] bg-pictonBlue outline-blackCurrant lg:outline-[0.2rem] sm:outline-[0.3rem] rounded-2xl flex flex-col px-[1rem] items-center justify-center">
           <OutlineTextResizable size="large" max1={3}>
             {`${playerState?.name}'s ${playerState?.monster?.name}`}
           </OutlineTextResizable>
@@ -59,42 +68,107 @@ export const AdventureInfoPopup = ({
             sm:w-[90%]
             lg:min-h-[20vh]
             lg:w-[80%]
-            border-[3px]
+            border-[5px]
             border-[#403245]
-            rounded-[20px]
+            rounded-[5rem] 
+            mb-[3rem]
+            xl:mb-[1rem]
             box-border
             bg-[#FFE8B1]
             flex-col
-            items-center py-2`}
+            gap-[1%]
+            items-center
+            py-[2rem] xl:py-[0.5rem]
+            overflow-y-auto
+            [scrollbar-width:none]`}
         >
-          <div className="bg-[#EDAF55] outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
-            <OutlineText size="choice-text">
+          <div className="bg-[#EDAF55] outline-blackCurrant px-[2rem] lg:outline-[0.20rem] sm:outline-[0.4rem] rounded-2xl flex flex-col items-center justify-center">
+            <OutlineText size="medium">
               {currentlyViewing[viewingTab]}
             </OutlineText>
           </div>
           {viewingTab === 0 && (
             <>
-              <div className="bg-[#EDAF55] outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
-                <OutlineText size="choice-text">ABILITIES</OutlineText>
+              <div className="flex flex-row w-full">
+                <StatInfoIcon
+                  stat="ac"
+                  statVal={playerState?.currentArmourClassStat!}
+                ></StatInfoIcon>
+                <StatInfoIcon
+                  stat="hp"
+                  statVal={playerState?.currentHealth!}
+                ></StatInfoIcon>
+                <StatInfoIcon
+                  stat="atk+"
+                  statVal={playerState?.currentAttackStat!}
+                ></StatInfoIcon>
               </div>
 
-              {currentAbilities.map((ability, idx) => (
-                <div
-                  key={ability.id || idx}
-                  className="flex flex-row items-center justify-left"
-                >
-                  <img
-                    src={"/assets/actions/" + ability.id + ".png"}
-                    alt="ability icon"
-                    className="w-[7rem] h-[7rem]"
-                  />
-                  <div>
-                    <OutlineText size="medium">{ability.name}</OutlineText>
-                    {/**<BlackText size="medium">{ability.description}</BlackText>*/}
-                    <BlackText size="medium">{ability.description}</BlackText>
+              <div className="flex flex-col w-full">
+                <AdventureStatBar
+                  stat="Attack Damage"
+                  statVal={attackState?.attackDamage!}
+                ></AdventureStatBar>
+                <AdventureStatBar
+                  stat="Critical Hit Rate"
+                  statVal={attackState?.critRate!}
+                ></AdventureStatBar>
+                <AdventureStatBar
+                  stat="Dice Roll Range"
+                  statVal={attackState?.diceRange!}
+                ></AdventureStatBar>
+              </div>
+
+              <div className="bg-[#EDAF55] border-blackCurrant lg:border-[0.25rem] sm:border-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
+                <OutlineText size="choice-text">ABILITIES</OutlineText>
+              </div>
+              <div className="sm:w-[95%] lg:w-full flex sm:flex-col lg:flex-row justify-evenly">
+                {currentAbilities.map((ability, idx) => (
+                  <div
+                    key={ability.id || idx}
+                    className="flex flex-row items-center gap-[2%] lg:w-[45%]"
+                  >
+                    <img
+                      src={"/assets/actions/" + ability.id + ".png"}
+                      alt="ability icon"
+                      className="w-[5rem] h-[5rem]"
+                    />
+                    <div className="flex flex-col items-start text-justify">
+                      <OutlineTextResizable size="medium">
+                        {ability.name}
+                      </OutlineTextResizable>
+                      {/**<BlackText size="medium">{ability.description}</BlackText>*/}
+                      <BlackText size="tiny">{ability.description}</BlackText>
+                    </div>
                   </div>
+                ))}
+              </div>
+            </>
+          )}
+          {viewingTab ===1 &&(
+            <>
+              {/* <div className="min-h-0 flex flex-row justify-center w-full items-center px-3 " style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}> */}
+              <div className=" flex flex-row justify-center w-full items-center px-3 " >
+                {playerState?.statuses[0] ? (
+                  <></>
+                ) : (
+                  <BlackText size="medium">
+                    You are normal...
+                  </BlackText>
+                )}
+                <div className = "xl:mt-[1rem] mt-[2rem] columns-3 gap-[2rem] xl:gap-[3rem] space-y-[2rem] items-center justify-center">
+                  {playerState?.statuses.map((c) =>(
+                    <>
+                      <StatusButton status={c}></StatusButton>
+                    </>
+                  ))}
+
                 </div>
-              ))}
+              
+              
+              </div>
+            
+            
             </>
           )}
         </div>

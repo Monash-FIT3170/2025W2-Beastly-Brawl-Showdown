@@ -9,7 +9,11 @@ import DiceRollModal from "../Game/DiceRollModal";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { useEffect, useState } from "react";
 import { BattleState } from "/types/composite/battleState";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionState,
+  AttackState,
+} from "/types/single/actionState";
 import { randomUUID } from "crypto";
 import React from "react";
 import socket from "../../socket";
@@ -31,6 +35,8 @@ import { PlayerState } from "/types/single/playerState";
 import { Equipment } from "../../../../server/src/model/game/equipment/equipment";
 import { AdventureInfoPopup } from "../../components/popups/AdventureInfo";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
+import { EquipmentState } from "/types/single/itemState";
+import { EquipmentCard } from "../../components/cards/EquipmentCard";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -39,46 +45,80 @@ interface AdventureProps {
 }
 
 const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
-  //TODO: determine enemy in here???? maybe from AdventureProps
+  const battleId = "ADVENTURE";
+  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
+  var backgroundString =
+    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
+
+  //ADVENTURE PAGE:
   const [dialogue, setDialogue] = useState<string[] | null>(null);
+  const [attackState, setAttackState] = useState<AttackState | null>();
+  const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
+  const [stage, setStage] = useState<number>(1);
+
+  const [playerState, setPlayerState] = useState<PlayerState | null>();
+
   const [battleState, setBattleState] = useState<BattleState | null>(null);
-  const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
-  const [diceValue, setDiceValue] = useState<number>(0); // result of dice
-  const [question, setQuestion] = useState<string[] | null>(null);
-  const [choices, setChoices] = useState<option[] | null>(null);
-  const [statChange, setStatChange] = useState<string[] | null>(null);
+  const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
+
+  //POPUPS
+  const [showLeave, setShowLeave] = useState(false);
+  const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
+  const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
   const [receivingConsumable, setReceivingConsumable] = useState<string | null>(
     null
   );
-  const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
-  const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
     null
   );
-  const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
-  const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
+  const [equipmentInventoryFull, setEquipmentInventoryFull] = useState(false);
+  const [currentEquipment, setCurrentEquipment] = useState<EquipmentState[]>(
+    []
+  );
+  const [incomingEquipment, setIncomingEquipment] =
+    useState<EquipmentState | null>(null);
+  const [question, setQuestion] = useState<string[] | null>(null);
+  const [choices, setChoices] = useState<option[] | null>(null);
+
+  const [statChange, setStatChange] = useState<string[] | null>(null);
   const [statusResult, setStatusResult] = useState<string[] | null>(null);
-  const battleId = "ADVENTURE";
-  //TODO: set player state
-  const [playerState, setPlayerState] = useState<PlayerState | null>();
+
+  //DICE
+  const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
+  const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
   const handleChoiceSelect = (choiceId: string) => {
     socket.emit("adventure_choice", { stage, choiceId });
     setChoices(null);
   };
 
-  const [showLeave, setShowLeave] = useState(false);
-
   socket.on("adventure_win", (stage) => {
     FlowRouter.go("/adventure/win");
   });
 
-  console.log("Battle State Player Logs", battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
 
   useEffect(() => {
-    socket.emit("adventure_request", { stage });
+    console.log("playerState updated:", playerState);
+  }, [playerState]);
+
+  useEffect(() => {
+    console.log("BATTLE STATE UPDATED");
+    if (battleState !== null) {
+      setPlayerState(battleState.yourPlayer);
+    }
+  }, [battleState]);
+
+  useEffect(() => {
+    socket.emit("adventure_request", { stage }); //TODO: WHO IS THIS, WHY IS SHE HERE?
 
     socket.on("adventure_state", (state) => {
+      if (state.stage) {
+        setStage(state.stage);
+      } else {
+        console.log("stage", stage);
+        // setStage(1000);
+      }
+      console.log(state.stage);
       if (state.type === "battle") {
         setBattleState(state.battle);
         console.log("STARTING LOGS...", battleState?.yourPlayer.battleLogs);
@@ -88,21 +128,32 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
         setDialogue(state.dialogue);
         setCurrentEnemy(state.enemy ?? null);
         setBattleState(null); // Clear battle
+        setAttackState(state.attack);
         setPlayerState(state.player);
       } else if (state.type === "choice") {
         // Handle choice state
         setChoices(state.choices);
         setQuestion(state.result);
         setBattleState(null); // Clear battle
+        setPlayerState(state.player);
         setCurrentEnemy(null);
       } else if (state.type === "stat_change") {
         setStatChange(state.result);
         setBattleState(null); // Clear battle
+        setPlayerState(state.player);
         setCurrentEnemy(null);
       } else if (state.type === "status") {
+        console.log("test", state);
         setStatusResult(state.result);
+        console.log("test", statusResult);
         setBattleState(null); // Clear battle
+        setPlayerState(state.player);
         setCurrentEnemy(null);
+      } else if (state.type === "update_player") {
+        setPlayerState(state.player);
+        setEquipmentInventoryFull(false);
+        setIncomingEquipment(null);
+        setCurrentEquipment([]);
       }
     });
 
@@ -112,6 +163,12 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
 
     socket.on("adventure_equipment", (equipmentName) => {
       setReceivingEquipment(equipmentName.name);
+    });
+
+    socket.on("adventure_equipment_full", (data) => {
+      setCurrentEquipment(data.currentEquipment); // array of 3 equipment that player has
+      setIncomingEquipment(data.incomingEquipment); // a new equipment item
+      setEquipmentInventoryFull(true);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -129,16 +186,13 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
     return () => {
       socket.off("possible_actions");
       socket.off("adventure_state");
+      socket.off("adventure_equipment_full");
     };
-  }, [stage]);
+  });
 
-  //biome variable setup
-  const backgroundLocation = getBiomeString(levelMonster);
-  const slimeString = "SLIME_" + backgroundLocation;
-  var backgroundString =
-    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
 
-  //TODO: add inventory button
+  console.log("PLAYER LOGS:", battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
+
   return (
     <>
       <div
@@ -148,6 +202,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
         {viewingInfo && (
           <AdventureInfoPopup
             playerState={playerState}
+            attackState={attackState}
             onClose={() => setViewingInfo(false)}
           ></AdventureInfoPopup>
         )}
@@ -155,6 +210,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
           <AdventureBagPopup
             playerState={playerState}
             onClose={() => setViewingInventory(false)}
+            inBattle={battleState !== null}
           ></AdventureBagPopup>
         )}
         {receivingConsumable && (
@@ -193,28 +249,98 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
             </PopupClean>
           </div>
         )}
-        {receivingEquipment && (
-          <div>
-            <PopupClean>
-              <div className="flex flex-col justify-around items-center">
-                <OutlineText size="extraLarge">
-                  {receivingEquipment}
-                </OutlineText>
-                <div className="flex flex-row justify-between items-center">
+        {receivingEquipment &&
+          !equipmentInventoryFull &&
+          !incomingEquipment && (
+            <div>
+              <PopupClean>
+                <div className="flex flex-col justify-around items-center">
+                  <OutlineText size="extraLarge">
+                    {receivingEquipment}
+                  </OutlineText>
+                  <div className="flex flex-row justify-between items-center">
+                    <ButtonGeneric
+                      size="large"
+                      color="blue"
+                      onClick={() => {
+                        setReceivingEquipment(null);
+                        socket.emit("adventure_next", { stage });
+                      }}
+                    >
+                      EQUIP!
+                    </ButtonGeneric>
+                  </div>
+                </div>
+              </PopupClean>
+            </div>
+          )}
+        {equipmentInventoryFull && incomingEquipment && (
+          <PopupClean>
+            <div className="flex flex-col items-center gap-4">
+              <OutlineText size="large">YOUR BAG IS TOO HEAVY!</OutlineText>
+              <OutlineText size="medium">REMOVE AN ITEM!</OutlineText>
+              <div className="grid grid-flow-row h-full w-full auto-rows-auto gap-2 my-4">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="flex items-center bg-gray-100 rounded p-2"
+                  >
+                    <div className="flex-1">
+                      {currentEquipment[i] ? (
+                        <EquipmentCard
+                          equipment={currentEquipment[i]}
+                          onClick={() => {}} // Optional: show details if you want
+                        />
+                      ) : (
+                        <span className="text-gray-400">Empty Slot</span>
+                      )}
+                    </div>
+                    {currentEquipment[i] && (
+                      <ButtonGeneric
+                        color="red"
+                        size="small"
+                        onClick={() => {
+                          setEquipmentInventoryFull(false);
+                          setIncomingEquipment(null);
+                          setCurrentEquipment([]);
+                          setReceivingEquipment(null);
+                          socket.emit("adventure_replace_equipment", {
+                            removeIndex: i,
+                            newEquipment: incomingEquipment,
+                          });
+                        }}
+                      >
+                        🗑️
+                      </ButtonGeneric>
+                    )}
+                  </div>
+                ))}
+                {/* Incoming equipment */}
+                <div className="flex items-center bg-yellow-100 rounded p-2">
+                  <div className="flex-1">
+                    <EquipmentCard
+                      equipment={incomingEquipment}
+                      onClick={() => {}} // Optional: show details if you want
+                    />
+                  </div>
                   <ButtonGeneric
-                    size="large"
-                    color="blue"
+                    color="red"
+                    size="small"
                     onClick={() => {
+                      // Reject the new equipment
+                      setEquipmentInventoryFull(false);
+                      setIncomingEquipment(null);
+                      setCurrentEquipment([]);
                       setReceivingEquipment(null);
                       socket.emit("adventure_next", { stage });
                     }}
                   >
-                    EQUIP!
+                    🗑️
                   </ButtonGeneric>
                 </div>
               </div>
-            </PopupClean>
-          </div>
+            </div>
+          </PopupClean>
         )}
         {dialogue && (
           <>
@@ -259,7 +385,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
             />
           </div>
         )}
-        {statusResult && (
+        {/**{statusResult && (
           <div>
             <StatChangePopup
               messages={statusResult}
@@ -268,6 +394,27 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
                 socket.emit("adventure_next", { stage });
               }}
             />
+          </div>
+        )}*/}
+        {statusResult && (
+          <div>
+            <PopupClean>
+              <div className="flex flex-col justify-around items-center">
+                <OutlineText size="extraLarge">{statusResult}</OutlineText>
+                <div className="flex flex-row justify-between items-center">
+                  <ButtonGeneric
+                    size="large"
+                    color="blue"
+                    onClick={() => {
+                      setStatusResult(null);
+                      socket.emit("adventure_next", { stage });
+                    }}
+                  >
+                    CONFIRM
+                  </ButtonGeneric>
+                </div>
+              </div>
+            </PopupClean>
           </div>
         )}
         {choices && (
@@ -301,54 +448,101 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage, levelMonster }) => {
             </div>
           </>
         )}
+        {/* ADVENTURE HEADER (DURING NON-BATTLE) */}
         {!battleState && playerState && (
           <>
-            <AdventureInfoPanel playerState={playerState} />
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              />
+            <div className="flex items-center gap-4 px-[20px]">
+              {/* Header */}
+              <div className="flex-1">
+                <div className="panel">
+                  <AdventureInfoPanel
+                    playerState={playerState}
+                    level={levelMonster}
+                    stage={stage}
+                  />
+                </div>
+              </div>
+              {/* Inventory Button */}
+              <div className="py-[12px]">
+                <ButtonGeneric
+                  color={"ronchi"}
+                  size={"backpack"}
+                  onClick={() => setViewingInventory(true)}
+                >
+                  <img
+                    src={"/assets/backpack.png"}
+                    className={"w-[80%] h-[80%] object-contain mx-auto"}
+                  ></img>
+                </ButtonGeneric>
+              </div>
+            </div>
+            {/* Exit/Info Buttons */}
+            <div className="flex justify-between xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem]  pointer-events-auto">
+              <div className="flex lg:gap-5 sm:gap-10">
+                <IconButton
+                  style="arrowleft"
+                  iconColour="black"
+                  buttonColour="red"
+                  size="small"
+                  onClick={() => setShowLeave(true)}
+                />
+                <IconButton
+                  style="info"
+                  iconColour="black"
+                  buttonColour="blue"
+                  size="small"
+                  onClick={() => setViewingInfo(true)}
+                />
+              </div>
+
               <LeavePopup
                 open={showLeave}
                 onClose={() => setShowLeave(false)}
               />
-              <ButtonGeneric
-                color={"ronchi"}
-                size={"tiny"}
-                onClick={() => setViewingInventory(true)}
-              >
-                INVENTORY
-              </ButtonGeneric>
-              <ButtonGeneric
-                color={"blue"}
-                size={"tiny"}
-                onClick={() => setViewingInfo(true)}
-              >
-                INFO
-              </ButtonGeneric>
             </div>
             {/* INSERT INVENTORY */}
           </>
         )}
+
+        {/* DURING BATTLE UI */}
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
             <PlayerInfoPanel battleState={battleState} />
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              ></IconButton>
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10">
+              <div className="flex lg:gap-5 sm:gap-10">
+                <IconButton
+                  style="arrowleft"
+                  iconColour="black"
+                  buttonColour="red"
+                  size="small"
+                  onClick={() => setShowLeave(true)}
+                />
+                <IconButton
+                  style="info"
+                  iconColour="black"
+                  buttonColour="blue"
+                  size="small"
+                  onClick={() => setViewingInfo(true)}
+                />
+              </div>
+
               <LeavePopup
                 open={showLeave}
                 onClose={() => setShowLeave(false)}
               ></LeavePopup>
+              {/* Inventory Button */}
+              <div className="py-[12px]">
+                <ButtonGeneric
+                  color={"ronchi"}
+                  size={"squaremedium"}
+                  onClick={() => setViewingInventory(true)}
+                >
+                  <img
+                    src={"/assets/backpack.png"}
+                    className={"w-[80%] h-[80%] object-contain mx-auto"}
+                  ></img>
+                </ButtonGeneric>
+              </div>
             </div>
             <BattleMonsterPanel
               battleState={battleState}
