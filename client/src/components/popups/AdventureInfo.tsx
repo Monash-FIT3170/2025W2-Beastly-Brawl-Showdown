@@ -75,7 +75,7 @@ export const AdventureInfoPopup = ({
             flex-col
             gap-[1%]
             items-center
-            py-1`}
+            py-1 overflow-y-auto`}
         >
           <div className="bg-[#EDAF55] border-blackCurrant lg:border-[0.25rem] sm:border-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
             <OutlineText size="choice-text">
