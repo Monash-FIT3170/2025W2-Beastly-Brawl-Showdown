@@ -29,7 +29,6 @@ export class ScoringTournament implements IGameMode{
 		for (const p of session.getPlayers().getItems()){
 			this.board.register(p.getId(), p.getName())
 		}
-		console.log("[INIT]: ",this.board.showBoard())
 
 	}
 

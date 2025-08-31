@@ -32,4 +32,12 @@ export class ScoreBoard {
             .sort((a, b) => b.points - a.points);
     }
 
+    showBoard2(): Record<string, PlayerScore>{
+        const out: Record<string, PlayerScore> = {};
+        for (const score of this.playerScores.values()){
+            out[score.playerId] = { ...score };
+        }
+        return out
+    }
+
 }
