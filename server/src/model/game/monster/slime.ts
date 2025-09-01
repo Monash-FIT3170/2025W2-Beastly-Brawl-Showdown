@@ -3,6 +3,7 @@ import { Monster } from "./monster";
 import { Neutral } from "../archetype/neutral";
 import { NullAction } from "../action/null";
 import { GroundSlamAbilityAction } from "../action/ability/groundSlam";
+import { SlimeSupportAction } from "../action/ability/slimeSupport";
 
 export class Slime extends Monster {
   constructor(name: string) {
@@ -11,7 +12,7 @@ export class Slime extends Monster {
       name,
       "blob blob...",
       new Neutral(),
-      new NullAction(), //TODO: give ability?
+      new SlimeSupportAction(),
       15,
       15,
       15

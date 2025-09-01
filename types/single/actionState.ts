@@ -14,6 +14,7 @@ export enum ActionIdentifier {
   ALLURING_LULLABY = "ALLURING_LULLABY",
   FLAME_LASH = "FLAME_LASH",
   CONSUME = "CONSUME",
+  SLIME_SUPPORT = "SLIME_SUPPORT",
 }
 
 export interface ActionState {
