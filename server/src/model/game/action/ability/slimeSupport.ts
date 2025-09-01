@@ -10,7 +10,7 @@ export class SlimeSupportAction extends Action {
     super(
       ActionIdentifier.SLIME_SUPPORT,
       "Slime Support",
-      "Use your natural ooze to boost your lowest stat for X turns",
+      "Use your natural ooze to boost your lowest stats for three turns.",
       1
     );
   }

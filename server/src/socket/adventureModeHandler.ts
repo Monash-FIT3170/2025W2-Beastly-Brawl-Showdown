@@ -21,6 +21,7 @@ import { ConsumeAction } from "../model/game/action/consume";
 import { createEquipment } from "../model/adventure/factories/equipmentFactory";
 import { Poison } from "../model/game/status/poison";
 import { Stun } from "../model/game/status/stun";
+import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -74,6 +75,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       player.giveConsumable(
         new PercentageHealthPotion("Large Health Potion", 0.5)
       );
+      player.giveConsumable(new SlimeSubstance());
       player.giveEquipment(new BlazingGauntlets());
       console.log("ADV TEST: CONSUMABLES", player.getConsumables());
       console.log("ADV TEST: EQUIPMENT", player.getEquipment());

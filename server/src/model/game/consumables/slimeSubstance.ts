@@ -5,7 +5,7 @@ import { Consumable } from "./consumable";
 export class SlimeSubstance extends Consumable {
   constructor() {
     const description =
-      "This slimy substance seems to hold the powers of a fallen slime.. Consuming this ooze will boost your lowest rated stat for a temporary period.";
+      "This slimy substance seems to hold the powers of a fallen slime.. Consuming this ooze will boost your lowest rated stats overtime.";
     super("Slime Substance", description);
   }
 

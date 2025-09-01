@@ -197,6 +197,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
+        <LeavePopup open={showLeave} onClose={() => setShowLeave(false)} />
+
         {viewingInfo && (
           <AdventureInfoPopup
             playerState={playerState}
@@ -390,6 +392,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           </div>
         )}
+
         {/**{statusResult && (
           <div>
             <StatChangePopup
@@ -402,7 +405,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
           </div>
         )}*/}
 
-        <LeavePopup open={showLeave} onClose={() => setShowLeave(false)} />
         {statusResult && (
           <div>
             <PopupClean>
@@ -458,51 +460,52 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         {/* ADVENTURE HEADER (DURING NON-BATTLE) */}
         {!battleState && playerState && (
           <>
-            <div className="flex items-center gap-4 px-[20px]">
-              {/* Header */}
-              <div className="flex-1">
-                <div className="panel">
-                  <AdventureInfoPanel
-                    playerState={playerState}
-                    level={levelMonster}
-                    stage={stage}
+            <div className="fixed top-0 left-0 w-full">
+              <div className="flex items-center gap-4 px-[20px]">
+                {/* Header */}
+                <div className="flex-1">
+                  <div className="panel">
+                    <AdventureInfoPanel
+                      playerState={playerState}
+                      level={levelMonster}
+                      stage={stage}
+                    />
+                  </div>
+                </div>
+                {/* Inventory Button */}
+                <div className="py-[12px]">
+                  <ButtonGeneric
+                    color={"ronchi"}
+                    size={"backpack"}
+                    onClick={() => setViewingInventory(true)}
+                  >
+                    <img
+                      src={"/assets/backpack.png"}
+                      className={"w-[80%] h-[80%] object-contain mx-auto"}
+                    ></img>
+                  </ButtonGeneric>
+                </div>
+              </div>
+              {/* Exit/Info Buttons */}
+              <div className="flex justify-between xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem]  pointer-events-auto">
+                <div className="flex lg:gap-5 sm:gap-10">
+                  <IconButton
+                    style="arrowleft"
+                    iconColour="black"
+                    buttonColour="red"
+                    size="small"
+                    onClick={() => setShowLeave(true)}
+                  />
+                  <IconButton
+                    style="info"
+                    iconColour="black"
+                    buttonColour="blue"
+                    size="small"
+                    onClick={() => setViewingInfo(true)}
                   />
                 </div>
               </div>
-              {/* Inventory Button */}
-              <div className="py-[12px]">
-                <ButtonGeneric
-                  color={"ronchi"}
-                  size={"backpack"}
-                  onClick={() => setViewingInventory(true)}
-                >
-                  <img
-                    src={"/assets/backpack.png"}
-                    className={"w-[80%] h-[80%] object-contain mx-auto"}
-                  ></img>
-                </ButtonGeneric>
-              </div>
             </div>
-            {/* Exit/Info Buttons */}
-            <div className="flex justify-between xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem]  pointer-events-auto">
-              <div className="flex lg:gap-5 sm:gap-10">
-                <IconButton
-                  style="arrowleft"
-                  iconColour="black"
-                  buttonColour="red"
-                  size="small"
-                  onClick={() => setShowLeave(true)}
-                />
-                <IconButton
-                  style="info"
-                  iconColour="black"
-                  buttonColour="blue"
-                  size="small"
-                  onClick={() => setViewingInfo(true)}
-                />
-              </div>
-            </div>
-            {/* INSERT INVENTORY */}
           </>
         )}
 

@@ -42,7 +42,7 @@
       {
         "id": "slime_aura",
         "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "consumableId": "slime_substance"
       }
     ]
   }
