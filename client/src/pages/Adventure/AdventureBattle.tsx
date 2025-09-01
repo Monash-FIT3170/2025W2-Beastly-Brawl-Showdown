@@ -2,7 +2,7 @@ import {
   ArchetypeIdentifier,
   MonsterIdentifier,
 } from "/types/single/monsterState";
-import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
+import BattleHeader from "../../components/player-screen/BattleHeader";
 import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
 import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import DiceRollModal from "../Game/DiceRollModal";
@@ -249,7 +249,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
         )}
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
-            <PlayerInfoPanel battleState={battleState} />
+            <BattleHeader battleState={battleState} />
             <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
               <IconButton
                 style="arrowleft"

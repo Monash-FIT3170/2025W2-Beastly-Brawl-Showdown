@@ -60,7 +60,7 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
       <div className="bg-peach flex items-center flex flex-col justify-around border-[4px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
         {/* <BaseCard color="peach" width={60} height={70}> */}
 
-        <OutlineText size="large">YOU WON!</OutlineText>
+        <OutlineText size="large">BETTER LUCK NEXT TIME!</OutlineText>
 
         <img
           className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]"

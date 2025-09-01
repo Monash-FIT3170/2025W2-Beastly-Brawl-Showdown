@@ -49,8 +49,6 @@ export abstract class Action {
 
   public abstract prepareAnimation(): string | [string, number]; // returns the socket message that represents the animation name
 
-  public abstract prepareAnimation(): string | [string, number]; // returns the socket message that represents the animation name
-
   public getId(): ActionIdentifier {
     return this.id;
   }

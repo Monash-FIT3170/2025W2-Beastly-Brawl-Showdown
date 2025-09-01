@@ -42,6 +42,7 @@ export default class GameSession {
     this.players = new Queue<Player>(this.player_max);
     this.battles = new Queue<Battle>(this.battle_max);
     // this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
+    this.mode = addition.mode
 
     if (addition.presetGameCode !== undefined) {
       // Use preset game code if provided
@@ -340,7 +341,7 @@ export default class GameSession {
   public getGameSessionState(): GameSessionState {
     const allBattles = [];
     let remainingPlayers = 0;
-    let totalPlayers = this.battles.size() * 2;
+    let totalPlayers = this.battles.size() * 2;''
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
@@ -363,6 +364,7 @@ export default class GameSession {
       currentPhase: this.currentPhase,
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
+      waitingPlayers: this.getPlayersNotInBattle(),
       metadata: metadata
     };
   }
