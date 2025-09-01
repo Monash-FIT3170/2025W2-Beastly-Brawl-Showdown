@@ -44,6 +44,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       battleId,
       playerId: socket.id,
     });
+    onClick();
   };
 
   const adventureClicked = () => {
@@ -51,6 +52,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       action: actionState,
       playerId: socket.id,
     });
+    onClick();
   };
 
   const image = `
