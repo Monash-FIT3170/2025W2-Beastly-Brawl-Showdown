@@ -78,23 +78,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       console.log("ADV TEST: CONSUMABLES", player.getConsumables());
       console.log("ADV TEST: EQUIPMENT", player.getEquipment());
       console.log("ADV TEST: EQUIPMENT", player.getStatuses());
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
-      player.addStatus(new Poison)
+      player.addStatus(new Poison());
     }
   );
 

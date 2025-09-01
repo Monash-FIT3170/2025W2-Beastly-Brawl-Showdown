@@ -17,12 +17,8 @@ export const AdventureInfoPanel: React.FC<AdventureInfoPanelProps> = ({
   level,
   stage,
 }) => {
-  //TODO: get proper level/stage
   //TODO: figure out why this disappears on occasion....
   //todo: make status icons bigger for mobile
-
-  var testingMap = ["STUN", "STUN", "POISON"];
-  // testingMap = [];
 
   return (
     <>

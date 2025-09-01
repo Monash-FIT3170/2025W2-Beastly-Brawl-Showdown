@@ -32,7 +32,7 @@ export const PopupClean = ({ colour, children }: PopupProp) => {
         flex
         flex-col
         backdrop-blur-md
-        z-50  
+        z-100
         `;
 
   const popup = `
@@ -51,7 +51,7 @@ export const PopupClean = ({ colour, children }: PopupProp) => {
         flex
         flex-col
         break-words
-        z-50  
+        z-100  
         `;
 
   const popupText = `

@@ -393,6 +393,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           </div>
         )}*/}
+
+        <LeavePopup open={showLeave} onClose={() => setShowLeave(false)} />
         {statusResult && (
           <div>
             <PopupClean>
@@ -491,11 +493,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   onClick={() => setViewingInfo(true)}
                 />
               </div>
-
-              <LeavePopup
-                open={showLeave}
-                onClose={() => setShowLeave(false)}
-              />
             </div>
             {/* INSERT INVENTORY */}
           </>
