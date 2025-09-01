@@ -65,7 +65,7 @@ export class ScoringTournament implements IGameMode{
 
 
 		io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
-			console.log("Server test 1", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
+			console.log("Server test 1 (Scoring)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
 			this.playerFinished += 1
 			console.log(this.playerFinished,session.getPlayers().getItems().length)
 			if ( this.playerFinished == session.getEffectivePlayer()){
@@ -74,7 +74,7 @@ export class ScoringTournament implements IGameMode{
 		})
 
 		io.sockets.sockets.get(battle.getPlayers()[1].getId())?.once("ready_next_battle", () => {
-			console.log("Server test 2", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
+			console.log("Server test 2 (Scoring)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
 			this.playerFinished += 1
 			console.log(this.playerFinished,session.getPlayers().getItems().length)
 			if (this.playerFinished == session.getEffectivePlayer()){

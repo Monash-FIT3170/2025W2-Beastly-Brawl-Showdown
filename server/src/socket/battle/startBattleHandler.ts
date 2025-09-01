@@ -35,12 +35,14 @@ export default function proceedBattleTurn(
       //if battle is over, the array length is guaranteed to be either 0 or 1
       io.to(battle.getId()).emit("battle_end", {
         result: "draw",
-        winners: winners,
+        winners: winners.map((player) => player.getName()),
       });
     } else {
+      const winningPlayer = winners[0];
+      console.log(`Player ${winningPlayer.getName()} added to the Waiting Queue`);
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
-        winners: winners,
+        winners: winners.map((player) => player.getName()),
       });
     }
   }
@@ -233,7 +235,7 @@ export default function proceedBattleTurn(
             gameSession.onBattlesEnded(io, socket)
 
             console.log(
-              `All battles are concluded in game session ${gameSession.getGameCode()}`
+              `Only one player remains.`
             );
 
             //TODO: for future, this can be used to handle what happens after a game session ends
@@ -241,6 +243,11 @@ export default function proceedBattleTurn(
             socket.emit("game_session_ended", {
               message: `Game session ${gameSession.getGameCode()} has ended.`,
             });
+            return;
+          }
+
+          if (battle.isBattleOver()) {
+            console.log(`Battle ${battle.getId} has ended`);
             return;
           }
 

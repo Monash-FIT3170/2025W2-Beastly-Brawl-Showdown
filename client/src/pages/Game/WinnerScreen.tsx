@@ -25,6 +25,10 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
     FlowRouter.go("/");
   };
 
+  const backToWaitingRoom = () => {
+    socket.emit("return-to-waiting-room", {userID:socket.id})
+  };
+
   // const leave = () => {
   //   socket.emit('leave-game', {userID:socket.id})
   //   FlowRouter.go("/")
@@ -67,6 +71,18 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
           src={`/assets/trophies/${playerMonster.id}_WIN.png`}
           alt={`${playerMonster.id}_WIN image`}
         />
+
+        <ButtonGeneric
+          color="red"
+          size="medium"
+          onClick={() => backToWaitingRoom()}
+        >
+          <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+            <div>
+              <OutlineText size="medium">RETURN TO WAITING ROOM</OutlineText>
+            </div>
+          </div>
+        </ButtonGeneric>
 
         <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">

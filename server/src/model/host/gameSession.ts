@@ -20,6 +20,7 @@ import { BotPlayer } from "../game/botPlayer";
 export default class GameSession {
   private hostUID: string;
   private players: Queue<Player>;
+  private waitQueue: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
   private round: number = 1; // Round number
@@ -30,7 +31,8 @@ export default class GameSession {
   private mode: IGameMode;
   private monsters: Array<String>;
   private botInLobby: boolean = false; // whether has been added to this session or not
-  
+  private finalWinner: PlayerState | null = null;
+
   // Initialise sample data
   private gameSessionData: GameSessionData = {
     mostChosenMonster: { monster: null, percentagePick: "0" },
@@ -40,6 +42,7 @@ export default class GameSession {
     this.hostUID = hostID;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
+    this.waitQueue = new Queue<Player>(4);
     this.battles = new Queue<Battle>(this.battle_max);
     // this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
 
@@ -129,6 +132,10 @@ export default class GameSession {
     this.round = newRound
   }
 
+  public getWaitQueue() {
+    return this.waitQueue;
+  }
+
   // Add player to Game Session queue
   public addPlayer(player: Player): { success: boolean; reason?: string } {
     if (!this.canSocketJoin(player.getId())) {
@@ -159,6 +166,20 @@ export default class GameSession {
         this.players.enqueue(playerIndexed); // If the player is not the argument one, then put them back in the queue
       }
     }
+  }
+
+  getPlayerWaiting(seaarchingPlayerID: String): Player | null {
+    // Loop to check through each item in the queue
+    for (let i = 0; i < this.waitQueue.size(); i++) {
+      const playerIndexed = this.waitQueue.dequeue(); // Serves the current player at the front
+      if (playerIndexed != undefined) {
+        this.waitQueue.enqueue(playerIndexed);
+        if (playerIndexed.getId() == seaarchingPlayerID) {
+          return playerIndexed;
+        }
+      }
+    }
+    return null;
   }
 
   // Check if all requirements are met before starting game
@@ -340,15 +361,22 @@ export default class GameSession {
   public getGameSessionState(): GameSessionState {
     const allBattles = [];
     let remainingPlayers = 0;
-    let totalPlayers = this.battles.size() * 2;
+    // let totalPlayers = this.battles.size() * 2;
+    let totalPlayers = this.players.size();
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
       allBattles.push(battle.getBattleState(firstPlayer.getId()));
-      if (battle.isBattleOver()) {
+      // if (battle.isBattleOver()) {
+      //   remainingPlayers += 1;
+      // } else {
+      //   remainingPlayers += 2;
+      // }
+    }
+
+    for (const player of this.getPlayers().getItems()) {
+      if (player.getHealth() > 0) {
         remainingPlayers += 1;
-      } else {
-        remainingPlayers += 2;
       }
     }
 
@@ -413,4 +441,11 @@ export default class GameSession {
     return playersNotInBattle;
   }
 
+  public setFinalWinner(finalWinner: PlayerState | null): void {
+    this.finalWinner = finalWinner;
+  }
+
+  public getFinalWinner(): PlayerState | null {
+    return this.finalWinner;
+  }
 }
