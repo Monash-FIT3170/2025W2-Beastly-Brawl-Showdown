@@ -63,6 +63,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   //POPUPS
   const [showLeave, setShowLeave] = useState(false);
   const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
+  const [viewingEnemyInfo, setViewingEnemyInfo] = useState<Boolean>(false);
   const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
   const [receivingConsumable, setReceivingConsumable] = useState<string | null>(
     null
@@ -201,6 +202,13 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             playerState={playerState}
             attackState={attackState}
             onClose={() => setViewingInfo(false)}
+          ></AdventureInfoPopup>
+        )}
+        {viewingEnemyInfo && (
+          <AdventureInfoPopup
+            playerState={battleState.opponentPlayer}
+            attackState={undefined}
+            onClose={() => setViewingEnemyInfo(false)}
           ></AdventureInfoPopup>
         )}
         {viewingInventory && (
@@ -502,7 +510,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
             <PlayerInfoPanel battleState={battleState} />
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10">
+            {/* Buttons */}
+            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10 w-full flex justify-between">
+              {/* Left side buttons */}
               <div className="flex lg:gap-5 sm:gap-10">
                 <IconButton
                   style="arrowleft"
@@ -518,14 +528,21 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   size="small"
                   onClick={() => setViewingInfo(true)}
                 />
+                <LeavePopup
+                  open={showLeave}
+                  onClose={() => setShowLeave(false)}
+                ></LeavePopup>
               </div>
 
-              <LeavePopup
-                open={showLeave}
-                onClose={() => setShowLeave(false)}
-              ></LeavePopup>
-              {/* Inventory Button */}
-              <div className="py-[12px]">
+              {/* Right side buttons */}
+              <div className="flex lg:gap-5 sm:gap-10 pr-[2rem]">
+                <IconButton
+                  style="info"
+                  iconColour="black"
+                  buttonColour="redpink"
+                  size="small"
+                  onClick={() => setViewingEnemyInfo(true)}
+                />
                 <ButtonGeneric
                   color={"ronchi"}
                   size={"squaremedium"}
@@ -538,6 +555,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                 </ButtonGeneric>
               </div>
             </div>
+
             <BattleMonsterPanel
               battleState={battleState}
               slimeString={backgroundLocation}

@@ -37,25 +37,47 @@ export const AdventureInfoPopup = ({
   const currentlyViewing = ["MONSTER STATS", "CURRENT STATUSES"];
 
   useEffect(() => {
-    setCurrentAbilities([]);
-    for (const action of playerState?.monster?.possibleActions!) {
+    //REMOVES ATTACK/DEFEND AND ANY DUPLICATE ABILITIES
+    const uniqueActions = new Map<
+      ActionIdentifier,
+      (typeof playerState.monster.possibleActions)[0]
+    >();
+    for (const action of playerState?.monster?.possibleActions ?? []) {
       if (
         action.id !== ActionIdentifier.ATTACK &&
         action.id !== ActionIdentifier.DEFEND
       ) {
-        setCurrentAbilities((prevAbilities) => [...prevAbilities, action]);
+        uniqueActions.set(action.id, action);
       }
     }
+
+    setCurrentAbilities(Array.from(uniqueActions.values()));
+
+    // setCurrentAbilities([]);
+    // for (const action of playerState?.monster?.possibleActions!) {
+    //   if (
+    //     action.id !== ActionIdentifier.ATTACK &&
+    //     action.id !== ActionIdentifier.DEFEND
+    //   ) {
+    //     setCurrentAbilities((prevAbilities) => [...prevAbilities, action]);
+    //   }
+    // }
   }, [playerState?.monster?.possibleActions]);
   const monsterImgPath =
     "/assets/characters/" + playerState?.monster?.id + ".png";
+
+  var playerName = `${playerState?.name}'s ${playerState?.monster?.name}`;
+
+  if (playerState?.name == playerState?.monster?.name) {
+    playerName = `${playerState?.name}`;
+  }
 
   return (
     <PopupAdventure colour="goldenRod">
       <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-full h-full">
         <div className="mt-[1rem] xl:mt-[0.5rem] bg-pictonBlue outline-blackCurrant lg:outline-[0.2rem] sm:outline-[0.3rem] rounded-2xl flex flex-col px-[1rem] items-center justify-center">
           <OutlineTextResizable size="large" max1={3}>
-            {`${playerState?.name}'s ${playerState?.monster?.name}`}
+            {playerName}
           </OutlineTextResizable>
         </div>
         <img className="sm:size-[30vw] lg:size-[20vh]" src={monsterImgPath} />
@@ -107,15 +129,15 @@ export const AdventureInfoPopup = ({
               <div className="flex flex-col w-full">
                 <AdventureStatBar
                   stat="Attack Damage"
-                  statVal={attackState?.attackDamage!}
+                  statVal={attackState?.attackDamage! ?? "?"}
                 ></AdventureStatBar>
                 <AdventureStatBar
                   stat="Critical Hit Rate"
-                  statVal={attackState?.critRate!}
+                  statVal={attackState?.critRate! ?? "?"}
                 ></AdventureStatBar>
                 <AdventureStatBar
                   stat="Dice Roll Range"
-                  statVal={attackState?.diceRange!}
+                  statVal={attackState?.diceRange! ?? "?"}
                 ></AdventureStatBar>
               </div>
 
