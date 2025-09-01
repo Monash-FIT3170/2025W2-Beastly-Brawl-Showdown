@@ -32,7 +32,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
   var backgroundLocation = "ARCTIC"; //TODO: change this to be based off level/monster?
   var backgroundString =
-    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" + backgroundLocation + ".jpg')";
 
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {

@@ -9,7 +9,7 @@ interface MostPopularPanelProps {
 const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ popularMonster }) => {
 
   const formattedName = popularMonster.monster!.id;
-  const imageSrc = `/assets/characters/${formattedName}.png`;
+  const imageSrc = "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + formattedName + ".png";
   console.log("image src = ",imageSrc)
 
   return (

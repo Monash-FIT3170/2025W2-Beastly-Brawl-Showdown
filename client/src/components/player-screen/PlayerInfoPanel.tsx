@@ -37,7 +37,7 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({ battleState })
         <div className="flex flex-row">
           <div className="size-[30px]"/>
           {battleState.yourPlayer.statuses.map((status) => (
-            <img className = " size-[30px] object-contain rounded-md block" src={`/assets/statuses/${status.name.toUpperCase()}.png`} alt={`${status.name.toUpperCase()} image`}/>
+            <img className = " size-[30px] object-contain rounded-md block" src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase()}.png`} alt={`${status.name.toUpperCase()} image`}/>
           ))}
         </div>
         <div className="leading-none pt-[2%]">
@@ -63,7 +63,7 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({ battleState })
         <div className="flex flex-row">
           <div className="size-[30px]"/>
           {battleState.opponentPlayer.statuses.map((status) => (
-            <img className = " size-[30px] object-contain rounded-md block" src={`/assets/statuses/${status.name.toUpperCase()}.png`} alt={`${status.name.toUpperCase()} image`}/>
+            <img className = " size-[30px] object-contain rounded-md block" src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase()}.png`} alt={`${status.name.toUpperCase()} image`}/>
           ))}
         </div>
         <div className="leading-none pt-[2%]">
