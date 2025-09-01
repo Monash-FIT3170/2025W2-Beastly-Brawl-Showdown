@@ -325,7 +325,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
       {/* Player name+monster cards */}
       {/* Not sure how the monster is being determined yet, so just using a string for now */}
       <div className="flex flex-row h-3/5 w-full items-center justify-between p-[2rem]">
-        <div className="flex flex-row h-full w-full justify-around items-center bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-4 h-full w-full bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl max-h-[32rem] overflow-y-auto p-4">
           {players.map((player) => (
             <NameCard
               player={player}
@@ -355,7 +355,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </ButtonGeneric>
 
         <div className="mb-5 mr-13">
-          {/* UPDATE: Add pop up for : Do you want to start the game? */}
           {/* UPDATE: Add pop up for : Do you want to start the game? */}
           <ButtonGeneric
             color="ronchi"
