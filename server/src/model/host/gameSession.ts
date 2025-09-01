@@ -15,7 +15,7 @@ import crypto from "crypto";
 import { IGameMode } from "./gamemode/gameMode";
 import { Server, Socket } from "socket.io";
 import { ActionResult } from "/types/single/actionState";
-import { BotPlayer } from "../game/botPlayer";
+import { BotPlayer } from "../game/botplayer";
 
 export default class GameSession {
   private hostUID: string;

@@ -25,6 +25,19 @@ export class BattleRoyale implements IGameMode {
 
   public onActionExecuted(session: GameSession): void { }
 
+  public isPlayerInWaitingQueue(session: GameSession, playerFinding: Player): boolean {
+    for (let i = 0; i < session.getWaitQueue().size(); i++) {
+      const playerChecking = session.getWaitQueue().dequeue();
+      if (playerChecking != undefined) {
+        session.getWaitQueue().enqueue(playerChecking);
+        if (playerChecking == playerFinding) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   public onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void {
     // Case 1: There is a winner
     if (winner) {
@@ -53,10 +66,20 @@ export class BattleRoyale implements IGameMode {
 
     io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
       console.log("Server test 1 (Royale)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id);
-      if (winner != null) {
+      if (winner != null && !this.isPlayerInWaitingQueue(session, winner)) {
         session.getWaitQueue().enqueue(winner);
         console.log(`Add player ${winner} to waitQueue`);
-        if (session.getWaitQueue().size() > 1) {
+        console.log("Queue Currently has the following players:")
+        for (let i = 0; i < session.getWaitQueue().size(); i++) {
+          const checkingPlayer = session.getWaitQueue().dequeue();
+          if (checkingPlayer != undefined) {
+            session.getWaitQueue().enqueue(checkingPlayer);
+            console.log(`${checkingPlayer.getName()}`)
+          } else {
+            console.log("Undefined")
+          }
+        }
+        if (session.getWaitQueue().size() % 2 == 0) {
           console.log("waitQueue Size large enough");
 
           const player1Indexed = session.getWaitQueue().dequeue();
@@ -94,10 +117,20 @@ export class BattleRoyale implements IGameMode {
 
     io.sockets.sockets.get(battle.getPlayers()[1].getId())?.once("ready_next_battle", () => {
       console.log("Server test 2 (Royale)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id);
-      if (winner != null) {
+      if (winner != null  && !this.isPlayerInWaitingQueue(session, winner)) {
         session.getWaitQueue().enqueue(winner);
         console.log(`Add player ${winner} to waitQueue`);
-        if (session.getWaitQueue().size() > 1) {
+        console.log("Queue Currently has the following players:")
+        for (let i = 0; i < session.getWaitQueue().size(); i++) {
+          const checkingPlayer = session.getWaitQueue().dequeue();
+          if (checkingPlayer != undefined) {
+            session.getWaitQueue().enqueue(checkingPlayer);
+            console.log(`${checkingPlayer.getName()}`)
+          } else {
+            console.log("Undefined")
+          }
+        }
+        if (session.getWaitQueue().size() % 2 == 0) {
           console.log("waitQueue Size large enough");
 
           const player1Indexed = session.getWaitQueue().dequeue();
