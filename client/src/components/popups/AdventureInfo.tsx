@@ -202,7 +202,7 @@ export const AdventureInfoPopup = ({
 
           <div className="w-min">
             <ButtonGeneric color="red" size="battle" onClick={onClose}>
-              <OutlineText size="choice-text">Back</OutlineText>
+              <OutlineText size="choice-text">BACK</OutlineText>
             </ButtonGeneric>
           </div>
 

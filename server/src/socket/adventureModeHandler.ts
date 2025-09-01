@@ -22,6 +22,7 @@ import { createEquipment } from "../model/adventure/factories/equipmentFactory";
 import { Poison } from "../model/game/status/poison";
 import { Stun } from "../model/game/status/stun";
 import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
+import { LakeCurse } from "../model/game/status/lakeCurse";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -81,6 +82,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       console.log("ADV TEST: EQUIPMENT", player.getEquipment());
       console.log("ADV TEST: EQUIPMENT", player.getStatuses());
       player.addStatus(new Poison());
+      player.addStatus(new LakeCurse(2));
+      player.addStatus(new Stun(2));
     }
   );
 
