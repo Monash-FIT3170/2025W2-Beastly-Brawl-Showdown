@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
@@ -85,7 +86,7 @@ export const Home = () => {
         <ButtonGeneric
           color="ronchi"
           size="large"
-          onClick={createGame}
+          onClick={renderConfigPage}
           mobileHidden={"true"}
         >
           <OutlineText size="large">HOST GAME</OutlineText>

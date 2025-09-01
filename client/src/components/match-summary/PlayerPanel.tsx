@@ -22,16 +22,12 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
   const currentHealth = playerState.currentHealth;
   const maxHealth = playerState.monster?.maxHealth;
 
-  // Get player's score if any
-  //const playerScore = playerState.score;
-  // const playerScore = 10;
-  // const player2Score = 2;
 
   const getScorePosition = () => {
     if (isLeftPlayer) {
-      return 'right-18';
+      return 'left-2';
     }
-    return 'left-2';
+    return 'right-18';
   }
 
   // Format the name of the monster from the form 'Monster Name' to 'MONSTER_NAME'.
