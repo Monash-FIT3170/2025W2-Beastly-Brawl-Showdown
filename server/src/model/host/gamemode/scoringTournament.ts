@@ -122,7 +122,8 @@ export class ScoringTournament implements IGameMode{
 	//Provide metadata of scoring tournament
 	getMetadata(): GameSessionStateMetaData {
 		return {
-			round: this.round
+			round: this.round,
+			playerScore: this.board.showBoard2()
 		}
 	}
 	

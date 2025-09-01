@@ -8,7 +8,7 @@ interface PlayerPanelProps {
   playerIndex: number;
   isLeftPlayer?: boolean; // Add this to control layout direction
   winner: boolean;
-  // playerScore: number
+  playerScore: number
 }
 
 const PlayerPanel: React.FC<PlayerPanelProps> = ({ 
@@ -16,6 +16,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
   playerIndex,  
   isLeftPlayer = true,
   winner,
+  playerScore
 }) => {
   // Extract current and max health values
   const currentHealth = playerState.currentHealth;
@@ -23,8 +24,9 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
 
   // Get player's score if any
   //const playerScore = playerState.score;
-  const playerScore = 93;
+  // playerScore = 93;
   const player2Score = 0;
+  console.log("[PLAYERSCORE]:", playerScore)
 
   // Format the name of the monster from the form 'Monster Name' to 'MONSTER_NAME'.
   const formattedName = playerState.monster?.id;
