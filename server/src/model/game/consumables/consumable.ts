@@ -22,12 +22,14 @@ export abstract class Consumable {
 
   public abstract consume(player: Player): void;
 
+  protected abstract getImageString(): string;
+
   public getState(): ConsumableState {
     return {
       name: this.name,
       description: this.description,
       statDescription: this.getStatDescription(),
-      imageString: "OOZING_BLADE", //TO-DO: UPDATE IMAGE!
+      imageString: this.getImageString(),
     };
   }
 }

@@ -78,7 +78,7 @@ export const ConsumablePopup = ({
               >
                 <img
                   className="w-full h-full object-contain"
-                  src={`/assets/items/item.png`}
+                  src={`/assets/items/${consumable.imageString}.png`}
                 />
               </div>
             </div>

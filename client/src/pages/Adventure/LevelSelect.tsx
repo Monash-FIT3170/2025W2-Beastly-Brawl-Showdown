@@ -6,6 +6,7 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { IconButton } from "../../components/buttons/IconButton";
 import socket from "../../socket";
 import { MonsterIdentifier } from "/types/single/monsterState";
+import { getBiomeString } from "./AdventureBattle";
 
 interface LevelSelectProps {}
 
@@ -37,6 +38,9 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     ? "/assets/characters/" + monster + ".png"
     : "/assets/characters/silhouettes/" + monster + "_SILHOUETTE.png";
 
+  const backgroundString =
+    "url('/assets/backgrounds/" + getBiomeString(monster) + ".jpg')";
+
   return (
     <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">
       <GenericHeader color="lightYellow">
@@ -57,6 +61,12 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             w-[60%]
             box-border
             flex flex-col  justify-evenly items-center gap-y-10 py-10`}
+        style={{
+          backgroundImage: backgroundString,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
       >
         {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
         <img

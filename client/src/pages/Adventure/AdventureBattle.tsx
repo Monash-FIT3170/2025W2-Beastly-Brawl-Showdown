@@ -589,14 +589,14 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
 const biomeMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
-  [MonsterIdentifier.POUNCING_BANDIT, () => "DESERT"],
+  [MonsterIdentifier.POUNCING_BANDIT, () => "FOREST"],
   [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],
   [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
   [MonsterIdentifier.POISON_POGO, () => "MARSH"],
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
 ]);
 
-function getBiomeString(monsterID: MonsterIdentifier) {
+export function getBiomeString(monsterID: MonsterIdentifier) {
   //default return is forest :)
   const biomeName = biomeMap.get(monsterID);
   return biomeName ? biomeName() : "FOREST";

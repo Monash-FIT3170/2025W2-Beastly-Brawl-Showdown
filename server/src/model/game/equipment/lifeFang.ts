@@ -25,4 +25,8 @@ export class LifeFang extends Equipment {
 
     this.strength = stage;
   }
+
+  protected getImageString(): string {
+    return "lifeFang";
+  }
 }

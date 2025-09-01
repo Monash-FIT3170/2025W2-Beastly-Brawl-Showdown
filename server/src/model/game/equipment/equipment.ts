@@ -31,12 +31,14 @@ export abstract class Equipment {
 
   public abstract calculateStrength(stage: number): void;
 
+  protected abstract getImageString(): string;
+
   public getState(): EquipmentState {
     return {
       name: this.name,
       description: this.description,
       statDescription: this.getStatDescription(),
-      imageString: "OOZING_BLADE", //TO-DO: UPDATE IMAGE!
+      imageString: this.getImageString(), //TO-DO: UPDATE IMAGE!
     };
   }
 }

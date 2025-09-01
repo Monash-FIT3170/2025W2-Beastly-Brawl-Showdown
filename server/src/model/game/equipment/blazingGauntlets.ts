@@ -25,4 +25,8 @@ export class BlazingGauntlets extends Equipment {
     //TODO: update formula - currently strength = stage
     this.strength = stage;
   }
+
+  protected getImageString(): string {
+    return "item";
+  }
 }

@@ -9,7 +9,6 @@ interface EquipmentProps {
 }
 
 export const EquipmentCard = ({ equipment, onClick }: EquipmentProps) => {
-  const imageName = "item"; //TO-DO: set up
   return (
     <button
       onClick={onClick}
@@ -34,7 +33,7 @@ export const EquipmentCard = ({ equipment, onClick }: EquipmentProps) => {
         >
           <img
             className="w-full h-full object-contain"
-            src={`/assets/items/${imageName}.png`}
+            src={`/assets/items/${equipment.imageString}.png`}
           />
         </div>
 

@@ -25,4 +25,8 @@ export class StickyDie extends Equipment {
     //TODO: update formula - currently strength = stage
     this.strength = stage + 2;
   }
+
+  protected getImageString(): string {
+    return "item";
+  }
 }

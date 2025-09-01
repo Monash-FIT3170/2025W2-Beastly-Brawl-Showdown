@@ -3,13 +3,15 @@ import { Consumable } from "./consumable";
 
 export class PercentageHealthPotion extends Consumable {
   private percent: number;
+  private image: string;
 
-  constructor(name: string, percent: number) {
+  constructor(name: string, percent: number, image?: string) {
     //btw feel free to change descriptions this is just for now
     const description =
       "A vibrant liquid stored in an unsuspecting vial, there are rumours this red liquid cures even the toughest wounds.";
     super(name, description);
     this.percent = percent;
+    this.image = image ?? "HEALTHPOTIONFULL";
   }
 
   public consume(player: Player): void {
@@ -21,5 +23,9 @@ export class PercentageHealthPotion extends Consumable {
 
   public getStatDescription(): string {
     return "Heal " + this.percent * 100 + "% of your HP";
+  }
+
+  protected getImageString(): string {
+    return this.image;
   }
 }

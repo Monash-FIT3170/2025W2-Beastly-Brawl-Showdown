@@ -52,9 +52,9 @@ export const AdventureInfoPanel: React.FC<AdventureInfoPanelProps> = ({
       >
         {/* Player Name */}
         <div className="flex leading-none pt-[2%]">
-          <OutlineText size="medium">
+          <BlackText size="medium">
             {`${playerState.name.toUpperCase()}'S ${playerState.monster?.name.toUpperCase()}`}
-          </OutlineText>
+          </BlackText>
         </div>
 
         <div>
@@ -86,8 +86,8 @@ export const AdventureInfoPanel: React.FC<AdventureInfoPanelProps> = ({
         </div>
         {/* Adventure Level/Stage */}
         <div className="flex justify-between">
-          <OutlineText size="medium">LEVEL: {level}</OutlineText>{" "}
-          <OutlineText size="medium">STAGE: {stage}</OutlineText>
+          <BlackText size="medium">LEVEL: {level.replace(/_/g, " ")}</BlackText>
+          <BlackText size="medium">STAGE: {stage}</BlackText>
         </div>
       </div>
     </>

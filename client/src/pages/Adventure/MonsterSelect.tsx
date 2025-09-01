@@ -48,7 +48,14 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
   //dependent on how player accounts work :)
   const [unlockedMonstersIDs, setUnlockedMonstersIDs] = useState<
     MonsterIdentifier[]
-  >([MonsterIdentifier.ROCKY_RHINO]);
+  >([
+    MonsterIdentifier.ROCKY_RHINO,
+    MonsterIdentifier.CHARMER_COBRA,
+    MonsterIdentifier.CINDER_TAIL,
+    MonsterIdentifier.FURIOUS_FLIPPER,
+    MonsterIdentifier.POISON_POGO,
+    MonsterIdentifier.POUNCING_BANDIT,
+  ]);
 
   useEffect(() => {
     // Request the monster list once when component mounts
@@ -364,9 +371,9 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                       className="flex flex-row items-center grow-1 justify-left"
                     >
                       <img
-                        src={"/assets/actions/" + ability.id + ".png"}
+                        src={"/assets/actions/" + ability.id + ".webp"}
                         alt="ability icon"
-                        className="w-[7rem] h-[7rem]"
+                        className="w-[7rem] h-[7rem] rounded-2xl "
                       />
                       <div>
                         <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">

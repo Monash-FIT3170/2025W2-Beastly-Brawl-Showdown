@@ -19,7 +19,7 @@ import {
 import { BlackText } from "../texts/BlackText";
 import { StatInfoIcon } from "../cards/StatInfoIcon";
 import { AdventureStatBar } from "../bars/AdventureStatBar";
-import { StatusButton} from "../buttons/StatusButton"
+import { StatusButton } from "../buttons/StatusButton";
 
 export interface AdventureInfoPopupProp {
   playerState: PlayerState | null | undefined;
@@ -129,7 +129,7 @@ export const AdventureInfoPopup = ({
                     className="flex flex-row items-center gap-[2%] lg:w-[45%]"
                   >
                     <img
-                      src={"/assets/actions/" + ability.id + ".png"}
+                      src={"/assets/actions/" + ability.id + ".webp"}
                       alt="ability icon"
                       className="w-[5rem] h-[5rem]"
                     />
@@ -145,30 +145,23 @@ export const AdventureInfoPopup = ({
               </div>
             </>
           )}
-          {viewingTab ===1 &&(
+          {viewingTab === 1 && (
             <>
               {/* <div className="min-h-0 flex flex-row justify-center w-full items-center px-3 " style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}> */}
-              <div className=" flex flex-row justify-center w-full items-center px-3 " >
+              <div className=" flex flex-row justify-center w-full items-center px-3 ">
                 {playerState?.statuses[0] ? (
                   <></>
                 ) : (
-                  <BlackText size="medium">
-                    You are normal...
-                  </BlackText>
+                  <BlackText size="medium">You are normal...</BlackText>
                 )}
-                <div className = "xl:mt-[1rem] mt-[2rem] columns-3 gap-[2rem] xl:gap-[3rem] space-y-[2rem] items-center justify-center">
-                  {playerState?.statuses.map((c) =>(
+                <div className="xl:mt-[1rem] mt-[2rem] columns-3 gap-[2rem] xl:gap-[3rem] space-y-[2rem] items-center justify-center">
+                  {playerState?.statuses.map((c) => (
                     <>
                       <StatusButton status={c}></StatusButton>
                     </>
                   ))}
-
                 </div>
-              
-              
               </div>
-            
-            
             </>
           )}
         </div>

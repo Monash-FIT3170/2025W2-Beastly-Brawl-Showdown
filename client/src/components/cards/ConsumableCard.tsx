@@ -9,7 +9,6 @@ interface ConsumableProps {
 }
 
 export const ConsumableCard = ({ consumable, onClick }: ConsumableProps) => {
-  const imageName = "item"; //TO-DO: set up
   return (
     <button
       onClick={onClick}
@@ -33,7 +32,7 @@ export const ConsumableCard = ({ consumable, onClick }: ConsumableProps) => {
         >
           <img
             className="w-full h-full object-contain"
-            src={`/assets/items/${imageName}.png`}
+            src={`/assets/items/${consumable.imageString}.png`}
           />
         </div>
 

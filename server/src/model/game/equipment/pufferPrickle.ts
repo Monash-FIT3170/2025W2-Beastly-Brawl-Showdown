@@ -24,4 +24,8 @@ export class PufferPrickle extends Equipment {
     //TODO: update formula - currently strength = stage
     this.strength = stage * 3;
   }
+
+  protected getImageString(): string {
+    return "item";
+  }
 }

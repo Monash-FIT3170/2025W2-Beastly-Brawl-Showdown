@@ -23,4 +23,8 @@ export class OozingBlade extends Equipment {
   public calculateStrength(stage: number): void {
     this.strength = stage;
   }
+
+  protected getImageString(): string {
+    return "oozingBlade";
+  }
 }
