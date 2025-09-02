@@ -8,8 +8,8 @@
         "id": "initial",
         "result": [
           "You come across a cute green cottage that smells of freshly baked cookies.",
-          "You knock on the door and large slime slowly oozes out to meet you",
-          "Within the slime you notice a rolling pin, an apron and glasses"
+          "You knock on the door and large slime slowly oozes out to meet you.",
+          "Within the slime you notice a rolling pin, an apron and glasses."
         ],
         "type": "DIALOGUE",
         "next": "check_saved_child"
@@ -71,9 +71,9 @@
         "id": "fight_win",
         "result": [
           "You defeated the slime!",
-          "Your slime friend works its way out of the backpack",
+          "Your slime friend works its way out of the backpack.",
           "It looks around seems excited, almost as though it recognises the place.",
-          "It looks around but it seems dissapointed",
+          "It looks around but it seems dissapointed.",
           "Was it expecting someone?"
         ],
         "type": "DIALOGUE"

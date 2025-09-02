@@ -80,8 +80,9 @@
       },
       {
         "id": "eel_attack",
-        "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": ["The eel shocks you!!"]
       },
       {
         "id": "caught_strength",
@@ -115,7 +116,7 @@
         "id": "pirahna_swarm",
         "type": "DIALOGUE",
         "result": [
-          "As you start to swim across you realise you aren't the only thing in the water",
+          "As you start to swim across you realise you aren't the only thing in the water.",
           "You hear what sounds like rushing water, and you notice a swarm of pirahnas rapidly approaching.",
           "You speed up and successfuly manage to outswim most of the pirahnas",
           "The faster ones managed to leave you with a parting gift"
@@ -212,7 +213,7 @@
         "id": "drink_power",
         "type": "DIALOGUE",
         "result": [
-          "Your head a voice in the back of your head",
+          "Your hear a voice in the back of your head.",
           "I will bestow you with power so you may vanquish your enemies as you see fit."
         ],
         "next": "drink_reward"
@@ -233,30 +234,31 @@
       },
       {
         "id": "drink_punishment",
-        "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "type": "STATUS",
+        "statusId": "lake_curse_mini"
       },
       {
         "id": "swim_power",
         "type": "DIALOGUE",
         "result": [
-          "As you paddle around you feel stronger",
+          "As you paddle around you feel stronger.",
           "By the time you come back to shore you feel better than before you even found the lake.",
-          "You feel changed"
+          "You feel changed.."
         ],
         "next": "swim_reward"
       },
       {
         "id": "swim_reward",
-        "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "result": ["The lake has imbued you with power!"],
+        "type": "STATUS",
+        "statusId": "lake_blessing"
       },
       {
         "id": "swim_curse",
         "type": "DIALOGUE",
         "result": [
           "As you paddle around, you feel yourself get caught in weeds.",
-          "You panic and swim to shore",
+          "You panic and swim to shore.",
           "While you're physically unchanged you can feel the presence of evil."
         ],
         "next": "swim_punishment"
@@ -265,7 +267,6 @@
         "id": "swim_punishment",
         "type": "STATUS",
         "result": ["The lake has left its mark on you."],
-        "next": "slime_dialogue_1",
         "statusId": "lake_curse"
       },
       {

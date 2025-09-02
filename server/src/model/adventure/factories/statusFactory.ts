@@ -2,10 +2,13 @@ import { Status } from "../../game/status/status";
 import { Poison } from "../../game/status/poison";
 import { Stun } from "../../game/status/stun";
 import { LakeCurse } from "../../game/status/lakeCurse";
+import { LakeBlessing } from "../../game/status/lakeBlessing";
 
 const statusFactory: Record<string, () => Status> = {
   stunned: () => new Stun(2),
+  lake_curse_mini: () => new LakeCurse(3),
   lake_curse: () => new LakeCurse(10),
+  lake_blessing: () => new LakeBlessing(30),
 };
 
 export function createStatus(id: string): Status {
