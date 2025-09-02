@@ -35,7 +35,7 @@ const AdventureDefeated: React.FC = () => {
             <OutlineText size="large">BETTER LUCK NEXT TIME!</OutlineText>
             
             {/* <img style={{ width: `${40}rem xl:${30}rem`, height: `${40}rem xl:${30}rem` }} src={`/GRAVE.png`} alt={`GRAVE image`} /> */}
-            <img className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]" src={`/GRAVE.png`} alt={`GRAVE image`} />
+            <img className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]" src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`} alt={`GRAVE image`} />
   
             <ButtonGeneric
               color="blue"

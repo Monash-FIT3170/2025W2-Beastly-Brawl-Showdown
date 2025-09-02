@@ -13,12 +13,17 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   slimeString,
 }) => {
   const pathLeftMon =
-    "/assets/characters/" + battleState.yourPlayerMonster.id + ".png";
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+    battleState.yourPlayerMonster.id +
+    ".png";
   var pathRightMon =
-    "/assets/characters/" + battleState.opponentPlayerMonster.id + ".png";
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+    battleState.opponentPlayerMonster.id +
+    ".png";
 
   //checks if enemy is a slime - then uses biome specific variant
   //note: slimes can only be enemies
+  // TODO: UPDATE SLIMES TO BE IN DIGITAL OCEAN
   if (battleState.opponentPlayerMonster.id == MonsterIdentifier.SLIME) {
     pathRightMon = "/assets/characters/SLIME_" + slimeString + ".png";
   }
@@ -48,14 +53,20 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
         <div></div>
         <div className=" relative inline-block xl:w-[50%] ">
           <img className="relative z-10" src={pathRightMon} />
-          <img className={`${shadow}`} src="/shadow.png"></img>
+          <img
+            className={`${shadow}`}
+            src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/SHADOW.png"
+          ></img>
         </div>
         <div className="relative inline-block xl:w-[50%]">
           <img
             className=" relative transform -scale-x-100 z-10"
             src={pathLeftMon}
           />
-          <img className={`${shadow}`} src="/shadow.png"></img>
+          <img
+            className={`${shadow}`}
+            src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/SHADOW.png"
+          ></img>
         </div>
         <div></div>
       </div>

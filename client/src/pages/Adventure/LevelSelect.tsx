@@ -34,12 +34,17 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
 
   const monster = levelMap[observedLevel] ?? "None";
 
+  // TODO: PUT SILHOUETTES AND
   const monsterImage = UNLOCKED_LEVELS.includes(observedLevel)
-    ? "/assets/characters/" + monster + ".png"
+    ? "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+      monster +
+      ".png"
     : "/assets/characters/silhouettes/" + monster + "_SILHOUETTE.png";
 
   const backgroundString =
-    "url('/assets/backgrounds/" + getBiomeString(monster) + ".jpg')";
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
+    getBiomeString(monster) +
+    ".jpg')";
 
   return (
     <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">

@@ -362,7 +362,11 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
                       className="flex flex-row items-center grow-1 justify-left"
                     >
                       <img
-                        src={"/assets/actions/" + ability.id + ".webp"}
+                        src={
+                          "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/action/" +
+                          ability.id +
+                          ".png"
+                        }
                         alt="ability icon"
                         className="w-[7rem] h-[7rem] rounded-md"
                       />

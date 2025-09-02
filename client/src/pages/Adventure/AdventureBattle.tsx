@@ -251,7 +251,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   >
                     TAKE!
                   </ButtonGeneric>
-                  <ButtonGeneric size="battle" color = "red" onClick={() => {setReceivingConsumable(null); socket.emit("adventure_next", { stage });}}>DROP</ButtonGeneric>
+                  <ButtonGeneric
+                    size="battle"
+                    color="red"
+                    onClick={() => {
+                      setReceivingConsumable(null);
+                      socket.emit("adventure_next", { stage });
+                    }}
+                  >
+                    DROP
+                  </ButtonGeneric>
                 </div>
               </div>
             </PopupClean>

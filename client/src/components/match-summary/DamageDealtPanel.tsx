@@ -56,8 +56,7 @@ const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
                 fontSize: '1.5rem',
                 fontFamily: 'Jua, sans-serif',
                 fontWeight: '100',
-                color: '#FFFFFF', // White text
-                WebkitTextStroke: '1px black', // Black outline
+                color: '#000000', // Black text
                 textTransform: 'uppercase',
                 flex: '1',
                 textAlign: 'center', // Center the player name in its flex area
@@ -70,8 +69,7 @@ const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
                 fontSize: '1.5rem',
                 fontFamily: 'Jua, sans-serif',
                 fontWeight: '100',
-                color: '#FFFFFF', // White text
-                WebkitTextStroke: '1px black', // Black outline
+                color: '#000000', // Black text
                 textTransform: 'uppercase',
                 flex: '0 0 auto',
                 textAlign: 'center',
@@ -85,7 +83,7 @@ const DamageDealtPanel: React.FC<DamageDealtPanelProps> = ({ damageData }) => {
                 fontSize: '1.5rem',
                 fontFamily: 'Jua, sans-serif',
                 fontWeight: '100',
-                color: '#FFFFFF', // White text
+                color: '#000000', // Black text
                 WebkitTextStroke: '1px black', // Black outline
                 textTransform: 'uppercase',
                 flex: '1',
