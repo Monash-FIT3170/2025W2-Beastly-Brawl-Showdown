@@ -16,6 +16,7 @@ import { IGameMode } from "./gamemode/gameMode";
 import { Server, Socket } from "socket.io";
 import { ActionResult } from "/types/single/actionState";
 import { BotPlayer } from "../game/botPlayer";
+import { GameModeIdentifier } from "/types/single/gameMode";
 
 export default class GameSession {
   private hostUID: string;
@@ -35,6 +36,8 @@ export default class GameSession {
   private gameSessionData: GameSessionData = {
     mostChosenMonster: { monster: null, percentagePick: "0" },
   };
+
+  
 
   constructor(hostID: string, addition: {mode: IGameMode, presetGameCode?: number}) {
     this.hostUID = hostID;
@@ -359,6 +362,7 @@ export default class GameSession {
     return {
       id: this.gameCode.toString(),
       round: this.round,
+      mode: this.mode.name,
       battleStates: allBattles,
       gameSessionData: this.gameSessionData,
       currentPhase: this.currentPhase,
@@ -413,6 +417,10 @@ export default class GameSession {
     );
 
     return playersNotInBattle;
+  }
+
+  public getMode(): GameModeIdentifier {
+    return this.mode.name;
   }
 
   public getMetadata(): GameSessionStateMetaData{
