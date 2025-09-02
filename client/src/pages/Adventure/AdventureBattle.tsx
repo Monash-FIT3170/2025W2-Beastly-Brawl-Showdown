@@ -97,6 +97,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     FlowRouter.go("/adventure/win");
   });
 
+  socket.on("adventure_defeat", () => {
+    FlowRouter.go("/adventure/defeat");
+  });
+
   useEffect(() => {
     console.log("playerState updated:", playerState);
   }, [playerState]);

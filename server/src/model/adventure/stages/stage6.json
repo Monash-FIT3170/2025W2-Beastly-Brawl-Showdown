@@ -89,7 +89,7 @@
           "You take out your slime friend from early.",
           "Both slimes start squelching happily.",
           "It looks as though you've bought the slime to one of its relatives.",
-          "The larger slime gives you a slime cookie as thanks.",
+          "The larger slime gives you what appears to be slime.",
           "While you may have lost a friend, you gained an item and a sense of fulfilment"
         ],
         "type": "DIALOGUE",
@@ -98,7 +98,7 @@
       {
         "id": "slime_cookie",
         "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "consumableId": "slime_substance"
       }
     ]
   }

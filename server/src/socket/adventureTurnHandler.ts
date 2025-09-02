@@ -169,7 +169,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                 }
               } else {
                 console.log(`ADV: GAME OVER!`);
-                //TODO: implement
+                socket.emit("adventure_defeat");
               }
             } else {
               console.error(`ADV: Player does not have name... ${playerName}`);

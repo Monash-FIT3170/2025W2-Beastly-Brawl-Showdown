@@ -135,6 +135,13 @@ FlowRouter.route("/adventure/win", {
   },
 });
 
+FlowRouter.route("/adventure/defeat", {
+  name: "AdventureDefeat",
+  action() {
+    mount(AdventureDefeated);
+  },
+});
+
 FlowRouter.route("/rules", {
   name: "Rules",
   action() {

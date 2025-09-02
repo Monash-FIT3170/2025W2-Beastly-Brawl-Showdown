@@ -227,11 +227,6 @@ export async function progressAdventure(
         enemy: resolved.enemy,
         next: resolved.next,
         player: adventure.getPlayer().getPlayerState(),
-        attack: adventure
-          .getPlayer()
-          .getMonster()
-          ?.getAttackAction()
-          .getAttackState(),
         stage: adventure.getStage(),
       });
     } else if (resolved.type === "RANDOM") {

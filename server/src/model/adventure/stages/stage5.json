@@ -89,14 +89,14 @@
         "type": "DIALOGUE",
         "result": [
           "You feel something at the end of your fishing line and reel it up as quick as you can.",
-          "A strength potion flies up out of the water and into your hands."
+          "An enormous health potion flies up out of the water and into your hands."
         ],
         "next": "gain_strength"
       },
       {
         "id": "gain_strength",
         "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "consumableId": "super_health_potion"
       },
       {
         "id": "caught_healing",
@@ -125,8 +125,9 @@
       },
       {
         "id": "lose_health",
-        "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": ["The pirahna's attack you!!"]
       },
       {
         "id": "nothing_happens",
@@ -221,7 +222,8 @@
       {
         "id": "drink_reward",
         "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "result": ["You feel powerful"],
+        "statusId": "lake_blessing_mini"
       },
       {
         "id": "drink_curse",
@@ -235,6 +237,7 @@
       {
         "id": "drink_punishment",
         "type": "STATUS",
+        "result": ["You feel changed.."],
         "statusId": "lake_curse_mini"
       },
       {
