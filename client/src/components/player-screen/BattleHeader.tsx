@@ -2,13 +2,29 @@ import React from "react";
 import { BattleHealthBar } from "../bars/BattleHealthBar";
 import { BattleState } from "/types/composite/battleState";
 import { OutlineTextBP } from "../texts/OutlineTextBP";
+import {GameSessionStateMetaData} from "/types/composite/gameSessionState"
 
 interface BattleHeaderProps {
   battleState: BattleState;
   timer: number;
+  metadata: GameSessionStateMetaData
 }
 
-export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer }) => {
+export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer, metadata }) => {
+
+  const player1State = battleState.yourPlayer;
+  const player1Id = player1State.id
+
+  const player2State = battleState.opponentPlayer;
+  const player2Id = player2State.id
+
+  let p1Score;
+  let p2Score;
+  console.log("[METADATA]:", metadata.playerScore)
+  if (metadata.playerScore){
+    p1Score = metadata.playerScore[player1Id].points
+    p2Score = metadata.playerScore[player2Id].points
+  }
 
   const playerScore = 10;
   const player2Score = 2;
@@ -49,7 +65,7 @@ export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer }
             </div>
             
           </div>
-          {playerScore == null ? <div/> :
+          {p1Score == null ? <div/> :
             
             <div className={`
               sm:w-[1rem] md:w-[1.5rem] lg:w-[2rem] xl:w-[2.5rem] 2xl:w-[3rem]
@@ -65,7 +81,7 @@ export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer }
               overflow-hidden
             `}>
               <OutlineTextBP size='small'>
-                {playerScore}
+                {p1Score}
               </OutlineTextBP>
             </div>  
           }
@@ -94,7 +110,7 @@ export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer }
         </div>
         <div className="flex flex-row w-full justify-between">
 
-          {player2Score == null ? <div/> : 
+          {p2Score == null ? <div/> : 
     
             <div className={`
               sm:w-[1rem] md:w-[1.5rem] lg:w-[2rem] xl:w-[2.5rem] 2xl:w-[3rem]
@@ -110,7 +126,7 @@ export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer }
               overflow-hidden
                 `}>
               <OutlineTextBP size='small'>
-                {player2Score}
+                {p2Score}
               </OutlineTextBP> 
             </div>
           }

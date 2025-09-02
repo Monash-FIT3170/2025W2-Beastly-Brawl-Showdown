@@ -28,7 +28,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
   // console.log("[METADATA]:", metadata)
   let p1Score;
   let p2Score;
-  if (metadata){
+  if (metadata.playerScore){
     p1Score = metadata.playerScore[player1Id].points
     p2Score = metadata.playerScore[player2Id].points
   }

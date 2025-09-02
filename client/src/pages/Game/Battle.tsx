@@ -14,6 +14,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { BlackText } from "../../components/texts/BlackText";
+import {GameSessionStateMetaData} from "/types/composite/gameSessionState"
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -30,14 +31,18 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [isBattleClosed, setIsBattleClosed] = useState<Boolean>(false); //indiate whether the battle is still live
   const [gameCode, setGameCode] = useState<string>(); // game code for directing player back to game session
   const [time, setTime] = useState<number>(5);
+  const [metadata, setMetadata] = useState<GameSessionStateMetaData |null>();
 
   var backgroundLocation = "ARCTIC"; //TODO: change this to be based off level/monster?
   var backgroundString =
     "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
 
   useEffect(() => {
-    socket.on("battle_state", (battle: BattleState) => {
-      setBattleState(battle);
+    socket.on("battle_state", (data) => {
+      console.log("[BATTLESTATE]: ", data.battle)
+      console.log("[METADATA]: ", data.metadata)
+      setBattleState(data.battle);
+      setMetadata(data.metadata)
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -183,7 +188,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             {battleState && (
               <div className="flex flex-col h-full w-full items-start space-y-10 ">
                 <div className="flex flex-row h-1/2 w-full items-start justify-center">
-                  <BattleHeader battleState={battleState} timer={timer} />
+                  <BattleHeader battleState={battleState} timer={timer} metadata = {metadata}/>
                 </div>
                 <div className="flex flex-row h-1/4 w-full items-center justify-around">
                   

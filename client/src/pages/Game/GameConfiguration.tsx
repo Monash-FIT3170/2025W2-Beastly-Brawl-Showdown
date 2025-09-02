@@ -20,7 +20,7 @@ export const GameConfiguration = () => {
 
   // Called on 'Host Lobby' button press
   const createGame = (mode: GameModeIdentifier) => {
-    socket.emit("create-game", { mode });
+    socket.emit("create-game", { mode, selectedValue });
     console.log("Game session created");
   };
 

@@ -2,7 +2,7 @@ import { Player } from "../game/player";
 import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
-import { GameSessionState } from "/types/composite/gameSessionState";
+import { GameSessionState,GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
@@ -365,7 +365,7 @@ export default class GameSession {
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
       waitingPlayers: this.getPlayersNotInBattle(),
-      metadata: metadata
+      metadata: this.getMetadata()
     };
   }
 
@@ -413,6 +413,10 @@ export default class GameSession {
     );
 
     return playersNotInBattle;
+  }
+
+  public getMetadata(): GameSessionStateMetaData{
+    return this.mode.getMetadata()
   }
 
 }
