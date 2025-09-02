@@ -255,7 +255,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
 
     //Initialise game (based on game mode)
-    session.initGame(io, socket)
+    // session.initGame(io, socket)
 
     if (!session.canStartGame()) {
       var errors = session.calculateErrors();
@@ -270,6 +270,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     session.calculateMostChosenMonster();
 
     session.createMatches();
+    session.initGame(io, socket)
 
     for (const battle of session.getBattles().getItems()) {
       for (const player of battle.getPlayers()) {

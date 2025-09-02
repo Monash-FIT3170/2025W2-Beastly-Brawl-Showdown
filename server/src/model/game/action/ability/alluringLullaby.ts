@@ -2,6 +2,7 @@ import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { AttackAction } from "../attack";
+import { NullAction } from "../null";
 
 export class AlluringLullaby extends Action {
   private affectedPlayerActions: Action[] = [];
@@ -20,6 +21,7 @@ export class AlluringLullaby extends Action {
     this.affectedPlayerActions = affectedPlayer.getActions();
     const action = new AttackAction(1, 1, 1, 1);
     affectedPlayer.removeAction(action); //remove attack action - any other action can continue
+    affectedPlayer.addAction(new NullAction("Null", ActionIdentifier.NULL, "Your attacked yourself", `${affectedPlayer.getName()} attacked themself`, `${affectedPlayer.getName()} attacked themself`))
   }
 
   public prepareAnimation(): string | [string, number] {

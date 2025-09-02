@@ -30,7 +30,7 @@ export class Player {
 
   private inventory: Item[] = [];
 
-  private playerAccount: PlayerAccountSchema;
+  private playerAccount: PlayerAccountSchema|null;
   private noNullAction: number = 0;
   static roundToCheck: number = 5; //change the value here 
 
@@ -146,6 +146,7 @@ export class Player {
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
       this.statuses = [];
+      this.noNullAction = 0;
     }
   }
 
