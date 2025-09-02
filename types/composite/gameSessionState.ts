@@ -20,4 +20,5 @@ export interface GameSessionState {
 export interface GameSessionStateMetaData{
   round?: number,
   playerScore?: Record<string,PlayerScore>
+  top3Score?: PlayerScore[]
 }

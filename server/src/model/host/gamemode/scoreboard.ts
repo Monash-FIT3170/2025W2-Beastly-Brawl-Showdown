@@ -1,3 +1,4 @@
+import { MonsterIdentifier } from "../../../../../types/single/monsterState";
 import { PlayerScore } from "/types/single/playerScore";
 
 //Scoreboard for storing Player's point in Scoring Tournament mode
@@ -5,11 +6,12 @@ import { PlayerScore } from "/types/single/playerScore";
 export class ScoreBoard {
     public playerScores = new Map<string, PlayerScore>();
 
-    register(playerId: string, name: string): void {
+    register(playerId: string, name: string, playerMonster: MonsterIdentifier): void {
         if (this.playerScores.has(playerId)) return; // Avoid duplicate registration
         this.playerScores.set(playerId, {
             playerId,
             name,
+            playerMonster,
             points: 0,
             bonuses: 0,
             currentStreak: null
@@ -34,7 +36,7 @@ export class ScoreBoard {
             }
             return
         }
-        
+
 		if (value.bonuses) {
 			playerScore.points += value.bonuses // Update player's point
 			playerScore.bonuses = value.bonuses // Record bonus point value for the last round
@@ -50,12 +52,20 @@ export class ScoreBoard {
 		}
         playerScore.currentStreak = value
     }
-	
-    showBoard(): PlayerScore[] {
-        return [...this.playerScores.values()]
-            .map(score => ({ ...score }))
-            .sort((a, b) => b.points - a.points);
+
+    setPlayerMonster(playerId: string, monster: MonsterIdentifier): void{
+        const playerScore = this.playerScores.get(playerId)
+        playerScore.playerMonster = monster
     }
+	
+    //Get top 3 score from the scoreboard
+    showBoard(): PlayerScore[] {
+        const top3Score = [...this.playerScores.values()]
+        .sort((a, b) => b.points - a.points)
+        .slice(0, 3);
+    return top3Score;
+    }
+
 
     showBoard2(): Record<string, PlayerScore>{
         const out: Record<string, PlayerScore> = {};

@@ -27,7 +27,7 @@ export class ScoringTournament implements IGameMode{
 	//Register each existing player into the ScoreBoard instance
 	init(session: GameSession, io: Server, socket: Socket){
 		for (const p of session.getPlayers().getItems()){
-			this.board.register(p.getId(), p.getName())
+			this.board.register(p.getId(), p.getName(), p.getMonster()?.getId())
 		}
 
 	}
@@ -104,7 +104,8 @@ export class ScoringTournament implements IGameMode{
 		}
 		
 
-		io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
+		io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", (data) => {
+			this.board.setPlayerMonster(battle.getPlayers()[0].getId(), data)
 			console.log("Server test 1 (Scoring)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
 			this.playerFinished += 1
 			console.log(this.playerFinished,session.getPlayers().getItems().length)
@@ -114,7 +115,8 @@ export class ScoringTournament implements IGameMode{
 		}
 		})
 
-		io.sockets.sockets.get(battle.getPlayers()[1].getId())?.once("ready_next_battle", () => {
+		io.sockets.sockets.get(battle.getPlayers()[1].getId())?.once("ready_next_battle", (data) => {
+			this.board.setPlayerMonster(battle.getPlayers()[1].getId(), data)
 			console.log("Server test 2 (Scoring)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
 			this.playerFinished += 1
 			console.log(this.playerFinished,session.getPlayers().getItems().length)
@@ -173,7 +175,8 @@ export class ScoringTournament implements IGameMode{
 	getMetadata(): GameSessionStateMetaData {
 		return {
 			round: this.round,
-			playerScore: this.board.showBoard2()
+			playerScore: this.board.showBoard2(),
+			top3Score: this.board.showBoard()
 		}
 	}
 	

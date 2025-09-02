@@ -252,7 +252,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
               style={{ minWidth: "260px", height: "100%", overflow: "auto" }}
             >
               {gameSession.mode == GameModeIdentifier.SCORING ? 
-                <ScoringLeaderboard battleStates={gameSession.battleStates}/> :
+                <ScoringLeaderboard metadata={gameSession.metadata}/> :
                 <RightPanel battleStates={gameSession.battleStates} /> 
               }
             </div>

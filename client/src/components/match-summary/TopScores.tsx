@@ -1,13 +1,14 @@
 import React from 'react';
 import './styles.css';
-import { BattleState } from '/types/composite/battleState';
+import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import ScoreCard from '../cards/ScoreCard';
 
 interface TopScoresProps {
-  battleStates?: BattleState[]|null;
+  metadata?: GameSessionStateMetaData|null;
 }
 
-const TopScores: React.FC<TopScoresProps> = ({ battleStates }) => {
+const TopScores: React.FC<TopScoresProps> = ({ metadata }) => {
+  const top3 = metadata.top3Score
     
     return (
     <div 
@@ -41,22 +42,31 @@ const TopScores: React.FC<TopScoresProps> = ({ battleStates }) => {
       </h3>
       
       {/* Scrollable log content */}
-      <div 
-        style={{
-          height: 'calc(100% - 3rem)', // Account for header height
-          paddingRight: '0.5rem',
-        }}
-      >
-        {/* Top 3 Highest Scores */}
-        {/* Prolly map name score and monster to this */}
-        
-        <ScoreCard playerName="Player 1" monster="CINDER_TAIL" score={10} />
-        
-        <ScoreCard playerName="Player 2" monster="ROCKY_RHINO" score={5} />
-        
-        <ScoreCard playerName="Player 3" monster="POISON_POGO" score={0} />
-
+      <div style={{ height: 'calc(100% - 3rem)', paddingRight: '0.5rem' }}>
+        {/* render only if present */}
+        {top3[0] && (
+          <ScoreCard
+            playerName={top3[0].name}
+            monster={top3[0].playerMonster}
+            score={top3[0].points}
+          />
+        )}
+        {top3[1] && (
+          <ScoreCard
+            playerName={top3[1].name}
+            monster={top3[1].playerMonster}
+            score={top3[1].points}
+          />
+        )}
+        {top3[2] && (
+          <ScoreCard
+            playerName={top3[2].name}
+            monster={top3[2].playerMonster}
+            score={top3[2].points}
+          />
+        )}
       </div>
+
     </div>
   );
 };

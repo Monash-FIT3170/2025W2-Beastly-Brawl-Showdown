@@ -1,12 +1,13 @@
 import React from 'react';
 import TopScores from './TopScores';
-import { BattleState } from '/types/composite/battleState';
+import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 
 interface ScoringLeaderboardProps {
-  battleStates?: BattleState[]|null;
+  metadata?: GameSessionStateMetaData[]|null;
 }
 
-const ScoringLeaderboard: React.FC<ScoringLeaderboardProps> = ({ battleStates }) => {
+const ScoringLeaderboard: React.FC<ScoringLeaderboardProps> = ({ metadata }) => {
+  console.log("[TOP3SCORES]:", metadata)
   
   return (
     <div 
@@ -42,7 +43,7 @@ const ScoringLeaderboard: React.FC<ScoringLeaderboardProps> = ({ battleStates })
       </div>
     
           {/* Log Panel */}
-          <TopScores battleStates={battleStates} />
+          <TopScores metadata={metadata} />
  
     </div>
   );

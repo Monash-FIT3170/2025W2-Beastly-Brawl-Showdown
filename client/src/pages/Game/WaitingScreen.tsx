@@ -118,7 +118,7 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
       console.log(`Received waiting screen data: ${monsterName}`);
       setPlayerMonster(monsterName);
 
-      socket.emit("ready_next_battle")
+      socket.emit("ready_next_battle", monsterName)
     }
 
     console.log("[SOCKET] Before .on(): ", socket.listeners("waiting_screen_data").length)
