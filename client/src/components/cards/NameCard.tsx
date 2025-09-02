@@ -2,7 +2,7 @@ import React from "react";
 import { IconButton } from "../buttons/IconButton";
 import { BaseCard } from "./BaseCard";
 import { MonsterImageResizable } from "../player-screen/monsters/MonsterImageResizable";
-import { OutlineText } from "../texts/OutlineText";
+import { BlackText } from "../texts/BlackText";
 import { PlayerState } from "/types/single/playerState";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
@@ -34,7 +34,7 @@ export const NameCard = ({ player, onClick }: NameCardProps) => {
         width={8}
       >
         <div className="flex flex-row items-center justify-apart space-x-4 m-2">
-          <OutlineText size="tiny">{player.name}</OutlineText>
+          <BlackText size="tiny">{player.name}</BlackText>
           <IconButton
             style="x"
             iconColour="black"

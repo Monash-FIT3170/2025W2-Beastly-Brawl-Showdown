@@ -369,7 +369,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </div>
 
         <div className="mb-20">
-          <BaseCard color="peach" width={12} height={4}>
+          <BaseCard color="peach" width={16} height={4}>
             <OutlineText size="medium">PLAYERS: {playerCount}/64</OutlineText>
           </BaseCard>
         </div>

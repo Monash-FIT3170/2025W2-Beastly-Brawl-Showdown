@@ -56,8 +56,7 @@ const AttacksBlockedPanel: React.FC<AttacksBlockedPanelProps> = ({ blockData }) 
                 fontSize: '1.5rem',
                 fontFamily: 'Jua, sans-serif',
                 fontWeight: '100',
-                color: '#FFFFFF', // White text
-                WebkitTextStroke: '1px black', // Black outline
+                color: '#000000', // White text
                 textTransform: 'uppercase',
                 flex: '1',
                 textAlign: 'center', // Center the player name in its flex area
@@ -70,8 +69,7 @@ const AttacksBlockedPanel: React.FC<AttacksBlockedPanelProps> = ({ blockData }) 
                 fontSize: '1.5rem',
                 fontFamily: 'Jua, sans-serif',
                 fontWeight: '100',
-                color: '#FFFFFF', // White text
-                WebkitTextStroke: '1px black', // Black outline
+                color: '#000000', // White text
                 textTransform: 'uppercase',
                 flex: '0 0 auto',
                 textAlign: 'center',
@@ -85,8 +83,7 @@ const AttacksBlockedPanel: React.FC<AttacksBlockedPanelProps> = ({ blockData }) 
                 fontSize: '1.5rem',
                 fontFamily: 'Jua, sans-serif',
                 fontWeight: '100',
-                color: '#FFFFFF', // White text
-                WebkitTextStroke: '1px black', // Black outline
+                color: '#000000', // White text
                 textTransform: 'uppercase',
                 flex: '1',
                 textAlign: 'center', // Center the blocks amount in its flex area

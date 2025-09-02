@@ -78,8 +78,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ popularMonster }) =
               fontSize: '1.4rem',
               fontFamily: 'Jua, sans-serif',
               fontWeight: '100',
-              color: '#FFFFFF',
-              WebkitTextStroke: '1px black',
+              color: '#000000',
               marginBottom: '0.25rem',
               textTransform: 'uppercase',
               lineHeight: '1.2',
@@ -94,8 +93,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ popularMonster }) =
               fontSize: '1.2rem',
               fontFamily: 'Jua, sans-serif',
               fontWeight: '100',
-              color: '#FFFFFF',
-              WebkitTextStroke: '1px black',
+              color: '#000000',
               textTransform: 'uppercase',
             }}
           >

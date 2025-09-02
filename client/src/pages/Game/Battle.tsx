@@ -30,7 +30,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live
   const [time, setTime] = useState<number>(5);
 
-  var backgroundLocation = "ARCTIC"; //TODO: change this to be based off level/monster?
+  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   var backgroundString =
     "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" + backgroundLocation + ".jpg')";
 
