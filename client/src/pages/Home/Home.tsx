@@ -14,7 +14,7 @@ export const Home = () => {
   useEffect(() => {
     socket.emit("check-login");
 
-    const handleLoginStatus = ({ loggedIn }) => {
+    const handleLoginStatus = ({ loggedIn }: { loggedIn: boolean }) => {
       setLoggedInUser(loggedIn);
     };
 
@@ -46,12 +46,13 @@ export const Home = () => {
 
   return (
     <BlankPage>
-      {/* Top-right login/account button with mobile spacing */}
-      <div className="absolute top-4 sm:top-10 right-4 sm:right-10 z-50">
+      {/* Top-right login/account button */}
+      <div className="absolute top-6 sm:top-10 right-6 sm:right-10 z-50">
         {!loggedInUser ? (
           <ButtonGeneric
             color="ronchi"
             size="large"
+            className="w-32 h-12 sm:w-40 sm:h-14"
             onClick={() => setShowLogin(true)}
           >
             <OutlineText size="large">LOGIN</OutlineText>
@@ -60,6 +61,7 @@ export const Home = () => {
           <ButtonGeneric
             color="ronchi"
             size="large"
+            className="w-32 h-12 sm:w-40 sm:h-14"
             onClick={() => FlowRouter.go("/account")}
           >
             <OutlineText size="large">ACCOUNT</OutlineText>
@@ -68,8 +70,8 @@ export const Home = () => {
       </div>
 
       {/* Logo section */}
-      <div className="flex flex-row h-[40vh] w-full sm:h-[50vh] lg:h-[60vh] items-center justify-center sm:justify-around px-4 sm:px-0">
-        <LogoResizable className="w-[60%] sm:w-1/4 max-w-[300px] sm:max-w-[400px]" />
+      <div className="flex flex-row h-[40vh] sm:h-[50vh] lg:h-[60vh] w-full items-center justify-center sm:justify-around px-4 sm:px-0">
+        <LogoResizable className="w-[80%] sm:w-1/4 max-w-[350px] sm:max-w-[400px]" />
       </div>
 
       {/* Main buttons */}
@@ -77,17 +79,27 @@ export const Home = () => {
         <ButtonGeneric
           color="ronchi"
           size="large"
+          className="w-56 h-14 sm:w-40 sm:h-14"
           onClick={createGame}
-          mobileHidden="true"
         >
           <OutlineText size="large">HOST</OutlineText>
         </ButtonGeneric>
 
-        <ButtonGeneric color="ronchi" size="large" onClick={renderJoinLobby}>
+        <ButtonGeneric
+          color="ronchi"
+          size="large"
+          className="w-56 h-14 sm:w-40 sm:h-14"
+          onClick={renderJoinLobby}
+        >
           <OutlineText size="large">JOIN</OutlineText>
         </ButtonGeneric>
 
-        <ButtonGeneric color="ronchi" size="large" onClick={renderAdventure}>
+        <ButtonGeneric
+          color="ronchi"
+          size="large"
+          className="w-56 h-14 sm:w-40 sm:h-14"
+          onClick={renderAdventure}
+        >
           <OutlineText size="large">ADVENTURE</OutlineText>
         </ButtonGeneric>
       </div>
