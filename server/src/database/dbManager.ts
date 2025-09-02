@@ -37,12 +37,11 @@ export interface PlayerMonsterStatSchema {
 
 // Schema for Adventure mode progression. 
 export interface AdventureProgressionSchema {
-  // {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
-  unlockedMonsters: Record<string, boolean>, 
+  unlockedMonsters: Record<string, boolean>, // e.g  {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
   unlockedLevels: number[], 
   stage: number,
   achievments: string[],
-  savedGameState: {} // This will store the state of the game as players can pause single player mode and resume later. 
+  savedGameState: {} 
 
 }
 
@@ -136,11 +135,22 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       createPlayerMonsterStatSchema('CHARMER_COBRA'),
       createPlayerMonsterStatSchema('FURIOUS_FLIPPER'),
     ],
+    adventureProgression: {
+      unlockedMonsters: {
+        'ROCKY_RHINO': true,
+        'CINDER_TAIL': false,
+        'POUNCING_BANDIT': false,
+        'POISON_POGO': false,
+        'CHARMER_COBRA': false,
+        'FURIOUS_FLIPPER': false,
+      },
+      unlockedLevels: [1],
+      stage: 1,
+      achievments: [],
+      savedGameState: {},
+    }
   };
 }
-
-
-
 
 
 
@@ -227,7 +237,8 @@ export async function getPlayerData(email: string): Promise<PlayerAccountSchema 
         numGamesWon: player.stats.numGamesWon,
       },
       achievments: player.achievments,
-      monstersStat: player.monstersStat
+      monstersStat: player.monstersStat,
+      adventureProgression: player.adventureProgression
     };
   } catch (error) {
     console.error(`Error fetching player data for email ${email}: ${error.message}`);
@@ -276,7 +287,11 @@ export async function updatePlayerAccount(
         ...(updates.stats || {})
       },
       monstersStat: updates.monstersStat || existingPlayer.monstersStat,
-      achievments: updates.achievments || existingPlayer.achievments
+      achievments: updates.achievments || existingPlayer.achievments, 
+      adventureProgression: {
+        ...existingPlayer.adventureProgression,
+        ...(updates.adventureProgression || {})
+      }
     };
 
     // Perform the update
