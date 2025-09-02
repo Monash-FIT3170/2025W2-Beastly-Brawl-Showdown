@@ -40,14 +40,15 @@ export const AdventureInfoPanel: React.FC<AdventureInfoPanelProps> = ({
       mx-[8px]
       lg:mt-[-8px]
       sm:mt-[-2rem]
-      px-[20px]
-      py-[1rem]
+      xl:px-[1rem]
+      px-[2rem]
+      py-[0.5rem]
       lg:pt-[1rem]  
       sm:pt-[3rem]
     "
       >
         {/* Player Name */}
-        <div className="flex leading-none pt-[2%]">
+        <div className="flex leading-none pt-[0] gap-y-[0]">
           <BlackText size="medium">
             {`${playerState.name.toUpperCase()}'S ${playerState.monster?.name.toUpperCase()}`}
           </BlackText>
@@ -60,13 +61,13 @@ export const AdventureInfoPanel: React.FC<AdventureInfoPanelProps> = ({
             maxHealth={playerState.monster?.maxHealth ?? 10000}
           />
           {/* Status Map */}
-          <div className="flex flex-row pt-[10px]">
+          <div className="flex flex-row xl:pt-[0.5rem] pt-[1.5rem] gap-x-[0.5rem] xl:gap-x-[0.5rem]">
             {playerState.statuses.length === 0 && (
               <div className="lg:size-[1rem] sm:size-[3rem]" />
             )}{" "}
             {playerState.statuses.map((status) => (
               <img
-                className=" size-[30px] object-contain rounded-md inline-block"
+                className=" size-[4.5rem] xl:size-[2.5rem] object-contain rounded-md inline-block"
                 src={`/assets/statuses/${status.name.toUpperCase()}.png`}
                 alt={`${status.name.toUpperCase()} image`}
               />
@@ -81,7 +82,7 @@ export const AdventureInfoPanel: React.FC<AdventureInfoPanelProps> = ({
           </div>
         </div>
         {/* Adventure Level/Stage */}
-        <div className="flex justify-between">
+        <div className="flex justify-between pt-0 xl:mt-[-0.5rem]">
           <BlackText size="medium">LEVEL: {level.replace(/_/g, " ")}</BlackText>
           <BlackText size="medium">STAGE: {stage}</BlackText>
         </div>

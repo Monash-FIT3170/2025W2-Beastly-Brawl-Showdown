@@ -3,6 +3,7 @@ import { Status } from "/server/src/model/game/status/status";
 import { useState } from "react";
 import { StatusPopup } from "../popups/StatusPopup";
 import { OutlineText } from "../texts/OutlineText";
+import { BlackText } from "../texts/BlackText";
 
 export interface StatusButtonProp{
     status: Status;
@@ -68,7 +69,8 @@ export const StatusButton = ({status}: StatusButtonProp) => {
             </div> */}
             <button className={`${Button}`} onClick={() => setShowStatus(true)} >
                 <div className = "absolute overflow-visible z-30 top-[1rem] ">
-                    <OutlineText size = "midsmall">{status.name}</OutlineText>
+                    {/* <OutlineText size = "midsmall">{status.name}</OutlineText> */}
+                    <BlackText size="tiny">{status.name}</BlackText>
                 </div>
                 <div className="py-[2rem] xl:py-[0.1rem] px-[3rem] xl:px-[1.3rem]">
                 <img src={path} ></img>
