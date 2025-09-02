@@ -8,7 +8,7 @@
         "id": "initial",
         "result": [
           "A stranger approaches you and challenges you to a fight.",
-          "You do not feel as though it is within your power to deny your opponent this challenge"
+          "You do not feel as though it is within your power to deny your opponent this challenge."
         ],
         "type": "DIALOGUE",
         "next": "pre_fight_dialogue"
@@ -36,8 +36,8 @@
         "result": [
           "Your opponent drops to the ground exhaused.",
           "After catching its breath it laughs.",
-          "'I haven't had a fight like that in a long time.'",
-          "'I'll be seeing you soon'",
+          "I haven't had a fight like that in a long time.",
+          "I'll be seeing you soon.",
           "Before you realise what's happening they have already disappeared."
         ]
       }

@@ -9,8 +9,8 @@
         "result": [
           "You feel a familiar presence.",
           "In the distance you see a familiar face.",
-          "He looks a lot stronger than before",
-          "You prepare for battle"
+          "He looks a lot stronger than before.",
+          "You prepare for battle."
         ],
         "type": "DIALOGUE",
         "next": "stranger_fight"
@@ -27,7 +27,7 @@
         "result": [
           "I concede defeat. You have well and truly bested me.",
           "If you'd allow, I would like to join you.",
-          "Maybe I could learn a thing or two"
+          "Maybe I could learn a thing or two."
         ]
       }
     ]
