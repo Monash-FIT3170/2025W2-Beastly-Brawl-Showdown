@@ -1,26 +1,37 @@
 import React, { ReactNode } from "react";
 
-interface OutlineTextProps{
-    size: 'tiny'|'small'|'medium'|'medium-battle-text'|'choice-text'|'large'|'extraLarge'|'monsterSelect';
-    children?: ReactNode;
+interface OutlineTextProps {
+  size:
+    | "tiny"
+    | "small"
+    | "medium"
+    | "medium-battle-text"
+    | "choice-text"
+    | "large"
+    | "extraLarge"
+    | "monsterSelect";
+  children?: ReactNode;
 }
 
-export const OutlineText = ({children, size}: OutlineTextProps) => {
-    
-    const sizeLoader: Record<string, string> = {
-        'tiny':'text-[2rem] lg:text-tiny',
-        'small': 'text-[1.5rem] lg:text-small',
-        'medium':'text-[3rem] lg:text-medium',
-        'medium-battle-text': 'text-[2rem] lg:text-medium-battle-text',
-        'choice-text': 'text-[4rem] lg:text-large',
-        'large':'text-[4rem] lg:text-large sm:text-largemobile',
-        'extraLarge': 'text-[5rem]',
-        'monsterSelect':'lg:text-[5rem] sm:text-[4.2rem]'
-    }
+const BASE_SCREEN_WIDTH = 1920;
 
-    return(
-    <p className={`${sizeLoader[size]} font-[Jua] text-outline`}>
-        {children}
+export const OutlineText = ({ children, size }: OutlineTextProps) => {
+  const sizeLoader: Record<string, number> = {
+    tiny: 12,
+    small: 16,
+    medium: 24,
+    "medium-battle-text": 20,
+    "choice-text": 32,
+    large: 40,
+    extraLarge: 48,
+    monsterSelect: 36,
+  };
+
+  const fontSize = `${(sizeLoader[size] / BASE_SCREEN_WIDTH) * 100}vw`;
+
+  return (
+    <p style={{ fontSize }} className="font-[Jua] text-outline">
+      {children}
     </p>
-    );
-}
+  );
+};
