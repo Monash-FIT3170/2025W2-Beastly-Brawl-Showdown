@@ -49,17 +49,34 @@ export const Account = () => {
 
     const handler = ({ user }) => {
       setUserData(user);
-      setFormData(user);
     };
 
     socket.on("userData", handler);
     return () => socket.off("userData", handler);
   }, []);
 
+  const startEditing = () => {
+    // Start with blank fields
+    setFormData({
+      ...userData,
+      username: "",
+      email: "",
+      password: "",
+    });
+    setEditing(true);
+  };
+
   const handleSave = () => {
     if (formData) {
-      socket.emit("updatePlayer", formData);
-      setUserData(formData);
+      // Only update the fields that have new values
+      const updatedUser = {
+        ...userData,
+        username: formData.username || userData?.username,
+        email: formData.email || userData?.email,
+        password: formData.password || userData?.password,
+      };
+      socket.emit("updatePlayer", updatedUser);
+      setUserData(updatedUser);
       setEditing(false);
     }
   };
@@ -94,7 +111,7 @@ export const Account = () => {
                 <OutlineText size="extraLarge">Profile</OutlineText>
               </div>
               <InputBox
-                value={""}
+                value={formData?.username ?? ""}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev!,
@@ -105,7 +122,7 @@ export const Account = () => {
                 placeholder="Enter New Username"
               />
               <InputBox
-                value={""}
+                value={formData?.email ?? ""}
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev!, email: e.target.value }))
                 }
@@ -113,7 +130,7 @@ export const Account = () => {
                 placeholder="Enter New Email"
               />
               <InputBox
-                value={""}
+                value={formData?.password ?? ""}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev!,
@@ -159,10 +176,10 @@ export const Account = () => {
                 <OutlineText size="extraLarge">Stats</OutlineText>
               </div>
               <OutlineText size="large">
-                Games Played: {userData.stats.numGamesPlayed}
+                Games Played: {userData.stats?.numGamesPlayed ?? 0}
               </OutlineText>
               <OutlineText size="large">
-                Games Won: {userData.stats.numGamesWon}
+                Games Won: {userData.stats?.numGamesWon ?? 0}
               </OutlineText>
             </div>
 
@@ -171,7 +188,7 @@ export const Account = () => {
               <div className="text-center font-bold">
                 <OutlineText size="extraLarge">Achievements</OutlineText>
               </div>
-              {userData.achievments.length ? (
+              {userData.achievments?.length ? (
                 <ul className="list-disc ml-6">
                   {userData.achievments.map((ach, idx) => (
                     <li key={idx}>{ach}</li>
@@ -187,7 +204,7 @@ export const Account = () => {
               <div className="text-center font-bold">
                 <OutlineText size="extraLarge">Monster Stats</OutlineText>
               </div>
-              {userData.monstersStat.length ? (
+              {userData.monstersStat?.length ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {userData.monstersStat.map((m, idx) => (
                     <div key={idx} className="border p-3 rounded-lg">
@@ -242,11 +259,7 @@ export const Account = () => {
 
             {/* Edit Button */}
             <div className="flex justify-center">
-              <ButtonGeneric
-                color="blue"
-                size="medium"
-                onClick={() => setEditing(true)}
-              >
+              <ButtonGeneric color="blue" size="medium" onClick={startEditing}>
                 Edit Profile
               </ButtonGeneric>
             </div>
