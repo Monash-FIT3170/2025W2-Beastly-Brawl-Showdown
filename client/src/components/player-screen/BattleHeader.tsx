@@ -26,8 +26,8 @@ export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer, 
     p2Score = metadata.playerScore[player2Id].points
   }
 
-  const playerScore = 10;
-  const player2Score = 2;
+  // const playerScore = 10;
+  // const player2Score = 2;
 
   return (
     <div className="flex flex-row 

@@ -12,13 +12,14 @@ import { BattleRoyale } from "../model/host/gamemode/battleRoyale";
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
-  socket.on("create-game", ({ mode, roundNum}) => {
+  socket.on("create-game", (data) => {
     console.log("Attempting game session creation...");
 
+    console.log("[MODE SELECTION]: ", data)
     let session: GameSession;
     //TODO: move this to a separate function if we have more multiplayer modes.
-    if (mode === GameModeIdentifier.SCORING){
-      session = new GameSession(socket.id, {mode: new ScoringTournament({rounds : roundNum})});
+    if (data.mode === GameModeIdentifier.SCORING){
+      session = new GameSession(socket.id, {mode: new ScoringTournament({rounds : data.selectedValue})});
     }
     else{
       session = new GameSession(socket.id, {mode: new BattleRoyale()});

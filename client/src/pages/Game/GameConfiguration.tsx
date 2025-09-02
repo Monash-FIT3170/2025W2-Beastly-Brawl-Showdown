@@ -16,7 +16,7 @@ export const GameConfiguration = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   // Use selectedValue to retrieve currently selected number of rounds.
-  const [selectedValue, setSelectedValue] = useState(5);
+  const [selectedValue, setSelectedValue] = useState(3);
 
   // Called on 'Host Lobby' button press
   const createGame = (mode: GameModeIdentifier) => {
@@ -78,7 +78,7 @@ export const GameConfiguration = () => {
               <OutlineText size="large">Round Count:</OutlineText>
             </div>
             <div className="flex flex-row items-center justify-center h-3/16">
-              <Slider max={10} min= {1} selectedValue={selectedValue} setSelectedValue={setSelectedValue} isDisabled = {sliderDisabled}/>
+              <Slider max={5} min= {2} selectedValue={selectedValue} setSelectedValue={setSelectedValue} isDisabled = {sliderDisabled}/>
             </div>
             <div className="flex flex-row items-center justify-center h-5/16">
               <ButtonGeneric color="ronchi" size="longlarge" onClick={() => createGame(options[selectedIndex].mode)}>

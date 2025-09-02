@@ -12,6 +12,7 @@ export class ScoreBoard {
             name,
             points: 0,
             bonuses: 0,
+            currentStreak: null
         });
     }
 
@@ -20,11 +21,35 @@ export class ScoreBoard {
 		if (!playerScore){
 			return
 		}
+
+        if (value.currentStreak){
+            if (playerScore.currentStreak === null){
+                playerScore.currentStreak = value.currentStreak
+            } else {
+                console.log("[INSTREAK]: INCREASE")
+                if (playerScore.currentStreak === value.currentStreak){
+                    playerScore.points += value.bonuses 
+                    playerScore.bonuses = value.bonuses
+                }
+            }
+            return
+        }
+        
 		if (value.bonuses) {
 			playerScore.points += value.bonuses // Update player's point
 			playerScore.bonuses = value.bonuses // Record bonus point value for the last round
 		}
+
+
 	}
+
+    setStreak(playerId: string, value: boolean):void{
+        const playerScore = this.playerScores.get(playerId)
+		if (!playerScore){
+			return
+		}
+        playerScore.currentStreak = value
+    }
 	
     showBoard(): PlayerScore[] {
         return [...this.playerScores.values()]

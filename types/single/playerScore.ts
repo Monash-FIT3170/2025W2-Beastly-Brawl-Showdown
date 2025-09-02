@@ -5,6 +5,7 @@ export interface PlayerScore{
 	name: string;
 	points: number
 	bonuses: number;
+	currentStreak: StreakIdentifier|null
 }
 
 //Bonus system interface
@@ -20,4 +21,10 @@ export const defaultBonus: BonusSystem = {
 	inStreak: 1,
 	debuff: 1,
 	win: 1
+}
+
+export enum StreakIdentifier {
+	WIN = "WIN_STREAK",
+	LOSE = "LOSE_STREAK",
+	DRAW = "DRAW_STREAK" // I think this is possible...
 }
