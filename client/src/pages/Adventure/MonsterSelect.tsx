@@ -374,7 +374,7 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                         src={
                           "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/action/" +
                           ability.id +
-                          ".png"
+                          ".webp"
                         }
                         alt="ability icon"
                         className="w-[7rem] h-[7rem] rounded-2xl "

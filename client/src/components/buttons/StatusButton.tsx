@@ -5,16 +5,14 @@ import { StatusPopup } from "../popups/StatusPopup";
 import { OutlineText } from "../texts/OutlineText";
 import { BlackText } from "../texts/BlackText";
 
-export interface StatusButtonProp{
-    status: Status;
+export interface StatusButtonProp {
+  status: Status;
 }
 
-export const StatusButton = ({status}: StatusButtonProp) => {
-
-    const [showStatus, setShowStatus] = useState(false);
-    const path = `/assets/statuses/${status.name.toUpperCase()}.png`;
-    const Button =
-        `
+export const StatusButton = ({ status }: StatusButtonProp) => {
+  const [showStatus, setShowStatus] = useState(false);
+  const path = `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase()}.png`;
+  const Button = `
         bg-pictonBlue
         w-[12rem]
         h-[12rem]
@@ -35,9 +33,8 @@ export const StatusButton = ({status}: StatusButtonProp) => {
         gap-y-[0.2rem]
 
 
-        `
-    const Circle = 
-        `
+        `;
+  const Circle = `
         absolute
         bottom-0
         rounded-full
@@ -57,33 +54,34 @@ export const StatusButton = ({status}: StatusButtonProp) => {
         font-jua
         overflow-visible
         z-30
-        `
+        `;
 
-    return(
-        <div className="gap-y-[0rem] flex flex-col items-center justify-center pb-[1.6rem] xl:pb-[1rem] pt-[1rem] relative w-full">
-            {/* <div className = "absolute overflow-visible z-30 top-0 ">
+  return (
+    <div className="gap-y-[0rem] flex flex-col items-center justify-center pb-[1.6rem] xl:pb-[1rem] pt-[1rem] relative w-full">
+      {/* <div className = "absolute overflow-visible z-30 top-0 ">
                     <OutlineText size = "medium">{status.name}</OutlineText>
                 </div> */}
-            {/* <div className = "overflow-visible z-30 relative top-0 absolute justify-center flex w-full">
+      {/* <div className = "overflow-visible z-30 relative top-0 absolute justify-center flex w-full">
                 <OutlineText size = "medium">{status.name}</OutlineText>
             </div> */}
-            <button className={`${Button}`} onClick={() => setShowStatus(true)} >
-                <div className = "absolute overflow-visible z-30 top-[1rem] ">
-                    {/* <OutlineText size = "midsmall">{status.name}</OutlineText> */}
-                    <BlackText size="tiny">{status.name}</BlackText>
-                </div>
-                <div className="py-[2rem] xl:py-[0.1rem] px-[3rem] xl:px-[1.3rem]">
-                <img src={path} ></img>
-                </div>
-                <div className={`${Circle}`}>
-                    {status.countDown}
-                </div>
-            </button>
-            {/* <div className={`${Circle}`}>
+      <button className={`${Button}`} onClick={() => setShowStatus(true)}>
+        <div className="absolute overflow-visible z-30 top-[1rem] ">
+          {/* <OutlineText size = "midsmall">{status.name}</OutlineText> */}
+          <BlackText size="tiny">{status.name}</BlackText>
+        </div>
+        <div className="py-[2rem] xl:py-[0.1rem] px-[3rem] xl:px-[1.3rem]">
+          <img src={path}></img>
+        </div>
+        <div className={`${Circle}`}>{status.countDown}</div>
+      </button>
+      {/* <div className={`${Circle}`}>
                     {status.countDown}
             </div> */}
-            <StatusPopup status={status} open={showStatus} onClose={() => setShowStatus(false)}></StatusPopup>
-        </div>
-
-    );
-}
+      <StatusPopup
+        status={status}
+        open={showStatus}
+        onClose={() => setShowStatus(false)}
+      ></StatusPopup>
+    </div>
+  );
+};

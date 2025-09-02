@@ -47,7 +47,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const battleId = "ADVENTURE";
   var backgroundLocation = getBiomeString(levelMonster); //TODO: change this to be based off level/monster?
   var backgroundString =
-    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
+    backgroundLocation +
+    ".jpg')";
 
   //ADVENTURE PAGE:
   const [dialogue, setDialogue] = useState<string[] | null>(null);
@@ -500,7 +502,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                     onClick={() => setViewingInventory(true)}
                   >
                     <img
-                      src={"/assets/backpack.png"}
+                      src={
+                        "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
+                      }
                       className={"w-[80%] h-[80%] object-contain mx-auto"}
                     ></img>
                   </ButtonGeneric>
@@ -572,7 +576,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   onClick={() => setViewingInventory(true)}
                 >
                   <img
-                    src={"/assets/backpack.png"}
+                    src={
+                      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
+                    }
                     className={"w-[80%] h-[80%] object-contain mx-auto"}
                   ></img>
                 </ButtonGeneric>

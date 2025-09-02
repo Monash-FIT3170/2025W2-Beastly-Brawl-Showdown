@@ -10,9 +10,10 @@ interface StatInfoIconProps {
 
 export const StatInfoIcon = ({ stat, statVal }: StatInfoIconProps) => {
   const imgpath: Record<string, string> = {
-    ac: "/assets/stats/ARMOUR_CLASS.png",
-    hp: "/assets/stats/HEALTH.png",
-    "atk+": "/assets/stats/ATTACK_BONUS.png",
+    ac: "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/ARMOUR_CLASS.png",
+    hp: "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/stats/HEALTH.png",
+    "atk+":
+      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/stats/ATTACK_BONUS.png",
   };
   return (
     <div className="flex flex-col items-center w-full h-full">

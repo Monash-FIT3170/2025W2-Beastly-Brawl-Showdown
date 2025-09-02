@@ -25,7 +25,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   const imagePath =
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/action/" +
     actionState.id +
-    ".png";
+    ".webp";
   const name = actionState.name.toUpperCase();
   const availableUses = actionState.currentUse; // How many REMAINING uses
   const isPassive = actionState.maxUse == 0; // Action is a passive ability if it can't be used
