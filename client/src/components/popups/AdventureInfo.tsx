@@ -78,9 +78,9 @@ export const AdventureInfoPopup = ({
     <PopupAdventure colour="goldenRod">
       <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-full h-full">
         <div className="mt-[1rem] xl:mt-[0.5rem] bg-pictonBlue outline-blackCurrant lg:outline-[0.2rem] sm:outline-[0.3rem] rounded-2xl flex flex-col px-[1rem] items-center justify-center">
-          <OutlineTextResizable size="large" max1={3}>
+          <OutlineText size="choice-text">
             {playerName}
-          </OutlineTextResizable>
+          </OutlineText>
         </div>
         <img className="sm:size-[30vw] lg:size-[20vh]" src={monsterImgPath} />
         <div
@@ -106,29 +106,29 @@ export const AdventureInfoPopup = ({
             overflow-y-auto
             [scrollbar-width:none]`}
         >
-          <div className="bg-[#EDAF55] outline-blackCurrant px-[2rem] lg:outline-[0.20rem] sm:outline-[0.4rem] rounded-2xl flex flex-col items-center justify-center">
+          <div className="bg-[#EDAF55] outline-blackCurrant px-[2rem] lg:outline-[0.20rem] sm:outline-[0.4rem] rounded-2xl flex flex-col items-center justify-center sm:w-[95%]">
             <OutlineText size="medium">
               {currentlyViewing[viewingTab]}
             </OutlineText>
           </div>
           {viewingTab === 0 && (
             <>
-              <div className="flex flex-row w-full">
+              <div className="flex flex-row w-[90%] pt-3">
                 <StatInfoIcon
-                  stat="ac"
+                  stat="AC"
                   statVal={playerState?.currentArmourClassStat!}
                 ></StatInfoIcon>
                 <StatInfoIcon
-                  stat="hp"
+                  stat="HP"
                   statVal={playerState?.currentHealth!}
                 ></StatInfoIcon>
                 <StatInfoIcon
-                  stat="atk+"
+                  stat="ATK+"
                   statVal={playerState?.currentAttackStat!}
                 ></StatInfoIcon>
               </div>
 
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col w-full gap-1 pb-3">
                 <AdventureStatBar
                   stat="Attack Damage"
                   statVal={attackState?.attackDamage! ?? "?"}
@@ -143,8 +143,8 @@ export const AdventureInfoPopup = ({
                 ></AdventureStatBar>
               </div>
 
-              <div className="bg-[#EDAF55] border-blackCurrant lg:border-[0.25rem] sm:border-[0.75rem] rounded-2xl flex flex-col items-center justify-center">
-                <OutlineText size="choice-text">ABILITIES</OutlineText>
+              <div className="bg-[#EDAF55] border-blackCurrant lg:border-[0.2rem] sm:border-[0.4rem] rounded-2xl flex flex-col items-center justify-center sm:w-[95%]">
+                <OutlineText size="medium">ABILITIES</OutlineText>
               </div>
               <div className="sm:w-[95%] lg:w-full flex sm:flex-col lg:flex-row justify-evenly">
                 {currentAbilities.map((ability, idx) => (
@@ -159,7 +159,7 @@ export const AdventureInfoPopup = ({
                         ".webp"
                       }
                       alt="ability icon"
-                      className="w-[5rem] h-[5rem]"
+                      className="w-[5rem] h-[5rem] rounded-xl border-blackCurrant border-2"
                     />
                     <div className="flex flex-col items-start text-justify">
                       <OutlineTextResizable size="medium">
