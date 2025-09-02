@@ -170,11 +170,15 @@ export const AdventureInfoPopup = ({
           {viewingTab === 1 && (
             <>
               {/* <div className="min-h-0 flex flex-row justify-center w-full items-center px-3 " style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}> */}
-              <div className=" flex flex-row justify-center w-full items-center px-3 ">
+              <div className="w-full flex items-center justify-center content-center relative ">
                 {playerState?.statuses[0] ? (
                   <></>
                 ) : (
-                  <BlackText size="medium">You are normal...</BlackText>
+                  <div className="items-center justify-center xl:mt-[4rem] mt-[6rem] absolute ">
+                  {/* <BlackText size="medium">You are normal...</BlackText> */}
+                  {/* <OutlineText size="medium">You are normal...</OutlineText> */}
+                    <BlackText size="medium">You are normal...</BlackText>
+                  </div>
                 )}
                 <div className="xl:mt-[1rem] mt-[2rem] columns-3 gap-[2rem] xl:gap-[3rem] space-y-[2rem] items-center justify-center">
                   {playerState?.statuses.map((c) => (
