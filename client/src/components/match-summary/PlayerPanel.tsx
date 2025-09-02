@@ -32,7 +32,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
 
   // Format the name of the monster from the form 'Monster Name' to 'MONSTER_NAME'.
   const formattedName = playerState.monster?.id;
-  const imageSrc = `/assets/characters/${formattedName}.png`;
+  const imageSrc = "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + formattedName + ".png";
 
   return (
     <div 
@@ -69,7 +69,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         {/* Crown image - only show if winner */}
         {winner && (
           <img 
-            src="/assets/match-summary/CROWN.png"
+            src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/matchsummary/CROWN.png"
             alt="Winner Crown"
             style={{
               width: '35px', // Increased from 20px to 35px
@@ -85,7 +85,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         {/* Crown on the other side for balance */}
         {winner && (
           <img 
-            src="/assets/match-summary/CROWN.png"
+            src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/matchsummary/CROWN.png"
             alt="Winner Crown"
             style={{
               width: '35px', // Increased from 20px to 35px

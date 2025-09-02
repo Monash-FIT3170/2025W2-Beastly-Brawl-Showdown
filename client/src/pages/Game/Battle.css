@@ -1,0 +1,29 @@
+.game-screen {  
+  width: 100vw;
+  height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  border: 4px solid #333;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+}
+
+.timer-box {
+  display: flex;
+  align-items: center; /* center vertically */
+  justify-content: center;
+  gap: 8px;
+  margin-left: auto;
+  margin-top: 8px;
+  margin-right: 8px;
+  background-color: #ace4f1;
+  border: 3px solid #3d2f4f;
+  border-radius: 12px;
+  padding: 3px 12px;
+  font-weight: bold;
+  color: #3d2f4f;
+  width: auto;           /* shrink to fit content */
+  max-width: 120px;      /* optional: limit width */
+}

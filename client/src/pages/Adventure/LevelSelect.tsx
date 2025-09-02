@@ -20,8 +20,8 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     socket.emit("adventure_level_selected", { level: observedLevel + 1 });
     FlowRouter.go("/adventure/monster-select");
   };
-  const monster = "None";
-  const monsterImage = "/assets/characters/" + monster + ".png";
+  const monster = "NONE";
+  const monsterImage = "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + monster + ".png";
 
   return (
     <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">

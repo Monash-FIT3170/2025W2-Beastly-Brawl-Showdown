@@ -76,7 +76,25 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
         return;
       }
 
-      const newPlayer = new Player(socket.id, name, playerAccount);
+      // Assign guest name if name field is empty
+      let finalName: string;
+      if (name === "") {
+        const currentPlayers = session.getPlayerStates();
+        let guestNumber = 0;
+        let numberTaken = true;
+
+        while (numberTaken) {
+          guestNumber++;
+          numberTaken = currentPlayers.some(p => p.name === `Guest ${guestNumber}`);
+        }
+
+        finalName = `Guest ${guestNumber}`;
+
+      } else {
+        finalName = name;
+      }
+
+      const newPlayer = new Player(socket.id, finalName, playerAccount);
       const addResult = session.addPlayer(newPlayer);
       if (!addResult.success) {
         // Join request rejected

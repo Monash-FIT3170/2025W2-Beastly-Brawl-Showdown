@@ -28,6 +28,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const [startPopup, setStartPopup] = useState<Boolean>();
   const [kickPopup, setKickPopup] = useState<string>();
   const [kickName, setKickName] = useState<string>();
+  const [qrPopup, setQrPopup] = useState<Boolean>();
 
   // On reload ask for players and update host
   useEffect(() => {
@@ -165,14 +166,14 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
               <div className="flex flex-row justify-between items-center">
                 <ButtonGeneric
                   size="large"
-                  color="blue"
+                  color="red"
                   onClick={() => setStartPopup(false)}
                 >
                   BACK
                 </ButtonGeneric>
                 <ButtonGeneric
                   size="large"
-                  color="red"
+                  color="blue"
                   onClick={() => {
                     setStartPopup(false);
                     startGame();
@@ -275,6 +276,30 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
           </PopupClean>
         )}
 
+        {qrPopup && (
+          <PopupClean>
+            <div className="flex flex-col justify-center items-center">
+              <div className="outline-blackCurrant outline-[0.25rem] rounded-2xl">
+                <QRCodeSVG
+                  value={`${Meteor.settings.public.SERVER_URLS[0]}/join/${code}`}
+                  size={400}
+                  bgColor="#FFFFFF"
+                  marginSize={2}
+                />
+              </div>
+              <div className="mt-8">
+                <ButtonGeneric
+                  size="large"
+                  color="red"
+                  onClick={() => setQrPopup(false)}
+                >
+                  CLOSE
+                </ButtonGeneric>
+              </div>
+            </div>
+          </PopupClean>
+        )}
+
         {/* Heading in the center */}
         <BaseCard color="springLeaves" width={65} height={5}>
           <OutlineText size="large">
@@ -284,10 +309,13 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </BaseCard>
 
         {/* QR code on the right */}
-        <div className="flex p-1 outline-blackCurrant outline-[0.25rem] rounded-2xl bg-white mt-1">
+        <div
+          className="flex p-1 outline-blackCurrant outline-[0.25rem] rounded-2xl bg-white mt-1"
+          onClick={() => setQrPopup(true)}
+        >
           <QRCodeSVG
             value={`${Meteor.settings.public.SERVER_URLS[0]}/join/${code}`}
-            size={100}
+            size={135}
             bgColor="#FFFFFF"
             marginSize={2}
           />
@@ -297,7 +325,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
       {/* Player name+monster cards */}
       {/* Not sure how the monster is being determined yet, so just using a string for now */}
       <div className="flex flex-row h-3/5 w-full items-center justify-between p-[2rem]">
-        <div className="flex flex-row h-full w-full justify-around items-center bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-4 h-full w-full bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl max-h-[32rem] overflow-y-auto p-4">
           {players.map((player) => (
             <NameCard
               player={player}
@@ -307,7 +335,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
               }}
             />
           ))}
-          {/* UPDATE: Add pop up for : Do you want to kick this player? */}
           {/* UPDATE: Add pop up for : Do you want to kick this player? */}
         </div>
       </div>
@@ -329,7 +356,6 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
         <div className="mb-5 mr-13">
           {/* UPDATE: Add pop up for : Do you want to start the game? */}
-          {/* UPDATE: Add pop up for : Do you want to start the game? */}
           <ButtonGeneric
             color="ronchi"
             size="large"
@@ -343,8 +369,8 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         </div>
 
         <div className="mb-20">
-          <BaseCard color="peach" width={12} height={4}>
-            <OutlineText size="medium">PLAYERS: {playerCount}/8</OutlineText>
+          <BaseCard color="peach" width={16} height={4}>
+            <OutlineText size="medium">PLAYERS: {playerCount}/64</OutlineText>
           </BaseCard>
         </div>
       </div>

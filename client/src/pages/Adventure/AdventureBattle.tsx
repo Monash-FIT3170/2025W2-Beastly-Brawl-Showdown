@@ -111,7 +111,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
 
   var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   var backgroundString =
-    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" + backgroundLocation + ".jpg')";
 
   //TODO: add exit button
   //TODO: add inventory button

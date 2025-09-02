@@ -59,7 +59,7 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
 
         <img
           className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]"
-          src={`/assets/trophies/${playerMonster.id}_WIN.png`}
+          src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/${playerMonster.id}_WIN.png`}
           alt={`${playerMonster.id}_WIN image`}
         />
 
