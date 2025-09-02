@@ -24,22 +24,22 @@ const PhaseImage: React.FC<PhaseImageProps> = ({
   const getImageSrc = () => {
     // Check for winner first
     if (player1Win || player2Win) {
-      return '/assets/match-summary/TRIANGLE_WINNER.png';
+      return "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/matchsummary/TRIANGLE.png";
     }
 
     // This conditional will be true if both players eliminate each other at the same time
     if (isOver) {
-      return '/assets/match-summary/NO_WINNER.png';
+      return "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/matchsummary/CROSS.png";
     }
     
     // Otherwise use phase-based images
     switch (currentPhase) {
       case 'CHOOSE_ACTION':
-        return '/assets/match-summary/SWORDS_CROSSED.png';
+        return "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/matchsummary/SWORDS.png";
       case 'EXECUTE_ACTION':
-        return '/assets/match-summary/SMOKE.png';
+        return "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/matchsummary/SMOKE.png";
       default:
-        return '/assets/match-summary/SWORDS_CROSSED.png'; // Default image
+        return "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/matchsummary/SWORDS.png"; // Default image
     }
   };
 

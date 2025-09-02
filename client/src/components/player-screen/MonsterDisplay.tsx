@@ -11,7 +11,8 @@ const MonsterDisplay: React.FC<MonsterDisplayProps> = ({
   monster,
   className,
 }) => {
-  const imagePath = `/assets/characters/${monster.id}.png`;
+  const imagePath = "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + monster.id + ".png";
+;
 
   return (
     <div className={`monster-display-container ${className ?? ""}`}>
@@ -24,7 +25,7 @@ const MonsterDisplay: React.FC<MonsterDisplayProps> = ({
         />
         <img
           className="monster-shadow"
-          src="/shadow.png"
+          src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/SHADOW.png"
           alt="shadow"
           draggable={false}
         />

@@ -41,32 +41,22 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       const playerState = battle.yourPlayer;
       const playerName = playerState.name;
       const successBlocks = playerState.successBlock || 0; // Use successBlock from player state
-      const successHits = playerState.successHit || 0; // Use successHit from player state
-
-      // console.log(playerState.logs)
-
-      // Accumulate blocks for each player across all battles
-      blockDataMap[playerName] =
-        (blockDataMap[playerName] || 0) + successBlocks;
-
-      // Accumulate damage for each player across all battles (each hit = 5 damage)
-      damageDataMap[playerName] =
-        (damageDataMap[playerName] || 0) + successHits * 5;
 
       const secondPlayerState = battle.opponentPlayer;
       const secondPlayerName = secondPlayerState.name;
-      const secondPlayersuccessBlocks = secondPlayerState.successBlock || 0; // Use successBlock from player state
-      const secondPlayeruccessHits = secondPlayerState.successHit || 0; // Use successHit from player state
+      const secondPlayerSuccessBlocks = secondPlayerState.successBlock || 0; // Use successBlock from player state
 
-      // console.log(playerState.logs)
+      // Current player stats
+      blockDataMap[playerName] =
+        (blockDataMap[playerName] || 0) + successBlocks;
+      damageDataMap[playerName] =
+        battle.opponentPlayerMonster.maxHealth - secondPlayerState.currentHealth;
 
-      // Accumulate blocks for each player across all battles
+      // Opponent player stats
       blockDataMap[secondPlayerName] =
-        (blockDataMap[secondPlayerName] || 0) + secondPlayersuccessBlocks;
-
-      // Accumulate damage for each player across all battles (each hit = 5 damage)
+        (blockDataMap[secondPlayerName] || 0) + secondPlayerSuccessBlocks;
       damageDataMap[secondPlayerName] =
-        (damageDataMap[secondPlayerName] || 0) + secondPlayeruccessHits * 5;
+        battle.yourPlayerMonster.maxHealth - playerState.currentHealth;
     });
     // Convert block data to array format and sort by blocks (highest first)
     const blockData = Object.entries(blockDataMap)
@@ -183,8 +173,8 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
             {/* Left Panel */}
             {/* <div className="left-panel"> */}
             <LeftPanel
-              damageData={playerStats.damageData} // Use real damage data
-              blockData={playerStats.blockData} // Use real block data
+              damageData={playerStats.damageData.slice(0, 3)} // Top 3 damage dealt
+              blockData={playerStats.blockData.slice(0, 3)} // Top 3 blocks
               popularMonster={gameSession.gameSessionData.mostChosenMonster}
             />
             {/* </div> */}

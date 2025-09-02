@@ -8,9 +8,9 @@ interface MonsterPanelProps {
 
 const MonsterPanel: React.FC<MonsterPanelProps> = ({ battleState }) => {
   const pathLeftMon =
-    "/assets/characters/" + battleState.yourPlayerMonster.id + ".png";
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + battleState.yourPlayerMonster.id + ".png";
   const pathRightMon =
-    "/assets/characters/" + battleState.opponentPlayerMonster.id + ".png";
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + battleState.opponentPlayerMonster.id + ".png";
 
   // console.log("Left Monster Path: ", pathLeftMon);
   // console.log("Right Monster Path: ", pathRightMon);

@@ -9,7 +9,7 @@ interface MostPopularPanelProps {
 const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ popularMonster }) => {
 
   const formattedName = popularMonster.monster!.id;
-  const imageSrc = `/assets/characters/${formattedName}.png`;
+  const imageSrc = "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + formattedName + ".png";
   console.log("image src = ",imageSrc)
 
   return (
@@ -78,8 +78,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ popularMonster }) =
               fontSize: '1.4rem',
               fontFamily: 'Jua, sans-serif',
               fontWeight: '100',
-              color: '#FFFFFF',
-              WebkitTextStroke: '1px black',
+              color: '#000000',
               marginBottom: '0.25rem',
               textTransform: 'uppercase',
               lineHeight: '1.2',
@@ -94,8 +93,7 @@ const MostPopularPanel: React.FC<MostPopularPanelProps> = ({ popularMonster }) =
               fontSize: '1.2rem',
               fontFamily: 'Jua, sans-serif',
               fontWeight: '100',
-              color: '#FFFFFF',
-              WebkitTextStroke: '1px black',
+              color: '#000000',
               textTransform: 'uppercase',
             }}
           >

@@ -30,9 +30,9 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live
   const [time, setTime] = useState<number>(5);
 
-  var backgroundLocation = "ARCTIC"; //TODO: change this to be based off level/monster?
+  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   var backgroundString =
-    "url('/assets/backgrounds/" + backgroundLocation + ".jpg')";
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" + backgroundLocation + ".jpg')";
 
   useEffect(() => {
     socket.on("battle_state", (battle: BattleState) => {
@@ -90,13 +90,12 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
     //Countdown before player get redirected
     const countdown = setInterval(() => {
-      setTime((prev) => prev - 1);
+      setTime((prev) => Math.max(prev - 1,0 ));
     }, 1000); //1 second per interval
 
     //Redirect after countdown is finished
     const timeout = setTimeout(() => {
       FlowRouter.go("./");
-      setTime(-1);
     }, 5000); // 5 seconds before user get directed to home page
 
     return () => {
