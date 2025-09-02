@@ -240,9 +240,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                 <OutlineText size="extraLarge">
                   {receivingConsumable}
                 </OutlineText>
-                <div className="flex flex-row justify-between items-center">
+                <div className="flex flex-row justify-between gap-x-[3rem] items-center">
                   <ButtonGeneric
-                    size="large"
+                    size="battle"
                     color="blue"
                     onClick={() => {
                       setReceivingConsumable(null);
@@ -251,6 +251,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   >
                     TAKE!
                   </ButtonGeneric>
+                  <ButtonGeneric size="battle" color = "red" onClick={() => {setReceivingConsumable(null); socket.emit("adventure_next", { stage });}}>DROP</ButtonGeneric>
                 </div>
               </div>
             </PopupClean>
@@ -265,9 +266,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   <OutlineText size="extraLarge">
                     {receivingEquipment}
                   </OutlineText>
-                  <div className="flex flex-row justify-between items-center">
+                  <div className="flex flex-row justify-between items-center gap-x-[3rem]">
                     <ButtonGeneric
-                      size="large"
+                      size="battle"
                       color="blue"
                       onClick={() => {
                         setReceivingEquipment(null);
@@ -275,6 +276,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                       }}
                     >
                       EQUIP!
+                    </ButtonGeneric>
+                    <ButtonGeneric
+                      size="battle"
+                      color="red"
+                      onClick={() => {
+                        setReceivingEquipment(null);
+                        socket.emit("adventure_next", { stage });
+                      }}
+                    >
+                      SKIP
                     </ButtonGeneric>
                   </div>
                 </div>
