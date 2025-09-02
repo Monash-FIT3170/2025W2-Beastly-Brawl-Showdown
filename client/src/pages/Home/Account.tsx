@@ -3,149 +3,256 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
-import LogoResizable from "../../components/logos/LogoResizable";
-import { BlankPage } from "../../components/pagelayouts/BlankPage";
-import { ButtonResizableText } from "../../components/buttons/ButtonResizableText";
-import { GenericIcon } from "../../components/icons/GenericIcon";
 import { InputBox } from "../../components/inputs/InputBox";
 import { IconButton } from "../../components/buttons/IconButton";
+import { GenericHeader } from "../../components/cards/GenericHeader";
+
+// Schema types
+interface PlayerMonsterStatSchema {
+  monsterId: string;
+  maxHealth: number;
+  attackBonus: number;
+  armourClass: number;
+}
+
+interface AdventureProgressionSchema {
+  unlockedMonsters: Record<string, boolean>;
+  unlockedLevels: number[];
+  stage: number;
+  achievments: string[];
+  savedGameState: {};
+}
+
+interface PlayerAccountSchema {
+  _id: string;
+  email?: string;
+  username?: string;
+  password?: string;
+  level?: number;
+  online?: boolean;
+  stats?: {
+    numGamesPlayed?: number;
+    numGamesWon?: number;
+  };
+  achievments?: string[];
+  monstersStat?: PlayerMonsterStatSchema[];
+  adventureProgression?: AdventureProgressionSchema;
+}
 
 export const Account = () => {
-  interface PlayerAccount {
-    _id: string;
-    email?: string;
-    username?: string;
-    password?: string;
-    level?: number;
-    stats?: {
-      numGamesPlayed?: number;
-      numGamesWon?: number;
-    };
-    achievments?: string[];
-    monstersStat?: PlayerMonsterStat[];
-  }
-
-  // Schema for the Player's monsters stats customization
-  interface PlayerMonsterStat {
-    monsterId: string;
-    maxHealth: number;
-    attackBonus: number;
-    armourClass: number;
-  }
-
-  const [userData, setUserData] = useState<PlayerAccount | null>(null);
+  const [userData, setUserData] = useState<PlayerAccountSchema | null>(null);
   const [editing, setEditing] = useState(false);
-  const [formData, setFormData] = useState(userData);
+  const [formData, setFormData] = useState<PlayerAccountSchema | null>(null);
 
   useEffect(() => {
     socket.emit("fetchUserData");
 
     const handler = ({ user }) => {
       setUserData(user);
+      setFormData(user);
     };
 
     socket.on("userData", handler);
+    return () => socket.off("userData", handler);
   }, []);
 
+  const handleSave = () => {
+    if (formData) {
+      socket.emit("updatePlayer", formData);
+      setUserData(formData);
+      setEditing(false);
+    }
+  };
+
   return (
-    <BlankPage>
-      {!userData ? (
-        <p>Loading account details...</p>
-      ) : (
-        <div>
-          <h1>Account Details</h1>
+    <div className="flex flex-col h-[100dvh]">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 relative py-6 border-b bg-springLeaves shadow">
+        <div className="absolute top-6 left-6">
+          <IconButton
+            style="arrowleft"
+            iconColour="black"
+            buttonColour="red"
+            size="medium"
+            onClick={() => FlowRouter.go("/")}
+          />
+        </div>
+        <GenericHeader color="lightYellow">
+          <OutlineText size="extraLarge">Account Details</OutlineText>
+        </GenericHeader>
+      </div>
 
-          {/* Exit Button */}
-          <div style={{ position: "absolute", top: "50px", left: "50px" }}>
-            <IconButton
-              style="arrowleft"
-              iconColour="black"
-              buttonColour="red"
-              size="medium"
-              onClick={() => FlowRouter.go("/")}
-            />
-          </div>
-
-          {/* Details */}
-          {editing ? (
-            <div className="flex flex-col gap-4">
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-6 pt-[120px]">
+        {!userData ? (
+          <p>Loading account details...</p>
+        ) : editing ? (
+          <div className="flex flex-col gap-6 max-w-[900px] w-full mx-auto">
+            {/* Profile Editing */}
+            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] flex flex-col gap-4 border-2 border-black">
+              <div className="text-center font-bold">
+                <OutlineText size="extraLarge">Profile</OutlineText>
+              </div>
               <InputBox
-                value={formData?.username ?? ""}
+                value={""}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, username: e.target.value }))
+                  setFormData((prev) => ({
+                    ...prev!,
+                    username: e.target.value,
+                  }))
                 }
                 maxLength={50}
                 placeholder="Enter New Username"
               />
               <InputBox
-                value={formData?.email ?? ""}
+                value={""}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, email: e.target.value }))
+                  setFormData((prev) => ({ ...prev!, email: e.target.value }))
                 }
                 maxLength={50}
                 placeholder="Enter New Email"
               />
               <InputBox
-                value={formData?.password ?? ""}
+                value={""}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, password: e.target.value }))
+                  setFormData((prev) => ({
+                    ...prev!,
+                    password: e.target.value,
+                  }))
                 }
                 maxLength={50}
                 placeholder="Enter New Password"
               />
-
-              <div className="flex gap-4">
-                <ButtonGeneric
-                  color="blue"
-                  size="medium"
-                  onClick={() => {
-                    socket.emit("updatePlayer", formData); // send to server
-                    setUserData((prev) => ({ ...prev, ...formData }));
-                    setEditing(false);
-                  }}
-                >
-                  Save
-                </ButtonGeneric>
-
-                <ButtonGeneric
-                  color="red"
-                  size="medium"
-                  onClick={() => setEditing(false)}
-                >
-                  Cancel
-                </ButtonGeneric>
-              </div>
             </div>
-          ) : (
-            <>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 justify-center">
+              <ButtonGeneric color="blue" size="medium" onClick={handleSave}>
+                Save
+              </ButtonGeneric>
+              <ButtonGeneric
+                color="red"
+                size="medium"
+                onClick={() => setEditing(false)}
+              >
+                Cancel
+              </ButtonGeneric>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-6 max-w-[900px] w-full mx-auto">
+            {/* Profile Info */}
+            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+              <div className="text-center font-bold">
+                <OutlineText size="extraLarge">Profile</OutlineText>
+              </div>
               <OutlineText size="large">
                 Username: {userData.username}
               </OutlineText>
               <OutlineText size="large">Email: {userData.email}</OutlineText>
               <OutlineText size="large">Level: {userData.level}</OutlineText>
+            </div>
+
+            {/* Stats */}
+            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+              <div className="text-center font-bold">
+                <OutlineText size="extraLarge">Stats</OutlineText>
+              </div>
               <OutlineText size="large">
-                Games Played: {userData.stats?.numGamesPlayed}
+                Games Played: {userData.stats.numGamesPlayed}
               </OutlineText>
               <OutlineText size="large">
-                Games Won: {userData.stats?.numGamesWon}
+                Games Won: {userData.stats.numGamesWon}
               </OutlineText>
-              <OutlineText size="large">
-                Achievements: {userData.achievments?.join(", ")}
-              </OutlineText>
-            </>
-          )}
-          {/* Edit Button */}
-          {!editing && (
-            <ButtonGeneric
-              color="blue"
-              size="medium"
-              onClick={() => setEditing(true)}
-            >
-              Edit
-            </ButtonGeneric>
-          )}
-        </div>
-      )}
-    </BlankPage>
+            </div>
+
+            {/* Achievements */}
+            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+              <div className="text-center font-bold">
+                <OutlineText size="extraLarge">Achievements</OutlineText>
+              </div>
+              {userData.achievments.length ? (
+                <ul className="list-disc ml-6">
+                  {userData.achievments.map((ach, idx) => (
+                    <li key={idx}>{ach}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No achievements yet.</p>
+              )}
+            </div>
+
+            {/* Monsters */}
+            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+              <div className="text-center font-bold">
+                <OutlineText size="extraLarge">Monster Stats</OutlineText>
+              </div>
+              {userData.monstersStat.length ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {userData.monstersStat.map((m, idx) => (
+                    <div key={idx} className="border p-3 rounded-lg">
+                      <p className="font-bold">{m.monsterId}</p>
+                      <p>Health: {m.maxHealth}</p>
+                      <p>Attack Bonus: {m.attackBonus}</p>
+                      <p>Armour Class: {m.armourClass}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No monster stats yet.</p>
+              )}
+            </div>
+
+            {/* Adventure Progression */}
+            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+              <div className="text-center font-bold">
+                <OutlineText size="extraLarge">
+                  Adventure Progression
+                </OutlineText>
+              </div>
+              {userData.adventureProgression ? (
+                <>
+                  <p>Stage: {userData.adventureProgression.stage}</p>
+                  <p>
+                    Levels Unlocked:{" "}
+                    {userData.adventureProgression.unlockedLevels.length
+                      ? userData.adventureProgression.unlockedLevels.join(", ")
+                      : "None"}
+                  </p>
+                  <p>
+                    Monsters Unlocked:{" "}
+                    {Object.entries(
+                      userData.adventureProgression.unlockedMonsters
+                    )
+                      .filter(([_, unlocked]) => unlocked)
+                      .map(([name]) => name)
+                      .join(", ") || "None"}
+                  </p>
+                  <p>
+                    Adventure Achievements:{" "}
+                    {userData.adventureProgression.achievments.length
+                      ? userData.adventureProgression.achievments.join(", ")
+                      : "None"}
+                  </p>
+                </>
+              ) : (
+                <p>No adventure progression yet.</p>
+              )}
+            </div>
+
+            {/* Edit Button */}
+            <div className="flex justify-center">
+              <ButtonGeneric
+                color="blue"
+                size="medium"
+                onClick={() => setEditing(true)}
+              >
+                Edit Profile
+              </ButtonGeneric>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
