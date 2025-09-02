@@ -22,7 +22,7 @@ export interface PlayerAccountSchema {
     numGamesPlayed: number;
     numGamesWon: number;
   }
-  achievments: string[];
+  achievements: string[];
   monstersStat: PlayerMonsterStatSchema[]; 
   adventureProgression: AdventureProgressionSchema
 }
@@ -40,7 +40,7 @@ export interface AdventureProgressionSchema {
   unlockedMonsters: Record<string, boolean>, // e.g  {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
   unlockedLevels: number[], 
   stage: number,
-  achievments: string[],
+  achievements: string[],
   savedGameState: {} 
 
 }
@@ -126,7 +126,7 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       numGamesPlayed: 0,
       numGamesWon: 0,
     },
-    achievments: [],
+    achievements: [],
     monstersStat: [
       createPlayerMonsterStatSchema('ROCKY_RHINO'),
       createPlayerMonsterStatSchema('CINDER_TAIL'),
@@ -146,7 +146,7 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       },
       unlockedLevels: [1],
       stage: 1,
-      achievments: [],
+      achievements: [],
       savedGameState: {},
     }
   };
@@ -183,7 +183,7 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
         numGamesPlayed: 0, 
         numGamesWon: 0,
       },
-      achievments: [], 
+      achievements: [], 
       monstersStat: [
         createPlayerMonsterStatSchema('ROCKY_RHINO'), 
         createPlayerMonsterStatSchema('CINDER_TAIL'), 
@@ -203,7 +203,7 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
         },
         unlockedLevels: [1],
         stage: 1,
-        achievments: [],
+        achievements: [],
         savedGameState: {},
       }
     };
@@ -236,7 +236,7 @@ export async function getPlayerData(email: string): Promise<PlayerAccountSchema 
         numGamesPlayed: player.stats.numGamesPlayed,
         numGamesWon: player.stats.numGamesWon,
       },
-      achievments: player.achievments,
+      achievements: player.achievements,
       monstersStat: player.monstersStat,
       adventureProgression: player.adventureProgression
     };
@@ -287,7 +287,7 @@ export async function updatePlayerAccount(
         ...(updates.stats || {})
       },
       monstersStat: updates.monstersStat || existingPlayer.monstersStat,
-      achievments: updates.achievments || existingPlayer.achievments, 
+      achievements: updates.achievements || existingPlayer.achievements, 
       adventureProgression: {
         ...existingPlayer.adventureProgression,
         ...(updates.adventureProgression || {})
