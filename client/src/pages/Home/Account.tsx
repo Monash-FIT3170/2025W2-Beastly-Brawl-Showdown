@@ -111,7 +111,7 @@ export const Account = () => {
           <div className="flex flex-col gap-6 sm:gap-8 w-full max-w-[600px] sm:max-w-[900px] mx-auto">
             {/* Profile Editing */}
             <div className="mt-4 sm:mt-0 p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] flex flex-col gap-4 sm:gap-6 border-2 border-black">
-              <div className="text-center font-bold">
+              <div className="text-center">
                 <OutlineText size="extraLarge">Profile</OutlineText>
               </div>
               <InputBox
@@ -164,7 +164,7 @@ export const Account = () => {
           <div className="flex flex-col gap-6 sm:gap-8 w-full max-w-[600px] sm:max-w-[900px] mx-auto">
             {/* Profile Info */}
             <div className="mt-4 sm:mt-0 p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center font-bold">
+              <div className="text-center">
                 <OutlineText size="extraLarge">Profile</OutlineText>
               </div>
               <OutlineText size="large">
@@ -176,7 +176,7 @@ export const Account = () => {
 
             {/* Stats */}
             <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center font-bold">
+              <div className="text-center">
                 <OutlineText size="extraLarge">Stats</OutlineText>
               </div>
               <OutlineText size="large">
@@ -189,7 +189,7 @@ export const Account = () => {
 
             {/* Achievements */}
             <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center font-bold">
+              <div className="text-center">
                 <OutlineText size="extraLarge">Achievements</OutlineText>
               </div>
               {userData.achievments?.length ? (
@@ -205,7 +205,7 @@ export const Account = () => {
 
             {/* Monsters */}
             <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center font-bold">
+              <div className="text-center">
                 <OutlineText size="extraLarge">Monster Stats</OutlineText>
               </div>
               {userData.monstersStat?.length ? (
@@ -226,7 +226,7 @@ export const Account = () => {
 
             {/* Adventure Progression */}
             <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center font-bold">
+              <div className="text-center">
                 <OutlineText size="extraLarge">
                   Adventure Progression
                 </OutlineText>
