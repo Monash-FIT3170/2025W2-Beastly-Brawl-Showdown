@@ -21,7 +21,7 @@ const MonsterDisplay: React.FC<MonsterDisplayProps> = ({
   //checks if monster is a slime - then uses biome specific variant
   // TODO: UPDATE SLIMES TO BE IN DIGITAL OCEAN
   if (monster.id == MonsterIdentifier.SLIME) {
-    imagePath = `/assets/characters/SLIME_${biomeString}.png`;
+    imagePath = `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/SLIME_${biomeString}.png`;
   }
   return (
     <div className={`monster-display-container ${className ?? ""}`}>

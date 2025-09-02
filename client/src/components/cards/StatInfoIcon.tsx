@@ -11,9 +11,9 @@ interface StatInfoIconProps {
 export const StatInfoIcon = ({ stat, statVal }: StatInfoIconProps) => {
   const imgpath: Record<string, string> = {
     ac: "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/ARMOUR_CLASS.png",
-    hp: "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/stats/HEALTH.png",
+    hp: "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/HEALTH.png",
     "atk+":
-      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/stats/ATTACK_BONUS.png",
+      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/ATTACK_BONUS.png",
   };
   return (
     <div className="flex flex-col items-center w-full h-full">

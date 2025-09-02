@@ -25,7 +25,10 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   //note: slimes can only be enemies
   // TODO: UPDATE SLIMES TO BE IN DIGITAL OCEAN
   if (battleState.opponentPlayerMonster.id == MonsterIdentifier.SLIME) {
-    pathRightMon = "/assets/characters/SLIME_" + slimeString + ".png";
+    pathRightMon =
+      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/SLIME_" +
+      slimeString +
+      ".png";
   }
 
   // console.log("Left Monster Path: ", pathLeftMon);

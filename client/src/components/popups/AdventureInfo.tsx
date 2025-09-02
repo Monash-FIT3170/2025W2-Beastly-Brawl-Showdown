@@ -64,7 +64,9 @@ export const AdventureInfoPopup = ({
     // }
   }, [playerState?.monster?.possibleActions]);
   const monsterImgPath =
-    "/assets/characters/" + playerState?.monster?.id + ".png";
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+    playerState?.monster?.id +
+    ".png";
 
   var playerName = `${playerState?.name}'s ${playerState?.monster?.name}`;
 
@@ -151,7 +153,11 @@ export const AdventureInfoPopup = ({
                     className="flex flex-row items-center gap-[2%] lg:w-[45%]"
                   >
                     <img
-                      src={"/assets/actions/" + ability.id + ".webp"}
+                      src={
+                        "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/action/" +
+                        ability.id +
+                        ".webp"
+                      }
                       alt="ability icon"
                       className="w-[5rem] h-[5rem]"
                     />
@@ -175,8 +181,8 @@ export const AdventureInfoPopup = ({
                   <></>
                 ) : (
                   <div className="items-center justify-center xl:mt-[4rem] mt-[6rem] absolute ">
-                  {/* <BlackText size="medium">You are normal...</BlackText> */}
-                  {/* <OutlineText size="medium">You are normal...</OutlineText> */}
+                    {/* <BlackText size="medium">You are normal...</BlackText> */}
+                    {/* <OutlineText size="medium">You are normal...</OutlineText> */}
                     <BlackText size="medium">You are normal...</BlackText>
                   </div>
                 )}

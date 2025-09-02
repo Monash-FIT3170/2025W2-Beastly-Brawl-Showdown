@@ -40,7 +40,9 @@ export const AdventureBagPopup = ({
   const [equipment, setEquipment] = useState<EquipmentState | null>(null);
 
   const monsterImgPath =
-    "/assets/characters/" + playerState?.monster?.id + ".png";
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+    playerState?.monster?.id +
+    ".png";
 
   console.log(playerState);
 
