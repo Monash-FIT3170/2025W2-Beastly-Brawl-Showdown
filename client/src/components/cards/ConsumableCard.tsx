@@ -32,7 +32,7 @@ export const ConsumableCard = ({ consumable, onClick }: ConsumableProps) => {
         >
           <img
             className="w-full h-full object-contain"
-            src={`/assets/items/${consumable.imageString}.png`}
+            src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/${consumable.imageString}.png`}
           />
         </div>
 

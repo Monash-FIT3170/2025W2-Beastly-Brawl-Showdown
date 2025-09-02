@@ -39,7 +39,9 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     ? "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
       monster +
       ".png"
-    : "/assets/characters/silhouettes/" + monster + "_SILHOUETTE.png";
+    : "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/silhouettes/" +
+      monster +
+      "_SILHOUETTE.png";
 
   const backgroundString =
     "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
