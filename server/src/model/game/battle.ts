@@ -99,4 +99,22 @@ export class Battle {
   
     return null;
   }
+
+public getPlayerWithBetterHealth(): Player | null {
+  const players = this.getPlayers();
+
+  const [p1, p2] = players;
+  const h1 = p1.getHealth();
+  const h2 = p2.getHealth();
+
+
+  if (h1 === h2) return null;
+  return h1 > h2 ? p1 : p2;
+}
+
+public getOpponentOf(target: Player ): Player {
+  const targetId = target.getId();
+  const arr = this.getPlayers()
+  return arr[0].getId() === targetId ? arr[1] : arr[0];
+}
 }

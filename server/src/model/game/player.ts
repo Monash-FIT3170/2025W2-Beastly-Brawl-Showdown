@@ -5,6 +5,7 @@ import { PlayerAccountSchema } from "../../database/dbManager";
 
 import { Status } from "./status/status";
 import { Item } from "./item/item";
+import { ActionIdentifier } from "/types/single/actionState";
 
 export class Player {
   private id: string;
@@ -30,6 +31,8 @@ export class Player {
   private inventory: Item[] = [];
 
   private playerAccount: PlayerAccountSchema;
+  private noNullAction: number = 0;
+  static roundToCheck: number = 5; //change the value here 
 
   constructor(
     id: string,
@@ -85,6 +88,14 @@ export class Player {
 
   public isBotPlayer(): boolean{
     return this.botPlayer;
+  }
+
+  public setNoNullAction(value: number):void{
+    this.noNullAction = value
+  }
+
+  public getNoNullAction(): number{
+    return this.noNullAction
   }
 
   public incSuccessfulHit(number: number): void {
@@ -144,6 +155,7 @@ export class Player {
     if (this.battleLogs.length !== 1){
       this.battleLogs.shift()
     }
+  }
     
   public getPlayerAccountUsername() {
     return this.playerAccount.username;
@@ -262,6 +274,11 @@ export class Player {
   }
 
   public addAction(action: Action): void {
+    if (action.getId() === ActionIdentifier.NULL){
+      this.noNullAction += 1
+    } else {
+      this.noNullAction = 0
+    }
     if (this.actions.length > 0) {
       this.resetActions();
     }
@@ -325,5 +342,4 @@ export class Player {
       battleLogs: this.battleLogs,
     };
   }
-}
 }

@@ -7,6 +7,7 @@ import { AttackAction } from "../../model/game/action/attack";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
 import { ActionRandomiser } from "../../model/game/actionRandomiser";
+import { Player } from "../../model/game/player";
 
 export default function proceedBattleTurn(
   io: Server,
@@ -86,6 +87,18 @@ export default function proceedBattleTurn(
       playersInBattle.forEach((player) => {
         if (player.getActions().length === 0) {
           player.addAction(new NullAction());
+        }
+
+        if (player.getNoNullAction() === Player.roundToCheck){
+          const winner = battle.getPlayerWithBetterHealth();
+          
+          if (winner === null){
+            playersInBattle[0].setHealth(0)
+            playersInBattle[1].setHealth(0)
+          } else{
+            battle.getOpponentOf(winner).setHealth(0)
+          }
+          return
         }
       });
 
