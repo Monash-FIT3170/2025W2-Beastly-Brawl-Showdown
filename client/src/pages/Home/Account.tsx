@@ -56,7 +56,6 @@ export const Account = () => {
   }, []);
 
   const startEditing = () => {
-    // Start with blank fields
     setFormData({
       ...userData,
       username: "",
@@ -68,7 +67,6 @@ export const Account = () => {
 
   const handleSave = () => {
     if (formData) {
-      // Only update the fields that have new values
       const updatedUser = {
         ...userData,
         username: formData.username || userData?.username,
@@ -82,10 +80,10 @@ export const Account = () => {
   };
 
   return (
-    <div className="flex flex-col h-[100dvh]">
+    <div className="flex flex-col min-h-screen">
       {/* Fixed Header */}
-      <div className="flex-shrink-0 relative py-6 border-b bg-springLeaves shadow">
-        <div className="absolute top-6 left-6">
+      <div className="flex-shrink-0 relative py-4 sm:py-6 border-b bg-springLeaves shadow">
+        <div className="absolute top-4 sm:top-6 left-4 sm:left-6">
           <IconButton
             style="arrowleft"
             iconColour="black"
@@ -100,13 +98,13 @@ export const Account = () => {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-6 pt-[120px]">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 flex flex-col gap-4 sm:gap-6 pt-[100px] sm:pt-[120px]">
         {!userData ? (
           <p>Loading account details...</p>
         ) : editing ? (
-          <div className="flex flex-col gap-6 max-w-[900px] w-full mx-auto">
+          <div className="flex flex-col gap-4 sm:gap-6 w-full max-w-[600px] sm:max-w-[900px] mx-auto">
             {/* Profile Editing */}
-            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] flex flex-col gap-4 border-2 border-black">
+            <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] flex flex-col gap-3 sm:gap-4 border-2 border-black">
               <div className="text-center font-bold">
                 <OutlineText size="extraLarge">Profile</OutlineText>
               </div>
@@ -143,7 +141,7 @@ export const Account = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <ButtonGeneric color="blue" size="medium" onClick={handleSave}>
                 Save
               </ButtonGeneric>
@@ -157,9 +155,9 @@ export const Account = () => {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col gap-6 max-w-[900px] w-full mx-auto">
+          <div className="flex flex-col gap-4 sm:gap-6 w-full max-w-[600px] sm:max-w-[900px] mx-auto">
             {/* Profile Info */}
-            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+            <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
               <div className="text-center font-bold">
                 <OutlineText size="extraLarge">Profile</OutlineText>
               </div>
@@ -171,7 +169,7 @@ export const Account = () => {
             </div>
 
             {/* Stats */}
-            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+            <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
               <div className="text-center font-bold">
                 <OutlineText size="extraLarge">Stats</OutlineText>
               </div>
@@ -184,12 +182,12 @@ export const Account = () => {
             </div>
 
             {/* Achievements */}
-            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+            <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
               <div className="text-center font-bold">
                 <OutlineText size="extraLarge">Achievements</OutlineText>
               </div>
               {userData.achievments?.length ? (
-                <ul className="list-disc ml-6">
+                <ul className="list-disc ml-4 sm:ml-6">
                   {userData.achievments.map((ach, idx) => (
                     <li key={idx}>{ach}</li>
                   ))}
@@ -200,14 +198,14 @@ export const Account = () => {
             </div>
 
             {/* Monsters */}
-            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+            <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
               <div className="text-center font-bold">
                 <OutlineText size="extraLarge">Monster Stats</OutlineText>
               </div>
               {userData.monstersStat?.length ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {userData.monstersStat.map((m, idx) => (
-                    <div key={idx} className="border p-3 rounded-lg">
+                    <div key={idx} className="border p-2 sm:p-3 rounded-lg">
                       <p className="font-bold">{m.monsterId}</p>
                       <p>Health: {m.maxHealth}</p>
                       <p>Attack Bonus: {m.attackBonus}</p>
@@ -221,7 +219,7 @@ export const Account = () => {
             </div>
 
             {/* Adventure Progression */}
-            <div className="p-4 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+            <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
               <div className="text-center font-bold">
                 <OutlineText size="extraLarge">
                   Adventure Progression

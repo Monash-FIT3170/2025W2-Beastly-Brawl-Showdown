@@ -5,7 +5,6 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
-import { ButtonResizableText } from "../../components/buttons/ButtonResizableText";
 import { LoginPopup } from "./Login";
 
 export const Home = () => {
@@ -20,10 +19,7 @@ export const Home = () => {
     };
 
     socket.on("login-status", handleLoginStatus);
-
-    return () => {
-      socket.off("login-status", handleLoginStatus);
-    };
+    return () => socket.off("login-status", handleLoginStatus);
   }, []);
 
   const createGame = () => {
@@ -32,13 +28,11 @@ export const Home = () => {
   };
 
   socket.on("new-game", ({ code }) => {
-    const codeString = code.toString();
-    FlowRouter.go(`/host/${codeString}`);
+    FlowRouter.go(`/host/${code}`);
   });
 
-  const renderJoinLobby = () => {
-    FlowRouter.go("/join");
-  };
+  const renderJoinLobby = () => FlowRouter.go("/join");
+  const renderAdventure = () => FlowRouter.go("/adventure/level-select");
 
   const handleLoginSuccess = (username: string) => {
     setShowLogin(false);
@@ -50,15 +44,10 @@ export const Home = () => {
     console.log("Exit login");
   };
 
-  // Called on 'Adventure' button press
-  const renderAdventure = () => {
-    FlowRouter.go("/adventure/level-select");
-  };
-
   return (
     <BlankPage>
-      {/* Top-right login/account button */}
-      <div className="absolute top-10 right-10 z-50">
+      {/* Top-right login/account button with mobile spacing */}
+      <div className="absolute top-4 sm:top-10 right-4 sm:right-10 z-50">
         {!loggedInUser ? (
           <ButtonGeneric
             color="ronchi"
@@ -78,22 +67,24 @@ export const Home = () => {
         )}
       </div>
 
-      <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
-        <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
+      {/* Logo section */}
+      <div className="flex flex-row h-[40vh] w-full sm:h-[50vh] lg:h-[60vh] items-center justify-center sm:justify-around px-4 sm:px-0">
+        <LogoResizable className="w-[60%] sm:w-1/4 max-w-[300px] sm:max-w-[400px]" />
       </div>
 
-      <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-5 sm:space-y-30">
+      {/* Main buttons */}
+      <div className="flex flex-col sm:flex-row items-center justify-center w-full sm:w-2/3 lg:w-1/2 gap-4 sm:gap-6 mt-6 sm:mt-10 px-4 sm:px-0">
         <ButtonGeneric
           color="ronchi"
           size="large"
           onClick={createGame}
-          mobileHidden={"true"}
+          mobileHidden="true"
         >
-          <OutlineText size="large">HOST GAME</OutlineText>
+          <OutlineText size="large">HOST</OutlineText>
         </ButtonGeneric>
 
         <ButtonGeneric color="ronchi" size="large" onClick={renderJoinLobby}>
-          <OutlineText size="large">JOIN GAME</OutlineText>
+          <OutlineText size="large">JOIN</OutlineText>
         </ButtonGeneric>
 
         <ButtonGeneric color="ronchi" size="large" onClick={renderAdventure}>
