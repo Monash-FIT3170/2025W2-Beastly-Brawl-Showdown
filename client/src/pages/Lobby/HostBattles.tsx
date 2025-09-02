@@ -15,6 +15,7 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { GameModeIdentifier } from "/types/single/gameMode";
+import ScoringLeaderboard from "../../components/match-summary/ScoringLeaderboard";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -26,6 +27,9 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const [gameSession, setGameSession] = useState<GameSessionState>();
   const [playerStats, setPlayerStats] = useState<PlayerStats>();
   const [exit, setExit] = useState<Boolean>();
+  const [hostWaitNextRound, setWaitNextRound] = useState<boolean>(false);
+  const [hostPrepareNextRound, setPrepareNextRound] = useState<boolean>(false);
+  const [time, setTime] = useState<number>(5);
 
   // Function to extract player statistics from battleStates
   const extractPlayerStatistics = (battles: BattleState[] | null) => {
@@ -110,6 +114,17 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       setPlayerStats(stats);
     });
 
+    socket.on("host-wait-next-round", () => {
+      setWaitNextRound(true)
+    })
+
+    socket.on("host-prepare-next-round", () => {
+      console.log("[PREPARENEXROUND]: test"),
+      setWaitNextRound(false),
+      setPrepareNextRound(true)
+    }
+    )
+
     return () => {
       {
         /* This is the cleanup function that React will call when the component unmounts.
@@ -117,11 +132,35 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       }
       // socket.off("most_chosen_monster");
       socket.off("game-session-state");
+      socket.off("host-wait-next-round")
+      socket.off("host-prepare-next-round")
     };
   }, []);
 
+    useEffect(() => {
+    if (!hostPrepareNextRound){return}
+
+    //Countdown 
+    const countdown = setInterval(() => {
+      setTime((prev) => prev - 1);
+    }, 1000); //1 second per interval
+
+    //Remove the popup
+    const timeout = setTimeout(() =>{
+      socket.emit("start-next-battle")
+      setPrepareNextRound(false)
+      setTime(5)
+    }, 5000) // 5 seconds before user get directed to home page
+    
+    return () => {
+      clearInterval(countdown); // interval cleanup
+      clearTimeout(timeout); //timeout cleanup
+    }
+    
+  }, [hostPrepareNextRound])
+
   useEffect(() => {
-    const handleGameMode = ({ mode }: { mode: Mode }) => {
+    const handleGameMode = (mode: GameModeIdentifier) => {
       console.log("Received game mode:", mode);
       setGameMode(mode);
     };
@@ -151,6 +190,22 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
         overflow: "auto",
       }}
     >
+        {hostPrepareNextRound && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+          <BlackText size = 'large'>ALL PLAYER ARE READY</BlackText>
+          <BlackText size = 'large'>NEXT ROUND START IN {time} SECONDS</BlackText>
+          </div>
+        </PopupClean>)}
+
+        {hostWaitNextRound && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+          <BlackText size = 'large'>ROUND {gameSession.metadata.round} HAS ENDED</BlackText>
+          <BlackText size = 'large'>WAITING FOR PLAYERS FOR NEXT ROUND...</BlackText>
+          </div>
+        </PopupClean>)}
+
         {exit && (
         <PopupClean>
           <div className="flex flex-col justify-around">
@@ -206,7 +261,10 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
             <div
               style={{ minWidth: "260px", height: "100%", overflow: "auto" }}
             >
-              <RightPanel battleStates={gameSession.battleStates} />
+              {gameMode == GameModeIdentifier.SCORING ? 
+                <ScoringLeaderboard battleStates={gameSession.battleStates}/> :
+                <RightPanel battleStates={gameSession.battleStates} /> 
+              }
             </div>
           </div>
         </div>

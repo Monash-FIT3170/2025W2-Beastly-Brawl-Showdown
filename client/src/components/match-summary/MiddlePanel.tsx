@@ -6,7 +6,7 @@ import { GameModeIdentifier } from '/types/single/gameMode';
 
 interface MiddlePanelProps {
   gameSession: GameSessionState;
-  gameMode: GameModeIdentifier;
+  gameMode: GameModeIdentifier | null;
 }
 
 const MiddlePanel: React.FC<MiddlePanelProps> = ({ gameSession, gameMode }) => {

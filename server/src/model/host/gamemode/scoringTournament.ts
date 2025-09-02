@@ -9,7 +9,7 @@ import { GameModeIdentifier } from "/types/single/gameMode";
 import { ScoringConfig } from "/types/single/scoringConfig";
 import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
 import { ActionResult } from "/types/single/actionState";
-import { BonusSystem, defaultBonus } from "/types/single/playerScore";
+import { BonusSystem, defaultBonus, StreakIdentifier } from "/types/single/playerScore";
 import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 
 export class ScoringTournament implements IGameMode{
@@ -57,18 +57,59 @@ export class ScoringTournament implements IGameMode{
 			this.board.setScore(winner.getId(), {
 				bonuses: this.bonus.win
 			})
+
+			//finished with hp above a certain percentage
+			const currentHp = winner.getHealth()
+			const maxHp = winner.getMonster()?.getMaxHealth()
+			const percHp = Math.round((currentHp / maxHp) * 100)
+			if (percHp > this.bonus.finishedWithHpAbove.percentage){
+				this.board.setScore(winner.getId(), {
+				bonuses: this.bonus.finishedWithHpAbove.bonus
+			})
+			}
+		}
+
+		let playersInBattle = battle.getPlayers();
+
+		playersInBattle.forEach((player) => {
+			if (winner === null){
+				this.board.setScore(player.getId(), {
+					bonuses: this.bonus.inStreak,
+					currentStreak: StreakIdentifier.DRAW
+				})
+			} else if (player.getId() === winner.getId()){
+					this.board.setScore(player.getId(), {
+					bonuses: this.bonus.inStreak,
+					currentStreak: StreakIdentifier.WIN
+				})
+			} else {
+					this.board.setScore(player.getId(), {
+					bonuses: this.bonus.inStreak,
+					currentStreak: StreakIdentifier.LOSE
+				})
+	}})
+
+		console.log("[SESSION ENDED]: ", this.isSessionConcluded(session))
+		if (this.isSessionConcluded(session)){
+			return
 		}
 
 		console.log("[GAME ENDED] Scoreboard: ", this.board.showBoard())
 
 		io.to(battle.getId()).emit("battle-closed", {gameCode : session.getGameCode().toString()})
+		
 
+		if (session.areBattlesConcluded()){
+			socket.emit("host-wait-next-round")
+		}
+		
 
 		io.sockets.sockets.get(battle.getPlayers()[0].getId())?.once("ready_next_battle", () => {
 			console.log("Server test 1 (Scoring)", io.sockets.sockets.get(battle.getPlayers()[0].getId())?.id)
 			this.playerFinished += 1
 			console.log(this.playerFinished,session.getPlayers().getItems().length)
 			if ( this.playerFinished == session.getEffectivePlayer()){
+				// socket.emit("host-prepare-next-round")
 				this.onBattlesEnded(session, io, socket)
 		}
 		})
@@ -78,7 +119,8 @@ export class ScoringTournament implements IGameMode{
 			this.playerFinished += 1
 			console.log(this.playerFinished,session.getPlayers().getItems().length)
 			if (this.playerFinished == session.getEffectivePlayer()){
-			this.onBattlesEnded(session, io, socket)
+				// socket.emit("host-prepare-next-round")
+				this.onBattlesEnded(session, io, socket)
 		}
 		})
 
@@ -96,25 +138,33 @@ export class ScoringTournament implements IGameMode{
 		}
 
 		console.log("proceed to bext battle")
+		socket.emit("host-prepare-next-round")
 
-		setTimeout(() => {
-			this.playerFinished = 0
-			session.clearBattles();
-			this.round += 1;
-			session.createMatches();
+		const handleNextBattle = () => {
+		this.playerFinished = 0;
+		session.clearBattles();
+		this.round += 1;
+		session.createMatches();
 
-			for (const battle of session.getBattles().getItems()) {
-
-				for (const player of battle.getPlayers()) {
-					player.prepareForNextBattle();
-					const playerSocket = io.sockets.sockets.get(player.getId());
-					playerSocket?.join(battle.getId());
-				}
-
-				io.to(battle.getId()).emit("battle_started", battle.getId());
-				proceedBattleTurn(io, socket, session, battle);
+		for (const battle of session.getBattles().getItems()) {
+			for (const player of battle.getPlayers()) {
+			player.prepareForNextBattle();
+			const playerSocket = io.sockets.sockets.get(player.getId());
+			playerSocket?.join(battle.getId());
 			}
-		}, 10000)
+
+			io.to(battle.getId()).emit("battle_started", battle.getId());
+			proceedBattleTurn(io, socket, session, battle);
+		}
+
+		socket.off("start-next-battle", handleNextBattle);
+		};
+
+		socket.on("start-next-battle", handleNextBattle);
+
+		// setTimeout(() => {
+
+		// }, 10000)
 
 			
 		}
@@ -122,14 +172,15 @@ export class ScoringTournament implements IGameMode{
 	//Provide metadata of scoring tournament
 	getMetadata(): GameSessionStateMetaData {
 		return {
-			round: this.round
+			round: this.round,
+			playerScore: this.board.showBoard2()
 		}
 	}
 	
 
 	//Check whether the game session has ended
 	isSessionConcluded(session: GameSession): boolean {
-		return this.round > this.config.rounds
+		return this.round == this.config.rounds
 	}
 
 	

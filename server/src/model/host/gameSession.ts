@@ -2,7 +2,7 @@ import { Player } from "../game/player";
 import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
-import { GameSessionState } from "/types/composite/gameSessionState";
+import { GameSessionState,GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
@@ -45,6 +45,7 @@ export default class GameSession {
     this.waitQueue = new Queue<Player>(4);
     this.battles = new Queue<Battle>(this.battle_max);
     // this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
+    this.mode = addition.mode
 
     if (addition.presetGameCode !== undefined) {
       // Use preset game code if provided
@@ -391,7 +392,8 @@ export default class GameSession {
       currentPhase: this.currentPhase,
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
-      metadata: metadata
+      waitingPlayers: this.getPlayersNotInBattle(),
+      metadata: this.getMetadata()
     };
   }
 
@@ -447,5 +449,9 @@ export default class GameSession {
 
   public getFinalWinner(): PlayerState | null {
     return this.finalWinner;
+  }
+
+  public getMetadata(): GameSessionStateMetaData{
+    return this.mode.getMetadata()
   }
 }

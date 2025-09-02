@@ -16,6 +16,8 @@ import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
 import { Account } from "./src/pages/Home/Account";
+import { TestPage } from "./src/pages/Test/TestPage";
+import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -30,6 +32,15 @@ FlowRouter.route("/", {
     mount(Home);
   },
 });
+
+
+FlowRouter.route("/host/test", {
+  name: "TestPage",
+  action() {
+    mount(TestPage); 
+  },
+});
+
 
 FlowRouter.route("/host", {
   name: "HostLobby",

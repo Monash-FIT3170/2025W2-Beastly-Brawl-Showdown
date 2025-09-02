@@ -25,12 +25,13 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
   const player1Win = player1State.currentHealth != 0 && player2State.currentHealth == 0;
   const player2Win = player2State.currentHealth != 0 && player1State.currentHealth == 0;
 
-  // let p1Score;
-  // let p2Score;
-  // if (metadata){
-  //   p1Score = metadata.playerScore[player1Id].points
-  //   p2Score = metadata.playerScore[player2Id].points
-  // }
+  // console.log("[METADATA]:", metadata)
+  let p1Score;
+  let p2Score;
+  if (metadata.playerScore){
+    p1Score = metadata.playerScore[player1Id].points
+    p2Score = metadata.playerScore[player2Id].points
+  }
 
   return (
     <div 
@@ -61,7 +62,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
           playerIndex={player1Index}
           isLeftPlayer={player1LeftPlayer}
           winner={player1Win}
-          // score = {p1Score}
+          playerScore = {p1Score}
         />
 
         {/* Use the new DifferentPhaseImage component */}
@@ -81,7 +82,7 @@ const BattlePanel: React.FC<BattlePanelProps> = ({ battleState, battleIndex, cur
           playerIndex={player2Index}
           isLeftPlayer={player2LeftPlayer}
           winner={player2Win}
-          // score = {p2Score}
+          playerScore = {p2Score}
         />
       </div>
     

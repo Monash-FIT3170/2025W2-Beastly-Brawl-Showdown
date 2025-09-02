@@ -86,7 +86,7 @@ export const Home = () => {
         <ButtonGeneric
           color="ronchi"
           size="large"
-          onClick={createGame}
+          onClick={renderConfigPage}
           mobileHidden={"true"}
         >
           <OutlineText size="large">HOST GAME</OutlineText>
