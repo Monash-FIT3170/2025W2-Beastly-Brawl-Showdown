@@ -9,7 +9,7 @@ const Background: React.FC<BackgroundProps> = ({ children }) => {
   return (
     <div 
       style={{
-        backgroundImage: `url("/assets/match-summary/forest.png")`,
+        backgroundImage: "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/FOREST.jpg')",
         backgroundRepeat: 'no-repeat',
         backgroundSize: "cover",
         height: '100vh',        // Change from minHeight to height

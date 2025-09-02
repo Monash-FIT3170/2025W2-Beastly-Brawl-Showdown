@@ -11,7 +11,7 @@ export const MonsterImageResizable = ({
   width,
   height,
 }: MonsterImageProps) => {
-  const path = `/assets/characters/${name}.png`;
+  const path = `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/${name}.png`;
 
   return (
     <img

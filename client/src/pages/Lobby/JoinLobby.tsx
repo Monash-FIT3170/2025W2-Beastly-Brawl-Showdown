@@ -29,7 +29,7 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
 
   // Called when 'JOIN ROOM' button is clicked
   const joinSession = () => {
-    socket.emit("join-game", { gameCode: code, name: name });
+    socket.emit("join-game", { gameCode: code, name: name.trim() });
   };
 
   // Listen for the "join-accept" event from the server

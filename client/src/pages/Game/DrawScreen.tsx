@@ -38,7 +38,7 @@ const DrawScreen: React.FC = () => {
 
           <img
             style={{ width: `${40}rem`, height: `${40}rem` }}
-            src={`/GRAVE.png`}
+            src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/GRAVE.png`}
             alt={`GRAVE image`}
           />
 

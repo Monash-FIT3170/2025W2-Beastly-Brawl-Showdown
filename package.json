@@ -16,7 +16,7 @@
     "babel-runtime": "^6.26.0",
     "bcrypt": "^6.0.0",
     "dotenv-cli": "^10.0.0",
-    "meteor-node-stubs": "^1.2.22",
+    "meteor-node-stubs": "^1.2.24",
     "postcss": "^8.5.3",
     "postcss-load-config": "^6.0.1",
     "qrcode.react": "^4.2.0",
