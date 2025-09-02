@@ -10,6 +10,7 @@ import { GenericHeader } from "../../components/cards/GenericHeader";
 // Schema types
 interface PlayerMonsterStatSchema {
   monsterId: string;
+  monsterName: string;
   maxHealth: number;
   attackBonus: number;
   armourClass: number;
@@ -211,7 +212,7 @@ export const Account = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   {userData.monstersStat.map((m, idx) => (
                     <div key={idx} className="border p-3 sm:p-4 rounded-lg">
-                      <p className="font-bold">{m.monsterId}</p>
+                      <p className="font-bold">{m.monsterName}</p>
                       <p>Health: {m.maxHealth}</p>
                       <p>Attack Bonus: {m.attackBonus}</p>
                       <p>Armour Class: {m.armourClass}</p>
