@@ -380,7 +380,7 @@ export default class GameSession {
       }
     }
 
-    console.log("[CURRENTMODE]: ", this.mode)
+    console.log("[CURRENT MODE]: ", this.mode.name)
     let metadata = this.mode.getMetadata()
 
     return {
