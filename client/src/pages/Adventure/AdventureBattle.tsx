@@ -53,7 +53,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
   //ADVENTURE PAGE:
   const [dialogue, setDialogue] = useState<string[] | null>(null);
-  const [attackState, setAttackState] = useState<AttackState | null>();
   const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const [stage, setStage] = useState<number>(1);
 
@@ -129,7 +128,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         setDialogue(state.dialogue);
         setCurrentEnemy(state.enemy ?? null);
         setBattleState(null); // Clear battle
-        setAttackState(state.attack);
         setPlayerState(state.player);
       } else if (state.type === "choice") {
         // Handle choice state
@@ -204,14 +202,14 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         {viewingInfo && (
           <AdventureInfoPopup
             playerState={playerState}
-            attackState={attackState}
+            attackState={playerState.attackState}
             onClose={() => setViewingInfo(false)}
           ></AdventureInfoPopup>
         )}
         {viewingEnemyInfo && (
           <AdventureInfoPopup
             playerState={battleState.opponentPlayer}
-            attackState={undefined}
+            attackState={battleState.opponentPlayer.attackState}
             onClose={() => setViewingEnemyInfo(false)}
           ></AdventureInfoPopup>
         )}

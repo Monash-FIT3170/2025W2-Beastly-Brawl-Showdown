@@ -366,6 +366,7 @@ export class Player {
       battleLogs: this.battleLogs,
       equipment: this.equipment.map((e) => e.getState()),
       consumables: this.consumables.map((c) => c.getState()),
+      attackState: this.getMonster()?.getAttackAction().getAttackState()!,
     };
   }
 }

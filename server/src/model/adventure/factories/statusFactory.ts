@@ -9,6 +9,7 @@ const statusFactory: Record<string, () => Status> = {
   lake_curse_mini: () => new LakeCurse(3),
   lake_curse: () => new LakeCurse(10),
   lake_blessing: () => new LakeBlessing(30),
+  lake_blessing_mini: () => new LakeBlessing(10),
 };
 
 export function createStatus(id: string): Status {

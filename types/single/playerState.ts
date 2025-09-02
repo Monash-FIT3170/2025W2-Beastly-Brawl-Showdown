@@ -1,3 +1,4 @@
+import { AttackState } from "./actionState";
 import { ConsumableState, EquipmentState } from "./itemState";
 import { MonsterState } from "./monsterState";
 import { Status } from "/server/src/model/game/status/status";
@@ -24,4 +25,6 @@ export interface PlayerState {
 
   equipment: EquipmentState[];
   consumables: ConsumableState[];
+
+  attackState: AttackState;
 }

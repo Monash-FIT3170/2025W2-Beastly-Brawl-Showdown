@@ -221,7 +221,8 @@
       {
         "id": "drink_reward",
         "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "result": ["You feel powerful"],
+        "statusId": "lake_blessing_mini"
       },
       {
         "id": "drink_curse",

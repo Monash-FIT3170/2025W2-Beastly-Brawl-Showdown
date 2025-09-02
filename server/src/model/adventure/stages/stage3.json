@@ -62,14 +62,9 @@
         "type": "DIALOGUE",
         "result": [
           "You reach your hand out to the slime.",
-          "It oozes happily and crawls from your hand to your bag."
-        ],
-        "next": "friendship_conclusion"
-      },
-      {
-        "id": "friendship_conclusion",
-        "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+          "It oozes happily and crawls from your hand to your bag.",
+          "You adventure onwards together."
+        ]
       },
       {
         "id": "slime_fight",
@@ -89,7 +84,7 @@
       {
         "id": "slime_scent",
         "type": "CONSUMABLE",
-        "consumableId": "mini_health_potion"
+        "consumableId": "slime_substance"
       },
       {
         "id": "no_investigation",
