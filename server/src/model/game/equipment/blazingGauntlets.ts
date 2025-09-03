@@ -12,7 +12,7 @@ export class BlazingGauntlets extends Equipment {
   public equip(player: Player): void {
     //TODO: implement
     const attack = player.getMonster()?.getAttackAction();
-    attack?.incrementDamageDealt(this.strength * 10000);
+    attack?.incrementDamageDealt(this.strength);
   }
 
   public unequip(player: Player): void {
