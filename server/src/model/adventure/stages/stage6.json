@@ -93,12 +93,13 @@
           "While you may have lost a friend, you gained an item and a sense of fulfilment"
         ],
         "type": "DIALOGUE",
-        "next": "slime_cookie"
+        "next": "slime_blessing"
       },
       {
-        "id": "slime_cookie",
-        "type": "CONSUMABLE",
-        "consumableId": "slime_substance"
+        "id": "slime_blessing",
+        "result": ["You have received the blessing of the slimes."],
+        "type": "STATUS",
+        "statusId": "slime_substance"
       }
     ]
   }
