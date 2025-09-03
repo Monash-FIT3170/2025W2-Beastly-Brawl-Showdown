@@ -63,7 +63,7 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
         {/* Player / Monster Name */}
         <div className="leading-none pt-[2%]">
           <OutlineText size="small">
-            {battleState.yourPlayerMonster.name.toUpperCase()}
+            {battleState.yourPlayerMonster.id.toUpperCase().replace("_", " ")}
           </OutlineText>
         </div>
         <div className="leading-none pb-[2%]">
@@ -109,7 +109,9 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
         {/* Player / Monster Name */}
         <div className="leading-none pt-[2%]">
           <OutlineText size="small">
-            {battleState.opponentPlayerMonster.name.toUpperCase()}
+            {battleState.opponentPlayerMonster.id
+              .toUpperCase()
+              .replace("_", " ")}
           </OutlineText>
         </div>
         <div className="leading-none pb-[2%]">

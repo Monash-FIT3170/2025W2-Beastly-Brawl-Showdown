@@ -129,7 +129,7 @@ export const AdventureBagPopup = ({
                   </BlackText>
                 )}
                 {/* map of consumables */}
-                <div className="w-full p-[1rem] flex flex-wrap gap-4">
+                <div className="w-full p-[1rem] flex flex-wrap gap-4 justify-center">
                   {playerState?.consumables.map((c) => (
                     <>
                       <ConsumableCard
