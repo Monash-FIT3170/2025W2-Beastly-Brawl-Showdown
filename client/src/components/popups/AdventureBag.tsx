@@ -147,7 +147,7 @@ export const AdventureBagPopup = ({
               <>
                 <div className="grid grid-flow-row h-full w-full auto-rows-auto">
                   {[0, 1, 2].map((i) => (
-                    <div key={i} className="py-2 bg-green-200">
+                    <div key={i} className="py-2">
                       <OutlineText size="medium">Slot {i + 1}</OutlineText>
                       <div className="h-[2px] bg-blackCurrant mb-4 w-[90%] mx-auto" />
                       {playerState?.equipment[i] ? (
@@ -165,7 +165,7 @@ export const AdventureBagPopup = ({
             )}
           </div>
 
-          <div className="grid grid-cols-3 justify-items-center bg-blue-200 p-[1rem]">
+          <div className="grid grid-cols-3 justify-items-center p-[1rem]">
             <div className="flex justify-center items-center">
               {viewingTab !== 0 && (
                 <IconButton
