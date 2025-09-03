@@ -14,8 +14,8 @@ export class SlimeBoost extends Status {
       case "AC":
         //Doubles AC for this round.
         current = player.getArmourClassStat();
-        player.incArmourClassStat(1);
-        console.log(`Slime Boost: Boosted AC +1`);
+        player.incArmourClassStat(5);
+        console.log(`Slime Boost: Boosted AC +5`);
       case "HP":
         // Heals for 3 HP
         current = player.getHealth();
@@ -24,8 +24,8 @@ export class SlimeBoost extends Status {
       default:
         //Doubles ATK+
         current = player.getAttackStat();
-        player.incAttackStat(1);
-        console.log(`Slime Boost: ${player.getName()} Boosted ATK Bonus +1`);
+        player.incAttackStat(2);
+        console.log(`Slime Boost: ${player.getName()} Boosted ATK Bonus +2`);
     }
 
     console.error("Slime Support NOT TESTED");
@@ -47,11 +47,20 @@ export class SlimeBoost extends Status {
     const currentATK = player.getAttackStat();
     const currentHP = player.getHealth();
 
-    const stats = {
-      AC: this.getRelativeValue(currentAC, acScale),
-      ATK: this.getRelativeValue(currentATK, atkScale),
-      HP: this.getRelativeValue(currentHP, hpScale),
-    };
+    if (currentHP <= 0) {
+      //to remove immortality
+      var stats = {
+        AC: this.getRelativeValue(currentAC, acScale),
+        ATK: this.getRelativeValue(currentATK, atkScale),
+        HP: 1000,
+      };
+    } else {
+      stats = {
+        AC: this.getRelativeValue(currentAC, acScale),
+        ATK: this.getRelativeValue(currentATK, atkScale),
+        HP: this.getRelativeValue(currentHP, hpScale),
+      };
+    }
 
     // Find the lowest entry
     const [lowestStatName, lowestStatValue] = Object.entries(stats).reduce(

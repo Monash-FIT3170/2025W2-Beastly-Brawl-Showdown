@@ -29,6 +29,7 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
       mt-[-8px]
     "
     >
+      {/* Your Player's Details */}
       <div
         className="
         flex
@@ -39,15 +40,19 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
         text-left
       "
       >
+        {/* Health Bar */}
         <BattleHealthBar
           currentHealth={battleState.yourPlayer.currentHealth}
           maxHealth={battleState.yourPlayerMonster.maxHealth}
         />
-        <div className="flex flex-row">
-          <div className="size-[30px]" />
+        {/* Status Map */}
+        <div className="flex flex-row xl:pt-[0.5rem] pt-[1.5rem] gap-x-[0.5rem] xl:gap-x-[0.5rem]">
+          {battleState.yourPlayer.statuses.length === 0 && (
+            <div className="lg:size-[1rem] sm:size-[3rem]" />
+          )}{" "}
           {battleState.yourPlayer.statuses.map((status) => (
             <img
-              className=" size-[30px] object-contain rounded-md block"
+              className=" size-[4.5rem] xl:size-[2.5rem] object-contain rounded-md inline-block"
               src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
                 .replace(" ", "_")
                 .toUpperCase()}.png`}
@@ -55,6 +60,7 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
             />
           ))}
         </div>
+        {/* Player / Monster Name */}
         <div className="leading-none pt-[2%]">
           <OutlineText size="small">
             {battleState.yourPlayerMonster.name.toUpperCase()}
@@ -66,6 +72,8 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
           </OutlineText>
         </div>
       </div>
+
+      {/* Enemy Player's Details */}
       <div
         className="
         flex
@@ -76,15 +84,20 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
         text-right
       "
       >
+        {/* Health Bar */}
         <BattleHealthBar
           currentHealth={battleState.opponentPlayer.currentHealth}
           maxHealth={battleState.opponentPlayerMonster.maxHealth}
         />
-        <div className="flex flex-row">
-          <div className="size-[30px]" />
+
+        {/* Status Map */}
+        <div className="flex flex-row xl:pt-[0.5rem] pt-[1.5rem] gap-x-[0.5rem] xl:gap-x-[0.5rem]">
+          {battleState.opponentPlayer.statuses.length === 0 && (
+            <div className="lg:size-[1rem] sm:size-[3rem]" />
+          )}{" "}
           {battleState.opponentPlayer.statuses.map((status) => (
             <img
-              className=" size-[30px] object-contain rounded-md block"
+              className=" size-[4.5rem] xl:size-[2.5rem] object-contain rounded-md inline-block"
               src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
                 .replace(" ", "_")
                 .toUpperCase()}.png`}
@@ -92,6 +105,8 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
             />
           ))}
         </div>
+
+        {/* Player / Monster Name */}
         <div className="leading-none pt-[2%]">
           <OutlineText size="small">
             {battleState.opponentPlayerMonster.name.toUpperCase()}

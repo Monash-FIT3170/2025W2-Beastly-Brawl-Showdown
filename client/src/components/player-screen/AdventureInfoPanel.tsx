@@ -74,13 +74,6 @@ export const AdventureInfoPanel: React.FC<AdventureInfoPanelProps> = ({
                 alt={`${status.name.toUpperCase()} image`}
               />
             ))}
-            {/* {testingMap.map((status) => (
-              <img
-                className=" lg:size-[30px] sm:size-[50px] object-contain rounded-md inline-block"
-                src={`/assets/statuses/${status.toUpperCase()}.png`}
-                alt={`${status.toUpperCase()} image`}
-              />
-            ))} */}
           </div>
         </div>
         {/* Adventure Level/Stage */}
