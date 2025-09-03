@@ -12,11 +12,11 @@
       },
       {
         "id": "stranger_dialogue",
-        "type": "DIALOGUE",
-        "results": [
+        "result": [
           "You don't stand a chance against me now.",
           "I've toppled greater foes than you."
         ],
+        "type": "DIALOGUE",
         "enemyId": "pouncing_bandit",
         "next": "stranger_fight"
       },
