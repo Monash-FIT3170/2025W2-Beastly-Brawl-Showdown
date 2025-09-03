@@ -31,7 +31,8 @@ const AdventureWin: React.FC = () => {
     return () => {
       socket.off("monster_response", onMonster);
     };
-  }, []);
+  }, [FlowRouter.getParam("monsterId")]);
+  // const monster = FlowRouter.getParam("monsterId") as MonsterIdentifier | undefined;
 
   const leave = () => {
     socket.emit("leave-game", { userID: socket.id });
@@ -57,15 +58,16 @@ const AdventureWin: React.FC = () => {
       <GenericHeader color="blue">
         <OutlineText size="extraLarge">NEW MONSTER!</OutlineText>
       </GenericHeader>
-      <div className="bg-peach flex items-center flex flex-col justify-around border-[8px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
+      <div className="bg-peach flex items-center flex flex-col justify-around border-[6px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
         <OutlineText size="large">YOU'VE UNLOCKED</OutlineText>
 
-        <div className={`${colorLoader[monster.archetypeId]} flex items-center justify-around border-[8px] border-blackCurrant w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem] rounded-xl`}>
+        <div className={`bg-[#FFA600] flex flex-col items-center justify-around border-[6px] border-blackCurrant w-[40rem] h-[50rem] xl:w-[20rem] xl:h-[20rem] rounded-xl`}>
           
           <MonsterImage
             name={monster.id}
-            className="sm:w-[20rem] sm:h-[20rem] lg:w-[15rem] lg:h-[15rem]"
+            className="sm:w-[30rem] sm:h-[30rem] lg:w-[15rem] lg:h-[15rem]"
           />
+          <OutlineText size="large">{monster.name}</OutlineText>
         </div>
         <ButtonGeneric color="blue" size="medium" onClick={() => leave()}>
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">

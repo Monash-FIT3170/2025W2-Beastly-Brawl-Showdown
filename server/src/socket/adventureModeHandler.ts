@@ -2,7 +2,7 @@ import { Server, Socket } from "socket.io";
 import { activeAdventures, players, battles } from "../../main";
 import { Adventure } from "../model/game/adventure";
 import { Player } from "../model/game/player";
-import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
+import { MonsterIdentifier } from "/types/single/monsterState";
 import { Battle } from "../model/game/battle";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
@@ -25,11 +25,10 @@ import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
 import { LakeCurse } from "../model/game/status/lakeCurse";
 import { createConsumable } from "../model/adventure/factories/consumableFactory";
 import { SlimeBoost } from "../model/game/status/slimeBoost";
-import { resolve } from "path";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
-
+  
   //LEVEL SELECT SOCKET
   socket.on("adventure_level_selected", async ({ level }) => {
     const player = new Player(socket.id, "Guest", null); // TODO: Use real player name
@@ -70,6 +69,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       progressAdventure(io, socket, adventure, adventure.getStage());
 
       //TESTING ITEMS PLEASE DELETE:
+      /** 
       player.giveConsumable(
         new PercentageHealthPotion("Super Health Potion", 1)
       );
@@ -83,7 +83,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       console.log("ADV TEST: CONSUMABLES", player.getConsumables());
       console.log("ADV TEST: EQUIPMENT", player.getEquipment());
       console.log("ADV TEST: EQUIPMENT", player.getStatuses());
-      player.addStatus(new SlimeBoost(10));
+      */
     }
   );
 
@@ -91,7 +91,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
   socket.on("adventure_next", async ({ stage }) => {
     const adventure = activeAdventures.get(socket.id);
     if (!adventure) return;
-    
+
     const lastOutcome = loadNextStory(io, adventure, socket);
 
     if (lastOutcome && lastOutcome.next) {
@@ -152,6 +152,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         const newEquipInstance = createEquipment(newEquipment.id);
         equipmentList.splice(removeIndex, 0, newEquipInstance);
       }
+    
     }
 
     // Send updated player state to client
@@ -186,7 +187,15 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
     progressAdventure(io, socket, adventure, stage);
   });
-
+  socket.on("monster_request", ({ id }) => {
+      const monster = getMonster(id);
+      if (monster) {
+        socket.emit("monster_response", monster);
+      } else {
+        socket.emit("adventure_unlock_error", { message: "Monster not found" });
+      }
+    });
+    
   socket.on("adventure_take_equipment", ({ equipmentId, stage }) => {
     const adventure = activeAdventures.get(socket.id);
     if (!adventure) return;
@@ -205,7 +214,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         return;
       }
       // If successful, continue adventure
-    }
+  
 
     const lastOutcome = loadNextStory(io, adventure, socket);
 
@@ -218,19 +227,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     }
 
     progressAdventure(io, socket, adventure, stage);
-  });
-};
+}})
 
-//Pass enemy to the winner screne:
-  socket.on("monster_request", ({ id }) => {
-    const monster = getMonster(id);
-    if (monster) {
-      socket.emit("monster_response", monster);
-    } else {
-      socket.emit("adventure_unlock_error", { message: "Monster not found" });
-    }
-  });
-};
 // Helper function to progress adventure outcomes
 export async function progressAdventure(
   io: Server,
@@ -375,7 +373,7 @@ export async function progressAdventure(
   }
 }
 
-function loadNextStory(
+export function loadNextStory(
   io: Server,
   adventure: Adventure,
   socket: Socket
@@ -386,14 +384,11 @@ function loadNextStory(
     adventure.currentOutcomeId = "initial";
     adventure.incrementStage();
     const stage = adventure.getStage();
-    
-    //return enemy monster and go to win page
     const enemy = adventure.getLevelMonster();
     if (stage > 8) {
       console.log("Adventure complete, emitting adventure_win", { monsterId: enemy });
       io.to(socket.id).emit('adventure_win', { monsterId: enemy });
     }
-    
     const loadNodes = loadStage(stage);
     const eligibleNodes = loadNodes.filter((node) => {
       const match = node.level.includes(adventure.getLevel());

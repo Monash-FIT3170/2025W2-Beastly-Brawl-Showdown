@@ -147,7 +147,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                 if (adventure && stage) {
                   // Get current story node and outcome
 
-                  const outcome = loadNextStory(adventure, socket);
+                  const outcome = loadNextStory(io, adventure, socket);
 
                   // If outcome has a next, update currentOutcomeId
                   if (outcome && outcome.next) {

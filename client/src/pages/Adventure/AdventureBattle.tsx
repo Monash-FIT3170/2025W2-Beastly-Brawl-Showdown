@@ -95,8 +95,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     setChoices(null);
   };
 
-  const [showLeave, setShowLeave] = useState(false);
- 
   useEffect(() => {
     const onAdventureWin = ({ monsterId }: { monsterId: string }) => {
       FlowRouter.go(`/adventure/win/${monsterId}`);
