@@ -2,7 +2,7 @@ import { Player } from "../game/player";
 import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
-import { GameSessionState,GameSessionStateMetaData } from "/types/composite/gameSessionState";
+import { GameSessionState, GameSessionStateMetaData, GameSessionFinalResults } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
@@ -32,7 +32,7 @@ export default class GameSession {
   private mode: IGameMode;
   private monsters: Array<String>;
   private botInLobby: boolean = false; // whether has been added to this session or not
-  private finalWinner: PlayerState | null | undefined = undefined;
+  private finalResults: GameSessionFinalResults;
 
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -449,11 +449,28 @@ export default class GameSession {
 
   // If there is no final winner, use null instead
   public setFinalWinner(finalWinner: PlayerState | null): void {
-    this.finalWinner = finalWinner;
+    this.finalResults.finalWinner = finalWinner;
   }
 
-  public getFinalWinner(): PlayerState | null | undefined {
-    return this.finalWinner;
+  // If final winner is null, this means there is no winner
+  public getFinalWinner(): PlayerState | null {
+    return this.finalResults.finalWinner;
+  }
+
+  public setTop3Players(top3Players: PlayerState[]): void {
+    this.finalResults.top3Players = top3Players;
+  }
+
+  public getTop3Players(): PlayerState[] {
+    return this.finalResults.top3Players;
+  }
+
+  public setFinalResults(finalResults: GameSessionFinalResults): void {
+    this.finalResults = finalResults;
+  }
+
+  public getFinalResults(): GameSessionFinalResults {
+    return this.finalResults;
   }
 
   public getMode(): GameModeIdentifier {

@@ -358,4 +358,35 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       socket.emit("battle-royale-final-results", { finalWinner: undefined });
     }
   });
+
+  // Get final results for scoring tournament
+  socket.on("request-scoring-tournament-final-results", ({ gameCode }) => {
+    const gameCodeN = Number(gameCode);
+    const session = activeGameSessions.get(gameCodeN);
+    const top3Players = session?.getTop3Players();
+    const top3Scores = session?.getMetadata().playerScore;
+
+    if (top3Players && top3Scores) {
+      console.log(`Successfully retrieved top 3 for game code ${gameCode}`);
+      socket.emit("scoring-tournament-final-results", { top3Players, top3Scores });
+    } else {
+      console.log(`Failed to retrieve top 3 for game code ${gameCode}`);
+      socket.emit("scoring-tournament-final-results", { top3Players: undefined, top3Scores: undefined });
+    }
+  });
+
+  // Get final results
+  socket.on("request-final-results", ({ gameCode }) => {
+    const gameCodeN = Number(gameCode);
+    const session = activeGameSessions.get(gameCodeN);
+    const finalResults = session?.getFinalResults();
+
+    if (finalResults) {
+      console.log(`Successfully retrieved final results for game code ${gameCode}`);
+      socket.emit("final-results", { finalResults });
+    } else {
+      console.log(`Failed to retrieve final results for game code ${gameCode}`);
+      socket.emit("final-results", { finalResults: null });
+    }
+  });
 };
