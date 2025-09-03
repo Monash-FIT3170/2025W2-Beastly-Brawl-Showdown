@@ -6,19 +6,24 @@
     "outcomes": [
       {
         "id": "initial",
-        "result": [
-          "You feel a familiar presence.",
-          "In the distance you see a familiar face.",
-          "He looks a lot stronger than before.",
-          "You prepare for battle."
-        ],
+        "result": ["In the distance you see a familiar face."],
         "type": "DIALOGUE",
+        "next": "stranger_dialogue"
+      },
+      {
+        "id": "stranger_dialogue",
+        "type": "DIALOGUE",
+        "results": [
+          "You don't stand a chance against me now.",
+          "I've toppled greater foes than you."
+        ],
+        "enemyId": "pouncing_bandit",
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "pouncing_bandit_4",
+        "enemyId": "pouncing_bandit",
         "next": "victory"
       },
       {
@@ -28,7 +33,8 @@
           "I concede defeat. You have well and truly bested me.",
           "If you'd allow, I would like to join you.",
           "Maybe I could learn a thing or two."
-        ]
+        ],
+        "enemyId": "pouncing_bandit"
       }
     ]
   }

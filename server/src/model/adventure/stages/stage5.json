@@ -221,7 +221,7 @@
       },
       {
         "id": "drink_reward",
-        "type": "CONSUMABLE",
+        "type": "STATUS",
         "result": ["You feel powerful"],
         "statusId": "lake_blessing_mini"
       },

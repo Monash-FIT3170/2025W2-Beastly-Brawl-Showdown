@@ -21,13 +21,13 @@
           "Prepare yourself!"
         ],
         "type": "DIALOGUE",
-        "enemyId": "pouncing_bandit_4",
+        "enemyId": "pouncing_bandit",
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "pouncing_bandit_4",
+        "enemyId": "pouncing_bandit",
         "next": "victory"
       },
       {

@@ -364,11 +364,11 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                 <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
                   SPECIAL ABILITIES
                 </p>
-                <div className="flex flex-col justify-center lg:flex-row w-full">
+                <div className="flex flex-col justify-center lg:flex-row w-[95%]">
                   {abilities.map((ability, idx) => (
                     <div
                       key={ability.id || idx}
-                      className="flex flex-row items-center grow-1 justify-left"
+                      className="flex flex-row items-center justify-left w[45%] gap-[2%]"
                     >
                       <img
                         src={
@@ -377,7 +377,7 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                           ".webp"
                         }
                         alt="ability icon"
-                        className="w-[7rem] h-[7rem] rounded-2xl "
+                        className="w-[7rem] h-[7rem] rounded-xl border-blackCurrant border-2"
                       />
                       <div>
                         <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
