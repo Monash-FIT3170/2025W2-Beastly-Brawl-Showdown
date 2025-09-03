@@ -182,7 +182,9 @@ export class BattleRoyale implements IGameMode {
         console.log("[FINAL RESULTS]: There are no winners, everyone got eliminated");
       }
 
-      session.setFinalWinner(finalWinner);
+      session.setFinalResults({
+        finalWinner
+      });
     }
   }
 

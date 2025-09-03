@@ -21,13 +21,13 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
     if (!socket)
       return;
 
-    socket.emit("request-battle-royale-final-results", { gameCode });
-    socket.on("battle-royale-final-results", ({ finalWinner }) => {
-      setFinalWinner(finalWinner);
+    socket.emit("request-final-results", { gameCode });
+    socket.on("final-results", ({ finalResults }) => {
+      setFinalWinner(finalResults.finalWinner);
     });
 
     return () => {
-      socket.off("battle-royale-final-results");
+      socket.off("final-results");
     };
   }, [gameCode]);
 
@@ -43,7 +43,7 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
     );
   }
 
-  console.log(`Winner fetched: ${finalWinner ? finalWinner.name : "There is no final winner"}\n`);
+  console.log(`Winner fetched: ${finalWinner ? finalWinner.name : "There is no final winner"}`);
 
   // Button handler for restarting a new battle royale lobby
   const newLobby = () => {

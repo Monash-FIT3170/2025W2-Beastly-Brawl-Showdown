@@ -447,24 +447,6 @@ export default class GameSession {
     return playersNotInBattle;
   }
 
-  // If there is no final winner, use null instead
-  public setFinalWinner(finalWinner: PlayerState | null): void {
-    this.finalResults.finalWinner = finalWinner;
-  }
-
-  // If final winner is null, this means there is no winner
-  public getFinalWinner(): PlayerState | null {
-    return this.finalResults.finalWinner;
-  }
-
-  public setTop3Players(top3Players: PlayerState[]): void {
-    this.finalResults.top3Players = top3Players;
-  }
-
-  public getTop3Players(): PlayerState[] {
-    return this.finalResults.top3Players;
-  }
-
   public setFinalResults(finalResults: GameSessionFinalResults): void {
     this.finalResults = finalResults;
   }

@@ -7,7 +7,6 @@ import { ScoringTournament } from "../model/host/gamemode/scoringTournament";
 import { BattleRoyale } from "../model/host/gamemode/battleRoyale";
 import { playerAccounts } from "../../main";
 import { GameModeIdentifier } from "/types/single/gameMode";
-import { BattleRoyale } from "../model/host/gamemode/battleRoyale";
 
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
@@ -339,40 +338,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
       console.log(`Game ${gameCodeN} is cancelled.`);
     }, 100);
-  });
-
-  // Get final results for battle royale
-  socket.on("request-battle-royale-final-results", ({ gameCode }) => {
-    const gameCodeN = Number(gameCode);
-    const session = activeGameSessions.get(gameCodeN);
-    const finalWinner = session?.getFinalWinner();
-
-    if (finalWinner) {
-      console.log(`Successfully retrieved final winner for game code ${gameCode}`);
-      socket.emit("battle-royale-final-results", { finalWinner });
-    } else if (finalWinner === null) {
-      console.log(`Successfully retrieved no final winner (null) for game code ${gameCode}`);
-      socket.emit("battle-royale-final-results", { finalWinner: null });  // There are no final winners (i.e., draws)
-    } else {  // finalWinner === undefined
-      console.log(`Failed to retrieve final winner for game code ${gameCode}`);
-      socket.emit("battle-royale-final-results", { finalWinner: undefined });
-    }
-  });
-
-  // Get final results for scoring tournament
-  socket.on("request-scoring-tournament-final-results", ({ gameCode }) => {
-    const gameCodeN = Number(gameCode);
-    const session = activeGameSessions.get(gameCodeN);
-    const top3Players = session?.getTop3Players();
-    const top3Scores = session?.getMetadata().playerScore;
-
-    if (top3Players && top3Scores) {
-      console.log(`Successfully retrieved top 3 for game code ${gameCode}`);
-      socket.emit("scoring-tournament-final-results", { top3Players, top3Scores });
-    } else {
-      console.log(`Failed to retrieve top 3 for game code ${gameCode}`);
-      socket.emit("scoring-tournament-final-results", { top3Players: undefined, top3Scores: undefined });
-    }
   });
 
   // Get final results
