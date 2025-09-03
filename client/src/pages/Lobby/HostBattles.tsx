@@ -266,16 +266,18 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
               }
             </div>
           </div>
-          <ButtonGeneric
-            size="medium"
-            color="blue"
-            // isDisabled={
-            //   gameMode == GameModeIdentifier.BATTLE_ROYALE
-            //     ? (gameSession.remainingPlayers > 1)
-            //     : (gameSession.remainingPlayers == gameSession.totalPlayers)}
-            onClick={showFinalResults}>
-              SHOW FINAL RESULTS
-          </ButtonGeneric>
+          <div style={{ position: "absolute", top: "1.5rem", right: "1.5rem" }}>
+            <ButtonGeneric
+              size="medium"
+              color="blue"
+              /*isDisabled={
+                gameMode == GameModeIdentifier.BATTLE_ROYALE
+                  ? (gameSession.remainingPlayers > 1)
+                  : (gameSession.remainingPlayers == gameSession.totalPlayers)
+              } */onClick={showFinalResults}>
+                SHOW FINAL RESULTS
+            </ButtonGeneric>
+          </div>
         </div>
       ) : null}
     </div>
