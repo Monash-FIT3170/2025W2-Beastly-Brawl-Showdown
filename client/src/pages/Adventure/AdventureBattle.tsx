@@ -52,7 +52,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     ".jpg')";
 
   //ADVENTURE PAGE:
-  const [dialogue, setDialogue] = useState<string[] | null>(null);
+  const [dialogue, setDialogue] = useState<string[] | null>([
+    "A small, green, gelatinous creature bounces around you.",
+    "It looks harmless enough.",
+  ]);
   const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const [stage, setStage] = useState<number>(1);
 
@@ -121,7 +124,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   }, [battleState]);
 
   useEffect(() => {
-    socket.emit("adventure_request", { stage }); //TODO: WHO IS THIS, WHY IS SHE HERE?
+    //socket.emit("adventure_request", { stage }); //TODO: WHO IS THIS, WHY IS SHE HERE?
 
     socket.on("adventure_state", (state) => {
       if (state.stage) {
