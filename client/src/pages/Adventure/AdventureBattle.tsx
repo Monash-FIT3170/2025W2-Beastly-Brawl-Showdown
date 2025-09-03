@@ -69,9 +69,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [receivingConsumable, setReceivingConsumable] = useState<string | null>(
     null
   );
+  const [consumableId, setConsumableId] = useState<string | null>(null);
   const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
     null
   );
+  const [equipmentId, setEquipmentId] = useState<string | null>(null);
   const [equipmentInventoryFull, setEquipmentInventoryFull] = useState(false);
   const [currentEquipment, setCurrentEquipment] = useState<EquipmentState[]>(
     []
@@ -160,12 +162,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       }
     });
 
-    socket.on("adventure_consumable", (consumableName) => {
-      setReceivingConsumable(consumableName.name);
+    socket.on("adventure_consumable", (data) => {
+      console.log("Received adventure_consumable:", data);
+      setReceivingConsumable(data.name);
+      setConsumableId(data.consumableId);
     });
 
-    socket.on("adventure_equipment", (equipmentName) => {
-      setReceivingEquipment(equipmentName.name);
+    socket.on("adventure_equipment", (data) => {
+      console.log("Received adventure_equipment:", data);
+      setReceivingEquipment(data.name);
+      setEquipmentId(data.equipmentId);
     });
 
     socket.on("adventure_equipment_full", (data) => {
@@ -250,7 +256,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                     color="blue"
                     onClick={() => {
                       setReceivingConsumable(null);
-                      socket.emit("adventure_next", { stage });
+                      setConsumableId(null);
+                      socket.emit("adventure_take_consumable", {
+                        consumableId,
+                        stage,
+                      });
                     }}
                   >
                     TAKE!
@@ -260,6 +270,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                     color="red"
                     onClick={() => {
                       setReceivingConsumable(null);
+                      setConsumableId(null);
                       socket.emit("adventure_next", { stage });
                     }}
                   >
@@ -279,13 +290,17 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   <OutlineText size="extraLarge">
                     {receivingEquipment}
                   </OutlineText>
-                  <div className="flex flex-row justify-between items-center gap-x-[3rem]">
+                  <div className="flex flex-row justify-between gap-x-[3rem] items-center">
                     <ButtonGeneric
                       size="battle"
                       color="blue"
                       onClick={() => {
                         setReceivingEquipment(null);
-                        socket.emit("adventure_next", { stage });
+                        setEquipmentId(null);
+                        socket.emit("adventure_take_equipment", {
+                          equipmentId,
+                          stage,
+                        });
                       }}
                     >
                       EQUIP!
@@ -295,10 +310,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                       color="red"
                       onClick={() => {
                         setReceivingEquipment(null);
+                        setEquipmentId(null);
                         socket.emit("adventure_next", { stage });
                       }}
                     >
-                      SKIP
+                      DROP
                     </ButtonGeneric>
                   </div>
                 </div>
@@ -636,9 +652,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 const biomeMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
   [MonsterIdentifier.POUNCING_BANDIT, () => "FOREST"],
-  [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],
+  [MonsterIdentifier.CINDER_TAIL, () => "ASHLANDS"],
   [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
-  [MonsterIdentifier.POISON_POGO, () => "MARSH"],
+  [MonsterIdentifier.POISON_POGO, () => "WETLAND"],
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
 ]);
 

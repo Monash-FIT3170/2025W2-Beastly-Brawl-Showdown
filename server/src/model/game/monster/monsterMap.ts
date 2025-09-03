@@ -23,9 +23,9 @@ export function getMonster(monsterID: MonsterIdentifier) {
 export const biomeMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
   [MonsterIdentifier.POUNCING_BANDIT, () => "FOREST"],
-  [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],
+  [MonsterIdentifier.CINDER_TAIL, () => "ASHLANDS"],
   [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
-  [MonsterIdentifier.POISON_POGO, () => "MARSH"],
+  [MonsterIdentifier.POISON_POGO, () => "WETLAND"],
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
 ]);
 

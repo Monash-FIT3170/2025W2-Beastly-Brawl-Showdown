@@ -10,6 +10,10 @@ export abstract class Consumable {
     this.description = description;
   }
 
+  public nameToId(): string {
+    return this.name.trim().toLowerCase().replace(/\s+/g, "_");
+  }
+
   public getName(): string {
     return this.name;
   }
