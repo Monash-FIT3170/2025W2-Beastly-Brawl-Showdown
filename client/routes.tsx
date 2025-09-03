@@ -16,7 +16,6 @@ import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
 import { Account } from "./src/pages/Home/Account";
-import { TestPage } from "./src/pages/Test/TestPage";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 import { FinalResultsScoringTournament } from "./src/pages/Lobby/FinalResultsScoringTournament";
 import { FinalResultsBattleRoyale } from "./src/pages/Lobby/FinalResultsBattleRoyale";
@@ -36,12 +35,7 @@ FlowRouter.route("/", {
 });
 
 
-FlowRouter.route("/host/test", {
-  name: "TestPage",
-  action() {
-    mount(TestPage); 
-  },
-});
+
 
 
 FlowRouter.route("/host", {
@@ -127,12 +121,6 @@ FlowRouter.route("/adventure/level-select", {
   name: "LevelSelect",
   action() {
     mount(LevelSelect);
-  },
-});
-FlowRouter.route('/config', {
-  name: 'GameConfiguraion',
-  action() {
-    mount(GameConfiguration);
   },
 });
 

@@ -32,6 +32,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [gameCode, setGameCode] = useState<string>(); // game code for directing player back to game session
   const [time, setTime] = useState<number>(5);
   const [metadata, setMetadata] = useState<GameSessionStateMetaData |null>();
+  const [waitForConclusion, setWaitForConclusion] = useState<boolean>(false);
 
   var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   var backgroundString =
@@ -55,6 +56,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     });
 
     socket.on("battle_end", ({ result, winners }) => {
+      setWaitForConclusion(false);
       console.log(result, winners);
       if (result === "draw") {
         setWinner("Draw");
@@ -85,6 +87,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.on("battle-closed", (data) => {
       setIsBattleClosed(true)
       setGameCode(data.gameCode)
+    })
+
+    socket.on("client-wait-conclusion", () => {
+      setWaitForConclusion(true)
     })
 
     return () => {
@@ -142,6 +148,20 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
   return (
     <>
+      {waitForConclusion && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+            <OutlineText size="extraLarge">LAST ROUND COMPLETED</OutlineText>
+            <BlackText size="large">
+              YOU HAVE FINISHED YOUR LAST BATTLE!
+            </BlackText>
+            <BlackText size="large">
+              WAITING FOR OTHER PLAYERS TO FINISH THEIR BATTLES...
+            </BlackText>
+          </div>
+        </PopupClean>
+      )}
+
       {isSessionCancelled && (
         <PopupClean>
           <div className="flex flex-col justify-around">

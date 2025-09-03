@@ -192,8 +192,8 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
         {hostPrepareNextRound && (
         <PopupClean>
           <div className="flex flex-col justify-around">
-          <BlackText size = 'large'>ALL PLAYER ARE READY</BlackText>
-          <BlackText size = 'large'>NEXT ROUND START IN {time} SECONDS</BlackText>
+          <BlackText size = 'large'>ALL PLAYERS ARE READY</BlackText>
+          <BlackText size = 'large'>NEXT ROUND STARTS IN {time} SECONDS</BlackText>
           </div>
         </PopupClean>)}
 

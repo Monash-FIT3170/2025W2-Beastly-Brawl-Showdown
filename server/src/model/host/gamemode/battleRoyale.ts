@@ -41,7 +41,14 @@ export class BattleRoyale implements IGameMode {
     if (winner) {
       let loser = battle.getPlayers().filter(player => player.getId() != winner.getId())[0];
       this.eliminatePlayer(loser);
-    }
+
+      io.to(battle.getId()).emit("battle_end", {
+        result: "concluded",
+        winners: [winner.getName()]
+,
+      });
+
+    } 
 
     // Case 2: It is a draw - there are no winners
     else {
@@ -49,6 +56,13 @@ export class BattleRoyale implements IGameMode {
       this.eliminatePlayer(player1);
       let player2 = battle.getPlayers()[1];
       this.eliminatePlayer(player2);
+
+      io.to(battle.getId()).emit("battle_end", {
+        result: "concluded",
+        winners: []
+,
+      });
+
     }
 
     console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
