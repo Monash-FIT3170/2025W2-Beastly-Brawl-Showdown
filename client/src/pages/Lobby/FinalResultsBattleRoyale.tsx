@@ -10,11 +10,11 @@ import { RankingBar } from "../../components/bars/RankingBar";
 import { PlayerState } from "../../../../types/single/playerState";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 
-interface BattleRoyaleFinalResultsProps {
+interface FinalResultsBattleRoyaleProps {
   gameCode?: string;
 }
 
-export const BattleRoyaleFinalResults = ({ gameCode }: BattleRoyaleFinalResultsProps) => {
+export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleProps) => {
   const [finalWinner, setFinalWinner] = useState<PlayerState | null | undefined>(undefined);  // null means there is no final winner (i.e., draws)
 
   useEffect(() => {

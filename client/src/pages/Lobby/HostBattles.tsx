@@ -84,9 +84,9 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   // Take host to 'Final Results' page for either battle royale or scoring tournament mode
   const showFinalResults = () => {
     if (gameSession.mode === GameModeIdentifier.BATTLE_ROYALE) {
-      FlowRouter.go(`/battle-royale-final-results/${code}`);
+      FlowRouter.go(`/final-results-battle-royale/${code}`);
     } else {
-      FlowRouter.go(`/scoring-tournament-final-results/${code}`);
+      FlowRouter.go(`/final-results-scoring-tournament/${code}`);
     }
   };
 
@@ -266,15 +266,18 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
               }
             </div>
           </div>
+          <ButtonGeneric
+            size="medium"
+            color="blue"
+            // isDisabled={
+            //   gameMode == GameModeIdentifier.BATTLE_ROYALE
+            //     ? (gameSession.remainingPlayers > 1)
+            //     : (gameSession.remainingPlayers == gameSession.totalPlayers)}
+            onClick={showFinalResults}>
+              SHOW FINAL RESULTS
+          </ButtonGeneric>
         </div>
       ) : null}
-      <ButtonGeneric
-        size="medium"
-        color="blue"
-        isDisabled={gameSession?.remainingPlayers > 1}
-        onClick={showFinalResults}>
-          SHOW FINAL RESULTS
-      </ButtonGeneric>
     </div>
   );
 };

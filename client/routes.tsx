@@ -18,8 +18,8 @@ import AdventureWin from "./src/pages/Adventure/AdventureWin";
 import { Account } from "./src/pages/Home/Account";
 import { TestPage } from "./src/pages/Test/TestPage";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
-import { FinalResults } from "./src/pages/Lobby/FinalResults";
-import { BattleRoyaleFinalResults } from "./src/pages/Lobby/BattleRoyaleFinalResults";
+import { FinalResultsScoringTournament } from "./src/pages/Lobby/FinalResultsScoringTournament";
+import { FinalResultsBattleRoyale } from "./src/pages/Lobby/FinalResultsBattleRoyale";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -109,17 +109,17 @@ FlowRouter.route("/battles/:code?", {
   },
 });
 
-FlowRouter.route("/battle-royale-final-results/:code?", {
-  name: "BattleRoyaleFinalResults",
+FlowRouter.route("/final-results-battle-royale/:code?", {
+  name: "FinalResultsBattleRoyale",
     action(params) {
-      mount(() => <BattleRoyaleFinalResults gameCode={params.code} />);
+      mount(() => <FinalResultsBattleRoyale gameCode={params.code} />);
     },
 });
 
-FlowRouter.route("/scoring-tournament-final-results/:code?", {
-  name: "ScoringTournamentFinalResults",
+FlowRouter.route("/final-results-scoring-tournament/:code?", {
+  name: "FinalResultsScoringTournament",
     action(params) {
-      mount(() => <FinalResults gameCode={params.code} />);
+      mount(() => <FinalResultsScoringTournament gameCode={params.code} />);
     },
 });
 

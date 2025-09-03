@@ -7,17 +7,16 @@ import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { BaseCard } from "../../components/cards/BaseCard";
 import socket from "../../socket";
 import { RankingBar } from "../../components/bars/RankingBar";
-import { PlayerState } from "/types/single/playerState";
+import { PlayerState } from "../../../../types/single/playerState";
+import { GameModeIdentifier } from "../../../../types/single/gameMode";
 
-interface FinalResultsProps {
+interface FinalResultsScoringTournamentProps {
   gameCode?: string;
 }
 
-export const FinalResults = ({ gameCode }: FinalResultsProps) => {
+export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringTournamentProps) => {
   const code = gameCode;
-  const [playersToDisplay, setPlayersToDisplay] = useState<PlayerState[] | null>(null);
-  const minBarWidth = 30;  // in %
-  const maxBarWidth = 70;  // in %
+  const [top3, setTop3] = useState<PlayerState[] | null>(null);
 
   // useEffect(() => {
   //   if (!socket) return;
@@ -47,7 +46,7 @@ export const FinalResults = ({ gameCode }: FinalResultsProps) => {
     const updatePlayers = ({ message, players }: UpdatePlayersProps) => {
       console.log(message);
       if (Array.isArray(players) && players.length > 0) {
-        setPlayersToDisplay(players);
+        setTop3(players);
         socket.off("update-players", updatePlayers);
       } else {
         console.log("'players' is empty or not an array", players);
@@ -64,7 +63,7 @@ export const FinalResults = ({ gameCode }: FinalResultsProps) => {
   //////////////////////////////////////////////////////////////////////////
 
   // Wait until final results are available
-  if (playersToDisplay === null) {
+  if (top3 === null) {
     console.log("Waiting for players to be fetched...");
     return (
       <div>
@@ -75,37 +74,26 @@ export const FinalResults = ({ gameCode }: FinalResultsProps) => {
     );
   }
 
-  console.log(`Players fetched: ${playersToDisplay.length}\n`);
+  console.log(`Players fetched: ${top3.map((player) => player.name)}\n`);
 
-  /* TODO: Check if this is correct */
-  // Button handler for restarting a new lobby
+  // Button handler for restarting a new battle royale lobby
   const newLobby = () => {
-    socket.emit("create-game", {});
+    socket.emit("create-game", { mode: GameModeIdentifier.SCORING, selectedValue: null });
     console.log("Game session created");
   };
 
-  /* TODO: Check if this is correct */
-  // Takes user to 'Host Lobby' page
-  // Will use the same tournament mode as the previous one
-  socket.on("new-game", ({ code }) => {
-    const codeString = code.toString();
-    FlowRouter.go(`/host/${codeString}`);
-  });
-
-  /* TODO: Check if this is correct */
   // Button handler for exiting to home
   const exitToHome = () => {
-    // Deletes game session and returns user to 'Home' page
-    socket.emit("cancel-game", { gameCode: code });
+    socket.emit("cancel-game", { gameCode });
     FlowRouter.go("/");
   };
 
-  // const firstPlace = playersToDisplay[0];
-  // const secondPlace = playersToDisplay[1];
-  // let thirdPlace: PlayerState | null = null;
-  // if (playersToDisplay.length >= 3) {
-  //   thirdPlace = playersToDisplay[2];
-  // }
+  const firstPlace = top3[0];
+  const secondPlace = top3[1];
+  let thirdPlace: PlayerState | null = null;
+  if (top3.length >= 3) {
+    thirdPlace = top3[2];
+  }
 
   return (
     <BlankPage>
@@ -125,25 +113,13 @@ export const FinalResults = ({ gameCode }: FinalResultsProps) => {
             <OutlineText size="large">The Top 3:</OutlineText>
           </div>
 
-          {/* TODO: Fix the bars not being evenly spaced on different-sized screens */}
           <div className="w-full flex flex-col gap-[1rem]">
-            {playersToDisplay.map((player, index) => {
-              const barWidth =
-                playersToDisplay.length === 1
-                  ? maxBarWidth
-                  : maxBarWidth - ((maxBarWidth - minBarWidth) * index) / (playersToDisplay.length - 1);
-              return (
-                <div className={`w-[${barWidth}%] m-[-0.15rem]`}>
-                  <RankingBar player={player} rank={1} />
-                </div>
-              );
-            })}
-            {/* <div className="w-7/10 m-[-0.15rem]"><RankingBar player={firstPlace} rank={1} /></div>
-            <div className="w-6/10 m-[-0.15rem]"><RankingBar player={secondPlace} rank={2} /></div> */}
+            <div className="w-7/10 m-[-0.15rem]"><RankingBar player={firstPlace} rank={1} /></div>
+            <div className="w-6/10 m-[-0.15rem]"><RankingBar player={secondPlace} rank={2} /></div>
             {/* Only show the 3rd place bar if there exists a 3rd place player in the lobby */}
-            {/* {thirdPlace ?
+            {thirdPlace ?
               <div className="w-5/10 m-[-0.15rem]"><RankingBar player={thirdPlace} rank={3} /></div>
-            : null} */}
+            : null}
           </div>
         </div>
       </div>
