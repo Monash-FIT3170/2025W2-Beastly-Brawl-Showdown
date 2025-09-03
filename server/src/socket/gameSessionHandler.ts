@@ -341,18 +341,21 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }, 100);
   });
 
-  // Get final winner
-  socket.on("get-final-winner", ({ gameCode }) => {
+  // Get final results for battle royale
+  socket.on("get-battle-royale-final-results", ({ gameCode }) => {
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
     const finalWinner = session?.getFinalWinner();
 
     if (finalWinner) {
       console.log(`Successfully retrieved final winner for game code ${gameCode}`);
-      socket.emit("final-winner-response", { finalWinner });
-    } else {
+      socket.emit("battle-royale-final-results-response", { finalWinner });
+    } else if (finalWinner === null) {
+      console.log(`Successfully retrieved no final winner (null) for game code ${gameCode}`);
+      socket.emit("battle-royale-final-results-response", { finalWinner: null });  // There are no final winners (i.e., draws)
+    } else {  // finalWinner === undefined
       console.log(`Failed to retrieve final winner for game code ${gameCode}`);
-      socket.emit("final-winner-response", { finalWinner: null });
+      socket.emit("battle-royale-final-results-response", { finalWinner: undefined });
     }
   });
 };

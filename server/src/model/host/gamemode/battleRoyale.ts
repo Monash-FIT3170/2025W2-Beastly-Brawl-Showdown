@@ -12,11 +12,9 @@ export class BattleRoyale implements IGameMode {
   public name = GameModeIdentifier.BATTLE_ROYALE as const;
   private eliminatedPlayers: Player[] = [];  // Earlier eliminated players are closer to the front of the array
   private remainingPlayers: Player[] = [];
-  private io: Server | null = null;
   private playerFinished = 0;
 
   public init(session: GameSession, io: Server, socket: Socket): void {
-    this.io = io;
     for (let player of session.getPlayers().getItems()) {
       this.remainingPlayers.push(player);
     }
@@ -184,8 +182,6 @@ export class BattleRoyale implements IGameMode {
         console.log("[FINAL RESULTS]: There are no winners, everyone got eliminated");
       }
 
-      const gameCode = session.getGameCode();
-      this.io?.to(`game-${gameCode}`).emit("final-winner-response", { finalWinner });
       session.setFinalWinner(finalWinner);
     }
   }

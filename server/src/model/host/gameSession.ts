@@ -32,7 +32,7 @@ export default class GameSession {
   private mode: IGameMode;
   private monsters: Array<String>;
   private botInLobby: boolean = false; // whether has been added to this session or not
-  private finalWinner: PlayerState | null = null;
+  private finalWinner: PlayerState | null | undefined = undefined;
 
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -447,11 +447,12 @@ export default class GameSession {
     return playersNotInBattle;
   }
 
+  // If there is no final winner, use null instead
   public setFinalWinner(finalWinner: PlayerState | null): void {
     this.finalWinner = finalWinner;
   }
 
-  public getFinalWinner(): PlayerState | null {
+  public getFinalWinner(): PlayerState | null | undefined {
     return this.finalWinner;
   }
 

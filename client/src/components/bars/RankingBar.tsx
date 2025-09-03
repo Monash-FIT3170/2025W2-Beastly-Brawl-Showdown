@@ -16,6 +16,7 @@ export const RankingBar = ({ player, rank }: RankingBarProps) => {
 
   const rankToDisplay = rankingBarStyleSets[rank][0];
   const colourToDisplay = rankingBarStyleSets[rank][1];
+  const imagePath = "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + player.monster?.id + ".png";
   const altText = "Image of " + player.monster?.name;
 
   const rankingBarProperties = `
@@ -53,8 +54,9 @@ export const RankingBar = ({ player, rank }: RankingBarProps) => {
               </OutlineText>
 
               <img
-                src={`/assets/characters/${player.monster?.id}.png`}
+                src={imagePath}
                 alt={altText}
+                className="w-[80%] h-[80%] object-contain"
               />
             </div>
           </div>
