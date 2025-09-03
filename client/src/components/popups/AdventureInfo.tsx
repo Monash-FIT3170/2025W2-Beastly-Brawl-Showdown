@@ -187,7 +187,7 @@ export const AdventureInfoPopup = ({
                     <BlackText size="medium">You are normal...</BlackText>
                   </div>
                 )}
-                <div className="xl:mt-[1rem] mt-[2rem] columns-3 gap-[2rem] xl:gap-[3rem] space-y-[2rem] items-center justify-center">
+                <div className="xl:mt-[1rem] mt-[2rem] grid grid-cols-3 gap-y-[2.5rem] gap-x-[3rem] xl:gap-y-[0.5rem] xl:gap-x-[3rem] items-center justify-center">
                   {playerState?.statuses.map((c) => (
                     <>
                       <StatusButton status={c}></StatusButton>
