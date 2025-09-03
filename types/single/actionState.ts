@@ -8,10 +8,13 @@ export enum ActionIdentifier {
   SHADOW_LEAP = "SHADOW_LEAP",
   TIP_THE_SCALES = "TIP_THE_SCALES",
   STUNNED = "STUNNED",
+  LAKE_CURSE = "LAKE_CURSE",
   PUFFER_BLAST = "PUFFER_BLAST",
   TOXIN_TONGUE = "TOXIN_TONGUE",
   ALLURING_LULLABY = "ALLURING_LULLABY",
   FLAME_LASH = "FLAME_LASH",
+  CONSUME = "CONSUME",
+  SLIME_SUPPORT = "SLIME_SUPPORT",
 }
 
 export interface ActionState {
@@ -20,4 +23,10 @@ export interface ActionState {
   description: string;
   currentUse: number;
   maxUse: number;
+}
+
+export interface AttackState {
+  attackDamage: number;
+  critRate: number;
+  diceRange: number;
 }

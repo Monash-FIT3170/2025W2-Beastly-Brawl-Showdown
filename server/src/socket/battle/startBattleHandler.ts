@@ -4,8 +4,9 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
+import { ActionRandomiser } from "../../model/game/actionRandomiser";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
-
+import { ActionIdentifier } from "/types/single/actionState";
 export default function proceedBattleTurn(
   io: Server,
   socket: Socket,
@@ -19,13 +20,13 @@ export default function proceedBattleTurn(
   let playersInBattle = battle.getPlayers();
 
   // checks/ticks statuses for each player
-  playersInBattle.forEach((player) => {
-    player.tickStatuses();
-    // let statuses = player.getStatuses();
-    // statuses.forEach((status) => {
-    //   status.tick(player);
-    // })
-  });
+  //playersInBattle.forEach((player) => {
+  //player.tickStatuses();
+  // let statuses = player.getStatuses();
+  // statuses.forEach((status) => {
+  //   status.tick(player);
+  // })
+  //});
 
   if (battle.isBattleOver()) {
     const winners = battle.getWinners();
@@ -50,13 +51,29 @@ export default function proceedBattleTurn(
   });
 
   playersInBattle.forEach((player) => {
-    io.to(player.getId()).emit(
-      "battle_state",
-      battle.getBattleState(player.getId())
-    ); // Emit the battle state to each player
+    // player.tickStatuses();
+    if (!player.isBotPlayer()) {
+      //only emit to socket if the player is a human
+      io.to(player.getId()).emit(
+        "battle_state",
+        battle.getBattleState(player.getId())
+      ); // Emit the battle state to each player
+      if (!player.isBotPlayer()) {
+        //only emit to socket if the player is a human
+        io.to(player.getId()).emit(
+          "battle_state",
+          battle.getBattleState(player.getId())
+        ); // Emit the battle state to each player
 
-    let actions = player.getMonster().getPossibleActionStates();
-    io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+        let actions = player.getMonster().getPossibleActionStates();
+        io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+      } else {
+        let actions = player.getMonster().getPossibleActionStates();
+        io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
+      }
+    } else {
+      ActionRandomiser.randomAction(player);
+    }
   });
 
   let player1 = playersInBattle[0];
@@ -87,22 +104,48 @@ export default function proceedBattleTurn(
         action.prepare(player2, player1);
       });
 
-      // Emitting player1's action animations
+      // Animations, For the future, we need to handle animations in a more centralised manner with no hard coding.
+      // Handles the dice roll - For now, typecasting to send the damage so dice can roll it
+      // TODO: For the future, actions should trigger their own animations themselves. Perhaps add a feature that emits animation type and let the
+      // battle screen handle the type of animation to show
       player1.getActions().forEach((action) => {
-        const animationInfo = action.prepareAnimation();
-        const animationType = animationInfo[0];
-        const diceRollNumber = animationInfo[1];
-        console.log(animationType, diceRollNumber);
-        io.to(player1.getId()).emit(String(animationType), diceRollNumber);
+        if (!player1.isBotPlayer()) {
+          //only emit to socket if the player is a human
+          if (action.getName() === "Attack") {
+            const attackAction = action as AttackAction;
+            const diceRoll = attackAction.getDiceRoll();
+            io.to(player1.getId()).emit("roll_dice", diceRoll);
+          }
+        }
+
+        if (action.getName() === "Tip The Scales") {
+          const tipTheScalesAction = action as TipTheScalesAbilityAction;
+          const diceRoll = tipTheScalesAction.getDiceRoll();
+          io.to(player1.getId()).emit("roll_dice", diceRoll);
+          console.log(
+            `Player 1 used tip the scales and dice roll = ${diceRoll}`
+          );
+        }
       });
 
-      // Emitting player2's action animations
       player2.getActions().forEach((action) => {
-        const animationInfo = action.prepareAnimation();
-        const animationType = animationInfo[0];
-        const diceRollNumber = animationInfo[1];
-        console.log(animationType, diceRollNumber);
-        io.to(player2.getId()).emit(String(animationType), diceRollNumber);
+        if (!player2.isBotPlayer()) {
+          //only emit to socket if the player is a human
+          if (action.getName() === "Attack") {
+            const attackAction = action as AttackAction;
+            const diceRoll = attackAction.getDiceRoll();
+            io.to(player2.getId()).emit("roll_dice", diceRoll);
+          }
+        }
+
+        if (action.getName() === "Tip The Scales") {
+          const tipTheScalesAction = action as TipTheScalesAbilityAction;
+          const diceRoll = tipTheScalesAction.getDiceRoll();
+          console.log(
+            `Player 2 used tip the scales and dice roll = ${diceRoll}`
+          );
+          io.to(player2.getId()).emit("roll_dice", diceRoll);
+        }
       });
 
       setTimeout(() => {
@@ -123,10 +166,13 @@ export default function proceedBattleTurn(
 
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
-          io.to(player.getId()).emit(
-            "battle_state",
-            battle.getBattleState(player.getId())
-          );
+          if (!player.isBotPlayer()) {
+            // Only emit the battle state of human player
+            io.to(player.getId()).emit(
+              "battle_state",
+              battle.getBattleState(player.getId())
+            );
+          }
         });
 
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
@@ -150,6 +196,10 @@ export default function proceedBattleTurn(
               winners: winners,
             });
           }
+        } else {
+          playersInBattle.forEach((player) => {
+            player.tickStatuses();
+          });
         }
         // TODO: ONLY update the current battle to be more memory efficient...
         //Players' states after the turn ends

@@ -1,8 +1,12 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
+import { ConsumeAction } from "./action/consume";
 import { PlayerState } from "/types/single/playerState";
+import { PlayerAccountSchema } from "../../database/dbManager";
+
 import { Status } from "./status/status";
-import { Item } from "./item/item";
+import { Consumable } from "./consumables/consumable";
+import { Equipment } from "./equipment/equipment";
 
 export class Player {
   private id: string;
@@ -14,6 +18,7 @@ export class Player {
   private currentHealth: number;
   private currentAttackStat: number;
   private currentArmourClassStat: number;
+  private botPlayer: boolean;
 
   private actions: Action[] = [];
   private statuses: Status[] = [];
@@ -23,9 +28,18 @@ export class Player {
   private successfulHit: number = 0;
   private successfulBlock: number = 0;
 
-  private inventory: Item[] = [];
+  private consumables: Consumable[] = [];
+  private consumableActions: Action[] = [];
+  private equipment: Equipment[] = [];
 
-  constructor(id: string, name: string) {
+  private playerAccount: PlayerAccountSchema;
+
+  constructor(
+    id: string,
+    name: string,
+    playerAccount: PlayerAccountSchema | null,
+    botPlayer?: boolean
+  ) {
     this.name = name;
     this.id = id;
     this.monster = null;
@@ -33,6 +47,16 @@ export class Player {
     this.currentAttackStat = 0;
     this.currentArmourClassStat = 0;
     this.currentGameCode = 0;
+    this.playerAccount = playerAccount;
+    this.botPlayer = botPlayer ?? false;
+  }
+
+  public getPlayerAccountEmail() {
+    return this.playerAccount.email;
+  }
+
+  public getPlayerAccountUsername() {
+    return this.playerAccount.username;
   }
 
   public getMonster(): Monster | null {
@@ -105,7 +129,7 @@ export class Player {
     if (this.monster) {
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
-      this.dodging = false;
+      this.dodging = false; //TODO: fix
     }
   }
 
@@ -135,6 +159,11 @@ export class Player {
   }
 
   public tickStatuses() {
+    console.log(
+      `DEBUG: Pre-Tick Statuses of ${
+        this.name
+      } (names)" ${this.statuses.forEach((status) => status.getName())}`
+    );
     this.statuses.forEach((status) => status.tick(this));
     //removes statuses that have expired after the tick
     this.statuses = this.statuses.filter((status) => !status.isExpired());
@@ -165,6 +194,10 @@ export class Player {
 
   public getSuccessfulBlock() {
     return this.successfulBlock;
+  }
+
+  public isBotPlayer(): boolean {
+    return this.botPlayer;
   }
 
   public incSuccessfulHit(number: number): void {
@@ -227,30 +260,87 @@ export class Player {
   }
 
   //INVENTORY METHODS:
-  public getInventory(): Item[] {
-    return this.inventory;
+  public getConsumables(): Consumable[] {
+    return this.consumables;
   }
 
-  public checkInventory(item: Item): boolean {
+  public hasConsumable(name: string): boolean {
     //checks inventory for item
-    return this.inventory.some((i) => i.getName() === item.getName());
+    return this.consumables.some((c) => c.getName() === name);
   }
 
-  public addToInventory(item: Item): void {
-    this.inventory.push(item);
+  public giveConsumable(item: Consumable): void {
+    this.consumables.push(item);
+    const action = new ConsumeAction(item.getName());
+    //um for now this action list will just kind of keep growing T-T
+    this.consumableActions.push(action);
   }
 
-  public removeFromInventory(item: Item): void {
-    //done like this incase you have multiple of the same item
-    //TODO: might be done incorrectly needs to be tested.
-    const i = this.inventory.indexOf(item);
-    if (i !== -1) {
-      this.inventory.splice(i, 1);
+  public useConsumable(name: string): void {
+    if (this.hasConsumable(name)) {
+      const consumable = this.consumables.find((c) => c.getName() === name);
+      if (consumable) {
+        console.log("TESTING CONSUMABLE", consumable);
+        consumable?.consume(this);
+        this.removeConsumable(consumable);
+        console.log(`${this.name} has consumed ${consumable.getName()}`);
+      } else {
+        console.error(`${this.name} cannot find consumable of name ${name}`);
+      }
+    } else {
+      console.error(`${this.name} does not own consumable of name ${name}`);
     }
   }
 
-  public clearInventory(): void {
-    this.inventory = [];
+  public removeConsumable(item: Consumable): void {
+    //done like this incase you have multiple of the same item
+    //TODO: might be done incorrectly needs to be tested.
+    const i = this.consumables.indexOf(item);
+    if (i !== -1) {
+      this.consumables.splice(i, 1);
+    }
+  }
+
+  public clearConsumables(): void {
+    this.consumables = [];
+  }
+
+  public getEquipment(): Equipment[] {
+    return this.equipment;
+  }
+
+  public hasEquipment(equipment: Equipment): boolean {
+    return this.equipment.some((e) => e.getName() == equipment.getName());
+  }
+
+  public giveEquipment(equip: Equipment): boolean {
+    if (this.equipment.length >= 3) {
+      return false; // means that equipment is full
+    }
+
+    this.equipment.push(equip);
+    equip.equip(this);
+    this.resetStats();
+    return true;
+  }
+
+  public isEquipmentFull(): boolean {
+    return this.equipment.length >= 3;
+  }
+
+  public removeEquipment(equip: Equipment): void {
+    //done like this incase you have multiple of the same item
+    //TODO: might be done incorrectly needs to be tested.
+    const i = this.equipment.indexOf(equip);
+    if (i !== -1) {
+      this.equipment.splice(i, 1);
+    }
+    equip.unequip(this);
+    this.resetStats();
+  }
+
+  public clearEquipment(): void {
+    this.equipment = [];
   }
 
   //PLAYER STATE:
@@ -263,6 +353,7 @@ export class Player {
       currentHealth: this.currentHealth,
       currentAttackStat: this.currentAttackStat,
       currentArmourClassStat: this.currentArmourClassStat,
+
       // initialHealth: this.monster.getMaxHealth(),
       successBlock: this.successfulBlock,
       successHit: this.successfulHit,
@@ -273,6 +364,9 @@ export class Player {
 
       logs: this.logs,
       battleLogs: this.battleLogs,
+      equipment: this.equipment.map((e) => e.getState()),
+      consumables: this.consumables.map((c) => c.getState()),
+      attackState: this.getMonster()?.getAttackAction().getAttackState()!,
     };
   }
 }

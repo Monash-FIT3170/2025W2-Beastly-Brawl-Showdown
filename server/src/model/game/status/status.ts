@@ -14,6 +14,9 @@ export abstract class Status {
   public tick(player: Player): void {
     if (this.countDown > 0) {
       //necessary check as UI requires status to remain post countdown = 0
+      //OR NOT? - cos i swear i added this cos stun status was disappearing immediately - but perhaps adventure is built different, need to test on multiplayer cos if they're built differently we are FUCKED!!!!
+      //we are maybe calling tick statuses at different times.
+      //need to find where
       this.effect(player);
     }
     this.countDown -= 1;
@@ -25,9 +28,17 @@ export abstract class Status {
     return this.name;
   }
 
+  public getDescription(): string{
+    return this.description;
+  }
+
+  public getRemaningTurn(): number{
+    return this.countDown
+  }
+
   public isExpired(): boolean {
     //checks if countdown hit 0
-    if (this.countDown < 0) {
+    if (this.countDown == 0) {
       return true;
     }
 

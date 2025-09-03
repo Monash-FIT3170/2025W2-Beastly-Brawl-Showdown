@@ -10,7 +10,7 @@ export class FortressStanceAbilityAction extends Action {
     super(
       ActionIdentifier.FORTRESS_STANCE,
       "Fortress Stance",
-      "Stand fortified... Gain +10 AC for 1 turn.",
+      "You tense to prepare for an attack. Your hide becomes tougher than iron. Gain 10 AC",
       1
     );
   }

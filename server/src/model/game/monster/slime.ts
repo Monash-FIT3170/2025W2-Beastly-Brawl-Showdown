@@ -2,6 +2,8 @@ import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 import { Monster } from "./monster";
 import { Neutral } from "../archetype/neutral";
 import { NullAction } from "../action/null";
+import { GroundSlamAbilityAction } from "../action/ability/groundSlam";
+import { SlimeSupportAction } from "../action/ability/slimeSupport";
 
 export class Slime extends Monster {
   constructor(name: string) {
@@ -10,10 +12,10 @@ export class Slime extends Monster {
       name,
       "blob blob...",
       new Neutral(),
-      new NullAction(), //TODO: give ability?
-      15,
-      15,
-      15
+      new SlimeSupportAction(),
+      5,
+      0,
+      8
     );
   }
 }

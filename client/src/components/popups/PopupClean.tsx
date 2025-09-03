@@ -1,16 +1,25 @@
-import React, { ReactNode, useState } from 'react';
-import { IconButton } from '../buttons/IconButton';
+import React, { ReactNode, useState } from "react";
+import { IconButton } from "../buttons/IconButton";
 
-interface PopupProp{
-    children?: ReactNode;
+interface PopupProp {
+  colour?: string;
+  children?: ReactNode;
 }
 
-export const PopupClean = ({children}:PopupProp) => {
-    const [visible, setVisible] = useState(true);
-    if (!visible) return null;
+export const PopupClean = ({ colour, children }: PopupProp) => {
+  const [visible, setVisible] = useState(true);
+  if (!visible) return null;
+  const colourLoader: Record<string, string> = {
+    goldenRod: "bg-goldenRod",
+  };
+  let bgcolour;
+  if (!colour) {
+    bgcolour = "bg-[#FFE8B1]";
+  } else {
+    bgcolour = colourLoader[colour] ?? "bg-[#FFE8B1]";
+  }
 
-    const popupLayout=
-        `
+  const popupLayout = `
         items-center
         justify-center
         box-border
@@ -23,16 +32,14 @@ export const PopupClean = ({children}:PopupProp) => {
         flex
         flex-col
         backdrop-blur-md
-        z-50  
+        z-100
         `;
-        
-      
-      const popup =
-        `
+
+  const popup = `
         top-[20%]
         py-[1rem]
         px-[1rem]
-        bg-[#FFE8B1]
+        ${bgcolour}
         border-[3px]
         border-[#403245]
         rounded-[20px]
@@ -44,22 +51,19 @@ export const PopupClean = ({children}:PopupProp) => {
         flex
         flex-col
         break-words
-        z-50  
+        z-100  
         `;
-        
-      const popupText=
-      `
+
+  const popupText = `
         py-[5rem]
         px-[3rem]
-      `
+      `;
 
-    return(
-    <div className = {`${popupLayout}`}>
-        <div className = {`${popup}`}> 
-            <div className = {`${popupText}`}>
-                {children}
-            </div>
-        </div>
+  return (
+    <div className={`${popupLayout}`}>
+      <div className={`${popup}`}>
+        <div className={`${popupText}`}>{children}</div>
+      </div>
     </div>
-    )
-}
+  );
+};

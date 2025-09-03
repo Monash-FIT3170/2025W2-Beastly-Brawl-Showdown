@@ -13,6 +13,7 @@ interface WinningScreenProps {
 }
 
 const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
+  socket.emit("updateWin");
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
     // UPDATE: add pop up when kicked
@@ -59,11 +60,11 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
       <div className="bg-peach flex items-center flex flex-col justify-around border-[4px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
         {/* <BaseCard color="peach" width={60} height={70}> */}
 
-        <OutlineText size="large">BETTER LUCK NEXT TIME!</OutlineText>
+        <OutlineText size="large">YOU WON!</OutlineText>
 
         <img
           className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]"
-          src={`/assets/trophies/${playerMonster.id}_WIN.png`}
+          src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/${playerMonster.id}_WIN.png`}
           alt={`${playerMonster.id}_WIN image`}
         />
 

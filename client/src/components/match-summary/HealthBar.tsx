@@ -1,5 +1,6 @@
 import React from "react";
 import "./HealthBar.css";
+import { OutlineText } from "../texts/OutlineText";
 
 interface HealthBarProps {
   current: number;
@@ -8,26 +9,24 @@ interface HealthBarProps {
 }
 
 const HealthBar: React.FC<HealthBarProps> = ({ current, max, isLeftPlayer = true }) => {
-  const percentage = (current / max) * 100;
+  const percentage = Math.floor(current / max * 100);
 
-  let color = "green";
-
-  if (percentage === 0) color = "grey";
-  else if (percentage <= 20) color = "red";
-  else if (percentage <= 50) color = "orange";
+  let color = "bg-conifer";
+  if (percentage === 0) color = "bg-gray-400";
+  else if (percentage <= 20) color = "bg-burntSienna";
+  else if (percentage <= 50) color = "bg-schoolBusYellow";
 
   return (
     <div className="health-bar" style={{ position: 'relative' }}>
       <div
-        className="health-bar-fill"
+        className={`health-bar-fill ${color}`}
         style={{
           width: `${percentage}%`,
           backgroundColor: color,
         }}
       >
       </div>
-      <span 
-        className="health-bar-text"
+      <div 
         style={{
           position: 'absolute',
           top: '50%',
@@ -38,8 +37,10 @@ const HealthBar: React.FC<HealthBarProps> = ({ current, max, isLeftPlayer = true
           pointerEvents: 'none',
         }}
       >
-        {current}/{max}
-      </span>
+        <OutlineText size="small">
+          {current}/{max}
+        </OutlineText>
+      </div>
     </div>
   );
 };

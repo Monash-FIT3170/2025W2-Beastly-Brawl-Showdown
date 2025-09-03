@@ -1,6 +1,6 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, AttackState } from "/types/single/actionState";
 import socket from "../../socket";
 
 export class AttackAction extends Action {
@@ -38,6 +38,17 @@ export class AttackAction extends Action {
     return d20;
   }
 
+  public incrementDamageDealt(number: number): void {
+    this.damageDealt += number;
+  }
+
+  public incrementMinRoll(number: number): void {
+    this.diceMin += number;
+  }
+
+  public incrementCritRate(number: number): void {
+    this.critRate += number;
+  }
   public getDiceRoll(): number {
     return this.d20;
   }
@@ -45,6 +56,7 @@ export class AttackAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     // Rolling a d20 dice
     this.d20 = this.rollDice();
+    this.attackBonus = actingPlayer.getAttackStat();
     this.attackHit = this.d20 + this.attackBonus;
     console.log(
       `${actingPlayer.getName()} Dice roll: ${this.d20} | Attack bonus: ${
@@ -125,5 +137,13 @@ export class AttackAction extends Action {
       // Increment successful block for front end
       affectedPlayer.incSuccessfulBlock(1);
     }
+  }
+
+  public getAttackState(): AttackState {
+    return {
+      attackDamage: this.damageDealt,
+      critRate: this.critRate,
+      diceRange: this.diceMin,
+    };
   }
 }

@@ -1,18 +1,35 @@
 import React from "react";
 import "./BattleMonsterPanel.css";
 import { BattleState } from "/types/composite/battleState";
+import { MonsterIdentifier } from "/types/single/monsterState";
 
 interface BattleMonsterPanelProps {
   battleState: BattleState;
+  slimeString: string;
 }
 
 const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   battleState,
+  slimeString,
 }) => {
   const pathLeftMon =
-    "/assets/characters/" + battleState.yourPlayerMonster.id + ".png";
-  const pathRightMon =
-    "/assets/characters/" + battleState.opponentPlayerMonster.id + ".png";
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+    battleState.yourPlayerMonster.id +
+    ".png";
+  var pathRightMon =
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+    battleState.opponentPlayerMonster.id +
+    ".png";
+
+  //checks if enemy is a slime - then uses biome specific variant
+  //note: slimes can only be enemies
+  // TODO: UPDATE SLIMES TO BE IN DIGITAL OCEAN
+  if (battleState.opponentPlayerMonster.id == MonsterIdentifier.SLIME) {
+    pathRightMon =
+      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/SLIME_" +
+      slimeString +
+      ".png";
+  }
 
   // console.log("Left Monster Path: ", pathLeftMon);
   // console.log("Right Monster Path: ", pathRightMon);
@@ -39,14 +56,20 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
         <div></div>
         <div className=" relative inline-block xl:w-[50%] ">
           <img className="relative z-10" src={pathRightMon} />
-          <img className={`${shadow}`} src="/shadow.png"></img>
+          <img
+            className={`${shadow}`}
+            src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/SHADOW.png"
+          ></img>
         </div>
         <div className="relative inline-block xl:w-[50%]">
           <img
             className=" relative transform -scale-x-100 z-10"
             src={pathLeftMon}
           />
-          <img className={`${shadow}`} src="/shadow.png"></img>
+          <img
+            className={`${shadow}`}
+            src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/SHADOW.png"
+          ></img>
         </div>
         <div></div>
       </div>

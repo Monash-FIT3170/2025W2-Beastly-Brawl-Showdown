@@ -21,6 +21,7 @@ import { TotalHealthBar } from "../../components/bars/TotalHealthBar";
 import { ArmourClassBar } from "../../components/bars/ArmourClassBar";
 import { AttackBonusBar } from "../../components/bars/AttackBonusBar";
 import { BlackText } from "../../components/texts/BlackText";
+import { OutlineTextResizable } from "../../components/texts/ResizableOutlineText";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { IconButton } from "../../components/buttons/IconButton";
 import { HeaderWithLeave } from "../../components/cards/HeaderWithLeave";
@@ -47,7 +48,14 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
   //dependent on how player accounts work :)
   const [unlockedMonstersIDs, setUnlockedMonstersIDs] = useState<
     MonsterIdentifier[]
-  >([MonsterIdentifier.ROCKY_RHINO]);
+  >([
+    MonsterIdentifier.ROCKY_RHINO,
+    MonsterIdentifier.CHARMER_COBRA,
+    MonsterIdentifier.CINDER_TAIL,
+    MonsterIdentifier.FURIOUS_FLIPPER,
+    MonsterIdentifier.POISON_POGO,
+    MonsterIdentifier.POUNCING_BANDIT,
+  ]);
 
   useEffect(() => {
     // Request the monster list once when component mounts
@@ -115,10 +123,15 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
       console.log(
         `Adventure Monster ${selectedMonster.name} selected for player`
       );
-      // TODO: Update the page, might be dialogue page
-      FlowRouter.go("/adventure/adventure-battle");
     }
   };
+
+  //need flow routing to be done via socket inorder to fetch monster level
+  socket.on("start_adventure", (levelMonster: MonsterIdentifier) => {
+    console.log("START ADVENTURE", levelMonster);
+
+    FlowRouter.go(`/adventure/adventure-${levelMonster.toLowerCase()}`);
+  });
 
   const handleCancelSelection = () => {
     setSelectedMonster(null);
@@ -151,18 +164,30 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters
-          .filter(
-            (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
-          )
-          .map((monster) => (
-            <MonsterSelectionCard
-              key={monster.id}
-              monster={monster}
-              type={monster.archetypeId}
-              onClick={() => handleSelectMonster(monster)}
-            />
-          ))}
+        {monsters.filter(
+          (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
+        ).length === 0 ? (
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full text-center">
+              <BlackText size="medium">
+                NO DEFENDER MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE.
+              </BlackText>
+            </div>
+          </div>
+        ) : (
+          monsters
+            .filter(
+              (monster) => monster.archetypeId === ArchetypeIdentifier.DEFENDER
+            )
+            .map((monster) => (
+              <MonsterSelectionCard
+                key={monster.id}
+                monster={monster}
+                type={monster.archetypeId}
+                onClick={() => handleSelectMonster(monster)}
+              />
+            ))
+        )}
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
@@ -179,18 +204,30 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters
-          .filter(
-            (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
-          )
-          .map((monster) => (
-            <MonsterSelectionCard
-              key={monster.id}
-              monster={monster}
-              type={monster.archetypeId}
-              onClick={() => handleSelectMonster(monster)}
-            />
-          ))}
+        {monsters.filter(
+          (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
+        ).length === 0 ? (
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full text-center">
+              <BlackText size="medium">
+                NO BALANCED MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE.
+              </BlackText>
+            </div>
+          </div>
+        ) : (
+          monsters
+            .filter(
+              (monster) => monster.archetypeId === ArchetypeIdentifier.BALANCED
+            )
+            .map((monster) => (
+              <MonsterSelectionCard
+                key={monster.id}
+                monster={monster}
+                type={monster.archetypeId}
+                onClick={() => handleSelectMonster(monster)}
+              />
+            ))
+        )}
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-10 sm:pt-20 lg:pt-20">
@@ -207,18 +244,30 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
           </div>
           <hr className="border-t border-gray-900 w-[90%]"></hr>
         </div>
-        {monsters
-          .filter(
-            (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
-          )
-          .map((monster) => (
-            <MonsterSelectionCard
-              key={monster.id}
-              monster={monster}
-              type={monster.archetypeId}
-              onClick={() => handleSelectMonster(monster)}
-            />
-          ))}
+        {monsters.filter(
+          (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
+        ).length === 0 ? (
+          <div className="w-full flex justify-center items-center">
+            <div className="w-full text-center">
+              <BlackText size="medium">
+                NO ATTACKER MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE.
+              </BlackText>
+            </div>
+          </div>
+        ) : (
+          monsters
+            .filter(
+              (monster) => monster.archetypeId === ArchetypeIdentifier.ATTACKER
+            )
+            .map((monster) => (
+              <MonsterSelectionCard
+                key={monster.id}
+                monster={monster}
+                type={monster.archetypeId}
+                onClick={() => handleSelectMonster(monster)}
+              />
+            ))
+        )}
       </div>
 
       {selectedArchetype && (
@@ -315,23 +364,27 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                 <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
                   SPECIAL ABILITIES
                 </p>
-                <div className="flex flex-col justify-center lg:flex-row w-full">
+                <div className="flex flex-col justify-center lg:flex-row w-[95%]">
                   {abilities.map((ability, idx) => (
                     <div
                       key={ability.id || idx}
-                      className="flex flex-row items-center grow-1 justify-left"
+                      className="flex flex-row items-center justify-left w[45%] gap-[2%]"
                     >
                       <img
-                        src={"/assets/actions/" + ability.id + ".png"}
+                        src={
+                          "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/action/" +
+                          ability.id +
+                          ".webp"
+                        }
                         alt="ability icon"
-                        className="w-[7rem] h-[7rem]"
+                        className="w-[7rem] h-[7rem] rounded-xl border-blackCurrant border-2"
                       />
                       <div>
                         <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
                           {ability.name}
                         </p>
                         {/**<BlackText size="medium">{ability.description}</BlackText>*/}
-                        <p className="text-black font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">
+                        <p className="text-blackCurrant font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">
                           {ability.description}
                         </p>
                       </div>

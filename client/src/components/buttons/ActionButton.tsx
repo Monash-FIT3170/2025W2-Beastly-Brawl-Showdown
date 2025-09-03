@@ -22,7 +22,10 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   isActive,
   onClick,
 }) => {
-  const imagePath = "/assets/actions/" + actionState.id + ".png";
+  const imagePath =
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/action/" +
+    actionState.id +
+    ".webp";
   const name = actionState.name.toUpperCase();
   const availableUses = actionState.currentUse; // How many REMAINING uses
   const isPassive = actionState.maxUse == 0; // Action is a passive ability if it can't be used
@@ -44,6 +47,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       battleId,
       playerId: socket.id,
     });
+    onClick();
   };
 
   const adventureClicked = () => {
@@ -51,6 +55,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       action: actionState,
       playerId: socket.id,
     });
+    onClick();
   };
 
   const image = `
