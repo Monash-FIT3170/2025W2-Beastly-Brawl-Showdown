@@ -7,6 +7,7 @@ import { SlimeBoost } from "../../game/status/slimeBoost";
 
 const statusFactory: Record<string, () => Status> = {
   stunned: () => new Stun(2),
+  poisoned: () => new Poison(5),
   lake_curse_mini: () => new LakeCurse(3),
   lake_curse: () => new LakeCurse(10),
   lake_blessing: () => new LakeBlessing(30),

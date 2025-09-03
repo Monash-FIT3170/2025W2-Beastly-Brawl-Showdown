@@ -69,6 +69,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       progressAdventure(io, socket, adventure, adventure.getStage());
 
       //TESTING ITEMS PLEASE DELETE:
+      /** 
       player.giveConsumable(
         new PercentageHealthPotion("Super Health Potion", 1)
       );
@@ -82,7 +83,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       console.log("ADV TEST: CONSUMABLES", player.getConsumables());
       console.log("ADV TEST: EQUIPMENT", player.getEquipment());
       console.log("ADV TEST: EQUIPMENT", player.getStatuses());
-      player.addStatus(new SlimeBoost(10));
+      */
     }
   );
 

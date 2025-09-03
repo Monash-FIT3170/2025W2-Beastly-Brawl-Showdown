@@ -35,8 +35,15 @@
         "type": "DIALOGUE",
         "result": [
           "Your opponent drops to the ground exhausted.",
-          "Before you realise what's happening they have already disappeared."
-        ]
+          "Before you realise what's happening they have already disappeared.",
+          "You see something glimmer from behind a rock."
+        ],
+        "next": "mini_boss_reward"
+      },
+      {
+        "id": "mini_boss_reward",
+        "type": "EQUIPMENT",
+        "equipmentId": "magicShield"
       }
     ]
   }

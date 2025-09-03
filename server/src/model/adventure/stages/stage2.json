@@ -37,12 +37,12 @@
           "At least the smell is gone"
         ],
         "type": "DIALOGUE",
-        "next": "slime_aura"
+        "next": "slime_health_potion"
       },
       {
-        "id": "slime_aura",
+        "id": "slime_health_potion",
         "type": "CONSUMABLE",
-        "consumableId": "slime_substance"
+        "consumableId": "large_health_potion"
       }
     ]
   }
