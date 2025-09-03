@@ -51,4 +51,8 @@ export class Adventure {
   public getPlayerMonster(): Monster | null {
     return this.playerMonster;
   }
+
+  public getLevelMonster(): MonsterIdentifier | null {
+    return this.levelMonster;
+  }
 }

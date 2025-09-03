@@ -95,9 +95,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     setChoices(null);
   };
 
-  socket.on("adventure_win", (stage) => {
-    FlowRouter.go("/adventure/win");
-  });
+  useEffect(() => {
+    const onAdventureWin = ({ monsterId }: { monsterId: string }) => {
+      FlowRouter.go(`/adventure/win/${monsterId}`);
+    };
+    socket.on("adventure_win", onAdventureWin);
+    return () => {
+      socket.off("adventure_win", onAdventureWin);
+    };
+  }, [stage]);
 
   socket.on("adventure_defeat", () => {
     FlowRouter.go("/adventure/defeat");

@@ -128,8 +128,8 @@ FlowRouter.route("/adventure/defeated", {
   },
 });
 
-FlowRouter.route("/adventure/win", {
-  name: "AdventureWin",
+FlowRouter.route('/adventure/win/:monsterId', {
+  name: 'adventure.win',
   action() {
     mount(AdventureWin);
   },
