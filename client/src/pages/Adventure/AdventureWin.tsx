@@ -17,7 +17,7 @@ const AdventureWin: React.FC = () => {
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-ronchi ">
-      <GenericHeader color="red">
+      <GenericHeader color="blue">
         <OutlineText size="extraLarge">YOU WIN!!!</OutlineText>
       </GenericHeader>
       <div className="bg-peach flex items-center flex flex-col justify-around border-[4px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">

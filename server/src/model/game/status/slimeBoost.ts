@@ -3,7 +3,7 @@ import { Status } from "./status";
 
 export class SlimeBoost extends Status {
   constructor(countdown: number) {
-    super("Slime Support", "Buff your lowest rated stat!", countdown);
+    super("Slime Boost", "Buff your lowest rated stat!", countdown);
   }
 
   public effect(player: Player): void {
