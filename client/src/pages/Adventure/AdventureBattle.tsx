@@ -652,9 +652,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 const biomeMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
   [MonsterIdentifier.POUNCING_BANDIT, () => "FOREST"],
-  [MonsterIdentifier.CINDER_TAIL, () => "ASHLANDS"],
+  [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],
   [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
-  [MonsterIdentifier.POISON_POGO, () => "WETLAND"],
+  [MonsterIdentifier.POISON_POGO, () => "MARSH"],
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
 ]);
 
