@@ -52,6 +52,7 @@ export const AdventureInfoPopup = ({
     }
 
     setCurrentAbilities(Array.from(uniqueActions.values()));
+    console.log(playerState)
 
     // setCurrentAbilities([]);
     // for (const action of playerState?.monster?.possibleActions!) {

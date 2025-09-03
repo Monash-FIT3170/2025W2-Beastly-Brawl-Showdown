@@ -113,19 +113,23 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             }
           });
 
+          //reset stats
+          playersInBattle.forEach((p) => {
+            p.resetStats();
+            p.resetActions();
+            p.getMonster()?.removeTemporaryActions();
+            p.tickStatuses();
+          });
+
           //update battlestate
           io.to(playerId).emit("adventure_state", {
             type: "battle",
             battle: battle?.getBattleState(playerId),
           });
 
-          //reset stats
-          playersInBattle.forEach((p) => {
-            p.resetStats();
-            p.resetActions();
-            p.getMonster()?.removeTemporaryActions();
-          });
-
+          console.log("Player hp", player1.getHealth());
+          console.log("Player ac", player1.getArmourClassStat());
+          console.log("Player atk", player1.getAttackStat());
           //check if battle is over
           if (battle?.isBattleOver()) {
             console.log(`ADV: battle is over!`);
@@ -175,9 +179,6 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
               console.error(`ADV: Player does not have name... ${playerName}`);
             }
           } else {
-            playersInBattle.forEach((p) => {
-              p.tickStatuses();
-            }); //i dont think van move it here maybe mobe in multipla
             let actions = player?.getMonster()?.getPossibleActionStates();
             io.to(playerId).emit("possible_actions", actions);
           }

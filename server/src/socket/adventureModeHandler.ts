@@ -24,6 +24,7 @@ import { Stun } from "../model/game/status/stun";
 import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
 import { LakeCurse } from "../model/game/status/lakeCurse";
 import { createConsumable } from "../model/adventure/factories/consumableFactory";
+import { SlimeBoost } from "../model/game/status/slimeBoost";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -81,9 +82,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       console.log("ADV TEST: CONSUMABLES", player.getConsumables());
       console.log("ADV TEST: EQUIPMENT", player.getEquipment());
       console.log("ADV TEST: EQUIPMENT", player.getStatuses());
-      player.addStatus(new Poison());
-      player.addStatus(new LakeCurse(2));
-      player.addStatus(new Stun(2));
+      player.addStatus(new SlimeBoost(10));
     }
   );
 
