@@ -21,13 +21,13 @@ export const BattleRoyaleFinalResults = ({ gameCode }: BattleRoyaleFinalResultsP
     if (!socket)
       return;
 
-    socket.emit("get-battle-royale-final-results", { gameCode });
-    socket.on("battle-royale-final-results-response", ({ finalWinner }) => {
+    socket.emit("request-battle-royale-final-results", { gameCode });
+    socket.on("battle-royale-final-results", ({ finalWinner }) => {
       setFinalWinner(finalWinner);
     });
 
     return () => {
-      socket.off("battle-royale-final-results-response");
+      socket.off("battle-royale-final-results");
     };
   }, [gameCode]);
 
