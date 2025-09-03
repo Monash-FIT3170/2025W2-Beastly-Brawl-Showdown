@@ -1,13 +1,15 @@
 import React from "react";
 import { OutlineText } from "../texts/OutlineText";
-import { PlayerState } from "/types/single/playerState";
+import { PlayerState } from "../../../../types/single/playerState";
+import { PlayerScore } from "../../../../types/single/playerScore";
 
 interface RankingBarProps {
   player: PlayerState;
   rank: number;
+  score?: PlayerScore;
 }
 
-export const RankingBar = ({ player, rank }: RankingBarProps) => {
+export const RankingBar = ({ player, rank, score }: RankingBarProps) => {
   const rankingBarStyleSets: Record<number, [string, string]> = {
     1: ["1st", "bg-schoolBusYellow"],
     2: ["2nd", "bg-brightsilver"],
@@ -63,10 +65,15 @@ export const RankingBar = ({ player, rank }: RankingBarProps) => {
         </div>
       </div>
 
-      <div className="pl-[0.5rem]">
+      <div className="pl-[0.5rem] flex items-baseline gap-2 whitespace-nowrap">
         <OutlineText size="large">
           {rankToDisplay}
         </OutlineText>
+        {score ? (
+          <OutlineText size="medium">
+            [{score.points} pts]
+          </OutlineText>
+        ) : null}
       </div>
     </div>
   );
