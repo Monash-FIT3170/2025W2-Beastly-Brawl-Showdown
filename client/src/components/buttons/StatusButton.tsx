@@ -27,15 +27,10 @@ export const StatusButton = ({ status }: StatusButtonProp) => {
         outline-[0.5rem]
         flex
         flex-col
-
-        xl:py-[1.2rem]
         overflow-visible
-
-        py-[1rem]
-        gap-y-[0.2rem]
-
-
+        gap-y-[0rem]
         `;
+        
   const Circle = `
         absolute
         bottom-0
@@ -55,11 +50,12 @@ export const StatusButton = ({ status }: StatusButtonProp) => {
         text-[3rem]
         font-jua
         overflow-visible
+        py-[0rem]
         z-30
         `;
 
   return (
-    <div className="gap-y-[0rem] flex flex-col items-center justify-center pb-[1.6rem] xl:pb-[1rem] pt-[1rem] relative w-full">
+    <div className="gap-y-[0rem] flex flex-col items-center justify-center pb-[1.6rem] xl:pb-[1rem]  relative w-full">
       {/* <div className = "absolute overflow-visible z-30 top-0 ">
                     <OutlineText size = "medium">{status.name}</OutlineText>
                 </div> */}
@@ -67,11 +63,11 @@ export const StatusButton = ({ status }: StatusButtonProp) => {
                 <OutlineText size = "medium">{status.name}</OutlineText>
             </div> */}
       <button className={`${Button}`} onClick={() => setShowStatus(true)}>
-        <div className="absolute overflow-visible z-30 top-[1rem] ">
+        <div className="overflow-visible z-30 top-0 ">
           {/* <OutlineText size = "midsmall">{status.name}</OutlineText> */}
           <BlackText size="tiny">{status.name}</BlackText>
         </div>
-        <div className="py-[2rem] xl:py-[0.1rem] px-[3rem] xl:px-[1.3rem]">
+        <div className="py-[0.4rem] xl:py-[0.1rem] px-[3rem] xl:px-[1.3rem]">
           <img src={path}></img>
         </div>
         <div className={`${Circle}`}>{status.countDown}</div>
