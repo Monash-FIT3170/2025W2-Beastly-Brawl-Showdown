@@ -53,6 +53,9 @@ export class ScoringTournament implements IGameMode{
 	//Update the scoreboard
 	//TODO: Add Player to waiting room 
 	onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void {
+		const winners = this.board.showBoard().map((player) => player.name)
+		console.log("[SCORING WINNERS:] ", winners)
+
 		if (winner){
 			this.board.setScore(winner.getId(), {
 				bonuses: this.bonus.win
@@ -69,6 +72,7 @@ export class ScoringTournament implements IGameMode{
 			}
 		}
 
+		//Calculate score for the previous battle
 		let playersInBattle = battle.getPlayers();
 
 		playersInBattle.forEach((player) => {
@@ -89,8 +93,36 @@ export class ScoringTournament implements IGameMode{
 				})
 	}})
 
-		console.log("[SESSION ENDED]: ", this.isSessionConcluded(session))
+
+
+
 		if (this.isSessionConcluded(session)){
+			if (session.areBattlesConcluded()){
+				const playersInSession = session.getPlayers().getItems()
+				playersInSession.forEach((player) => {
+					const playerName = player.getName()
+					console.log("[POST MATCH (SCORING)]: ", playerName)
+					if (winners.includes(playerName)){
+						if (!player.isBotPlayer()){
+							io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+							result: "concluded",
+							winners: [playerName] })
+						}
+					} else {
+						if (!player.isBotPlayer()){
+							console.log("[POST MATCH LOSING]: ", playerName)
+							io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+							result: "draw",
+							winners: [] })
+						}
+					}
+				})
+			} else {
+				const playersInBattle = battle.getPlayers()
+				playersInBattle.forEach((player) => {
+					io.to(battle.getId()).emit("client-wait-conclusion")
+				})
+			}
 			return
 		}
 

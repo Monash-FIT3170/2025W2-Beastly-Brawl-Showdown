@@ -165,6 +165,7 @@ export default function proceedBattleTurn(
 
         // Execute method
         player1.getActions().forEach((action) => {
+
           p1_result = action.execute(player1, player2);
           if (action instanceof NullAction) {
             console.log(`P1 - ${player1.getName()} did nothing.`);
@@ -172,6 +173,7 @@ export default function proceedBattleTurn(
         });
 
         player2.getActions().forEach((action) => {
+
           p2_result = action.execute(player2, player1);
           if (action instanceof NullAction) {
             console.log(`P2 - ${player2.getName()} did nothing.`);
@@ -213,20 +215,20 @@ export default function proceedBattleTurn(
             //Handler after a battle ended
             gameSession.onBattleEnded(null,battle, io, socket)
 
-            //if battle is over, the array length is guaranteed to be either 0 or 1
-            io.to(battle.getId()).emit("battle_end", {
-              result: "draw",
-              winners: winners.map((player) => player.getName()),
-            });
+            // if battle is over, the array length is guaranteed to be either 0 or 1
+            // io.to(battle.getId()).emit("battle_end", {
+            //   result: "draw",
+            //   winners: winners.map((player) => player.getName()),
+            // });
           } else {
             //Handler after a battle ended
             gameSession.onBattleEnded(winners[0], battle, io,socket)
 
-            io.to(battle.getId()).emit("battle_end", {
-              result: "concluded",
-              winners: winners.map((player) => player.getName())
-,
-            });
+//             io.to(battle.getId()).emit("battle_end", {
+//               result: "concluded",
+//               winners: winners.map((player) => player.getName())
+// ,
+//             });
           }
           
           //Emit to host one last time before shutting down the handler
