@@ -14,7 +14,9 @@ export interface StatusPopupProp {
 export const StatusPopup = ({ status, open, onClose }: StatusPopupProp) => {
   if (!open) return null;
 
-  const path = `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase()}.png`;
+  const path = `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
+    .replace(" ", "_")
+    .toUpperCase()}.png`;
 
   return (
     <PopupClean>

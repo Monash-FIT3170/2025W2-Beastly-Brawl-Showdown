@@ -11,7 +11,9 @@ export interface StatusButtonProp {
 
 export const StatusButton = ({ status }: StatusButtonProp) => {
   const [showStatus, setShowStatus] = useState(false);
-  const path = `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase()}.png`;
+  const path = `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
+    .replace(" ", "_")
+    .toUpperCase()}.png`;
   const Button = `
         bg-pictonBlue
         w-[12rem]

@@ -85,7 +85,9 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
           {battleState.opponentPlayer.statuses.map((status) => (
             <img
               className=" size-[30px] object-contain rounded-md block"
-              src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase()}.png`}
+              src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
+                .replace(" ", "_")
+                .toUpperCase()}.png`}
               alt={`${status.name.toUpperCase()} image`}
             />
           ))}
