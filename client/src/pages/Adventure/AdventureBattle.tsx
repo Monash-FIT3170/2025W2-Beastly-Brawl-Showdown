@@ -37,6 +37,7 @@ import { AdventureInfoPopup } from "../../components/popups/AdventureInfo";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
 import { EquipmentState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
+import { PlayerInfoPanel } from "../../components/player-screen/PlayerInfoPanel";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process

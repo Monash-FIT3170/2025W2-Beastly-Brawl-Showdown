@@ -102,14 +102,6 @@ export class Player {
     this.logs = [];
   }
 
-  public resetStats(): void {
-    if (this.monster) {
-      this.currentAttackStat = this.monster.getAttackBonus();
-      this.currentArmourClassStat = this.monster.getArmourClass();
-      this.dodging = false;
-    }
-  }
-
   //Similar to resetStats, but also restore player HP to full
   public prepareForNextBattle(): void {
     if (this.monster) {
@@ -236,8 +228,13 @@ export class Player {
     return {success: true}
   }
   */
-  public addStatus(status: Status) {
+  public addStatus(status: Status): {
+    success: boolean;
+    reason?: string;
+    metadata?: unknown;
+  } {
     this.statuses.push(status);
+    return { success: true };
   }
 
   public tickStatuses() {

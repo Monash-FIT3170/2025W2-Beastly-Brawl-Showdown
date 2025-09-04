@@ -1,5 +1,9 @@
 import { Player } from "../player";
-import { ActionIdentifier, ActionResult, ActionState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionResult,
+  ActionState,
+} from "/types/single/actionState";
 
 export abstract class Action {
   private id: ActionIdentifier;
@@ -15,14 +19,14 @@ export abstract class Action {
     name: string,
     description: string,
     maxUse: number,
-    dodgeable: boolean
+    dodgeable?: boolean
   ) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.currentUse = maxUse;
     this.maxUse = maxUse;
-    this.dodgeable = dodgeable;
+    this.dodgeable = dodgeable ?? true;
   }
 
   public incCurrentUse(value: number): void {
@@ -47,7 +51,10 @@ export abstract class Action {
   public abstract prepare(actingPlayer: Player, affectedPlayer: Player): void;
 
   //Return the "effects" caused by action
-  public abstract execute(actingPlayer: Player, affectedPlayer: Player): ActionResult;
+  public abstract execute(
+    actingPlayer: Player,
+    affectedPlayer: Player
+  ): ActionResult;
 
   public abstract prepareAnimation(): string | [string, number]; // returns the socket message that represents the animation name
 
