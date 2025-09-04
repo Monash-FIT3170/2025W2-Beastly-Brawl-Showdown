@@ -1,13 +1,13 @@
 import React from "react";
 import { BattleHealthBar } from "../bars/BattleHealthBar";
-import { BattleState } from "/types/composite/battleState";
+import { BattleState } from "../../../../types/composite/battleState";
 import { OutlineTextBP } from "../texts/OutlineTextBP";
-import {GameSessionStateMetaData} from "/types/composite/gameSessionState"
+import { GameSessionStateMetaData } from "../../../../types/composite/gameSessionState"
 
 interface BattleHeaderProps {
   battleState: BattleState;
-  timer: number;
-  metadata: GameSessionStateMetaData
+  timer?: number;
+  metadata?: GameSessionStateMetaData
 }
 
 export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer, metadata }) => {
@@ -20,14 +20,13 @@ export const BattleHeader: React.FC<BattleHeaderProps> = ({ battleState, timer, 
 
   let p1Score;
   let p2Score;
-  console.log("[METADATA]:", metadata.playerScore)
-  if (metadata.playerScore){
-    p1Score = metadata.playerScore[player1Id].points
-    p2Score = metadata.playerScore[player2Id].points
+  if (metadata) {
+    console.log("[METADATA]:", metadata.playerScore)
+    if (metadata.playerScore){
+      p1Score = metadata.playerScore[player1Id].points
+      p2Score = metadata.playerScore[player2Id].points
+    }
   }
-
-  // const playerScore = 10;
-  // const player2Score = 2;
 
   return (
     <div className="flex flex-row 

@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css';
-import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
+import { GameSessionStateMetaData } from "../../../../types/composite/gameSessionState";
 import ScoreCard from '../cards/ScoreCard';
 
 interface TopScoresProps {
@@ -8,8 +8,8 @@ interface TopScoresProps {
 }
 
 const TopScores: React.FC<TopScoresProps> = ({ metadata }) => {
-  const top3 = metadata.top3Score
-    
+  const top3 = metadata?.top3Score ?? [];
+  
     return (
     <div 
       style={{
