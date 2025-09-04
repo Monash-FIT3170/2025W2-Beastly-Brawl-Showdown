@@ -232,11 +232,6 @@ export default function proceedBattleTurn(
             // ,
             //             });
           }
-        } else {
-          playersInBattle.forEach((player) => {
-            player.tickStatuses();
-          });
-
           //Emit to host one last time before shutting down the handler
           gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
           io.to(gameSession.getHost()).emit("game-session-state", {
@@ -245,6 +240,10 @@ export default function proceedBattleTurn(
 
           //Shutting down the handler
           return;
+        } else {
+          playersInBattle.forEach((player) => {
+            player.tickStatuses();
+          });
         }
         // TODO: ONLY update the current battle to be more memory efficient...
         //Players' states after the turn ends
