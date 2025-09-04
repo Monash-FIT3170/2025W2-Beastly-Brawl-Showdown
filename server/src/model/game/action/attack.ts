@@ -1,6 +1,10 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier, AttackState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionResult,
+  AttackState,
+} from "/types/single/actionState";
 import socket from "../../socket";
 
 export class AttackAction extends Action {
@@ -70,14 +74,14 @@ export class AttackAction extends Action {
     return ["roll_dice", this.d20];
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
-    if (this.attackHit > affectedPlayer.getMonster().getArmourClass()) {
+    if (this.attackHit >= affectedPlayer.getArmourClassStat()) {
       console.log(
-        `${actingPlayer.getName()}'s attack successful | Attack exceeds opponents armour: (${affectedPlayer
-          .getMonster()
-          .getArmourClass()} < ${this.attackHit}).`
+        `${actingPlayer.getName()}'s attack successful | Attack exceeds opponents armour: (${affectedPlayer.getArmourClassStat()} < ${
+          this.attackHit
+        }).`
       );
 
       // Check for a critical hit
@@ -137,6 +141,12 @@ export class AttackAction extends Action {
       // Increment successful block for front end
       affectedPlayer.incSuccessfulBlock(1);
     }
+
+    return {
+      appliedStatus: {
+        success: false,
+      },
+    };
   }
 
   public getAttackState(): AttackState {

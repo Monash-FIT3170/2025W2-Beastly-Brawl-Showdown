@@ -13,8 +13,8 @@ export class Slime extends Monster {
       "blob blob...",
       new Neutral(),
       new SlimeSupportAction(),
-      15,
-      15,
+      5,
+      5,
       8
     );
   }

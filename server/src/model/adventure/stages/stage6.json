@@ -49,7 +49,7 @@
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_1",
+        "enemyId": "slime_4",
         "next": "check_fight_win"
       },
       {

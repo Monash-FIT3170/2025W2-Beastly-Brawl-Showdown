@@ -9,6 +9,10 @@ import { ButtonResizableText } from "../../components/buttons/ButtonResizableTex
 import { LoginPopup } from "./Login";
 
 export const Home = () => {
+    // Called on 'Host Lobby' button press
+  const renderConfigPage = () => {
+    FlowRouter.go("/host/choose-mode");
+  };
   const [showLogin, setShowLogin] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(false);
 
@@ -82,7 +86,7 @@ export const Home = () => {
         <ButtonGeneric
           color="ronchi"
           size="large"
-          onClick={createGame}
+          onClick={renderConfigPage}
           mobileHidden={"true"}
         >
           <OutlineText size="large">HOST GAME</OutlineText>

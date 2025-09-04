@@ -1,23 +1,34 @@
 import React from 'react';
 import HealthBar from './HealthBar';
 import { PlayerState } from '/types/single/playerState';
+import { OutlineText } from '../texts/OutlineText';
 
 interface PlayerPanelProps {
   playerState: PlayerState;
   playerIndex: number;
   isLeftPlayer?: boolean; // Add this to control layout direction
   winner: boolean;
+  playerScore: number
 }
 
 const PlayerPanel: React.FC<PlayerPanelProps> = ({ 
   playerState, 
   playerIndex,  
   isLeftPlayer = true,
-  winner
+  winner,
+  playerScore
 }) => {
   // Extract current and max health values
   const currentHealth = playerState.currentHealth;
   const maxHealth = playerState.monster?.maxHealth;
+
+
+  const getScorePosition = () => {
+    if (isLeftPlayer) {
+      return 'left-2';
+    }
+    return 'right-18';
+  }
 
   // Format the name of the monster from the form 'Monster Name' to 'MONSTER_NAME'.
   const formattedName = playerState.monster?.id;
@@ -138,6 +149,33 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
           />
         </div>
       </div>
+      {playerScore == null ? <div/> : 
+      <div>
+        {/* P1 score */}
+        <div className={`
+                absolute
+                top-5
+                ${getScorePosition()}
+                w-10
+                h-10
+                rounded-full
+                bg-[#FFE07C]
+                border-3
+                border-[#403245]
+                text-white
+                flex
+                items-center
+                justify-center
+                text-sm
+                font-jua
+                overflow-hidden
+            `}>
+          <OutlineText size='small'>
+            {playerScore}
+          </OutlineText>
+        </div>
+      </div>
+      }
     </div>
   );
 };

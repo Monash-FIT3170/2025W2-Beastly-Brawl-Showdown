@@ -5,7 +5,7 @@ import { Home } from "./src/pages/Home/Home";
 import HostLobby from "./src/pages/Lobby/HostLobby";
 import JoinLobby from "./src/pages/Lobby/JoinLobby";
 import PathNotFound from "./src/pages/Home/PathNotFound";
-import HostBattles from "./src/pages/Lobby/HostBattles";
+import { GameConfiguration } from "./src/pages/Game/GameConfiguration";
 import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
 import Rules from "./src/pages/Game/Rules";
@@ -17,6 +17,7 @@ import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
+import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -32,10 +33,22 @@ FlowRouter.route("/", {
   },
 });
 
+
+
+
+
 FlowRouter.route("/host", {
   name: "HostLobby",
   action() {
     mount(HostLobby);
+  },
+});
+
+
+FlowRouter.route('/host/choose-mode', {
+  name: 'GameConfiguration',
+  action() {
+    mount(GameConfiguration);
   },
 });
 
@@ -81,6 +94,7 @@ FlowRouter.route("/session/:sessionId?", {
   },
 });
 
+
 FlowRouter.route("/battles/:code?", {
   name: "MatchSummary",
   action(params) {
@@ -94,6 +108,7 @@ FlowRouter.route("/adventure/level-select", {
     mount(LevelSelect);
   },
 });
+
 
 FlowRouter.route("/adventure/monster-select", {
   name: "MonsterSelect",

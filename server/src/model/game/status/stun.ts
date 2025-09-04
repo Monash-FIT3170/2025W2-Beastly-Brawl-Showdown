@@ -2,10 +2,11 @@ import { NullAction } from "../action/null";
 import { Player } from "../player";
 import { Status } from "./status";
 import { ActionIdentifier } from "/types/single/actionState";
+import { StatusType } from "/types/single/statusType";
 
 export class Stun extends Status {
   constructor(countDown: number) {
-    super("Stun", "Monster is unable to attack", countDown);
+    super("Stun", "Monster is unable to attack", countDown, StatusType.DEBUFF);
   }
 
   //TODO: implement stun

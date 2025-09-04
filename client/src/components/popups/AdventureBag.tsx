@@ -33,7 +33,7 @@ export const AdventureBagPopup = ({
   inBattle,
 }: AdventureBagProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
-  const currentlyViewing = ["EQUIPMENT", "CONSUMABLES"];
+  const currentlyViewing = ["CONSUMABLES", "EQUIPMENT"];
   const [viewingConsumable, setViewingConsumable] = useState<Boolean>(false);
   const [viewingEquipment, setViewingEquipment] = useState<Boolean>(false);
   const [consumable, setConsumable] = useState<ConsumableState | null>(null);
@@ -117,8 +117,31 @@ export const AdventureBagPopup = ({
                 {currentlyViewing[viewingTab]}
               </OutlineText>
             </div>
-            {/* CONSUMABLES CONTENTS */}
+
+            {/* EQUIPMENT CONTENTS */}
             {viewingTab !== 0 && (
+              <>
+                <div className="grid grid-flow-row h-full w-full auto-rows-auto">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="py-2">
+                      <OutlineText size="medium">Slot {i + 1}</OutlineText>
+                      <div className="h-[2px] bg-blackCurrant mb-4 w-[90%] mx-auto" />
+                      {playerState?.equipment[i] ? (
+                        <EquipmentCard
+                          onClick={() => setEquipment(playerState.equipment[i])}
+                          equipment={playerState.equipment[i]}
+                        />
+                      ) : (
+                        <EmptyEquipmentCard />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* CONSUMABLES CONTENTS */}
+            {viewingTab !== 1 && (
               <>
                 {/* if no consumables */}
                 {playerState?.consumables[0] ? (
@@ -137,28 +160,6 @@ export const AdventureBagPopup = ({
                         consumable={c}
                       ></ConsumableCard>
                     </>
-                  ))}
-                </div>
-              </>
-            )}
-
-            {/* EQUIPMENT CONTENTS */}
-            {viewingTab !== 1 && (
-              <>
-                <div className="grid grid-flow-row h-full w-full auto-rows-auto">
-                  {[0, 1, 2].map((i) => (
-                    <div key={i} className="py-2">
-                      <OutlineText size="medium">Slot {i + 1}</OutlineText>
-                      <div className="h-[2px] bg-blackCurrant mb-4 w-[90%] mx-auto" />
-                      {playerState?.equipment[i] ? (
-                        <EquipmentCard
-                          onClick={() => setEquipment(playerState.equipment[i])}
-                          equipment={playerState.equipment[i]}
-                        />
-                      ) : (
-                        <EmptyEquipmentCard />
-                      )}
-                    </div>
                   ))}
                 </div>
               </>

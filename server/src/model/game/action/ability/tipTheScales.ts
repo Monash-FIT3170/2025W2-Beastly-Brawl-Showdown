@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 import { get } from "http";
 
@@ -43,7 +43,7 @@ export class TipTheScalesAbilityAction extends Action {
     return "roll_dice";
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     // Log actions
@@ -60,5 +60,11 @@ export class TipTheScalesAbilityAction extends Action {
     );
 
     this.attackAction?.execute(actingPlayer, affectedPlayer);
+
+    return {
+      appliedStatus: {
+        success: false
+      }
+    }
   }
 }
