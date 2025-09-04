@@ -34,7 +34,7 @@ export const GenericHeader = ({ children, color }: HeaderProps) => {
         pl-[1%]
         pr-[1%]
         inset-x-0
-        sticky
+        fixed
         top-0
         `;
 
