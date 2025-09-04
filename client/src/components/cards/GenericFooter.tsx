@@ -1,13 +1,12 @@
 import React from "react";
 
-interface FooterProps{
-    children: React.ReactNode;
+interface FooterProps {
+  children: React.ReactNode;
 }
 
-export const GenericFooter = ({children }: FooterProps) => {
-    const footer = 
-        `
-        bg-[#FBD474]
+export const GenericFooter = ({ children }: FooterProps) => {
+  const footer = `
+        bg-goldenRod
         mx-auto
         font-[Jua]
         w-[95%]
@@ -33,10 +32,5 @@ export const GenericFooter = ({children }: FooterProps) => {
         bottom-0
         `;
 
-    return(
-        <div className={`${footer}`}>
-            {children}
-        </div>
-    );
-    
-}
+  return <div className={`${footer}`}>{children}</div>;
+};

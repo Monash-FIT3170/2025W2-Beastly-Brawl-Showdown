@@ -26,6 +26,7 @@ export abstract class Monster {
 
   private useTemporaryActions: boolean = false;
   private temporaryActions: Action[] = [];
+  private attackAction: AttackAction;
 
   constructor(
     id: MonsterIdentifier,
@@ -46,7 +47,8 @@ export abstract class Monster {
     this.armourClass = armourClass;
     this.critRate = archetype.getCritRate();
 
-    this.possibleActions.push(new AttackAction(attackBonus, this.critRate));
+    this.attackAction = new AttackAction(attackBonus, this.critRate);
+    this.possibleActions.push(this.attackAction);
     this.possibleActions.push(new DefendAction(armourClass));
     this.possibleActions.push(ability);
     this.possibleActions.push(archetype.getAbility());
@@ -79,6 +81,10 @@ export abstract class Monster {
       return this.temporaryActions;
     }
     return this.possibleActions;
+  }
+
+  public getAttackAction(): AttackAction {
+    return this.attackAction;
   }
 
   public getPossibleActionStates(): ActionState[] {
@@ -127,16 +133,31 @@ export abstract class Monster {
     };
   }
 
+  public incMaxHealth(health: number): void {
+    this.maxHealth += health;
+  }
+
+  public incAttackBonus(attack: number): void {
+    this.attackBonus += attack;
+  }
+
+  public incArmourClass(armour: number): void {
+    this.armourClass += armour;
+  }
+
   public pveScaling(stage: number): void {
     if (stage === 4) {
-      this.maxHealth = Math.ceil(this.maxHealth * 1.5);
-      this.attackBonus = Math.ceil(this.maxHealth * 1.5);
+      //mini boss
+      this.maxHealth = Math.ceil(this.maxHealth * 0.9);
+      this.attackBonus = Math.ceil(this.attackBonus * 0.9);
     } else if (stage === 8) {
-      this.maxHealth = Math.ceil(this.maxHealth * 2);
-      this.attackBonus = Math.ceil(this.maxHealth * 2);
+      //main boss
+      this.maxHealth = Math.ceil(this.maxHealth * 1.5);
+      this.attackBonus = Math.ceil(this.attackBonus * 1.5);
     } else {
-      this.maxHealth = Math.ceil(this.maxHealth * (stage * 0.1));
-      this.attackBonus = Math.ceil(this.maxHealth * (stage * 0.1));
+      //every other stage
+      this.maxHealth = Math.ceil(stage * 3.5);
+      this.attackBonus = Math.ceil(this.attackBonus + stage * 0.75);
     }
   }
 }

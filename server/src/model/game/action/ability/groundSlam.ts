@@ -19,17 +19,16 @@ export class GroundSlamAbilityAction extends Action {
     // affectedPlayer.clearActions();
   }
 
-    public prepareAnimation(): string | [string, number] {
+  public prepareAnimation(): string | [string, number] {
     return "Ground_Slam_Animation";
   }
-
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     // Deal 3 damage + Stun
     affectedPlayer.incHealth(-3);
-    affectedPlayer.addStatus(new Stun(1), 100);
+    affectedPlayer.addStatus(new Stun(1));
 
     // Add logs
     actingPlayer.addLog(
@@ -45,8 +44,8 @@ export class GroundSlamAbilityAction extends Action {
     //Success evaluates true since the current status rate for this ability is 100%
     return {
       appliedStatus: {
-        success: true
-      }
-    }
+        success: true,
+      },
+    };
   }
 }
