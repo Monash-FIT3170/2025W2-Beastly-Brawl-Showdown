@@ -55,7 +55,6 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       action: actionState,
       playerId: socket.id,
     });
-    onClick();
   };
 
   const image = `

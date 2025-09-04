@@ -17,6 +17,6 @@ export class SlimeSubstance extends Consumable {
     player.addStatus(new SlimeBoost(3));
   }
   protected getImageString(): string {
-    return "item";
+    return "SLIME_SUBSTANCE";
   }
 }

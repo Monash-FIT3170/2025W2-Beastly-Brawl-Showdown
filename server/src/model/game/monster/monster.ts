@@ -147,14 +147,17 @@ export abstract class Monster {
 
   public pveScaling(stage: number): void {
     if (stage === 4) {
-      this.maxHealth = Math.ceil(this.maxHealth * 1.5);
-      this.attackBonus = Math.ceil(this.maxHealth * 1.5);
+      //mini boss
+      this.maxHealth = Math.ceil(this.maxHealth * 0.9);
+      this.attackBonus = Math.ceil(this.attackBonus * 0.9);
     } else if (stage === 8) {
-      this.maxHealth = Math.ceil(this.maxHealth * 2);
-      this.attackBonus = Math.ceil(this.maxHealth * 2);
+      //main boss
+      this.maxHealth = Math.ceil(this.maxHealth * 1.5);
+      this.attackBonus = Math.ceil(this.attackBonus * 1.5);
     } else {
+      //every other stage
       this.maxHealth = Math.ceil(this.maxHealth * (stage * 0.1));
-      this.attackBonus = Math.ceil(this.maxHealth * (stage * 0.1));
+      this.attackBonus = Math.ceil(this.attackBonus * (stage * 0.1));
     }
   }
 }

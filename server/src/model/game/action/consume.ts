@@ -20,13 +20,19 @@ export class ConsumeAction extends Action {
     actingPlayer.useConsumable(this.consumableName);
 
     //LOGS
-    actingPlayer.addLog(`You used your ${this.consumableName} doing XX.`);
+    actingPlayer.addLog(
+      `You used your ${this.consumableName} from your backpack!`
+    );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.consumableName} doing XX!
+      `${actingPlayer.getName()} used ${
+        this.consumableName
+      } from their backpack!
       }.`
     );
     actingPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${this.consumableName} doing XX!.`
+      `${actingPlayer.getName()} used ${
+        this.consumableName
+      } from their backpack!`
     );
   }
   public prepareAnimation(): string | [string, number] {

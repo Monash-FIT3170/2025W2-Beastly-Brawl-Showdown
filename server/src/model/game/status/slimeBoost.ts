@@ -8,6 +8,7 @@ export class SlimeBoost extends Status {
 
   public effect(player: Player): void {
     //CURRENTLY: only checks AC, HP, ATK+
+    //TODO: add logs!!
     const buffedStat = this.getLowestStat(player);
     var current = 0;
     switch (buffedStat) {
@@ -16,11 +17,11 @@ export class SlimeBoost extends Status {
         current = player.getArmourClassStat();
         player.incArmourClassStat(5);
         console.log(`Slime Boost: Boosted AC +5`);
-      case "HP":
-        // Heals for 3 HP
-        current = player.getHealth();
-        player.incHealth(3);
-        console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
+      // case "HP":
+      //   // Heals for 3 HP
+      //   current = player.getHealth();
+      //   player.incHealth(3);
+      //   console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
       default:
         //Doubles ATK+
         current = player.getAttackStat();
@@ -47,20 +48,11 @@ export class SlimeBoost extends Status {
     const currentATK = player.getAttackStat();
     const currentHP = player.getHealth();
 
-    if (currentHP <= 0) {
-      //to remove immortality
-      var stats = {
-        AC: this.getRelativeValue(currentAC, acScale),
-        ATK: this.getRelativeValue(currentATK, atkScale),
-        HP: 1000,
-      };
-    } else {
-      stats = {
-        AC: this.getRelativeValue(currentAC, acScale),
-        ATK: this.getRelativeValue(currentATK, atkScale),
-        HP: this.getRelativeValue(currentHP, hpScale),
-      };
-    }
+    const stats = {
+      // AC: this.getRelativeValue(currentAC, acScale),
+      ATK: this.getRelativeValue(currentATK, atkScale),
+      HP: this.getRelativeValue(currentHP, hpScale),
+    };
 
     // Find the lowest entry
     const [lowestStatName, lowestStatValue] = Object.entries(stats).reduce(
