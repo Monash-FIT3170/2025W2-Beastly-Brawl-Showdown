@@ -50,7 +50,7 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
     `;
 
   return (
-    <div className="fixed flex flex-col w-full h-screen justify-center pb-[50%] xl:pb-[20%] pl-[5%] xl:pl-[0%] xl:pr-[0%] pr-[5%]">
+    <div className="flex flex-col w-full h-full justify-center">
       {/* Generate 2 by 2 grid and placed monster at top right and bottom left colums */}
       <div className="w-full place-items-center xl:gap-x-[40rem] grid grid-cols-2 gap-y-[7rem] xl:gap-y-[0rem] ">
         <div></div>

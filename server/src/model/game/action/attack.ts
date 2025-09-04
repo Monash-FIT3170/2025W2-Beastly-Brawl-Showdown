@@ -70,7 +70,7 @@ export class AttackAction extends Action {
     return ["roll_dice", this.d20];
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
     if (this.attackHit >= affectedPlayer.getArmourClassStat()) {
@@ -137,6 +137,12 @@ export class AttackAction extends Action {
       // Increment successful block for front end
       affectedPlayer.incSuccessfulBlock(1);
     }
+
+    return {
+      appliedStatus: {
+        success: false,
+      },
+    };
   }
 
   public getAttackState(): AttackState {

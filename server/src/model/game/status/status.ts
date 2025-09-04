@@ -1,14 +1,22 @@
 import { Player } from "../player";
+import { StatusType } from "/types/single/statusType";
 
 export abstract class Status {
   public name: string;
   protected description: string;
   protected countDown: number;
+  public type: StatusType;
 
-  constructor(name: string, description: string, countDown: number = 0) {
+  constructor(
+    name: string,
+    description: string,
+    countDown: number = 0,
+    type: StatusType
+  ) {
     this.name = name;
     this.description = description;
     this.countDown = countDown;
+    this.type = type;
   }
 
   public tick(player: Player): void {
@@ -28,12 +36,16 @@ export abstract class Status {
     return this.name;
   }
 
-  public getDescription(): string{
+  public getDescription(): string {
     return this.description;
   }
 
-  public getRemaningTurn(): number{
-    return this.countDown
+  public getRemainingTurn(): number {
+    return this.countDown;
+  }
+
+  public getType(): StatusType {
+    return this.type;
   }
 
   public isExpired(): boolean {

@@ -1,8 +1,8 @@
 import {
   ArchetypeIdentifier,
   MonsterIdentifier,
-} from "/types/single/monsterState";
-import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
+} from "../../../../types/single/monsterState";
+import BattleHeader from "../../components/player-screen/BattleHeader";
 import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
 import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import DiceRollModal from "../Game/DiceRollModal";
@@ -18,7 +18,7 @@ import { randomUUID } from "crypto";
 import React from "react";
 import socket from "../../socket";
 import { DialogueBox } from "../../components/cards/DialogueBox";
-import { option } from "/types/composite/storyTypes";
+import { option } from "../../../../types/composite/storyTypes";
 import { DialogueChoiceButton } from "../../components/buttons/DialogueChoiceButton";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
@@ -26,7 +26,7 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { ChoicePopup } from "../../components/popups/ChoicePopup";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { StatChangePopup } from "../../components/popups/statChangePopup";
-import { MonsterState } from "/types/single/monsterState";
+import { MonsterState } from "../../../../types/single/monsterState";
 import MonsterDisplay from "../../components/player-screen/MonsterDisplay";
 import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { IconButton } from "../../components/buttons/IconButton";
@@ -216,7 +216,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   return (
     <>
       <div
-        className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
+        className="inset-0 w-screen h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
         <LeavePopup open={showLeave} onClose={() => setShowLeave(false)} />
@@ -635,7 +635,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
               ))}
             </div>
 
-            <div>
+            <div className="h-1/3 w-full">
               {
                 <BattleFooter
                   possibleActions={possibleActions}

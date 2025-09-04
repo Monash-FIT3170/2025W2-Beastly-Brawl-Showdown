@@ -45,6 +45,7 @@ export const ButtonGeneric = ({
     backpack: "lg:w-[8rem] lg:h-[8rem] sm:w-[16rem] sm:h-[16rem]",
   };
 
+  // NOTE: might not be in main rn, not used
   const mobile = {
     true: "sm:hidden lg:block",
     false: "block",

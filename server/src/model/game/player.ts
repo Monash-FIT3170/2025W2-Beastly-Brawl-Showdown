@@ -7,13 +7,13 @@ import { PlayerAccountSchema } from "../../database/dbManager";
 import { Status } from "./status/status";
 import { Consumable } from "./consumables/consumable";
 import { Equipment } from "./equipment/equipment";
+import { ActionIdentifier } from "/types/single/actionState";
 
 export class Player {
   private id: string;
   private name: string;
   private monster: Monster | null;
   public currentGameCode: number;
-  private score: number = 0;
   private currentlyDodging = false;
   private currentHealth: number;
   private currentAttackStat: number;
@@ -32,7 +32,9 @@ export class Player {
   private consumableActions: Action[] = [];
   private equipment: Equipment[] = [];
 
-  private playerAccount: PlayerAccountSchema;
+  private playerAccount: PlayerAccountSchema | null;
+  private noNullAction: number = 0;
+  static roundToCheck: number = 5; //change the value here
 
   constructor(
     id: string,
@@ -51,8 +53,78 @@ export class Player {
     this.botPlayer = botPlayer ?? false;
   }
 
-  public getPlayerAccountEmail() {
-    return this.playerAccount.email;
+  public getSuccessfulBlock() {
+    return this.successfulBlock;
+  }
+
+  public isBotPlayer(): boolean {
+    return this.botPlayer;
+  }
+
+  public setNoNullAction(value: number): void {
+    this.noNullAction = value;
+  }
+
+  public getNoNullAction(): number {
+    return this.noNullAction;
+  }
+
+  public incSuccessfulHit(number: number): void {
+    this.successfulHit += number;
+  }
+
+  public incSuccessfulBlock(number: number): void {
+    this.successfulBlock += number;
+  }
+
+  public getGameCode() {
+    return this.currentGameCode;
+  }
+
+  public updateGameCode(newCode: number) {
+    this.currentGameCode = newCode;
+  }
+
+  public getLogs(): string[] {
+    return this.logs;
+  }
+
+  public addLog(log: string): void {
+    this.logs.push(log);
+  }
+
+  public addBattleLog(log: string): void {
+    // match summary logs
+    this.battleLogs.push(log);
+  }
+
+  public clearLogs(): void {
+    this.logs = [];
+  }
+
+  public resetStats(): void {
+    if (this.monster) {
+      this.currentAttackStat = this.monster.getAttackBonus();
+      this.currentArmourClassStat = this.monster.getArmourClass();
+      this.dodging = false;
+    }
+  }
+
+  //Similar to resetStats, but also restore player HP to full
+  public prepareForNextBattle(): void {
+    if (this.monster) {
+      this.currentHealth = this.monster.getMaxHealth();
+      this.currentAttackStat = this.monster.getAttackBonus();
+      this.currentArmourClassStat = this.monster.getArmourClass();
+      this.statuses = [];
+      this.noNullAction = 0;
+    }
+  }
+
+  public clearBattleLogs(): void {
+    if (this.battleLogs.length !== 1) {
+      this.battleLogs.shift();
+    }
   }
 
   public getPlayerAccountUsername() {
@@ -154,6 +226,16 @@ export class Player {
     return this.statuses;
   }
 
+  /* FROM HUU'S BRANCH 1008 - FUTURE REFERENCE
+  public addStatus(status: Status, succesRate: number): {success: boolean; reason?: string; metadata?: unknown}{
+    const chance = Math.random() * 100;
+    if (chance >= succesRate){
+      return {success: false, reason: "Missed"}
+    }
+    this.statuses.push(status);
+    return {success: true}
+  }
+  */
   public addStatus(status: Status) {
     this.statuses.push(status);
   }
@@ -192,59 +274,17 @@ export class Player {
     return this.currentlyDodging;
   }
 
-  public getSuccessfulBlock() {
-    return this.successfulBlock;
-  }
-
-  public isBotPlayer(): boolean {
-    return this.botPlayer;
-  }
-
-  public incSuccessfulHit(number: number): void {
-    this.successfulHit += number;
-  }
-
-  public incSuccessfulBlock(number: number): void {
-    this.successfulBlock += number;
-  }
-
-  //GAMECODE METHODS:
-  public getGameCode() {
-    return this.currentGameCode;
-  }
-
-  public updateGameCode(newCode: number) {
-    this.currentGameCode = newCode;
-  }
-
-  //LOG METHODS:
-  public getLogs(): string[] {
-    return this.logs;
-  }
-
-  public addLog(log: string): void {
-    this.logs.push(log);
-  }
-
-  public addBattleLog(log: string): void {
-    // match summary logs
-    this.battleLogs.push(log);
-  }
-
-  public clearLogs(): void {
-    this.logs = [];
-  }
-
-  public clearBattleLogs(): void {
-    this.battleLogs = [];
-  }
-
   //ACTION METHODS:
   public getActions(): Action[] {
     return this.actions;
   }
 
   public addAction(action: Action): void {
+    if (action.getId() === ActionIdentifier.NULL) {
+      this.noNullAction += 1;
+    } else {
+      this.noNullAction = 0;
+    }
     if (this.actions.length > 0) {
       this.resetActions();
     }
