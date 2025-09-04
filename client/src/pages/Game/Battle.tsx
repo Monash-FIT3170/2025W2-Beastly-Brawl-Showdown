@@ -206,10 +206,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
           <>
             {battleState && (
               <div className="flex flex-col h-full w-full items-start space-y-10 ">
-                <div className="flex flex-row h-1/2 w-full items-start justify-center">
+                <div className="flex flex-row h-1/4 w-full items-start justify-center">
                   <BattleHeader battleState={battleState} timer={timer} metadata = {metadata}/>
                 </div>
-                <div className="flex flex-row h-1/4 w-full items-center justify-around">
+                <div className="flex flex-col h-3/4 w-full items-center justify-around">
                   
 
                   <BattleMonsterPanel battleState={battleState} />
