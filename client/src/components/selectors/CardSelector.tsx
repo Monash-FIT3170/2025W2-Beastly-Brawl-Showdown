@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IconButton } from "../buttons/IconButton";
 import { OutlineText } from "../texts/OutlineText";
 import { BlackText } from "../texts/BlackText";
+import { SelectorOption } from "/types/single/selectorOption";
 
 interface CardSelectorProps {
   options: SelectorOption[];
@@ -27,16 +28,16 @@ const CardSelector: React.FC<CardSelectorProps> = ({
   return (
     <div className="flex items-center justify-center h-full w-full space-x-4">
       {/* Left Arrow */}
-      <IconButton style="arrowleft" buttonColour="alto" iconColour="stroked" size="small" onClick={prev} />
+      <IconButton style="arrowleft" buttonColour="blue" iconColour="stroked" size="small" onClick={prev} />
       
       {/* Card */}
-      <div className="outline-[0.25rem] bg-alto p-6 rounded-xl w-120 text-center">
+      <div className="outline-[0.25rem] bg-pictonBlue p-6 rounded-xl w-120 text-center">
         <OutlineText size="large">{options[selectedIndex].title}</OutlineText>
         <BlackText size="medium">{options[selectedIndex].description}</BlackText>
       </div>
 
       {/* Right Arrow */}
-      <IconButton style="arrowright" buttonColour="alto" iconColour="stroked" size="small" onClick={next} />
+      <IconButton style="arrowright" buttonColour="blue" iconColour="stroked" size="small" onClick={next} />
     </div>
   );
 };

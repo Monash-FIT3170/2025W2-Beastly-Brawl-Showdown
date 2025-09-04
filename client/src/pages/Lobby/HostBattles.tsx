@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 // Update the import path and extension as needed; for example:
-import { BattleState } from "/types/composite/battleState";
+import { BattleState } from "../../../../types/composite/battleState";
 import socket from "../../socket";
 import RoundNumberHeader from "../../components/match-summary/RoundNumberHeader";
 import LeftPanel from "../../components/match-summary/LeftPanel";
 import RightPanel from "../../components/match-summary/RightPanel";
 import MiddlePanel from "../../components/match-summary/MiddlePanel";
-import { GameSessionState } from "/types/composite/gameSessionState";
+import { GameSessionState } from "../../../../types/composite/gameSessionState";
 import { PlayerStats } from "../../types/data";
 import { IconButton } from "../../components/buttons/IconButton";
 import { PopupClean } from "../../components/popups/PopupClean";
@@ -14,7 +14,7 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import { GameModeIdentifier } from "/types/single/gameMode";
+import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import ScoringLeaderboard from "../../components/match-summary/ScoringLeaderboard";
 
 interface HostBattlesProps {

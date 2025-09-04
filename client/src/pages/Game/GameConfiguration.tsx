@@ -4,7 +4,7 @@ import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
-import { GameModeIdentifier } from "/types/single/gameMode";
+import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import { IconButton } from "../../components/buttons/IconButton";
 import { BaseCard } from "../../components/cards/BaseCard";
 import { Slider } from "../../components/sliders/Slider";
