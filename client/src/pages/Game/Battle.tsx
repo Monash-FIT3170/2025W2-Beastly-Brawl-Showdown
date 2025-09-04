@@ -115,7 +115,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
     //Redirect after countdown is finished
     const timeout = setTimeout(() => {
-      FlowRouter.go("./");
+      FlowRouter.go("/");
     }, 5000); // 5 seconds before user get directed to home page
 
     return () => {
@@ -220,7 +220,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                   />
                 </div>
                 <div className="flex flex-col h-3/4 w-full items-center justify-around">
-                  <BattleMonsterPanel battleState={battleState} />
+                  <BattleMonsterPanel
+                    battleState={battleState}
+                    slimeString="FOREST"
+                  />
 
                   <div
                     className=" h-screen flex flex-col items-center justify-center content-center mt-[60%] xl:mt-[15%]"

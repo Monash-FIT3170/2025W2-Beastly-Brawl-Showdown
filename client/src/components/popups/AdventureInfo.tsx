@@ -144,7 +144,7 @@ export const AdventureInfoPopup = ({
                 ></AdventureStatBar>
               </div>
 
-              <div className="bg-ronchiborder-blackCurrant lg:border-[0.2rem] sm:border-[0.4rem] rounded-2xl flex flex-col items-center justify-center sm:w-[95%]">
+              <div className="bg-ronchi border-blackCurrant lg:border-[0.2rem] sm:border-[0.4rem] rounded-2xl flex flex-col items-center justify-center sm:w-[95%]">
                 <OutlineText size="medium">ABILITIES</OutlineText>
               </div>
               <div className="sm:w-[95%] lg:w-full flex sm:flex-col lg:flex-row justify-evenly">
