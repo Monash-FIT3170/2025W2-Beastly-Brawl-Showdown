@@ -1,6 +1,6 @@
 import React from "react";
 import "./BattleMonsterPanel.css";
-import { BattleState } from "/types/composite/battleState";
+import { BattleState } from "../../../../types/composite/battleState";
 
 interface BattleMonsterPanelProps {
   battleState: BattleState;

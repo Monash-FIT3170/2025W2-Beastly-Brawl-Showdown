@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IconButton } from "../buttons/IconButton";
 import { OutlineText } from "../texts/OutlineText";
 import { BlackText } from "../texts/BlackText";
+import { SelectorOption } from "/types/single/selectorOption";
 
 interface CardSelectorProps {
   options: SelectorOption[];
