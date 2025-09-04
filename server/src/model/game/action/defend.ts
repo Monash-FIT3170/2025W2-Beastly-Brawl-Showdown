@@ -1,6 +1,6 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { act } from "react";
 
 export class DefendAction extends Action {
@@ -32,7 +32,12 @@ export class DefendAction extends Action {
     );
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
+    return {
+      appliedStatus: {
+        success: false
+      }
+    }
   }
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import socket from "../../socket";
 import { ActionState } from "/types/single/actionState";
 import { BattleState } from "/types/composite/battleState";
-import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
+import BattleHeader from "../../components/player-screen/BattleHeader";
 import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
 import DiceRollModal from "./DiceRollModal";
 import WinnerScreen from "./WinnerScreen";
@@ -13,8 +13,8 @@ import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
-import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
+import {GameSessionStateMetaData} from "/types/composite/gameSessionState"
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -27,16 +27,23 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [winner, setWinner] = useState<string | null>(null);
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
-  const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live
+  const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live 
+  const [isBattleClosed, setIsBattleClosed] = useState<Boolean>(false); //indiate whether the battle is still live
+  const [gameCode, setGameCode] = useState<string>(); // game code for directing player back to game session
   const [time, setTime] = useState<number>(5);
+  const [metadata, setMetadata] = useState<GameSessionStateMetaData |null>();
+  const [waitForConclusion, setWaitForConclusion] = useState<boolean>(false);
 
   var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   var backgroundString =
     "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" + backgroundLocation + ".jpg')";
 
   useEffect(() => {
-    socket.on("battle_state", (battle: BattleState) => {
-      setBattleState(battle);
+    socket.on("battle_state", (data) => {
+      console.log("[BATTLESTATE]: ", data.battle)
+      console.log("[METADATA]: ", data.metadata)
+      setBattleState(data.battle);
+      setMetadata(data.metadata)
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -49,6 +56,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     });
 
     socket.on("battle_end", ({ result, winners }) => {
+      setWaitForConclusion(false);
       console.log(result, winners);
       if (result === "draw") {
         setWinner("Draw");
@@ -75,6 +83,18 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.on("host-closed", () => {
       setIsSessionCancelled(true);
     });
+
+    socket.on("battle-closed", (data) => {
+      setIsBattleClosed(true)
+      setGameCode(data.gameCode)
+      socket.removeAllListeners("client-wait-conclusion")
+    })
+
+    socket.on("client-wait-conclusion", () => {
+      setWaitForConclusion(true)
+    })
+
+
 
     return () => {
       socket.off("possible_actions");
@@ -104,12 +124,47 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     };
   }, [isSessionCancelled]);
 
+    useEffect(() => {
+    if (!isBattleClosed){return}
+
+    //Countdown before player get redirected
+    const countdown = setInterval(() => {
+      setTime((prev) => prev - 1);
+    }, 1000); //1 second per interval
+
+    //Redirect after countdown is finished
+    const timeout = setTimeout(() =>{
+      FlowRouter.go(`/session/${gameCode}`)
+      setTime(-1)
+    }, 5000) // 5 seconds before user get directed to home page
+    
+    return () => {
+      clearInterval(countdown); // interval cleanup
+      clearTimeout(timeout); //timeout cleanup
+    }
+    
+  }, [isBattleClosed])
+
   socket.on("new-connect", () => {
     FlowRouter.go("/");
   });
 
   return (
     <>
+      {waitForConclusion && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+            <OutlineText size="extraLarge">LAST ROUND COMPLETED</OutlineText>
+            <BlackText size="large">
+              YOU HAVE FINISHED YOUR LAST BATTLE!
+            </BlackText>
+            <BlackText size="large">
+              WAITING FOR OTHER PLAYERS TO FINISH THEIR BATTLES...
+            </BlackText>
+          </div>
+        </PopupClean>
+      )}
+
       {isSessionCancelled && (
         <PopupClean>
           <div className="flex flex-col justify-around">
@@ -124,8 +179,18 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         </PopupClean>
       )}
 
+    {isBattleClosed && (
+    <PopupClean>
+      <div className="flex flex-col justify-around">
+      <OutlineText size = 'extraLarge'>BATTLE CLOSED</OutlineText>
+      <BlackText size = 'large'>BATTLE HAS ENDED</BlackText>
+      <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE WAITING ROOM IN {time} SECONDS</BlackText>
+      </div>
+    </PopupClean>)}
+
+
       <div
-        className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
+        className="inset-0 w-screen h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
         {/* Winner display if battle is over */}
@@ -143,47 +208,42 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         ) : (
           <>
             {battleState && (
-              <div className="battle-state-parts item-center justify-center ">
-                <PlayerInfoPanel battleState={battleState} />
-
-                <div className="timer-box font-[Jua]">
-                  <p>Timer: {timer}</p>
+              <div className="flex flex-col h-full w-full items-start space-y-10 ">
+                <div className="flex flex-row h-1/4 w-full items-start justify-center">
+                  <BattleHeader battleState={battleState} timer={timer} metadata = {metadata}/>
                 </div>
+                <div className="flex flex-col h-3/4 w-full items-center justify-around">
+                  
 
-                <BattleMonsterPanel battleState={battleState} />
+                  <BattleMonsterPanel battleState={battleState} />
 
-                {/* <div className="battle-logs">
-                <h3>Logs:</h3>
-                {battleState.yourPlayer.logs.map((log, index) => (
-                  <p key={index}>{log}</p>
-                ))}
-              </div> */}
+                  <div
+                    className="battle-logs-stack mt-[60%] xl:mt-[15%]"
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "120px",
+                    }}
+                  >
+                    {battleState.yourPlayer.logs.map((log, index) => (
+                      <FadingBattleText
+                        key={index}
+                        size="medium-battle-text"
+                        style={{ top: `${index * 32}px` }}
+                      >
+                        {log}
+                      </FadingBattleText>
+                    ))}
+                  </div>
 
-                <div
-                  className="battle-logs-stack mt-[60%] xl:mt-[15%]"
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    height: "120px",
-                  }}
-                >
-                  {battleState.yourPlayer.logs.map((log, index) => (
-                    <FadingBattleText
-                      key={index}
-                      size="medium-battle-text"
-                      style={{ top: `${index * 32}px` }}
-                    >
-                      {log}
-                    </FadingBattleText>
-                  ))}
+                  <DiceRollModal
+                    show={showDiceModal}
+                    onClose={() => setShowDiceModal(false)}
+                    toRoll={diceValue}
+                    battleState={battleState}
+                  />
                 </div>
-
-                <DiceRollModal
-                  show={showDiceModal}
-                  onClose={() => setShowDiceModal(false)}
-                  toRoll={diceValue}
-                  battleState={battleState}
-                />
+              
               </div>
             )}
 

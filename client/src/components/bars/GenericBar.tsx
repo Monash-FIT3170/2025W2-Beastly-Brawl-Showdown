@@ -23,8 +23,8 @@ export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, 
     };
 
     const textPositionToDisplay: Record<string, string> = {
-        "left": "justify-start pl-[3%]",
-        "right": "justify-end pr-[3%]",
+        "left": "justify-start items-center pl-[3%]",
+        "right": "justify-end items-center pr-[3%]",
         "none": ""
     };
 
@@ -49,8 +49,8 @@ export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, 
         z-0
         w-full
         h-full
-        border-3
-        border-blackCurrant
+        sm:outline-[0.125rem] md:outline-[0.15rem] lg:outline-[0.2rem] xl:outline-[0.25rem] 2xl:outline-[0.3rem]
+        outline-blackCurrant
         bg-alto
     `;
 
@@ -60,7 +60,7 @@ export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, 
         left-0
         z-10
         h-full
-        border-3
+        sm:outline-[0.125rem] md:outline-[0.15rem] lg:outline-[0.2rem] xl:outline-[0.25rem] 2xl:outline-[0.3rem]
         flex
         items-center
         justify-center
@@ -71,9 +71,9 @@ export const GenericBar = ({colour, cornerRadius, textPosition, fillPercentage, 
 
     // Make the coloured portion of the bar completely disappear if its fill percentage is zero
     if (fillPercentage == 0) {
-        baseFrontBarProperties += `border-transparent`
+        baseFrontBarProperties += `outline-transparent`
     } else {
-        baseFrontBarProperties += `border-blackCurrant ${colourToDisplay[colour]}`;
+        baseFrontBarProperties += `outline-blackCurrant ${colourToDisplay[colour]}`;
     }
 
     return (

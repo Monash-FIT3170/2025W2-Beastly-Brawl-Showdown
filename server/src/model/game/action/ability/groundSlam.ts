@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { Stun } from "../../status/stun";
 
 export class GroundSlamAbilityAction extends Action {
@@ -19,16 +19,17 @@ export class GroundSlamAbilityAction extends Action {
     // affectedPlayer.clearActions();
   }
 
-  public prepareAnimation(): string | [string, number] {
+    public prepareAnimation(): string | [string, number] {
     return "Ground_Slam_Animation";
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     // Deal 3 damage + Stun
     affectedPlayer.incHealth(-3);
-    affectedPlayer.addStatus(new Stun(1));
+    affectedPlayer.addStatus(new Stun(1), 100);
 
     // Add logs
     actingPlayer.addLog(
@@ -40,5 +41,12 @@ export class GroundSlamAbilityAction extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing 3 damage and stunning ${affectedPlayer.getName()} for 1 turn.`
     );
+
+    //Success evaluates true since the current status rate for this ability is 100%
+    return {
+      appliedStatus: {
+        success: true
+      }
+    }
   }
 }

@@ -20,8 +20,9 @@ export class BotPlayer extends Player {
 
   constructor(name?: string) {
     var botName = name ?? BotPlayer.getRandomName();
+    
 
-    super("placeholder", botName, true); //TODO: give proper id??? - i guess id is never used properly??? - adding a TODO in case...
+    super("placeholder", botName, null ,true); //TODO: give proper id??? - i guess id is never used properly??? - adding a TODO in case...
   }
 
   public setRandomMonster(): void {

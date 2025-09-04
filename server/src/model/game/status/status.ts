@@ -1,15 +1,19 @@
 import { Player } from "../player";
+import { StatusType } from "/types/single/statusType";
 
 export abstract class Status {
   public name: string;
   protected description: string;
   protected countDown: number;
+  public type: StatusType;
 
-  constructor(name: string, description: string, countDown: number = 0) {
+  constructor(name: string, description: string, countDown: number = 0, type: StatusType) {
     this.name = name;
     this.description = description;
     this.countDown = countDown;
+    this.type = type;
   }
+
 
   public tick(player: Player): void {
     if (this.countDown > 0) {
@@ -25,6 +29,10 @@ export abstract class Status {
     return this.name;
   }
 
+  public getType(): StatusType{
+    return this.type
+  }
+
   public isExpired(): boolean {
     //checks if countdown hit 0
     if (this.countDown < 0) {
@@ -34,3 +42,4 @@ export abstract class Status {
     return false;
   }
 }
+

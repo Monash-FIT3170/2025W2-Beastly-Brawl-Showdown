@@ -1,20 +1,20 @@
 import {
   ArchetypeIdentifier,
   MonsterIdentifier,
-} from "/types/single/monsterState";
-import PlayerInfoPanel from "../../components/player-screen/PlayerInfoPanel";
+} from "../../../../types/single/monsterState";
+import BattleHeader from "../../components/player-screen/BattleHeader";
 import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
 import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import DiceRollModal from "../Game/DiceRollModal";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { useEffect, useState } from "react";
-import { BattleState } from "/types/composite/battleState";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import { BattleState } from "../../../../types/composite/battleState";
+import { ActionIdentifier, ActionState } from "../../../../types/single/actionState";
 import { randomUUID } from "crypto";
 import React from "react";
 import socket from "../../socket";
 import { DialogueBox } from "../../components/cards/DialogueBox";
-import { option } from "/types/composite/storyTypes";
+import { option } from "../../../../types/composite/storyTypes";
 import { DialogueChoiceButton } from "../../components/buttons/DialogueChoiceButton";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
@@ -22,7 +22,7 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { ChoicePopup } from "../../components/popups/ChoicePopup";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { StatChangePopup } from "../../components/popups/statChangePopup";
-import { MonsterState } from "/types/single/monsterState";
+import { MonsterState } from "../../../../types/single/monsterState";
 import MonsterDisplay from "../../components/player-screen/MonsterDisplay";
 import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { IconButton } from "../../components/buttons/IconButton";
@@ -124,7 +124,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
   return (
     <>
       <div
-        className="inset-0 w-full h-screen bg-cover bg-center overscroll-contain"
+        className="inset-0 w-screen h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
         {/* <div className="pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
@@ -248,25 +248,29 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
           </>
         )}
         {battleState && (
-          <div className="battle-state-parts item-center justify-center ">
-            <PlayerInfoPanel battleState={battleState} />
-            <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              ></IconButton>
-              <LeavePopup
-                open={showLeave}
-                onClose={() => setShowLeave(false)}
-              ></LeavePopup>
+          <div className="flex flex-col w-full h-full items-start justify-between">
+            <div className="flex flex-col w-full">
+              <div className="flex flex-row w-full items-start justify-center">
+                <BattleHeader battleState={battleState} />
+              </div>
+              <div className="ml-[2rem] mt-[2rem] z-[10000] pointer-events-auto">
+                <IconButton
+                  style="arrowleft"
+                  iconColour="black"
+                  buttonColour="red"
+                  size="small"
+                  onClick={() => setShowLeave(true)}
+                ></IconButton>
+                <LeavePopup
+                  open={showLeave}
+                  onClose={() => setShowLeave(false)}
+                ></LeavePopup>
+              </div>
             </div>
             <BattleMonsterPanel battleState={battleState} />
 
             <div
-              className="battle-logs-stack mt-[60%] xl:mt-[15%]"
+              className="absolute mt-[60%] xl:mt-[15%]"
               style={{
                 position: "relative",
                 width: "100%",
@@ -284,7 +288,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ stage }) => {
               ))}
             </div>
 
-            <div>
+            <div className="h-1/3 w-full">
               {
                 <BattleFooter
                   possibleActions={possibleActions}

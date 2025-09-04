@@ -24,6 +24,11 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
   const [playerMonster, setPlayerMonster] = useState<string>("");
   const [exit, setExit] = useState<Boolean>(false);
   const [exitPopup, setExitPopup] = useState<Boolean>(false);
+  const [isBattleFound, setIsBattleFound] = useState<Boolean>(false); //indiate whether a new battle has been found
+  const [isBattleRoyaleStarted, setIsBattleRoyaleStarted] = useState<Boolean>(false); //indiate whether the session has started
+  const [timer, setTimer] = useState<number>(10);
+  const [time, setTime] = useState<number>(5);
+  const [gameCode, setGameCode] = useState<string>(); // game code for directing player back to game session
 
   // Listen for battle start event + send req to server for player's detail
   useEffect(() => {
@@ -36,6 +41,58 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
       socket.off("battle_started");
     };
   }, []);
+
+  useEffect(() => {
+    if (!isBattleFound) {return;}
+
+    // Countdown before player get redirected 
+    const countdown = setInterval(() => {
+      setTime((prev) => prev-1)
+    }, 1000); // 1 second per interval
+
+    // Redirect after countdown is finished
+    const timeout = setTimeout(() => {
+      socket.emit("start-new-battle", ({ gameCode }));
+      setTime(-1);
+    }, 5000); // 5 seconds before user get directed to home page
+
+    return () => {
+      clearInterval(countdown); // interval cleanup
+      clearTimeout(timeout); // timeout cleanup
+    }
+
+  }, [isBattleFound]);
+
+  useEffect(() => {
+    if (!isBattleRoyaleStarted) {return;}
+
+    // Countdown before player get redirected 
+    const countdown = setInterval(() => {
+      setTime((prev) => prev-1);
+    }, 1000); // 1 second per interval
+
+    // Redirect after countdown is finished
+    const timeout = setTimeout(() => {
+      socket.emit("start-battle-royale", ({ gameCode }))
+      setTime(-1);
+    }, 5000); // 5 seconds before user get directed to home page
+
+    return () => {
+      clearInterval(countdown); // interval cleanup
+      clearTimeout(timeout); // timeout cleanup
+    }
+
+  }, [isBattleRoyaleStarted]);
+
+  socket.on("battle-found", (data) => {
+      setIsBattleFound(true)
+      setGameCode(data.gameCode)
+  });
+
+  socket.on("battle-royale-started", (data) => {
+      setIsBattleRoyaleStarted(true)
+      setGameCode(data.gameCode)
+  });
 
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
@@ -55,18 +112,48 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
   // Listen to server to wait for a response with the player's monster name
   // We can use this to pass in more of the player's information for the lobby stats page later...
   useEffect(() => {
-    socket.on("waiting_screen_data", (data: { monsterName: string }) => {
+    socket.removeAllListeners("waiting_screen_data")
+    const waitingScreenDataHandler = (data: { monsterName: string }) => {
       const monsterName = data.monsterName.toUpperCase();
       console.log(`Received waiting screen data: ${monsterName}`);
       setPlayerMonster(monsterName);
-    });
 
+      socket.emit("ready_next_battle", monsterName)
+    }
+
+    console.log("[SOCKET] Before .on(): ", socket.listeners("waiting_screen_data").length)
+    socket.off("waiting_screen_data", waitingScreenDataHandler)
+    socket.on("waiting_screen_data", waitingScreenDataHandler);
+
+    console.log("[SOCKET] After .on(): ", socket.listeners("waiting_screen_data").length)
     return () => {
-      socket.off("waiting_screen_data");
+      console.log("[SOCKET] Cleanup called")
+      socket.off("waiting_screen_data", waitingScreenDataHandler);
     };
-  });
+  }, []);
 
   return (
+    <>
+    {isBattleFound && (
+      <PopupClean>
+        <div className="flex flex-col justify-around">
+          <OutlineText size = 'extraLarge'>BATTLE FOUND</OutlineText>
+          <BlackText size = 'large'>A NEW OPPONENT HAS ARRIVED</BlackText>
+          <BlackText size = 'large'>BATTLE WILL START IN {time} SECONDS</BlackText>
+        </div>
+      </PopupClean>
+    )}
+
+    {isBattleRoyaleStarted && (
+      <PopupClean>
+        <div className="flex flex-col justify-around">
+          <OutlineText size = 'extraLarge'>BATTLE ROYALE STARTED</OutlineText>
+          <BlackText size = 'large'>YOUR FIRST OPPONENT HAS ARRIVED</BlackText>
+          <BlackText size = 'large'>BATTLE WILL START IN {time} SECONDS</BlackText>
+        </div>
+      </PopupClean>
+    )}
+
     <div className="bg-peach lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">
       {/* Title - Using OutlineText styling as text sizing needs to be modified */}
       <div className="bg-pictonBlue outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center p-4 mt-[-3rem]">
@@ -161,6 +248,7 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
         </ButtonGeneric>
       </div>
     </div>
+    </>
   );
 };
 

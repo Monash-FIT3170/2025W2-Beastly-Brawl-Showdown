@@ -19,7 +19,7 @@ export const IconButton = ({style, buttonColour, iconColour, size, isDisabled, o
 		}
 
     const buttonIconSize = {
-		  'small': "lg",
+		  'small': "md",
       'medium': "xl"
 		}
 
