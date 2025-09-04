@@ -123,6 +123,10 @@ export class Player {
     return this.playerAccount.username;
   }
 
+  public getPlayerAccountEmail() {
+    return this.playerAccount.email;
+  }
+
   public getMonster(): Monster | null {
     return this.monster;
   }

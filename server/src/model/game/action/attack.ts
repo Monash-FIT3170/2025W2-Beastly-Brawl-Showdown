@@ -1,6 +1,10 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier, AttackState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionResult,
+  AttackState,
+} from "/types/single/actionState";
 import socket from "../../socket";
 
 export class AttackAction extends Action {
