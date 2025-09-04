@@ -4,13 +4,13 @@ import { ActionIdentifier } from "/types/single/actionState";
 
 export class FortressStanceAbilityAction extends Action {
   // Grants the user bonus AC for 1 round
-  private armourBonus = 10;
+  private armourBonus = 20;
 
   constructor() {
     super(
       ActionIdentifier.FORTRESS_STANCE,
       "Fortress Stance",
-      "You tense to prepare for an attack. Your hide becomes tougher than iron. Gain 10 AC",
+      "You tense to prepare for an attack. Your hide becomes tougher than iron. Gain 20 AC",
       1
     );
   }

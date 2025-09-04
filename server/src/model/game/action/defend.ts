@@ -18,17 +18,13 @@ export class DefendAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     actingPlayer.incArmourClassStat(this.armourBonus);
     actingPlayer.addLog(
-      `You defended and increased your armour class stat by ${this.armourBonus}.`
+      `You defended and increased your armour class stat to ${actingPlayer.getArmourClassStat()}.`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} defended and increased their armour class stat by ${
-        this.armourBonus
-      }.`
+      `${actingPlayer.getName()} defended and increased their armour class stat to ${actingPlayer.getArmourClassStat()}.`
     );
     actingPlayer.addBattleLog(
-      `${actingPlayer.getName()} defended and increased your armour class stat by ${
-        this.armourBonus
-      }.`
+      `${actingPlayer.getName()} defended and increased your armour class stat to ${actingPlayer.getArmourClassStat()}.`
     );
   }
 

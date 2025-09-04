@@ -156,8 +156,8 @@ export abstract class Monster {
       this.attackBonus = Math.ceil(this.attackBonus * 1.5);
     } else {
       //every other stage
-      this.maxHealth = Math.ceil(this.maxHealth * (stage * 0.1));
-      this.attackBonus = Math.ceil(this.attackBonus * (stage * 0.1));
+      this.maxHealth = Math.ceil(stage * 3.5);
+      this.attackBonus = Math.ceil(this.attackBonus + stage * 0.75);
     }
   }
 }

@@ -73,11 +73,11 @@ export class AttackAction extends Action {
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
-    if (this.attackHit > affectedPlayer.getMonster().getArmourClass()) {
+    if (this.attackHit >= affectedPlayer.getArmourClassStat()) {
       console.log(
-        `${actingPlayer.getName()}'s attack successful | Attack exceeds opponents armour: (${affectedPlayer
-          .getMonster()
-          .getArmourClass()} < ${this.attackHit}).`
+        `${actingPlayer.getName()}'s attack successful | Attack exceeds opponents armour: (${affectedPlayer.getArmourClassStat()} < ${
+          this.attackHit
+        }).`
       );
 
       // Check for a critical hit
