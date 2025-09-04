@@ -87,11 +87,14 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.on("battle-closed", (data) => {
       setIsBattleClosed(true)
       setGameCode(data.gameCode)
+      socket.removeAllListeners("client-wait-conclusion")
     })
 
     socket.on("client-wait-conclusion", () => {
       setWaitForConclusion(true)
     })
+
+
 
     return () => {
       socket.off("possible_actions");
