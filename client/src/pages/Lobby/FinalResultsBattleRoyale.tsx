@@ -59,35 +59,41 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
 
   return (
     <BlankPage>
-      <div className="flex flex-row h-1/5 w-full items-center justify-between px-4 pt-4">
-        <LogoResizable className="h-full w-1/11" />
-        <BaseCard color="springLeaves" width={30} height={5}>
-          <OutlineText size="large">
-            FINAL RESULTS
-          </OutlineText>
-        </BaseCard>
-        <LogoResizable className="h-full w-1/11 invisible" />
-      </div>
-
-      <div className="flex flex-row h-full w-full items-center justify-between pt-[2rem] px-[10rem]">
-        <div className="flex flex-col h-full w-full items-center bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl pr-[2rem] py-[2rem]">
-          <div className="w-full text-center mb-[1.5rem]">
-            <OutlineText size="large">
-              The Final Winner:
-            </OutlineText>
-          </div>
-          <div className="w-full flex flex-col gap-[1rem]">
-            <div className="w-7/10 m-[-0.15rem]">
-              {finalWinner ? (
-                <RankingBar player={finalWinner} rank={1} />
-              ) : (
-                <OutlineText size="large">
-                  There is no winner.
-                </OutlineText>
-              )}
-            </div>
+      <div className="flex lg:flex-row lg:h-1/4 sm:flex-col w-full">
+        <div className="flex flex-row w-1/8 sm:h-1/2">
+          <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
+            <LogoResizable className="h-[200%] w-[200%]" />
           </div>
         </div>
+        <div className="flex flex-row lg:h-full lg:w-3/4 sm:h-3/4 lg:items-start sm:items-end justify-around">
+          <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
+            <BaseCard color="peach" width={50} height={8}>
+              <OutlineText size="extraLarge">{finalWinner ? "FINAL WINNER" : "NO SURVIVORS"}</OutlineText>
+            </BaseCard>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center justify-start w-3/4 bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl px-6 py-2">
+        {finalWinner ? (
+          <>
+            <div className="mb-2 text-center">
+              <OutlineText size="large">{finalWinner.name}</OutlineText>
+              <OutlineText size="medium">{finalWinner.monster?.name}</OutlineText>
+            </div>
+            <img
+              className="max-w-full max-h-[300px] object-contain"
+              src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/${finalWinner.monster?.id}_WIN.png`}
+              alt={`${finalWinner.monster?.id}_WIN image`}
+            />
+          </>
+        ) : (
+          <img
+            className="max-w-full max-h-[300px] object-contain"
+            src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/GRAVE.png`}
+            alt="GRAVE image"
+          />
+        )}
       </div>
 
       <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
