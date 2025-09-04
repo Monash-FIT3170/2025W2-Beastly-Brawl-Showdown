@@ -8,11 +8,11 @@ interface HeaderProps {
 export const GenericHeader = ({ children, color }: HeaderProps) => {
   const colorToDisplay = {
     blue: "bg-[#55A9ED]",
-    purple: "bg-[#BD55ED]",
-    lightYellow: "bg-[#EDAF55]",
-    green: "bg-[#7EED55]",
-    red: "bg-[#ED5A55]",
-    cream: "bg-[#FFE8B1]",
+    purple: "bg-heliotrope",
+    lightYellow: "bg-ronchi",
+    green: "bg-conifer",
+    red: "bg-burntSienna",
+    cream: "bg-peach",
   };
 
   const header = `
@@ -34,7 +34,7 @@ export const GenericHeader = ({ children, color }: HeaderProps) => {
         pl-[1%]
         pr-[1%]
         inset-x-0
-        fixed
+        sticky
         top-0
         `;
 

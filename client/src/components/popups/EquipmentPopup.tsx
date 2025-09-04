@@ -26,8 +26,8 @@ export const EquipmentPopup = ({ equipment, onClose }: EquipmentProp) => {
         items-center
           `;
   const popup = `border-[3px]
-        bg-[#FFE8B1]
-        border-[#403245]
+        bg-peach
+        border-blackCurrant
         rounded-[20px]
         flex
         flex-col
@@ -65,7 +65,7 @@ export const EquipmentPopup = ({ equipment, onClose }: EquipmentProp) => {
             <div className="justify-center items-center p-[1rem]">
               <div
                 className="lg:h-[10rem] sm:h-[30rem] lg:outline-[0.25rem] sm:outline-[0.75rem] 
-                        rounded-2xl  bg-[#BD55ED] outline-blackCurrant aspect-square mx-auto"
+                        rounded-2xl  bg-heliotrope outline-blackCurrant aspect-square mx-auto"
               >
                 <img
                   className="w-full h-full object-contain"
@@ -77,7 +77,7 @@ export const EquipmentPopup = ({ equipment, onClose }: EquipmentProp) => {
             {/* Description */}
             <div className="justify-center flex flex-col items-center p-[1rem] gap-5 ">
               <BlackText size="medium">{equipment.description}</BlackText>
-              <div className="w-[90%] bg-[#EDAF55] outline-blackCurrant outline-[0.25rem] rounded-full items-center justify-center">
+              <div className="w-[90%] bg-ronchi outline-blackCurrant outline-[0.25rem] rounded-full items-center justify-center">
                 <OutlineText size="medium">
                   {equipment.statDescription}
                 </OutlineText>

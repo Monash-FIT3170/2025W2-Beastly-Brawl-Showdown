@@ -14,9 +14,9 @@ export const PopupAdventure = ({ colour, children }: PopupAdventureProp) => {
   };
   let bgcolour;
   if (!colour) {
-    bgcolour = "bg-[#FFE8B1]";
+    bgcolour = "bg-peach";
   } else {
-    bgcolour = colourLoader[colour] ?? "bg-[#FFE8B1]";
+    bgcolour = colourLoader[colour] ?? "bg-peach";
   }
 
   const popupLayout = `
@@ -39,7 +39,7 @@ export const PopupAdventure = ({ colour, children }: PopupAdventureProp) => {
         
         ${bgcolour}
         border-[3px]
-        border-[#403245]
+        border-blackCurrant
         rounded-[20px]
         flex
         flex-col

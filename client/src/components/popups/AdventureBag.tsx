@@ -100,10 +100,10 @@ export const AdventureBagPopup = ({
             lg:min-h-[20vh]
             lg:w-[90%]
             border-[3px]
-            border-[#403245]
+            border-blackCurrant
             rounded-[20px]
             box-border
-            bg-[#FFE8B1]
+            bg-peach
             flex-col
             items-center py-2
             p-[2rem]
@@ -112,7 +112,7 @@ export const AdventureBagPopup = ({
             `}
           >
             {/* SECTION HEADING */}
-            <div className="w-[90%] bg-[#EDAF55] outline-blackCurrant outline-[0.25rem] rounded-full flex flex-col items-center justify-center">
+            <div className="w-[90%] bg-ronchi outline-blackCurrant outline-[0.25rem] rounded-full flex flex-col items-center justify-center">
               <OutlineText size="medium">
                 {currentlyViewing[viewingTab]}
               </OutlineText>

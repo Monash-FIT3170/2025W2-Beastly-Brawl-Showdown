@@ -297,7 +297,7 @@ export const MonsterSelection: React.FC<MonsterSelectionProps> = ({
             lg:h-min
             lg:w-[90dvw]
             border-[3px]
-            border-[#403245]
+            border-blackCurrant
             rounded-[20px]
             w-[60%]
             box-border

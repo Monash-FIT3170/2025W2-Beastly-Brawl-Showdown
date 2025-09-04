@@ -49,85 +49,86 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     ".jpg')";
 
   return (
-    <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">
-      <GenericHeader color="lightYellow">
-        <OutlineText size="extraLarge">START YOUR JOURNEY</OutlineText>
-      </GenericHeader>
-
-      <div
-        className={`border-[4px] 
+    <>
+      <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">
+        <GenericHeader color="lightYellow">
+          <OutlineText size="extraLarge">START YOUR JOURNEY</OutlineText>
+        </GenericHeader>
+        <div
+          className={`border-[4px] 
             border-blackCurrant w-min h-min rounded-xl
-            bg-[#FFE8B1]
+            bg-peach
             sm:h-min
             sm:w-[80dvw]
             lg:h-min
             lg:w-[40dvw]
             border-[3px]
-            border-[#403245]
+            border-blackCurrant
             rounded-[20px]
             w-[60%]
             box-border
             flex flex-col  justify-evenly items-center gap-y-10 py-10`}
-        style={{
-          backgroundImage: backgroundString,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
-        <img
-          src={monsterImage}
-          className="sm:w-[20rem] sm:h-[20rem] lg:w-[15rem] lg:h-[15rem]"
-        />
-        <ButtonGeneric
-          color={UNLOCKED_LEVELS.includes(observedLevel) ? `ronchi` : `alto`}
-          size="battle"
-          onClick={
-            UNLOCKED_LEVELS.includes(observedLevel)
-              ? renderAdventureMonsterSelect
-              : undefined
-          }
+          style={{
+            backgroundImage: backgroundString,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+          }}
         >
-          {UNLOCKED_LEVELS.includes(observedLevel) ? `PROCEED` : `LOCKED`}
-        </ButtonGeneric>
-      </div>
-      <div className="grid grid-cols-3 justify-items-center">
-        <div className="flex justify-center items-center">
-          {observedLevel != 0 && (
-            <IconButton
-              style="arrowleft"
-              buttonColour="blue"
-              iconColour="black"
-              size="medium"
-              onClick={() => alterLevel(-1)}
-            />
-          )}
-        </div>
-
-        <div className="w-min">
+          {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
+          <img
+            src={monsterImage}
+            className="sm:w-[20rem] sm:h-[20rem] lg:w-[15rem] lg:h-[15rem]"
+          />
           <ButtonGeneric
-            color="red"
+            color={UNLOCKED_LEVELS.includes(observedLevel) ? `ronchi` : `alto`}
             size="battle"
-            onClick={() => FlowRouter.go("/")}
+            onClick={
+              UNLOCKED_LEVELS.includes(observedLevel)
+                ? renderAdventureMonsterSelect
+                : undefined
+            }
           >
-            BACK
+            {UNLOCKED_LEVELS.includes(observedLevel) ? `PROCEED` : `LOCKED`}
           </ButtonGeneric>
         </div>
+        <div className="grid grid-cols-3 justify-items-center">
+          <div className="flex justify-center items-center">
+            {observedLevel != 0 && (
+              <IconButton
+                style="arrowleft"
+                buttonColour="blue"
+                iconColour="black"
+                size="medium"
+                onClick={() => alterLevel(-1)}
+              />
+            )}
+          </div>
 
-        <div className="flex justify-center items-center">
-          {observedLevel != 4 && (
-            <IconButton
-              style="arrowright"
-              buttonColour="blue"
-              iconColour="black"
-              size="medium"
-              onClick={() => alterLevel(1)}
-            />
-          )}
+          <div className="w-min">
+            <ButtonGeneric
+              color="red"
+              size="battle"
+              onClick={() => FlowRouter.go("/")}
+            >
+              BACK
+            </ButtonGeneric>
+          </div>
+
+          <div className="flex justify-center items-center">
+            {observedLevel != 4 && (
+              <IconButton
+                style="arrowright"
+                buttonColour="blue"
+                iconColour="black"
+                size="medium"
+                onClick={() => alterLevel(1)}
+              />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -8,9 +8,9 @@ interface AdventureStatBarProps {
 
 export const AdventureStatBar = ({ stat, statVal }: AdventureStatBarProps) => {
   const statColour: Record<string, string> = {
-    "Attack Damage": "bg-[#ED5A55]",
-    "Critical Hit Rate": "bg-[#E28454]",
-    "Dice Roll Range": "bg-[#BD55ED]",
+    "Attack Damage": "bg-burntSienna",
+    "Critical Hit Rate": "bg-terracotta",
+    "Dice Roll Range": "bg-heliotrope",
   };
 
   const statDisplay: Record<string, string> = {

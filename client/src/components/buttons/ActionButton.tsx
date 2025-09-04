@@ -100,7 +100,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
                 rounded-full
                 bg-[#FFE07C]
                 border-3
-                border-[#403245]
+                border-blackCurrant
                 text-white
                 flex
                 items-center

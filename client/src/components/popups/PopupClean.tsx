@@ -14,9 +14,9 @@ export const PopupClean = ({ colour, children }: PopupProp) => {
   };
   let bgcolour;
   if (!colour) {
-    bgcolour = "bg-[#FFE8B1]";
+    bgcolour = "bg-peach";
   } else {
-    bgcolour = colourLoader[colour] ?? "bg-[#FFE8B1]";
+    bgcolour = colourLoader[colour] ?? "bg-peach";
   }
 
   const popupLayout = `
@@ -41,7 +41,7 @@ export const PopupClean = ({ colour, children }: PopupProp) => {
         px-[1rem]
         ${bgcolour}
         border-[3px]
-        border-[#403245]
+        border-blackCurrant
         rounded-[20px]
         text-center
         xl:w-[60%]

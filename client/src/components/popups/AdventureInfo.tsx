@@ -94,12 +94,12 @@ export const AdventureInfoPopup = ({
             lg:min-h-[20vh]
             lg:w-[80%]
             border-[5px]
-            border-[#403245]
+            border-blackCurrant
             rounded-[5rem] 
             mb-[3rem]
             xl:mb-[1rem]
             box-border
-            bg-[#FFE8B1]
+            bg-peach
             flex-col
             gap-[1%]
             items-center
@@ -107,7 +107,7 @@ export const AdventureInfoPopup = ({
             overflow-y-auto
             [scrollbar-width:none]`}
         >
-          <div className="bg-[#EDAF55] outline-blackCurrant px-[2rem] lg:outline-[0.20rem] sm:outline-[0.4rem] rounded-2xl flex flex-col items-center justify-center sm:w-[95%]">
+          <div className="bg-ronchi outline-blackCurrant px-[2rem] lg:outline-[0.20rem] sm:outline-[0.4rem] rounded-2xl flex flex-col items-center justify-center sm:w-[95%]">
             <OutlineText size="medium">
               {currentlyViewing[viewingTab]}
             </OutlineText>
@@ -144,7 +144,7 @@ export const AdventureInfoPopup = ({
                 ></AdventureStatBar>
               </div>
 
-              <div className="bg-[#EDAF55] border-blackCurrant lg:border-[0.2rem] sm:border-[0.4rem] rounded-2xl flex flex-col items-center justify-center sm:w-[95%]">
+              <div className="bg-ronchiborder-blackCurrant lg:border-[0.2rem] sm:border-[0.4rem] rounded-2xl flex flex-col items-center justify-center sm:w-[95%]">
                 <OutlineText size="medium">ABILITIES</OutlineText>
               </div>
               <div className="sm:w-[95%] lg:w-full flex sm:flex-col lg:flex-row justify-evenly">
