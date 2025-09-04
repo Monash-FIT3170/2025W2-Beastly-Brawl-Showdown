@@ -205,6 +205,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       socket.off("possible_actions");
       socket.off("adventure_state");
       socket.off("adventure_equipment_full");
+      socket.off("roll_dice");
+      socket.off("adventure_equipment");
+      socket.off("adventure_consumable");
     };
   });
 
@@ -618,7 +621,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
 
             <div
-              className="battle-logs-stack mt-[60%] xl:mt-[15%]"
+              className=" h-screen flex flex-col items-center justify-center content-center mt-[60%] xl:mt-[15%]"
               style={{
                 position: "relative",
                 width: "100%",
@@ -626,13 +629,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
               }}
             >
               {battleState.yourPlayer.logs.map((log, index) => (
-                <FadingBattleText
-                  key={index}
-                  size="medium-battle-text"
-                  style={{ top: `${index * 32}px` }}
-                >
+                <OutlineText key={index} size="medium-battle-text">
                   {log}
-                </FadingBattleText>
+                </OutlineText>
               ))}
             </div>
 

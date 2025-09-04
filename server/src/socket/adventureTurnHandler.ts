@@ -19,7 +19,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
       var battle = battles.get(playerId);
       var player = battle?.getPlayer(playerId);
       var actionToAdd: Action | undefined = undefined;
-
+      player?.clearLogs();
       if (action.name == ActionIdentifier.CONSUME) {
         //CHECK IF CONSUME ACTION and just continue???
         //TODO: fix my methods because its ew just tryna get it to work lol...
@@ -162,7 +162,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                   console.log("outcome", outcome);
                   console.log("outcome.next", outcome?.next);
                   adventure.getPlayer().clearLogs();
-                  adventure.getPlayer().clearBattleLogs();
+                  //adventure.getPlayer().clearBattleLogs();
 
                   progressAdventure(io, socket, adventure, stage);
                 } else {
