@@ -7,7 +7,13 @@ export class ConsumeAction extends Action {
   private consumableName: string;
 
   constructor(consumableName: string) {
-    super(ActionIdentifier.CONSUME, "Consume", "Use given consumable!", 1);
+    super(
+      ActionIdentifier.CONSUME,
+      "Consume",
+      "Use given consumable!",
+      1,
+      false
+    );
     this.consumableName = consumableName;
   }
 
