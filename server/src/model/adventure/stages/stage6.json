@@ -8,11 +8,26 @@
         "id": "initial",
         "result": [
           "You come across a cute green cottage that smells of freshly baked cookies.",
-          "You knock on the door and large slime slowly oozes out to meet you",
-          "Within the slime you notice a rolling pin, an apron and glasses"
+          "You knock on the door and large slime slowly oozes out to meet you.",
+          "Within the slime you notice a rolling pin, an apron and glasses."
         ],
         "type": "DIALOGUE",
-        "next": "choice_1"
+        "next": "check_saved_child"
+      },
+      {
+        "id": "check_saved_child",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "child_safe",
+            "prerequisite": ["befriend_slime"],
+            "next": "choice_1"
+          },
+          {
+            "id": "child_not_safe",
+            "next": "fight_1"
+          }
+        ]
       },
       {
         "id": "choice_1",
@@ -34,18 +49,38 @@
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_1",
-        "next": "fight_win"
+        "enemyId": "slime_4",
+        "next": "check_fight_win"
+      },
+      {
+        "id": "check_fight_win",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "child_safe",
+            "prerequisite": ["befriend_slime"],
+            "next": "fight_win"
+          },
+          {
+            "id": "child_not_safe",
+            "next": "fight_win_2"
+          }
+        ]
       },
       {
         "id": "fight_win",
         "result": [
           "You defeated the slime!",
-          "Your slime friend works its way out of the backpack",
+          "Your slime friend works its way out of the backpack.",
           "It looks around seems excited, almost as though it recognises the place.",
-          "It looks around but it seems dissapointed",
+          "It looks around but it seems dissapointed.",
           "Was it expecting someone?"
         ],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "fight_win_2",
+        "result": ["You defeated the slime!", "You feel empty."],
         "type": "DIALOGUE"
       },
       {
@@ -54,16 +89,17 @@
           "You take out your slime friend from early.",
           "Both slimes start squelching happily.",
           "It looks as though you've bought the slime to one of its relatives.",
-          "The larger slime gives you a slime cookie as thanks.",
+          "The larger slime gives you what appears to be slime.",
           "While you may have lost a friend, you gained an item and a sense of fulfilment"
         ],
         "type": "DIALOGUE",
-        "next": "slime_cookie"
+        "next": "slime_blessing"
       },
       {
-        "id": "slime_cookie",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "id": "slime_blessing",
+        "result": ["You have received the blessing of the slimes."],
+        "type": "STATUS",
+        "statusId": "grandma_blessing"
       }
     ]
   }

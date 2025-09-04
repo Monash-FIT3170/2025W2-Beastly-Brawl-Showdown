@@ -28,7 +28,7 @@ export class ToxinTongue extends Action {
     var numberOfTurns = 5;
 
     // Poison the opponent
-    affectedPlayer.addStatus(new Poison(numberOfTurns), 100);
+    affectedPlayer.addStatus(new Poison(numberOfTurns));
 
     // Add logs
     actingPlayer.addLog(
@@ -44,9 +44,8 @@ export class ToxinTongue extends Action {
     //Success evaluates true since the curren rate of poison for this ability is 100%...
     return {
       appliedStatus: {
-        success: true
-        
-      }
-    }
+        success: true,
+      },
+    };
   }
 }

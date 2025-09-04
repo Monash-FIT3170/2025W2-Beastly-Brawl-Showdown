@@ -8,7 +8,7 @@
         "id": "initial",
         "result": [
           "A stranger approaches you and challenges you to a fight.",
-          "You do not feel as though it is within your power to deny your opponent this challenge"
+          "You do not feel as though it is within your power to deny your opponent this challenge."
         ],
         "type": "DIALOGUE",
         "next": "pre_fight_dialogue"
@@ -21,25 +21,29 @@
           "Prepare yourself!"
         ],
         "type": "DIALOGUE",
-        "enemyId": "pouncing_bandit_4",
+        "enemyId": "pouncing_bandit",
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "pouncing_bandit_4",
+        "enemyId": "pouncing_bandit",
         "next": "victory"
       },
       {
         "id": "victory",
         "type": "DIALOGUE",
         "result": [
-          "Your opponent drops to the ground exhaused.",
-          "After catching its breath it laughs.",
-          "'I haven't had a fight like that in a long time.'",
-          "'I'll be seeing you soon'",
-          "Before you realise what's happening they have already disappeared."
-        ]
+          "Your opponent drops to the ground exhausted.",
+          "Before you realise what's happening they have already disappeared.",
+          "You see something glimmer from behind a rock."
+        ],
+        "next": "mini_boss_reward"
+      },
+      {
+        "id": "mini_boss_reward",
+        "type": "EQUIPMENT",
+        "equipmentId": "magicShield"
       }
     ]
   }

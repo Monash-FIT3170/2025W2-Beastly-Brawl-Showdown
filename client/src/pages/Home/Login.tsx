@@ -108,7 +108,10 @@ export function LoginPopup({
           className="p-2 rounded border"
         />
 
-        <button type="submit" className="bg-[#403245] text-white py-2 rounded">
+        <button
+          type="submit"
+          className="bg-blackCurrant text-white py-2 rounded"
+        >
           {mode === "login" ? "Log In" : "Register"}
         </button>
 

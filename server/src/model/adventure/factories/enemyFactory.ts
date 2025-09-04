@@ -6,7 +6,9 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 const enemyFactory: Record<string, () => any> = {
   slime_1: () => new Slime("PAPA SLIME"),
   slime_2: () => new Slime("MAMA SLIME"),
-  pouncing_bandit_4: () => new PouncingBandit("Bandito"),
+  slime_3: () => new Slime("BABY SLIME"),
+  slime_4: () => new Slime("GRANDMA SLIME"),
+  pouncing_bandit: () => new PouncingBandit("Bandito"),
 };
 
 export function createEnemy(id: string) {

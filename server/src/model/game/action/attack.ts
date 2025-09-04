@@ -1,6 +1,10 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier, ActionResult } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionResult,
+  AttackState,
+} from "/types/single/actionState";
 import socket from "../../socket";
 
 export class AttackAction extends Action {
@@ -38,6 +42,17 @@ export class AttackAction extends Action {
     return d20;
   }
 
+  public incrementDamageDealt(number: number): void {
+    this.damageDealt += number;
+  }
+
+  public incrementMinRoll(number: number): void {
+    this.diceMin += number;
+  }
+
+  public incrementCritRate(number: number): void {
+    this.critRate += number;
+  }
   public getDiceRoll(): number {
     return this.d20;
   }
@@ -45,6 +60,7 @@ export class AttackAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     // Rolling a d20 dice
     this.d20 = this.rollDice();
+    this.attackBonus = actingPlayer.getAttackStat();
     this.attackHit = this.d20 + this.attackBonus;
     console.log(
       `${actingPlayer.getName()} Dice roll: ${this.d20} | Attack bonus: ${
@@ -61,11 +77,11 @@ export class AttackAction extends Action {
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
-    if (this.attackHit > affectedPlayer.getMonster().getArmourClass()) {
+    if (this.attackHit >= affectedPlayer.getArmourClassStat()) {
       console.log(
-        `${actingPlayer.getName()}'s attack successful | Attack exceeds opponents armour: (${affectedPlayer
-          .getMonster()
-          .getArmourClass()} < ${this.attackHit}).`
+        `${actingPlayer.getName()}'s attack successful | Attack exceeds opponents armour: (${affectedPlayer.getArmourClassStat()} < ${
+          this.attackHit
+        }).`
       );
 
       // Check for a critical hit
@@ -128,8 +144,16 @@ export class AttackAction extends Action {
 
     return {
       appliedStatus: {
-        success: false
-      }
-    }
+        success: false,
+      },
+    };
+  }
+
+  public getAttackState(): AttackState {
+    return {
+      attackDamage: this.damageDealt,
+      critRate: this.critRate,
+      diceRange: this.diceMin,
+    };
   }
 }

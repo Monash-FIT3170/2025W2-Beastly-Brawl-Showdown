@@ -27,6 +27,13 @@
         "next": "slime_dialogue_1"
       },
       {
+        "id": "status_1",
+        "type": "STATUS",
+        "result": ["You suddenly feel sluggish.", "You are now stunned!"],
+        "statusId": "stunned",
+        "next": "fight_1"
+      },
+      {
         "id": "dialogue_test",
         "result": ["RANDOM SHIT"],
         "type": "DIALOGUE",
@@ -62,8 +69,8 @@
       },
       {
         "id": "item_1",
-        "type": "ITEM",
-        "itemId": "potion_basic",
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion",
         "next": "choice_1"
       },
       {
@@ -140,8 +147,8 @@
       },
       {
         "id": "item_1",
-        "type": "ITEM",
-        "itemId": "potion_basic",
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion",
         "next": "choice_1"
       },
       {
