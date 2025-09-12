@@ -56,7 +56,7 @@ export const Home = () => {
       </div>
 
       {/* Top-right login/account button */}
-      <div className="absolute top-6 sm:top-10 right-6 sm:right-10 z-50 flex flex-col space-y-3 sm:space-y-5 lg:space-y-8">
+      <div className="absolute top-6 sm:top-10 right-6 sm:right-10 z-50 flex flex-col items-end justify-start w-1/2 h-1/2 lg:space-y-5 sm:space-y-30">
         {!loggedInUser ? (
           <ButtonGeneric
             color="ronchi"
