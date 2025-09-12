@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 export class FlameLashAbilityAction extends Action {
   // Attack that always lands on your opponent, even if they attempt to dodge the attack.
@@ -17,10 +17,11 @@ export class FlameLashAbilityAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public prepareAnimation(): string | [string, number] {
-    return "FlameLash_Animation";
-  }
+  return "FlameLash_Animation";
+}
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     // Deal 10 damage if the opponent is dodging, 5 damage otherwise
@@ -46,5 +47,12 @@ export class FlameLashAbilityAction extends Action {
         affectedPlayer.getDodgingPosition() ? 10 : 5
       } damage to ${affectedPlayer.getName()}.`
     );
+
+    //No status applied in this action/ability
+    return {
+      appliedStatus: {
+        success: false
+      }
+    }
   }
 }

@@ -8,6 +8,10 @@ import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { LoginPopup } from "./Login";
 
 export const Home = () => {
+  // Called on 'Host Lobby' button press
+  const renderConfigPage = () => {
+    FlowRouter.go("/host/choose-mode");
+  };
   const [showLogin, setShowLogin] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(false);
 

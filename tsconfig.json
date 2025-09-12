@@ -9,6 +9,7 @@
     "jsx": "preserve",
     "incremental": true,
     "noEmit": true,
+    "ignoreDeprecations": "6.0",
 
     /* Strict Type-Checking Options */
     "strict": true,

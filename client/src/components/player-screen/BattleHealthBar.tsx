@@ -1,5 +1,6 @@
 import React from "react";
 import "./BattleHealthBar.css";
+import { OutlineTextBP } from "../texts/OutlineTextBP";
 
 interface BattleHealthBarProps {
   current: number;
@@ -22,10 +23,10 @@ const BattleHealthBar: React.FC<BattleHealthBarProps> = ({ current, max }) => {
           backgroundColor: color,
         }}
       >
-        <span className="health-bar-text">{current}/{max}</span>
+        <OutlineTextBP size="medium">{current}/{max}</OutlineTextBP>
       </div>
     </div>
   );
 };
 
-export default BattleHealthBar;
+export default BattleHealthBar; 

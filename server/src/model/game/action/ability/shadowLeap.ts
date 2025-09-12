@@ -1,6 +1,6 @@
 import { Action } from "../action";
 import { Player } from "../../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { AttackAction } from "../attack";
 import { NullAction } from "../null";
 
@@ -32,13 +32,19 @@ export class ShadowLeapAbilityAction extends Action {
         const affectedMessage = `You dodged ${affectedPlayer.getName()}'s attack!`;
         const battleLogMessage = `${actingPlayer.getName()} dodged ${affectedPlayer.getName()}'s attack!`;
         affectedPlayer.addAction(
-          new NullAction(actingMessage, affectedMessage, battleLogMessage)
-        ); //inputs are incorrect?
+          new NullAction(
+            "Attack Dodged",
+            ActionIdentifier.NULL,
+            actingMessage,
+            affectedMessage,
+            battleLogMessage
+          )
+        );
       }
     });
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
     // Log the action
@@ -51,5 +57,11 @@ export class ShadowLeapAbilityAction extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, preparing to dodge an attack.`
     );
+
+    return {
+      appliedStatus:{
+        success: false
+      }
+    }
   }
 }

@@ -22,7 +22,7 @@ export interface PlayerAccountSchema {
     numGamesPlayed: number;
     numGamesWon: number;
   }
-  achievments: string[];
+  achievements: string[];
   monstersStat: PlayerMonsterStatSchema[]; 
   adventureProgression: AdventureProgressionSchema
 }
@@ -38,12 +38,11 @@ export interface PlayerMonsterStatSchema {
 
 // Schema for Adventure mode progression. 
 export interface AdventureProgressionSchema {
-  // {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
-  unlockedMonsters: Record<string, boolean>, 
+  unlockedMonsters: Record<string, boolean>, // e.g  {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
   unlockedLevels: number[], 
   stage: number,
-  achievments: string[],
-  savedGameState: {} // This will store the state of the game as players can pause single player mode and resume later. 
+  achievements: string[],
+  savedGameState: {} 
 
 }
 
@@ -130,7 +129,7 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       numGamesPlayed: 0,
       numGamesWon: 0,
     },
-    achievments: [],
+    achievements: [],
     monstersStat: [
       createPlayerMonsterStatSchema('ROCKY_RHINO'),
       createPlayerMonsterStatSchema('CINDER_TAIL'),
@@ -139,11 +138,22 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       createPlayerMonsterStatSchema('CHARMER_COBRA'),
       createPlayerMonsterStatSchema('FURIOUS_FLIPPER'),
     ],
+    adventureProgression: {
+      unlockedMonsters: {
+        'ROCKY_RHINO': true,
+        'CINDER_TAIL': false,
+        'POUNCING_BANDIT': false,
+        'POISON_POGO': false,
+        'CHARMER_COBRA': false,
+        'FURIOUS_FLIPPER': false,
+      },
+      unlockedLevels: [1],
+      stage: 1,
+      achievements: [],
+      savedGameState: {},
+    }
   };
 }
-
-
-
 
 
 
@@ -176,7 +186,7 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
         numGamesPlayed: 0, 
         numGamesWon: 0,
       },
-      achievments: [], 
+      achievements: [], 
       monstersStat: [
         createPlayerMonsterStatSchema('ROCKY_RHINO'), 
         createPlayerMonsterStatSchema('CINDER_TAIL'), 
@@ -196,7 +206,7 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
         },
         unlockedLevels: [1],
         stage: 1,
-        achievments: [],
+        achievements: [],
         savedGameState: {},
       }
     };
@@ -229,8 +239,9 @@ export async function getPlayerData(email: string): Promise<PlayerAccountSchema 
         numGamesPlayed: player.stats.numGamesPlayed,
         numGamesWon: player.stats.numGamesWon,
       },
-      achievments: player.achievments,
-      monstersStat: player.monstersStat
+      achievements: player.achievements,
+      monstersStat: player.monstersStat,
+      adventureProgression: player.adventureProgression
     };
   } catch (error) {
     console.error(`Error fetching player data for email ${email}: ${error.message}`);
@@ -279,7 +290,11 @@ export async function updatePlayerAccount(
         ...(updates.stats || {})
       },
       monstersStat: updates.monstersStat || existingPlayer.monstersStat,
-      achievments: updates.achievments || existingPlayer.achievments
+      achievements: updates.achievements || existingPlayer.achievements, 
+      adventureProgression: {
+        ...existingPlayer.adventureProgression,
+        ...(updates.adventureProgression || {})
+      }
     };
 
     // Perform the update

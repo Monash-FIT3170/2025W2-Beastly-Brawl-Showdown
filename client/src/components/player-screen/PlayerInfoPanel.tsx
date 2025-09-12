@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BattleHealthBar } from "../bars/BattleHealthBar";
 import { BattleState } from "/types/composite/battleState";
 import { OutlineText } from "../texts/OutlineText";
@@ -7,9 +7,12 @@ interface PlayerInfoPanelProps {
   battleState: BattleState;
 }
 
-export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({ battleState }) => {
+export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
+  battleState,
+}) => {
   return (
-    <div className="
+    <div
+      className="
       bg-[#ffe9af]
       border
       border-4
@@ -24,51 +27,91 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({ battleState })
       box-border
       mx-[8px]
       mt-[-8px]
-    ">
-      <div className="
+    "
+    >
+      {/* Your Player's Details */}
+      <div
+        className="
         flex
         flex-col
         gap-[4px]
         w-[45%]
         items-start
         text-left
-      ">
-        <BattleHealthBar currentHealth={battleState.yourPlayer.currentHealth} maxHealth={battleState.yourPlayerMonster.maxHealth}/>
-        <div className="flex flex-row">
-          <div className="size-[30px]"/>
+      "
+      >
+        {/* Health Bar */}
+        <BattleHealthBar
+          currentHealth={battleState.yourPlayer.currentHealth}
+          maxHealth={battleState.yourPlayerMonster.maxHealth}
+        />
+        {/* Status Map */}
+        <div className="flex flex-row xl:pt-[0.5rem] pt-[1.5rem] gap-x-[0.5rem] xl:gap-x-[0.5rem]">
+          {battleState.yourPlayer.statuses.length === 0 && (
+            <div className="lg:size-[1rem] sm:size-[3rem]" />
+          )}{" "}
           {battleState.yourPlayer.statuses.map((status) => (
-            <img className = " size-[30px] object-contain rounded-md block" src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase()}.png`} alt={`${status.name.toUpperCase()} image`}/>
+            <img
+              className=" size-[4.5rem] xl:size-[2.5rem] object-contain rounded-md inline-block"
+              src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
+                .replace(" ", "_")
+                .toUpperCase()}.png`}
+              alt={`${status.name.toUpperCase()} image`}
+            />
           ))}
         </div>
+        {/* Player / Monster Name */}
         <div className="leading-none pt-[2%]">
           <OutlineText size="small">
-              {battleState.yourPlayerMonster.name.toUpperCase()}
+            {battleState.yourPlayerMonster.id.toUpperCase().replace("_", " ")}
           </OutlineText>
         </div>
         <div className="leading-none pb-[2%]">
           <OutlineText size="medium">
-              {battleState.yourPlayer.name.toUpperCase()}
+            {battleState.yourPlayer.name.toUpperCase()}
           </OutlineText>
         </div>
       </div>
-      <div className="
+
+      {/* Enemy Player's Details */}
+      <div
+        className="
         flex
         flex-col
         gap-[4px]
         w-[45%]
         items-end
         text-right
-      ">
-        <BattleHealthBar currentHealth={battleState.opponentPlayer.currentHealth} maxHealth={battleState.opponentPlayerMonster.maxHealth}/>
-        <div className="flex flex-row">
-          <div className="size-[30px]"/>
+      "
+      >
+        {/* Health Bar */}
+        <BattleHealthBar
+          currentHealth={battleState.opponentPlayer.currentHealth}
+          maxHealth={battleState.opponentPlayerMonster.maxHealth}
+        />
+
+        {/* Status Map */}
+        <div className="flex flex-row xl:pt-[0.5rem] pt-[1.5rem] gap-x-[0.5rem] xl:gap-x-[0.5rem]">
+          {battleState.opponentPlayer.statuses.length === 0 && (
+            <div className="lg:size-[1rem] sm:size-[3rem]" />
+          )}{" "}
           {battleState.opponentPlayer.statuses.map((status) => (
-            <img className = " size-[30px] object-contain rounded-md block" src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase()}.png`} alt={`${status.name.toUpperCase()} image`}/>
+            <img
+              className=" size-[4.5rem] xl:size-[2.5rem] object-contain rounded-md inline-block"
+              src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
+                .replace(" ", "_")
+                .toUpperCase()}.png`}
+              alt={`${status.name.toUpperCase()} image`}
+            />
           ))}
         </div>
+
+        {/* Player / Monster Name */}
         <div className="leading-none pt-[2%]">
           <OutlineText size="small">
-              {battleState.opponentPlayerMonster.name.toUpperCase()}
+            {battleState.opponentPlayerMonster.id
+              .toUpperCase()
+              .replace("_", " ")}
           </OutlineText>
         </div>
         <div className="leading-none pb-[2%]">

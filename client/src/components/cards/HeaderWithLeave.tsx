@@ -9,23 +9,23 @@ interface HeaderWithLeaveProps {
 }
 
 export const HeaderWithLeave = ({ children, color }: HeaderWithLeaveProps) => {
-    const [showLeave, setShowLeave] = useState(false);
+  const [showLeave, setShowLeave] = useState(false);
 
-    const colorToDisplay = {
-        blue: "bg-[#55A9ED]",
-        purple: "bg-[#BD55ED]",
-        lightYellow: "bg-[#EDAF55]",
-        green: "bg-[#7EED55]",
-        red: "bg-[#ED5A55]",
-        cream: "bg-[#FFE8B1]",
-    };
+  const colorToDisplay = {
+    blue: "bg-[#55A9ED]",
+    purple: "bg-heliotrope",
+    lightYellow: "bg-ronchi",
+    green: "bg-conifer",
+    red: "bg-burntSienna",
+    cream: "bg-peach",
+  };
 
-    const layout = `
+  const layout = `
         w-[90%]
         
-    `
+    `;
 
-    const header = `
+  const header = `
             ${colorToDisplay[color]}
             mx-auto
             text-large
@@ -54,17 +54,24 @@ export const HeaderWithLeave = ({ children, color }: HeaderWithLeaveProps) => {
             xl:pb-[0]
             `;
 
-    return(
+  return (
     <div className="justify-center">
-        <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-            <IconButton style="arrowleft" iconColour="black" buttonColour="red" size="small" onClick={() => setShowLeave(true)}></IconButton>
-            <LeavePopup open={showLeave} onClose={() => setShowLeave(false)}></LeavePopup>
-        </div>
-        <div className="pl-[20rem] xl:pl-[0rem]">
-            <div className={`${header}`}>
-            {children}
-            </div>
-        </div>
+      <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto">
+        <IconButton
+          style="arrowleft"
+          iconColour="black"
+          buttonColour="red"
+          size="small"
+          onClick={() => setShowLeave(true)}
+        ></IconButton>
+        <LeavePopup
+          open={showLeave}
+          onClose={() => setShowLeave(false)}
+        ></LeavePopup>
+      </div>
+      <div className="pl-[20rem] xl:pl-[0rem]">
+        <div className={`${header}`}>{children}</div>
+      </div>
     </div>
-  )
+  );
 };

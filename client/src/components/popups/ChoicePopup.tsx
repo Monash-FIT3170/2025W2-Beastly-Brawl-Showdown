@@ -1,23 +1,22 @@
-import React, { ReactNode, useState } from 'react';
-import { DialogueChoiceButton } from '../buttons/DialogueChoiceButton';
-import { option } from '/types/composite/storyTypes';
-import { OutlineText } from '../texts/OutlineText';
+import React, { ReactNode, useState } from "react";
+import { DialogueChoiceButton } from "../buttons/DialogueChoiceButton";
+import { option } from "/types/composite/storyTypes";
+import { OutlineText } from "../texts/OutlineText";
 import socket from "../../socket";
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
-
-export interface ChoicePopupProp{
-    question: string;
-    choices: option[];
-    onClick: (choiceId: string) => void;
+export interface ChoicePopupProp {
+  question: string;
+  choices: option[];
+  onClick: (choiceId: string) => void;
 }
 
-
-export const ChoicePopup = ({question, choices, onClick}: ChoicePopupProp ) => {
-
-
-
-    const Layout = `
+export const ChoicePopup = ({
+  question,
+  choices,
+  onClick,
+}: ChoicePopupProp) => {
+  const Layout = `
         items-center
         justify-center
         box-border
@@ -32,10 +31,9 @@ export const ChoicePopup = ({question, choices, onClick}: ChoicePopupProp ) => {
         backdrop-blur-md
         z-50  
         `;
-    
-    
-    const Popup = `
-        bg-[#FFE8B1]
+
+  const Popup = `
+        bg-peach
         outline-blackCurrant
         inline-flex
         flex-col
@@ -57,28 +55,26 @@ export const ChoicePopup = ({question, choices, onClick}: ChoicePopupProp ) => {
         
         `;
 
-    const goNext = (next: string) => {
-        FlowRouter.go(next);
-    };
+  const goNext = (next: string) => {
+    FlowRouter.go(next);
+  };
 
-    return(
+  return (
+    <div className={`${Layout}`}>
+      <div className={`${Popup}`}>
+        <div className="w-full flex flex-col items-center justify-center gap-y-6 flex-wrap text-center">
+          <OutlineText size="choice-text"> {question} </OutlineText>
 
-    <div className = {`${Layout}`}>
-        <div className = {`${Popup}`}> 
-            <div className="w-full flex flex-col items-center justify-center gap-y-6 flex-wrap text-center">
-                <OutlineText size ='choice-text'> {question} </OutlineText>
-                
-                    {choices.map((choice, idx) => (
-                        <DialogueChoiceButton key={idx} onClick={() => onClick(choice.next)}> 
-                            <OutlineText size ="medium"> {choice.text} </OutlineText> 
-                        </DialogueChoiceButton>
-                    ))}
-
-            </div>
-
+          {choices.map((choice, idx) => (
+            <DialogueChoiceButton
+              key={idx}
+              onClick={() => onClick(choice.next)}
+            >
+              <OutlineText size="medium"> {choice.text} </OutlineText>
+            </DialogueChoiceButton>
+          ))}
         </div>
+      </div>
     </div>
-
-    )
-
-}
+  );
+};

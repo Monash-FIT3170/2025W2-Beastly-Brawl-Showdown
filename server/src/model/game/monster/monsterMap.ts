@@ -29,16 +29,11 @@ export const biomeMap = new Map([
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
 ]);
 
-export function getBiomeString(monsterID: MonsterIdentifier) {
-  const biomeName = biomeMap.get(monsterID);
-  return biomeName ? biomeName() : null;
-}
-
-export function getSlimeString(monsterID: MonsterIdentifier) {
-  const biomeName = biomeMap.get(monsterID);
-  if (!biomeName) {
-    return null;
-  }
-  const slimeName = "SLIME_" + biomeName;
-  return slimeName;
-}
+//NOTE: levelMap exists in front end so update both accordingly
+export const levelMap: Record<number, MonsterIdentifier> = {
+  0: MonsterIdentifier.POUNCING_BANDIT,
+  1: MonsterIdentifier.CINDER_TAIL,
+  2: MonsterIdentifier.FURIOUS_FLIPPER,
+  3: MonsterIdentifier.POISON_POGO,
+  4: MonsterIdentifier.CHARMER_COBRA,
+};

@@ -10,8 +10,8 @@ import { gameSessionHandler } from "./src/socket/gameSessionHandler";
 import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataHandler";
 import { adventureModeHandler } from "./src/socket/adventureModeHandler";
 import { Adventure } from "./src/model/game/adventure";
+import { adventureTurnHandler } from "./src/socket/adventureTurnHandler";
 import { LogBool } from "./src/socket/backend/loginHandler";
-
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
 export const activeGameSessions = new Map<number, GameSession>();
@@ -89,6 +89,7 @@ Meteor.startup(async () => {
     waitingScreenDataHandler(io, socket);
     LogBool(io, socket);
     adventureModeHandler(io, socket);
+    adventureTurnHandler(io, socket);
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);

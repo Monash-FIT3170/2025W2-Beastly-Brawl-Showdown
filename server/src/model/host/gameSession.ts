@@ -2,7 +2,7 @@ import { Player } from "../game/player";
 import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
-import { GameSessionState } from "/types/composite/gameSessionState";
+import { GameSessionState,GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
@@ -11,12 +11,17 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { RockyRhino } from "../game/monster/rockyRhino";
 import { PouncingBandit } from "../game/monster/pouncingBandit";
 import { CinderTail } from "../game/monster/cinderTail";
-import { BotPlayer } from "../game/botPlayer";
 import crypto from "crypto";
+import { IGameMode } from "./gamemode/gameMode";
+import { Server, Socket } from "socket.io";
+import { ActionResult } from "/types/single/actionState";
+import { BotPlayer } from "../game/botPlayer";
+import { GameModeIdentifier } from "/types/single/gameMode";
 
 export default class GameSession {
   private hostUID: string;
   private players: Queue<Player>;
+  private waitQueue: Queue<Player>;
   private battles: Queue<Battle>;
   private gameCode: number;
   private round: number = 1; // Round number
@@ -24,26 +29,35 @@ export default class GameSession {
   private battle_max: number = 32; // Max 32 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
   // private monsters: Array<String>;
+  private mode: IGameMode;
+  private monsters: Array<String>;
+  private botInLobby: boolean = false; // whether has been added to this session or not
+  private finalWinner: PlayerState | null = null;
 
   // Initialise sample data
   private gameSessionData: GameSessionData = {
     mostChosenMonster: { monster: null, percentagePick: "0" },
   };
 
-  constructor(hostID: string, presetGameCode?: number) {
+  
+
+  constructor(hostID: string, addition: {mode: IGameMode, presetGameCode?: number}) {
     this.hostUID = hostID;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
+    this.waitQueue = new Queue<Player>(4);
     this.battles = new Queue<Battle>(this.battle_max);
     // this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
+    this.mode = addition.mode
 
-    if (presetGameCode !== undefined) {
+    if (addition.presetGameCode !== undefined) {
       // Use preset game code if provided
-      this.gameCode = presetGameCode;
+      this.gameCode = addition.presetGameCode;
     } else {
       // Generate a new game code
       this.gameCode = this.generateGameCode();
     }
+    this.mode = addition.mode
   }
 
   // Generate game code
@@ -60,6 +74,22 @@ export default class GameSession {
     this.battles.getItems().forEach((curBattle) => {
       curBattle.eliminateAllPlayers();
     });
+  }
+
+  public getBotInLobby():boolean {
+    return this.botInLobby
+  }
+
+  public setBotInLobby(hasBot: boolean): void{
+    this.botInLobby = hasBot
+  }
+
+  //Get the actual number of players (bot is excluded)
+  public getEffectivePlayer(): number{
+    if (this.botInLobby){
+      return this.players.getItems().length -1
+    }
+    return this.players.getItems().length
   }
 
   // Getters and setters
@@ -90,9 +120,25 @@ export default class GameSession {
   public getPlayers() {
     return this.players;
   }
-  // public getMonsters() {
-  //   return this.monsters;
-  // }
+  public getMonsters(){
+    return this.monsters;
+  }
+
+  public clearBattles(){
+    this.battles = new Queue<Battle>(this.battle_max);
+  }
+
+  public getRound():number{
+    return this.round;
+  }
+
+  public setRound(newRound:number): void{
+    this.round = newRound
+  }
+
+  public getWaitQueue() {
+    return this.waitQueue;
+  }
 
   // Add player to Game Session queue
   public addPlayer(player: Player): { success: boolean; reason?: string } {
@@ -124,6 +170,20 @@ export default class GameSession {
         this.players.enqueue(playerIndexed); // If the player is not the argument one, then put them back in the queue
       }
     }
+  }
+
+  getPlayerWaiting(seaarchingPlayerID: String): Player | null {
+    // Loop to check through each item in the queue
+    for (let i = 0; i < this.waitQueue.size(); i++) {
+      const playerIndexed = this.waitQueue.dequeue(); // Serves the current player at the front
+      if (playerIndexed != undefined) {
+        this.waitQueue.enqueue(playerIndexed);
+        if (playerIndexed.getId() == seaarchingPlayerID) {
+          return playerIndexed;
+        }
+      }
+    }
+    return null;
   }
 
   // Check if all requirements are met before starting game
@@ -244,15 +304,16 @@ export default class GameSession {
     let battleId = crypto.randomUUID();
 
     const botPlayer = new BotPlayer();
-    botPlayer.setRandomMonster(); //moved original code inside bot player
+    botPlayer.setRandomMonster();
 
     this.players.enqueue(botPlayer);
 
-    const battle = new Battle(battleId, oddPlayer, botPlayer, this.hostUID);
+    const battle = new Battle(battleId, oddPlayer, botPlayer, this.hostUID)
 
     battles.set(battleId, battle);
-    this.battles.enqueue(battle);
+    this.battles.enqueue(battle)
 
+    this.botInLobby = true
     return oddPlayer;
   }
   public calculateMostChosenMonster() {
@@ -304,26 +365,39 @@ export default class GameSession {
   public getGameSessionState(): GameSessionState {
     const allBattles = [];
     let remainingPlayers = 0;
-    let totalPlayers = this.battles.size() * 2;
+    // let totalPlayers = this.battles.size() * 2;
+    let totalPlayers = this.players.size();
 
     for (const battle of this.battles.getItems()) {
       var firstPlayer = battle.getPlayers()[0];
       allBattles.push(battle.getBattleState(firstPlayer.getId()));
-      if (battle.isBattleOver()) {
+      // if (battle.isBattleOver()) {
+      //   remainingPlayers += 1;
+      // } else {
+      //   remainingPlayers += 2;
+      // }
+    }
+
+    for (const player of this.getPlayers().getItems()) {
+      if (player.getHealth() > 0) {
         remainingPlayers += 1;
-      } else {
-        remainingPlayers += 2;
       }
     }
+
+    console.log("[CURRENT MODE]: ", this.mode.name)
+    let metadata = this.mode.getMetadata()
 
     return {
       id: this.gameCode.toString(),
       round: this.round,
+      mode: this.mode.name,
       battleStates: allBattles,
       gameSessionData: this.gameSessionData,
       currentPhase: this.currentPhase,
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
+      waitingPlayers: this.getPlayersNotInBattle(),
+      metadata: this.getMetadata()
     };
   }
 
@@ -333,5 +407,59 @@ export default class GameSession {
       playerStates.push(player.getPlayerState());
     }
     return playerStates;
+  }
+
+  public initGame(io: Server, socket: Socket):void {
+    return this.mode.init(this, io, socket)
+  }
+
+  public onActionExecuted(player1Id:string,  player1Result: ActionResult, player2Id: string, player2Result:ActionResult):void {
+    return this.mode.onActionExecuted(this, player1Id, player1Result, player2Id, player2Result);
+  }
+
+  public onBattleEnded(winner: Player | null,battle: Battle, io: Server, socket: Socket): void {
+    return this.mode.onBattleEnded(this, battle ,winner, io,socket);
+  }
+
+  public onBattlesEnded(io: Server, socket: Socket): void {
+    return this.mode.onBattlesEnded(this, io, socket);
+  }
+
+  public isSessionConcluded(): boolean {
+    return this.mode.isSessionConcluded(this);
+  }
+  public getPlayersNotInBattle(): Player[] {
+    const allPlayers = this.players.getItems(); // All players in the session
+    const playersInBattles = new Set<string>();
+
+    // Gather IDs of all players currently in battles
+    for (const battle of this.battles.getItems()) {
+      for (const player of battle.getPlayers()) {
+        playersInBattles.add(player.getId());
+      }
+    }
+
+    // Filter players not in the playersInBattles set
+    const playersNotInBattle = allPlayers.filter(
+      (player) => !playersInBattles.has(player.getId())
+    );
+
+    return playersNotInBattle;
+  }
+
+  public setFinalWinner(finalWinner: PlayerState | null): void {
+    this.finalWinner = finalWinner;
+  }
+
+  public getFinalWinner(): PlayerState | null {
+    return this.finalWinner;
+  }
+
+  public getMode(): GameModeIdentifier {
+    return this.mode.name;
+  }
+
+  public getMetadata(): GameSessionStateMetaData{
+    return this.mode.getMetadata()
   }
 }

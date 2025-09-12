@@ -86,10 +86,10 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
   // deletes game session
   const closeGame = () => {
-    // UPDATE: popup asking if they are sure before returning to home
+    // UPDATE: popup asking if they are sure before returning to game setup screen
     socket.emit("cancel-game", { gameCode: code });
-    // return to home
-    FlowRouter.go("/");
+    // return game setup screen
+    FlowRouter.go("/host/choose-mode");
   };
 
   return (

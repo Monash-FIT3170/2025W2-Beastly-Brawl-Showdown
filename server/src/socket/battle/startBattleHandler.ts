@@ -4,9 +4,11 @@ import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { AttackAction } from "../../model/game/action/attack";
-import { ActionRandomiser } from "../../model/game/actionRandomiser";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionRandomiser } from "../../model/game/actionRandomiser";
+import { Player } from "../../model/game/player";
+
 export default function proceedBattleTurn(
   io: Server,
   socket: Socket,
@@ -20,13 +22,13 @@ export default function proceedBattleTurn(
   let playersInBattle = battle.getPlayers();
 
   // checks/ticks statuses for each player
-  playersInBattle.forEach((player) => {
-    player.tickStatuses();
-    // let statuses = player.getStatuses();
-    // statuses.forEach((status) => {
-    //   status.tick(player);
-    // })
-  });
+  //playersInBattle.forEach((player) => {
+  //player.tickStatuses();
+  // let statuses = player.getStatuses();
+  // statuses.forEach((status) => {
+  //   status.tick(player);
+  // })
+  //});
 
   if (battle.isBattleOver()) {
     const winners = battle.getWinners();
@@ -34,42 +36,37 @@ export default function proceedBattleTurn(
       //if battle is over, the array length is guaranteed to be either 0 or 1
       io.to(battle.getId()).emit("battle_end", {
         result: "draw",
-        winners: winners,
+        winners: winners.map((player) => player.getName()),
       });
     } else {
+      const winningPlayer = winners[0];
+      console.log(
+        `Player ${winningPlayer.getName()} added to the Waiting Queue`
+      );
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
-        winners: winners,
+        winners: winners.map((player) => player.getName()),
       });
     }
   }
 
   //Players' states before the turn start
   gameSession.setCurrentPhase(BattlePhase.CHOOSE_ACTION);
-  socket.emit("game-session-state", {
+  io.to(gameSession.getHost()).emit("game-session-state", {
     session: gameSession.getGameSessionState(),
   });
 
   playersInBattle.forEach((player) => {
+    // player.tickStatuses();
     if (!player.isBotPlayer()) {
       //only emit to socket if the player is a human
-      io.to(player.getId()).emit(
-        "battle_state",
-        battle.getBattleState(player.getId())
-      ); // Emit the battle state to each player
-      if (!player.isBotPlayer()) {
-        //only emit to socket if the player is a human
-        io.to(player.getId()).emit(
-          "battle_state",
-          battle.getBattleState(player.getId())
-        ); // Emit the battle state to each player
+      io.to(player.getId()).emit("battle_state", {
+        battle: battle.getBattleState(player.getId()),
+        metadata: gameSession.getMetadata(), //metadata received from the game session
+      }); // Emit the battle state to each player
 
-        let actions = player.getMonster().getPossibleActionStates();
-        io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
-      } else {
-        let actions = player.getMonster().getPossibleActionStates();
-        io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
-      }
+      let actions = player.getMonster().getPossibleActionStates();
+      io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
       ActionRandomiser.randomAction(player);
     }
@@ -91,6 +88,18 @@ export default function proceedBattleTurn(
       playersInBattle.forEach((player) => {
         if (player.getActions().length === 0) {
           player.addAction(new NullAction());
+        }
+
+        if (player.getNoNullAction() === Player.roundToCheck) {
+          const winner = battle.getPlayerWithBetterHealth();
+
+          if (winner === null) {
+            playersInBattle[0].setHealth(0);
+            playersInBattle[1].setHealth(0);
+          } else {
+            battle.getOpponentOf(winner).setHealth(0);
+          }
+          return;
         }
       });
 
@@ -115,15 +124,18 @@ export default function proceedBattleTurn(
             const diceRoll = attackAction.getDiceRoll();
             io.to(player1.getId()).emit("roll_dice", diceRoll);
           }
-        }
 
-        if (action.getName() === "Tip The Scales") {
-          const tipTheScalesAction = action as TipTheScalesAbilityAction;
-          const diceRoll = tipTheScalesAction.getDiceRoll();
-          io.to(player1.getId()).emit("roll_dice", diceRoll);
-          console.log(
-            `Player 1 used tip the scales and dice roll = ${diceRoll}`
-          );
+          if (!player1.isBotPlayer()) {
+            //only emit to socket if the player is a human
+            if (action.getName() === "Tip The Scales") {
+              const tipTheScalesAction = action as TipTheScalesAbilityAction;
+              const diceRoll = tipTheScalesAction.getDiceRoll();
+              io.to(player1.getId()).emit("roll_dice", diceRoll);
+              console.log(
+                `Player 1 used tip the scales and dice roll = ${diceRoll}`
+              );
+            }
+          }
         }
       });
 
@@ -135,42 +147,60 @@ export default function proceedBattleTurn(
             const diceRoll = attackAction.getDiceRoll();
             io.to(player2.getId()).emit("roll_dice", diceRoll);
           }
-        }
 
-        if (action.getName() === "Tip The Scales") {
-          const tipTheScalesAction = action as TipTheScalesAbilityAction;
-          const diceRoll = tipTheScalesAction.getDiceRoll();
-          console.log(
-            `Player 2 used tip the scales and dice roll = ${diceRoll}`
-          );
-          io.to(player2.getId()).emit("roll_dice", diceRoll);
+          if (action.getName() === "Tip The Scales") {
+            const tipTheScalesAction = action as TipTheScalesAbilityAction;
+            const diceRoll = tipTheScalesAction.getDiceRoll();
+            console.log(
+              `Player 2 used tip the scales and dice roll = ${diceRoll}`
+            );
+            io.to(player2.getId()).emit("roll_dice", diceRoll);
+          }
         }
       });
 
       setTimeout(() => {
+        let p1_result;
+        let p2_result;
+
         // Execute method
         player1.getActions().forEach((action) => {
-          action.execute(player1, player2);
+          p1_result = action.execute(player1, player2);
           if (action instanceof NullAction) {
             console.log(`P1 - ${player1.getName()} did nothing.`);
           }
         });
 
         player2.getActions().forEach((action) => {
-          action.execute(player2, player1);
+          p2_result = action.execute(player2, player1);
           if (action instanceof NullAction) {
             console.log(`P2 - ${player2.getName()} did nothing.`);
           }
         });
 
+        console.log("P1: ", player1);
+
+        console.log("P2: ", player2);
+
+        //Handle logic after actions are executed (see GameMode)
+        gameSession.onActionExecuted(
+          player1.getId(),
+          p1_result,
+          player2.getId(),
+          p2_result
+        );
+
+        //clear previous battlelogs
+        battle.clearBattleLogs();
+
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
           if (!player.isBotPlayer()) {
             // Only emit the battle state of human player
-            io.to(player.getId()).emit(
-              "battle_state",
-              battle.getBattleState(player.getId())
-            );
+            io.to(player.getId()).emit("battle_state", {
+              battle: battle.getBattleState(player.getId()),
+              metadata: gameSession.getMetadata(),
+            });
           }
         });
 
@@ -184,37 +214,62 @@ export default function proceedBattleTurn(
         if (battle.isBattleOver()) {
           const winners = battle.getWinners();
           if (winners.length == 0) {
-            //if battle is over, the array length is guaranteed to be either 0 or 1
-            io.to(battle.getId()).emit("battle_end", {
-              result: "draw",
-              winners: winners,
-            });
+            //Handler after a battle ended
+            gameSession.onBattleEnded(null, battle, io, socket);
+
+            // if battle is over, the array length is guaranteed to be either 0 or 1
+            // io.to(battle.getId()).emit("battle_end", {
+            //   result: "draw",
+            //   winners: winners.map((player) => player.getName()),
+            // });
           } else {
-            io.to(battle.getId()).emit("battle_end", {
-              result: "concluded",
-              winners: winners,
-            });
+            //Handler after a battle ended
+            gameSession.onBattleEnded(winners[0], battle, io, socket);
+
+            //             io.to(battle.getId()).emit("battle_end", {
+            //               result: "concluded",
+            //               winners: winners.map((player) => player.getName())
+            // ,
+            //             });
           }
+          //Emit to host one last time before shutting down the handler
+          gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
+          io.to(gameSession.getHost()).emit("game-session-state", {
+            session: gameSession.getGameSessionState(),
+          });
+
+          //Shutting down the handler
+          return;
+        } else {
+          playersInBattle.forEach((player) => {
+            player.tickStatuses();
+          });
         }
         // TODO: ONLY update the current battle to be more memory efficient...
         //Players' states after the turn ends
         gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
-        socket.emit("game-session-state", {
+        io.to(gameSession.getHost()).emit("game-session-state", {
           session: gameSession.getGameSessionState(),
         });
 
         //
         setTimeout(() => {
           if (gameSession.areBattlesConcluded()) {
-            console.log(
-              `All battles are concluded in game session ${gameSession.getGameCode()}`
-            );
+            //Handler after all battles have ended
+            gameSession.onBattlesEnded(io, socket);
+
+            console.log(`Only one player remains.`);
 
             //TODO: for future, this can be used to handle what happens after a game session ends
 
             socket.emit("game_session_ended", {
               message: `Game session ${gameSession.getGameCode()} has ended.`,
             });
+            return;
+          }
+
+          if (battle.isBattleOver()) {
+            console.log(`Battle ${battle.getId} has ended`);
             return;
           }
 

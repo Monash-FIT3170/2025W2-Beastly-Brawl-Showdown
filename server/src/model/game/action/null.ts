@@ -1,6 +1,6 @@
 import { Action } from "./action";
 import { Player } from "../player";
-import { ActionIdentifier } from "/types/single/actionState";
+import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 
 export class NullAction extends Action {
   private actingMessage: string | null;
@@ -14,7 +14,7 @@ export class NullAction extends Action {
     affectedMessage: string | null = null,
     battleLogMessage: string | null = null
   ) {
-    super(actionIdentifier, name, "No action", 0);
+    super(actionIdentifier, name, "No action", Infinity);
     this.actingMessage = actingMessage;
     this.affectedMessage = affectedMessage;
     this.battleLogMessage = battleLogMessage;
@@ -26,7 +26,7 @@ export class NullAction extends Action {
     return "NullAction_Animation";
   }
 
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     actingPlayer.addLog(
       `${this.actingMessage ? this.actingMessage + " " : ""}You did nothing.`
     );
@@ -40,5 +40,11 @@ export class NullAction extends Action {
         this.battleLogMessage ? this.battleLogMessage + " " : ""
       }${actingPlayer.getName()} did nothing.`
     );
+
+    return {
+      appliedStatus: {
+        success: false
+      }
+    }
   }
 }

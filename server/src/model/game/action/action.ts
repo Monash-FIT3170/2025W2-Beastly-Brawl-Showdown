@@ -1,5 +1,9 @@
 import { Player } from "../player";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
+import {
+  ActionIdentifier,
+  ActionResult,
+  ActionState,
+} from "/types/single/actionState";
 
 export abstract class Action {
   private id: ActionIdentifier;
@@ -14,13 +18,15 @@ export abstract class Action {
     id: ActionIdentifier,
     name: string,
     description: string,
-    maxUse: number
+    maxUse: number,
+    dodgeable?: boolean
   ) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.currentUse = maxUse;
     this.maxUse = maxUse;
+    this.dodgeable = dodgeable ?? true;
   }
 
   public incCurrentUse(value: number): void {
@@ -30,11 +36,11 @@ export abstract class Action {
   public getCurrentUse(): number {
     return this.currentUse;
   }
-  //returns if an action can be dodged 
+  //returns if an action can be dodged
   public getDodgeable(): boolean {
     return this.dodgeable;
   }
-  //if an action cant be dodged, this function is used to set it apart from the default 
+  //if an action cant be dodged, this function is used to set it apart from the default
   protected setDodgeable(value: boolean): void {
     this.dodgeable = value;
   }
@@ -44,7 +50,11 @@ export abstract class Action {
 
   public abstract prepare(actingPlayer: Player, affectedPlayer: Player): void;
 
-  public abstract execute(actingPlayer: Player, affectedPlayer: Player): void;
+  //Return the "effects" caused by action
+  public abstract execute(
+    actingPlayer: Player,
+    affectedPlayer: Player
+  ): ActionResult;
 
   public abstract prepareAnimation(): string | [string, number]; // returns the socket message that represents the animation name
 

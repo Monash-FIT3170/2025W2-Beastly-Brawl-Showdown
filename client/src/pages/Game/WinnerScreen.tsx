@@ -25,11 +25,6 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
     FlowRouter.go("/");
   };
 
-  // const leave = () => {
-  //   socket.emit('leave-game', {userID:socket.id})
-  //   FlowRouter.go("/")
-  // };
-
   if (!playerMonster) {
     return (
       <BlankPage>

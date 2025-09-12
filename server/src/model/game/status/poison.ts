@@ -1,9 +1,10 @@
 import { Player } from "../player";
 import { Status } from "./status";
+import { StatusType } from "/types/single/statusType";
 
 export class Poison extends Status {
   constructor(countdown: number = 5) {
-    super("Poison", "Lose 1 HP.", countdown);
+    super("Poison", "Lose 1 HP.", countdown, StatusType.DEBUFF);
   }
 
   public effect(player: Player): void {
