@@ -251,7 +251,7 @@ export const Account = () => {
                   </p>
                   <p>
                     Adventure Achievements:{" "}
-                    {userData.adventureProgression.achievments.length
+                    {userData.adventureProgression.achievments
                       ? userData.adventureProgression.achievments.join(", ")
                       : "None"}
                   </p>
