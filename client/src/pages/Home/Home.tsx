@@ -51,12 +51,12 @@ export const Home = () => {
   return (
     <BlankPage>
       {/* Logo section */}
-      <div className="flex flex-row h-[40vh] sm:h-[50vh] lg:h-[60vh] w-full items-center justify-center sm:justify-around px-4 sm:px-0">
-        <LogoResizable className="w-[80%] sm:w-1/4 max-w-[350px] sm:max-w-[400px]" />
+      <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
+        <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
       </div>
 
       {/* Top-right login/account button */}
-      <div className="absolute top-6 sm:top-10 right-6 sm:right-10 z-50">
+      <div className="absolute top-6 sm:top-10 right-6 sm:right-10 z-50 flex flex-col space-y-3 sm:space-y-5 lg:space-y-8">
         {!loggedInUser ? (
           <ButtonGeneric
             color="ronchi"
