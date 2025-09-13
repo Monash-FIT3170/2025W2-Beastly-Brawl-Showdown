@@ -1,12 +1,17 @@
-import { ActionIdentifier } from "../../../../../types/single/actionState";
+import { error } from "console";
+import {
+  ActionIdentifier,
+  ActionResult,
+} from "../../../../../types/single/actionState";
 import { Consumable } from "../consumables/consumable";
 import { Player } from "../player";
 import { Action } from "./action";
+import { ConsumableType } from "/types/single/itemState";
 
 export class ConsumeAction extends Action {
-  private consumableName: string;
+  private consumable: Consumable;
 
-  constructor(consumableName: string) {
+  constructor(consumable: Consumable) {
     super(
       ActionIdentifier.CONSUME,
       "Consume",
@@ -14,35 +19,47 @@ export class ConsumeAction extends Action {
       1,
       false
     );
-    this.consumableName = consumableName;
+    this.consumable = consumable;
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     console.error("Consume Action Preparation Unimplemented");
   }
-  public execute(actingPlayer: Player, affectedPlayer: Player): void {
-    //TODO: handle this differently depending on the consumable
-    //can add consumable types???
-    actingPlayer.useConsumable(this.consumableName);
+  public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    if (this.consumable?.getType() == ConsumableType.SELF_INFLICT) {
+      this.consume(actingPlayer, this.consumable);
+    } else if (this.consumable?.getType() == ConsumableType.ENEMY_INFLICT) {
+      this.consume(affectedPlayer, this.consumable);
+    } else {
+      console.error("Consumable does not have valid type.");
+    }
 
     //LOGS
     actingPlayer.addLog(
-      `You used your ${this.consumableName} from your backpack!`
+      `You used your ${this.consumable.getName()} from your backpack!`
     );
     affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${
-        this.consumableName
-      } from their backpack!
+      `${actingPlayer.getName()} used ${this.consumable.getName()} from their backpack!
       }.`
     );
     actingPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${
-        this.consumableName
-      } from their backpack!`
+      `${actingPlayer.getName()} used ${this.consumable.getName()} from their backpack!`
     );
+
+    return {
+      appliedStatus: {
+        success: true,
+      },
+    };
   }
+
   public prepareAnimation(): string | [string, number] {
     console.error("Consume Action Animation Unimplemented");
     return "consume";
+  }
+
+  private consume(player: Player, consumable: Consumable): void {
+    consumable.consume(player);
+    console.log(`${consumable.getName()} has been used on ${player.getName()}`);
   }
 }

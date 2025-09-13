@@ -2,11 +2,7 @@ import { Archetype } from "../archetype/archetype";
 import { Action } from "../action/action";
 import { AttackAction } from "../action/attack";
 import { DefendAction } from "../action/defend";
-import {
-  ArchetypeIdentifier,
-  MonsterIdentifier,
-  MonsterState,
-} from "/types/single/monsterState";
+import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
 
 export abstract class Monster {

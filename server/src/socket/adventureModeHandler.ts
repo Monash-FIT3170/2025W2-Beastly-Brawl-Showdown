@@ -113,8 +113,17 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         `ADV: Player - ${playerId}, Adding Consumable - ${consumable.name}`
       );
       const player = players.get(playerId);
-      const action = new ConsumeAction(consumable.name);
-      player?.addAction(action);
+      if (!player?.hasConsumable(consumable.name)) {
+        console.error(
+          `${player?.getName()} does not have consumable of name ${
+            consumable.name
+          }`
+        );
+      } else {
+        const item = player.getConsumable(consumable.name);
+        const action = new ConsumeAction(item);
+        player.addAction(action);
+      }
     }
   );
 
@@ -169,6 +178,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
     progressAdventure(io, socket, adventure, stage);
   });
+
   socket.on("monster_request", ({ id }) => {
     const monster = getMonster(id);
     if (monster) {

@@ -1,6 +1,5 @@
 import { Monster } from "./monster/monster";
 import { Action } from "./action/action";
-import { ConsumeAction } from "./action/consume";
 import { PlayerState } from "/types/single/playerState";
 import { PlayerAccountSchema } from "../../database/dbManager";
 
@@ -312,25 +311,14 @@ export class Player {
 
   public giveConsumable(item: Consumable): void {
     this.consumables.push(item);
-    const action = new ConsumeAction(item.getName());
-    //um for now this action list will just kind of keep growing T-T
-    this.consumableActions.push(action);
   }
 
-  public useConsumable(name: string): void {
-    if (this.hasConsumable(name)) {
-      const consumable = this.consumables.find((c) => c.getName() === name);
-      if (consumable) {
-        console.log("TESTING CONSUMABLE", consumable);
-        consumable?.consume(this);
-        this.removeConsumable(consumable);
-        console.log(`${this.name} has consumed ${consumable.getName()}`);
-      } else {
-        console.error(`${this.name} cannot find consumable of name ${name}`);
-      }
-    } else {
-      console.error(`${this.name} does not own consumable of name ${name}`);
+  public getConsumable(name: string): Consumable {
+    const consumable = this.consumables.find((c) => c.getName() === name);
+    if (!consumable) {
+      throw new Error("Player does not have related consumable");
     }
+    return consumable;
   }
 
   public removeConsumable(item: Consumable): void {
