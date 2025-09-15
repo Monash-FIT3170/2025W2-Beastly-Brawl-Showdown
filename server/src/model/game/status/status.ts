@@ -56,4 +56,7 @@ export abstract class Status {
 
     return false;
   }
+
+  //todo: implement + call expire when status is gone, useful for removing statuses that might give temporary buffs
+  public abstract expire(): void;
 }

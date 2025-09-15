@@ -1,12 +1,14 @@
 import { Player } from "../player";
 import { Status } from "./status";
+import { StatusType } from "/types/single/statusType";
 
 export class LakeBlessing extends Status {
   constructor(countdown: number = 20) {
     super(
       "Lake Blessing",
       "If the blessing is active resurrect on death",
-      countdown
+      countdown,
+      StatusType.DEBUFF
     );
   }
 
