@@ -12,47 +12,56 @@ export class FlameLashAbilityAction extends Action {
       1
     );
     this.setDodgeable(false);
+    this.damage = 5;
   }
 
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+    this.damage = 5;
+  }
 
   public prepareAnimation(): string | [string, number] {
-  return "FlameLash_Animation";
-}
-
+    return "FlameLash_Animation";
+  }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
-
     // Deal 10 damage if the opponent is dodging, 5 damage otherwise
-    if (affectedPlayer.getDodgingPosition()) {
-      affectedPlayer.incHealth(-10);
-    } else {
-      affectedPlayer.incHealth(-5);
+    if (affectedPlayer.getArmourClassStat() >= 30) {
+      //TODO FIGURE OUT A BALANCED AC
+      this.damage = 10;
     }
+    affectedPlayer.incHealth(this.damage);
+
+    // if (affectedPlayer.getDodgingPosition()) {
+    //   affectedPlayer.incHealth(-10);
+    // } else {
+    //   affectedPlayer.incHealth(-5);
+    // }
 
     // Log the action
     actingPlayer.addLog(
       `You used ${this.getName()}, dealing ${
-        affectedPlayer.getDodgingPosition() ? 10 : 5
+        this.damage
       } damage to ${affectedPlayer.getName()}.`
     );
     affectedPlayer.addLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${
-        affectedPlayer.getDodgingPosition() ? 10 : 5
+        this.damage
       } damage to you.`
     );
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${
-        affectedPlayer.getDodgingPosition() ? 10 : 5
+        this.damage
       } damage to ${affectedPlayer.getName()}.`
     );
+
+    this.executeBattleEffect(actingPlayer, affectedPlayer, true);
 
     //No status applied in this action/ability
     return {
       appliedStatus: {
-        success: false
-      }
-    }
+        success: false,
+      },
+    };
   }
 }

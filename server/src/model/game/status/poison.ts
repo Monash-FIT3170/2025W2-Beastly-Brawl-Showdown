@@ -11,4 +11,11 @@ export class Poison extends Status {
     player.incHealth(-1);
     console.log(`${player.getName()} -1 Health: Poison Tick`);
   }
+
+  public updateLogs(player: Player): void {
+    player.addLog(`You have been poisoned, -1 HP.`);
+  }
+  public expire(): void {
+    console.error("Method not implemented.");
+  }
 }

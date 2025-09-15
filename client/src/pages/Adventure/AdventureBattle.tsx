@@ -99,6 +99,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     setChoices(null);
   };
 
+  socket.on("adventure_defeat", () => {
+    FlowRouter.go("/adventure/defeat");
+  });
+
   useEffect(() => {
     const onAdventureWin = ({ monsterId }: { monsterId: string }) => {
       FlowRouter.go(`/adventure/win/${monsterId}`);
@@ -108,10 +112,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       socket.off("adventure_win", onAdventureWin);
     };
   }, [stage]);
-
-  socket.on("adventure_defeat", () => {
-    FlowRouter.go("/adventure/defeat");
-  });
 
   useEffect(() => {
     console.log("playerState updated:", playerState);
@@ -137,7 +137,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       console.log(state.stage);
       if (state.type === "battle") {
         setBattleState(state.battle);
-        console.log("STARTING LOGS...", battleState?.yourPlayer.battleLogs);
+        console.log("STARTING LOGS...", battleState?.yourPlayer.logs);
         setDialogue(null); // Clear dialogue
         setCurrentEnemy(null);
       } else if (state.type === "dialogue") {
@@ -481,27 +481,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         )}
         {choices && (
           <>
-            {/* {choices.map((choice, idx) => (
-            <DialogueChoiceButton
-              key={idx}
-              children={choice.text}
-              onClick={() => handleChoiceSelect(choice.next)}
-            />
-          ))} */}
             <div>
-              {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-                <IconButton
-                  style="arrowleft"
-                  iconColour="black"
-                  buttonColour="red"
-                  size="small"
-                  onClick={() => setShowLeave(true)}
-                ></IconButton>
-                <LeavePopup
-                  open={showLeave}
-                  onClose={() => setShowLeave(false)}
-                ></LeavePopup>
-              </div> */}
               <ChoicePopup
                 question={question![0]}
                 choices={choices}

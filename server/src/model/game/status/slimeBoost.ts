@@ -1,9 +1,15 @@
+import { StatusType } from "../../../../../types/single/statusType";
 import { Player } from "../player";
 import { Status } from "./status";
 
 export class SlimeBoost extends Status {
   constructor(countdown: number) {
-    super("Slime Boost", "Buff your lowest rated stat!", countdown);
+    super(
+      "Slime Boost",
+      "Buff your lowest rated stat!",
+      countdown,
+      StatusType.BUFF
+    );
   }
 
   public effect(player: Player): void {
@@ -16,6 +22,7 @@ export class SlimeBoost extends Status {
         //Doubles AC for this round.
         current = player.getArmourClassStat();
         player.incArmourClassStat(5);
+        player.addLog("Your Slime Boost has increased your Armour Class by 5!");
         console.log(`Slime Boost: Boosted AC +5`);
       // case "HP":
       //   // Heals for 3 HP
@@ -26,6 +33,7 @@ export class SlimeBoost extends Status {
         //Doubles ATK+
         current = player.getAttackStat();
         player.incAttackStat(2);
+        player.addLog("Your Slime Boost has increased your Attack Bonus by 2!");
         console.log(`Slime Boost: ${player.getName()} Boosted ATK Bonus +2`);
     }
 
@@ -49,9 +57,9 @@ export class SlimeBoost extends Status {
     const currentHP = player.getHealth();
 
     const stats = {
-      // AC: this.getRelativeValue(currentAC, acScale),
+      AC: this.getRelativeValue(currentAC, acScale),
       ATK: this.getRelativeValue(currentATK, atkScale),
-      HP: this.getRelativeValue(currentHP, hpScale),
+      // HP: this.getRelativeValue(currentHP, hpScale),
     };
 
     // Find the lowest entry
@@ -68,5 +76,10 @@ export class SlimeBoost extends Status {
   ): number {
     if (max === min) return (value - min) / 1; // avoid divide by zero
     return (value - min) / (max - min);
+  }
+
+  public updateLogs(player: Player): void {}
+  public expire(): void {
+    console.error("Method not implemented.");
   }
 }

@@ -12,6 +12,7 @@ export class GroundSlamAbilityAction extends Action {
       "Stomp the earth with brutal force. Deal 3 damage and leave your opponent stunned, unable to act next turn.",
       2
     );
+    this.damage = 3;
   }
 
   // Clear the opponent's actions
@@ -40,6 +41,8 @@ export class GroundSlamAbilityAction extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing 3 damage and stunning ${affectedPlayer.getName()} for 1 turn.`
     );
+
+    this.executeBattleEffect(actingPlayer, affectedPlayer, true);
 
     //Success evaluates true since the current status rate for this ability is 100%
     return {

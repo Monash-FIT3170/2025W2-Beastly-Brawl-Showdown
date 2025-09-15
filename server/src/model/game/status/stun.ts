@@ -27,4 +27,11 @@ export class Stun extends Status {
     player.getMonster()?.setTemporaryActions(temporaryActions);
     console.log(`${player.getName()} is stunned. Cannot make a move.`);
   }
+
+  public updateLogs(player: Player): void {
+    //unnecessary as user feedback is obvious from the action footer.
+  }
+  public expire(): void {
+    console.error("Method not implemented.");
+  }
 }

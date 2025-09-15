@@ -1,3 +1,4 @@
+import { StatusType } from "../../../../../types/single/statusType";
 import { Action } from "../action/action";
 import { NullAction } from "../action/null";
 import { Player } from "../player";
@@ -9,7 +10,8 @@ export class LakeCurse extends Status {
     super(
       "Lake Curse",
       "Monster's actions may be disabled at random",
-      countDown
+      countDown,
+      StatusType.DEBUFF
     );
   }
 
@@ -43,5 +45,11 @@ export class LakeCurse extends Status {
     console.log(
       `${player.getName()} is cursed!. Their actions may be restricted.`
     );
+  }
+  public updateLogs(player: Player): void {
+    //unnecessary as user feedback is obvious from the action footer.
+  }
+  public expire(): void {
+    console.error("Method not implemented.");
   }
 }

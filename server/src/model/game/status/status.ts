@@ -26,11 +26,14 @@ export abstract class Status {
       //we are maybe calling tick statuses at different times.
       //need to find where
       this.effect(player);
+      this.updateLogs(player);
     }
     this.countDown -= 1;
   }
 
   public abstract effect(player: Player): void;
+
+  public abstract updateLogs(player: Player): void;
 
   public getName(): string {
     return this.name;

@@ -1,6 +1,6 @@
+import { StatusType } from "../../../../../types/single/statusType";
 import { Player } from "../player";
 import { Status } from "./status";
-import { StatusType } from "/types/single/statusType";
 
 export class LakeBlessing extends Status {
   constructor(countdown: number = 20) {
@@ -8,7 +8,7 @@ export class LakeBlessing extends Status {
       "Lake Blessing",
       "If the blessing is active resurrect on death",
       countdown,
-      StatusType.DEBUFF
+      StatusType.BUFF
     );
   }
 
@@ -18,5 +18,11 @@ export class LakeBlessing extends Status {
     ) {
       player.setArmourClassStat(player.getArmourClassStat() + 5);
     }
+  }
+  public updateLogs(player: Player): void {
+    player.addLog("You have been blessed, resurrection is possible!");
+  }
+  public expire(): void {
+    console.error("Method not implemented.");
   }
 }

@@ -13,7 +13,7 @@ export class AttackAction extends Action {
   private d20: number = 0;
   private diceMin: number;
   private diceMax: number;
-  private damageDealt: number = 5; // Damage on a non-crit is 5
+  // private damage: number = 5; // Damage on a non-crit is 5
   private critRate: number; // % Chance to crit
   private rollRange: number = 0;
 
@@ -43,7 +43,7 @@ export class AttackAction extends Action {
   }
 
   public incrementDamageDealt(number: number): void {
-    this.damageDealt += number;
+    this.damage += number;
   }
 
   public incrementMinRoll(number: number): void {
@@ -62,6 +62,7 @@ export class AttackAction extends Action {
     this.d20 = this.rollDice();
     this.attackBonus = actingPlayer.getAttackStat();
     this.attackHit = this.d20 + this.attackBonus;
+    this.damage = 5;
     console.log(
       `${actingPlayer.getName()} Dice roll: ${this.d20} | Attack bonus: ${
         this.attackBonus
@@ -89,42 +90,41 @@ export class AttackAction extends Action {
       // Set the crit range starting from the maximum dice value and going down
       // Check if the dice roll is within the crit range
       // E.g. normal d20 roll is 1-20, with a crit rate of 10%, you need to roll 19 or 20 to crit
-      let tmpDamage = this.damageDealt;
+      let tmpDamage = this.damage;
       const isCrit =
         this.d20 >
         this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
       if (isCrit) {
-        this.damageDealt *= 2; // Double the damage on a crit
+        this.damage *= 2; // Double the damage on a crit
       }
-      affectedPlayer.incHealth(-this.damageDealt);
+      affectedPlayer.incHealth(-this.damage);
 
       // Log successful attack
       actingPlayer.addLog(
         `${
           isCrit ? "Critical hit! " : ""
         }You attacked ${affectedPlayer.getName()}, dealing ${
-          this.damageDealt
+          this.damage
         } damage.`
       );
 
       affectedPlayer.addLog(
         `${
           isCrit ? "Critical hit! " : ""
-        }${actingPlayer.getName()} attacked you, dealing ${
-          this.damageDealt
-        } damage.`
+        }${actingPlayer.getName()} attacked you, dealing ${this.damage} damage.`
       );
 
       actingPlayer.addBattleLog(
         `${
           isCrit ? "Critical hit! " : ""
         }${actingPlayer.getName()} attacked ${affectedPlayer.getName()}, dealing ${
-          this.damageDealt
+          this.damage
         } damage.`
       );
-      this.damageDealt = tmpDamage;
+      this.damage = tmpDamage;
       // Increment successful hit for front end
       actingPlayer.incSuccessfulHit(1);
+      this.executeBattleEffect(actingPlayer, affectedPlayer, true);
     } else {
       // Log failed attack
       actingPlayer.addLog(
@@ -140,6 +140,8 @@ export class AttackAction extends Action {
       );
       // Increment successful block for front end
       affectedPlayer.incSuccessfulBlock(1);
+
+      this.executeBattleEffect(actingPlayer, affectedPlayer, false);
     }
 
     return {
@@ -151,7 +153,7 @@ export class AttackAction extends Action {
 
   public getAttackState(): AttackState {
     return {
-      attackDamage: this.damageDealt,
+      attackDamage: this.damage,
       critRate: this.critRate,
       diceRange: this.diceMin,
     };

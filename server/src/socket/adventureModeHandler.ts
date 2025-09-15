@@ -12,19 +12,11 @@ import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
 import { Action } from "../model/game/action/action";
 import { AttackAction } from "../model/game/action/attack";
-import { PercentageHealthPotion } from "../model/game/consumables/healthPotion";
-import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
-import { MagicShield } from "../model/game/equipment/magicShield";
-import { OozingBlade } from "../model/game/equipment/oozingBlade";
 import { ConsumableState } from "/types/single/itemState";
 import { ConsumeAction } from "../model/game/action/consume";
 import { createEquipment } from "../model/adventure/factories/equipmentFactory";
-import { Poison } from "../model/game/status/poison";
-import { Stun } from "../model/game/status/stun";
-import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
-import { LakeCurse } from "../model/game/status/lakeCurse";
 import { createConsumable } from "../model/adventure/factories/consumableFactory";
-import { SlimeBoost } from "../model/game/status/slimeBoost";
+import { DamageHeal } from "../model/game/status/damageHeal";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -66,6 +58,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
+      //TESTING PLEASE REMOVE
+      player.addStatus(new DamageHeal(20));
       progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );
