@@ -49,11 +49,11 @@ export class SlimeBoost extends EndStatus {
         player.incArmourClassStat(5);
         player.addLog("Your Slime Boost has increased your Armour Class by 5!");
         console.log(`Slime Boost: Boosted AC +5`);
-      case "HP":
-        // Heals for 3 HP
-        current = player.getHealth();
-        player.incHealth(3);
-        console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
+      // case "HP":
+      //   // Heals for 3 HP
+      //   current = player.getHealth();
+      //   player.incHealth(3);
+      //   console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
       default:
         //Doubles ATK+
         current = player.getAttackStat();

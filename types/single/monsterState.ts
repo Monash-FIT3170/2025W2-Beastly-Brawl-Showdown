@@ -27,6 +27,10 @@ export interface MonsterState {
   attackBonus: number;
   armourClass: number;
 
+  startingHP: number;
+  startingATK: number;
+  startingAC: number;
+
   possibleActions: ActionState[];
 }
 

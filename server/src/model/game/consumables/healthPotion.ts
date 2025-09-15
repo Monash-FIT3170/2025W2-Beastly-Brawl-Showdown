@@ -20,6 +20,9 @@ export class PercentageHealthPotion extends Consumable {
       player.getMonster()!.getMaxHealth() * this.percent
     );
     player.incHealth(healAmount);
+    player.addLog(
+      `You consumed the Health Potion gaining a delicious ${healAmount} HP`
+    );
   }
 
   public getStatDescription(): string {

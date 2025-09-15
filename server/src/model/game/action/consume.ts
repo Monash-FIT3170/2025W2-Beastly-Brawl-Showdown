@@ -35,9 +35,6 @@ export class ConsumeAction extends Action {
     }
 
     //LOGS
-    actingPlayer.addLog(
-      `You used your ${this.consumable.getName()} from your backpack!`
-    );
     affectedPlayer.addLog(
       `${actingPlayer.getName()} used ${this.consumable.getName()} from their backpack!
       }.`

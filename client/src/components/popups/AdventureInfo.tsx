@@ -118,17 +118,18 @@ export const AdventureInfoPopup = ({
                 <StatInfoIcon
                   stat="AC"
                   statVal={playerState?.currentArmourClassStat!}
-                  monsterStat={playerState.monster.armourClass}
+                  monsterStat={playerState.monster.startingAC}
                 ></StatInfoIcon>
                 <StatInfoIcon
                   stat="HP"
                   statVal={playerState?.currentHealth!}
-                  monsterStat={playerState.monster.maxHealth}
+                  monsterStat={playerState.monster.startingHP}
+
                 ></StatInfoIcon>
                 <StatInfoIcon
                   stat="ATK+"
                   statVal={playerState?.currentAttackStat!}
-                  monsterStat={playerState.monster.attackBonus}
+                  monsterStat={playerState.monster.startingATK}
                 ></StatInfoIcon>
               </div>
 

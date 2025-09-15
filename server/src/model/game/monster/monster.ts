@@ -20,6 +20,10 @@ export abstract class Monster {
   private armourClass: number;
   private critRate: number;
 
+  private startingHealth: number;
+  private startingAttackBonus: number;
+  private startingArmourClass: number;
+
   private useTemporaryActions: boolean = false;
   private temporaryActions: Action[] = [];
   private attackAction: AttackAction;
@@ -41,6 +45,9 @@ export abstract class Monster {
     this.maxHealth = maxHealth;
     this.attackBonus = attackBonus;
     this.armourClass = armourClass;
+    this.startingHealth = maxHealth;
+    this.startingAttackBonus = attackBonus;
+    this.startingArmourClass = armourClass;
     this.critRate = archetype.getCritRate();
 
     this.attackAction = new AttackAction(attackBonus, this.critRate);
@@ -124,6 +131,10 @@ export abstract class Monster {
       maxHealth: this.maxHealth,
       attackBonus: this.attackBonus,
       armourClass: this.armourClass,
+
+      startingHP: this.startingHealth,
+      startingATK: this.startingAttackBonus,
+      startingAC: this.startingArmourClass,
 
       possibleActions: this.getPossibleActionStates(),
     };

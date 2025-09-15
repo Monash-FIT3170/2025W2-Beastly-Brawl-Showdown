@@ -16,6 +16,9 @@ export class SlimeSubstance extends Consumable {
   public consume(player: Player): void {
     //TODO: decide appropriate time for status
     player.addStatus(new SlimeBoost(3));
+    player.addLog(
+      `You consumed the slimy substance, it seems to have gifted you the natural Slime Boost`
+    );
   }
   protected getImageString(): string {
     return "SLIME_SUBSTANCE";
