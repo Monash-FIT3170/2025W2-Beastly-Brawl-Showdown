@@ -27,9 +27,15 @@ export class ConsumeAction extends Action {
   }
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     if (this.consumable?.getType() == ConsumableType.SELF_INFLICT) {
-      this.consume(actingPlayer, this.consumable);
+      this.consumable.consume(actingPlayer);
+      console.log(
+        `${this.consumable.getName()} has been used on ${actingPlayer.getName()}`
+      );
     } else if (this.consumable?.getType() == ConsumableType.ENEMY_INFLICT) {
-      this.consume(affectedPlayer, this.consumable);
+      this.consumable.consume(affectedPlayer);
+      console.log(
+        `${this.consumable.getName()} has been used on ${affectedPlayer.getName()}`
+      );
     } else {
       console.error("Consumable does not have valid type.");
     }
@@ -53,10 +59,5 @@ export class ConsumeAction extends Action {
   public prepareAnimation(): string | [string, number] {
     console.error("Consume Action Animation Unimplemented");
     return "consume";
-  }
-
-  private consume(player: Player, consumable: Consumable): void {
-    consumable.consume(player);
-    console.log(`${consumable.getName()} has been used on ${player.getName()}`);
   }
 }

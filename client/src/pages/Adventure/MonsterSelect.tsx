@@ -314,7 +314,7 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                               lg:size-[10dvw]"
               />
               <div className="w-[100%] flex items-center flex-col">
-                <div className="bg-ronchi border-[4px] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
+                <div className="bg-ronchi border-[4px] pr-[0.5rem] pl-[0.5rem] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
                   <OutlineText size="medium">
                     {selectedMonster.name}
                   </OutlineText>
@@ -353,11 +353,11 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                 <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
                   SPECIAL ABILITIES
                 </p>
-                <div className="flex flex-col justify-center lg:flex-row w-[95%]">
+                <div className="flex flex-col justify-center lg:flex-row w-full">
                   {abilities.map((ability, idx) => (
                     <div
                       key={ability.id || idx}
-                      className="flex flex-row items-center justify-left w[45%] gap-[2%]"
+                      className="flex flex-row items-center grow-1 justify-left p-[1rem]"
                     >
                       <img
                         src={
@@ -366,9 +366,9 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                           ".webp"
                         }
                         alt="ability icon"
-                        className="w-[7rem] h-[7rem] rounded-xl border-blackCurrant border-2"
+                        className="w-[7rem] h-[7rem] rounded-xl border-blackCurrant border-[4px]"
                       />
-                      <div>
+                      <div className="p-[0.5rem]">
                         <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
                           {ability.name}
                         </p>
