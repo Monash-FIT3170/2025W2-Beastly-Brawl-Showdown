@@ -37,6 +37,6 @@ export interface MonsterState {
 export interface ArchetypeInfo {
   id: ArchetypeIdentifier;
   name: string;
-  ability: string;
-  abilityDesc: string;
+  description: string;
+  ability: ActionState;
 }

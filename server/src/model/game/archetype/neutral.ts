@@ -7,6 +7,11 @@ import { ArchetypeIdentifier } from "/types/single/monsterState";
 export class Neutral extends Archetype {
   constructor() {
     //TODO: GIVE ABILITY???
-    super("Neutral", new SlimeSupportAction(), ArchetypeIdentifier.NEUTRAL);
+    super(
+      "Neutral",
+      new SlimeSupportAction(),
+      ArchetypeIdentifier.NEUTRAL,
+      "The Neutral Archetype lives outside the normal archetype system, reserved for special monsters."
+    );
   }
 }
