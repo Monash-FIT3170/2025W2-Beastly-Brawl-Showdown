@@ -17,6 +17,7 @@ import AdventureWin from "./src/pages/Adventure/AdventureWin";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
+import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -74,9 +75,33 @@ FlowRouter.route("/join/:code?", {
 
 FlowRouter.route("/account", {
   name: "Account",
-  action(params) {
+  action() {
     document.title = "My Account | Beastly Brawl Showdown";
     mount(() => <Account />);
+  },
+});
+
+FlowRouter.route("/leaderboard", {
+  name: "Leaderboard",
+  action() {
+    document.title = "Leaderboard | Beastly Brawl Showdown";
+    mount(() => <BlankPage />);
+  },
+});
+
+FlowRouter.route("/help", {
+  name: "Help",
+  action() {
+    document.title = "Help | Beastly Brawl Showdown";
+    mount(() => <BlankPage />);
+  },
+});
+
+FlowRouter.route("/dev-notes", {
+  name: "Dev Notes",
+  action() {
+    document.title = "Dev Notes | Beastly Brawl Showdown";
+    mount(() => <BlankPage />);
   },
 });
 

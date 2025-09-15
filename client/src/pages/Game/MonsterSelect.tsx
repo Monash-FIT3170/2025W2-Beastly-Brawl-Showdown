@@ -5,7 +5,6 @@ import { Screens } from "../../screens";
 import {
   ArchetypeIdentifier,
   ArchetypeInfo,
-  MonsterIdentifier,
   MonsterState,
 } from "../../../../types/single/monsterState";
 import {
@@ -43,9 +42,9 @@ export const MonsterSelect: React.FC<MonsterSelectProps> = ({ setScreen }) => {
   const [exitPopup, setExitPopup] = useState<Boolean>();
 
   const colorLoader: Record<string, string> = {
-    [ArchetypeIdentifier.ATTACKER]: "bg-[#DC7466]",
-    [ArchetypeIdentifier.DEFENDER]: "bg-[#7EACD5]",
-    [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
+    [ArchetypeIdentifier.ATTACKER]: "bg-attacker",
+    [ArchetypeIdentifier.DEFENDER]: "bg-defender",
+    [ArchetypeIdentifier.BALANCED]: "bg-balanced",
   };
 
   useEffect(() => {

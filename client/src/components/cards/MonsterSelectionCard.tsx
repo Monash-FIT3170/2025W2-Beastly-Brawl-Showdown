@@ -18,10 +18,10 @@ export const MonsterSelectionCard = ({
   onClick,
 }: MonsterSelectionProps) => {
   const colorLoader: Record<ArchetypeIdentifier, string> = {
-    [ArchetypeIdentifier.ATTACKER]: "bg-[#DC7466]",
-    [ArchetypeIdentifier.DEFENDER]: "bg-[#7EACD5]",
-    [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
-    [ArchetypeIdentifier.NEUTRAL]: "bg-[#DC7466]",
+    [ArchetypeIdentifier.ATTACKER]: "bg-attacker",
+    [ArchetypeIdentifier.DEFENDER]: "bg-defender",
+    [ArchetypeIdentifier.BALANCED]: "bg-balanced",
+    [ArchetypeIdentifier.NEUTRAL]: "bg-quillGray",
   };
 
   return (

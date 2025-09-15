@@ -38,9 +38,9 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
   const [abilities, setAbilities] = useState<ActionState[]>([]);
 
   const colorLoader: Record<string, string> = {
-    [ArchetypeIdentifier.ATTACKER]: "bg-[#DC7466]",
-    [ArchetypeIdentifier.DEFENDER]: "bg-[#7EACD5]",
-    [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
+    [ArchetypeIdentifier.ATTACKER]: "bg-attacker",
+    [ArchetypeIdentifier.DEFENDER]: "bg-defender",
+    [ArchetypeIdentifier.BALANCED]: "bg-balanced",
   };
 
   //TODO: implement getting genuine unlocked monsters

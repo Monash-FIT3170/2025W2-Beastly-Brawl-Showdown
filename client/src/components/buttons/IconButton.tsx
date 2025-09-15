@@ -11,8 +11,18 @@ interface IconProps {
     | "x"
     | "bars"
     | "info"
+    | "profile"
+    | "leaderboard"
+    | "notes"
     | "cog";
-  buttonColour: "ronchi" | "blue" | "red" | "alto" | "redpink";
+  buttonColour:
+    | "ronchi"
+    | "blue"
+    | "red"
+    | "alto"
+    | "redpink"
+    | "pink"
+    | "gray";
   iconColour: "black" | "stroked";
   size: "small" | "medium" | "large";
   isDisabled?: boolean;
