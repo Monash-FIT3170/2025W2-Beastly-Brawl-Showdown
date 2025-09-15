@@ -118,14 +118,17 @@ export const AdventureInfoPopup = ({
                 <StatInfoIcon
                   stat="AC"
                   statVal={playerState?.currentArmourClassStat!}
+                  monsterStat={playerState.monster.armourClass}
                 ></StatInfoIcon>
                 <StatInfoIcon
                   stat="HP"
                   statVal={playerState?.currentHealth!}
+                  monsterStat={playerState.monster.maxHealth}
                 ></StatInfoIcon>
                 <StatInfoIcon
                   stat="ATK+"
                   statVal={playerState?.currentAttackStat!}
+                  monsterStat={playerState.monster.attackBonus}
                 ></StatInfoIcon>
               </div>
 
@@ -188,7 +191,7 @@ export const AdventureInfoPopup = ({
                   </div>
                 )}
                 <div className="xl:mt-[1rem] mt-[2rem] grid grid-cols-3 gap-y-[2.5rem] gap-x-[3rem] xl:gap-y-[0.5rem] xl:gap-x-[3rem] items-center justify-center">
-                  {playerState?.statuses.map((c) => (
+                  {playerState?.statuses.map((c: Status) => (
                     <>
                       <StatusButton status={c}></StatusButton>
                     </>

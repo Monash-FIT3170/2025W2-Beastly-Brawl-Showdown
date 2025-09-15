@@ -100,8 +100,6 @@ export const AdventureBagPopup = ({
             lg:min-h-[20vh]
             lg:w-[90%]
             border-[3px]
-            border-blackCurrant
-            rounded-[20px]
             box-border
             bg-peach
             flex-col

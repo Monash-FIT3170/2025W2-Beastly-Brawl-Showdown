@@ -62,3 +62,15 @@ h2 {
   -webkit-text-stroke-width: 0.05em;
   -webkit-text-stroke-color: var(--color-blackCurrant);
 }
+
+.text-outline-green {
+  -webkit-text-fill-color: #22c55e;
+  -webkit-text-stroke-width: 0.05em;
+  -webkit-text-stroke-color: var(--color-blackCurrant);
+}
+
+.text-outline-red {
+  -webkit-text-fill-color: #ef4444;
+  -webkit-text-stroke-width: 0.05em;
+  -webkit-text-stroke-color: var(--color-blackCurrant);
+}
