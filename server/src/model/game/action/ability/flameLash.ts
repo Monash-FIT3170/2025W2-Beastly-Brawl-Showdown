@@ -30,13 +30,12 @@ export class FlameLashAbilityAction extends Action {
       //TODO FIGURE OUT A BALANCED AC
       this.damage = 10;
     }
-    affectedPlayer.incHealth(this.damage);
 
-    // if (affectedPlayer.getDodgingPosition()) {
-    //   affectedPlayer.incHealth(-10);
-    // } else {
-    //   affectedPlayer.incHealth(-5);
-    // }
+    //to remove once dodge is reworked?
+    if (affectedPlayer.getDodgingPosition()) {
+      this.damage = 10;
+    }
+    affectedPlayer.incHealth(this.damage);
 
     // Log the action
     actingPlayer.addLog(

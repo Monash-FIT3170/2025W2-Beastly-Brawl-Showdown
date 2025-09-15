@@ -3,6 +3,7 @@ import { Player } from "../player";
 import { Status } from "./status";
 
 export class LakeBlessing extends Status {
+  //TODO: pick a statustype..
   constructor(countdown: number = 20) {
     super(
       "Lake Blessing",

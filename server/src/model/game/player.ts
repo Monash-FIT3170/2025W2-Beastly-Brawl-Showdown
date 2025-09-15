@@ -7,6 +7,8 @@ import { Status } from "./status/status";
 import { Consumable } from "./consumables/consumable";
 import { Equipment } from "./equipment/equipment";
 import { ActionIdentifier } from "/types/single/actionState";
+import { StartStatus } from "./status/startStatus";
+import { EndStatus } from "./status/endStatus";
 
 export class Player {
   private id: string;
@@ -249,6 +251,22 @@ export class Player {
     this.statuses.forEach((status) => status.tick(this));
     //removes statuses that have expired after the tick
     this.statuses = this.statuses.filter((status) => !status.isExpired());
+  }
+
+  public startStatusEffects() {
+    const startStatuses = this.getStatuses().filter(
+      (s) => s instanceof StartStatus
+    );
+
+    startStatuses.forEach((s) => s.startingEffect(this));
+  }
+
+  public endStatusEffects() {
+    const endStatuses = this.getStatuses().filter(
+      (s) => s instanceof EndStatus
+    );
+
+    endStatuses.forEach((s) => s.endingEffect(this));
   }
 
   public hasStatus(name: String) {

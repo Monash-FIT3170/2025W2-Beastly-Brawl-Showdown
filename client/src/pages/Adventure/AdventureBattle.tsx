@@ -245,19 +245,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         )}
         {receivingConsumable && (
           <div>
-            {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              ></IconButton>
-              <LeavePopup
-                open={showLeave}
-                onClose={() => setShowLeave(false)}
-              ></LeavePopup> */}
-            {/* </div> */}
             <PopupClean>
               <div className="flex flex-col justify-around items-center">
                 <OutlineText size="extraLarge">
@@ -423,19 +410,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         )}
         {statChange && (
           <div>
-            {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              ></IconButton>
-              <LeavePopup
-                open={showLeave}
-                onClose={() => setShowLeave(false)}
-              ></LeavePopup>
-            </div> */}
             <StatChangePopup
               messages={statChange}
               onClose={() => {
@@ -445,18 +419,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           </div>
         )}
-
-        {/**{statusResult && (
-          <div>
-            <StatChangePopup
-              messages={statusResult}
-              onClose={() => {
-                setStatusResult(null);
-                socket.emit("adventure_next", { stage });
-              }}
-            />
-          </div>
-        )}*/}
 
         {statusResult && (
           <div>

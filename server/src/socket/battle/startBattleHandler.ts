@@ -241,8 +241,10 @@ export default function proceedBattleTurn(
           //Shutting down the handler
           return;
         } else {
-          playersInBattle.forEach((player) => {
-            player.tickStatuses();
+          playersInBattle.forEach((p) => {
+            p.startStatusEffects();
+            p.endStatusEffects();
+            p.tickStatuses();
           });
         }
         // TODO: ONLY update the current battle to be more memory efficient...
