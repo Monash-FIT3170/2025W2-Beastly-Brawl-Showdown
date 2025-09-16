@@ -1,1 +1,10 @@
-type ButtonSize = 'tiny' | 'medium' | 'large' | 'square' | 'squaremedium' | 'battle' | 'scaling' |"adventure"
+type ButtonSize =
+  | "tiny"
+  | "medium"
+  | "large"
+  | "square"
+  | "squaremedium"
+  | "battle"
+  | "scaling"
+  | "adventure"
+  | "backpack";

@@ -7,7 +7,7 @@
       {
         "id": "initial",
         "result": [
-          "You step in something damp sticky and green",
+          "You step in something damp sticky and green.",
           "An angry green mass of ooze lurches towards you.",
           "Within the ooze you notice a disconnected set of eyes locked on to you."
         ],
@@ -37,12 +37,12 @@
           "At least the smell is gone"
         ],
         "type": "DIALOGUE",
-        "next": "slime_aura"
+        "next": "slime_health_potion"
       },
       {
-        "id": "slime_aura",
-        "type": "ITEM",
-        "itemId": "potion_basic"
+        "id": "slime_health_potion",
+        "type": "CONSUMABLE",
+        "consumableId": "large_health_potion"
       }
     ]
   }

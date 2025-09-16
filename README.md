@@ -1,48 +1,164 @@
 # 2025W2-Beastly-Brawl-Showdown
 
-The application is hosted in 3 ways
+Beastly Brawl Showdown is a web-based role-playing game where players battle each other using unique monsters with distinct abilities, inspired by classic tabletop games like Dungeons & Dragons. The game features simple attack and defend mechanics, live match updates, and a variety of tournament formats (adventure and battle royale), making it accessible and engaging for both new and experienced players. Its social, in-person focus encourages interaction and serves as a fun party or icebreaker game. The combination of strategy, luck, and diverse monster abilities ensures each match feels fresh and unpredictable.
 
-- On a production site https://www.beastlybrawl.app/
-  - This will only be up during Milestone presentations where we need to handle increased demand/load
-- On a test site https://www.beastlybrawl-test.app/
-  - This is generally up 24/7
-- Locally hosted. See details instructions below
+---
+
+## Hosting
+
+- **Production:** https://www.beastlybrawl.app/ (active during milestone presentations)
+- **Test:** https://www.beastlybrawl-test.app/ (generally up 24/7)
+- **Local:** See instructions above
+
+---
 
 ## Instructions To Locally Run Application
 
-1. Install node.js
-   - Check node.js version > v22.14.0, run `node -v`
-   - Check npm version > v10.9.2, run `npm -v`
-2. Install meteor using node,js
-   - Run `npx meteor` (ensure to run in admin terminal)
-   - Check meteor version == v3.2, run `meteor --version`, downgrade if needed
-3. Open up a new terminal in your IDE, ensuring you're in the `2025W2-Beastly-Brawl-Showdown` directory.
-4. Run `meteor npm i` to install dependencies
-5. Run `meteor run --settings settings.dev.json`
+1. **Install Node.js**
 
-## Deployment Infrastructure and Management
+   - [Download Node.js](https://nodejs.org/en/download)
+   - Check Node.js version (> v22.14.0):  
+     `node -v`
+   - Check npm version (> v10.9.2):  
+     `npm -v`
 
-The application is deployed on two DigitalOcean droplets (TEST: 1 vCPU, 1GB RAM - PROD: 4 vCPU, 8GB RAM).
-Docker is used to run both a container of the Meteor application and an Nginx container for the web server.
+2. **Install Meteor**
+
+   - In an admin terminal, run:  
+     `npx meteor`
+   - Check Meteor version (should be v3.2):  
+     `meteor --version`
+
+3. **Clone the Repository**
+
+   - `git clone https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown.git`
+   - Navigate to the project root directory.
+
+4. **Install Dependencies**
+
+   - `meteor npm install`
+
+5. **Set Up Environment Variables**
+
+   - Create a `.env` file in the project root.
+   - Add your MongoDB connection string:  
+     `MONGO_URL=your_mongodb_connection_string`
+
+6. **Start the Application**
+   - `npm start`
+
+---
+
+## Tech Stack Overview
+
+### Frontend (React - TypeScript)
+
+- Built with React and TypeScript.
+- Uses Tailwind CSS and custom React components for UI consistency.
+- [Frontend source code](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/tree/main/client)
+
+### Backend (Meteor - TypeScript)
+
+- Meteor manages game logic, state, authentication, matchmaking, and MongoDB communication.
+- [Backend source code](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/tree/main/server)
+
+### API Technology (socket.io)
+
+- Enables real-time communication between client and server.
+- Handles player input, game state updates, and more.
+- [Socket server setup](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/blob/main/server/main.ts)
+- [Frontend socket connection](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/blob/main/client/src/socket.ts)
+
+### Database (MongoDB)
+
+- Hosted on MongoDB Atlas (free tier).
+- Stores user accounts and game tracking data.
+- Set `MONGO_URL` environment variable to connect.
+
+### Cloud Service Host (Digital Ocean)
+
+- Deployed on two DigitalOcean droplets:
+  - TEST: 1 vCPU, 1GB RAM
+  - PROD: 4 vCPU, 8GB RAM
+- Managed with Terraform.
+- [Terraform files](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/tree/main/terraform)
+- Static assets served via DigitalOcean Spaces CDN.
+
+### Containerisation (Docker & Docker Compose)
+
+- Application is containerised using Docker.
+- [Dockerfile](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/blob/main/Dockerfile)
+- Two containers are run:
+  - The Meteor application
+  - Nginx
+
+### Web Server (Nginx, SSL, DNS)
+
+- Nginx acts as a reverse proxy for HTTP/HTTPS.
+- SSL certificates from Namecheap/Name.com (free using GitHub Student Developer Pack, expiring Aug 2026).
+- DNS entries for human-readable domains (free using GitHub Student Developer Pack, expiring Aug 2026).
+- [Nginx prod config](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/blob/main/deployment/default.prod.conf)
+- [Nginx test config](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/blob/main/deployment/default.test.conf)
+
+### Automation (GitHub Actions)
 
 There are four GitHub Actions Workflows to manage application deployment.
 
-- Test - Startup Droplet & Deploy Game
+- **Test - Startup Droplet & Deploy Game**
   - Can be run manually on any branch. Automatically triggered on PR creation/update and merge to main
-- Prod - Startup Droplet & Deploy Game
+- **Prod - Startup Droplet & Deploy Game**
   - Can only be run manually on the **main branch**.
-- Test - Shutdown Droplet
+- **Test - Shutdown Droplet**
   - Can be run manually on any branch. No automatic triggers.
-- Prod - Shutdown Droplet
+- **Prod - Shutdown Droplet**
+
   - Can be run manually on the **main branch**. Automatically triggered every night at around 11:55PM AEST.
 
-## System Architects:
+- [Startup workflow](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/blob/main/.github/workflows/startup-template.yaml)
+- [Shutdown workflow](https://github.com/Monash-FIT3170/2025W2-Beastly-Brawl-Showdown/blob/main/.github/workflows/shutdown-template.yaml)
+
+#### Startup Workflow
+
+- Starts droplet via Terraform (recreates from snapshot).
+- Builds Docker image.
+- Deploys app using Docker Compose (runs containers for Meteor & Nginx).
+
+#### Shutdown Workflow
+
+- Takes droplet snapshot.
+- Destroys droplet via Terraform (As just shutting it down still incurs costs. Destroying but saving a snapshot is cheaper).
+
+#### GitHub Repository Secrets
+
+| SECRET NAME                                | DESCRIPTION                        |
+| ------------------------------------------ | ---------------------------------- |
+| BEASTLYBRAWL_APP_ROOT_URL_PROD             | Production site URL                |
+| BEASTLYBRAWL_APP_ROOT_URL_TEST             | Test site URL                      |
+| BEASTLYBRAWL_APP_SSL_CERT_PROD             | Production SSL certificate         |
+| BEASTLYBRAWL_APP_SSL_CERT_TEST             | Test SSL certificate               |
+| BEASTLYBRAWL_APP_SSL_KEY_PROD              | Production SSL key                 |
+| BEASTLYBRAWL_APP_SSL_KEY_TEST              | Test SSL key                       |
+| DIGITAL_OCEAN_DROPLET_IP_PROD              | Production VM IP                   |
+| DIGITAL_OCEAN_DROPLET_IP_TEST              | Test VM IP                         |
+| DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY_PROD | Production VM SSH key              |
+| DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY_TEST | Test VM SSH key                    |
+| DIGITAL_OCEAN_PAT                          | DigitalOcean Personal Access Token |
+| DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID         | Spaces Access Key ID               |
+| DIGITAL_OCEAN_SPACES_SECRET_KEY            | Spaces Secret Key                  |
+| GHCR_PACKAGES_TOKEN                        | GHCR packages token                |
+| MONGO_URL                                  | MongoDB connection string          |
+
+---
+
+## Meet The Team!
+
+### System Architects
 
 - Devan (dfed0003@student.monash.edu)
 - Danniel (dyou0009@student.monash.edu)
 - Daniel Loh (dloh0003@student.monash.edu)
 
-## Product Managers:
+### Product Managers
 
 - Naveen (nsel0009@student.monash.edu)
 - Meng (hsia0003@student.monash.edu)
@@ -50,7 +166,7 @@ There are four GitHub Actions Workflows to manage application deployment.
 - Derek (dcao0008@student.monash.edu)
 - Omar (osal0004@student.monash.edu)
 
-## Release Train Engineers:
+### Release Train Engineers
 
 - Aden (atra0066@student.monash.edu)
 - Will Richter (wric0006@student.monash.edu)
@@ -58,3 +174,5 @@ There are four GitHub Actions Workflows to manage application deployment.
 - Cameron (cameronhumphreys77@gmail.com)
 - Anika (akam0020@student.monash.edu)
 - Huu Nguyen (hngu0187@student.monash.edu)
+
+---

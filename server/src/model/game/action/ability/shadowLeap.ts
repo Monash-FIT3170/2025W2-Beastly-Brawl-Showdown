@@ -32,8 +32,14 @@ export class ShadowLeapAbilityAction extends Action {
         const affectedMessage = `You dodged ${affectedPlayer.getName()}'s attack!`;
         const battleLogMessage = `${actingPlayer.getName()} dodged ${affectedPlayer.getName()}'s attack!`;
         affectedPlayer.addAction(
-          new NullAction(actingMessage, affectedMessage, battleLogMessage)
-        ); //inputs are incorrect?
+          new NullAction(
+            "Attack Dodged",
+            ActionIdentifier.NULL,
+            actingMessage,
+            affectedMessage,
+            battleLogMessage
+          )
+        );
       }
     });
   }

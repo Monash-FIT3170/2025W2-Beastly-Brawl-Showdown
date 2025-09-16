@@ -44,9 +44,8 @@ export class ToxinTongue extends Action {
     //Success evaluates true since the curren rate of poison for this ability is 100%...
     return {
       appliedStatus: {
-        success: true
-        
-      }
-    }
+        success: true,
+      },
+    };
   }
 }

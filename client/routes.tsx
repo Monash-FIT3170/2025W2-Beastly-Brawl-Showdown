@@ -15,6 +15,7 @@ import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
+import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 import { FinalResultsScoringTournament } from "./src/pages/Lobby/FinalResultsScoringTournament";
@@ -132,12 +133,23 @@ FlowRouter.route("/adventure/monster-select", {
   },
 });
 
-FlowRouter.route("/adventure/adventure-battle", {
-  name: "AdventureBattle",
-  action() {
-    mount(() => <AdventureBattle stage={1} />);
-    // TODO: Pass the stage as a prop
-  },
+//hard coded list of current levels
+const adventureLevelMonsters = [
+  MonsterIdentifier.POUNCING_BANDIT,
+  MonsterIdentifier.CINDER_TAIL,
+  MonsterIdentifier.FURIOUS_FLIPPER,
+  MonsterIdentifier.CHARMER_COBRA,
+  MonsterIdentifier.POISON_POGO,
+];
+
+//create flow router for each level
+adventureLevelMonsters.forEach((monster) => {
+  FlowRouter.route(`/adventure/adventure-${monster}`, {
+    name: "AdventureBattle",
+    action() {
+      mount(() => <AdventureBattle stage={1} levelMonster={monster} />);
+    },
+  });
 });
 
 FlowRouter.route("/adventure/defeated", {
@@ -147,10 +159,17 @@ FlowRouter.route("/adventure/defeated", {
   },
 });
 
-FlowRouter.route("/adventure/win", {
-  name: "AdventureWin",
+FlowRouter.route('/adventure/win/:monsterId', {
+  name: 'adventure.win',
   action() {
     mount(AdventureWin);
+  },
+});
+
+FlowRouter.route("/adventure/defeat", {
+  name: "AdventureDefeat",
+  action() {
+    mount(AdventureDefeated);
   },
 });
 

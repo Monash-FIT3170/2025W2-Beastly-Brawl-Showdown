@@ -10,6 +10,7 @@
   --color-terracotta: #e28454;
   --color-heliotrope: #bd55ed;
   --color-quillGray: #dad9d7;
+  --color-consumablePink: #fb7eab;
   --color-alto: #dadada;
   --color-goldenRod: #fbd474;
   --color-merino: #f6f1e5;
@@ -36,7 +37,7 @@
 
 body {
   font-family: sans-serif;
-  @apply bg-peach; 
+  @apply bg-peach;
 }
 
 h1 {
@@ -44,12 +45,8 @@ h1 {
   font-size: 100px;
   margin: 0;
   padding: 10px 0;
-  text-shadow:
-    2px 2px #fba800,
-    -1px -1px #fba800,
-    -1px 1px #fba800,
-    1px -1px #fba800,
-    1px 1px #fba800;
+  text-shadow: 2px 2px #fba800, -1px -1px #fba800, -1px 1px #fba800,
+    1px -1px #fba800, 1px 1px #fba800;
 }
 
 h2 {
@@ -57,16 +54,12 @@ h2 {
   font-size: 50px;
   margin: 0;
   padding: 10px 0;
-  text-shadow:
-    2px 2px #fba800,
-    -1px -1px #fba800,
-    -1px 1px #fba800,
-    1px -1px #fba800,
-    1px 1px #fba800;
+  text-shadow: 2px 2px #fba800, -1px -1px #fba800, -1px 1px #fba800,
+    1px -1px #fba800, 1px 1px #fba800;
 }
 
 .text-outline {
   -webkit-text-fill-color: var(--color-merino);
-  -webkit-text-stroke-width: 0.05em; 
+  -webkit-text-stroke-width: 0.05em;
   -webkit-text-stroke-color: var(--color-blackCurrant);
 }

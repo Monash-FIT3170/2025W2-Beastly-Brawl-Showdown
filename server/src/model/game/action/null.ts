@@ -14,7 +14,7 @@ export class NullAction extends Action {
     affectedMessage: string | null = null,
     battleLogMessage: string | null = null
   ) {
-    super(actionIdentifier, name, "No action", 0);
+    super(actionIdentifier, name, "No action", Infinity);
     this.actingMessage = actingMessage;
     this.affectedMessage = affectedMessage;
     this.battleLogMessage = battleLogMessage;

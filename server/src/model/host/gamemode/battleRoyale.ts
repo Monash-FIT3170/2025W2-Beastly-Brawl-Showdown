@@ -12,9 +12,11 @@ export class BattleRoyale implements IGameMode {
   public name = GameModeIdentifier.BATTLE_ROYALE as const;
   private eliminatedPlayers: Player[] = [];  // Earlier eliminated players are closer to the front of the array
   private remainingPlayers: Player[] = [];
+  private io: Server | null = null;
   private playerFinished = 0;
 
   public init(session: GameSession, io: Server, socket: Socket): void {
+    this.io = io;
     for (let player of session.getPlayers().getItems()) {
       this.remainingPlayers.push(player);
     }
@@ -199,7 +201,30 @@ export class BattleRoyale implements IGameMode {
       session.setFinalResults({
         finalWinner
       });
-    }
+    // Incoming:
+    //   const gameCode = session.getGameCode();
+    //   this.io?.to(`game-${gameCode}`).emit("final-winner-response", { finalWinner });
+    //   session.setFinalWinner(finalWinner);
+
+    //   const playersInSession = session.getPlayers().getItems();
+		// 		playersInSession.forEach((player) => {
+		// 			if (finalWinner) {
+		// 				if (!player.isBotPlayer()) {
+		// 					io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+    //             result: "concluded",
+    //             winners: [finalWinner.name]
+    //           });
+		// 				}
+		// 			} else {
+		// 				if (!player.isBotPlayer()) {
+		// 					io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+    //             result: "draw",
+    //             winners: []
+    //           });
+		// 				}
+		// 			}
+		// 		});
+    // }
   }
 
 	public isSessionConcluded(session: GameSession): boolean {

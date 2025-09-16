@@ -21,7 +21,7 @@ export const Account = () => {
       numGamesPlayed?: number;
       numGamesWon?: number;
     };
-    achievments?: string[];
+    achievements?: string[];
     monstersStat?: PlayerMonsterStat[];
   }
 
@@ -130,7 +130,7 @@ export const Account = () => {
                 Games Won: {userData.stats?.numGamesWon}
               </OutlineText>
               <OutlineText size="large">
-                Achievements: {userData.achievments?.join(", ")}
+                Achievements: {userData.achievements?.join(", ")}
               </OutlineText>
             </>
           )}

@@ -11,7 +11,6 @@ import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
 import { ActionResult } from "/types/single/actionState";
 import { BonusSystem, defaultBonus, StreakIdentifier } from "/types/single/playerScore";
 import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
-import { PlayerState } from "../../../../../types/single/playerState";
 
 export class ScoringTournament implements IGameMode{
 	name = GameModeIdentifier.SCORING as const;
@@ -94,17 +93,9 @@ export class ScoringTournament implements IGameMode{
 				})
 	}})
 
-		const top3Scores = this.board.showBoard();
-		const top3Players: PlayerState[] = [];
-		for (const score of top3Scores) {
-			top3Players.push(session.getPlayerStates().find((player) => player.id == score.playerId));
-		}
-		session.setFinalResults({
-			top3Players,
-			top3Scores
-		});
 
-		console.log("[SESSION ENDED]: ", this.isSessionConcluded(session))
+
+
 		if (this.isSessionConcluded(session)){
 			if (session.areBattlesConcluded()){
 				const playersInSession = session.getPlayers().getItems()
@@ -167,6 +158,10 @@ export class ScoringTournament implements IGameMode{
 		}
 		})
 
+
+
+
+		
 	}
 
 	//All battles have been concluded, redo the pairing for the next round

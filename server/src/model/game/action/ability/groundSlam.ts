@@ -23,7 +23,6 @@ export class GroundSlamAbilityAction extends Action {
     return "Ground_Slam_Animation";
   }
 
-
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
@@ -45,8 +44,8 @@ export class GroundSlamAbilityAction extends Action {
     //Success evaluates true since the current status rate for this ability is 100%
     return {
       appliedStatus: {
-        success: true
-      }
-    }
+        success: true,
+      },
+    };
   }
 }

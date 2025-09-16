@@ -1,19 +1,28 @@
 import React from "react";
-import { MonsterState } from "/types/single/monsterState";
+import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 import "./MonsterDisplay.css";
 
 interface MonsterDisplayProps {
   monster: MonsterState;
   className?: string;
+  biomeString: string;
 }
 
 const MonsterDisplay: React.FC<MonsterDisplayProps> = ({
   monster,
   className,
+  biomeString,
 }) => {
-  const imagePath = "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + monster.id + ".png";
-;
+  var imagePath =
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+    monster.id +
+    ".png";
 
+  //checks if monster is a slime - then uses biome specific variant
+  // TODO: UPDATE SLIMES TO BE IN DIGITAL OCEAN
+  if (monster.id == MonsterIdentifier.SLIME) {
+    imagePath = `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/SLIME_${biomeString}.png`;
+  }
   return (
     <div className={`monster-display-container ${className ?? ""}`}>
       <div className="monster-image-wrapper">

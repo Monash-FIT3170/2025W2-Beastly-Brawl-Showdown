@@ -14,7 +14,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { BlackText } from "../../components/texts/BlackText";
-import {GameSessionStateMetaData} from "/types/composite/gameSessionState"
+import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -27,23 +27,25 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [winner, setWinner] = useState<string | null>(null);
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
-  const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live 
+  const [isSessionCancelled, setIsSessionCancelled] = useState<Boolean>(false); // indicate whether the host is still live
   const [isBattleClosed, setIsBattleClosed] = useState<Boolean>(false); //indiate whether the battle is still live
   const [gameCode, setGameCode] = useState<string>(); // game code for directing player back to game session
   const [time, setTime] = useState<number>(5);
-  const [metadata, setMetadata] = useState<GameSessionStateMetaData |null>();
+  const [metadata, setMetadata] = useState<GameSessionStateMetaData | null>();
   const [waitForConclusion, setWaitForConclusion] = useState<boolean>(false);
 
   var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   var backgroundString =
-    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" + backgroundLocation + ".jpg')";
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
+    backgroundLocation +
+    ".jpg')";
 
   useEffect(() => {
     socket.on("battle_state", (data) => {
-      console.log("[BATTLESTATE]: ", data.battle)
-      console.log("[METADATA]: ", data.metadata)
+      console.log("[BATTLESTATE]: ", data.battle);
+      console.log("[METADATA]: ", data.metadata);
       setBattleState(data.battle);
-      setMetadata(data.metadata)
+      setMetadata(data.metadata);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -85,13 +87,14 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     });
 
     socket.on("battle-closed", (data) => {
-      setIsBattleClosed(true)
-      setGameCode(data.gameCode)
-    })
+      setIsBattleClosed(true);
+      setGameCode(data.gameCode);
+      socket.removeAllListeners("client-wait-conclusion");
+    });
 
     socket.on("client-wait-conclusion", () => {
-      setWaitForConclusion(true)
-    })
+      setWaitForConclusion(true);
+    });
 
     return () => {
       socket.off("possible_actions");
@@ -107,12 +110,12 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
     //Countdown before player get redirected
     const countdown = setInterval(() => {
-      setTime((prev) => Math.max(prev - 1,0 ));
+      setTime((prev) => Math.max(prev - 1, 0));
     }, 1000); //1 second per interval
 
     //Redirect after countdown is finished
     const timeout = setTimeout(() => {
-      FlowRouter.go("./");
+      FlowRouter.go("/");
     }, 5000); // 5 seconds before user get directed to home page
 
     return () => {
@@ -121,8 +124,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     };
   }, [isSessionCancelled]);
 
-    useEffect(() => {
-    if (!isBattleClosed){return}
+  useEffect(() => {
+    if (!isBattleClosed) {
+      return;
+    }
 
     //Countdown before player get redirected
     const countdown = setInterval(() => {
@@ -130,17 +135,16 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     }, 1000); //1 second per interval
 
     //Redirect after countdown is finished
-    const timeout = setTimeout(() =>{
-      FlowRouter.go(`/session/${gameCode}`)
-      setTime(-1)
-    }, 5000) // 5 seconds before user get directed to home page
-    
+    const timeout = setTimeout(() => {
+      FlowRouter.go(`/session/${gameCode}`);
+      setTime(-1);
+    }, 5000); // 5 seconds before user get directed to home page
+
     return () => {
       clearInterval(countdown); // interval cleanup
       clearTimeout(timeout); //timeout cleanup
-    }
-    
-  }, [isBattleClosed])
+    };
+  }, [isBattleClosed]);
 
   socket.on("new-connect", () => {
     FlowRouter.go("/");
@@ -176,15 +180,17 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         </PopupClean>
       )}
 
-    {isBattleClosed && (
-    <PopupClean>
-      <div className="flex flex-col justify-around">
-      <OutlineText size = 'extraLarge'>BATTLE CLOSED</OutlineText>
-      <BlackText size = 'large'>BATTLE HAS ENDED</BlackText>
-      <BlackText size = 'large'>YOU WILL BE DIRECTED BACK TO THE WAITING ROOM IN {time} SECONDS</BlackText>
-      </div>
-    </PopupClean>)}
-
+      {isBattleClosed && (
+        <PopupClean>
+          <div className="flex flex-col justify-around">
+            <OutlineText size="extraLarge">BATTLE CLOSED</OutlineText>
+            <BlackText size="large">BATTLE HAS ENDED</BlackText>
+            <BlackText size="large">
+              YOU WILL BE DIRECTED BACK TO THE WAITING ROOM IN {time} SECONDS
+            </BlackText>
+          </div>
+        </PopupClean>
+      )}
 
       <div
         className="inset-0 w-screen h-screen bg-cover bg-center overscroll-contain"
@@ -207,15 +213,20 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             {battleState && (
               <div className="flex flex-col h-full w-full items-start space-y-10 ">
                 <div className="flex flex-row h-1/4 w-full items-start justify-center">
-                  <BattleHeader battleState={battleState} timer={timer} metadata = {metadata}/>
+                  <BattleHeader
+                    battleState={battleState}
+                    timer={timer}
+                    metadata={metadata}
+                  />
                 </div>
                 <div className="flex flex-col h-3/4 w-full items-center justify-around">
-                  
-
-                  <BattleMonsterPanel battleState={battleState} />
+                  <BattleMonsterPanel
+                    battleState={battleState}
+                    slimeString="FOREST"
+                  />
 
                   <div
-                    className="battle-logs-stack mt-[60%] xl:mt-[15%]"
+                    className=" h-screen flex flex-col items-center justify-center content-center mt-[60%] xl:mt-[15%]"
                     style={{
                       position: "relative",
                       width: "100%",
@@ -240,7 +251,6 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                     battleState={battleState}
                   />
                 </div>
-              
               </div>
             )}
 
