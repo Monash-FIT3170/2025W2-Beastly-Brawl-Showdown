@@ -60,7 +60,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const [stage, setStage] = useState<number>(1);
 
-  const [playerState, setPlayerState] = useState<PlayerState | null>();
+  const [playerState, setPlayerState] = useState<PlayerState | null>(null);
 
   const [battleState, setBattleState] = useState<BattleState | null>(null);
   const [possibleActions, setPossibleActions] = useState<ActionState[]>([]);
@@ -109,8 +109,14 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     };
   }, [stage]);
 
-  socket.on("adventure_defeat", () => {
-    FlowRouter.go("/adventure/defeat");
+  useEffect(() => {
+    const onAdventureDefeat = () => {
+      FlowRouter.go("/adventure/defeat");
+    };
+    socket.on("adventure_defeat", onAdventureDefeat);
+    return () => {
+      socket.off("adventure_defeat", onAdventureDefeat);
+    };
   });
 
   useEffect(() => {
@@ -126,7 +132,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
   useEffect(() => {
     //socket.emit("adventure_request", { stage }); //TODO: WHO IS THIS, WHY IS SHE HERE?
-
+    if (!playerState) {
+      socket.emit("failed_connection", { stage });
+    }
     socket.on("adventure_state", (state) => {
       if (state.stage) {
         setStage(state.stage);
