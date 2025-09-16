@@ -66,6 +66,11 @@ export const Account = () => {
     setEditing(true);
   };
 
+  const Logout = () => {
+    socket.emit("logout");
+    FlowRouter.go("/");
+  };
+
   const handleSave = () => {
     if (formData) {
       const updatedUser = {
@@ -257,6 +262,9 @@ export const Account = () => {
                 </OutlineText>
               )}
             </div>
+            <ButtonGeneric color="red" size="medium" onClick={Logout}>
+              Logout
+            </ButtonGeneric>
           </div>
         )}
       </div>
