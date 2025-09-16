@@ -20,7 +20,7 @@ interface AdventureProgressionSchema {
   unlockedMonsters: Record<string, boolean>;
   unlockedLevels: number[];
   stage: number;
-  achievments: string[];
+  achievements: string[];
   savedGameState: {};
 }
 
@@ -35,7 +35,7 @@ interface PlayerAccountSchema {
     numGamesPlayed?: number;
     numGamesWon?: number;
   };
-  achievments?: string[];
+  achievements?: string[];
   monstersStat?: PlayerMonsterStatSchema[];
   adventureProgression?: AdventureProgressionSchema;
 }
@@ -83,7 +83,7 @@ export const Account = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Fixed Header */}
-      <div className="flex-shrink-0 relative border-b bg-springLeaves shadow">
+      <div className="fixed top-0 left-0 w-full border-b bg-springLeaves shadow z-20">
         {/* Return button */}
         <div className="absolute top-2 sm:top-6 left-2 sm:left-6 z-50">
           <IconButton
@@ -95,8 +95,8 @@ export const Account = () => {
           />
         </div>
 
-        {/* Header text with extra padding for spacing */}
-        <div className="py-20 sm:py-14">
+        {/* Header text */}
+        <div className="py-6 sm:py-8">
           <GenericHeader color="lightYellow">
             <OutlineText size="extraLarge">Account Details</OutlineText>
           </GenericHeader>
@@ -104,7 +104,7 @@ export const Account = () => {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 flex flex-col gap-6 sm:gap-8">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 flex flex-col gap-6 sm:gap-8 mt-[120px] sm:mt-[160px]">
         {!userData ? (
           <p>Loading account details...</p>
         ) : editing ? (
@@ -112,7 +112,7 @@ export const Account = () => {
             {/* Profile Editing */}
             <div className="mt-4 sm:mt-0 p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] flex flex-col gap-4 sm:gap-6 border-2 border-black">
               <div className="text-center">
-                <OutlineText size="extraLarge">Profile</OutlineText>
+                <OutlineText size="large">Profile</OutlineText>
               </div>
               <InputBox
                 value={formData?.username ?? ""}
@@ -163,84 +163,72 @@ export const Account = () => {
         ) : (
           <div className="flex flex-col gap-6 sm:gap-8 w-full max-w-[600px] sm:max-w-[900px] mx-auto">
             {/* Profile Info */}
-            <div className="mt-4 sm:mt-0 p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center">
-                <OutlineText size="extraLarge">Profile</OutlineText>
+            <div className="relative p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
+              <div className="text-center mb-4">
+                <OutlineText size="large">Profile</OutlineText>
               </div>
-              <OutlineText size="large">
+              <OutlineText size="medium">
                 Username: {userData.username}
               </OutlineText>
-              <OutlineText size="large">Email: {userData.email}</OutlineText>
-              <OutlineText size="large">Level: {userData.level}</OutlineText>
+              <OutlineText size="medium">Email: {userData.email}</OutlineText>
+              <OutlineText size="medium">Level: {userData.level}</OutlineText>
+
+              {/* Edit Button in bottom-right */}
+              <div className="absolute bottom-4 right-4">
+                <ButtonGeneric
+                  color="blue"
+                  size="medium"
+                  onClick={startEditing}
+                >
+                  Edit Profile
+                </ButtonGeneric>
+              </div>
             </div>
 
             {/* Stats */}
             <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center">
-                <OutlineText size="extraLarge">Stats</OutlineText>
+              <div className="text-center mb-4">
+                <OutlineText size="large">Stats</OutlineText>
               </div>
-              <OutlineText size="large">
+              <OutlineText size="medium">
                 Games Played: {userData.stats?.numGamesPlayed ?? 0}
               </OutlineText>
-              <OutlineText size="large">
+              <OutlineText size="medium">
                 Games Won: {userData.stats?.numGamesWon ?? 0}
               </OutlineText>
             </div>
 
             {/* Achievements */}
             <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center">
-                <OutlineText size="extraLarge">Achievements</OutlineText>
+              <div className="text-center mb-4">
+                <OutlineText size="large">Achievements</OutlineText>
               </div>
-              {userData.achievments?.length ? (
+              {userData.achievements?.length ? (
                 <ul className="list-disc ml-4 sm:ml-6">
-                  {userData.achievments.map((ach, idx) => (
+                  {userData.achievements.map((ach, idx) => (
                     <li key={idx}>{ach}</li>
                   ))}
                 </ul>
               ) : (
-                <p>No achievements yet.</p>
-              )}
-            </div>
-
-            {/* Monsters */}
-            <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center">
-                <OutlineText size="extraLarge">Monster Stats</OutlineText>
-              </div>
-              {userData.monstersStat?.length ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                  {userData.monstersStat.map((m, idx) => (
-                    <div key={idx} className="border p-3 sm:p-4 rounded-lg">
-                      <p className="font-bold">{m.monsterName}</p>
-                      <p>Health: {m.maxHealth}</p>
-                      <p>Attack Bonus: {m.attackBonus}</p>
-                      <p>Armour Class: {m.armourClass}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p>No monster stats yet.</p>
+                <p className="text-center">No achievements yet.</p>
               )}
             </div>
 
             {/* Adventure Progression */}
             <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center">
-                <OutlineText size="extraLarge">
-                  Adventure Progression
-                </OutlineText>
+              <div className="text-center mb-4">
+                <OutlineText size="large">Adventure Progression</OutlineText>
               </div>
               {userData.adventureProgression ? (
                 <>
                   <p>Stage: {userData.adventureProgression.stage}</p>
-                  <p>
+                  <p className="break-words">
                     Levels Unlocked:{" "}
                     {userData.adventureProgression.unlockedLevels.length
                       ? userData.adventureProgression.unlockedLevels.join(", ")
                       : "None"}
                   </p>
-                  <p>
+                  <p className="break-words">
                     Monsters Unlocked:{" "}
                     {Object.entries(
                       userData.adventureProgression.unlockedMonsters
@@ -249,23 +237,16 @@ export const Account = () => {
                       .map(([name]) => name)
                       .join(", ") || "None"}
                   </p>
-                  <p>
+                  <p className="break-words">
                     Adventure Achievements:{" "}
-                    {userData.adventureProgression.achievments
-                      ? userData.adventureProgression.achievments.join(", ")
+                    {userData.adventureProgression.achievements
+                      ? userData.adventureProgression.achievements.join(", ")
                       : "None"}
                   </p>
                 </>
               ) : (
-                <p>No adventure progression yet.</p>
+                <p className="text-center">No adventure progression yet.</p>
               )}
-            </div>
-
-            {/* Edit Button */}
-            <div className="flex justify-center">
-              <ButtonGeneric color="blue" size="medium" onClick={startEditing}>
-                Edit Profile
-              </ButtonGeneric>
             </div>
           </div>
         )}
