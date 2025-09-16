@@ -114,6 +114,8 @@ export const Account = () => {
               <div className="text-center">
                 <OutlineText size="large">Profile</OutlineText>
               </div>
+
+              <OutlineText size="medium">Username:</OutlineText>
               <InputBox
                 value={formData?.username ?? ""}
                 onChange={(e) =>
@@ -125,6 +127,8 @@ export const Account = () => {
                 maxLength={50}
                 placeholder="Enter New Username"
               />
+
+              <OutlineText size="medium">Email:</OutlineText>
               <InputBox
                 value={formData?.email ?? ""}
                 onChange={(e) =>
@@ -133,6 +137,8 @@ export const Account = () => {
                 maxLength={50}
                 placeholder="Enter New Email"
               />
+
+              <OutlineText size="medium">Password:</OutlineText>
               <InputBox
                 value={formData?.password ?? ""}
                 onChange={(e) =>
@@ -221,14 +227,16 @@ export const Account = () => {
               </div>
               {userData.adventureProgression ? (
                 <>
-                  <p>Stage: {userData.adventureProgression.stage}</p>
-                  <p className="break-words">
+                  <OutlineText size="medium">
+                    Stage: {userData.adventureProgression.stage}
+                  </OutlineText>
+                  <OutlineText size="medium">
                     Levels Unlocked:{" "}
                     {userData.adventureProgression.unlockedLevels.length
                       ? userData.adventureProgression.unlockedLevels.join(", ")
                       : "None"}
-                  </p>
-                  <p className="break-words">
+                  </OutlineText>
+                  <OutlineText size="medium">
                     Monsters Unlocked:{" "}
                     {Object.entries(
                       userData.adventureProgression.unlockedMonsters
@@ -236,16 +244,18 @@ export const Account = () => {
                       .filter(([_, unlocked]) => unlocked)
                       .map(([name]) => name)
                       .join(", ") || "None"}
-                  </p>
-                  <p className="break-words">
+                  </OutlineText>
+                  <OutlineText size="medium">
                     Adventure Achievements:{" "}
                     {userData.adventureProgression.achievements
                       ? userData.adventureProgression.achievements.join(", ")
                       : "None"}
-                  </p>
+                  </OutlineText>
                 </>
               ) : (
-                <p className="text-center">No adventure progression yet.</p>
+                <OutlineText size="medium">
+                  No adventure progression yet.
+                </OutlineText>
               )}
             </div>
           </div>
