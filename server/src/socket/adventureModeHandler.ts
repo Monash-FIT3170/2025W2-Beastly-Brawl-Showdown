@@ -257,6 +257,9 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         battles.set(socket.id, battle);
         console.log(`ADV: New Battle for ${socket.id}`);
         // Send battle state to client
+        battle.getPlayers().forEach((p) => {
+          p.startStatusEffects();
+        });
         socket.emit("adventure_state", {
           type: "battle",
           battle: battle.getBattleState(socket.id),
