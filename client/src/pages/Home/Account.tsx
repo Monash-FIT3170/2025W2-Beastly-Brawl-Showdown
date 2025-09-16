@@ -83,7 +83,7 @@ export const Account = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Fixed Header */}
-      <div className="fixed top-0 left-0 w-full border-b bg-springLeaves shadow z-20">
+      <div className="fixed top-0 left-0 w-full border-b  shadow z-20">
         {/* Return button */}
         <div className="absolute top-2 sm:top-6 left-2 sm:left-6 z-50">
           <IconButton
@@ -177,7 +177,6 @@ export const Account = () => {
                 Username: {userData.username}
               </OutlineText>
               <OutlineText size="medium">Email: {userData.email}</OutlineText>
-              <OutlineText size="medium">Level: {userData.level}</OutlineText>
 
               {/* Edit Button in bottom-right */}
               <div className="absolute bottom-4 right-4">
