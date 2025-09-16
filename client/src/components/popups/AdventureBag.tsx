@@ -1,17 +1,10 @@
 import React, { ReactNode, useState } from "react";
-import { PopupClean } from "./PopupClean";
-import { ChoicePopup } from "./ChoicePopup";
 import socket from "../../socket";
-import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { OutlineText } from "../texts/OutlineText";
 import { ButtonGeneric } from "../buttons/ButtonGeneric";
-import { DialogueChoiceButton } from "../buttons/DialogueChoiceButton";
 import { PlayerState } from "/types/single/playerState";
-import { Status } from "/server/src/model/game/status/status";
 import { IconButton } from "../buttons/IconButton";
-import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 import { PopupAdventure } from "./PopupAdventure";
-import { Equipment } from "/server/src/model/game/equipment/equipment";
 import { EquipmentCard } from "../cards/EquipmentCard";
 import { EmptyEquipmentCard } from "../cards/EmptyEquipmentCard";
 import { BlackText } from "../texts/BlackText";
@@ -119,7 +112,8 @@ export const AdventureBagPopup = ({
             {/* EQUIPMENT CONTENTS */}
             {viewingTab !== 0 && (
               <>
-                <div className="grid grid-flow-row h-full w-full auto-rows-auto">
+                <div className="h-full p-[1rem] flex flex-wrap gap-4 justify-center">
+                  {/* <div className="grid grid-flow-row h-full w-full auto-rows-auto"> */}
                   {[0, 1, 2].map((i) => (
                     <div key={i} className="py-2">
                       <OutlineText size="medium">Slot {i + 1}</OutlineText>

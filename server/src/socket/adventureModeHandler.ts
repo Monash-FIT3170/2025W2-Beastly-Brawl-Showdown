@@ -19,6 +19,7 @@ import { createConsumable } from "../model/adventure/factories/consumableFactory
 import { DamageHeal } from "../model/game/status/damageHeal";
 import { Poison } from "../model/game/status/poison";
 import { Stun } from "../model/game/status/stun";
+import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -64,6 +65,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       player.addStatus(new DamageHeal(20));
       player.addStatus(new Poison(10));
       player.addStatus(new Stun(1));
+      player.giveConsumable(new SlimeSubstance());
       progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );
