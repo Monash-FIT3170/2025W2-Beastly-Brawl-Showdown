@@ -66,10 +66,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
-      player.giveConsumable(new SlimeSubstance());
-      player.giveEquipment(new MagicShield());
-      player.addStatus(new Poison());
-      progressAdventure(io, socket, adventure, adventure.getStage());
+      //progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );
 
