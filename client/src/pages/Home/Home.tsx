@@ -5,59 +5,50 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
-import { LoginPopup } from "./Login";
 
 export const Home = () => {
-  // Called on 'Host Lobby' button press
-  const renderConfigPage = () => {
-    FlowRouter.go("/host/choose-mode");
-  };
-  const [showLogin, setShowLogin] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(false);
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
+    // Ask server for login status
     socket.emit("check-login");
 
     const handleLoginStatus = ({ loggedIn }: { loggedIn: boolean }) => {
       setLoggedInUser(loggedIn);
+      setLoading(false); // Done loading once we get response
     };
 
     socket.on("login-status", handleLoginStatus);
+
     return () => socket.off("login-status", handleLoginStatus);
   }, []);
 
-  const createGame = () => {
-    socket.emit("create-game", {});
-    console.log("Game session created");
-  };
-
-  socket.on("new-game", ({ code }) => {
-    FlowRouter.go(`/host/${code}`);
-  });
-
+  const renderConfigPage = () => FlowRouter.go("/host/choose-mode");
   const renderJoinLobby = () => FlowRouter.go("/join");
   const renderAdventure = () => FlowRouter.go("/adventure/level-select");
 
-  const handleLoginSuccess = (username: string) => {
-    setShowLogin(false);
-    setLoggedInUser(true);
-  };
+  useEffect(() => {
+    const handleNewGame = ({ code }: { code: string }) => {
+      FlowRouter.go(`/host/${code}`);
+    };
 
-  const handleExitLogin = () => {
-    setShowLogin(false);
-    console.log("Exit login");
-  };
+    socket.on("new-game", handleNewGame);
+    return () => socket.off("new-game", handleNewGame);
+  }, []);
 
   return (
     <BlankPage>
       {/* Top-right login/account button */}
       <div className="w-full flex justify-end items-start pt-2 pr-2 sm:pt-3 sm:pr-3">
-        {" "}
-        {!loggedInUser ? (
+        {loading ? (
+          // Render nothing or a placeholder while loading
+          <div className="w-[6rem] h-[3rem]" />
+        ) : !loggedInUser ? (
           <ButtonGeneric
             color="ronchi"
             size="large"
-            onClick={() => setShowLogin(true)}
+            onClick={() => FlowRouter.go("/login")}
           >
             <OutlineText size="large">LOGIN</OutlineText>
           </ButtonGeneric>
@@ -71,6 +62,7 @@ export const Home = () => {
           </ButtonGeneric>
         )}
       </div>
+
       {/* Logo section */}
       <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
         <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
@@ -95,13 +87,6 @@ export const Home = () => {
           <OutlineText size="large">ADVENTURE</OutlineText>
         </ButtonGeneric>
       </div>
-
-      {showLogin && (
-        <LoginPopup
-          onLoginSuccess={handleLoginSuccess}
-          setExitPopup={handleExitLogin}
-        />
-      )}
     </BlankPage>
   );
 };
