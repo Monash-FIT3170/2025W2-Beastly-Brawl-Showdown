@@ -65,10 +65,17 @@ export const Home = () => {
     <BlankPage>
       <div className="absolute lg:top-[3rem] lg:right-[3rem] top-[5rem] right-[5rem] items-center justify-center">
         {!loggedInUser ? (
+          //   <IconButton
+          //     style="profile"
+          //     iconColour="black"
+          //     buttonColour="gray"
+          //     size="medium"
+          //     onClick={() => setShowLogin(true)}
+          //   />
           <ButtonGeneric color={"ronchi"} size={"squaremedium"}>
             <div className="flex flex-col ">
-              <OutlineText size={"tiny"}>LOG</OutlineText>
-              <OutlineText size={"tiny"}>IN</OutlineText>
+              <BlackText size={"tiny"}>LOG</BlackText>
+              <BlackText size={"tiny"}>IN</BlackText>
             </div>
           </ButtonGeneric>
         ) : (
@@ -81,25 +88,59 @@ export const Home = () => {
           />
         )}
       </div>
-      <div className="flex flex-row w-full sm:items-end lg:items-center justify-around">
-        <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
-      </div>
-      <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-5 sm:space-y-30">
-        <ButtonGeneric
-          color="ronchi"
-          size="large"
-          onClick={renderConfigPage}
-          mobileHidden={"true"}
-        >
-          <OutlineText size="large">HOST GAME</OutlineText>
-        </ButtonGeneric>
+      <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] ">
+        <div className="flex flex-row w-full sm:items-end lg:items-center justify-around">
+          <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
+        </div>
+        {/* <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-5 sm:space-y-30"> */}
+        <div className="flex flex-col lg:space-y-[1rem] space-y-[3rem] items-center flex-grow justify-center ">
+          <BlackText size="tiny">
+            Hello [insert username] ! Ready to Brawl?
+          </BlackText>
+          <ButtonGeneric
+            color="ronchi"
+            size="large"
+            onClick={renderConfigPage}
+            mobileHidden={"true"}
+          >
+            <OutlineText size="large">HOST GAME</OutlineText>
+          </ButtonGeneric>
 
-        <ButtonGeneric color="ronchi" size="large" onClick={renderJoinLobby}>
-          <OutlineText size="large">JOIN GAME</OutlineText>
-        </ButtonGeneric>
-        <ButtonGeneric color="ronchi" size="large" onClick={renderAdventure}>
-          <OutlineText size="large">ADVENTURE</OutlineText>
-        </ButtonGeneric>
+          <ButtonGeneric color="ronchi" size="large" onClick={renderJoinLobby}>
+            <OutlineText size="large">JOIN GAME</OutlineText>
+          </ButtonGeneric>
+          <ButtonGeneric color="ronchi" size="large" onClick={renderAdventure}>
+            <OutlineText size="large">ADVENTURE</OutlineText>
+          </ButtonGeneric>
+          <ButtonGeneric color="ronchi" size="large">
+            <OutlineText size="large">EVENTS</OutlineText>
+          </ButtonGeneric>
+
+          <div className="flex-row flex space-x-[3rem] lg:space-x-[1rem]">
+            <IconButton
+              style="info"
+              iconColour="black"
+              buttonColour="blue"
+              size="medium"
+              onClick={() => FlowRouter.go("/help")}
+            />
+            <IconButton
+              style="leaderboard"
+              iconColour="black"
+              buttonColour="redpink"
+              size="medium"
+              onClick={() => FlowRouter.go("/leaderboard")}
+            />
+            <IconButton
+              style="notes"
+              iconColour="black"
+              buttonColour="pink"
+              size="medium"
+              onClick={() => FlowRouter.go("/dev-notes")}
+            />
+          </div>
+        </div>
+        {/* </div> */}
       </div>
 
       {showLogin && (
