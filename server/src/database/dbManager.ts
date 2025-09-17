@@ -278,8 +278,10 @@ export async function updatePlayerAccount(
 
     // If a new password is provided, hash it
     if (updates.password) {
-      updates.password = await hashPassword(updates.password);
-    }
+  updates.password = await hashPassword(updates.password);
+  } else {
+    delete updates.password; // make sure no null/undefined overwrites existing password
+  }
 
     // Merge existing player data with updates to ensure all required fields stay filled
     const mergedPlayer: PlayerAccountSchema = {

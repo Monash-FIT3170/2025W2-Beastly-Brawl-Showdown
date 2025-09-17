@@ -79,7 +79,7 @@ export const Account = () => {
         ...userData,
         username: formData.username || userData?.username,
         email: formData.email || userData?.email,
-        password: formData.password || userData?.password,
+        password: formData.password || null,
       };
       socket.emit("updatePlayer", updatedUser);
       setUserData(updatedUser);
