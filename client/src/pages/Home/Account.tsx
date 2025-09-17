@@ -226,44 +226,6 @@ export const Account = () => {
               )}
             </div>
 
-            {/* Adventure Progression */}
-            <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black">
-              <div className="text-center mb-4">
-                <OutlineText size="large">Adventure Progression</OutlineText>
-              </div>
-              {userData.adventureProgression ? (
-                <>
-                  <OutlineText size="medium">
-                    Stage: {userData.adventureProgression.stage}
-                  </OutlineText>
-                  <OutlineText size="medium">
-                    Levels Unlocked:{" "}
-                    {userData.adventureProgression.unlockedLevels.length
-                      ? userData.adventureProgression.unlockedLevels.join(", ")
-                      : "None"}
-                  </OutlineText>
-                  <OutlineText size="medium">
-                    Monsters Unlocked:{" "}
-                    {Object.entries(
-                      userData.adventureProgression.unlockedMonsters
-                    )
-                      .filter(([_, unlocked]) => unlocked)
-                      .map(([name]) => name)
-                      .join(", ") || "None"}
-                  </OutlineText>
-                  <OutlineText size="medium">
-                    Adventure Achievements:{" "}
-                    {userData.adventureProgression.achievements
-                      ? userData.adventureProgression.achievements.join(", ")
-                      : "None"}
-                  </OutlineText>
-                </>
-              ) : (
-                <OutlineText size="medium">
-                  No adventure progression yet.
-                </OutlineText>
-              )}
-            </div>
             <ButtonGeneric color="red" size="medium" onClick={Logout}>
               Logout
             </ButtonGeneric>
