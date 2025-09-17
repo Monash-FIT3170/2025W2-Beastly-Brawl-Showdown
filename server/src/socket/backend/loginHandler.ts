@@ -20,6 +20,7 @@ export const loginHandler = (io: Server, socket: Socket) => {
     } catch (err) {
       console.error(`Failed to mark user ${user.email} offline:`, err);
     }
+    socket.emit("logoutSuccessful");
   });
 
   socket.on("login", async (data) => {

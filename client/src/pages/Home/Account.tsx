@@ -68,7 +68,9 @@ export const Account = () => {
 
   const Logout = () => {
     socket.emit("logout");
-    FlowRouter.go("/");
+    socket.on("logoutSuccessful", () => {
+      FlowRouter.go("/");
+    });
   };
 
   const handleSave = () => {
