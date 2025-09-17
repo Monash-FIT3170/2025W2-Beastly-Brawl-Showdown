@@ -238,7 +238,9 @@ export class Player {
     reason?: string;
     metadata?: unknown;
   } {
+    console.log(`DEBUG: ${this.name} pushing ${status.name}`);
     this.statuses.push(status);
+    console.log("DEBUG, statuses", this.statuses);
     return { success: true };
   }
 
@@ -250,7 +252,7 @@ export class Player {
     );
     this.statuses.forEach((status) => status.tick(this));
     //removes statuses that have expired after the tick
-    this.statuses = this.statuses.filter((status) => !status.isExpired());
+    this.statuses = this.statuses.filter((status) => !status.isExpired(this));
   }
 
   public startStatusEffects() {

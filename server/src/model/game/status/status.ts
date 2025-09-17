@@ -47,15 +47,16 @@ export abstract class Status {
     return this.type;
   }
 
-  public isExpired(): boolean {
+  public isExpired(player: Player): boolean {
     //checks if countdown hit 0
+    //gets called after tick()
     if (this.countDown == 0) {
-      this.expire();
+      this.expire(player);
       return true;
     }
     return false;
   }
 
-  //todo: implement + call expire when status is gone, useful for removing statuses that might give temporary buffs
-  public abstract expire(): void;
+  // useful for removing statuses that might give temporary buffs or giving nerfs post buff
+  public abstract expire(player: Player): void;
 }

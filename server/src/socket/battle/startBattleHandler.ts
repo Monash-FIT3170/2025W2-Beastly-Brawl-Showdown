@@ -117,46 +117,20 @@ export default function proceedBattleTurn(
       // TODO: For the future, actions should trigger their own animations themselves. Perhaps add a feature that emits animation type and let the
       // battle screen handle the type of animation to show
       player1.getActions().forEach((action) => {
-        if (!player1.isBotPlayer()) {
-          //only emit to socket if the player is a human
-          if (action.getName() === "Attack") {
-            const attackAction = action as AttackAction;
-            const diceRoll = attackAction.getDiceRoll();
-            io.to(player1.getId()).emit("roll_dice", diceRoll);
-          }
-
-          if (!player1.isBotPlayer()) {
-            //only emit to socket if the player is a human
-            if (action.getName() === "Tip The Scales") {
-              const tipTheScalesAction = action as TipTheScalesAbilityAction;
-              const diceRoll = tipTheScalesAction.getDiceRoll();
-              io.to(player1.getId()).emit("roll_dice", diceRoll);
-              console.log(
-                `Player 1 used tip the scales and dice roll = ${diceRoll}`
-              );
-            }
-          }
-        }
+        const animationInfo = action.prepareAnimation();
+        const animationType = animationInfo[0];
+        const diceRollNumber = animationInfo[1];
+        console.log(`ADV: Animation P1 - ${animationType}, ${diceRollNumber}`);
+        io.to(player1.getId()).emit(String(animationType), diceRollNumber);
       });
 
       player2.getActions().forEach((action) => {
-        if (!player2.isBotPlayer()) {
-          //only emit to socket if the player is a human
-          if (action.getName() === "Attack") {
-            const attackAction = action as AttackAction;
-            const diceRoll = attackAction.getDiceRoll();
-            io.to(player2.getId()).emit("roll_dice", diceRoll);
-          }
+        const animationInfo = action.prepareAnimation();
+        const animationType = animationInfo[1];
+        const diceRollNumber = animationInfo[1];
 
-          if (action.getName() === "Tip The Scales") {
-            const tipTheScalesAction = action as TipTheScalesAbilityAction;
-            const diceRoll = tipTheScalesAction.getDiceRoll();
-            console.log(
-              `Player 2 used tip the scales and dice roll = ${diceRoll}`
-            );
-            io.to(player2.getId()).emit("roll_dice", diceRoll);
-          }
-        }
+        console.log(`ADV: Animation P2 - ${animationType}, ${diceRollNumber}`);
+        io.to(player2.getId()).emit(String(animationType), diceRollNumber);
       });
 
       setTimeout(() => {

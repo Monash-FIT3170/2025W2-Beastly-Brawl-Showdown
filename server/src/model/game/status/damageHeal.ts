@@ -43,6 +43,7 @@ export class DamageHeal extends BattleEffect {
     console.error("DamageHeal: Method not implemented.");
   }
   public updateLogs(player: Player): void {}
+
   public expire(): void {
     console.error("DamageHeal: Method not implemented.");
   }
