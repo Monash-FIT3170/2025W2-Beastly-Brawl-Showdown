@@ -20,6 +20,8 @@ import { DamageHeal } from "../model/game/status/damageHeal";
 import { Poison } from "../model/game/status/poison";
 import { Stun } from "../model/game/status/stun";
 import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
+import { StoryItem } from "../model/game/consumables/storyItem/storyItem";
+import { SlimeBoost } from "../model/game/status/slimeBoost";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -63,8 +65,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       player.setMonster(monster);
       //TESTING PLEASE REMOVE
       player.addStatus(new DamageHeal(20));
-      player.addStatus(new Poison(10));
-      player.addStatus(new Stun(1));
+      player.addStatus(new SlimeBoost(80));
       player.giveConsumable(new SlimeSubstance());
       progressAdventure(io, socket, adventure, adventure.getStage());
     }
@@ -123,6 +124,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         const item = player.getConsumable(consumable.name);
         const action = new ConsumeAction(item);
         player.addAction(action);
+        player.removeConsumable(item);
       }
     }
   );
@@ -164,6 +166,9 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     if (consumableId) {
       const consumable = createConsumable(consumableId);
       player.giveConsumable(consumable);
+      if (consumable instanceof StoryItem) {
+        consumable.setAdventure(adventure);
+      }
     }
 
     const lastOutcome = loadNextStory(io, adventure, socket);
@@ -339,7 +344,12 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
             adventure.pastEncounters.push(adventure.currentOutcomeId);
             break;
           }
-          const setB = new Set(adventure.pastEncounters);
+          const setB = new Set(
+            adventure
+              .getPlayer()
+              .getConsumables()
+              .map((c) => c.getName())
+          );
           const allPresent = option.prerequisite?.every((item) =>
             setB.has(item)
           );
