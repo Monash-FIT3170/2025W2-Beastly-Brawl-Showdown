@@ -19,6 +19,7 @@ import AdventureWin from "./src/pages/Adventure/AdventureWin";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
+import { Achievements } from "./src/pages/Home/Achievements";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -45,6 +46,13 @@ FlowRouter.route("/login", {
   name: "LoginPage",
   action() {
     mount(LoginPage);
+  },
+});
+
+FlowRouter.route("/achievements", {
+  name: "Achievements",
+  action() {
+    mount(Achievements);
   },
 });
 
