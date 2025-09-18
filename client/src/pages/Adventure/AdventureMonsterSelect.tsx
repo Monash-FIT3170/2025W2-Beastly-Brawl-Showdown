@@ -297,7 +297,7 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
             flex items-center justify-center
             bg-white/30 backdrop-blur-md
             p-4
-            overflow-y-auto overflow-x-hidden
+            overflow-y-auto 
           "
         >
           {/* <div
@@ -327,19 +327,19 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
               max-h-[90dvh]
               box-border
               flex flex-col items-center
-              overflow-y-auto overflow-x-hidden
+              overflow-y-auto 
               min-w-0
             `}
           >
             <div className="pt-4" />
             <BaseCard
               color="goldenRod"
-              className="flex flex-col justify-around sm:w-[80dvw] lg:w:[90dvw] h-min"
+              className="flex flex-col justify-around sm:w-[55rem] lg:w:[95rem] h-min"
             >
               <MonsterImage
                 name={selectedMonster.id}
-                className="sm:size-[30dvw]
-                              lg:size-[10dvw]"
+                className="sm:size-[20rem]
+                              lg:size-[10rem]"
               />
               <div className="w-[100%] flex items-center flex-col">
                 <div className="bg-ronchi border-[4px] pr-[0.5rem] pl-[0.5rem] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
