@@ -117,7 +117,8 @@ export default function proceedBattleTurn(
       // TODO: For the future, actions should trigger their own animations themselves. Perhaps add a feature that emits animation type and let the
       // battle screen handle the type of animation to show
       player1.getActions().forEach((action) => {
-        if (!player1.isBotPlayer()){ //only emit to socket if the player is a human
+        if (!player1.isBotPlayer()) {
+          //only emit to socket if the player is a human
           if (action.getName() === "Attack") {
             const attackAction = action as AttackAction;
             const diceRoll = attackAction.getDiceRoll();
@@ -136,12 +137,10 @@ export default function proceedBattleTurn(
             }
           }
         }
-      }});
-    
-
+      });
 
       player2.getActions().forEach((action) => {
-        if (!player2.isBotPlayer()){
+        if (!player2.isBotPlayer()) {
           //only emit to socket if the player is a human
           if (action.getName() === "Attack") {
             const attackAction = action as AttackAction;
@@ -157,7 +156,8 @@ export default function proceedBattleTurn(
             );
             io.to(player2.getId()).emit("roll_dice", diceRoll);
           }
-        };
+        }
+      });
 
       setTimeout(() => {
         let p1_result;

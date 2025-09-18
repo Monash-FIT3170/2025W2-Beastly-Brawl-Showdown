@@ -118,7 +118,7 @@ export class Player {
       this.battleLogs.shift();
     }
   }
-    
+
   public getPlayerAccountUsername() {
     return this.playerAccount.username;
   }
