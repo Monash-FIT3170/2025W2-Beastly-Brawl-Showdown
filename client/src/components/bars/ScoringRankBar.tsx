@@ -3,13 +3,13 @@ import { OutlineText } from "../texts/OutlineText";
 import { PlayerState } from "../../../../types/single/playerState";
 import { PlayerScore } from "../../../../types/single/playerScore";
 
-interface RankingBarProps {
+interface ScoringRankBarProps {
   player: PlayerState;
   rank: number;
   score?: PlayerScore;
 }
 
-export const RankingBar = ({ player, rank, score }: RankingBarProps) => {
+export const ScoringRankBar = ({ player, rank, score }: ScoringRankBarProps) => {
   const rankingBarStyleSets: Record<number, [string, string]> = {
     1: ["1st", "bg-schoolBusYellow"],
     2: ["2nd", "bg-brightsilver"],
@@ -31,9 +31,6 @@ export const RankingBar = ({ player, rank, score }: RankingBarProps) => {
     flex
     items-center
     justify-center
-    transition-[width]
-    duration-300
-    ease-in-out
     rounded-e-[0.5rem]
     justify-start pl-[3%]
     ${colourToDisplay}

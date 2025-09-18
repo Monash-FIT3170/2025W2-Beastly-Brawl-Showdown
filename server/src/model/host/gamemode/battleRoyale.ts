@@ -46,10 +46,8 @@ export class BattleRoyale implements IGameMode {
 
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
-        winners: [winner.getName()]
-,
+        winners: [winner.getName()],
       });
-
     } 
 
     // Case 2: It is a draw - there are no winners
@@ -61,10 +59,8 @@ export class BattleRoyale implements IGameMode {
 
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
-        winners: []
-,
+        winners: [],
       });
-
     }
 
     console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
@@ -182,7 +178,7 @@ export class BattleRoyale implements IGameMode {
     });
   }
 
-	public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
+  public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
     if (this.isSessionConcluded(session)) {
       let finalWinner: PlayerState | null;
 
@@ -201,37 +197,34 @@ export class BattleRoyale implements IGameMode {
       session.setFinalResults({
         finalWinner
       });
-    // Incoming:
-    //   const gameCode = session.getGameCode();
-    //   this.io?.to(`game-${gameCode}`).emit("final-winner-response", { finalWinner });
-    //   session.setFinalWinner(finalWinner);
 
-    //   const playersInSession = session.getPlayers().getItems();
-		// 		playersInSession.forEach((player) => {
-		// 			if (finalWinner) {
-		// 				if (!player.isBotPlayer()) {
-		// 					io.sockets.sockets.get(player.getId())?.emit("battle_end", {
-    //             result: "concluded",
-    //             winners: [finalWinner.name]
-    //           });
-		// 				}
-		// 			} else {
-		// 				if (!player.isBotPlayer()) {
-		// 					io.sockets.sockets.get(player.getId())?.emit("battle_end", {
-    //             result: "draw",
-    //             winners: []
-    //           });
-		// 				}
-		// 			}
-		// 		});
-    // }
+      // Properly end the battle for each player
+      const playersInSession = session.getPlayers().getItems();
+        playersInSession.forEach((player) => {
+          if (finalWinner) {
+            if (!player.isBotPlayer()) {
+              io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+                result: "concluded",
+                winners: [finalWinner.name]
+              });
+            }
+          } else {
+            if (!player.isBotPlayer()) {
+              io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+                result: "draw",
+                winners: []
+              });
+            }
+          }
+        });
+    }
   }
 
-	public isSessionConcluded(session: GameSession): boolean {
+  public isSessionConcluded(session: GameSession): boolean {
     return this.remainingPlayers.length <= 1;
   }
 
-	public getMetadata(): GameSessionStateMetaData {
+  public getMetadata(): GameSessionStateMetaData {
     return {};
   }
 

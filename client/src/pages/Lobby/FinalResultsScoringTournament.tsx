@@ -6,9 +6,8 @@ import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { BaseCard } from "../../components/cards/BaseCard";
 import socket from "../../socket";
-import { RankingBar } from "../../components/bars/RankingBar";
+import { ScoringRankBar } from "../../components/bars/ScoringRankBar";
 import { PlayerState } from "../../../../types/single/playerState";
-import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import { PlayerScore } from "../../../../types/single/playerScore";
 
 interface FinalResultsScoringTournamentProps {
@@ -48,10 +47,10 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
 
   console.log(`Top 3 players: ${top3Players?.map((player) => player.name)}\nTop 3 scores: ${top3Scores?.map((playerScore) => playerScore.points)}`);
 
-  // Button handler for restarting a new battle royale lobby
-  const newLobby = () => {
-    socket.emit("create-game", { mode: GameModeIdentifier.SCORING, selectedValue: null });
-    console.log("Game session created");
+  // Button handler for restarting a new lobby
+  const renderConfigPage = () => {
+    socket.emit("cancel-game", { gameCode });
+    FlowRouter.go("/host/choose-mode");
   };
 
   // Button handler for exiting to home
@@ -154,15 +153,15 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
           </div>
           <div className="w-full flex flex-col gap-[1rem]">
             <div className={bar1Width + " m-[-0.15rem]"}>
-              <RankingBar player={player1} rank={bar1Rank} score={score1} />
+              <ScoringRankBar player={player1} rank={bar1Rank} score={score1} />
             </div>
             <div className={bar2Width + " m-[-0.15rem]"}>
-              <RankingBar player={player2} rank={bar2Rank} score={score2} />
+              <ScoringRankBar player={player2} rank={bar2Rank} score={score2} />
             </div>
             {/* Only show the 3rd place bar if there exists a 3rd place player in the lobby */}
             {player3 ?
               <div className={bar3Width + " m-[-0.15rem]"}>
-                <RankingBar player={player3} rank={bar3Rank!} score={score3!} />
+                <ScoringRankBar player={player3} rank={bar3Rank!} score={score3!} />
               </div>
             : null}
           </div>
@@ -170,7 +169,7 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
       </div>
 
       <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
-        <ButtonGeneric color="ronchi" size="large" onClick={newLobby}>
+        <ButtonGeneric color="ronchi" size="large" onClick={renderConfigPage}>
           <OutlineText size="large">
             NEW LOBBY
           </OutlineText>
