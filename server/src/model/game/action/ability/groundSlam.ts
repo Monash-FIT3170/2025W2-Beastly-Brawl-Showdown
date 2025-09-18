@@ -19,7 +19,7 @@ export class GroundSlamAbilityAction extends Action {
     // affectedPlayer.clearActions();
   }
 
-    public prepareAnimation(): string | [string, number] {
+  public prepareAnimation(): string | [string, number] {
     return "Ground_Slam_Animation";
   }
 
@@ -28,7 +28,7 @@ export class GroundSlamAbilityAction extends Action {
 
     // Deal 3 damage + Stun
     affectedPlayer.incHealth(-3);
-    affectedPlayer.addStatus(new Stun(1), 100);
+    affectedPlayer.addStatus(new Stun(1));
 
     // Add logs
     actingPlayer.addLog(

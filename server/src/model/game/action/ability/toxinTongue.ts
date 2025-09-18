@@ -28,7 +28,7 @@ export class ToxinTongue extends Action {
     var numberOfTurns = 5;
 
     // Poison the opponent
-    affectedPlayer.addStatus(new Poison(numberOfTurns), 100);
+    affectedPlayer.addStatus(new Poison(numberOfTurns));
 
     // Add logs
     actingPlayer.addLog(

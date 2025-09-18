@@ -68,7 +68,7 @@ export default function proceedBattleTurn(
       let actions = player.getMonster().getPossibleActionStates();
       io.to(player.getId()).emit("possible_actions", actions); // Emit the list of action names
     } else {
-      ActionRandomiser.randomAction(player)
+      ActionRandomiser.randomAction(player);
     }
   });
 
@@ -141,7 +141,8 @@ export default function proceedBattleTurn(
 
 
       player2.getActions().forEach((action) => {
-        if (!player2.isBotPlayer()){ //only emit to socket if the player is a human
+        if (!player2.isBotPlayer()){
+          //only emit to socket if the player is a human
           if (action.getName() === "Attack") {
             const attackAction = action as AttackAction;
             const diceRoll = attackAction.getDiceRoll();
@@ -156,12 +157,7 @@ export default function proceedBattleTurn(
             );
             io.to(player2.getId()).emit("roll_dice", diceRoll);
           }
-        }
-
-
-      
-      }
-    });
+        };
 
       setTimeout(() => {
         let p1_result;

@@ -19,7 +19,6 @@ export abstract class Status {
     this.type = type;
   }
 
-
   public tick(player: Player): void {
     if (this.countDown > 0) {
       //necessary check as UI requires status to remain post countdown = 0
@@ -58,4 +57,3 @@ export abstract class Status {
     return false;
   }
 }
-
