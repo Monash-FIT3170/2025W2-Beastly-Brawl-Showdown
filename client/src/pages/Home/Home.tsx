@@ -65,7 +65,11 @@ export const Home = () => {
     <BlankPage>
       <div className="absolute lg:top-[3rem] lg:right-[3rem] top-[5rem] right-[5rem] items-center justify-center">
         {!loggedInUser ? (
-          <ButtonGeneric color={"ronchi"} size={"squaremedium"}>
+          <ButtonGeneric
+            color={"ronchi"}
+            size={"squaremedium"}
+            onClick={() => setShowLogin(true)}
+          >
             <div className="flex flex-col ">
               <OutlineText size={"tiny"}>LOG</OutlineText>
               <OutlineText size={"tiny"}>IN</OutlineText>
