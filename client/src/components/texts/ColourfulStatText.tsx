@@ -27,7 +27,7 @@ export const ColourfulStatText = ({
 
   if (stat === "HP") {
     return (
-      <p className={`font-[Jua] text-outline ${className}`}>
+      <p className={`${sizeLoader[size]} font-[Jua] text-outline ${className}`}>
         {statVal} {stat}
       </p>
     );
@@ -36,7 +36,7 @@ export const ColourfulStatText = ({
   const diff = statVal - monsterStat;
 
   return (
-    <p className={`font-[Jua] text-outline ${className}`}>
+    <p className={`${sizeLoader[size]} font-[Jua] text-outline ${className}`}>
       {monsterStat}
       {diff !== 0 && (
         <>

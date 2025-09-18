@@ -36,7 +36,6 @@ export const StatInfoIcon = ({
       <div className="border-[3px] border-blackCurrant bg-goldenRod rounded-full sm:size-[8rem] lg:size-[5rem] flex justify-center items-center">
         <img className="size-[70%]" src={imgpath[stat]}></img>
       </div>
-      <OutlineTextResizable size="small">{text}</OutlineTextResizable>
       <ColourfulStatText
         stat={stat}
         statVal={statVal}
