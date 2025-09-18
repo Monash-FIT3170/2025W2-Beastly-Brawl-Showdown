@@ -136,7 +136,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
 
     //Redirect after countdown is finished
     const timeout = setTimeout(() => {
-      FlowRouter.go(`/session/${gameCode}`);
+      FlowRouter.go(`/session/${gameCode}`, {}, { fromBattle: "true" });
       setTime(-1);
     }, 5000); // 5 seconds before user get directed to home page
 

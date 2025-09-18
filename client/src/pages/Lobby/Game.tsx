@@ -10,9 +10,13 @@ interface GameProps {
 }
 
 export const Game: React.FC<GameProps> = ({ gameSessionId }) => {
-  const [screen, setScreen] = useState<Screens>(
-    Screens.CHARACTER_SELECT_SCREEN
-  ); // State to track the current screen
+  const [screen, setScreen] = useState<Screens>(() => {
+    const queryParams = FlowRouter.current().queryParams;
+    if (queryParams.fromBattle === "true") {
+      return Screens.WAITING_SCREEN;
+    }
+    return Screens.CHARACTER_SELECT_SCREEN;
+  }); // State to track the current screen
 
   // add on reload?
   socket.on("new-connect", () => {
