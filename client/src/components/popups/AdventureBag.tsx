@@ -114,16 +114,17 @@ export const AdventureBagPopup = ({
             {/* EQUIPMENT CONTENTS */}
             {viewingTab !== 0 && (
               <>
-                <div className="w-full px-[3rem] p-[1rem] flex flex-col items-center gap-6">
+                <div className="w-full p-[1rem] flex flex-col justify-center items-center gap-6">
                   {/* <div className="grid grid-flow-row h-full w-full auto-rows-auto"> */}
                   {[0, 1, 2].map((i) => (
-                    <div key={i} className="w-full max-w-[40rem] mx-auto min-w-0 mx-auto">
+                    <div key={i} className="w-full mx-auto min-w-0 mx-auto ">
                       <div className="flex flex-col items-center">
                       <OutlineText size="medium">Slot {i + 1}</OutlineText>
                       </div>
                       {/* <div className="h-[2px] bg-blackCurrant mb-4 w-[70rem] mx-auto px-[10rem] justify-center items-center" /> */}
                       <div className="h-[2px] bg-blackCurrant my-4 w-full" />
                       {/* <div className="mx-auto"> */}
+                      <div className="flex flex-wrap justify-center items-center">
                       {playerState?.equipment[i] ? (
                         <EquipmentCard
                           onClick={() => setEquipment(playerState.equipment[i])}
@@ -132,6 +133,7 @@ export const AdventureBagPopup = ({
                       ) : (
                         <EmptyEquipmentCard />
                       )}
+                      </div>
                       {/* </div> */}
                     </div>
                   ))}
