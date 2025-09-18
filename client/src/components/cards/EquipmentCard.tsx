@@ -16,7 +16,7 @@ export const EquipmentCard = ({ equipment, onClick }: EquipmentProps) => {
     bg-heliotrope
     border border-[4px] border-blackCurrant
     rounded-2xl
-    w-[40rem]
+    w-[30rem]
     p-[1rem]
     justify-center
     items-center
