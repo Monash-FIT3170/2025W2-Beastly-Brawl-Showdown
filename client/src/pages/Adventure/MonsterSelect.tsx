@@ -107,6 +107,7 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
     if (selectedMonster) {
       // Emit the selected monster to the server
       // TODO: Use in next page
+
       socket.emit("adventure_monster_selected", {
         monsterID: selectedMonster.id,
       });
