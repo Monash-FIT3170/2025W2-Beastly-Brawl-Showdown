@@ -140,6 +140,7 @@ export const Account = () => {
 
                   <OutlineText size="medium">Email:</OutlineText>
                   <InputBox
+                    type="Email"
                     value={formData?.email ?? ""}
                     onChange={(e) =>
                       setFormData((prev) => ({
@@ -153,6 +154,7 @@ export const Account = () => {
 
                   <OutlineText size="medium">Password:</OutlineText>
                   <InputBox
+                    type="Password"
                     value={formData?.password ?? ""}
                     onChange={(e) =>
                       setFormData((prev) => ({

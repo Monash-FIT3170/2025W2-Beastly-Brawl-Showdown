@@ -84,6 +84,7 @@ export const LoginPage = () => {
                 placeholder="Email"
                 maxLength={50}
                 onChange={(e) => setEmail(e.target.value)}
+                type="Email"
               />
             </label>
 
@@ -108,6 +109,7 @@ export const LoginPage = () => {
                 placeholder="Password"
                 maxLength={50}
                 onChange={(e) => setPassword(e.target.value)}
+                type="Password"
               />
             </label>
 

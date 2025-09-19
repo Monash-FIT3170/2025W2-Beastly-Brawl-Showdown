@@ -6,6 +6,7 @@ interface InputProps {
   maxLength?: number;
   placeholder?: string;
   pattern?: string;
+  type?: string;
   onChange?: (e: any) => void;
 }
 
@@ -14,13 +15,14 @@ export const InputBox = ({
   maxLength,
   placeholder,
   pattern,
+  type = "text",
   onChange,
 }: InputProps) => {
   return (
     <div>
       <input
         className="bg-merino lg:text-tiny sm:text-large w-full lg:h-8 sm:h-30 text-blackCurrant font-[Jua] p-1 pl-4 lg:rounded-[15px] sm:rounded-[6rem] border-[2px] border-blackCurrant focus:outline-none"
-        type="text"
+        type={type}
         value={value}
         maxLength={maxLength}
         placeholder={placeholder}
