@@ -30,6 +30,7 @@ export interface PlayerAccountSchema {
 // Schema for the Player's monsters stats customization
 export interface PlayerMonsterStatSchema {
   monsterId: string,
+  monsterName: string,
   maxHealth: number,
   attackBonus: number,
   armourClass: number
@@ -92,11 +93,12 @@ export async function verifyPassword(inputPassword: string, hashedPassword: stri
 const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit(), new PoisonPogo(), new CharmerCobra(), new FuriousFlipper()];
 
 // Gets default stats of monsters
-function getBaseMonsterStats(monsterId: string): { maxHealth: number, attackBonus: number, armourClass: number } {
+function getBaseMonsterStats(monsterId: string): { name:string, maxHealth: number, attackBonus: number, armourClass: number } {
   const monster = monsterList.find(m => m.getId() === monsterId);
   if (!monster) {throw new Error(`Monster with id ${monsterId} not found.`);}
 
   return {
+    name: monster.getName(),
     maxHealth: monster.getMaxHealth(),
     attackBonus: monster.getAttackBonus(),
     armourClass: monster.getArmourClass(),
@@ -108,6 +110,7 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
   const baseStats = getBaseMonsterStats(monsterId);
   return {
     monsterId,
+    monsterName: baseStats.name,
     maxHealth: baseStats.maxHealth,
     attackBonus: baseStats.attackBonus,
     armourClass: baseStats.armourClass,
@@ -275,8 +278,10 @@ export async function updatePlayerAccount(
 
     // If a new password is provided, hash it
     if (updates.password) {
-      updates.password = await hashPassword(updates.password);
-    }
+  updates.password = await hashPassword(updates.password);
+  } else {
+    delete updates.password; // make sure no null/undefined overwrites existing password
+  }
 
     // Merge existing player data with updates to ensure all required fields stay filled
     const mergedPlayer: PlayerAccountSchema = {
