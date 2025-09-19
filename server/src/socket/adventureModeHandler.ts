@@ -321,13 +321,17 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         const [stat, change] = resolved.statChange!;
         adventure.getPlayer().changeStat(stat, change);
 
-        socket.emit("adventure_state", {
-          type: "stat_change",
-          result: resolved.result,
-          next: resolved.next,
-          stage: adventure.getStage(),
-          player: adventure.getPlayer().getPlayerState(),
-        });
+        if (adventure.getPlayer().getHealth() > 0) {
+          socket.emit("adventure_state", {
+            type: "stat_change",
+            result: resolved.result,
+            next: resolved.next,
+            stage: adventure.getStage(),
+            player: adventure.getPlayer().getPlayerState(),
+          });
+        } else {
+          socket.emit("adventure_defeat");
+        }
       } else if (resolved.type === "EQUIPMENT") {
         socket.emit("adventure_equipment", {
           name: resolved.equipment?.getName() || "Unknown equipment",
