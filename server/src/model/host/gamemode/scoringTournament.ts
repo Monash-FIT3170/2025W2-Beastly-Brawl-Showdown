@@ -11,6 +11,7 @@ import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
 import { ActionResult } from "/types/single/actionState";
 import { BonusSystem, defaultBonus, StreakIdentifier } from "/types/single/playerScore";
 import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
+import { PlayerState } from "../../../../../types/single/playerState";
 
 export class ScoringTournament implements IGameMode{
 	name = GameModeIdentifier.SCORING as const;
@@ -98,6 +99,20 @@ export class ScoringTournament implements IGameMode{
 
 		if (this.isSessionConcluded(session)){
 			if (session.areBattlesConcluded()){
+				const top3Scores = this.board.showBoard();
+				const winnerIds = top3Scores.map((player) => player.playerId);
+				let top3Players: PlayerState[] = [];
+				winnerIds.forEach((winnerId) => {
+					session.getPlayers().getItems().forEach((player) => {
+						if (player.getId() == winnerId) {
+							top3Players.push(player.getPlayerState());
+						}
+					});
+				});
+				session.setFinalResults({
+					top3Players,
+					top3Scores
+				});
 				const playersInSession = session.getPlayers().getItems()
 				playersInSession.forEach((player) => {
 					const playerName = player.getName()
