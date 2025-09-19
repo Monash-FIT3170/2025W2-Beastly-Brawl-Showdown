@@ -92,11 +92,30 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
             />
           </>
         ) : (
-          <img
-            className="max-w-full max-h-[300px] object-contain"
-            src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/GRAVE.png`}
-            alt="GRAVE image"
-          />
+          <>
+            <div className="mb-2 text-center">
+              <OutlineText size="large">
+                Everyone got eliminated.
+              </OutlineText>
+            </div>
+            <div className="flex flex-row items-center justify-center space-x-[3rem] h-[40vh]">
+              <img
+                className="h-1/2 object-contain"
+                src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
+                alt="Small GRAVE left"
+              />
+              <img
+                className="h-full object-contain"
+                src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
+                alt="Main GRAVE image"
+              />
+              <img
+                className="h-1/2 object-contain"
+                src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
+                alt="Small GRAVE right"
+              />
+            </div>
+          </>
         )}
       </div>
 
