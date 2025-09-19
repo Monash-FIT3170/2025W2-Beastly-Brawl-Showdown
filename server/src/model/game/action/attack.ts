@@ -29,6 +29,7 @@ export class AttackAction extends Action {
     this.diceMax = diceMax;
     this.critRate = critRate;
     this.rollRange = this.diceMax - this.diceMin + 1; // Determine the range of the dice roll
+    this.damage = 5;
   }
 
   private rollDice(): number {
@@ -152,6 +153,7 @@ export class AttackAction extends Action {
   }
 
   public getAttackState(): AttackState {
+    console.log("ATTACK DAMAGE", this.damage);
     return {
       attackDamage: this.damage,
       critRate: this.critRate,

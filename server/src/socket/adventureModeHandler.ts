@@ -63,10 +63,6 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
-      //TESTING PLEASE REMOVE
-      player.addStatus(new DamageHeal(20));
-      player.addStatus(new SlimeBoost(80));
-      player.giveConsumable(new SlimeSubstance());
       progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );

@@ -37,6 +37,7 @@ export const AdventureInfoPopup = ({
   const currentlyViewing = ["MONSTER STATS", "CURRENT STATUSES"];
 
   useEffect(() => {
+    console.log(attackState)
     //REMOVES ATTACK/DEFEND AND ANY DUPLICATE ABILITIES
     const uniqueActions = new Map<
       ActionIdentifier,
