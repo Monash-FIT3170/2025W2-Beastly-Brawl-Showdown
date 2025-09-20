@@ -19,6 +19,7 @@ import { MonsterIdentifier } from "../types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 import { WikiPage } from "./src/pages/Wiki/WikiPage";
+import { WikiIndex } from "./src/pages/Wiki/WikiIndex";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -43,7 +44,7 @@ FlowRouter.route("/wiki", {
 
 FlowRouter.route("/wiki/:slug", {
   name: "WikiPage",
-  action(params: string) {
+  action(params: any) {
     mount(() => <WikiPage pageName={params.slug as WikiPageIdentifier} />);
   },
 });

@@ -1,16 +1,17 @@
 import { useEffect } from "react"
 import React, { useState } from "react";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
+import { WikiPageIdentifier } from "../../types/WikiPageIdentifier";
 
 
 interface PageProps {
-    pageName: WikiPageIdentifier
+    pageName: WikiPageIdentifier;
 }
 
 export const WikiPage = ({ pageName }: PageProps) => {
     const [content, setContent] = useState<string>("Loading...");
 
-    useEffect(() => {
+    useEffect(() => { 
         fetch(`/wikipages/${pageName.toString()}.md`)
             .then((res) => res.text())
             .then((text) => setContent(text))
