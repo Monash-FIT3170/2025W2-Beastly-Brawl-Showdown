@@ -157,14 +157,23 @@ export abstract class Monster {
       //mini boss
       this.maxHealth = Math.ceil(this.maxHealth * 0.9);
       this.attackBonus = Math.ceil(this.attackBonus * 0.9);
+
+      this.startingHealth = Math.ceil(this.maxHealth * 0.9);
+      this.startingAttackBonus = Math.ceil(this.attackBonus * 0.9);
     } else if (stage === 8) {
       //main boss
       this.maxHealth = Math.ceil(this.maxHealth * 1.5);
       this.attackBonus = Math.ceil(this.attackBonus * 1.5);
+
+      this.startingHealth = Math.ceil(this.maxHealth * 1.5);
+      this.startingAttackBonus = Math.ceil(this.attackBonus * 1.5);
     } else {
       //every other stage
       this.maxHealth = Math.ceil(stage * 3.5);
-      this.attackBonus = Math.ceil(this.attackBonus + stage * 0.75);
+      this.attackBonus = Math.ceil(this.attackBonus + stage * 3.5);
+
+      this.startingHealth = Math.ceil(this.maxHealth * 0.9);
+      this.startingAttackBonus = Math.ceil(this.attackBonus * 0.9);
     }
   }
 }
