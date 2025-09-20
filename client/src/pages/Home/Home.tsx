@@ -45,7 +45,7 @@ export const Home = () => {
   };
 
   const renderWiki = () => {
-    FlowRouter.go("/wiki/howtoplay");
+    FlowRouter.go("/wiki");
   };
 
   const handleLoginSuccess = (username: string) => {

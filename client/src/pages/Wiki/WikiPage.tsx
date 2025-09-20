@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import React, { useState } from "react";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { WikiPageIdentifier } from "../../types/WikiPageIdentifier";
+import { BlackText } from "../../components/texts/BlackText";
 
 
 interface PageProps {
@@ -20,7 +21,11 @@ export const WikiPage = ({ pageName }: PageProps) => {
 
     return (
         <BlankPage>
-            <pre>{content}</pre>
+            <div className="flex flex-col h-full w-full">
+                <BlackText size="medium">
+                    <div className="whitespace-pre-wrap break-normal">{content}</div>
+                </BlackText>
+            </div>
         </BlankPage>
     );
 };
