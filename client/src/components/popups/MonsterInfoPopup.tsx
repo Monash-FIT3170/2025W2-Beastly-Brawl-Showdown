@@ -21,17 +21,17 @@ import { StatInfoIcon } from "../cards/StatInfoIcon";
 import { AdventureStatBar } from "../bars/AdventureStatBar";
 import { StatusButton } from "../buttons/StatusButton";
 
-export interface AdventureInfoPopupProp {
+export interface MonsterInfoPopupProp {
   playerState: PlayerState | null | undefined;
   attackState: AttackState | null | undefined;
   onClose?: () => void;
 }
 
-export const AdventureInfoPopup = ({
+export const MonsterInfoPopup = ({
   playerState,
   attackState,
   onClose,
-}: AdventureInfoPopupProp) => {
+}: MonsterInfoPopupProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
   const [currentAbilities, setCurrentAbilities] = useState<ActionState[]>([]);
   const currentlyViewing = ["MONSTER STATS", "CURRENT STATUSES"];
@@ -54,16 +54,6 @@ export const AdventureInfoPopup = ({
 
     setCurrentAbilities(Array.from(uniqueActions.values()));
     console.log(playerState)
-
-    // setCurrentAbilities([]);
-    // for (const action of playerState?.monster?.possibleActions!) {
-    //   if (
-    //     action.id !== ActionIdentifier.ATTACK &&
-    //     action.id !== ActionIdentifier.DEFEND
-    //   ) {
-    //     setCurrentAbilities((prevAbilities) => [...prevAbilities, action]);
-    //   }
-    // }
   }, [playerState?.monster?.possibleActions]);
   const monsterImgPath =
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +

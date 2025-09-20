@@ -153,7 +153,6 @@ export class AttackAction extends Action {
   }
 
   public getAttackState(): AttackState {
-    console.log("ATTACK DAMAGE", this.damage);
     return {
       attackDamage: this.damage,
       critRate: this.critRate,

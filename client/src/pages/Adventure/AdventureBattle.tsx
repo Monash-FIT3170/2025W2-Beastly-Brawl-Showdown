@@ -1,20 +1,10 @@
-import {
-  ArchetypeIdentifier,
-  MonsterIdentifier,
-} from "../../../../types/single/monsterState";
-import BattleHeader from "../../components/player-screen/BattleHeader";
+import { MonsterIdentifier } from "../../../../types/single/monsterState";
 import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
-import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import DiceRollModal from "../Game/DiceRollModal";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { useEffect, useState } from "react";
 import { BattleState } from "/types/composite/battleState";
-import {
-  ActionIdentifier,
-  ActionState,
-  AttackState,
-} from "/types/single/actionState";
-import { randomUUID } from "crypto";
+import { ActionState, AttackState } from "/types/single/actionState";
 import React from "react";
 import socket from "../../socket";
 import { DialogueBox } from "../../components/cards/DialogueBox";
@@ -32,12 +22,11 @@ import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { IconButton } from "../../components/buttons/IconButton";
 import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfoPanel";
 import { PlayerState } from "/types/single/playerState";
-import { Equipment } from "../../../../server/src/model/game/equipment/equipment";
-import { AdventureInfoPopup } from "../../components/popups/AdventureInfo";
+import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
 import { EquipmentState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
-import { PlayerInfoPanel } from "../../components/player-screen/PlayerInfoPanel";
+import { AdventureBattleHeader } from "../../components/player-screen/AdventureBattleHeader";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -238,25 +227,25 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         <LeavePopup open={showLeave} onClose={() => setShowLeave(false)} />
 
         {viewingInfo && (
-          <AdventureInfoPopup
+          <MonsterInfoPopup
             playerState={playerState}
             attackState={playerState.attackState}
             onClose={() => setViewingInfo(false)}
-          ></AdventureInfoPopup>
+          ></MonsterInfoPopup>
         )}
         {viewingEnemyInfo && (
-          <AdventureInfoPopup
+          <MonsterInfoPopup
             playerState={battleState.opponentPlayer}
             attackState={battleState.opponentPlayer.attackState}
             onClose={() => setViewingEnemyInfo(false)}
-          ></AdventureInfoPopup>
+          ></MonsterInfoPopup>
         )}
         {viewingInventory && (
-          <AdventureBagPopup
+          <MonsterInfoPopup
             playerState={playerState}
             onClose={() => setViewingInventory(false)}
             inBattle={battleState !== null}
-          ></AdventureBagPopup>
+          ></MonsterInfoPopup>
         )}
         {receivingConsumable && (
           <div>
@@ -524,7 +513,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         {/* DURING BATTLE UI */}
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
-            <PlayerInfoPanel battleState={battleState} />
+            <AdventureBattleHeader battleState={battleState} />
             {/* Buttons */}
             <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10 w-full flex justify-between">
               {/* Left side buttons */}

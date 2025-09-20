@@ -29,6 +29,7 @@ function mount(Component: React.FC) {
 FlowRouter.route("/", {
   name: "Home",
   action() {
+    document.title = "Beastly Brawl Showdown";
     mount(Home);
   },
 });

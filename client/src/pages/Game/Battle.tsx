@@ -15,6 +15,9 @@ import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { BlackText } from "../../components/texts/BlackText";
 import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
+import { IconButton } from "../../components/buttons/IconButton";
+import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
+import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -33,6 +36,8 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [time, setTime] = useState<number>(5);
   const [metadata, setMetadata] = useState<GameSessionStateMetaData | null>();
   const [waitForConclusion, setWaitForConclusion] = useState<boolean>(false);
+  const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
+  const [viewingEnemyInfo, setViewingEnemyInfo] = useState<Boolean>(false);
 
   var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   var backgroundString =
@@ -196,6 +201,20 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         className="inset-0 w-screen h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
+        {viewingInfo && (
+          <MonsterInfoPopup
+            playerState={battleState.yourPlayer}
+            attackState={battleState.yourPlayer.attackState}
+            onClose={() => setViewingInfo(false)}
+          ></MonsterInfoPopup>
+        )}
+        {viewingEnemyInfo && (
+          <MonsterInfoPopup
+            playerState={battleState.opponentPlayer}
+            attackState={battleState.opponentPlayer.attackState}
+            onClose={() => setViewingEnemyInfo(false)}
+          ></MonsterInfoPopup>
+        )}
         {/* Winner display if battle is over */}
         {/*winner === "Draw" ? (
           <DrawScreen />
@@ -219,6 +238,30 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                     metadata={metadata}
                   />
                 </div>
+                {/* Buttons */}
+                {/* TODO: test button placement */}
+                {/* <div className="flex w-full justify-between px-8">
+                  <div className="flex lg:gap-5 sm:gap-10">
+                    <IconButton
+                      style="info"
+                      iconColour="black"
+                      buttonColour="blue"
+                      size="small"
+                      onClick={() => setViewingInfo(true)}
+                    />
+                  </div>
+
+                  <div className="flex lg:gap-5 sm:gap-10 pr-[2rem]">
+                    <IconButton
+                      style="info"
+                      iconColour="black"
+                      buttonColour="redpink"
+                      size="small"
+                      onClick={() => setViewingEnemyInfo(true)}
+                    />
+                  </div>
+                </div> */}
+
                 <div className="flex flex-col h-3/4 w-full items-center justify-around">
                   <BattleMonsterPanel
                     battleState={battleState}
