@@ -15,7 +15,7 @@ import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
-import { MonsterIdentifier } from "/types/single/monsterState";
+import { MonsterIdentifier } from "../types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 
@@ -33,9 +33,19 @@ FlowRouter.route("/", {
   },
 });
 
+FlowRouter.route("/wiki", {
+  name: "WikiIndex",
+  action() {
+    mount(WikiIndex);
+  },
+});
 
-
-
+FlowRouter.route("/wiki/:slug", {
+  name: "WikiPage",
+  action() {
+    mount(WikiPage);
+  },
+});
 
 FlowRouter.route("/host", {
   name: "HostLobby",
