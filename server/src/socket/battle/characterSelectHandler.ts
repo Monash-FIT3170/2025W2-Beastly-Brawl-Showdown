@@ -66,7 +66,7 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
   });
 
   socket.on("request_adventure_monster_list", () => {
-    console.log("Requesting monster list from server");
+    console.log("ADV: Requesting monster list from server");
     const user = playerAccounts.get(socket.id);
     const unlockedMonsters = user?.adventureProgression.unlockedMonsters;
     if (unlockedMonsters) {

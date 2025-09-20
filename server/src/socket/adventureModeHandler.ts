@@ -30,6 +30,13 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
 
   //LEVEL SELECT SOCKET
+  socket.on("request_unlocked_levels", () => {
+    console.log("ADV: Requesting unlocked levels from server");
+    const unlockedLevels = [0];
+    //TODO: get actual unlocked levels.
+    socket.emit("unlocked_levels", unlockedLevels);
+  });
+
   socket.on("adventure_level_selected", async ({ level }) => {
     const player = new Player(socket.id, "Guest", null); // TODO: Use real player name
     players.set(socket.id, player);
