@@ -63,10 +63,16 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
-      progressAdventure(io, socket, adventure, adventure.getStage());
+      //progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );
 
+  socket.on("failed_connection", async ({}) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+
+    progressAdventure(io, socket, adventure, adventure.getStage());
+  });
   // Handle next outcome in adventure
   socket.on("adventure_next", async ({ stage }) => {
     const adventure = activeAdventures.get(socket.id);
