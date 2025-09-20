@@ -18,6 +18,7 @@ import AdventureWin from "./src/pages/Adventure/AdventureWin";
 import { MonsterIdentifier } from "../types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
+import { WikiPage } from "./src/pages/Wiki/WikiPage";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -42,8 +43,8 @@ FlowRouter.route("/wiki", {
 
 FlowRouter.route("/wiki/:slug", {
   name: "WikiPage",
-  action() {
-    mount(WikiPage);
+  action(params: string) {
+    mount(() => <WikiPage pageName={params.slug as WikiPageIdentifier} />);
   },
 });
 

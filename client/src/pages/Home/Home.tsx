@@ -44,6 +44,10 @@ export const Home = () => {
     FlowRouter.go("/join");
   };
 
+  const renderWiki = () => {
+    FlowRouter.go("/wiki/howtoplay");
+  };
+
   const handleLoginSuccess = (username: string) => {
     setShowLogin(false);
     setLoggedInUser(true);
@@ -97,6 +101,9 @@ export const Home = () => {
         </ButtonGeneric>
         <ButtonGeneric color="ronchi" size="large" onClick={renderAdventure}>
           <OutlineText size="large">ADVENTURE</OutlineText>
+        </ButtonGeneric>
+        <ButtonGeneric color="ronchi" size="large" onClick={renderWiki}>
+          <OutlineText size="large">RULES</OutlineText>
         </ButtonGeneric>
       </div>
 
