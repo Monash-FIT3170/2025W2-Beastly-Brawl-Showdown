@@ -27,6 +27,10 @@ import { AdventureBagPopup } from "../../components/popups/AdventureBag";
 import { EquipmentState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
 import { AdventureBattleHeader } from "../../components/player-screen/AdventureBattleHeader";
+import { ConsumablePopup } from "../../components/popups/ConsumablePopup";
+import { ConsumablePickupPopup } from "../../components/popups/ConsumablePickupPopup";
+import { ConsumableState } from "/types/single/itemState";
+import { EquipmentPickupPopup } from "../../components/popups/EquipmentPickupPopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -56,13 +60,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
   const [viewingEnemyInfo, setViewingEnemyInfo] = useState<Boolean>(false);
   const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
-  const [receivingConsumable, setReceivingConsumable] = useState<string | null>(
-    null
-  );
+  const [receivingConsumable, setReceivingConsumable] =
+    useState<ConsumableState | null>(null);
   const [consumableId, setConsumableId] = useState<string | null>(null);
-  const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
-    null
-  );
+  const [receivingEquipment, setReceivingEquipment] =
+    useState<EquipmentState | null>(null);
   const [equipmentId, setEquipmentId] = useState<string | null>(null);
   const [equipmentInventoryFull, setEquipmentInventoryFull] = useState(false);
   const [currentEquipment, setCurrentEquipment] = useState<EquipmentState[]>(
@@ -178,13 +180,13 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
     socket.on("adventure_consumable", (data) => {
       console.log("Received adventure_consumable:", data);
-      setReceivingConsumable(data.name);
+      setReceivingConsumable(data.consumable);
       setConsumableId(data.consumableId);
     });
 
     socket.on("adventure_equipment", (data) => {
       console.log("Received adventure_equipment:", data);
-      setReceivingEquipment(data.name);
+      setReceivingEquipment(data.equipment);
       setEquipmentId(data.equipmentId);
     });
 
@@ -241,89 +243,49 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
           ></MonsterInfoPopup>
         )}
         {viewingInventory && (
-          <MonsterInfoPopup
+          <AdventureBagPopup
             playerState={playerState}
             onClose={() => setViewingInventory(false)}
             inBattle={battleState !== null}
-          ></MonsterInfoPopup>
+          ></AdventureBagPopup>
         )}
         {receivingConsumable && (
-          <div>
-            <PopupClean>
-              <div className="flex flex-col justify-around items-center">
-                <OutlineText size="extraLarge">
-                  {receivingConsumable}
-                </OutlineText>
-                <div className="flex flex-row justify-between gap-x-[3rem] items-center">
-                  <ButtonGeneric
-                    size="battle"
-                    color="blue"
-                    onClick={() => {
-                      setReceivingConsumable(null);
-                      setConsumableId(null);
-                      socket.emit("adventure_take_consumable", {
-                        consumableId,
-                        stage,
-                      });
-                    }}
-                  >
-                    TAKE!
-                  </ButtonGeneric>
-                  <ButtonGeneric
-                    size="battle"
-                    color="red"
-                    onClick={() => {
-                      setReceivingConsumable(null);
-                      setConsumableId(null);
-                      socket.emit("adventure_next", { stage });
-                    }}
-                  >
-                    DROP
-                  </ButtonGeneric>
-                </div>
-              </div>
-            </PopupClean>
-          </div>
+          <ConsumablePickupPopup
+            consumable={receivingConsumable}
+            onTake={() => {
+              setReceivingConsumable(null);
+              setConsumableId(null);
+              socket.emit("adventure_take_consumable", {
+                consumableId,
+                stage,
+              });
+            }}
+            onDrop={() => {
+              setReceivingConsumable(null);
+              setConsumableId(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
         )}
         {receivingEquipment &&
           !equipmentInventoryFull &&
           !incomingEquipment && (
-            <div>
-              <PopupClean>
-                <div className="flex flex-col justify-around items-center">
-                  <OutlineText size="extraLarge">
-                    {receivingEquipment}
-                  </OutlineText>
-                  <div className="flex flex-row justify-between gap-x-[3rem] items-center">
-                    <ButtonGeneric
-                      size="battle"
-                      color="blue"
-                      onClick={() => {
-                        setReceivingEquipment(null);
-                        setEquipmentId(null);
-                        socket.emit("adventure_take_equipment", {
-                          equipmentId,
-                          stage,
-                        });
-                      }}
-                    >
-                      EQUIP!
-                    </ButtonGeneric>
-                    <ButtonGeneric
-                      size="battle"
-                      color="red"
-                      onClick={() => {
-                        setReceivingEquipment(null);
-                        setEquipmentId(null);
-                        socket.emit("adventure_next", { stage });
-                      }}
-                    >
-                      DROP
-                    </ButtonGeneric>
-                  </div>
-                </div>
-              </PopupClean>
-            </div>
+            <EquipmentPickupPopup
+              equipment={receivingEquipment}
+              onEquip={() => {
+                setReceivingEquipment(null);
+                setEquipmentId(null);
+                socket.emit("adventure_take_equipment", {
+                  equipmentId,
+                  stage,
+                });
+              }}
+              onDrop={() => {
+                setReceivingEquipment(null);
+                setEquipmentId(null);
+                socket.emit("adventure_next", { stage });
+              }}
+            />
           )}
         {equipmentInventoryFull && incomingEquipment && (
           <PopupClean>

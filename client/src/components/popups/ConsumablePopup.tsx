@@ -10,6 +10,9 @@ export interface ConsumableProp {
   onClose: () => void;
   onConsume: () => void;
   isDisabled: boolean;
+  backText?: string;
+  consumeText?: string;
+  confirmText?: string;
 }
 
 export const ConsumablePopup = ({
@@ -17,6 +20,9 @@ export const ConsumablePopup = ({
   onClose,
   onConsume,
   isDisabled,
+  backText = "BACK",
+  consumeText = "CONSUME",
+  confirmText = "Are you sure you want to consume this?",
 }: ConsumableProp) => {
   const popupLayout = `z-100  items-center
         justify-center
@@ -93,16 +99,14 @@ export const ConsumablePopup = ({
                   {consumable.statDescription}
                 </OutlineText>
               </div>
-              <BlackText size="medium">
-                Are you sure you want to consume this?
-              </BlackText>
+              <BlackText size="medium">{confirmText}</BlackText>
             </div>
 
             {/* Buttons */}
             <div className="justify-center items-center flex lg:gap-5 sm:gap-10">
               <ButtonGeneric color="red" size="battle" onClick={onClose}>
                 <div className="items-center">
-                  <OutlineText size="choice-text">BACK</OutlineText>
+                  <OutlineText size="choice-text">{backText}</OutlineText>
                 </div>
               </ButtonGeneric>
               <ButtonGeneric
@@ -112,7 +116,7 @@ export const ConsumablePopup = ({
                 onClick={consume}
               >
                 <div className="items-center">
-                  <OutlineText size="choice-text">CONSUME</OutlineText>
+                  <OutlineText size="choice-text">{consumeText}</OutlineText>
                 </div>
               </ButtonGeneric>
             </div>
