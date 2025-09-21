@@ -13,72 +13,44 @@ export class SlimeBoost extends EndStatus {
     );
   }
 
-  public effect(player: Player): void {
-    //CURRENTLY: only checks AC, HP, ATK+
-    //TODO: add logs!!
-    const buffedStat = this.getLowestStat(player);
-    var current = 0;
-    switch (buffedStat) {
-      case "AC":
-        //Doubles AC for this round.
-        current = player.getArmourClassStat();
-        player.incArmourClassStat(5);
-        player.addLog("Your Slime Boost has increased your Armour Class by 5!");
-        console.log(`Slime Boost: Boosted AC +5`);
-      // case "HP":
-      //   // Heals for 3 HP
-      //   current = player.getHealth();
-      //   player.incHealth(3);
-      //   console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
-      default:
-        //Doubles ATK+
-        current = player.getAttackStat();
-        player.incAttackStat(2);
-        player.addLog("Your Slime Boost has increased your Attack Bonus by 2!");
-        console.log(`Slime Boost: ${player.getName()} Boosted ATK Bonus +2`);
-    }
-  }
-
   public endingEffect(player: Player): void {
     const buffedStat = this.getLowestStat(player);
+    console.error(
+      `SLIME BOOST DEBUG for ${player.getName()}, Stat Boosted: ${buffedStat}`
+    );
     var current = 0;
     switch (buffedStat) {
       case "AC":
-        //Doubles AC for this round.
         current = player.getArmourClassStat();
         player.incArmourClassStat(5);
         player.addLog("Your Slime Boost has increased your Armour Class by 5!");
         console.log(`Slime Boost: Boosted AC +5`);
       // case "HP":
-      //   // Heals for 3 HP
       //   current = player.getHealth();
       //   player.incHealth(3);
       //   console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
-      default:
-        //Doubles ATK+
+      case "ATK":
         current = player.getAttackStat();
         player.incAttackStat(2);
         player.addLog("Your Slime Boost has increased your Attack Bonus by 2!");
         console.log(`Slime Boost: ${player.getName()} Boosted ATK Bonus +2`);
     }
-
-    console.error("Slime Support NOT TESTED");
   }
 
   private getLowestStat(player: Player): string {
     //TODO: verify my ranges/scale is fine
     const minAC = (player.getMonster()?.getArmourClass() ?? 12) - 4;
     const maxAC = (player.getMonster()?.getArmourClass() ?? 16) + 4;
-    const maxHP = player.getMonster()?.getMaxHealth() ?? 20;
+    // const maxHP = player.getMonster()?.getMaxHealth() ?? 20;
 
     //SCALES
     const acScale: [number, number] = [minAC, maxAC]; // -4 monster AC to + 4 monster AC
     const atkScale: [number, number] = [0, 6]; // 0 to 6
-    const hpScale: [number, number] = [1, maxHP]; //1 to max health
+    // const hpScale: [number, number] = [1, maxHP]; //1 to max health
 
     const currentAC = player.getArmourClassStat();
     const currentATK = player.getAttackStat();
-    const currentHP = player.getHealth();
+    // const currentHP = player.getHealth();
 
     const stats = {
       AC: this.getRelativeValue(currentAC, acScale),
@@ -103,7 +75,6 @@ export class SlimeBoost extends EndStatus {
   }
 
   public updateLogs(player: Player): void {}
-  public expire(): void {
-    console.error("Method not implemented.");
-  }
+
+  public expire(): void {}
 }

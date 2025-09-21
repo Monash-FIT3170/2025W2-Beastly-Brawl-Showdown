@@ -196,6 +196,13 @@ export class Player {
 
   public resetStats(): void {
     if (this.monster) {
+      console.error(
+        `DEBUG: Resetting stats for ${this.name}, ATK: ${
+          this.currentAttackStat
+        } to ${this.monster.getAttackBonus()}, AC: ${
+          this.currentArmourClassStat
+        } to ${this.monster.getArmourClass()}`
+      );
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
       this.dodging = false; //TODO: fix
