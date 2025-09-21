@@ -48,12 +48,15 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   useEffect(() => {
     socket.on("update_animation", (set: string) => {
       if (set === "prepare") {
+        console.log("Prepare Animations Update");
         setanimationRightMon(battleState.opponentPlayer.prepareAnimations);
         setanimationLeftMon(battleState.yourPlayer.prepareAnimations);
       } else if (set == "execute") {
+        console.log("Execute Animations Update");
         setanimationRightMon(battleState.opponentPlayer.executeAnimations);
         setanimationLeftMon(battleState.yourPlayer.executeAnimations);
       } else if (set == "default") {
+        console.log("Default Animations Update");
         setanimationRightMon(["default"]);
         setanimationLeftMon(["default"]);
       }
@@ -124,6 +127,17 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
                 src={pathTest}
               />
             </div>
+            {/* Testing Monster Image */}
+            <div
+              className={`${
+                animationRightMon.includes("stunned") ? "" : "hidden"
+              } absolute z-10`}
+            >
+              <img
+                className=" relative transform -scale-x-100 z-100"
+                src={getStatusOverlay("stun")}
+              />
+            </div>
           </div>
           {/* Shadow */}
           <img
@@ -136,5 +150,17 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
     </div>
   );
 };
+
+function getStatusOverlay(status: string): string {
+  return `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.toUpperCase()}.png`;
+}
+
+function getAbilityOverlay(monster: MonsterIdentifier): string {
+  return (
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+    monster +
+    "_ABILITY.png"
+  );
+}
 
 export default BattleMonsterPanel;

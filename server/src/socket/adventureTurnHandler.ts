@@ -70,28 +70,49 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
           action.prepare(player2, player1);
         });
 
-        // Emitting player1's action animations
+        // Prepare animations
+        var player1DiceRoll = 0;
+        var player2DiceRoll = 0;
+
         player1.getActions().forEach((action) => {
           const animationInfo = action.prepareAnimation();
-          const animationType = animationInfo[0];
-          const diceRollNumber = animationInfo[1];
-          console.log(
-            `ADV: Animation P1 - ${animationType}, ${diceRollNumber}`
-          );
-          io.to(player1.getId()).emit(String(animationType), diceRollNumber);
+          if (typeof animationInfo === "string") {
+            player1.addPrepareAnimation(animationInfo);
+            console.log(`ADV: Animation P1 - ${animationInfo}`);
+          } else {
+            const [animationType, diceRoll] = animationInfo;
+            player1.addPrepareAnimation(animationType);
+            player1DiceRoll = diceRoll;
+            console.log(`ADV: Animation P1 - ${animationType}, ${diceRoll}`);
+          }
         });
 
-        // Emitting player2's action animations
         player2.getActions().forEach((action) => {
           const animationInfo = action.prepareAnimation();
-          const animationType = animationInfo[0];
-          const diceRollNumber = animationInfo[1];
-          console.log(
-            `ADV: Animation P2 - ${animationType}, ${diceRollNumber}`
-          );
-          io.to(player2.getId()).emit(String(animationType), diceRollNumber);
+          if (typeof animationInfo === "string") {
+            player2.addPrepareAnimation(animationInfo);
+            console.log(`ADV: Animation P2 - ${animationInfo}`);
+          } else {
+            const [animationType, diceRoll] = animationInfo;
+            player1.addPrepareAnimation(animationType);
+            player2DiceRoll = diceRoll;
+            console.log(`ADV: Animation P2 - ${animationType}, ${diceRoll}`);
+          }
         });
 
+        io.to(player1.getId()).emit("update_animation", "prepare");
+        io.to(player2.getId()).emit("update_animation", "prepare");
+
+        // Roll animations
+        //TODO: add time out before dice roll
+        if (player1.getPrepareAnimations().includes("roll_dice")) {
+          io.to(player1.getId()).emit("roll_dice", player1DiceRoll);
+        }
+        if (player2.getPrepareAnimations().includes("roll_dice")) {
+          io.to(player2.getId()).emit("roll_dice", player2DiceRoll);
+        }
+
+        //TODO: update battle footer to display animation stage if we want?
         // Remove possible actions essentially hiding the battle footer until animations and calculations are done.
         io.to(playerId).emit("possible_actions", []);
 
@@ -113,6 +134,11 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             }
           });
 
+          // Execute animations
+          io.to(player1.getId()).emit("update_animation", "execute");
+          io.to(player2.getId()).emit("update_animation", "execute");
+          // TODO: figure out when(if?) to go back to normal
+
           //reset stats
           playersInBattle.forEach((p) => {
             p.resetStats();
@@ -121,6 +147,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             p.endStatusEffects();
             p.tickStatuses();
             p.startStatusEffects();
+            p.clearAnimations();
           });
 
           //update battlestate
@@ -129,9 +156,6 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             battle: battle?.getBattleState(playerId),
           });
 
-          console.log("Player hp", player1.getHealth());
-          console.log("Player ac", player1.getArmourClassStat());
-          console.log("Player atk", player1.getAttackStat());
           //check if battle is over
           if (battle?.isBattleOver()) {
             console.log(`ADV: battle is over!`);
