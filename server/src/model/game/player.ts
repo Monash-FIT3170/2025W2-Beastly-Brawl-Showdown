@@ -423,8 +423,9 @@ export class Player {
     animation: string,
     removeDefault: boolean = false
   ): void {
+    // console.error("addPrepareAnimation()", animation);
     if (removeDefault) {
-      this.executeAnimations.filter((a) => a !== "default");
+      this.prepareAnimations.filter((a) => a !== "default");
     }
     this.prepareAnimations.push(animation);
   }

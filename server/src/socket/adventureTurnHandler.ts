@@ -8,6 +8,7 @@ import { loadNextStory, progressAdventure } from "./adventureModeHandler";
 import { ActionRandomiser } from "../model/game/actionRandomiser";
 import { ActionIdentifier } from "../../../types/single/actionState";
 import { Action } from "../model/game/action/action";
+import { StartStatus } from "../model/game/status/startStatus";
 
 export const adventureTurnHandler = (io: Server, socket: Socket) => {
   // Handle player actions in adventure
@@ -77,11 +78,11 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
         player1.getActions().forEach((action) => {
           const animationInfo = action.prepareAnimation();
           if (typeof animationInfo === "string") {
-            player1.addPrepareAnimation(animationInfo);
+            player1.addPrepareAnimation(animationInfo.toLowerCase(), true);
             console.log(`ADV: Animation P1 - ${animationInfo}`);
           } else {
             const [animationType, diceRoll] = animationInfo;
-            player1.addPrepareAnimation(animationType);
+            player1.addPrepareAnimation(animationType.toLowerCase());
             player1DiceRoll = diceRoll;
             console.log(`ADV: Animation P1 - ${animationType}, ${diceRoll}`);
           }
@@ -90,14 +91,38 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
         player2.getActions().forEach((action) => {
           const animationInfo = action.prepareAnimation();
           if (typeof animationInfo === "string") {
-            player2.addPrepareAnimation(animationInfo);
+            player2.addPrepareAnimation(animationInfo.toLowerCase(), true);
             console.log(`ADV: Animation P2 - ${animationInfo}`);
           } else {
             const [animationType, diceRoll] = animationInfo;
-            player1.addPrepareAnimation(animationType);
+            player2.addPrepareAnimation(animationType.toLowerCase());
             player2DiceRoll = diceRoll;
             console.log(`ADV: Animation P2 - ${animationType}, ${diceRoll}`);
           }
+        });
+
+        //TODO: move this to start of turn not on click(prepare)
+        player1
+          .getStatuses()
+          .filter((s) => s instanceof StartStatus)
+          .forEach((s) => {
+            console.error("ADV: p1 - Starting Status", s.getName());
+            player1.addPrepareAnimation(s.getName().toLowerCase());
+            player1.addExecuteAnimation(s.getName().toLowerCase());
+          });
+        player2
+          .getStatuses()
+          .filter((s) => s instanceof StartStatus)
+          .forEach((s) => {
+            console.error("ADV: p2 - Starting Status", s.getName());
+            player2.addPrepareAnimation(s.getName().toLowerCase());
+            player2.addExecuteAnimation(s.getName().toLowerCase());
+          });
+
+        //update battlestate
+        io.to(playerId).emit("adventure_state", {
+          type: "battle",
+          battle: battle?.getBattleState(playerId),
         });
 
         io.to(player1.getId()).emit("update_animation", "prepare");
@@ -134,6 +159,8 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             }
           });
 
+          //TODO: add ending status animations
+
           // Execute animations
           io.to(player1.getId()).emit("update_animation", "execute");
           io.to(player2.getId()).emit("update_animation", "execute");
@@ -148,6 +175,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             p.tickStatuses();
             p.startStatusEffects();
             p.clearAnimations();
+            console.error(
+              `${p.getName()} Reset Prepare Animations: ${p.getPrepareAnimations()}`
+            );
           });
 
           //update battlestate
@@ -155,6 +185,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             type: "battle",
             battle: battle?.getBattleState(playerId),
           });
+
+          io.to(player1.getId()).emit("update_animation", "default");
+          io.to(player2.getId()).emit("update_animation", "default");
 
           //check if battle is over
           if (battle?.isBattleOver()) {

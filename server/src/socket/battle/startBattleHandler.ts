@@ -119,11 +119,11 @@ export default function proceedBattleTurn(
       player1.getActions().forEach((action) => {
         const animationInfo = action.prepareAnimation();
         if (typeof animationInfo === "string") {
-          player1.addPrepareAnimation(animationInfo);
+          player1.addPrepareAnimation(animationInfo.toLowerCase());
           console.log(`ADV: Animation P1 - ${animationInfo}`);
         } else {
           const [animationType, diceRoll] = animationInfo;
-          player1.addPrepareAnimation(animationType);
+          player1.addPrepareAnimation(animationType.toLowerCase());
           player1DiceRoll = diceRoll;
           console.log(`ADV: Animation P1 - ${animationType}, ${diceRoll}`);
         }
@@ -132,11 +132,11 @@ export default function proceedBattleTurn(
       player2.getActions().forEach((action) => {
         const animationInfo = action.prepareAnimation();
         if (typeof animationInfo === "string") {
-          player2.addPrepareAnimation(animationInfo);
+          player2.addPrepareAnimation(animationInfo.toLowerCase());
           console.log(`ADV: Animation P2 - ${animationInfo}`);
         } else {
           const [animationType, diceRoll] = animationInfo;
-          player1.addPrepareAnimation(animationType);
+          player1.addPrepareAnimation(animationType.toLowerCase());
           player2DiceRoll = diceRoll;
           console.log(`ADV: Animation P2 - ${animationType}, ${diceRoll}`);
         }
