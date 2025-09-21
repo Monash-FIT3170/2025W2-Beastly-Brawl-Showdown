@@ -564,7 +564,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
             <BattleMonsterPanel
               battleState={battleState}
-              slimeString={backgroundLocation}
+              biome={backgroundLocation}
             />
 
             <div

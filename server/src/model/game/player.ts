@@ -37,6 +37,9 @@ export class Player {
   private noNullAction: number = 0;
   static roundToCheck: number = 5; //change the value here
 
+  private prepareAnimations: string[] = ["default"];
+  private executeAnimations: string[] = ["default"];
+
   constructor(
     id: string,
     name: string,
@@ -392,6 +395,40 @@ export class Player {
     this.equipment = [];
   }
 
+  //ANIMATION METHODS:
+  public getExecuteAnimations(): string[] {
+    return this.executeAnimations;
+  }
+
+  public getPrepareAnimations(): string[] {
+    return this.prepareAnimations;
+  }
+
+  public clearAnimations(): void {
+    this.executeAnimations = ["default"];
+    this.prepareAnimations = ["default"];
+  }
+
+  public addExecuteAnimation(
+    animation: string,
+    removeDefault: boolean = false
+  ): void {
+    if (removeDefault) {
+      this.executeAnimations.filter((a) => a !== "default");
+    }
+    this.executeAnimations.push(animation);
+  }
+
+  public addPrepareAnimation(
+    animation: string,
+    removeDefault: boolean = false
+  ): void {
+    if (removeDefault) {
+      this.executeAnimations.filter((a) => a !== "default");
+    }
+    this.prepareAnimations.push(animation);
+  }
+
   //PLAYER STATE:
   public getPlayerState(): PlayerState {
     return {
@@ -416,6 +453,8 @@ export class Player {
       equipment: this.equipment.map((e) => e.getState()),
       consumables: this.consumables.map((c) => c.getState()),
       attackState: this.getMonster()?.getAttackAction().getAttackState()!,
+      prepareAnimations: this.prepareAnimations,
+      executeAnimations: this.executeAnimations,
     };
   }
 }

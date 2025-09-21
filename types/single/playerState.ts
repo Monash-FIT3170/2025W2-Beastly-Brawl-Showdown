@@ -27,4 +27,7 @@ export interface PlayerState {
   consumables: ConsumableState[];
 
   attackState: AttackState;
+
+  prepareAnimations: string[];
+  executeAnimations: string[];
 }
