@@ -95,5 +95,21 @@
         ]
       }
     ]
+  },
+  {
+    "id": "fire_encounter",
+    "level": [2],
+    "description": "Fire slime encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Off in the distance you hear squelches.",
+          "Whatever creature is making these noises sounds as though it is small and helpless."
+        ],
+        "type": "DIALOGUE",
+        "next": "choice_1"
+      }
+    ]
   }
 ]

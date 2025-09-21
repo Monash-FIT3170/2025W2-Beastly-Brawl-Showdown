@@ -1,6 +1,6 @@
 [
   {
-    "id": "slime_1",
+    "id": "green_slime",
     "level": [1],
     "description": "Stage 1, player fights slime 1.",
     "outcomes": [
@@ -8,6 +8,50 @@
         "id": "initial",
         "result": [
           "A small, green, gelatinous creature bounces around you.",
+          "It looks harmless enough."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["blob. blob.. blob...", "b l o b ."],
+        "type": "DIALOGUE",
+        "enemyId": "slime_1",
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": "slime_1",
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "You defeated the slime!",
+          "You hear something clatter on the ground.",
+          "It's green and slimy to the touch."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_stench"
+      },
+      {
+        "id": "slime_stench",
+        "type": "EQUIPMENT",
+        "equipmentId": "oozingBlade"
+      }
+    ]
+  },
+  {
+    "id": "fire_slime",
+    "level": [2],
+    "description": "Stage 1, player fights fire slime.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "A small, red, gelatinous creature bounces around you.",
           "It looks harmless enough."
         ],
         "type": "DIALOGUE",
