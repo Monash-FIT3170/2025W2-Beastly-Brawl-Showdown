@@ -11,12 +11,12 @@ import { Game } from "./src/pages/Lobby/Game";
 import Rules from "./src/pages/Game/Rules";
 import MatchSummary from "./src/pages/Host View/MatchSummary";
 import LevelSelect from "./src/pages/Adventure/LevelSelect";
-import MonsterSelect from "./src/pages/Adventure/MonsterSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
+import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 
 function mount(Component: React.FC) {
@@ -29,25 +29,23 @@ function mount(Component: React.FC) {
 FlowRouter.route("/", {
   name: "Home",
   action() {
+    document.title = "Beastly Brawl Showdown";
     mount(Home);
   },
 });
 
-
-
-
-
 FlowRouter.route("/host", {
   name: "HostLobby",
   action() {
+    document.title = "Hosting... | Beastly Brawl Showdown";
     mount(HostLobby);
   },
 });
 
-
-FlowRouter.route('/host/choose-mode', {
-  name: 'GameConfiguration',
+FlowRouter.route("/host/choose-mode", {
+  name: "GameConfiguration",
   action() {
+    document.title = "Hosting... | Beastly Brawl Showdown";
     mount(GameConfiguration);
   },
 });
@@ -55,6 +53,7 @@ FlowRouter.route('/host/choose-mode', {
 FlowRouter.route("/host/:code?", {
   name: "HostLobby",
   action(params) {
+    document.title = "Host Lobby | Beastly Brawl Showdown";
     mount(() => <HostLobby gameCode={params.code} />);
   },
 });
@@ -62,6 +61,7 @@ FlowRouter.route("/host/:code?", {
 FlowRouter.route("/join", {
   name: "JoinLobby",
   action() {
+    document.title = "Join | Beastly Brawl Showdown";
     mount(JoinLobby);
   },
 });
@@ -69,20 +69,47 @@ FlowRouter.route("/join", {
 FlowRouter.route("/join/:code?", {
   name: "JoinLobby",
   action(params) {
+    document.title = "Join | Beastly Brawl Showdown";
     mount(() => <JoinLobby gameCode={params.code} />);
   },
 });
 
 FlowRouter.route("/account", {
   name: "Account",
-  action(params) {
+  action() {
+    document.title = "My Account | Beastly Brawl Showdown";
     mount(() => <Account />);
+  },
+});
+
+FlowRouter.route("/leaderboard", {
+  name: "Leaderboard",
+  action() {
+    document.title = "Leaderboard | Beastly Brawl Showdown";
+    mount(() => <BlankPage />);
+  },
+});
+
+FlowRouter.route("/help", {
+  name: "Help",
+  action() {
+    document.title = "Help | Beastly Brawl Showdown";
+    mount(() => <BlankPage />);
+  },
+});
+
+FlowRouter.route("/dev-notes", {
+  name: "Dev Notes",
+  action() {
+    document.title = "Dev Notes | Beastly Brawl Showdown";
+    mount(() => <BlankPage />);
   },
 });
 
 FlowRouter.route("/battle/:battleId?", {
   name: "Battle",
   action(params) {
+    document.title = "Battle | Beastly Brawl Showdown";
     mount(() => <Battle battleId={params.battleId} />);
   },
 });
@@ -94,10 +121,10 @@ FlowRouter.route("/session/:sessionId?", {
   },
 });
 
-
 FlowRouter.route("/battles/:code?", {
   name: "MatchSummary",
   action(params) {
+    document.title = "Host Battles | Beastly Brawl Showdown";
     mount(() => <MatchSummary gameCode={params.code} />);
   },
 });
@@ -105,15 +132,16 @@ FlowRouter.route("/battles/:code?", {
 FlowRouter.route("/adventure/level-select", {
   name: "LevelSelect",
   action() {
+    document.title = "Level Select - Adventure Mode | Beastly Brawl Showdown";
     mount(LevelSelect);
   },
 });
 
-
 FlowRouter.route("/adventure/monster-select", {
   name: "MonsterSelect",
   action() {
-    mount(MonsterSelect);
+    document.title = "Monster Select - Adventure Mode | Beastly Brawl Showdown";
+    mount(AdventureMonsterSelect);
   },
 });
 
@@ -131,21 +159,16 @@ adventureLevelMonsters.forEach((monster) => {
   FlowRouter.route(`/adventure/adventure-${monster}`, {
     name: "AdventureBattle",
     action() {
-      mount(() => <AdventureBattle stage={1} levelMonster={monster} />);
+      document.title = "Adventure Mode | Beastly Brawl Showdown";
+      mount(() => <AdventureBattle levelMonster={monster} />);
     },
   });
 });
 
-FlowRouter.route("/adventure/defeated", {
-  name: "AdventureDefeated",
+FlowRouter.route("/adventure/win/:monsterId", {
+  name: "adventure.win",
   action() {
-    mount(AdventureDefeated);
-  },
-});
-
-FlowRouter.route('/adventure/win/:monsterId', {
-  name: 'adventure.win',
-  action() {
+    document.title = "Victory! - Adventure Mode | Beastly Brawl Showdown";
     mount(AdventureWin);
   },
 });
@@ -153,6 +176,7 @@ FlowRouter.route('/adventure/win/:monsterId', {
 FlowRouter.route("/adventure/defeat", {
   name: "AdventureDefeat",
   action() {
+    document.title = "Defeat! - Adventure Mode | Beastly Brawl Showdown";
     mount(AdventureDefeated);
   },
 });
@@ -160,6 +184,7 @@ FlowRouter.route("/adventure/defeat", {
 FlowRouter.route("/rules", {
   name: "Rules",
   action() {
+    document.title = "Rules | Beastly Brawl Showdown";
     mount(Rules);
   },
 });

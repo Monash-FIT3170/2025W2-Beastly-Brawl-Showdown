@@ -17,7 +17,7 @@ interface OutlineTextProps {
 
 export const OutlineText = ({ children, size }: OutlineTextProps) => {
   const sizeLoader: Record<string, string> = {
-    tiny: "text-[2rem] lg:text-tiny",
+    tiny: "text-[2rem] lg:text-[1.5rem]",
     small: "text-[1.5rem] lg:text-[2rem]",
     midsmall: "text-[2rem] lg:text-small",
     medium: "text-[3rem] lg:text-medium",

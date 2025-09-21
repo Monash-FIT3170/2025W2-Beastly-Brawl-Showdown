@@ -1,20 +1,10 @@
-import {
-  ArchetypeIdentifier,
-  MonsterIdentifier,
-} from "../../../../types/single/monsterState";
-import BattleHeader from "../../components/player-screen/BattleHeader";
+import { MonsterIdentifier } from "../../../../types/single/monsterState";
 import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
-import { FadingBattleText } from "../../components/texts/FadingBattleText";
 import DiceRollModal from "../Game/DiceRollModal";
 import { BattleFooter } from "../../components/cards/BattleFooter";
 import { useEffect, useState } from "react";
 import { BattleState } from "/types/composite/battleState";
-import {
-  ActionIdentifier,
-  ActionState,
-  AttackState,
-} from "/types/single/actionState";
-import { randomUUID } from "crypto";
+import { ActionState, AttackState } from "/types/single/actionState";
 import React from "react";
 import socket from "../../socket";
 import { DialogueBox } from "../../components/cards/DialogueBox";
@@ -32,12 +22,11 @@ import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { IconButton } from "../../components/buttons/IconButton";
 import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfoPanel";
 import { PlayerState } from "/types/single/playerState";
-import { Equipment } from "../../../../server/src/model/game/equipment/equipment";
-import { AdventureInfoPopup } from "../../components/popups/AdventureInfo";
+import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
 import { EquipmentState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
-import { PlayerInfoPanel } from "../../components/player-screen/PlayerInfoPanel";
+import { AdventureBattleHeader } from "../../components/player-screen/AdventureBattleHeader";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -96,6 +85,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     setChoices(null);
   };
 
+  socket.on("adventure_defeat", () => {
+    FlowRouter.go("/adventure/defeat");
+  });
+
   useEffect(() => {
     const onAdventureWin = ({ monsterId }: { monsterId: string }) => {
       FlowRouter.go(`/adventure/win/${monsterId}`);
@@ -148,7 +141,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       console.log(state.stage);
       if (state.type === "battle") {
         setBattleState(state.battle);
-        console.log("STARTING LOGS...", battleState?.yourPlayer.battleLogs);
+        console.log("STARTING LOGS...", battleState?.yourPlayer.logs);
         setDialogue(null); // Clear dialogue
         setCurrentEnemy(null);
       } else if (state.type === "dialogue") {
@@ -234,41 +227,28 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         <LeavePopup open={showLeave} onClose={() => setShowLeave(false)} />
 
         {viewingInfo && (
-          <AdventureInfoPopup
+          <MonsterInfoPopup
             playerState={playerState}
             attackState={playerState.attackState}
             onClose={() => setViewingInfo(false)}
-          ></AdventureInfoPopup>
+          ></MonsterInfoPopup>
         )}
         {viewingEnemyInfo && (
-          <AdventureInfoPopup
+          <MonsterInfoPopup
             playerState={battleState.opponentPlayer}
             attackState={battleState.opponentPlayer.attackState}
             onClose={() => setViewingEnemyInfo(false)}
-          ></AdventureInfoPopup>
+          ></MonsterInfoPopup>
         )}
         {viewingInventory && (
-          <AdventureBagPopup
+          <MonsterInfoPopup
             playerState={playerState}
             onClose={() => setViewingInventory(false)}
             inBattle={battleState !== null}
-          ></AdventureBagPopup>
+          ></MonsterInfoPopup>
         )}
         {receivingConsumable && (
           <div>
-            {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              ></IconButton>
-              <LeavePopup
-                open={showLeave}
-                onClose={() => setShowLeave(false)}
-              ></LeavePopup> */}
-            {/* </div> */}
             <PopupClean>
               <div className="flex flex-col justify-around items-center">
                 <OutlineText size="extraLarge">
@@ -434,19 +414,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         )}
         {statChange && (
           <div>
-            {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-              <IconButton
-                style="arrowleft"
-                iconColour="black"
-                buttonColour="red"
-                size="small"
-                onClick={() => setShowLeave(true)}
-              ></IconButton>
-              <LeavePopup
-                open={showLeave}
-                onClose={() => setShowLeave(false)}
-              ></LeavePopup>
-            </div> */}
             <StatChangePopup
               messages={statChange}
               onClose={() => {
@@ -456,18 +423,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           </div>
         )}
-
-        {/**{statusResult && (
-          <div>
-            <StatChangePopup
-              messages={statusResult}
-              onClose={() => {
-                setStatusResult(null);
-                socket.emit("adventure_next", { stage });
-              }}
-            />
-          </div>
-        )}*/}
 
         {statusResult && (
           <div>
@@ -492,27 +447,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         )}
         {choices && (
           <>
-            {/* {choices.map((choice, idx) => (
-            <DialogueChoiceButton
-              key={idx}
-              children={choice.text}
-              onClick={() => handleChoiceSelect(choice.next)}
-            />
-          ))} */}
             <div>
-              {/* <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] z-[10000] pointer-events-auto">
-                <IconButton
-                  style="arrowleft"
-                  iconColour="black"
-                  buttonColour="red"
-                  size="small"
-                  onClick={() => setShowLeave(true)}
-                ></IconButton>
-                <LeavePopup
-                  open={showLeave}
-                  onClose={() => setShowLeave(false)}
-                ></LeavePopup>
-              </div> */}
               <ChoicePopup
                 question={question![0]}
                 choices={choices}
@@ -578,7 +513,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         {/* DURING BATTLE UI */}
         {battleState && (
           <div className="battle-state-parts item-center justify-center ">
-            <PlayerInfoPanel battleState={battleState} />
+            <AdventureBattleHeader battleState={battleState} />
             {/* Buttons */}
             <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10 w-full flex justify-between">
               {/* Left side buttons */}

@@ -15,13 +15,12 @@ export class FortressStanceAbilityAction extends Action {
     );
   }
 
-
   public prepareAnimation(): string | [string, number] {
     return "Fortress_Stance_Animation";
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
-  
+
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
 
@@ -43,11 +42,13 @@ export class FortressStanceAbilityAction extends Action {
       } AC for 1 turn.`
     );
 
+    this.executeBattleEffect(actingPlayer, affectedPlayer, true);
+
     //Increasing AC should be a self-buff (as in Status) but with our current design I dont think it is...
     return {
       appliedStatus: {
-        success: false
-      }
-    }
+        success: false,
+      },
+    };
   }
 }

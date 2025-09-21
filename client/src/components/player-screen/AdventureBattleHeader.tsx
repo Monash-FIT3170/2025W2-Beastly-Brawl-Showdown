@@ -3,11 +3,11 @@ import { BattleHealthBar } from "../bars/BattleHealthBar";
 import { BattleState } from "/types/composite/battleState";
 import { OutlineText } from "../texts/OutlineText";
 
-interface PlayerInfoPanelProps {
+interface AdventureBattleHeaderProps {
   battleState: BattleState;
 }
 
-export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
+export const AdventureBattleHeader: React.FC<AdventureBattleHeaderProps> = ({
   battleState,
 }) => {
   return (
@@ -124,4 +124,4 @@ export const PlayerInfoPanel: React.FC<PlayerInfoPanelProps> = ({
   );
 };
 
-export default PlayerInfoPanel;
+export default AdventureBattleHeader;

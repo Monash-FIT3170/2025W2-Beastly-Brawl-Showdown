@@ -3,6 +3,7 @@ import { Player } from "../player";
 import { Status } from "./status";
 
 export class LakeBlessing extends Status {
+  //TODO: pick a statustype..
   constructor(countdown: number = 20) {
     super(
       "Lake Blessing",
@@ -18,5 +19,11 @@ export class LakeBlessing extends Status {
     ) {
       player.setArmourClassStat(player.getArmourClassStat() + 5);
     }
+  }
+  public updateLogs(player: Player): void {
+    player.addLog("You have been blessed, resurrection is possible!");
+  }
+  public expire(): void {
+    console.error("Method not implemented.");
   }
 }

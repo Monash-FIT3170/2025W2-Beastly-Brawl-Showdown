@@ -12,18 +12,15 @@ import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
 import { Action } from "../model/game/action/action";
 import { AttackAction } from "../model/game/action/attack";
-import { PercentageHealthPotion } from "../model/game/consumables/healthPotion";
-import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
-import { MagicShield } from "../model/game/equipment/magicShield";
-import { OozingBlade } from "../model/game/equipment/oozingBlade";
 import { ConsumableState } from "/types/single/itemState";
 import { ConsumeAction } from "../model/game/action/consume";
 import { createEquipment } from "../model/adventure/factories/equipmentFactory";
+import { createConsumable } from "../model/adventure/factories/consumableFactory";
+import { DamageHeal } from "../model/game/status/damageHeal";
 import { Poison } from "../model/game/status/poison";
 import { Stun } from "../model/game/status/stun";
 import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
-import { LakeCurse } from "../model/game/status/lakeCurse";
-import { createConsumable } from "../model/adventure/factories/consumableFactory";
+import { StoryItem } from "../model/game/consumables/storyItem/storyItem";
 import { SlimeBoost } from "../model/game/status/slimeBoost";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
@@ -119,8 +116,18 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         `ADV: Player - ${playerId}, Adding Consumable - ${consumable.name}`
       );
       const player = players.get(playerId);
-      const action = new ConsumeAction(consumable.name);
-      player?.addAction(action);
+      if (!player?.hasConsumable(consumable.name)) {
+        console.error(
+          `${player?.getName()} does not have consumable of name ${
+            consumable.name
+          }`
+        );
+      } else {
+        const item = player.getConsumable(consumable.name);
+        const action = new ConsumeAction(item);
+        player.addAction(action);
+        player.removeConsumable(item);
+      }
     }
   );
 
@@ -161,6 +168,9 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     if (consumableId) {
       const consumable = createConsumable(consumableId);
       player.giveConsumable(consumable);
+      if (consumable instanceof StoryItem) {
+        consumable.setAdventure(adventure);
+      }
     }
 
     const lastOutcome = loadNextStory(io, adventure, socket);
@@ -175,6 +185,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
     progressAdventure(io, socket, adventure, stage);
   });
+
   socket.on("monster_request", ({ id }) => {
     const monster = getMonster(id);
     if (monster) {
@@ -255,6 +266,9 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         battles.set(socket.id, battle);
         console.log(`ADV: New Battle for ${socket.id}`);
         // Send battle state to client
+        battle.getPlayers().forEach((p) => {
+          p.startStatusEffects();
+        });
         socket.emit("adventure_state", {
           type: "battle",
           battle: battle.getBattleState(socket.id),
@@ -313,13 +327,17 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         const [stat, change] = resolved.statChange!;
         adventure.getPlayer().changeStat(stat, change);
 
-        socket.emit("adventure_state", {
-          type: "stat_change",
-          result: resolved.result,
-          next: resolved.next,
-          stage: adventure.getStage(),
-          player: adventure.getPlayer().getPlayerState(),
-        });
+        if (adventure.getPlayer().getHealth() > 0) {
+          socket.emit("adventure_state", {
+            type: "stat_change",
+            result: resolved.result,
+            next: resolved.next,
+            stage: adventure.getStage(),
+            player: adventure.getPlayer().getPlayerState(),
+          });
+        } else {
+          socket.emit("adventure_defeat");
+        }
       } else if (resolved.type === "EQUIPMENT") {
         socket.emit("adventure_equipment", {
           name: resolved.equipment?.getName() || "Unknown equipment",
@@ -332,7 +350,12 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
             adventure.pastEncounters.push(adventure.currentOutcomeId);
             break;
           }
-          const setB = new Set(adventure.pastEncounters);
+          const setB = new Set(
+            adventure
+              .getPlayer()
+              .getConsumables()
+              .map((c) => c.getName())
+          );
           const allPresent = option.prerequisite?.every((item) =>
             setB.has(item)
           );
