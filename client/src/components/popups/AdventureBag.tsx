@@ -1,17 +1,10 @@
 import React, { ReactNode, useState } from "react";
-import { PopupClean } from "./PopupClean";
-import { ChoicePopup } from "./ChoicePopup";
 import socket from "../../socket";
-import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { OutlineText } from "../texts/OutlineText";
 import { ButtonGeneric } from "../buttons/ButtonGeneric";
-import { DialogueChoiceButton } from "../buttons/DialogueChoiceButton";
 import { PlayerState } from "/types/single/playerState";
-import { Status } from "/server/src/model/game/status/status";
 import { IconButton } from "../buttons/IconButton";
-import { OutlineTextResizable } from "../texts/ResizableOutlineText";
 import { PopupAdventure } from "./PopupAdventure";
-import { Equipment } from "/server/src/model/game/equipment/equipment";
 import { EquipmentCard } from "../cards/EquipmentCard";
 import { EmptyEquipmentCard } from "../cards/EmptyEquipmentCard";
 import { BlackText } from "../texts/BlackText";
@@ -100,8 +93,6 @@ export const AdventureBagPopup = ({
             lg:min-h-[20vh]
             lg:w-[90%]
             border-[3px]
-            border-blackCurrant
-            rounded-[20px]
             box-border
             bg-peach
             flex-col
@@ -109,6 +100,8 @@ export const AdventureBagPopup = ({
             p-[2rem]
             space-y-4
             overflow-y-auto
+            overflow-x-hidden 
+            min-w-0
             `}
           >
             {/* SECTION HEADING */}
@@ -121,11 +114,17 @@ export const AdventureBagPopup = ({
             {/* EQUIPMENT CONTENTS */}
             {viewingTab !== 0 && (
               <>
-                <div className="grid grid-flow-row h-full w-full auto-rows-auto">
+                <div className="w-full p-[1rem] flex flex-col justify-center items-center gap-6">
+                  {/* <div className="grid grid-flow-row h-full w-full auto-rows-auto"> */}
                   {[0, 1, 2].map((i) => (
-                    <div key={i} className="py-2">
+                    <div key={i} className="w-full mx-auto min-w-0 mx-auto ">
+                      <div className="flex flex-col items-center">
                       <OutlineText size="medium">Slot {i + 1}</OutlineText>
-                      <div className="h-[2px] bg-blackCurrant mb-4 w-[90%] mx-auto" />
+                      </div>
+                      {/* <div className="h-[2px] bg-blackCurrant mb-4 w-[70rem] mx-auto px-[10rem] justify-center items-center" /> */}
+                      <div className="h-[2px] bg-blackCurrant my-4 w-full" />
+                      {/* <div className="mx-auto"> */}
+                      <div className="flex flex-wrap justify-center items-center">
                       {playerState?.equipment[i] ? (
                         <EquipmentCard
                           onClick={() => setEquipment(playerState.equipment[i])}
@@ -134,6 +133,8 @@ export const AdventureBagPopup = ({
                       ) : (
                         <EmptyEquipmentCard />
                       )}
+                      </div>
+                      {/* </div> */}
                     </div>
                   ))}
                 </div>

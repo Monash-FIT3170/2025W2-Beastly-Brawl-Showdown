@@ -30,6 +30,7 @@ export class SlimeSupportAction extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, giving yourself the Slime Boost buff.`
     );
+    this.executeBattleEffect(actingPlayer, affectedPlayer, true);
   }
   public prepareAnimation(): string | [string, number] {
     return "Slime_Support_Animation";

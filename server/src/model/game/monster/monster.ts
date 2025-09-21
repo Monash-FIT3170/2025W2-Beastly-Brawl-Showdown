@@ -2,11 +2,7 @@ import { Archetype } from "../archetype/archetype";
 import { Action } from "../action/action";
 import { AttackAction } from "../action/attack";
 import { DefendAction } from "../action/defend";
-import {
-  ArchetypeIdentifier,
-  MonsterIdentifier,
-  MonsterState,
-} from "/types/single/monsterState";
+import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 import { ActionIdentifier, ActionState } from "/types/single/actionState";
 
 export abstract class Monster {
@@ -23,6 +19,10 @@ export abstract class Monster {
   private attackBonus: number;
   private armourClass: number;
   private critRate: number;
+
+  private startingHealth: number;
+  private startingAttackBonus: number;
+  private startingArmourClass: number;
 
   private useTemporaryActions: boolean = false;
   private temporaryActions: Action[] = [];
@@ -45,6 +45,9 @@ export abstract class Monster {
     this.maxHealth = maxHealth;
     this.attackBonus = attackBonus;
     this.armourClass = armourClass;
+    this.startingHealth = maxHealth;
+    this.startingAttackBonus = attackBonus;
+    this.startingArmourClass = armourClass;
     this.critRate = archetype.getCritRate();
 
     this.attackAction = new AttackAction(attackBonus, this.critRate);
@@ -129,6 +132,10 @@ export abstract class Monster {
       attackBonus: this.attackBonus,
       armourClass: this.armourClass,
 
+      startingHP: this.startingHealth,
+      startingATK: this.startingAttackBonus,
+      startingAC: this.startingArmourClass,
+
       possibleActions: this.getPossibleActionStates(),
     };
   }
@@ -146,18 +153,29 @@ export abstract class Monster {
   }
 
   public pveScaling(stage: number): void {
+    console.log("PVE SCALING DEBUG: HEALTH", this.maxHealth);
+    console.log("PVE SCALING DEBUG: ATK BONUS", this.attackBonus);
+
     if (stage === 4) {
       //mini boss
-      this.maxHealth = Math.ceil(this.maxHealth * 0.9);
-      this.attackBonus = Math.ceil(this.attackBonus * 0.9);
+      this.maxHealth = this.startingHealth = Math.ceil(this.maxHealth * 0.9);
+      this.attackBonus = this.startingAttackBonus = Math.ceil(
+        this.attackBonus * 0.9
+      );
     } else if (stage === 8) {
       //main boss
-      this.maxHealth = Math.ceil(this.maxHealth * 1.5);
-      this.attackBonus = Math.ceil(this.attackBonus * 1.5);
+      this.maxHealth = this.startingHealth = Math.ceil(this.maxHealth * 1.5);
+      this.attackBonus = this.startingAttackBonus = Math.ceil(
+        this.attackBonus * 1.5
+      );
     } else {
       //every other stage
-      this.maxHealth = Math.ceil(stage * 3.5);
-      this.attackBonus = Math.ceil(this.attackBonus + stage * 0.75);
+      this.maxHealth = this.startingHealth = Math.ceil(stage * 3.5);
+      this.attackBonus = this.startingAttackBonus = Math.ceil(
+        this.attackBonus + stage
+      );
     }
+    console.log("PVE SCALING DEBUG: HEALTH SCALED", this.maxHealth);
+    console.log("PVE SCALING DEBUG: ATK BONUS SCALED", this.attackBonus);
   }
 }
