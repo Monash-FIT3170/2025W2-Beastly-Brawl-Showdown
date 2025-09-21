@@ -8,7 +8,7 @@ Beastly Brawl Showdown is a web-based role-playing game where players battle eac
 
 - **Production:** https://www.beastlybrawl.app/ (active during milestone presentations)
 - **Test:** https://www.beastlybrawl-test.app/ (generally up 24/7)
-- **Local:** See instructions above
+- **Local:** See instructions below
 
 ---
 
@@ -152,27 +152,61 @@ There are four GitHub Actions Workflows to manage application deployment.
 
 ## Meet The Team!
 
-### System Architects
+<div align="center">
 
-- Devan (dfed0003@student.monash.edu)
-- Danniel (dyou0009@student.monash.edu)
-- Daniel Loh (dloh0003@student.monash.edu)
+  <div style="display:inline-block; width:280px; margin:20px; vertical-align:top; text-align:center;">
+    <img src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/CHARMER_COBRA.png" alt="Team Cobra" width="200" />
+    <h3>Team Cobra</h3>
+    <table align="center" style="border-collapse:collapse;">
+      <tr>
+        <td><strong>Naveen</strong><br><small>nsel0009@student.monash.edu</small></td>
+        <td><strong>Huu Nguyen</strong><br><small>hngu0187@student.monash.edu</small></td>
+      </tr>
+      <tr>
+        <td><strong>Danniel</strong><br><small>dyou0009@student.monash.edu</small></td>
+        <td><strong>Luna</strong><br><small>pnag0009@student.monash.edu</small></td>
+      </tr>
+      <tr>
+        <td><strong>Omar</strong><br><small>osal0004@student.monash.edu</small></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
 
-### Product Managers
+  <div style="display:inline-block; width:280px; margin:20px; vertical-align:top; text-align:center;">
+    <img src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/ROCKY_RHINO.png" alt="Team Rhino" width="200" />
+    <h3>Team Rhino</h3>
+    <table align="center" style="border-collapse:collapse;">
+      <tr>
+        <td><strong>Devan</strong><br><small>dfed0003@student.monash.edu</small></td>
+        <td><strong>Meng</strong><br><small>hsia0003@student.monash.edu</small></td>
+      </tr>
+      <tr>
+        <td><strong>Aden</strong><br><small>atra0066@student.monash.edu</small></td>
+        <td><strong>Will Richter</strong><br><small>wric0006@student.monash.edu</small></td>
+      </tr>
+    </table>
+  </div>
 
-- Naveen (nsel0009@student.monash.edu)
-- Meng (hsia0003@student.monash.edu)
-- Tinesia (tyuu0023@student.monash.edu)
-- Derek (dcao0008@student.monash.edu)
-- Omar (osal0004@student.monash.edu)
+  <div style="display:inline-block; width:280px; margin:20px; vertical-align:top; text-align:center;">
+    <img src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POISON_POGO.png" alt="Team Pogo" width="200" />
+    <h3>Team Pogo</h3>
+    <table align="center" style="border-collapse:collapse;">
+      <tr>
+        <td><strong>Cameron</strong><br><small>cameronhumphreys77@gmail.com</small></td>
+        <td><strong>Anika</strong><br><small>akam0020@student.monash.edu</small></td>
+      </tr>
+      <tr>
+        <td><strong>Tinesia</strong><br><small>tyuu0023@student.monash.edu</small></td>
+        <td><strong>Derek</strong><br><small>derek.jcao@gmail.com</small></td>
+      </tr>
+      <tr>
+        <td><strong>Daniel Loh</strong><br><small>dloh0003@student.monash.edu</small></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
 
-### Release Train Engineers
-
-- Aden (atra0066@student.monash.edu)
-- Will Richter (wric0006@student.monash.edu)
-- Luna (pnag0009@student.monash.edu)
-- Cameron (cameronhumphreys77@gmail.com)
-- Anika (akam0020@student.monash.edu)
-- Huu Nguyen (hngu0187@student.monash.edu)
+</div>
 
 ---
