@@ -13,31 +13,31 @@ export class SlimeBoost extends EndStatus {
     );
   }
 
-  public effect(player: Player): void {
-    //CURRENTLY: only checks AC, HP, ATK+
-    //TODO: add logs!!
-    const buffedStat = this.getLowestStat(player);
-    var current = 0;
-    switch (buffedStat) {
-      case "AC":
-        //Doubles AC for this round.
-        current = player.getArmourClassStat();
-        player.incArmourClassStat(5);
-        player.addLog("Your Slime Boost has increased your Armour Class by 5!");
-        console.log(`Slime Boost: Boosted AC +5`);
-      // case "HP":
-      //   // Heals for 3 HP
-      //   current = player.getHealth();
-      //   player.incHealth(3);
-      //   console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
-      default:
-        //Doubles ATK+
-        current = player.getAttackStat();
-        player.incAttackStat(2);
-        player.addLog("Your Slime Boost has increased your Attack Bonus by 2!");
-        console.log(`Slime Boost: ${player.getName()} Boosted ATK Bonus +2`);
-    }
-  }
+  // public effect(player: Player): void {
+  //   //CURRENTLY: only checks AC, HP, ATK+
+  //   //TODO: add logs!!
+  //   const buffedStat = this.getLowestStat(player);
+  //   var current = 0;
+  //   switch (buffedStat) {
+  //     case "AC":
+  //       //Doubles AC for this round.
+  //       current = player.getArmourClassStat();
+  //       player.incArmourClassStat(5);
+  //       player.addLog("Your Slime Boost has increased your Armour Class by 5!");
+  //       console.log(`Slime Boost: Boosted AC +5`);
+  //     // case "HP":
+  //     //   // Heals for 3 HP
+  //     //   current = player.getHealth();
+  //     //   player.incHealth(3);
+  //     //   console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
+  //     default:
+  //       //Doubles ATK+
+  //       current = player.getAttackStat();
+  //       player.incAttackStat(2);
+  //       player.addLog("Your Slime Boost has increased your Attack Bonus by 2!");
+  //       console.log(`Slime Boost: ${player.getName()} Boosted ATK Bonus +2`);
+  //   }
+  // }
 
   public endingEffect(player: Player): void {
     const buffedStat = this.getLowestStat(player);
@@ -54,7 +54,7 @@ export class SlimeBoost extends EndStatus {
       //   current = player.getHealth();
       //   player.incHealth(3);
       //   console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
-      default:
+      case "ATK":
         //Doubles ATK+
         current = player.getAttackStat();
         player.incAttackStat(2);

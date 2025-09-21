@@ -241,11 +241,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
           ></MonsterInfoPopup>
         )}
         {viewingInventory && (
-          <MonsterInfoPopup
+          <AdventureBagPopup
             playerState={playerState}
             onClose={() => setViewingInventory(false)}
             inBattle={battleState !== null}
-          ></MonsterInfoPopup>
+          ></AdventureBagPopup>
         )}
         {receivingConsumable && (
           <div>

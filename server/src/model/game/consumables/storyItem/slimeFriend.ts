@@ -21,7 +21,7 @@ export class SlimeFriend extends StoryItem {
   }
 
   public getImageString(): string {
-    return "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/SLIME.png";
+    return "SLIME";
   }
 
   public consume(player: Player): void {

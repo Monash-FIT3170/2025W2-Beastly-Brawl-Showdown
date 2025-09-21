@@ -172,7 +172,7 @@ export abstract class Monster {
       //every other stage
       this.maxHealth = this.startingHealth = Math.ceil(stage * 3.5);
       this.attackBonus = this.startingAttackBonus = Math.ceil(
-        this.attackBonus + stage
+        this.attackBonus + stage * 0.75
       );
     }
     console.log("PVE SCALING DEBUG: HEALTH SCALED", this.maxHealth);
