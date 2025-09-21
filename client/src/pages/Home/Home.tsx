@@ -58,7 +58,7 @@ export const Home = () => {
 
   // Called on 'Adventure' button press
   const renderAdventure = () => {
-    FlowRouter.go("/adventure/level-select");
+    FlowRouter.go("/adventure/mode-select");
   };
 
   return (
