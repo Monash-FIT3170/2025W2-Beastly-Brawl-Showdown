@@ -20,7 +20,7 @@ export class FlameLashAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "FlameLash_Animation";
+    return "monster_ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {

@@ -21,7 +21,7 @@ export class GroundSlamAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "Ground_Slam_Animation";
+    return "monster_ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
