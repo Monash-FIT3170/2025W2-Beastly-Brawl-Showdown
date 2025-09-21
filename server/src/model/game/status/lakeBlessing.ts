@@ -1,3 +1,4 @@
+import { StatusType } from "../../../../../types/single/statusType";
 import { Player } from "../player";
 import { Status } from "./status";
 
@@ -6,7 +7,8 @@ export class LakeBlessing extends Status {
     super(
       "Lake Blessing",
       "If the blessing is active resurrect on death",
-      countdown
+      countdown,
+      StatusType.BUFF
     );
   }
 
