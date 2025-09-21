@@ -399,13 +399,13 @@ export function loadNextStory(
     adventure.incrementStage();
     const stage = adventure.getStage();
     const enemy = adventure.getLevelMonster();
-    if (stage > 8) {
+    if (stage > 8 && adventure.getLevel() !== 0) {
       console.log("Adventure complete, emitting adventure_win", {
         monsterId: enemy,
       });
       io.to(socket.id).emit("adventure_win", { monsterId: enemy });
     }
-    const loadNodes = loadStage(stage);
+    const loadNodes = loadStage(stage % 8);
     const eligibleNodes = loadNodes.filter((node) => {
       const match = node.level.includes(adventure.getLevel());
       return match;

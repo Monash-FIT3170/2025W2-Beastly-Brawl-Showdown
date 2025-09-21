@@ -147,6 +147,7 @@ FlowRouter.route("/adventure/monster-select", {
 
 //hard coded list of current levels
 const adventureLevelMonsters = [
+  MonsterIdentifier.ENDLESS,
   MonsterIdentifier.POUNCING_BANDIT,
   MonsterIdentifier.CINDER_TAIL,
   MonsterIdentifier.FURIOUS_FLIPPER,

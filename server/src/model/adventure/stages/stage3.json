@@ -101,5 +101,17 @@
         ]
       }
     ]
+  },
+  {
+    "id": "slime_1",
+    "level": [0],
+    "description": "Stage 3, player fights slime 3.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 3"],
+        "type": "DIALOGUE"
+      }
+    ]
   }
 ]

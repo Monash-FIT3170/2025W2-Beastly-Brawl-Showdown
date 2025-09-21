@@ -45,5 +45,17 @@
         "consumableId": "large_health_potion"
       }
     ]
+  },
+  {
+    "id": "slime_1",
+    "level": [0],
+    "description": "Stage 2, player fights slime 2.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 2"],
+        "type": "DIALOGUE"
+      }
+    ]
   }
 ]
