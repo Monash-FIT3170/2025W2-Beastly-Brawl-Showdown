@@ -35,7 +35,7 @@ export class FlameLashAbilityAction extends Action {
     if (affectedPlayer.getDodgingPosition()) {
       this.damage = 10;
     }
-    affectedPlayer.incHealth(this.damage);
+    affectedPlayer.incHealth(-this.damage);
 
     // Log the action
     actingPlayer.addLog(
