@@ -99,17 +99,17 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
           ></img>
         </div>
         {/* Left Monster */}
-        <div className="relative inline-block xl:w-[50%]">
+        <div className=" relative inline-block xl:w-[50%]">
           {/* Monster "Animations" */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="relative inset-0 flex items-center justify-center">
             {/* Default Monster Image */}
             <div
               className={`${
                 animationRightMon.includes("default") ? "" : "hidden"
-              } absolute z-10`}
+              }  z-10`}
             >
               <img
-                className=" relative transform -scale-x-100 z-10"
+                className="  transform -scale-x-100 z-10"
                 src={pathLeftMon}
               />
             </div>
@@ -120,7 +120,7 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
               } absolute z-10`}
             >
               <img
-                className=" relative transform -scale-x-100 z-20"
+                className="  transform -scale-x-100 z-20"
                 src={pathTest}
               />
             </div>
