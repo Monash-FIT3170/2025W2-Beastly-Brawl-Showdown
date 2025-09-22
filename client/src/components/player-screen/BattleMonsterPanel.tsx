@@ -136,7 +136,7 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
               } absolute z-20`}
             >
               <img
-                className=" relative transform -scale-x-100 z-20"
+                className="  transform -scale-x-100 z-20"
                 src={pathTest}
               />
             </div>
