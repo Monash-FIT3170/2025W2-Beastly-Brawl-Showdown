@@ -1,4 +1,7 @@
-import { MonsterIdentifier } from "../../../../types/single/monsterState";
+import {
+  MonsterIdentifier,
+  MonsterState,
+} from "../../../../types/single/monsterState";
 import BattleMonsterPanel from "../../components/player-screen/BattleMonsterPanel";
 import DiceRollModal from "../Game/DiceRollModal";
 import { BattleFooter } from "../../components/cards/BattleFooter";
@@ -9,14 +12,12 @@ import React from "react";
 import socket from "../../socket";
 import { DialogueBox } from "../../components/cards/DialogueBox";
 import { option } from "../../../../types/composite/storyTypes";
-import { DialogueChoiceButton } from "../../components/buttons/DialogueChoiceButton";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { ChoicePopup } from "../../components/popups/ChoicePopup";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { StatChangePopup } from "../../components/popups/statChangePopup";
-import { MonsterState } from "../../../../types/single/monsterState";
 import MonsterDisplay from "../../components/player-screen/MonsterDisplay";
 import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { IconButton } from "../../components/buttons/IconButton";
@@ -24,12 +25,10 @@ import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfo
 import { PlayerState } from "/types/single/playerState";
 import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
-import { EquipmentState } from "/types/single/itemState";
+import { EquipmentState, ConsumableState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
 import { AdventureBattleHeader } from "../../components/player-screen/AdventureBattleHeader";
-import { ConsumablePopup } from "../../components/popups/ConsumablePopup";
 import { ConsumablePickupPopup } from "../../components/popups/ConsumablePickupPopup";
-import { ConsumableState } from "/types/single/itemState";
 import { EquipmentPickupPopup } from "../../components/popups/EquipmentPickupPopup";
 
 interface AdventureProps {

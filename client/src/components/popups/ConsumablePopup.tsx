@@ -1,10 +1,7 @@
-import React, { ReactNode, useState } from "react";
 import { ConsumableState } from "/types/single/itemState";
-import { PopupAdventure } from "./PopupAdventure";
 import { ButtonGeneric } from "../buttons/ButtonGeneric";
 import { OutlineText } from "../texts/OutlineText";
 import { BlackText } from "../texts/BlackText";
-import { on } from "events";
 
 export interface ConsumableProp {
   consumable: ConsumableState;
