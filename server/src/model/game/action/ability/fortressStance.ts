@@ -16,7 +16,7 @@ export class FortressStanceAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "Fortress_Stance_Animation";
+    return "archetype_ability";
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}

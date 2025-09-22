@@ -112,26 +112,47 @@ export default function proceedBattleTurn(
         action.prepare(player2, player1);
       });
 
-      // Animations, For the future, we need to handle animations in a more centralised manner with no hard coding.
-      // Handles the dice roll - For now, typecasting to send the damage so dice can roll it
-      // TODO: For the future, actions should trigger their own animations themselves. Perhaps add a feature that emits animation type and let the
-      // battle screen handle the type of animation to show
+      // Prepare animations
+      var player1DiceRoll = 0;
+      var player2DiceRoll = 0;
+
       player1.getActions().forEach((action) => {
         const animationInfo = action.prepareAnimation();
-        const animationType = animationInfo[0];
-        const diceRollNumber = animationInfo[1];
-        console.log(`ADV: Animation P1 - ${animationType}, ${diceRollNumber}`);
-        io.to(player1.getId()).emit(String(animationType), diceRollNumber);
+        if (typeof animationInfo === "string") {
+          player1.addPrepareAnimation(animationInfo.toLowerCase());
+          console.log(`ADV: Animation P1 - ${animationInfo}`);
+        } else {
+          const [animationType, diceRoll] = animationInfo;
+          player1.addPrepareAnimation(animationType.toLowerCase());
+          player1DiceRoll = diceRoll;
+          console.log(`ADV: Animation P1 - ${animationType}, ${diceRoll}`);
+        }
       });
 
       player2.getActions().forEach((action) => {
         const animationInfo = action.prepareAnimation();
-        const animationType = animationInfo[1];
-        const diceRollNumber = animationInfo[1];
-
-        console.log(`ADV: Animation P2 - ${animationType}, ${diceRollNumber}`);
-        io.to(player2.getId()).emit(String(animationType), diceRollNumber);
+        if (typeof animationInfo === "string") {
+          player2.addPrepareAnimation(animationInfo.toLowerCase());
+          console.log(`ADV: Animation P2 - ${animationInfo}`);
+        } else {
+          const [animationType, diceRoll] = animationInfo;
+          player1.addPrepareAnimation(animationType.toLowerCase());
+          player2DiceRoll = diceRoll;
+          console.log(`ADV: Animation P2 - ${animationType}, ${diceRoll}`);
+        }
       });
+
+      io.to(player1.getId()).emit("update_animation", "prepare");
+      io.to(player2.getId()).emit("update_animation", "prepare");
+
+      // Roll animations
+      //TODO: add time out before dice roll
+      if (player1.getPrepareAnimations().includes("roll_dice")) {
+        io.to(player1.getId()).emit("roll_dice", player1DiceRoll);
+      }
+      if (player2.getPrepareAnimations().includes("roll_dice")) {
+        io.to(player2.getId()).emit("roll_dice", player2DiceRoll);
+      }
 
       setTimeout(() => {
         let p1_result;
@@ -178,11 +199,17 @@ export default function proceedBattleTurn(
           }
         });
 
+        // Execute animations
+        io.to(player1.getId()).emit("update_animation", "execute");
+        io.to(player2.getId()).emit("update_animation", "execute");
+        // TODO: figure out when(if?) to go back to normal
+
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
         playersInBattle.forEach((player) => {
           player.resetStats();
           player.resetActions();
           player.getMonster()?.removeTemporaryActions();
+          player.clearAnimations();
         });
 
         if (battle.isBattleOver()) {

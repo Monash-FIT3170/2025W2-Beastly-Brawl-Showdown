@@ -23,7 +23,7 @@ export class NullAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public prepareAnimation(): string | [string, number] {
-    return "NullAction_Animation";
+    return "null";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
@@ -43,8 +43,8 @@ export class NullAction extends Action {
 
     return {
       appliedStatus: {
-        success: false
-      }
-    }
+        success: false,
+      },
+    };
   }
 }

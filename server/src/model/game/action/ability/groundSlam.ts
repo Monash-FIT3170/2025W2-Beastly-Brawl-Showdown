@@ -21,7 +21,7 @@ export class GroundSlamAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "Ground_Slam_Animation";
+    return "monster_ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
@@ -29,7 +29,7 @@ export class GroundSlamAbilityAction extends Action {
 
     // Deal 3 damage + Stun
     affectedPlayer.incHealth(-3);
-    affectedPlayer.addStatus(new Stun(1));
+    affectedPlayer.addStatus(new Stun(2));
 
     // Add logs
     actingPlayer.addLog(

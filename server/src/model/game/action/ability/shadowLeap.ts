@@ -16,7 +16,7 @@ export class ShadowLeapAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "Shadow_Leap_Animation";
+    return "monster_ability";
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
@@ -59,9 +59,9 @@ export class ShadowLeapAbilityAction extends Action {
     );
 
     return {
-      appliedStatus:{
-        success: false
-      }
-    }
+      appliedStatus: {
+        success: false,
+      },
+    };
   }
 }

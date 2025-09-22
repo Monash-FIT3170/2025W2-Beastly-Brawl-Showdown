@@ -19,7 +19,7 @@ export class PufferBlast extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "Puffer_Blast_Animation";
+    return "monster_ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {

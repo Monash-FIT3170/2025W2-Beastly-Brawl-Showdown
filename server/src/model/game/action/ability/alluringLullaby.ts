@@ -34,7 +34,7 @@ export class AlluringLullaby extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "AlluringLullaby_Animation";
+    return "monster_ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
