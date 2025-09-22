@@ -154,20 +154,31 @@ There are four GitHub Actions Workflows to manage application deployment.
 
 <div align="center">
 
+### Roles
+
+| Emoji | Role                   |
+| :---: | ---------------------- |
+|  🧑‍💼   | Product Manager        |
+|  🚂   | Release Train Engineer |
+|  🏗️   | System Architect       |
+
+</div>
+
+<div align="center">
   <div style="display:inline-block; width:280px; margin:20px; vertical-align:top; text-align:center;">
     <img src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/CHARMER_COBRA.png" alt="Team Cobra" width="200" />
     <h3>Team Cobra</h3>
     <table align="center" style="border-collapse:collapse;">
       <tr>
-        <td><strong>Naveen</strong><br><small>nsel0009@student.monash.edu</small></td>
-        <td><strong>Huu Nguyen</strong><br><small>hngu0187@student.monash.edu</small></td>
+        <td><strong>🚂 Luna</strong><br><small>pnag0009@student.monash.edu</small></td>
+        <td><strong>🚂 Huu Nguyen</strong><br><small>hngu0187@student.monash.edu</small></td>
       </tr>
       <tr>
-        <td><strong>Danniel</strong><br><small>dyou0009@student.monash.edu</small></td>
-        <td><strong>Luna</strong><br><small>pnag0009@student.monash.edu</small></td>
+        <td><strong>🧑‍💼 Omar</strong><br><small>osal0004@student.monash.edu</small></td>
+        <td><strong>🧑‍💼 Naveen</strong><br><small>nsel0009@student.monash.edu</small></td>
       </tr>
       <tr>
-        <td><strong>Omar</strong><br><small>osal0004@student.monash.edu</small></td>
+        <td><strong>🏗️ Danniel</strong><br><small>dyou0009@student.monash.edu</small></td>
         <td></td>
       </tr>
     </table>
@@ -178,12 +189,12 @@ There are four GitHub Actions Workflows to manage application deployment.
     <h3>Team Rhino</h3>
     <table align="center" style="border-collapse:collapse;">
       <tr>
-        <td><strong>Devan</strong><br><small>dfed0003@student.monash.edu</small></td>
-        <td><strong>Meng</strong><br><small>hsia0003@student.monash.edu</small></td>
+        <td><strong>🚂 Aden</strong><br><small>atra0066@student.monash.edu</small></td>
+        <td><strong>🚂 Will Richter</strong><br><small>wric0006@student.monash.edu</small></td>
       </tr>
       <tr>
-        <td><strong>Aden</strong><br><small>atra0066@student.monash.edu</small></td>
-        <td><strong>Will Richter</strong><br><small>wric0006@student.monash.edu</small></td>
+        <td><strong>🏗️ Devan</strong><br><small>dfed0003@student.monash.edu</small></td>
+        <td><strong>🧑‍💼 Meng</strong><br><small>hsia0003@student.monash.edu</small></td>
       </tr>
     </table>
   </div>
@@ -193,15 +204,15 @@ There are four GitHub Actions Workflows to manage application deployment.
     <h3>Team Pogo</h3>
     <table align="center" style="border-collapse:collapse;">
       <tr>
-        <td><strong>Cameron</strong><br><small>cameronhumphreys77@gmail.com</small></td>
-        <td><strong>Anika</strong><br><small>akam0020@student.monash.edu</small></td>
+        <td><strong>🚂 Cameron</strong><br><small>cameronhumphreys77@gmail.com</small></td>
+        <td><strong>🚂 Anika</strong><br><small>akam0020@student.monash.edu</small></td>
       </tr>
       <tr>
-        <td><strong>Tinesia</strong><br><small>tyuu0023@student.monash.edu</small></td>
-        <td><strong>Derek</strong><br><small>derek.jcao@gmail.com</small></td>
+        <td><strong>🧑‍💼 Tinesia</strong><br><small>tyuu0023@student.monash.edu</small></td>
+        <td><strong>🧑‍💼 Derek</strong><br><small>derek.jcao@gmail.com</small></td>
       </tr>
       <tr>
-        <td><strong>Daniel Loh</strong><br><small>dloh0003@student.monash.edu</small></td>
+        <td><strong>🏗️ Daniel Loh</strong><br><small>dloh0003@student.monash.edu</small></td>
         <td></td>
       </tr>
     </table>
