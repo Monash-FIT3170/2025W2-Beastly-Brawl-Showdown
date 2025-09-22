@@ -4,6 +4,7 @@ import { PopupAdventure } from "./PopupAdventure";
 import { ButtonGeneric } from "../buttons/ButtonGeneric";
 import { OutlineText } from "../texts/OutlineText";
 import { BlackText } from "../texts/BlackText";
+import { on } from "events";
 
 export interface ConsumableProp {
   consumable: ConsumableState;
@@ -58,12 +59,6 @@ export const ConsumablePopup = ({
         lg:h-[85%]
         sm:h-[75%]`;
 
-  const consume = () => {
-    console.log("CONSUME CLICKED");
-    onClose();
-    onConsume();
-  };
-
   //TODO: centre the rest of this poop
   //TODO: can't click
   return (
@@ -113,7 +108,7 @@ export const ConsumablePopup = ({
                 color="blue"
                 size="battle"
                 isDisabled={isDisabled}
-                onClick={consume}
+                onClick={onConsume}
               >
                 <div className="items-center">
                   <OutlineText size="choice-text">{consumeText}</OutlineText>

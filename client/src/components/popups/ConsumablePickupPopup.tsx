@@ -14,7 +14,6 @@ export const ConsumablePickupPopup = ({
   onTake,
   onDrop,
 }: ConsumablePickupPopupProps) => {
-  // We reuse ConsumablePopup but override the button text/behaviour
   return (
     <ConsumablePopup
       consumable={consumable}
