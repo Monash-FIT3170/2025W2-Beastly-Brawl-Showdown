@@ -22,6 +22,7 @@ import { Stun } from "../model/game/status/stun";
 import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
 import { StoryItem } from "../model/game/consumables/storyItem/storyItem";
 import { SlimeBoost } from "../model/game/status/slimeBoost";
+import { Equipment } from "../model/game/equipment/equipment";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -376,6 +377,19 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           stage: adventure.getStage(),
           player: adventure.getPlayer().getPlayerState(),
         });
+      } else if (resolved.type === "LOOT_POOL") {
+        if (resolved.randomLoot() instanceof Equipment) {
+          socket.emit("adventure_equipment", {
+            equipment: resolved.randomLoot()?.getState() || "Unknown equipment",
+            equipmentId: resolved.lootId || "unknown_equipment",
+          });
+        } else {
+          socket.emit("adventure_consumable", {
+            consumable:
+              resolved.randomLoot()?.getState() || "Unknown Consumable",
+            consumableId: resolved.lootId || "unknown_consumable",
+          });
+        }
       }
     } catch (err) {
       console.error("Adventure stage load error:", err);

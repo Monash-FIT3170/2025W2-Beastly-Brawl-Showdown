@@ -3,6 +3,7 @@ import { createEnemy } from "./factories/enemyFactory";
 import { createConsumable } from "./factories/consumableFactory";
 import { createEquipment } from "./factories/equipmentFactory";
 import { createStatus } from "./factories/statusFactory";
+import { createLoot } from "./factories/lootPoolFactory";
 
 export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
   switch (raw.type) {
@@ -27,6 +28,10 @@ export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
 
     case EncounterType.STATUS:
       return { ...raw, status: createStatus(raw.statusId!) };
+
+    case EncounterType.LOOT_POOL:
+      const loot = createLoot(raw.lootPoolId);
+      return { ...raw, randomLoot: loot.loot, lootId: loot.id };
 
     default:
       return raw; // purely descriptive outcome
