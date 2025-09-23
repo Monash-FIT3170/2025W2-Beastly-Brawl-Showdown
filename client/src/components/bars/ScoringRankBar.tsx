@@ -10,14 +10,15 @@ interface ScoringRankBarProps {
 }
 
 export const ScoringRankBar = ({ player, rank, score }: ScoringRankBarProps) => {
-  const rankingBarStyleSets: Record<number, [string, string]> = {
-    1: ["1st", "bg-schoolBusYellow"],
-    2: ["2nd", "bg-brightsilver"],
-    3: ["3rd", "bg-terracotta"]
+  const scoringRankBarStyleSets: Record<number, [string, string, string]> = {
+    1: ["1st", "bg-schoolBusYellow", "w-9/10"],
+    2: ["2nd", "bg-brightsilver", "w-8/10"],
+    3: ["3rd", "bg-terracotta", "w-7/10"]
   };
 
-  const rankToDisplay = rankingBarStyleSets[rank][0];
-  const colourToDisplay = rankingBarStyleSets[rank][1];
+  const rankToDisplay = scoringRankBarStyleSets[rank][0];
+  const colourToDisplay = scoringRankBarStyleSets[rank][1];
+  const widthToDisplay = scoringRankBarStyleSets[rank][2];
   const imagePath = "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" + player.monster?.id + ".png";
   const altText = "Image of " + player.monster?.name;
 
@@ -37,8 +38,8 @@ export const ScoringRankBar = ({ player, rank, score }: ScoringRankBarProps) => 
   `;
 
   return (
-    <div className="flex flex-row h-full w-full items-center justify-between">
-      <div className="relative w-full h-12">
+    <div className={`flex flex-row h-full ${widthToDisplay} items-center justify-between`}>
+      <div className="relative w-full h-17">
         <div className={`${rankingBarProperties}`}>
           <div className="flex justify-between items-center w-full px-3">
             <div className="flex flex-col leading-none pt-[0.25rem]">
@@ -46,16 +47,14 @@ export const ScoringRankBar = ({ player, rank, score }: ScoringRankBarProps) => 
                 {player.name.toUpperCase()}
               </OutlineText>
             </div>
-
             <div className="flex items-center leading-none max-w-[5rem] text-center justify-end break-words">
-              <OutlineText size="small">
+              <OutlineText size="medium">
                 {player.monster?.name}
               </OutlineText>
-
               <img
                 src={imagePath}
                 alt={altText}
-                className="w-[80%] h-[80%] object-contain"
+                className="w-[100%] h-[100%] object-contain"
               />
             </div>
           </div>
@@ -68,7 +67,7 @@ export const ScoringRankBar = ({ player, rank, score }: ScoringRankBarProps) => 
         </OutlineText>
         {score ? (
           <OutlineText size="medium">
-            [{score.points} pts]
+            &nbsp;(Score: {score.points})
           </OutlineText>
         ) : null}
       </div>

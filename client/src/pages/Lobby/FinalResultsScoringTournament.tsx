@@ -79,102 +79,75 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
   //   1st, 2nd, 2nd
   //   1st, 1st, 2nd
   //   1st, 1st, 1st
-  const width1st = "w-8/10";
-  const width2nd = "w-7/10";
-  const width3rd = "w-6/10";
-  let bar1Width: string;
-  let bar2Width: string;
-  let bar3Width: string | undefined = undefined;
-  let bar1Rank: number;
-  let bar2Rank: number;
-  let bar3Rank: number | undefined = undefined;
+  let barRanks: (number)[];  // [bar1Rank, bar2Rank, bar3Rank]
   if (score3) {  // There are 3 players in top 3
     if (score1.points > score2.points && score2.points > score3.points) {
-      bar1Width = width1st;
-      bar2Width = width2nd;
-      bar3Width = width3rd;
-      bar1Rank = 1;
-      bar2Rank = 2;
-      bar3Rank = 3;
+      barRanks = [1, 2, 3];
     } else if (score1.points > score2.points && score2.points == score3.points) {
-      bar1Width = width1st;
-      bar2Width = width2nd;
-      bar3Width = width2nd;
-      bar1Rank = 1;
-      bar2Rank = 2;
-      bar3Rank = 2;
+      barRanks = [1, 2, 2];
     } else if (score1.points == score2.points && score2.points > score3.points) {
-      bar1Width = width1st;
-      bar2Width = width1st;
-      bar3Width = width2nd;
-      bar1Rank = 1;
-      bar2Rank = 1;
-      bar3Rank = 2;
+      barRanks = [1, 1, 2];
     } else {  // score1.points == score2.points && score2.points == score3.points
-      bar1Width = width1st;
-      bar2Width = width1st;
-      bar3Width = width1st;
-      bar1Rank = 1;
-      bar2Rank = 1;
-      bar3Rank = 1;
+      barRanks = [1, 1, 1];
     }
   } else {  // There are only 2 players in top 3
     if (score1.points > score2.points) {
-      bar1Width = width1st;
-      bar2Width = width2nd;
-      bar1Rank = 1;
-      bar2Rank = 2;
+      barRanks = [1, 2, -1];
     } else {  // score1.points == score2.points
-      bar1Width = width1st;
-      bar2Width = width1st;
-      bar1Rank = 1;
-      bar2Rank = 1;
+      barRanks = [1, 1, -1];
     }
   }
 
   return (
     <BlankPage>
-      <div className="flex flex-row h-1/5 w-full items-center justify-between px-4 pt-4">
-        <LogoResizable className="h-full w-1/11" />
-        <BaseCard color="springLeaves" width={30} height={5}>
-          <OutlineText size="large">
-            FINAL RESULTS
-          </OutlineText>
-        </BaseCard>
-        <LogoResizable className="h-full w-1/11 invisible" />
+      <div className="flex lg:flex-row lg:h-1/4 sm:flex-col w-full">
+        <div className="flex flex-row w-1/8 sm:h-1/2">
+          <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
+            <LogoResizable className="h-[200%] w-[200%]" />
+          </div>
+        </div>
+        <div className="flex flex-row lg:h-full lg:w-3/4 sm:h-3/4 lg:items-start sm:items-end justify-around">
+          <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
+            <BaseCard color="peach" width={50} height={8}>
+              <OutlineText size="extraLarge">
+                FINAL RESULTS
+              </OutlineText>
+            </BaseCard>
+          </div>
+        </div>
       </div>
 
-      <div className="flex flex-row h-full w-full items-center justify-between pt-[2rem] px-[10rem]">
-        <div className="flex flex-col h-full w-full items-center bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl pr-[2rem] py-[2rem]">
+        <div className="flex flex-col items-center justify-start w-3/4 bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl px-6 py-2 h-[200%]">
           <div className="w-full text-center mb-[1.5rem]">
             <OutlineText size="large">
               The Top {top3Players?.length}:
             </OutlineText>
           </div>
           <div className="w-full flex flex-col gap-[1rem]">
-            <div className={bar1Width + " m-[-0.15rem]"}>
-              <ScoringRankBar player={player1} rank={bar1Rank} score={score1} />
+            <div className="ml-[-1.65rem]">
+              <ScoringRankBar player={player1} rank={barRanks[0]} score={score1} />
             </div>
-            <div className={bar2Width + " m-[-0.15rem]"}>
-              <ScoringRankBar player={player2} rank={bar2Rank} score={score2} />
+            <div className="ml-[-1.65rem]">
+              <ScoringRankBar player={player2} rank={barRanks[1]} score={score2} />
             </div>
             {/* Only show the 3rd place bar if there exists a 3rd place player in the lobby */}
             {player3 ?
-              <div className={bar3Width + " m-[-0.15rem]"}>
-                <ScoringRankBar player={player3} rank={bar3Rank!} score={score3!} />
-              </div>
+              score3 ?
+                <div className="ml-[-1.65rem]">
+                  <ScoringRankBar player={player3} rank={barRanks[2]} score={score3} />
+                </div>
+              : null
             : null}
           </div>
         </div>
-      </div>
 
-      <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
-        <ButtonGeneric color="ronchi" size="large" onClick={renderConfigPage}>
+      <div className="flex flex-row items-center justify-center h-1/2 space-x-[5rem]">
+        <ButtonGeneric color="ronchi" size="longlarge" onClick={renderConfigPage}>
           <OutlineText size="large">
             NEW LOBBY
           </OutlineText>
         </ButtonGeneric>
-        <ButtonGeneric color="red" size="large" onClick={exitToHome}>
+        <ButtonGeneric color="red" size="longlarge" onClick={exitToHome}>
           <OutlineText size="large">
             EXIT TO HOME
           </OutlineText>
