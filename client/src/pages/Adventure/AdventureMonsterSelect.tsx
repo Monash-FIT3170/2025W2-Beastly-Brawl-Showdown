@@ -23,10 +23,11 @@ import { AttackBonusBar } from "../../components/bars/AttackBonusBar";
 import { BlackText } from "../../components/texts/BlackText";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { IconButton } from "../../components/buttons/IconButton";
+import { ArchetypePopup } from "../../components/popups/ArchetypePopup";
 
-interface MonsterSelectProps {}
+interface AdventureMonsterSelectProps {}
 
-const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
+const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
   const [monsters, setMonsters] = useState<MonsterState[]>([]);
   const [archetypes, setArchetypes] = useState<ArchetypeInfo[]>([]);
   const [selectedMonster, setSelectedMonster] = useState<MonsterState | null>(
@@ -37,9 +38,9 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
   const [abilities, setAbilities] = useState<ActionState[]>([]);
 
   const colorLoader: Record<string, string> = {
-    [ArchetypeIdentifier.ATTACKER]: "bg-[#DC7466]",
-    [ArchetypeIdentifier.DEFENDER]: "bg-[#7EACD5]",
-    [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
+    [ArchetypeIdentifier.ATTACKER]: "bg-attacker",
+    [ArchetypeIdentifier.DEFENDER]: "bg-defender",
+    [ArchetypeIdentifier.BALANCED]: "bg-balanced",
   };
 
   //TODO: implement getting genuine unlocked monsters
@@ -107,6 +108,7 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
     if (selectedMonster) {
       // Emit the selected monster to the server
       // TODO: Use in next page
+
       socket.emit("adventure_monster_selected", {
         monsterID: selectedMonster.id,
       });
@@ -260,31 +262,46 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
       </div>
 
       {selectedArchetype && (
-        <PopupClean>
-          <div className="top-0 left-0">
-            <IconButton
-              size="small"
-              style="x"
-              buttonColour="red"
-              iconColour="black"
-              onClick={() => handleCancelInfo()}
-            />
-          </div>
-          <div className="flex flex-col">
-            <OutlineText size="extraLarge">
-              {`${selectedArchetype.name} Monster Ability`}
-            </OutlineText>
-            <BlackText size="medium">
-              {`${selectedArchetype.abilityDesc}`}
-            </BlackText>
-          </div>
-        </PopupClean>
+        // <PopupClean>
+        //   <div className="top-0 left-0">
+        //     <IconButton
+        //       size="small"
+        //       style="x"
+        //       buttonColour="red"
+        //       iconColour="black"
+        //       onClick={() => handleCancelInfo()}
+        //     />
+        //   </div>
+        //   <div className="flex flex-col">
+        //     <OutlineText size="extraLarge">
+        //       {`${selectedArchetype.name} Monster Ability`}
+        //     </OutlineText>
+        //     <BlackText size="medium">
+        //       {`${selectedArchetype.ability.description}`}
+        //     </BlackText>
+        //   </div>
+        // </PopupClean>
+        <>
+          <ArchetypePopup
+            archetype={selectedArchetype}
+            onExit={() => handleCancelInfo()}
+          ></ArchetypePopup>
+        </>
       )}
       {selectedMonster && (
+        // <div
+        //   className={`flex items-center justify-center box-border bg-white/30 fixed left-0 right-0 bottom-0 top-0 flex flex-col backdrop-blur-md z-50 overflow-y-scroll `}
+        // >
         <div
-          className={`flex items-center justify-center box-border bg-white/30 fixed left-0 right-0 bottom-0 top-0 flex flex-col backdrop-blur-md z-50 overflow-y-scroll `}
+          className="
+            fixed inset-0 z-50
+            flex items-center justify-center
+            bg-white/30 backdrop-blur-md
+            p-4
+            overflow-y-auto 
+          "
         >
-          <div
+          {/* <div
             className={`flex  
               justify-around border-[4px] 
               border-blackCurrant w-min h-min rounded-xl
@@ -302,19 +319,31 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
               flex
               flex-col
               items-center`}
+          > */}
+          <div
+            className={`
+              ${colorLoader[selectedMonster.archetypeId]}
+              border-[3px] border-blackCurrant rounded-[20px]
+              w-full max-w-[90rem]
+              max-h-[90dvh]
+              box-border
+              flex flex-col items-center
+              overflow-y-auto 
+              min-w-0
+            `}
           >
-            <div className="pt-[2dvh]" />
+            <div className="pt-4" />
             <BaseCard
               color="goldenRod"
-              className="flex flex-col justify-around sm:w-[80dvw] lg:w:[90dvw] h-min"
+              className="flex flex-col justify-around sm:w-[55rem] lg:w:[95rem] h-min"
             >
               <MonsterImage
                 name={selectedMonster.id}
-                className="sm:size-[30dvw]
-                              lg:size-[10dvw]"
+                className="sm:size-[20rem]
+                              lg:size-[10rem]"
               />
               <div className="w-[100%] flex items-center flex-col">
-                <div className="bg-ronchi border-[4px] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
+                <div className="bg-ronchi border-[4px] pr-[0.5rem] pl-[0.5rem] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
                   <OutlineText size="medium">
                     {selectedMonster.name}
                   </OutlineText>
@@ -349,15 +378,15 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                 </BaseCard>
               </div>
 
-              <div className="flex flex-col items-center justify-start">
+              <div className="mt-[1rem] flex flex-col items-center justify-start">
                 <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
                   SPECIAL ABILITIES
                 </p>
-                <div className="flex flex-col justify-center lg:flex-row w-[95%]">
+                <div className="flex flex-col justify-center lg:flex-row w-full">
                   {abilities.map((ability, idx) => (
                     <div
                       key={ability.id || idx}
-                      className="flex flex-row items-center justify-left w[45%] gap-[2%]"
+                      className="flex flex-row items-center grow-1 justify-left p-[1rem]"
                     >
                       <img
                         src={
@@ -366,9 +395,9 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
                           ".webp"
                         }
                         alt="ability icon"
-                        className="w-[7rem] h-[7rem] rounded-xl border-blackCurrant border-2"
+                        className="w-[7rem] h-[7rem] rounded-xl border-blackCurrant border-[4px]"
                       />
-                      <div>
+                      <div className="p-[0.5rem]">
                         <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
                           {ability.name}
                         </p>
@@ -410,4 +439,4 @@ const MonsterSelect: React.FC<MonsterSelectProps> = ({}) => {
   );
 };
 
-export default MonsterSelect;
+export default AdventureMonsterSelect;

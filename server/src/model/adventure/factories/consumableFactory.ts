@@ -2,6 +2,7 @@ import { PercentageHealthPotion } from "../../game/consumables/healthPotion";
 import { Consumable } from "../../game/consumables/consumable";
 import { SlimeBoost } from "../../game/status/slimeBoost";
 import { SlimeSubstance } from "../../game/consumables/slimeSubstance";
+import { SlimeFriend } from "../../game/consumables/storyItem/slimeFriend";
 
 const ConsumableFactory: Record<string, () => Consumable> = {
   mini_health_potion: () =>
@@ -11,6 +12,7 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   super_health_potion: () =>
     new PercentageHealthPotion("Super Health Potion", 1.0),
   slime_substance: () => new SlimeSubstance(),
+  slime_friend: () => new SlimeFriend(),
 };
 
 export function createConsumable(id: string): Consumable {

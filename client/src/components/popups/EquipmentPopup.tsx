@@ -8,9 +8,18 @@ import { BlackText } from "../texts/BlackText";
 export interface EquipmentProp {
   equipment: EquipmentState;
   onClose?: () => void;
+  onEquip?: () => void;
+  backText?: string;
+  equipText?: string;
 }
 
-export const EquipmentPopup = ({ equipment, onClose }: EquipmentProp) => {
+export const EquipmentPopup = ({
+  equipment,
+  onClose,
+  onEquip,
+  backText = "BACK",
+  equipText = "EQUIP",
+}: EquipmentProp) => {
   const popupLayout = `z-100  items-center
         justify-center
         box-border
@@ -88,9 +97,16 @@ export const EquipmentPopup = ({ equipment, onClose }: EquipmentProp) => {
             <div className="justify-center p-[1rem] items-center flex lg:gap-5 sm:gap-10">
               <ButtonGeneric color="red" size="battle" onClick={onClose}>
                 <div className="items-center">
-                  <OutlineText size="choice-text">BACK</OutlineText>
+                  <OutlineText size="choice-text">{backText}</OutlineText>
                 </div>
               </ButtonGeneric>
+              {onEquip && (
+                <ButtonGeneric color="blue" size="battle" onClick={onEquip}>
+                  <div className="items-center">
+                    <OutlineText size="choice-text">{equipText}</OutlineText>
+                  </div>
+                </ButtonGeneric>
+              )}
             </div>
           </div>
         </div>

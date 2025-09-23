@@ -27,12 +27,16 @@ export interface MonsterState {
   attackBonus: number;
   armourClass: number;
 
+  startingHP: number;
+  startingATK: number;
+  startingAC: number;
+
   possibleActions: ActionState[];
 }
 
 export interface ArchetypeInfo {
   id: ArchetypeIdentifier;
   name: string;
-  ability: string;
-  abilityDesc: string;
+  description: string;
+  ability: ActionState;
 }

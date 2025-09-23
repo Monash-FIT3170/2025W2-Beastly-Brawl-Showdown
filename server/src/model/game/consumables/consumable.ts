@@ -1,13 +1,15 @@
 import { Player } from "../player";
-import { ConsumableState } from "/types/single/itemState";
+import { ConsumableState, ConsumableType } from "/types/single/itemState";
 
 export abstract class Consumable {
   protected name: string;
   protected description: string;
+  protected type: ConsumableType;
 
-  constructor(name: string, description: string) {
+  constructor(name: string, description: string, type: ConsumableType) {
     this.name = name;
     this.description = description;
+    this.type = type;
   }
 
   public nameToId(): string {
@@ -22,6 +24,10 @@ export abstract class Consumable {
     return this.description;
   }
 
+  public getType(): ConsumableType {
+    return this.type;
+  }
+
   public abstract getStatDescription(): string;
 
   public abstract consume(player: Player): void;
@@ -34,6 +40,7 @@ export abstract class Consumable {
       description: this.description,
       statDescription: this.getStatDescription(),
       imageString: this.getImageString(),
+      type: this.type,
     };
   }
 }

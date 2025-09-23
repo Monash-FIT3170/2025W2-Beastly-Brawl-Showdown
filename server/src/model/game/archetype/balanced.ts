@@ -9,7 +9,8 @@ export class Balanced extends Archetype {
     super(
       "Balanced",
       new TipTheScalesAbilityAction(),
-      ArchetypeIdentifier.BALANCED
+      ArchetypeIdentifier.BALANCED,
+      "Balanced monsters have the best of both worlds. With solid defenses, reliable attacks, unique abilities, they are ready for anything."
     );
   }
 }

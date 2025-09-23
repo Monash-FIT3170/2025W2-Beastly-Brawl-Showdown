@@ -40,7 +40,8 @@ export const PopupClean = ({ colour, children }: PopupProp) => {
         py-[1rem]
         px-[1rem]
         ${bgcolour}
-        border-[3px]
+        border-[0.3rem]
+        lg:border-[0.2rem]
         border-blackCurrant
         rounded-[20px]
         text-center

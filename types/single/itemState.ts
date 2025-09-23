@@ -10,4 +10,10 @@ export interface ConsumableState {
   description: string;
   statDescription: string;
   imageString: string;
+  type: ConsumableType;
+}
+
+export enum ConsumableType {
+  SELF_INFLICT = "SELF_INFLICT",
+  ENEMY_INFLICT = "ENEMY_INFLICT",
 }
