@@ -22,6 +22,7 @@ import { Stun } from "../model/game/status/stun";
 import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
 import { StoryItem } from "../model/game/consumables/storyItem/storyItem";
 import { SlimeBoost } from "../model/game/status/slimeBoost";
+import { Equipment } from "../model/game/equipment/equipment";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -171,19 +172,18 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       if (consumable instanceof StoryItem) {
         consumable.setAdventure(adventure);
       }
+      const lastOutcome = loadNextStory(io, adventure, socket);
+
+      if (lastOutcome && lastOutcome.next) {
+        adventure.currentOutcomeId = lastOutcome.next;
+        adventure.pastEncounters.push(adventure.currentOutcomeId);
+      } else {
+        // If no next, end or error
+        adventure.currentOutcomeId = "";
+      }
+
+      progressAdventure(io, socket, adventure, stage);
     }
-
-    const lastOutcome = loadNextStory(io, adventure, socket);
-
-    if (lastOutcome && lastOutcome.next) {
-      adventure.currentOutcomeId = lastOutcome.next;
-      adventure.pastEncounters.push(adventure.currentOutcomeId);
-    } else {
-      // If no next, end or error
-      adventure.currentOutcomeId = "";
-    }
-
-    progressAdventure(io, socket, adventure, stage);
   });
 
   socket.on("monster_request", ({ id }) => {
@@ -319,8 +319,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         });
       } else if (resolved.type === "CONSUMABLE") {
         socket.emit("adventure_consumable", {
-          name: resolved.consumable?.getName() || "Unknown Consumable",
-          consumableId: resolved.consumableId || "unknown_consumable",
+          consumable: resolved.consumable.getState() || "Unknown Consumable",
+          consumableId: resolved.consumableId || "Unknown Consumable ID",
         });
       } else if (resolved.type === "STAT_CHANGE") {
         // Handle stat change
@@ -340,7 +340,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         }
       } else if (resolved.type === "EQUIPMENT") {
         socket.emit("adventure_equipment", {
-          name: resolved.equipment?.getName() || "Unknown equipment",
+          equipment: resolved.equipment?.getState() || "Unknown equipment",
           equipmentId: resolved.equipmentId || "unknown_equipment",
         });
       } else if (resolved.type === "PREREQUISITE") {
@@ -377,6 +377,19 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           stage: adventure.getStage(),
           player: adventure.getPlayer().getPlayerState(),
         });
+      } else if (resolved.type === "LOOT_POOL") {
+        if (resolved.randomLoot() instanceof Equipment) {
+          socket.emit("adventure_equipment", {
+            equipment: resolved.randomLoot()?.getState() || "Unknown equipment",
+            equipmentId: resolved.lootId || "unknown_equipment",
+          });
+        } else {
+          socket.emit("adventure_consumable", {
+            consumable:
+              resolved.randomLoot()?.getState() || "Unknown Consumable",
+            consumableId: resolved.lootId || "unknown_consumable",
+          });
+        }
       }
     } catch (err) {
       console.error("Adventure stage load error:", err);
@@ -399,13 +412,13 @@ export function loadNextStory(
     adventure.incrementStage();
     const stage = adventure.getStage();
     const enemy = adventure.getLevelMonster();
-    if (stage > 8) {
+    if (stage > 8 && adventure.getLevel() !== 0) {
       console.log("Adventure complete, emitting adventure_win", {
         monsterId: enemy,
       });
       io.to(socket.id).emit("adventure_win", { monsterId: enemy });
     }
-    const loadNodes = loadStage(stage);
+    const loadNodes = loadStage(stage % 8);
     const eligibleNodes = loadNodes.filter((node) => {
       const match = node.level.includes(adventure.getLevel());
       return match;

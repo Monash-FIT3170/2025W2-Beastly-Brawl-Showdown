@@ -27,6 +27,10 @@ import { AdventureBagPopup } from "../../components/popups/AdventureBag";
 import { EquipmentState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
 import { AdventureBattleHeader } from "../../components/player-screen/AdventureBattleHeader";
+import { ConsumablePopup } from "../../components/popups/ConsumablePopup";
+import { ConsumablePickupPopup } from "../../components/popups/ConsumablePickupPopup";
+import { ConsumableState } from "/types/single/itemState";
+import { EquipmentPickupPopup } from "../../components/popups/EquipmentPickupPopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -56,13 +60,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
   const [viewingEnemyInfo, setViewingEnemyInfo] = useState<Boolean>(false);
   const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
-  const [receivingConsumable, setReceivingConsumable] = useState<string | null>(
-    null
-  );
+  const [receivingConsumable, setReceivingConsumable] =
+    useState<ConsumableState | null>(null);
   const [consumableId, setConsumableId] = useState<string | null>(null);
-  const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
-    null
-  );
+  const [receivingEquipment, setReceivingEquipment] =
+    useState<EquipmentState | null>(null);
   const [equipmentId, setEquipmentId] = useState<string | null>(null);
   const [equipmentInventoryFull, setEquipmentInventoryFull] = useState(false);
   const [currentEquipment, setCurrentEquipment] = useState<EquipmentState[]>(
@@ -75,6 +77,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
   const [statChange, setStatChange] = useState<string[] | null>(null);
   const [statusResult, setStatusResult] = useState<string[] | null>(null);
+  const [hasNewInventoryItem, setHasNewInventoryItem] = useState(false);
 
   //DICE
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
@@ -178,14 +181,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
     socket.on("adventure_consumable", (data) => {
       console.log("Received adventure_consumable:", data);
-      setReceivingConsumable(data.name);
+      setReceivingConsumable(data.consumable);
       setConsumableId(data.consumableId);
+      setHasNewInventoryItem(true);
     });
 
     socket.on("adventure_equipment", (data) => {
       console.log("Received adventure_equipment:", data);
-      setReceivingEquipment(data.name);
+      setReceivingEquipment(data.equipment);
       setEquipmentId(data.equipmentId);
+      setHasNewInventoryItem(true);
     });
 
     socket.on("adventure_equipment_full", (data) => {
@@ -248,82 +253,42 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
           ></AdventureBagPopup>
         )}
         {receivingConsumable && (
-          <div>
-            <PopupClean>
-              <div className="flex flex-col justify-around items-center">
-                <OutlineText size="extraLarge">
-                  {receivingConsumable}
-                </OutlineText>
-                <div className="flex flex-row justify-between gap-x-[3rem] items-center">
-                  <ButtonGeneric
-                    size="battle"
-                    color="blue"
-                    onClick={() => {
-                      setReceivingConsumable(null);
-                      setConsumableId(null);
-                      socket.emit("adventure_take_consumable", {
-                        consumableId,
-                        stage,
-                      });
-                    }}
-                  >
-                    TAKE!
-                  </ButtonGeneric>
-                  <ButtonGeneric
-                    size="battle"
-                    color="red"
-                    onClick={() => {
-                      setReceivingConsumable(null);
-                      setConsumableId(null);
-                      socket.emit("adventure_next", { stage });
-                    }}
-                  >
-                    DROP
-                  </ButtonGeneric>
-                </div>
-              </div>
-            </PopupClean>
-          </div>
+          <ConsumablePickupPopup
+            consumable={receivingConsumable}
+            onTake={() => {
+              setReceivingConsumable(null);
+              setConsumableId(null);
+              socket.emit("adventure_take_consumable", {
+                consumableId,
+                stage,
+              });
+            }}
+            onDrop={() => {
+              setReceivingConsumable(null);
+              setConsumableId(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
         )}
         {receivingEquipment &&
           !equipmentInventoryFull &&
           !incomingEquipment && (
-            <div>
-              <PopupClean>
-                <div className="flex flex-col justify-around items-center">
-                  <OutlineText size="extraLarge">
-                    {receivingEquipment}
-                  </OutlineText>
-                  <div className="flex flex-row justify-between gap-x-[3rem] items-center">
-                    <ButtonGeneric
-                      size="battle"
-                      color="blue"
-                      onClick={() => {
-                        setReceivingEquipment(null);
-                        setEquipmentId(null);
-                        socket.emit("adventure_take_equipment", {
-                          equipmentId,
-                          stage,
-                        });
-                      }}
-                    >
-                      EQUIP!
-                    </ButtonGeneric>
-                    <ButtonGeneric
-                      size="battle"
-                      color="red"
-                      onClick={() => {
-                        setReceivingEquipment(null);
-                        setEquipmentId(null);
-                        socket.emit("adventure_next", { stage });
-                      }}
-                    >
-                      DROP
-                    </ButtonGeneric>
-                  </div>
-                </div>
-              </PopupClean>
-            </div>
+            <EquipmentPickupPopup
+              equipment={receivingEquipment}
+              onEquip={() => {
+                setReceivingEquipment(null);
+                setEquipmentId(null);
+                socket.emit("adventure_take_equipment", {
+                  equipmentId,
+                  stage,
+                });
+              }}
+              onDrop={() => {
+                setReceivingEquipment(null);
+                setEquipmentId(null);
+                socket.emit("adventure_next", { stage });
+              }}
+            />
           )}
         {equipmentInventoryFull && incomingEquipment && (
           <PopupClean>
@@ -476,14 +441,44 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   <ButtonGeneric
                     color={"ronchi"}
                     size={"backpack"}
-                    onClick={() => setViewingInventory(true)}
+                    onClick={() => {
+                      setViewingInventory(true);
+                      setHasNewInventoryItem(false);
+                    }}
                   >
-                    <img
-                      src={
-                        "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
-                      }
-                      className={"w-[80%] h-[80%] object-contain mx-auto"}
-                    ></img>
+                    <div
+                      style={{ position: "relative", display: "inline-block" }}
+                    >
+                      <img
+                        src={
+                          "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
+                        }
+                        className={"w-[90%] h-[90%] object-contain mx-auto"}
+                      />
+                      {hasNewInventoryItem && (
+                        <span
+                          className="
+                            absolute
+                            top-0
+                            right-0
+                            w-[36px] h-[36px]
+                            sm:w-[24px] sm:h-[24px]
+                            bg-red-600
+                            rounded-full
+                            flex items-center justify-center
+                            text-white
+                            text-[12px] sm:text-[16px]
+                            font-bold
+                            border-2 border-white
+                            pointer-events-none
+                            z-10
+                            select-none
+                          "
+                        >
+                          !
+                        </span>
+                      )}
+                    </div>
                   </ButtonGeneric>
                 </div>
               </div>
@@ -550,14 +545,41 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                 <ButtonGeneric
                   color={"ronchi"}
                   size={"squaremedium"}
-                  onClick={() => setViewingInventory(true)}
+                  onClick={() => {
+                    setViewingInventory(true);
+                    setHasNewInventoryItem(false);
+                  }}
                 >
-                  <img
-                    src={
-                      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
-                    }
-                    className={"w-[80%] h-[80%] object-contain mx-auto"}
-                  ></img>
+                  <div className="relative inline-block">
+                    <img
+                      src={
+                        "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
+                      }
+                      className="w-[80%] h-[80%] object-contain mx-auto"
+                    />
+                    {hasNewInventoryItem && (
+                      <span
+                        className="
+                        absolute
+                        -top-2 -right-2
+                        w-[22px] h-[22px]
+                        sm:w-[28px] sm:h-[28px]
+                        bg-red-600
+                        rounded-full
+                        flex items-center justify-center
+                        text-white
+                        text-[14px] sm:text-[18px]
+                        font-bold
+                        border-2 border-white
+                        pointer-events-none
+                        z-10
+                        select-none
+                      "
+                      >
+                        !
+                      </span>
+                    )}
+                  </div>
                 </ButtonGeneric>
               </div>
             </div>

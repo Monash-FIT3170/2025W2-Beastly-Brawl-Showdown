@@ -108,5 +108,17 @@
         "statusId": "grandma_blessing"
       }
     ]
+  },
+  {
+    "id": "slime_1",
+    "level": [0],
+    "description": "Stage 1, player fights slime 1.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 6"],
+        "type": "DIALOGUE"
+      }
+    ]
   }
 ]

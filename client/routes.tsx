@@ -18,6 +18,7 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
+import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -129,6 +130,14 @@ FlowRouter.route("/battles/:code?", {
   },
 });
 
+FlowRouter.route("/adventure/mode-select", {
+  name: "LevelSelect",
+  action() {
+    document.title = "Mode Select - Adventure Mode | Beastly Brawl Showdown";
+    mount(AdventureSelectMode);
+  },
+});
+
 FlowRouter.route("/adventure/level-select", {
   name: "LevelSelect",
   action() {
@@ -147,6 +156,7 @@ FlowRouter.route("/adventure/monster-select", {
 
 //hard coded list of current levels
 const adventureLevelMonsters = [
+  MonsterIdentifier.ENDLESS,
   MonsterIdentifier.POUNCING_BANDIT,
   MonsterIdentifier.CINDER_TAIL,
   MonsterIdentifier.FURIOUS_FLIPPER,

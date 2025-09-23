@@ -117,5 +117,17 @@
         "next": "choice_1"
       }
     ]
+  },
+  {
+    "id": "endless",
+    "level": [0],
+    "description": "endless",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 3"],
+        "type": "DIALOGUE"
+      }
+    ]
   }
 ]

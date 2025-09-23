@@ -94,10 +94,7 @@
     "outcomes": [
       {
         "id": "initial",
-        "result": [
-          "A small, green, gelatinous creature bounces around you.",
-          "It looks harmless enough."
-        ],
+        "result": ["This is stage 1"],
         "type": "DIALOGUE",
         "next": "slime_dialogue_1"
       }

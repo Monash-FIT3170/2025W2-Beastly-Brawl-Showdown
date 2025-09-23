@@ -4,12 +4,16 @@ import { PopupAdventure } from "./PopupAdventure";
 import { ButtonGeneric } from "../buttons/ButtonGeneric";
 import { OutlineText } from "../texts/OutlineText";
 import { BlackText } from "../texts/BlackText";
+import { on } from "events";
 
 export interface ConsumableProp {
   consumable: ConsumableState;
   onClose: () => void;
   onConsume: () => void;
   isDisabled: boolean;
+  backText?: string;
+  consumeText?: string;
+  confirmText?: string;
 }
 
 export const ConsumablePopup = ({
@@ -17,6 +21,9 @@ export const ConsumablePopup = ({
   onClose,
   onConsume,
   isDisabled,
+  backText = "BACK",
+  consumeText = "CONSUME",
+  confirmText = "Are you sure you want to consume this?",
 }: ConsumableProp) => {
   const popupLayout = `z-100  items-center
         justify-center
@@ -51,12 +58,6 @@ export const ConsumablePopup = ({
         sm:w-[85%]
         lg:h-[85%]
         sm:h-[75%]`;
-
-  const consume = () => {
-    console.log("CONSUME CLICKED");
-    onClose();
-    onConsume();
-  };
 
   //TODO: centre the rest of this poop
   //TODO: can't click
@@ -93,26 +94,24 @@ export const ConsumablePopup = ({
                   {consumable.statDescription}
                 </OutlineText>
               </div>
-              <BlackText size="medium">
-                Are you sure you want to consume this?
-              </BlackText>
+              <BlackText size="medium">{confirmText}</BlackText>
             </div>
 
             {/* Buttons */}
             <div className="justify-center items-center flex lg:gap-5 sm:gap-10">
               <ButtonGeneric color="red" size="battle" onClick={onClose}>
                 <div className="items-center">
-                  <OutlineText size="choice-text">BACK</OutlineText>
+                  <OutlineText size="choice-text">{backText}</OutlineText>
                 </div>
               </ButtonGeneric>
               <ButtonGeneric
                 color="blue"
                 size="battle"
                 isDisabled={isDisabled}
-                onClick={consume}
+                onClick={onConsume}
               >
                 <div className="items-center">
-                  <OutlineText size="choice-text">CONSUME</OutlineText>
+                  <OutlineText size="choice-text">{consumeText}</OutlineText>
                 </div>
               </ButtonGeneric>
             </div>

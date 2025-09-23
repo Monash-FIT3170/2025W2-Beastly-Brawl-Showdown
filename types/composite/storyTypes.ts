@@ -22,7 +22,10 @@ export interface storyOutcomes {
   consumableId?: string; // <-- NEW
   consumable?: any; // populated at runtime
   equipmentId?: string;
+  lootPoolId: string;
   equipment?: any; //populated at runtime
+  randomLoot?: any;
+  lootId?: any;
   next?: string;
 }
 
@@ -44,4 +47,5 @@ export enum EncounterType {
   CHOICE = "CHOICE",
   PREREQUISITE = "PREREQUISITE",
   STATUS = "STATUS",
+  LOOT_POOL = "LOOT_POOL",
 }
