@@ -24,13 +24,15 @@ import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfo
 import { PlayerState } from "/types/single/playerState";
 import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
-import { EquipmentState } from "/types/single/itemState";
+import { EquipmentState, StoryItemState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
 import { AdventureBattleHeader } from "../../components/player-screen/AdventureBattleHeader";
 import { ConsumablePopup } from "../../components/popups/ConsumablePopup";
 import { ConsumablePickupPopup } from "../../components/popups/ConsumablePickupPopup";
 import { ConsumableState } from "/types/single/itemState";
 import { EquipmentPickupPopup } from "../../components/popups/EquipmentPickupPopup";
+import { StoryItem } from "../../../../server/src/model/game/storyItem/storyItem";
+import { StoryItemPickupPopup } from "../../components/popups/StoryItemPickupPopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -63,6 +65,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [receivingConsumable, setReceivingConsumable] =
     useState<ConsumableState | null>(null);
   const [consumableId, setConsumableId] = useState<string | null>(null);
+  const [receivingStoryItem, setReceivingStoryItem] =
+    useState<StoryItemState | null>(null);
+  const [storyItemId, setStoryItemId] = useState<string | null>(null);
   const [receivingEquipment, setReceivingEquipment] =
     useState<EquipmentState | null>(null);
   const [equipmentId, setEquipmentId] = useState<string | null>(null);
@@ -186,6 +191,14 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       setHasNewInventoryItem(true);
     });
 
+    socket.on("adventure_storyItem", (data) => {
+      console.log("Received adventure_storyItem:", data);
+      setReceivingStoryItem(data.storyItem);
+      setStoryItemId(data.storyItemId);
+      console.log("HERE", storyItemId);
+      setHasNewInventoryItem(true);
+    });
+
     socket.on("adventure_equipment", (data) => {
       console.log("Received adventure_equipment:", data);
       setReceivingEquipment(data.equipment);
@@ -266,6 +279,24 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             onDrop={() => {
               setReceivingConsumable(null);
               setConsumableId(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
+        )}
+        {receivingStoryItem && (
+          <StoryItemPickupPopup
+            storyItem={receivingStoryItem}
+            onTake={() => {
+              setReceivingStoryItem(null);
+              setStoryItemId(null);
+              socket.emit("adventure_take_storyItem", {
+                storyItemId,
+                stage,
+              });
+            }}
+            onDrop={() => {
+              setReceivingStoryItem(null);
+              setStoryItemId(null);
               socket.emit("adventure_next", { stage });
             }}
           />

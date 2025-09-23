@@ -10,9 +10,16 @@ import { EmptyEquipmentCard } from "../cards/EmptyEquipmentCard";
 import { BlackText } from "../texts/BlackText";
 import { ConsumableCard } from "../cards/ConsumableCard";
 import { ConsumablePopup } from "./ConsumablePopup";
-import { ConsumableState, EquipmentState } from "/types/single/itemState";
+import {
+  ConsumableState,
+  EquipmentState,
+  StoryItemState,
+} from "/types/single/itemState";
 import { EquipmentPopup } from "./EquipmentPopup";
 import { ActionIdentifier } from "../../../../types/single/actionState";
+import { StoryItem } from "../../../../server/src/model/game/storyItem/storyItem";
+import { StoryItemPopup } from "./StoryItemPopup";
+import { StoryItemCard } from "../cards/StoryItemCard";
 
 export interface AdventureBagProp {
   playerState: PlayerState | null | undefined;
@@ -25,12 +32,14 @@ export const AdventureBagPopup = ({
   onClose,
   inBattle,
 }: AdventureBagProp) => {
-  const [viewingTab, setViewingTab] = useState<number>(0);
-  const currentlyViewing = ["CONSUMABLES", "EQUIPMENT"];
+  const [viewingTab, setViewingTab] = useState<number>(1);
+  const currentlyViewing = ["EQUIPMENT", "CONSUMABLES", "STORY ITEMS"];
   const [viewingConsumable, setViewingConsumable] = useState<Boolean>(false);
   const [viewingEquipment, setViewingEquipment] = useState<Boolean>(false);
+  const [viewingStoryItem, setViewingStoryItem] = useState<Boolean>(false);
   const [consumable, setConsumable] = useState<ConsumableState | null>(null);
   const [equipment, setEquipment] = useState<EquipmentState | null>(null);
+  const [storyItem, setStoryItem] = useState<StoryItemState | null>(null);
 
   const monsterImgPath =
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
@@ -45,6 +54,7 @@ export const AdventureBagPopup = ({
   const handleCancelSelection = () => {
     setConsumable(null);
     setEquipment(null);
+    setStoryItem(null);
   };
 
   function handleConsumption(consumable: ConsumableState) {
@@ -79,6 +89,12 @@ export const AdventureBagPopup = ({
           isDisabled={!inBattle}
         ></ConsumablePopup>
       )}
+      {storyItem && (
+        <StoryItemPopup
+          storyItem={storyItem}
+          onClose={() => handleCancelSelection()}
+        ></StoryItemPopup>
+      )}
       <PopupAdventure colour="goldenRod">
         <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-[100%] h-full">
           <OutlineText size="choice-text">BACKPACK</OutlineText>
@@ -107,32 +123,34 @@ export const AdventureBagPopup = ({
             {/* SECTION HEADING */}
             <div className="w-[90%] bg-ronchi outline-blackCurrant outline-[0.25rem] rounded-full flex flex-col items-center justify-center">
               <OutlineText size="medium">
-                {currentlyViewing[viewingTab]}
+                {currentlyViewing[viewingTab % 3]}
               </OutlineText>
             </div>
 
             {/* EQUIPMENT CONTENTS */}
-            {viewingTab !== 0 && (
+            {viewingTab % 3 === 0 && (
               <>
                 <div className="w-full p-[1rem] flex flex-col justify-center items-center gap-6">
                   {/* <div className="grid grid-flow-row h-full w-full auto-rows-auto"> */}
                   {[0, 1, 2].map((i) => (
                     <div key={i} className="w-full mx-auto min-w-0 mx-auto ">
                       <div className="flex flex-col items-center">
-                      <OutlineText size="medium">Slot {i + 1}</OutlineText>
+                        <OutlineText size="medium">Slot {i + 1}</OutlineText>
                       </div>
                       {/* <div className="h-[2px] bg-blackCurrant mb-4 w-[70rem] mx-auto px-[10rem] justify-center items-center" /> */}
                       <div className="h-[2px] bg-blackCurrant my-4 w-full" />
                       {/* <div className="mx-auto"> */}
                       <div className="flex flex-wrap justify-center items-center">
-                      {playerState?.equipment[i] ? (
-                        <EquipmentCard
-                          onClick={() => setEquipment(playerState.equipment[i])}
-                          equipment={playerState.equipment[i]}
-                        />
-                      ) : (
-                        <EmptyEquipmentCard />
-                      )}
+                        {playerState?.equipment[i] ? (
+                          <EquipmentCard
+                            onClick={() =>
+                              setEquipment(playerState.equipment[i])
+                            }
+                            equipment={playerState.equipment[i]}
+                          />
+                        ) : (
+                          <EmptyEquipmentCard />
+                        )}
                       </div>
                       {/* </div> */}
                     </div>
@@ -142,7 +160,7 @@ export const AdventureBagPopup = ({
             )}
 
             {/* CONSUMABLES CONTENTS */}
-            {viewingTab !== 1 && (
+            {viewingTab % 3 === 1 && (
               <>
                 {/* if no consumables */}
                 {playerState?.consumables[0] ? (
@@ -165,19 +183,41 @@ export const AdventureBagPopup = ({
                 </div>
               </>
             )}
+
+            {viewingTab % 3 === 2 && (
+              <>
+                {/* if no storyItems */}
+                {playerState?.storyItems[0] ? (
+                  <></>
+                ) : (
+                  <BlackText size="tiny">
+                    Continue adventuring to find more story items!!
+                  </BlackText>
+                )}
+                {/* map of consumables */}
+                <div className="w-full p-[1rem] flex flex-wrap gap-4 justify-center">
+                  {playerState?.storyItems.map((c) => (
+                    <>
+                      <StoryItemCard
+                        onClick={() => setStoryItem(c)}
+                        storyItem={c}
+                      ></StoryItemCard>
+                    </>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           <div className="grid grid-cols-3 justify-items-center p-[1rem]">
             <div className="flex justify-center items-center">
-              {viewingTab !== 0 && (
-                <IconButton
-                  style="arrowleft"
-                  buttonColour="blue"
-                  iconColour="black"
-                  size="medium"
-                  onClick={() => setViewingTab(viewingTab - 1)}
-                />
-              )}
+              <IconButton
+                style="arrowleft"
+                buttonColour="blue"
+                iconColour="black"
+                size="medium"
+                onClick={() => setViewingTab(viewingTab - 1)}
+              />
             </div>
 
             <div className="w-min">
@@ -187,15 +227,13 @@ export const AdventureBagPopup = ({
             </div>
 
             <div className="flex justify-center items-center">
-              {viewingTab !== 1 && (
-                <IconButton
-                  style="arrowright"
-                  buttonColour="blue"
-                  iconColour="black"
-                  size="medium"
-                  onClick={() => setViewingTab(viewingTab + 1)}
-                />
-              )}
+              <IconButton
+                style="arrowright"
+                buttonColour="blue"
+                iconColour="black"
+                size="medium"
+                onClick={() => setViewingTab(viewingTab + 1)}
+              />
             </div>
           </div>
         </div>

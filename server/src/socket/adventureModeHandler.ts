@@ -20,8 +20,9 @@ import { DamageHeal } from "../model/game/status/damageHeal";
 import { Poison } from "../model/game/status/poison";
 import { Stun } from "../model/game/status/stun";
 import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
-import { StoryItem } from "../model/game/consumables/storyItem/storyItem";
+import { StoryItem } from "../model/game/storyItem/storyItem";
 import { SlimeBoost } from "../model/game/status/slimeBoost";
+import { createStoryItem } from "../model/adventure/factories/storyItemFactory";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -168,9 +169,28 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     if (consumableId) {
       const consumable = createConsumable(consumableId);
       player.giveConsumable(consumable);
-      if (consumable instanceof StoryItem) {
-        consumable.setAdventure(adventure);
+      const lastOutcome = loadNextStory(io, adventure, socket);
+
+      if (lastOutcome && lastOutcome.next) {
+        adventure.currentOutcomeId = lastOutcome.next;
+        adventure.pastEncounters.push(adventure.currentOutcomeId);
+      } else {
+        // If no next, end or error
+        adventure.currentOutcomeId = "";
       }
+
+      progressAdventure(io, socket, adventure, stage);
+    }
+  });
+
+  socket.on("adventure_take_storyItem", ({ storyItemId, stage }) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+    const player = adventure.getPlayer();
+
+    if (storyItemId) {
+      const storyItem = createStoryItem(storyItemId);
+      player.giveStoryItem(storyItem);
       const lastOutcome = loadNextStory(io, adventure, socket);
 
       if (lastOutcome && lastOutcome.next) {
@@ -352,7 +372,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           const setB = new Set(
             adventure
               .getPlayer()
-              .getConsumables()
+              .getStoryItems()
               .map((c) => c.getName())
           );
           const allPresent = option.prerequisite?.every((item) =>
@@ -375,6 +395,11 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           next: resolved.next,
           stage: adventure.getStage(),
           player: adventure.getPlayer().getPlayerState(),
+        });
+      } else if (resolved.type === "STORY_ITEM") {
+        socket.emit("adventure_storyItem", {
+          storyItem: resolved.storyItem?.getState() || "Unknown story item",
+          storyItemId: resolved.storyItemId || "unknown_storyItem",
         });
       }
     } catch (err) {
