@@ -160,12 +160,15 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
           });
 
           //TODO: add ending status animations
-
+          
           // Execute animations
           io.to(player1.getId()).emit("update_animation", "execute");
           io.to(player2.getId()).emit("update_animation", "execute");
           // TODO: figure out when(if?) to go back to normal
-
+          
+          
+            
+          
           //reset stats
           playersInBattle.forEach((p) => {
             p.resetStats();
@@ -180,15 +183,17 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             );
           });
 
-          //update battlestate
-          io.to(playerId).emit("adventure_state", {
-            type: "battle",
-            battle: battle?.getBattleState(playerId),
-          });
-
+          
+            //update battlestate
+            io.to(playerId).emit("adventure_state", {
+              type: "battle",
+              battle: battle?.getBattleState(playerId),
+            });
+          
+          setTimeout(() => {
           io.to(player1.getId()).emit("update_animation", "default");
           io.to(player2.getId()).emit("update_animation", "default");
-
+          
           //check if battle is over
           if (battle?.isBattleOver()) {
             console.log(`ADV: battle is over!`);
@@ -243,6 +248,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             let actions = player?.getMonster()?.getPossibleActionStates();
             io.to(playerId).emit("possible_actions", actions);
           }
+          }, 1000)
         }, 2000);
       }
     }

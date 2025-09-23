@@ -136,7 +136,7 @@ export default function proceedBattleTurn(
           console.log(`ADV: Animation P2 - ${animationInfo}`);
         } else {
           const [animationType, diceRoll] = animationInfo;
-          player1.addPrepareAnimation(animationType.toLowerCase());
+          player2.addPrepareAnimation(animationType.toLowerCase());
           player2DiceRoll = diceRoll;
           console.log(`ADV: Animation P2 - ${animationType}, ${diceRoll}`);
         }
@@ -203,7 +203,7 @@ export default function proceedBattleTurn(
         io.to(player1.getId()).emit("update_animation", "execute");
         io.to(player2.getId()).emit("update_animation", "execute");
         // TODO: figure out when(if?) to go back to normal
-
+        
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
         playersInBattle.forEach((player) => {
           player.resetStats();
