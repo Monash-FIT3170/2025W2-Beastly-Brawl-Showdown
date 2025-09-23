@@ -74,7 +74,7 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-start w-3/4 bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl px-6 py-2">
+      <div className="flex flex-col items-center justify-start w-3/4 bg-peach outline-blackCurrant outline-[0.25rem] rounded-2xl px-6 py-2 h-[200%]">
         {finalWinner ? (
           <>
             <div className="mb-2 text-center">
@@ -86,7 +86,7 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
               </OutlineText>
             </div>
             <img
-              className="max-w-full max-h-[300px] object-contain"
+              className="max-w-[30%] max-h-full object-contain"
               src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/${finalWinner.monster?.id}_WIN.png`}
               alt={`${finalWinner.monster?.id}_WIN image`}
             />
@@ -95,22 +95,22 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
           <>
             <div className="mb-2 text-center">
               <OutlineText size="large">
-                Everyone got eliminated.
+                All players were eliminated.
               </OutlineText>
             </div>
-            <div className="flex flex-row items-center justify-center space-x-[3rem] h-[40vh]">
+            <div className="flex flex-row items-center justify-center space-x-[3rem]">
               <img
-                className="h-1/2 object-contain"
+                className="max-w-[15%] max-h-full object-contain"
                 src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
                 alt="Small GRAVE left"
               />
               <img
-                className="h-full object-contain"
+                className="max-w-[30%] max-h-full object-contain"
                 src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
                 alt="Main GRAVE image"
               />
               <img
-                className="h-1/2 object-contain"
+                className="max-w-[15%] max-h-full object-contain"
                 src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
                 alt="Small GRAVE right"
               />
@@ -119,13 +119,13 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
         )}
       </div>
 
-      <div className="flex flex-row items-center justify-center h-1/2 space-x-10">
-        <ButtonGeneric color="ronchi" size="large" onClick={renderConfigPage}>
+      <div className="flex flex-row items-center justify-center h-1/2 space-x-[5rem]">
+        <ButtonGeneric color="ronchi" size="longlarge" onClick={renderConfigPage}>
           <OutlineText size="large">
             NEW LOBBY
           </OutlineText>
         </ButtonGeneric>
-        <ButtonGeneric color="red" size="large" onClick={exitToHome}>
+        <ButtonGeneric color="red" size="longlarge" onClick={exitToHome}>
           <OutlineText size="large">
             EXIT TO HOME
           </OutlineText>
