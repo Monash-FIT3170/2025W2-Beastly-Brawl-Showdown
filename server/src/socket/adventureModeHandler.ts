@@ -171,19 +171,18 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       if (consumable instanceof StoryItem) {
         consumable.setAdventure(adventure);
       }
+      const lastOutcome = loadNextStory(io, adventure, socket);
+
+      if (lastOutcome && lastOutcome.next) {
+        adventure.currentOutcomeId = lastOutcome.next;
+        adventure.pastEncounters.push(adventure.currentOutcomeId);
+      } else {
+        // If no next, end or error
+        adventure.currentOutcomeId = "";
+      }
+
+      progressAdventure(io, socket, adventure, stage);
     }
-
-    const lastOutcome = loadNextStory(io, adventure, socket);
-
-    if (lastOutcome && lastOutcome.next) {
-      adventure.currentOutcomeId = lastOutcome.next;
-      adventure.pastEncounters.push(adventure.currentOutcomeId);
-    } else {
-      // If no next, end or error
-      adventure.currentOutcomeId = "";
-    }
-
-    progressAdventure(io, socket, adventure, stage);
   });
 
   socket.on("monster_request", ({ id }) => {
@@ -319,8 +318,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         });
       } else if (resolved.type === "CONSUMABLE") {
         socket.emit("adventure_consumable", {
-          name: resolved.consumable?.getName() || "Unknown Consumable",
-          consumableId: resolved.consumableId || "unknown_consumable",
+          consumable: resolved.consumable.getState() || "Unknown Consumable",
+          consumableId: resolved.consumableId || "Unknown Consumable ID",
         });
       } else if (resolved.type === "STAT_CHANGE") {
         // Handle stat change
@@ -340,7 +339,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         }
       } else if (resolved.type === "EQUIPMENT") {
         socket.emit("adventure_equipment", {
-          name: resolved.equipment?.getName() || "Unknown equipment",
+          equipment: resolved.equipment?.getState() || "Unknown equipment",
           equipmentId: resolved.equipmentId || "unknown_equipment",
         });
       } else if (resolved.type === "PREREQUISITE") {
