@@ -20,6 +20,7 @@ export class ScoringTournament implements IGameMode{
 	private round = 1;
 	private playerFinished: number = 0;
 	private bonus: BonusSystem = defaultBonus ;
+	private gameModeFinished = false;
 
 	constructor(cfg: ScoringConfig){
 		this.config = cfg
@@ -132,6 +133,7 @@ export class ScoringTournament implements IGameMode{
 						}
 					}
 				})
+        		this.gameModeFinished = true;
 			} else {
 				const playersInBattle = battle.getPlayers()
 				playersInBattle.forEach((player) => {
@@ -233,6 +235,8 @@ export class ScoringTournament implements IGameMode{
 		return this.round == this.config.rounds
 	}
 
-	
+	public isGameModeFinished(): boolean {
+		return this.gameModeFinished;
+	}
 	
 }

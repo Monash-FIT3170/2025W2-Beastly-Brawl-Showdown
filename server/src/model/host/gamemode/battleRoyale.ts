@@ -14,6 +14,7 @@ export class BattleRoyale implements IGameMode {
   private remainingPlayers: Player[] = [];
   private io: Server | null = null;
   private playerFinished = 0;
+  private gameModeFinished = false;
 
   public init(session: GameSession, io: Server, socket: Socket): void {
     this.io = io;
@@ -217,6 +218,8 @@ export class BattleRoyale implements IGameMode {
             }
           }
         });
+
+      this.gameModeFinished = true;
     }
   }
 
@@ -226,6 +229,10 @@ export class BattleRoyale implements IGameMode {
 
   public getMetadata(): GameSessionStateMetaData {
     return {};
+  }
+
+  public isGameModeFinished(): boolean {
+    return this.gameModeFinished;
   }
 
   private eliminatePlayer(player: Player): void {

@@ -397,7 +397,8 @@ export default class GameSession {
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
       waitingPlayers: this.getPlayersNotInBattle(),
-      metadata: this.getMetadata()
+      metadata: this.getMetadata(),
+      isGameModeFinished: this.isGameModeFinished()
     };
   }
 
@@ -461,5 +462,9 @@ export default class GameSession {
 
   public getMetadata(): GameSessionStateMetaData{
     return this.mode.getMetadata()
+  }
+
+  public isGameModeFinished(): boolean {
+    return this.mode.isGameModeFinished();
   }
 }

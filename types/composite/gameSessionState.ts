@@ -16,6 +16,7 @@ export interface GameSessionState {
   remainingPlayers: number;
   waitingPlayers: Player[];
   metadata: GameSessionStateMetaData
+  isGameModeFinished: boolean;
 }
 
 export interface GameSessionStateMetaData{
