@@ -88,9 +88,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
-  const handleChoiceSelect = (choiceId: string) => {
+  const handleChoiceSelect = (
+    choiceId: string,
+    itemNames: string[] | null = null
+  ) => {
     socket.emit("adventure_choice", { stage, choiceId });
     setChoices(null);
+    console.log("ITEM NAMES", itemNames);
+    if (itemNames) {
+      socket.emit("adventure_prereq_choice", { itemNames });
+    }
   };
 
   socket.on("adventure_defeat", () => {

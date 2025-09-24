@@ -21,7 +21,8 @@
           {
             "id": "child_safe",
             "prerequisite": ["Slime Friend"],
-            "next": "choice_1"
+            "next": "choice_1",
+            "cost": ["Slime Friend"]
           },
           {
             "id": "child_not_safe",

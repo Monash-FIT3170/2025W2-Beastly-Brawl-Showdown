@@ -415,10 +415,12 @@ export class Player {
     return storyItem;
   }
 
-  public removeStoryItem(item: StoryItem): void {
+  public removeStoryItem(item: string): void {
     //done like this incase you have multiple of the same item
     //TODO: might be done incorrectly needs to be tested.
-    const i = this.storyItems.indexOf(item);
+    const i = this.storyItems.findIndex(
+      (storyItem) => storyItem.getName() === item
+    );
     if (i !== -1) {
       this.storyItems.splice(i, 1);
     }

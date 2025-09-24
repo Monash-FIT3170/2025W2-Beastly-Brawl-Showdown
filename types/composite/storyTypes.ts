@@ -33,6 +33,7 @@ export interface option {
   chance?: number;
   text?: string;
   prerequisite?: string[];
+  cost?: string[];
   next: string;
 }
 

@@ -205,6 +205,16 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     }
   });
 
+  socket.on("adventure_prereq_choice", ({ itemNames }) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+    const player = adventure.getPlayer();
+    console.log("THESE ARE THE ITEM NAMES", itemNames);
+    itemNames.forEach((item) => {
+      player.removeStoryItem(item);
+    });
+  });
+
   socket.on("monster_request", ({ id }) => {
     const monster = getMonster(id);
     if (monster) {
@@ -329,6 +339,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         }
         progressAdventure(io, socket, adventure, stage);
       } else if (resolved.type === "CHOICE") {
+        console.log(resolved);
         socket.emit("adventure_state", {
           type: "choice",
           result: resolved.result,
@@ -336,6 +347,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           stage: adventure.getStage(),
           player: adventure.getPlayer().getPlayerState(),
         });
+        console.log(resolved);
       } else if (resolved.type === "CONSUMABLE") {
         socket.emit("adventure_consumable", {
           consumable: resolved.consumable.getState() || "Unknown Consumable",
@@ -397,10 +409,12 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           player: adventure.getPlayer().getPlayerState(),
         });
       } else if (resolved.type === "STORY_ITEM") {
+        console.log(resolved);
         socket.emit("adventure_storyItem", {
           storyItem: resolved.storyItem?.getState() || "Unknown story item",
           storyItemId: resolved.storyItemId || "unknown_storyItem",
         });
+        console.log(resolved);
       }
     } catch (err) {
       console.error("Adventure stage load error:", err);
