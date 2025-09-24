@@ -47,7 +47,7 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
   //dependent on how player accounts work :)
   const [unlockedMonstersIDs, setUnlockedMonstersIDs] = useState<
     MonsterIdentifier[]
-  >([MonsterIdentifier.ROCKY_RHINO]);
+  >([MonsterIdentifier.ROCKY_RHINO, MonsterIdentifier.POUNCING_BANDIT]);
 
   useEffect(() => {
     // Request the monster list once when component mounts

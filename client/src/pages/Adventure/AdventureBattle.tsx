@@ -388,26 +388,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           </div>
         )}
-
         {statusResult && (
           <div>
-            <PopupClean>
-              <div className="flex flex-col justify-around items-center">
-                <OutlineText size="extraLarge">{statusResult}</OutlineText>
-                <div className="flex flex-row justify-between items-center">
-                  <ButtonGeneric
-                    size="large"
-                    color="blue"
-                    onClick={() => {
-                      setStatusResult(null);
-                      socket.emit("adventure_next", { stage });
-                    }}
-                  >
-                    CONFIRM
-                  </ButtonGeneric>
-                </div>
-              </div>
-            </PopupClean>
+            <StatChangePopup
+              messages={statusResult}
+              onClose={() => {
+                setStatusResult(null);
+                socket.emit("adventure_next", { stage });
+              }}
+            />
           </div>
         )}
         {choices && (

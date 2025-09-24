@@ -1,13 +1,12 @@
 import { Player } from "../player";
 import { Equipment } from "./equipment";
 
-export class MagicShield extends Equipment {
+export class CoolingPendant extends Equipment {
   constructor() {
     super(
-      "Magic Shield",
-      "This sparkling shield holds magic that could defend you from any foe."
+      "Cooling Pendant",
+      "A chilled silver talisman that keeps the wearer cool and adds a small bonus to AC."
     );
-    //BRUZZ I WROTE FOE AGAIN...
   }
 
   public equip(player: Player): void {
@@ -23,10 +22,10 @@ export class MagicShield extends Equipment {
 
   public calculateStrength(stage: number): void {
     // TODO: update formula for endless - needs playtesting with monster scaling
-    this.strength = Math.min(stage * 0.5, 20);
+    this.strength = Math.min(stage, 10);
   }
 
   protected getImageString(): string {
-    return "MAGIC_SHIELD";
+    return "COOLING_PENDANT";
   }
 }

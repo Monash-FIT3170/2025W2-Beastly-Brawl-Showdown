@@ -55,7 +55,7 @@
         "id": "initial",
         "result": [
           "As you slowly make your way through the desert, you spot a figure under a faded awning.",
-          "As you approach, you see a weary merchant polishing a collection of trinkets and artifacts.",
+          "As you approach, you see a weary merchant sitting on a crate, polishing a collection of trinkets and artifacts.",
           "\"Greetings, traveler! Care to browse my wares?\" he asks with a hopeful smile.",
           "\"But I must warn you, it may cost you your health...\""
         ],
@@ -69,8 +69,8 @@
         "options": [
           {
             "id": "trade",
-            "text": "Trade 5HP for a shiny pendant",
-            "next": "trade_reward"
+            "text": "Trade health for an item",
+            "next": "trade_lose_hp"
           },
           {
             "id": "haggle",
@@ -85,10 +85,19 @@
         ]
       },
       {
+        "id": "trade_lose_hp",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": [
+          "The merchant grins. \"A fair price.\"",
+          "You feel a sharp sting as he pricks your finger and draws power from you."
+        ],
+        "next": "trade_reward"
+      },
+      {
         "id": "trade_reward",
-        "type": "CONSUMABLE",
-        "consumableId": "cooling_draught",
-        "result": ["You purchase a Cooling Draught that restores 5 health."]
+        "type": "EQUIPMENT",
+        "equipmentId": "coolingPendant"
       },
       {
         "id": "haggle_random",
@@ -101,18 +110,26 @@
       },
       {
         "id": "haggle_win",
-        "type": "CONSUMABLE",
-        "consumableId": "cooling_draught_discount",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
         "result": [
-          "The merchant, impressed, sells you the potion for half price."
-        ]
+          "The merchant nods appreciatively. \"A clever deal!\"",
+          "You feel a slight sting as he pricks your finger and draws a small amount of power from you."
+        ],
+        "next": "haggle_reward"
+      },
+      {
+        "id": "haggle_reward",
+        "type": "EQUIPMENT",
+        "equipmentId": "coolingPendant"
       },
       {
         "id": "haggle_lose",
         "type": "STAT_CHANGE",
         "statChange": ["health", -2],
         "result": [
-          "The merchant curses you and throws hot sand, dealing 2 damage."
+          "The offended merchant curses at you and throws hot sand in your face!",
+          "You lost 2 HP."
         ]
       },
       {
@@ -126,15 +143,25 @@
       },
       {
         "id": "find_antidote",
+        "result": [
+          "While the merchant wasn't looking, you managed to grab a strange vial from the crate."
+        ],
+        "type": "DIALOGUE",
+        "next": "get_antidote"
+      },
+      {
+        "id": "get_antidote",
         "type": "CONSUMABLE",
-        "consumableId": "venom_antidote",
-        "result": ["Inside you find a vial of venom antidote."]
+        "consumableId": "ability_antidote"
       },
       {
         "id": "trigger_trap",
-        "type": "STAT_CHANGE",
-        "statChange": ["health", -3],
-        "result": ["A spring-loaded dart strikes you, dealing 3 damage."]
+        "type": "STATUS",
+        "statusId": "poisoned",
+        "result": [
+          "A spring-loaded poison dart strikes you in the arm! You feel unwell...",
+          "You feel unwell..."
+        ]
       }
     ]
   },
