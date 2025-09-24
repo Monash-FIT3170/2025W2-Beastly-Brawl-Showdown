@@ -339,6 +339,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           socket.emit("adventure_defeat");
         }
       } else if (resolved.type === "EQUIPMENT") {
+        resolved.type.calculateStrength();
         socket.emit("adventure_equipment", {
           equipment: resolved.equipment?.getState() || "Unknown equipment",
           equipmentId: resolved.equipmentId || "unknown_equipment",
@@ -379,6 +380,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         });
       } else if (resolved.type === "LOOT_POOL") {
         if (resolved.randomLoot() instanceof Equipment) {
+          resolved.randomLoot().calculateStrength();
           socket.emit("adventure_equipment", {
             equipment: resolved.randomLoot()?.getState() || "Unknown equipment",
             equipmentId: resolved.lootId || "unknown_equipment",

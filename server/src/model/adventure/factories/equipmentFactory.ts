@@ -1,3 +1,4 @@
+import { BasaltShield } from "../../game/equipment/basaltShield";
 import { BlazingGauntlets } from "../../game/equipment/blazingGauntlets";
 import { CoolingPendant } from "../../game/equipment/coolingPendant";
 import { Equipment } from "../../game/equipment/equipment";
@@ -15,6 +16,7 @@ const equipmentFactory: Record<string, () => Equipment> = {
   sharpened_claws: () => new SharpenedClaws(),
   blazing_gauntlets: () => new BlazingGauntlets(),
   cooling_pendant: () => new CoolingPendant(),
+  basalt_shield: () => new BasaltShield(),
 };
 
 export function createEquipment(id: string): Equipment {

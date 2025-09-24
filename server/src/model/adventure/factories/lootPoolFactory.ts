@@ -33,22 +33,22 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
     {
       loot: () => new Coal(),
       chance: 5,
-      id: "", //todo
+      id: "coal",
     },
     {
       loot: () => new BasaltShield(),
       chance: 50,
-      id: "", //todo
+      id: "basalt_shield",
     },
     {
       loot: () => new ScorchPowder(),
       chance: 30,
-      id: "", //todo
+      id: "scorch_powder",
     },
     {
       loot: () => new CharredRoot(),
       chance: 15,
-      id: "", //todo
+      id: "charred_root",
     },
   ],
 };

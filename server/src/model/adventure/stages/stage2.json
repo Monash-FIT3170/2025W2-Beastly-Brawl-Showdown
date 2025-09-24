@@ -53,33 +53,41 @@
     "outcomes": [
       {
         "id": "initial",
-        "result": ["FIREEEEE AAAH!"],
+        "result": [
+          "The basalt path narrows, rivers of lava bubbling on either side.",
+          "A molten shape rises from the cliff's edge.",
+          "It's a magma slime blocking your way."
+        ],
         "type": "DIALOGUE",
         "next": "slime_dialogue_1"
       },
       {
         "id": "slime_dialogue_1",
-        "result": ["papa blob?", "*angry blob*"],
+        "result": ["grrr... hisss... pop...", "s i z z l e."],
         "type": "DIALOGUE",
-        "enemyId": "slime_2",
+        "enemyId": "ember_2",
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_2",
+        "enemyId": "ember_2",
         "next": "fight_win"
       },
       {
         "id": "fight_win",
-        "result": ["fireeee aaah"],
+        "result": [
+          "You are victorious once again.",
+          "Its body cracks apart, cooling into shards of obsidian.",
+          "You search the fragments, finding something buried within…"
+        ],
         "type": "DIALOGUE",
-        "next": "slime_health_potion"
+        "next": "ember_drop"
       },
       {
-        "id": "slime_health_potion",
-        "type": "CONSUMABLE",
-        "consumableId": "large_health_potion"
+        "id": "ember_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
       }
     ]
   },

@@ -282,6 +282,52 @@
     ]
   },
   {
+    "id": "ember_slime_3",
+    "level": [2],
+    "description": "Stage 5, player fights slime 3.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Between the large walls of basalt you spot a cavern, you go inside, because why not?",
+          "The cavern opens into a vast chamber, lava crashes from the cliffs above.",
+          "From the lava, a towering shape arises.",
+          "It's an inferno slime, its body blazing like a wildfire."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["i will win.", "b u r n."],
+        "type": "DIALOGUE",
+        "enemyId": "ember_3",
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": "ember_3",
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "Somehow, you survive the inferno's wrath.",
+          "Its blaze collapses, leaving scorched stone and glowing embers.",
+          "Amid the smoldering remains, you spot something pulsing with heat..."
+        ],
+        "type": "DIALOGUE",
+        "next": "ember_drop"
+      },
+      {
+        "id": "ember_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      }
+    ]
+  },
+  {
     "id": "slime_1",
     "level": [0],
     "description": "Stage 1, player fights slime 1.",

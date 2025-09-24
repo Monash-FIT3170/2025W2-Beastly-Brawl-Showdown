@@ -10,6 +10,8 @@ const enemyFactory: Record<string, () => any> = {
   slime_4: () => new Slime("GRANDMA SLIME"),
   pouncing_bandit: () => new PouncingBandit("Bandito"),
   ember_1: () => new Slime("EMBER SLIME"),
+  ember_2: () => new Slime("MAGMA SLIME"),
+  ember_3: () => new Slime("INFERNO SLIME"),
 };
 
 export function createEnemy(id: string) {

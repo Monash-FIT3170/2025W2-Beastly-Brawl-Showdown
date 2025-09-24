@@ -5,6 +5,9 @@ import { SlimeSubstance } from "../../game/consumables/slimeSubstance";
 import { SlimeFriend } from "../../game/consumables/storyItem/slimeFriend";
 import { SparklingFriend } from "../../game/consumables/sparklingFriend";
 import { AbilityAntidote } from "../../game/consumables/abilityAntidote";
+import { ScorchPowder } from "../../game/consumables/scorchPowder";
+import { Coal } from "../../game/consumables/coal";
+import { CharredRoot } from "../../game/consumables/charredRoot";
 
 const ConsumableFactory: Record<string, () => Consumable> = {
   mini_health_potion: () =>
@@ -17,6 +20,9 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   slime_friend: () => new SlimeFriend(),
   sparkling_friend: () => new SparklingFriend(),
   ability_antidote: () => new AbilityAntidote(),
+  coal: () => new Coal(),
+  scorch_powder: () => new ScorchPowder(),
+  charred_root: () => new CharredRoot(),
 };
 
 export function createConsumable(id: string): Consumable {

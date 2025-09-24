@@ -110,12 +110,17 @@
       {
         "id": "initial",
         "type": "DIALOGUE",
-        "result": ["there is falling basalt"],
+        "result": [
+          "The ground rumbles beneath your feet...",
+          "Cracks split along the cliffside.",
+          "Chunks of basalt break loose and start tumbling right for you!",
+          "You have only a moment to react.."
+        ],
         "next": "basalt_choice"
       },
       {
         "id": "basalt_choice",
-        "result": ["what u do"],
+        "result": ["What do you do?"],
         "type": "CHOICE",
         "options": [
           {
@@ -137,7 +142,7 @@
       },
       {
         "id": "dodge_random",
-        "result": ["You dodge"],
+        "result": ["You move as quickly as you can."],
         "type": "RANDOM",
         "options": [
           {
@@ -154,7 +159,11 @@
       },
       {
         "id": "dodge_success",
-        "result": ["to do"],
+        "result": [
+          "KRRRSHH!",
+          "Basalt crashes down where you once stood.",
+          "Your heart races, but you're unharmed."
+        ],
         "type": "DIALOGUE",
         "next": "dodge_reward"
       },
@@ -166,38 +175,35 @@
       {
         "id": "dodge_fail",
         "type": "DIALOGUE",
-        "result": ["todo"],
+        "result": [
+          "SKKKRRAACK!",
+          "You move too late.",
+          "Stone slams into you with crushing force."
+        ],
         "next": "dodge_injury"
       },
       {
         "id": "dodge_injury",
         "type": "STAT_CHANGE",
         "statChange": ["health", -5],
-        "result": ["yeoueuchch"],
-        "next": "resolution"
-      },
-      {
-        "id": "resolution",
-        "result": ["It hurts, but you can muster the strength to climb out."],
-        "type": "DIALOGUE"
+        "result": ["Yeowch!!"]
       },
       {
         "id": "brace_next",
         "type": "DIALOGUE",
-        "result": ["you brace blah blah"],
+        "result": [
+          "You plant your feet and shield yourself.",
+          "KRRSHHHHHH!",
+          "The basalt smashes into you, rattling your bones.",
+          "The hit hurts, but your stance softened the blow."
+        ],
         "next": "brace_injury"
       },
       {
         "id": "brace_injury",
         "type": "STAT_CHANGE",
         "statChange": ["health", -2],
-        "result": ["yeoueuchch but less"],
-        "next": "resolution"
-      },
-      {
-        "id": "resolution",
-        "result": ["It hurts, but todo."],
-        "type": "DIALOGUE"
+        "result": ["Ouch..."]
       }
     ]
   },
@@ -208,8 +214,117 @@
     "outcomes": [
       {
         "id": "initial",
-        "result": ["You at the camp baby!"],
-        "type": "DIALOGUE"
+        "result": [
+          "Amid the basalt cliffs, you spot an abandoned campsite.",
+          "Charred logs lie half buried in ash, the air tinged with sulfur.",
+          "You can tell no one is coming back to this place."
+        ],
+        "type": "DIALOGUE",
+        "next": "camp_choice"
+      },
+      {
+        "id": "camp_choice",
+        "result": ["What do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "search",
+            "text": "Search it",
+            "next": "search_random"
+          },
+          {
+            "id": "rest",
+            "text": "Rest briefly",
+            "next": "rest_random"
+          }
+        ]
+      },
+      {
+        "id": "search_random",
+        "result": ["You dig through the scorched remains."],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 20,
+            "next": "search_success"
+          },
+          {
+            "id": "failure",
+            "chance": 80,
+            "next": "search_failure"
+          }
+        ]
+      },
+      {
+        "id": "search_success",
+        "result": ["You dig through the scorched remains.", "TO-DO, REWARD"],
+        "type": "DIALOGUE",
+        "next": "search_reward"
+      },
+      {
+        "id": "search_failure",
+        "result": ["Failure!", "Youg et burnt.."],
+        "type": "DIALOGUE",
+        "next": "search_burn"
+      },
+      {
+        "id": "search_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion"
+      },
+      {
+        "id": "search_burn",
+        "type": "STATUS",
+        "statusId": "burn"
+      },
+      {
+        "id": "rest_random",
+        "result": [
+          "You settle by the firepit, letting your body finally rest."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 70,
+            "next": "rest_success"
+          },
+          {
+            "id": "failure",
+            "chance": 30,
+            "next": "rest_failure"
+          }
+        ]
+      },
+      {
+        "id": "rest_success",
+        "result": [
+          "For a moment, the cliffs feel calm.",
+          "You regain something...."
+        ],
+        "type": "DIALOGUE",
+        "next": "rest_reward"
+      },
+      {
+        "id": "rest_failure",
+        "result": [
+          "You close your eyes, just for a moment...",
+          "A loud hiss wakes you up! An ember slime has approached you.",
+          "It crackles and lunges as you quickly scramble to your feet."
+        ],
+        "type": "DIALOGUE",
+        "next": "rest_fight"
+      },
+      {
+        "id": "rest_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion"
+      },
+      {
+        "id": "rest_fight",
+        "type": "FIGHT",
+        "enemyId": "ember_1"
       }
     ]
   },

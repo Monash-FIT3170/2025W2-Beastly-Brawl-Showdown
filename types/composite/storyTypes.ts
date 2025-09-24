@@ -22,7 +22,7 @@ export interface storyOutcomes {
   consumableId?: string; // <-- NEW
   consumable?: any; // populated at runtime
   equipmentId?: string;
-  lootPoolId: string;
+  lootPoolId?: string;
   equipment?: any; //populated at runtime
   randomLoot?: any;
   lootId?: any;

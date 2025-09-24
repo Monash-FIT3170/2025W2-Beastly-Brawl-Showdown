@@ -79,12 +79,12 @@
           "You sift through the pile, something glimmers inside..."
         ],
         "type": "DIALOGUE",
-        "next": "slime_stench"
+        "next": "ember_drop"
       },
       {
-        "id": "slime_stench",
-        "type": "EQUIPMENT",
-        "equipmentId": "oozing_blade"
+        "id": "ember_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
       }
     ]
   },
