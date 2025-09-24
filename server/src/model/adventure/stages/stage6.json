@@ -21,8 +21,7 @@
           {
             "id": "child_safe",
             "prerequisite": ["Slime Friend"],
-            "next": "choice_1",
-            "cost": ["Slime Friend"]
+            "next": "choice_1"
           },
           {
             "id": "child_not_safe",
@@ -43,7 +42,8 @@
           {
             "id": "present_child",
             "text": "Take out the slime",
-            "next": "reunion"
+            "next": "reunion",
+            "cost": ["Slime Friend"]
           }
         ]
       },
