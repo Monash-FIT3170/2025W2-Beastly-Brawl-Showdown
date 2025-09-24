@@ -47,6 +47,98 @@
     ]
   },
   {
+    "id": "desert_merchant",
+    "level": [5],
+    "description": "Stage 5, player encounters a desert merchant.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "As you slowly make your way through the desert, you spot a figure under a faded awning.",
+          "As you approach, you see a weary merchant polishing a collection of trinkets and artifacts.",
+          "\"Greetings, traveler! Care to browse my wares?\" he asks with a hopeful smile.",
+          "\"But I must warn you, it may cost you your health...\""
+        ],
+        "type": "DIALOGUE",
+        "next": "desert_merchant_choice"
+      },
+      {
+        "id": "desert_merchant_choice",
+        "result": ["What do you do with the merchant?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "trade",
+            "text": "Trade 5HP for a shiny pendant",
+            "next": "trade_reward"
+          },
+          {
+            "id": "haggle",
+            "text": "Attempt to haggle",
+            "next": "haggle_random"
+          },
+          {
+            "id": "snoop",
+            "text": "Sneak a look at the guarded crate",
+            "next": "snoop_random"
+          }
+        ]
+      },
+      {
+        "id": "trade_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "cooling_draught",
+        "result": ["You purchase a Cooling Draught that restores 5 health."]
+      },
+      {
+        "id": "haggle_random",
+        "type": "RANDOM",
+        "result": ["You bargain with spirited words."],
+        "options": [
+          { "id": "success", "chance": 50, "next": "haggle_win" },
+          { "id": "fail", "chance": 50, "next": "haggle_lose" }
+        ]
+      },
+      {
+        "id": "haggle_win",
+        "type": "CONSUMABLE",
+        "consumableId": "cooling_draught_discount",
+        "result": [
+          "The merchant, impressed, sells you the potion for half price."
+        ]
+      },
+      {
+        "id": "haggle_lose",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": [
+          "The merchant curses you and throws hot sand, dealing 2 damage."
+        ]
+      },
+      {
+        "id": "snoop_random",
+        "type": "RANDOM",
+        "result": ["You sneak toward the crate."],
+        "options": [
+          { "id": "antidote", "chance": 60, "next": "find_antidote" },
+          { "id": "trap", "chance": 40, "next": "trigger_trap" }
+        ]
+      },
+      {
+        "id": "find_antidote",
+        "type": "CONSUMABLE",
+        "consumableId": "venom_antidote",
+        "result": ["Inside you find a vial of venom antidote."]
+      },
+      {
+        "id": "trigger_trap",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -3],
+        "result": ["A spring-loaded dart strikes you, dealing 3 damage."]
+      }
+    ]
+  },
+  {
     "id": "slime_1",
     "level": [0],
     "description": "Stage 2, player fights slime 2.",

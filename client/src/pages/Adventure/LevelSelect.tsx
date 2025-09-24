@@ -12,7 +12,7 @@ interface LevelSelectProps {}
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(1);
-  const UNLOCKED_LEVELS = [1];
+  const UNLOCKED_LEVELS = [1, 2, 3, 4, 5];
 
   //a levelMap exists in back end too - so update both appropriately
   const levelMap: Record<number, MonsterIdentifier> = {
