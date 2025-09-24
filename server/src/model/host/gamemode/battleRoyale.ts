@@ -201,23 +201,23 @@ export class BattleRoyale implements IGameMode {
 
       // Properly end the battle for each player
       const playersInSession = session.getPlayers().getItems();
-        playersInSession.forEach((player) => {
-          if (finalWinner) {
-            if (!player.isBotPlayer()) {
-              io.sockets.sockets.get(player.getId())?.emit("battle_end", {
-                result: "concluded",
-                winners: [finalWinner.name]
-              });
-            }
-          } else {
-            if (!player.isBotPlayer()) {
-              io.sockets.sockets.get(player.getId())?.emit("battle_end", {
-                result: "draw",
-                winners: []
-              });
-            }
+      playersInSession.forEach((player) => {
+        if (finalWinner) {
+          if (!player.isBotPlayer()) {
+            io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+              result: "concluded",
+              winners: [finalWinner.name]
+            });
           }
-        });
+        } else {
+          if (!player.isBotPlayer()) {
+            io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+              result: "draw",
+              winners: []
+            });
+          }
+        }
+      });
 
       this.gameModeFinished = true;
     }
