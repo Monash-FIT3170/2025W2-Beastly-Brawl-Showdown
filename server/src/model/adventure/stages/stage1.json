@@ -1,104 +1,45 @@
 [
   {
-    "id": "slime_child",
+    "id": "slime_1",
     "level": [1],
-    "description": "Slime child encounter",
+    "description": "Stage 1, player fights slime 1.",
     "outcomes": [
       {
         "id": "initial",
         "result": [
-          "Off in the distance you hear squelches.",
-          "Whatever creature is making these noises sounds as though it is small and helpless."
+          "A small, green, gelatinous creature bounces around you.",
+          "It looks harmless enough."
         ],
         "type": "DIALOGUE",
-        "next": "choice_1"
+        "next": "slime_dialogue_1"
       },
       {
-        "id": "choice_1",
-        "result": ["Do you go and investigate?"],
-        "type": "CHOICE",
-        "options": [
-          {
-            "id": "approach_slime",
-            "text": "Investigate",
-            "next": "encounter_child"
-          },
-          {
-            "id": "ignore",
-            "text": "Ignore it",
-            "next": "no_investigation"
-          }
-        ]
-      },
-      {
-        "id": "encounter_child",
+        "id": "slime_dialogue_1",
+        "result": ["blob. blob.. blob...", "b l o b ."],
         "type": "DIALOGUE",
-        "result": [
-          "A small slime looks up at you helplessly.",
-          "It seems harmless enough.",
-          "Do you engage it in combat or try to befriend it?"
-        ],
-        "next": "slime_choice"
+        "enemyId": "slime_1",
+        "next": "fight_1"
       },
       {
-        "id": "slime_choice",
-        "result": ["Do you engage it in combat or try to befriend it?"],
-        "type": "CHOICE",
-        "options": [
-          {
-            "id": "befriend",
-            "text": "Befriend",
-            "next": "befriend_slime"
-          },
-          {
-            "id": "attack",
-            "text": "Attack",
-            "next": "slime_fight"
-          }
-        ]
-      },
-      {
-        "id": "befriend_slime",
-        "type": "DIALOGUE",
-        "result": [
-          "You reach your hand out to the slime.",
-          "It oozes happily and crawls from your hand to your bag.",
-          "You adventure onwards together."
-        ],
-        "next": "slime_item"
-      },
-      {
-        "id": "slime_item",
-        "type": "STORY_ITEM",
-        "storyItemId": "slime_friend"
-      },
-      {
-        "id": "slime_fight",
+        "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_3",
-        "next": "battle_conclusion"
+        "enemyId": "slime_1",
+        "next": "fight_win"
       },
       {
-        "id": "battle_conclusion",
-        "type": "DIALOGUE",
+        "id": "fight_win",
         "result": [
-          "You aren't entirely sure why you felt you had to fight the young slime but nevertheless you emerged victorious.",
-          "A faint smell wafts from the lifeless pool of ooze."
+          "You defeated the slime!",
+          "You hear something clatter on the ground.",
+          "It's green and slimy to the touch."
         ],
-        "next": "slime_scent"
-      },
-      {
-        "id": "slime_scent",
-        "type": "CONSUMABLE",
-        "consumableId": "slime_substance"
-      },
-      {
-        "id": "no_investigation",
         "type": "DIALOGUE",
-        "result": [
-          "Trusting your gut you march onwards.",
-          "You've already seen enough combat to be taking unnecessary risks."
-        ]
+        "next": "slime_stench"
+      },
+      {
+        "id": "slime_stench",
+        "type": "EQUIPMENT",
+        "equipmentId": "oozingBlade"
       }
     ]
   }

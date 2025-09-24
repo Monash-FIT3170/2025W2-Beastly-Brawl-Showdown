@@ -30,7 +30,10 @@ export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
       return { ...raw, storyItem: createStoryItem(raw.storyItemId!) };
 
     case EncounterType.STATUS:
-      return { ...raw, status: createStatus(raw.statusId!) };
+      return {
+        ...raw,
+        status: createStatus(raw.statusId![0], raw.statusId![1]),
+      };
 
     default:
       return raw; // purely descriptive outcome

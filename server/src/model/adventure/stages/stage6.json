@@ -106,7 +106,7 @@
         "id": "slime_blessing",
         "result": ["You have received the blessing of the slimes."],
         "type": "STATUS",
-        "statusId": "grandma_blessing"
+        "statusId": ["slime_boost", 10]
       }
     ]
   }
