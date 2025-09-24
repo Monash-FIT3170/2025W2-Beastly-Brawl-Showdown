@@ -47,6 +47,43 @@
     ]
   },
   {
+    "id": "ember_slime_2",
+    "level": [2],
+    "description": "Stage 2, player fights slime 2.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["FIREEEEE AAAH!"],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["papa blob?", "*angry blob*"],
+        "type": "DIALOGUE",
+        "enemyId": "slime_2",
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": "slime_2",
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": ["fireeee aaah"],
+        "type": "DIALOGUE",
+        "next": "slime_health_potion"
+      },
+      {
+        "id": "slime_health_potion",
+        "type": "CONSUMABLE",
+        "consumableId": "large_health_potion"
+      }
+    ]
+  },
+  {
     "id": "desert_merchant",
     "level": [5],
     "description": "Stage 2, player encounters a desert merchant.",

@@ -103,18 +103,113 @@
     ]
   },
   {
-    "id": "fire_encounter",
+    "id": "falling_basalt",
     "level": [2],
-    "description": "Fire slime encounter",
+    "description": "Falling Basalt",
     "outcomes": [
       {
         "id": "initial",
-        "result": [
-          "Off in the distance you hear squelches.",
-          "Whatever creature is making these noises sounds as though it is small and helpless."
-        ],
         "type": "DIALOGUE",
-        "next": "choice_1"
+        "result": ["there is falling basalt"],
+        "next": "basalt_choice"
+      },
+      {
+        "id": "basalt_choice",
+        "result": ["what u do"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "left",
+            "text": "Dodge to the left",
+            "next": "dodge_random"
+          },
+          {
+            "id": "right",
+            "text": "Dodge to the right",
+            "next": "dodge_random"
+          },
+          {
+            "id": "brace",
+            "text": "Brace for the damage",
+            "next": "brace_next"
+          }
+        ]
+      },
+      {
+        "id": "dodge_random",
+        "result": ["You dodge"],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 50,
+            "next": "dodge_success"
+          },
+          {
+            "id": "failure",
+            "chance": 50,
+            "next": "dodge_fail"
+          }
+        ]
+      },
+      {
+        "id": "dodge_success",
+        "result": ["to do"],
+        "type": "DIALOGUE",
+        "next": "dodge_reward"
+      },
+      {
+        "id": "dodge_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion"
+      },
+      {
+        "id": "dodge_fail",
+        "type": "DIALOGUE",
+        "result": ["todo"],
+        "next": "dodge_injury"
+      },
+      {
+        "id": "dodge_injury",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": ["yeoueuchch"],
+        "next": "resolution"
+      },
+      {
+        "id": "resolution",
+        "result": ["It hurts, but you can muster the strength to climb out."],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "brace_next",
+        "type": "DIALOGUE",
+        "result": ["you brace blah blah"],
+        "next": "brace_injury"
+      },
+      {
+        "id": "brace_injury",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": ["yeoueuchch but less"],
+        "next": "resolution"
+      },
+      {
+        "id": "resolution",
+        "result": ["It hurts, but todo."],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "abandoned_camp",
+    "level": [2],
+    "description": "Stage 3, player finds an abandoned camp.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["You at the camp baby!"],
+        "type": "DIALOGUE"
       }
     ]
   },

@@ -120,5 +120,17 @@
         "type": "DIALOGUE"
       }
     ]
+  },
+  {
+    "id": "forge",
+    "level": [2],
+    "description": "Stage 6, player finds forge.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["You at the forge baby!"],
+        "type": "DIALOGUE"
+      }
+    ]
   }
 ]
