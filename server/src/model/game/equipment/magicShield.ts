@@ -27,6 +27,6 @@ export class MagicShield extends Equipment {
   }
 
   protected getImageString(): string {
-    return "MagicShield";
+    return "MAGIC_SHIELD";
   }
 }
