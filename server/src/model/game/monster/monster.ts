@@ -121,25 +121,6 @@ export abstract class Monster {
     return this.armourClass;
   }
 
-  public getMonsterState(): MonsterState {
-    return {
-      id: this.id,
-      archetypeId: this.archetype.getArchetypeIdentifier(),
-      name: this.name,
-      description: this.description,
-
-      maxHealth: this.maxHealth,
-      attackBonus: this.attackBonus,
-      armourClass: this.armourClass,
-
-      startingHP: this.startingHealth,
-      startingATK: this.startingAttackBonus,
-      startingAC: this.startingArmourClass,
-
-      possibleActions: this.getPossibleActionStates(),
-    };
-  }
-
   public incMaxHealth(health: number): void {
     this.maxHealth += health;
   }
@@ -177,5 +158,24 @@ export abstract class Monster {
     }
     console.log("PVE SCALING DEBUG: HEALTH SCALED", this.maxHealth);
     console.log("PVE SCALING DEBUG: ATK BONUS SCALED", this.attackBonus);
+  }
+
+  public getMonsterState(): MonsterState {
+    return {
+      id: this.id,
+      archetypeId: this.archetype.getArchetypeIdentifier(),
+      name: this.name,
+      description: this.description,
+
+      maxHealth: this.maxHealth,
+      attackBonus: this.attackBonus,
+      armourClass: this.armourClass,
+
+      startingHP: this.startingHealth,
+      startingATK: this.startingAttackBonus,
+      startingAC: this.startingArmourClass,
+
+      possibleActions: this.getPossibleActionStates(),
+    };
   }
 }

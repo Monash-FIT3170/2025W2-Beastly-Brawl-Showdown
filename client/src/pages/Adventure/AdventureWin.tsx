@@ -35,10 +35,11 @@ const AdventureWin: React.FC = () => {
     FlowRouter.go("/adventure/level-select");
   };
 
-  const colorLoader: Record<string, string> = {
-    [ArchetypeIdentifier.ATTACKER]: "bg-attacker",
-    [ArchetypeIdentifier.DEFENDER]: "bg-defender",
-    [ArchetypeIdentifier.BALANCED]: "bg-balanced",
+  const colourLoader: Record<ArchetypeIdentifier | string, string> = {
+    [ArchetypeIdentifier.ATTACKER]: "attacker",
+    [ArchetypeIdentifier.DEFENDER]: "defender",
+    [ArchetypeIdentifier.BALANCED]: "balanced",
+    NONE: "quillGray",
   };
 
   if (!monster) {
@@ -47,6 +48,8 @@ const AdventureWin: React.FC = () => {
         <OutlineText size="large">Loading reward</OutlineText>
       </div>
     );
+  } else {
+    console.log("DEBUG:", monster);
   }
 
   return (
@@ -58,7 +61,9 @@ const AdventureWin: React.FC = () => {
         <OutlineText size="large">YOU'VE UNLOCKED</OutlineText>
 
         <div
-          className={`bg-[#FFA600] flex flex-col items-center justify-around border-[6px] border-blackCurrant w-[40rem] h-[50rem] xl:w-[20rem] xl:h-[20rem] rounded-xl`}
+          className={`bg-${
+            colourLoader[monster.archetypeId]
+          } flex flex-col items-center justify-around border-[6px] border-blackCurrant w-[40rem] h-[50rem] xl:w-[20rem] xl:h-[20rem] rounded-xl`}
         >
           <MonsterImage
             name={monster.id}
