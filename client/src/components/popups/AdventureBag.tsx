@@ -216,7 +216,13 @@ export const AdventureBagPopup = ({
                 buttonColour="blue"
                 iconColour="black"
                 size="medium"
-                onClick={() => setViewingTab(viewingTab - 1)}
+                onClick={() => {
+                  if (viewingTab === 0) {
+                    setViewingTab(2);
+                  } else {
+                    setViewingTab(viewingTab - 1);
+                  }
+                }}
               />
             </div>
 
