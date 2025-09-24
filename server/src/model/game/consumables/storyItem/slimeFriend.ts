@@ -10,14 +10,14 @@ export class SlimeFriend extends StoryItem {
   constructor() {
     super(
       "Slime Friend",
-      "A green friend you met on your travels",
+      "A green friend you met on your travels, release him at the right time and maybe it will be of utmost help.",
       ConsumableType.ENEMY_INFLICT,
       "reunion_bridge"
     );
   }
 
   public getStatDescription(): string {
-    return "Take the slime out of your bag";
+    return "???";
   }
 
   public getImageString(): string {
@@ -30,7 +30,7 @@ export class SlimeFriend extends StoryItem {
       player.setHealth(0);
     } else {
       player.addLog(
-        "You took the slime out of your bag and it ran away in fear"
+        "You took the slime out of your bag and it ran away in fear.."
       );
     }
   }

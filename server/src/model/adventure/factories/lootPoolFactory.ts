@@ -5,6 +5,10 @@ import { SlimeSubstance } from "../../game/consumables/slimeSubstance";
 import { SlimeFriend } from "../../game/consumables/storyItem/slimeFriend";
 import { Equipment } from "../../game/equipment/equipment";
 import { OozingBlade } from "../../game/equipment/oozingBlade";
+import { Coal } from "../../game/consumables/coal";
+import { BasaltShield } from "../../game/equipment/basaltShield";
+import { ScorchPowder } from "../../game/consumables/scorchPowder";
+import { CharredRoot } from "../../game/consumables/charredRoot";
 
 interface LootEntry {
   loot: (() => Consumable) | (() => Equipment);
@@ -23,6 +27,28 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
       loot: () => new OozingBlade(),
       chance: 50,
       id: "oozingBlade",
+    },
+  ],
+  fire_pool: [
+    {
+      loot: () => new Coal(),
+      chance: 5,
+      id: "", //todo
+    },
+    {
+      loot: () => new BasaltShield(),
+      chance: 50,
+      id: "", //todo
+    },
+    {
+      loot: () => new ScorchPowder(),
+      chance: 30,
+      id: "", //todo
+    },
+    {
+      loot: () => new CharredRoot(),
+      chance: 15,
+      id: "", //todo
     },
   ],
 };

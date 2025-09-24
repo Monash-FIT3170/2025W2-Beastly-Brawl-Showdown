@@ -49,7 +49,7 @@
   {
     "id": "desert_merchant",
     "level": [5],
-    "description": "Stage 5, player encounters a desert merchant.",
+    "description": "Stage 2, player encounters a desert merchant.",
     "outcomes": [
       {
         "id": "initial",

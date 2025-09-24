@@ -3,19 +3,18 @@ import { EndStatus } from "./endStatus";
 
 import { StatusType } from "/types/single/statusType";
 
-export class Poison extends EndStatus {
+export class Burn extends EndStatus {
   constructor(countdown: number = 5) {
-    super("Poison", "Lose 1 HP.", countdown, StatusType.DEBUFF);
+    super("Burn", "TO DO.", countdown, StatusType.DEBUFF);
   }
 
   public endingEffect(player: Player): void {
-    player.incHealth(-1);
-    console.log(`${player.getName()} -1 Health: Poison Tick`);
-    // player.addLog(`You have been poisoned, -1 HP.`)
+    player.incHealth(-this.countDown);
+    console.log(`${player.getName()} -${this.countDown} Health: Burn Tick`);
   }
 
   public updateLogs(player: Player): void {
-    player.addLog(`You have been poisoned, -1 HP.`);
+    player.addLog(`The effects of the burn hurt you, -${this.countDown} HP.`);
   }
   public expire(): void {
     console.error("Method not implemented.");
