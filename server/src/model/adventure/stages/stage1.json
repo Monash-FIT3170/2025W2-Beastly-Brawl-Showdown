@@ -39,7 +39,7 @@
       {
         "id": "slime_stench",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "oozing_blade"
       }
     ]
   },
@@ -84,7 +84,7 @@
       {
         "id": "slime_stench",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "oozing_blade"
       }
     ]
   },
@@ -180,7 +180,7 @@
       {
         "id": "reward",
         "type": "EQUIPMENT",
-        "equipmentId": "sharpenedClaws"
+        "equipmentId": "sharpened_claws"
       }
     ]
   },

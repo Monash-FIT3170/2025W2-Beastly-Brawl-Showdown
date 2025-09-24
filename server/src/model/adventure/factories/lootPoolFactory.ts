@@ -26,7 +26,7 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
     {
       loot: () => new OozingBlade(),
       chance: 50,
-      id: "oozingBlade",
+      id: "oozing_blade",
     },
   ],
   fire_pool: [

@@ -134,7 +134,7 @@
       {
         "id": "trade_reward",
         "type": "EQUIPMENT",
-        "equipmentId": "coolingPendant"
+        "equipmentId": "cooling_pendant"
       },
       {
         "id": "haggle_random",
@@ -158,7 +158,7 @@
       {
         "id": "haggle_reward",
         "type": "EQUIPMENT",
-        "equipmentId": "coolingPendant"
+        "equipmentId": "cooling_pendant"
       },
       {
         "id": "haggle_lose",

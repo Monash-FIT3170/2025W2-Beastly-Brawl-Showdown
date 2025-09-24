@@ -43,7 +43,7 @@
       {
         "id": "mini_boss_reward",
         "type": "EQUIPMENT",
-        "equipmentId": "magicShield"
+        "equipmentId": "magic_shield"
       }
     ]
   },

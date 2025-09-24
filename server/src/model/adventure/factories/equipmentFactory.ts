@@ -8,13 +8,13 @@ import { PufferPrickle } from "../../game/equipment/pufferPrickle";
 import { SharpenedClaws } from "../../game/equipment/sharpenedClaws";
 
 const equipmentFactory: Record<string, () => Equipment> = {
-  oozingBlade: () => new OozingBlade(),
-  lifeFang: () => new LifeFang(),
-  magicShield: () => new MagicShield(),
-  pufferPrickle: () => new PufferPrickle(),
-  sharpenedClaws: () => new SharpenedClaws(),
-  blazingGauntlets: () => new BlazingGauntlets(),
-  coolingPendant: () => new CoolingPendant(),
+  oozing_blade: () => new OozingBlade(),
+  life_fang: () => new LifeFang(),
+  magic_shield: () => new MagicShield(),
+  puffer_prickle: () => new PufferPrickle(),
+  sharpened_claws: () => new SharpenedClaws(),
+  blazing_gauntlets: () => new BlazingGauntlets(),
+  cooling_pendant: () => new CoolingPendant(),
 };
 
 export function createEquipment(id: string): Equipment {
