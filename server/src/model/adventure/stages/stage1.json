@@ -110,7 +110,7 @@
         "id": "good_sleep_cont",
         "type": "STAT_CHANGE",
         "result": ["You get a good sleep."],
-        "statChange": ["health", -10],
+        "statChange": ["health", 10],
         "next": "good_sleep_resolution"
       },
       {
