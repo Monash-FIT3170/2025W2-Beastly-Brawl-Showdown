@@ -13,16 +13,14 @@ export const StoryItemCard = ({ storyItem, onClick }: StoryItemProps) => {
     <button
       onClick={onClick}
       className="
-    bg-heliotrope
+    bg-storycolour
     border border-[4px] border-blackCurrant
     rounded-2xl
     w-[40rem]
-    xl:w-[30rem]
     p-[1rem]
     justify-center
     items-center
     lg:h-[8rem]
-    
     "
     >
       <div className="grid grid-cols-[1fr_4fr] gap-4 w-full p-2 justify-center items-center">
@@ -46,7 +44,7 @@ export const StoryItemCard = ({ storyItem, onClick }: StoryItemProps) => {
           <OutlineText size="inventory">
             {storyItem.name.toUpperCase()}
           </OutlineText>
-          <BlackText size="tiny">{storyItem.statDescription}</BlackText>
+          <BlackText size="tiny">{storyItem.hintDescription}</BlackText>
         </div>
       </div>
     </button>

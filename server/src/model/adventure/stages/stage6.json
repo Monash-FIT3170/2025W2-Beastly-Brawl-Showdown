@@ -20,7 +20,7 @@
         "options": [
           {
             "id": "child_safe",
-            "prerequisite": ["Slime Friend"],
+            "prerequisite": ["Slime Baby"],
             "next": "choice_1"
           },
           {
@@ -41,9 +41,9 @@
           },
           {
             "id": "present_child",
-            "text": "Take out the slime",
+            "text": "Take the slime out of the backpack",
             "next": "reunion",
-            "cost": ["Slime Friend"]
+            "cost": ["Slime Baby"]
           }
         ]
       },
@@ -59,7 +59,7 @@
         "options": [
           {
             "id": "child_safe",
-            "prerequisite": ["Slime Friend"],
+            "prerequisite": ["Slime Baby"],
             "next": "fight_win"
           },
           {
@@ -85,15 +85,9 @@
         "type": "DIALOGUE"
       },
       {
-        "id": "reunion_bridge",
-        "result": ["THIS IS NOT MEANT TO BE READ"],
-        "type": "DIALOGUE",
-        "next": "reunion"
-      },
-      {
         "id": "reunion",
         "result": [
-          "You take out your slime friend from earlier.",
+          "You take out your slime baby from earlier.",
           "Both slimes start squelching happily.",
           "It looks as though you've bought the slime to one of its relatives.",
           "The larger slime gives you what appears to be slime.",

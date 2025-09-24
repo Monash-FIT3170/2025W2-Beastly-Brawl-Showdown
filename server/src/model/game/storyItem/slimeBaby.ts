@@ -6,10 +6,10 @@ import { StoryItem } from "./storyItem";
 import { ConsumableType } from "/types/single/itemState";
 import socket from "../../../../../client/src/socket";
 
-export class SlimeFriend extends StoryItem {
+export class SlimeBaby extends StoryItem {
   constructor() {
     super(
-      "Slime Friend",
+      "Slime Baby",
       "A green friend you met on your travels",
       "It seems lonely",
       "SLIME"

@@ -1,8 +1,8 @@
-import { SlimeFriend } from "../../game/storyItem/slimeFriend";
+import { SlimeBaby } from "../../game/storyItem/slimeBaby";
 import { StoryItem } from "../../game/storyItem/storyItem";
 
 const StoryItemFactory: Record<string, () => StoryItem> = {
-  slime_friend: () => new SlimeFriend(),
+  slime_baby: () => new SlimeBaby(),
 };
 
 export function createStoryItem(id: string): StoryItem {

@@ -191,7 +191,7 @@ export const AdventureBagPopup = ({
                   <></>
                 ) : (
                   <BlackText size="tiny">
-                    Continue adventuring to find more story items!!
+                    Continue adventuring to find story items!!
                   </BlackText>
                 )}
                 {/* map of consumables */}
