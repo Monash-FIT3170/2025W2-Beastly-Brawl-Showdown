@@ -25,6 +25,23 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
       id: "oozingBlade",
     },
   ],
+  scavenger_pool: [
+    {
+      loot: () => new PercentageHealthPotion("Mini Health Potion", 0.25),
+      chance: 50,
+      id: "mini_health_potion",
+    },
+    {
+      loot: () => new PercentageHealthPotion("Large Health Potion", 0.5),
+      chance: 40,
+      id: "large_health_potion",
+    },
+    {
+      loot: () => new PercentageHealthPotion("Super Health Potion", 1),
+      chance: 10,
+      id: "super_health_potion",
+    },
+  ],
 };
 
 export function createLoot(id: string): LootEntry | null {
