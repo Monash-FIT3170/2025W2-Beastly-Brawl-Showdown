@@ -1,30 +1,18 @@
 import { Server, Socket } from "socket.io";
-import { activeAdventures, players, battles } from "../../main";
+import { activeAdventures, players, battles, playerAccounts } from "../../main";
 import { Adventure } from "../model/game/adventure";
 import { Player } from "../model/game/player";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Battle } from "../model/game/battle";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
 import { storyOutcomes, storyStruct } from "/types/composite/storyTypes";
-import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
-import { Action } from "../model/game/action/action";
-import { AttackAction } from "../model/game/action/attack";
-import { PercentageHealthPotion } from "../model/game/consumables/healthPotion";
-import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
-import { MagicShield } from "../model/game/equipment/magicShield";
-import { OozingBlade } from "../model/game/equipment/oozingBlade";
 import { ConsumableState } from "/types/single/itemState";
 import { ConsumeAction } from "../model/game/action/consume";
 import { createEquipment } from "../model/adventure/factories/equipmentFactory";
-import { Poison } from "../model/game/status/poison";
-import { Stun } from "../model/game/status/stun";
-import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
-import { LakeCurse } from "../model/game/status/lakeCurse";
 import { createConsumable } from "../model/adventure/factories/consumableFactory";
-import { SlimeBoost } from "../model/game/status/slimeBoost";
+import { updatePlayerAccount } from "../database/dbManager";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -388,6 +376,29 @@ export function loadNextStory(
         monsterId: enemy,
       });
       io.to(socket.id).emit("adventure_win", { monsterId: enemy });
+      //unlock monster
+      const user = playerAccounts.get(socket.id);
+      console.log(
+        `${user?.username} has unlocked ${adventure.getLevelMonster()}`
+      );
+      var adventureProgression = user?.adventureProgression;
+      if (adventureProgression) {
+        adventureProgression.unlockedMonsters[adventure.getLevelMonster()] =
+          true;
+        adventureProgression.unlockedLevels.push(adventure.getLevel() + 1);
+        updatePlayerAccount(user?._id, {
+          adventureProgression: adventureProgression,
+        });
+        console.log(
+          `${
+            user?.username
+          } has unlocked ${adventure.getLevelMonster()} and level ${
+            adventure.getLevel() + 1
+          }`
+        );
+      } else {
+        console.error(`Failed to update ${user?._id}'s unlocked monsters.`);
+      }
     }
     const loadNodes = loadStage(stage);
     const eligibleNodes = loadNodes.filter((node) => {
