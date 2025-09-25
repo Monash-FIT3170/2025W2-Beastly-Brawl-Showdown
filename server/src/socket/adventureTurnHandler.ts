@@ -1,14 +1,11 @@
 import { Server, Socket } from "socket.io";
 import { activeAdventures, players, battles } from "../../main";
-
 import { ActionState } from "/types/single/actionState";
 import { NullAction } from "../model/game/action/null";
-
 import { loadNextStory, progressAdventure } from "./adventureModeHandler";
 import { ActionRandomiser } from "../model/game/actionRandomiser";
 import { ActionIdentifier } from "../../../types/single/actionState";
 import { Action } from "../model/game/action/action";
-import { StartStatus } from "../model/game/status/startStatus";
 
 export const adventureTurnHandler = (io: Server, socket: Socket) => {
   // Handle player actions in adventure
@@ -78,11 +75,10 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
         player1.getActions().forEach((action) => {
           const animationInfo = action.prepareAnimation();
           if (typeof animationInfo === "string") {
-            player1.addPrepareAnimation(animationInfo.toLowerCase(), true);
+            player1.addAnimation(animationInfo.toLowerCase());
             console.log(`ADV: Animation P1 - ${animationInfo}`);
           } else {
             const [animationType, diceRoll] = animationInfo;
-            player1.addPrepareAnimation(animationType.toLowerCase());
             player1DiceRoll = diceRoll;
             console.log(`ADV: Animation P1 - ${animationType}, ${diceRoll}`);
           }
@@ -91,33 +87,18 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
         player2.getActions().forEach((action) => {
           const animationInfo = action.prepareAnimation();
           if (typeof animationInfo === "string") {
-            player2.addPrepareAnimation(animationInfo.toLowerCase(), true);
+            player2.addAnimation(animationInfo.toLowerCase());
             console.log(`ADV: Animation P2 - ${animationInfo}`);
           } else {
             const [animationType, diceRoll] = animationInfo;
-            player2.addPrepareAnimation(animationType.toLowerCase());
             player2DiceRoll = diceRoll;
             console.log(`ADV: Animation P2 - ${animationType}, ${diceRoll}`);
           }
         });
 
-        //TODO: move this to start of turn not on click(prepare)
-        player1
-          .getStatuses()
-          .filter((s) => s instanceof StartStatus)
-          .forEach((s) => {
-            console.error("ADV: p1 - Starting Status", s.getName());
-            player1.addPrepareAnimation(s.getName().toLowerCase());
-            player1.addExecuteAnimation(s.getName().toLowerCase());
-          });
-        player2
-          .getStatuses()
-          .filter((s) => s instanceof StartStatus)
-          .forEach((s) => {
-            console.error("ADV: p2 - Starting Status", s.getName());
-            player2.addPrepareAnimation(s.getName().toLowerCase());
-            player2.addExecuteAnimation(s.getName().toLowerCase());
-          });
+        //add statuses to animation.
+        player1.setStartStatusAnimations();
+        player1.setEndStatusAnimations();
 
         //update battlestate
         io.to(playerId).emit("adventure_state", {
@@ -130,10 +111,10 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
 
         // Roll animations
         //TODO: add time out before dice roll
-        if (player1.getPrepareAnimations().includes("roll_dice")) {
+        if (player1DiceRoll > 0) {
           io.to(player1.getId()).emit("roll_dice", player1DiceRoll);
         }
-        if (player2.getPrepareAnimations().includes("roll_dice")) {
+        if (player2DiceRoll > 0) {
           io.to(player2.getId()).emit("roll_dice", player2DiceRoll);
         }
 
@@ -143,6 +124,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
 
         //TIMEOUT - to allow animation
         setTimeout(() => {
+          player1.clearAnimations();
+          player2.clearAnimations();
+
           // Execute method
           player1.getActions().forEach((action) => {
             action.execute(player1, player2);
@@ -159,16 +143,24 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             }
           });
 
-          //TODO: add ending status animations
-          
+          //add statuses to animation.
+          player1.setStartStatusAnimations();
+          player1.setEndStatusAnimations();
+          player2.setStartStatusAnimations();
+          player2.setEndStatusAnimations();
+          //battle effect handled in effect()
+
+          //update battlestate
+          io.to(playerId).emit("adventure_state", {
+            type: "battle",
+            battle: battle?.getBattleState(playerId),
+          });
+
           // Execute animations
           io.to(player1.getId()).emit("update_animation", "execute");
           io.to(player2.getId()).emit("update_animation", "execute");
           // TODO: figure out when(if?) to go back to normal
-          
-          
-            
-          
+
           //reset stats
           playersInBattle.forEach((p) => {
             p.resetStats();
@@ -178,77 +170,76 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             p.tickStatuses();
             p.startStatusEffects();
             p.clearAnimations();
-            console.error(
-              `${p.getName()} Reset Prepare Animations: ${p.getPrepareAnimations()}`
-            );
+            p.setStartStatusAnimations();
           });
 
-          
-            //update battlestate
-            io.to(playerId).emit("adventure_state", {
-              type: "battle",
-              battle: battle?.getBattleState(playerId),
-            });
-          
+          //update battlestate
+          io.to(playerId).emit("adventure_state", {
+            type: "battle",
+            battle: battle?.getBattleState(playerId),
+          });
+
           setTimeout(() => {
-          io.to(player1.getId()).emit("update_animation", "default");
-          io.to(player2.getId()).emit("update_animation", "default");
-          
-          //check if battle is over
-          if (battle?.isBattleOver()) {
-            console.log(`ADV: battle is over!`);
-            const winners = battle
-              .getWinners()
-              ?.map((player) => player.getName());
-            console.log(winners);
-            const playerName = player?.getName();
-            if (playerName) {
-              //if the winner is the player
-              if (winners?.includes(playerName)) {
-                console.log(`ADV: player won!`);
-                const adventure = activeAdventures.get(playerId);
-                const stage = adventure?.getStage();
-                console.log("stage: ", stage);
-                // console.log("adventure", adventure);
-                if (adventure && stage) {
-                  // Get current story node and outcome
+            io.to(player1.getId()).emit("update_animation", "default");
+            io.to(player2.getId()).emit("update_animation", "default");
 
-                  const outcome = loadNextStory(io, adventure, socket);
+            //check if battle is over
+            if (battle?.isBattleOver()) {
+              console.log(`ADV: battle is over!`);
+              const winners = battle
+                .getWinners()
+                ?.map((player) => player.getName());
+              console.log(winners);
+              const playerName = player?.getName();
+              if (playerName) {
+                //if the winner is the player
+                if (winners?.includes(playerName)) {
+                  console.log(`ADV: player won!`);
+                  const adventure = activeAdventures.get(playerId);
+                  const stage = adventure?.getStage();
+                  console.log("stage: ", stage);
+                  // console.log("adventure", adventure);
+                  if (adventure && stage) {
+                    // Get current story node and outcome
 
-                  // If outcome has a next, update currentOutcomeId
-                  if (outcome && outcome.next) {
-                    adventure.currentOutcomeId = outcome.next;
-                    adventure.pastEncounters.push(adventure.currentOutcomeId);
+                    const outcome = loadNextStory(io, adventure, socket);
+
+                    // If outcome has a next, update currentOutcomeId
+                    if (outcome && outcome.next) {
+                      adventure.currentOutcomeId = outcome.next;
+                      adventure.pastEncounters.push(adventure.currentOutcomeId);
+                    } else {
+                      adventure.currentOutcomeId = null;
+                      adventure.currentStory = null; // Or handle end of adventure
+                    }
+
+                    //console.log("stageData", stageData);
+                    console.log("outcome", outcome);
+                    console.log("outcome.next", outcome?.next);
+                    adventure.getPlayer().clearLogs();
+                    //adventure.getPlayer().clearBattleLogs();
+
+                    progressAdventure(io, socket, adventure, stage);
                   } else {
-                    adventure.currentOutcomeId = null;
-                    adventure.currentStory = null; // Or handle end of adventure
-                  }
-
-                  //console.log("stageData", stageData);
-                  console.log("outcome", outcome);
-                  console.log("outcome.next", outcome?.next);
-                  adventure.getPlayer().clearLogs();
-                  //adventure.getPlayer().clearBattleLogs();
-
-                  progressAdventure(io, socket, adventure, stage);
-                } else {
-                  console.error(
-                    `ADV: adventure or stage does not exist for player id: ${playerId} \n
+                    console.error(
+                      `ADV: adventure or stage does not exist for player id: ${playerId} \n
                     ${adventure}, ${stage}`
-                  );
+                    );
+                  }
+                } else {
+                  console.log(`ADV: GAME OVER!`);
+                  socket.emit("adventure_defeat");
                 }
               } else {
-                console.log(`ADV: GAME OVER!`);
-                socket.emit("adventure_defeat");
+                console.error(
+                  `ADV: Player does not have name... ${playerName}`
+                );
               }
             } else {
-              console.error(`ADV: Player does not have name... ${playerName}`);
+              let actions = player?.getMonster()?.getPossibleActionStates();
+              io.to(playerId).emit("possible_actions", actions);
             }
-          } else {
-            let actions = player?.getMonster()?.getPossibleActionStates();
-            io.to(playerId).emit("possible_actions", actions);
-          }
-          }, 1000)
+          }, 1000);
         }, 2000);
       }
     }

@@ -37,8 +37,7 @@ export class Player {
   private noNullAction: number = 0;
   static roundToCheck: number = 5; //change the value here
 
-  private prepareAnimations: string[] = ["default"];
-  private executeAnimations: string[] = ["default"];
+  private animations: string[] = ["default"];
 
   constructor(
     id: string,
@@ -396,38 +395,29 @@ export class Player {
   }
 
   //ANIMATION METHODS:
-  public getExecuteAnimations(): string[] {
-    return this.executeAnimations;
-  }
-
-  public getPrepareAnimations(): string[] {
-    return this.prepareAnimations;
-  }
 
   public clearAnimations(): void {
-    this.executeAnimations = ["default"];
-    this.prepareAnimations = ["default"];
+    this.animations = ["default"];
   }
 
-  public addExecuteAnimation(
-    animation: string,
-    removeDefault: boolean = false
-  ): void {
-    if (removeDefault) {
-      this.executeAnimations.filter((a) => a !== "default");
-    }
-    this.executeAnimations.push(animation);
+  public getAnimations(): string[] {
+    return this.animations;
   }
 
-  public addPrepareAnimation(
-    animation: string,
-    removeDefault: boolean = false
-  ): void {
-    // console.error("addPrepareAnimation()", animation);
-    if (removeDefault) {
-      this.prepareAnimations.filter((a) => a !== "default");
-    }
-    this.prepareAnimations.push(animation);
+  public addAnimation(a: string): void {
+    this.animations.push(a);
+  }
+
+  public setStartStatusAnimations(): void {
+    this.statuses
+      .filter((s) => s instanceof StartStatus)
+      .forEach((s) => this.animations.push(s.getName().toLowerCase()));
+  }
+
+  public setEndStatusAnimations(): void {
+    this.statuses
+      .filter((s) => s instanceof EndStatus)
+      .forEach((s) => this.animations.push(s.getName().toLowerCase()));
   }
 
   //PLAYER STATE:
@@ -454,8 +444,7 @@ export class Player {
       equipment: this.equipment.map((e) => e.getState()),
       consumables: this.consumables.map((c) => c.getState()),
       attackState: this.getMonster()?.getAttackAction().getAttackState()!,
-      prepareAnimations: this.prepareAnimations,
-      executeAnimations: this.executeAnimations,
+      animations: this.animations,
     };
   }
 }

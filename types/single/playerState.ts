@@ -28,6 +28,5 @@ export interface PlayerState {
 
   attackState: AttackState;
 
-  prepareAnimations: string[];
-  executeAnimations: string[];
+  animations: string[];
 }
