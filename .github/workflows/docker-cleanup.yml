@@ -1,0 +1,24 @@
+name: Weekly-old Docker Cleanup
+
+on:
+  schedule:
+    # 19:00 UTC ≈ 5:00 AEST (standard time).
+    # Adjust to 18:00 UTC during daylight-saving if you need perfect accuracy.
+    - cron: '0 19 * * *'
+  workflow_dispatch:   # allows manual run as well
+
+jobs:
+  prune-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH into droplet and prune images >7 days old
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: root
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          script: |
+            # Remove only images older than 7 days and not in use
+            docker image prune -af --filter "until=168h"
+            # Optionally clear dangling volumes older than 7 days
+            docker volume prune -f --filter "until=168h"
