@@ -73,7 +73,7 @@ export const StoryItemPopup = ({
             <div className="justify-center items-center p-[1rem]">
               <div
                 className="lg:h-[10rem] sm:h-[30rem] lg:outline-[0.25rem] sm:outline-[0.75rem] 
-                        rounded-2xl  bg-consumablePink outline-blackCurrant aspect-square mx-auto"
+                        rounded-2xl  bg-storycolour outline-blackCurrant aspect-square mx-auto"
               >
                 <img
                   className="w-full h-full object-contain"

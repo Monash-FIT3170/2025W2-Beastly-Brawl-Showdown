@@ -35,15 +35,15 @@
         "type": "CHOICE",
         "options": [
           {
-            "id": "battle",
-            "text": "Battle",
-            "next": "fight_grandma"
-          },
-          {
             "id": "present_child",
             "text": "Take the slime out of the backpack",
             "next": "reunion",
             "cost": ["Slime Baby"]
+          },
+          {
+            "id": "battle",
+            "text": "Battle grandma slime",
+            "next": "fight_grandma"
           }
         ]
       },

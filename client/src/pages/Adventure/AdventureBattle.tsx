@@ -286,6 +286,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             onDrop={() => {
               setReceivingConsumable(null);
               setConsumableId(null);
+              setHasNewInventoryItem(false);
               socket.emit("adventure_next", { stage });
             }}
           />
@@ -304,6 +305,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             onDrop={() => {
               setReceivingStoryItem(null);
               setStoryItemId(null);
+              setHasNewInventoryItem(false);
               socket.emit("adventure_next", { stage });
             }}
           />
@@ -324,6 +326,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
               onDrop={() => {
                 setReceivingEquipment(null);
                 setEquipmentId(null);
+                setHasNewInventoryItem(false);
                 socket.emit("adventure_next", { stage });
               }}
             />
@@ -494,26 +497,26 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                         className={"w-[90%] h-[90%] object-contain mx-auto"}
                       />
                       {hasNewInventoryItem && (
-                        <span
-                          className="
-                            absolute
-                            top-0
-                            right-0
-                            w-[36px] h-[36px]
-                            sm:w-[24px] sm:h-[24px]
-                            bg-red-600
-                            rounded-full
-                            flex items-center justify-center
-                            text-white
-                            text-[12px] sm:text-[16px]
-                            font-bold
-                            border-2 border-white
-                            pointer-events-none
-                            z-10
-                            select-none
-                          "
-                        >
-                          !
+                        <span className="absolute -top-2 -right-2 flex items-center justify-center">
+                          {/* Ping animation with responsive sizing and translation */}
+                          <span
+                            className="absolute inline-flex 
+                         h-[26px] w-[26px]     
+                         md:h-[20px] md:w-[20px] 
+                         animate-ping 
+                         rounded-full bg-red-500 
+                         opacity-75
+                         -translate-y-1            
+                         md:-translate-y-1.5"
+                          ></span>
+                          <span
+                            className="relative inline-flex 
+                         h-[26px] w-[26px] 
+                         md:h-[20px] md:w-[20px] 
+                         rounded-full bg-red-600 
+                         -translate-y-1
+                         md:-translate-y-1.5"
+                          ></span>
                         </span>
                       )}
                     </div>
@@ -596,25 +599,26 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                       className="w-[80%] h-[80%] object-contain mx-auto"
                     />
                     {hasNewInventoryItem && (
-                      <span
-                        className="
-                        absolute
-                        -top-2 -right-2
-                        w-[22px] h-[22px]
-                        sm:w-[28px] sm:h-[28px]
-                        bg-red-600
-                        rounded-full
-                        flex items-center justify-center
-                        text-white
-                        text-[14px] sm:text-[18px]
-                        font-bold
-                        border-2 border-white
-                        pointer-events-none
-                        z-10
-                        select-none
-                      "
-                      >
-                        !
+                      <span className="absolute -top-2 -right-2 flex items-center justify-center">
+                        {/* Ping animation with responsive sizing and translation */}
+                        <span
+                          className="absolute inline-flex 
+                         h-[26px] w-[26px]          
+                         md:h-[20px] md:w-[20px]     
+                         animate-ping 
+                         rounded-full bg-red-500 
+                         opacity-75
+                         -translate-y-1             
+                         md:-translate-y-1.5"
+                        ></span>
+                        <span
+                          className="relative inline-flex 
+                         h-[26px] w-[26px] 
+                         md:h-[20px] md:w-[20px] 
+                         rounded-full bg-red-600 
+                         -translate-y-1
+                         md:-translate-y-1.5"
+                        ></span>
                       </span>
                     )}
                   </div>
