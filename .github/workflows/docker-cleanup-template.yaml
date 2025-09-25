@@ -1,4 +1,4 @@
-name: Prune Droplet Docker Resources
+name: Docker Cleanup Template
 
 on:
   workflow_call:
