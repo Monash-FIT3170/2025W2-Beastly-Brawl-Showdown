@@ -1,4 +1,4 @@
-name: Weekly-old Docker Cleanup
+name: Weekly Docker Cleanup
 
 on:
   schedule:
