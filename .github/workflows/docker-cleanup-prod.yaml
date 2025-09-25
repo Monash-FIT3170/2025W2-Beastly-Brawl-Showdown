@@ -1,7 +1,9 @@
 name: Prod - Docker Cleanup
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # manual trigger
+  schedule:
+    - cron: "55 13 * * *"
 
 jobs:
   call-prune-template:
@@ -10,5 +12,5 @@ jobs:
     with:
       env: prod
     secrets:
-      DIGITAL_OCEAN_DROPLET_IP: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP_TEST }}
-      DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY_TEST }}
+      DIGITAL_OCEAN_DROPLET_IP: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP_PROD }}
+      DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY_PROD }}

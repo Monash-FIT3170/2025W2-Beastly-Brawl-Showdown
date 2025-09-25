@@ -1,7 +1,9 @@
 name: Test - Docker Cleanup
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # manual trigger
+  schedule:
+    - cron: "55 13 * * *"
 
 jobs:
   call-prune-template:

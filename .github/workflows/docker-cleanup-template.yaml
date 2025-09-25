@@ -11,11 +11,6 @@ on:
         required: true
       DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY:
         required: true
-  workflow_dispatch:   # optional, lets you run manually
-  schedule:
-    # 19:00 UTC ≈ 5:00 AEST (standard time).
-    # Adjust to 18:00 UTC during daylight-saving if you need perfect accuracy.
-    - cron: '0 19 * * *'
 
 env:
   droplet_user: root
