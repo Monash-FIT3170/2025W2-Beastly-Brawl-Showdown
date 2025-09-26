@@ -110,18 +110,18 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   });
 
   useEffect(() => {
-    console.log("playerState updated:", playerState);
+    console.log("---ADV: Player State Updated:", playerState);
   }, [playerState]);
 
   useEffect(() => {
-    console.log("BATTLE STATE UPDATED");
+    console.log("---ADV: Battle State Updated---");
     if (battleState !== null) {
       setPlayerState(battleState.yourPlayer);
     }
   }, [battleState]);
 
   useEffect(() => {
-    console.log("ADVENTURE LOADED");
+    console.log("---ADV: Adventure State Updated---");
 
     socket.emit("failed_connection", { stage });
   }, []);
@@ -215,8 +215,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       socket.off("adventure_consumable");
     };
   });
-
-  console.log("PLAYER LOGS:", battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
 
   return (
     <>

@@ -119,11 +119,11 @@ export default function proceedBattleTurn(
       player1.getActions().forEach((action) => {
         const animationInfo = action.prepareAnimation();
         if (typeof animationInfo === "string") {
-          player1.addPrepareAnimation(animationInfo.toLowerCase());
+          player1.addAnimation(animationInfo.toLowerCase());
           console.log(`ADV: Animation P1 - ${animationInfo}`);
         } else {
           const [animationType, diceRoll] = animationInfo;
-          player1.addPrepareAnimation(animationType.toLowerCase());
+          player1.addAnimation(animationType.toLowerCase());
           player1DiceRoll = diceRoll;
           console.log(`ADV: Animation P1 - ${animationType}, ${diceRoll}`);
         }
@@ -132,11 +132,11 @@ export default function proceedBattleTurn(
       player2.getActions().forEach((action) => {
         const animationInfo = action.prepareAnimation();
         if (typeof animationInfo === "string") {
-          player2.addPrepareAnimation(animationInfo.toLowerCase());
+          player2.addAnimation(animationInfo.toLowerCase());
           console.log(`ADV: Animation P2 - ${animationInfo}`);
         } else {
           const [animationType, diceRoll] = animationInfo;
-          player2.addPrepareAnimation(animationType.toLowerCase());
+          player2.addAnimation(animationType.toLowerCase());
           player2DiceRoll = diceRoll;
           console.log(`ADV: Animation P2 - ${animationType}, ${diceRoll}`);
         }
@@ -147,10 +147,10 @@ export default function proceedBattleTurn(
 
       // Roll animations
       //TODO: add time out before dice roll
-      if (player1.getPrepareAnimations().includes("roll_dice")) {
+      if (player1DiceRoll > 0) {
         io.to(player1.getId()).emit("roll_dice", player1DiceRoll);
       }
-      if (player2.getPrepareAnimations().includes("roll_dice")) {
+      if (player2DiceRoll > 0) {
         io.to(player2.getId()).emit("roll_dice", player2DiceRoll);
       }
 
@@ -203,7 +203,7 @@ export default function proceedBattleTurn(
         io.to(player1.getId()).emit("update_animation", "execute");
         io.to(player2.getId()).emit("update_animation", "execute");
         // TODO: figure out when(if?) to go back to normal
-        
+
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
         playersInBattle.forEach((player) => {
           player.resetStats();

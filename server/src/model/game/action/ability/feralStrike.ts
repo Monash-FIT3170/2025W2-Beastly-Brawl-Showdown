@@ -16,7 +16,7 @@ export class FeralStrikeAbilityAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public prepareAnimation(): string | [string, number] {
-    return "archetype_ability";
+    return "archetype";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {

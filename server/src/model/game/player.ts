@@ -37,7 +37,7 @@ export class Player {
   private noNullAction: number = 0;
   static roundToCheck: number = 5; //change the value here
 
-  private animations: string[] = ["default"];
+  private animations: string[] = [];
 
   constructor(
     id: string,
@@ -397,7 +397,7 @@ export class Player {
   //ANIMATION METHODS:
 
   public clearAnimations(): void {
-    this.animations = ["default"];
+    this.animations = [];
   }
 
   public getAnimations(): string[] {

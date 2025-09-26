@@ -20,20 +20,23 @@ export class FlameLashAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "monster_ability";
+    return "ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
+    affectedPlayer.addAnimation("damage");
     // Deal 10 damage if the opponent is dodging, 5 damage otherwise
     if (affectedPlayer.getArmourClassStat() >= 30) {
       //TODO FIGURE OUT A BALANCED AC
       this.damage = 10;
+      affectedPlayer.addAnimation("crit");
     }
 
     //to remove once dodge is reworked?
     if (affectedPlayer.getDodgingPosition()) {
       this.damage = 10;
+      affectedPlayer.addAnimation("crit");
     }
     affectedPlayer.incHealth(-this.damage);
 

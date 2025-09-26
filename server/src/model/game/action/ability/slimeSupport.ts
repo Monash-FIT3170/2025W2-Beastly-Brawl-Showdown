@@ -33,6 +33,6 @@ export class SlimeSupportAction extends Action {
     this.executeBattleEffect(actingPlayer, affectedPlayer, true);
   }
   public prepareAnimation(): string | [string, number] {
-    return "monster_ability";
+    return "ability";
   }
 }

@@ -34,7 +34,7 @@ export class AlluringLullaby extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "monster_ability";
+    return "ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
@@ -56,6 +56,7 @@ export class AlluringLullaby extends Action {
           `${actingPlayer.getName()} used ${this.getName()}, confusing ${affectedPlayer.getName()} and hitting themselves.`
         );
         this.executeBattleEffect(actingPlayer, affectedPlayer, true);
+        affectedPlayer.addAnimation("damage");
       } else {
         // Add logs
         actingPlayer.addLog(`Your ${this.getName()} was ineffective!`);

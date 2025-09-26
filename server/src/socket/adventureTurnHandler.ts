@@ -39,9 +39,6 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
         }
       }
 
-      //ADDING ACTION TO BOT
-      //TODO: set bots action
-
       //PREPARE/EXECUTE ACTIONS
       let playersInBattle = battle?.getPlayers();
       if (!playersInBattle) {
@@ -79,6 +76,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             console.log(`ADV: Animation P1 - ${animationInfo}`);
           } else {
             const [animationType, diceRoll] = animationInfo;
+            player1.addAnimation(animationType.toLowerCase());
             player1DiceRoll = diceRoll;
             console.log(`ADV: Animation P1 - ${animationType}, ${diceRoll}`);
           }
@@ -91,6 +89,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             console.log(`ADV: Animation P2 - ${animationInfo}`);
           } else {
             const [animationType, diceRoll] = animationInfo;
+            player2.addAnimation(animationType.toLowerCase());
             player2DiceRoll = diceRoll;
             console.log(`ADV: Animation P2 - ${animationType}, ${diceRoll}`);
           }
@@ -109,138 +108,142 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
         io.to(player1.getId()).emit("update_animation", "prepare");
         io.to(player2.getId()).emit("update_animation", "prepare");
 
-        // Roll animations
-        //TODO: add time out before dice roll
-        if (player1DiceRoll > 0) {
-          io.to(player1.getId()).emit("roll_dice", player1DiceRoll);
-        }
-        if (player2DiceRoll > 0) {
-          io.to(player2.getId()).emit("roll_dice", player2DiceRoll);
-        }
-
-        //TODO: update battle footer to display animation stage if we want?
-        // Remove possible actions essentially hiding the battle footer until animations and calculations are done.
-        io.to(playerId).emit("possible_actions", []);
-
-        //TIMEOUT - to allow animation
+        // TIME OUT BETWEEN PREPARE AND ROLL = 1000
         setTimeout(() => {
-          player1.clearAnimations();
-          player2.clearAnimations();
+          // Roll animations
+          if (player1DiceRoll > 0) {
+            io.to(player1.getId()).emit("roll_dice", player1DiceRoll);
+          }
+          if (player2DiceRoll > 0) {
+            io.to(player2.getId()).emit("roll_dice", player2DiceRoll);
+          }
+          //TODO: update battle footer to display animation stage if we want?
+          // Remove possible actions essentially hiding the battle footer until animations and calculations are done.
+          io.to(playerId).emit("possible_actions", []);
 
-          // Execute method
-          player1.getActions().forEach((action) => {
-            action.execute(player1, player2);
-            if (action instanceof NullAction) {
-              console.log(`P1 - ${player1.getName()} did nothing.`);
-            }
-          });
-
-          player2.getActions().forEach((action) => {
-            action.execute(player2, player1);
-            if (action instanceof NullAction) {
-              //TODO: why doesn't this just exist in null action?
-              console.log(`P2 - ${player2.getName()} did nothing.`);
-            }
-          });
-
-          //add statuses to animation.
-          player1.setStartStatusAnimations();
-          player1.setEndStatusAnimations();
-          player2.setStartStatusAnimations();
-          player2.setEndStatusAnimations();
-          //battle effect handled in effect()
-
-          //update battlestate
-          io.to(playerId).emit("adventure_state", {
-            type: "battle",
-            battle: battle?.getBattleState(playerId),
-          });
-
-          // Execute animations
-          io.to(player1.getId()).emit("update_animation", "execute");
-          io.to(player2.getId()).emit("update_animation", "execute");
-          // TODO: figure out when(if?) to go back to normal
-
-          //reset stats
-          playersInBattle.forEach((p) => {
-            p.resetStats();
-            p.resetActions();
-            p.getMonster()?.removeTemporaryActions();
-            p.endStatusEffects();
-            p.tickStatuses();
-            p.startStatusEffects();
-            p.clearAnimations();
-            p.setStartStatusAnimations();
-          });
-
-          //update battlestate
-          io.to(playerId).emit("adventure_state", {
-            type: "battle",
-            battle: battle?.getBattleState(playerId),
-          });
-
+          //TIME OUT BETWEEN PREPARE/ROLL AND EXECUTE = 2000 + (1000)
           setTimeout(() => {
-            io.to(player1.getId()).emit("update_animation", "default");
-            io.to(player2.getId()).emit("update_animation", "default");
+            player1.clearAnimations();
+            player2.clearAnimations();
 
-            //check if battle is over
-            if (battle?.isBattleOver()) {
-              console.log(`ADV: battle is over!`);
-              const winners = battle
-                .getWinners()
-                ?.map((player) => player.getName());
-              console.log(winners);
-              const playerName = player?.getName();
-              if (playerName) {
-                //if the winner is the player
-                if (winners?.includes(playerName)) {
-                  console.log(`ADV: player won!`);
-                  const adventure = activeAdventures.get(playerId);
-                  const stage = adventure?.getStage();
-                  console.log("stage: ", stage);
-                  // console.log("adventure", adventure);
-                  if (adventure && stage) {
-                    // Get current story node and outcome
+            // Execute method
+            player1.getActions().forEach((action) => {
+              action.execute(player1, player2);
+              if (action instanceof NullAction) {
+                console.log(`P1 - ${player1.getName()} did nothing.`);
+              }
+            });
 
-                    const outcome = loadNextStory(io, adventure, socket);
+            player2.getActions().forEach((action) => {
+              action.execute(player2, player1);
+              if (action instanceof NullAction) {
+                //TODO: why doesn't this just exist in null action?
+                console.log(`P2 - ${player2.getName()} did nothing.`);
+              }
+            });
 
-                    // If outcome has a next, update currentOutcomeId
-                    if (outcome && outcome.next) {
-                      adventure.currentOutcomeId = outcome.next;
-                      adventure.pastEncounters.push(adventure.currentOutcomeId);
+            //add statuses to animation.
+            player1.setStartStatusAnimations();
+            player1.setEndStatusAnimations();
+            player2.setStartStatusAnimations();
+            player2.setEndStatusAnimations();
+            //battle effect handled in effect()
+
+            //update battlestate
+            io.to(playerId).emit("adventure_state", {
+              type: "battle",
+              battle: battle?.getBattleState(playerId),
+            });
+
+            // Execute animations
+            io.to(player1.getId()).emit("update_animation", "execute");
+            io.to(player2.getId()).emit("update_animation", "execute");
+            // TODO: figure out when(if?) to go back to normal
+
+            //reset stats
+            playersInBattle.forEach((p) => {
+              p.resetStats();
+              p.resetActions();
+              p.getMonster()?.removeTemporaryActions();
+              p.endStatusEffects();
+              p.tickStatuses();
+              p.startStatusEffects();
+              p.clearAnimations();
+              p.setStartStatusAnimations(); //always see stunned etc.
+            });
+
+            //update battlestate
+            io.to(playerId).emit("adventure_state", {
+              type: "battle",
+              battle: battle?.getBattleState(playerId),
+            });
+
+            //TIMEOUT BETWEEN EXECUTE AND DEFAULT = 3000
+            setTimeout(() => {
+              io.to(player1.getId()).emit("update_animation", "default");
+              io.to(player2.getId()).emit("update_animation", "default");
+
+              //check if battle is over
+              if (battle?.isBattleOver()) {
+                console.log(`ADV: battle is over!`);
+                const winners = battle
+                  .getWinners()
+                  ?.map((player) => player.getName());
+                console.log(winners);
+                const playerName = player?.getName();
+                if (playerName) {
+                  //if the winner is the player
+                  if (winners?.includes(playerName)) {
+                    console.log(`ADV: player won!`);
+                    const adventure = activeAdventures.get(playerId);
+                    const stage = adventure?.getStage();
+                    console.log("stage: ", stage);
+                    // console.log("adventure", adventure);
+                    if (adventure && stage) {
+                      // Get current story node and outcome
+
+                      const outcome = loadNextStory(io, adventure, socket);
+
+                      // If outcome has a next, update currentOutcomeId
+                      if (outcome && outcome.next) {
+                        adventure.currentOutcomeId = outcome.next;
+                        adventure.pastEncounters.push(
+                          adventure.currentOutcomeId
+                        );
+                      } else {
+                        adventure.currentOutcomeId = null;
+                        adventure.currentStory = null; // Or handle end of adventure
+                      }
+
+                      //console.log("stageData", stageData);
+                      console.log("outcome", outcome);
+                      console.log("outcome.next", outcome?.next);
+                      adventure.getPlayer().clearLogs();
+                      //adventure.getPlayer().clearBattleLogs();
+
+                      progressAdventure(io, socket, adventure, stage);
                     } else {
-                      adventure.currentOutcomeId = null;
-                      adventure.currentStory = null; // Or handle end of adventure
-                    }
-
-                    //console.log("stageData", stageData);
-                    console.log("outcome", outcome);
-                    console.log("outcome.next", outcome?.next);
-                    adventure.getPlayer().clearLogs();
-                    //adventure.getPlayer().clearBattleLogs();
-
-                    progressAdventure(io, socket, adventure, stage);
-                  } else {
-                    console.error(
-                      `ADV: adventure or stage does not exist for player id: ${playerId} \n
+                      console.error(
+                        `ADV: adventure or stage does not exist for player id: ${playerId} \n
                     ${adventure}, ${stage}`
-                    );
+                      );
+                    }
+                  } else {
+                    console.log(`ADV: GAME OVER!`);
+                    socket.emit("adventure_defeat");
                   }
                 } else {
-                  console.log(`ADV: GAME OVER!`);
-                  socket.emit("adventure_defeat");
+                  console.error(
+                    `ADV: Player does not have name... ${playerName}`
+                  );
                 }
               } else {
-                console.error(
-                  `ADV: Player does not have name... ${playerName}`
-                );
+                let actions = player?.getMonster()?.getPossibleActionStates();
+                io.to(playerId).emit("possible_actions", actions);
               }
-            } else {
-              let actions = player?.getMonster()?.getPossibleActionStates();
-              io.to(playerId).emit("possible_actions", actions);
-            }
-          }, 1000);
-        }, 2000);
+            }, 3000);
+          }, 2000);
+        }, 1000);
       }
     }
   );

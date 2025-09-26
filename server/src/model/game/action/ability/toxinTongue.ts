@@ -20,7 +20,7 @@ export class ToxinTongue extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "monster_ability";
+    return "ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {

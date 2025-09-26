@@ -16,8 +16,8 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   biome: slimeString,
 }) => {
   //todo: add sockets that handle which animations are which
-  const [playerAnimations, setPlayerAnimations] = useState(["default"]);
-  const [opponentAnimations, setOpponentAnimations] = useState(["default"]);
+  const [playerAnimations, setPlayerAnimations] = useState([]);
+  const [opponentAnimations, setOpponentAnimations] = useState([]);
   const [showStatusOverlays, setShowStatusOverlays] = useState(false);
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
         setShowStatusOverlays(false); // hide at new round / adventure reset
       }
       console.log(
-        `Player Animations during ${phase}: ${battleState.yourPlayer.animations}`
+        `${phase} - Player Animations: ${battleState.yourPlayer.animations}`
       );
       console.log(
-        `Opponent Animations during ${phase}: ${battleState.opponentPlayer.animations}`
+        `${phase} - Opponent Animations: ${battleState.opponentPlayer.animations}`
       );
     };
 

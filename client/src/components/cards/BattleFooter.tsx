@@ -61,7 +61,7 @@ export const BattleFooter = ({
       <div ref={gridRef}>
         <div className={`${button}`}>
           {possibleActions.map((action, index) => (
-            <div className="z-[50]">
+            <div key={action.id ?? index} className="z-[50]">
               <ActionButton
                 actionState={action}
                 battleId={battleId!}

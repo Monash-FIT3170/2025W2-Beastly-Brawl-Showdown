@@ -19,7 +19,7 @@ export class PufferBlast extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "monster_ability";
+    return "ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
@@ -51,6 +51,7 @@ export class PufferBlast extends Action {
 
     if (hitDamage > 0) {
       this.executeBattleEffect(actingPlayer, affectedPlayer, true);
+      affectedPlayer.addAnimation("damage");
     } else {
       this.executeBattleEffect(actingPlayer, affectedPlayer, false);
     }

@@ -15,6 +15,7 @@ const overlayOrder: string[] = [
   "lakeCurse",
   "strong",
   "weak",
+  "crit",
 ] as const; //order for each status from lowest layer to highest.
 const prio = new Map(overlayOrder.map((s, i) => [s, i]));
 
@@ -27,24 +28,28 @@ function getZLevel(status: string, z: number): number {
 //get monster image
 function getMonsterImage(
   monster: MonsterIdentifier,
-  animation: string[],
+  animation: string,
   biome?: string
 ): string {
-  //TODO: handle if we're not keeping normal monster.
+  let monsterName = monster;
+  if (monster === MonsterIdentifier.SLIME && biome) {
+    monsterName = `SLIME_${biome}`;
+  }
 
-  const isSlime = monster === MonsterIdentifier.SLIME;
-  if (isSlime && biome) {
+  if (animation === "default") {
     return (
-      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/SLIME_" +
-      biome +
+      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
+      monsterName +
       ".png"
     );
   }
-  return (
-    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
-    monster +
-    ".png"
-  );
+  const image =
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
+    monsterName +
+    "_" +
+    animation.toUpperCase() +
+    ".png";
+  return image;
 }
 
 //get status images
@@ -55,16 +60,35 @@ function getStatusOverlay(status: string): string {
     .toUpperCase()}.png`;
 }
 
-function splitAnimations(animations: string[]) {
-  const monsterImages = ["default", "attack", "defend", "ability"];
-  //todo handle if we are doing *underlays* i.e. overlays under the image.
-  const monsterImage: string[] = animations.filter((a) =>
-    monsterImages.includes(a)
+function getOverlay(animation: string): string {
+  return (
+    "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
+    animation.toUpperCase() +
+    ".png"
   );
+}
+
+function splitAnimations(animations: string[]): [string, string[], string[]] {
+  const monsterOptions = ["attack", "defend", "ability", "damage", "archetype"];
+  const matched = animations.filter((a) => monsterOptions.includes(a));
+  let monsterImage: string;
+
+  if (matched.length === 1) {
+    monsterImage = matched[0];
+  } else if (matched.length > 1) {
+    console.error(
+      `ANIMATION ERROR: expected only one monster image: ${matched}`
+    );
+    monsterImage = matched[0];
+  } else {
+    monsterImage = "default";
+  }
+  const underlayOptions = ["underlayexample"];
+  const underlayImage: string[] = []; //TODO: handle in the future.
+
   const overlayImage: string[] = animations.filter(
-    (a) => !monsterImages.includes(a)
+    (a) => !monsterOptions.includes(a) && !underlayOptions.includes(a)
   );
-  const underlayImage: string[] = []; //handle in the future.
   return [monsterImage, overlayImage, underlayImage];
 }
 
@@ -83,11 +107,10 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
   animations,
   biome,
 }) => {
-  const monsterPath = getMonsterImage(monster, statuses, biome);
-  const flip = side === "left" ? "transform -scale-x-100" : "";
   const [monsterImage, overlayImage, underlayImage] =
     splitAnimations(animations);
-
+  const monsterPath = getMonsterImage(monster, monsterImage, biome);
+  const flip = side === "left" ? "transform -scale-x-100" : "";
   const shadow = `
     xl:w-[13rem]
     xl:h-[2rem]
@@ -107,13 +130,14 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
       {/* Monster "Animations" */}
       <div className="relative inset-0 flex items-center justify-center">
         <img src={monsterPath} alt={monster} className={`z-10 ${flip}`}></img>
-        {statuses.map((status, i) => {
-          const overlay = getStatusOverlay(status.name);
-          const z = getZLevel(status.name, 20);
+        {/* will need to update to use actual overlays (once they exist) e.g. getOverlay()*/}
+        {overlayImage.map((item, i) => {
+          const overlay = getStatusOverlay(item);
+          const z = getZLevel(item, 20);
           return (
             <img
               src={overlay}
-              style={{ zIndex: getZLevel(status.name, 20) }}
+              style={{ zIndex: getZLevel(item, 20) }}
               className={`
                     absolute inset-0 
                     pointer-events-none 

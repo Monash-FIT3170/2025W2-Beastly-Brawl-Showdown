@@ -73,13 +73,14 @@ export class AttackAction extends Action {
 
   // relies on prepare() method being called to roll the dice first.
   public prepareAnimation(): string | [string, number] {
-    return ["roll_dice", this.d20];
+    return ["attack", this.d20];
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
     if (this.attackHit >= affectedPlayer.getArmourClassStat()) {
+      affectedPlayer.addAnimation("damage");
       console.log(
         `${actingPlayer.getName()}'s attack successful | Attack exceeds opponents armour: (${affectedPlayer.getArmourClassStat()} < ${
           this.attackHit
@@ -97,6 +98,7 @@ export class AttackAction extends Action {
         this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
       if (isCrit) {
         this.damage *= 2; // Double the damage on a crit
+        affectedPlayer.addAnimation("crit");
       }
       affectedPlayer.incHealth(-this.damage);
 
