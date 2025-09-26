@@ -16,33 +16,34 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   biome: slimeString,
 }) => {
   //todo: add sockets that handle which animations are which
-  const [playerAnimations, setPlayerAnimations] = useState([]);
-  const [opponentAnimations, setOpponentAnimations] = useState([]);
+  const [playerAnimations, setPlayerAnimations] = useState<string[]>([]);
+  const [opponentAnimations, setOpponentAnimations] = useState<string[]>([]);
   const [showStatusOverlays, setShowStatusOverlays] = useState(false);
 
   useEffect(() => {
-    const onUpdate = (phase: string) => {
-      setPlayerAnimations(battleState.yourPlayer.animations);
-      setOpponentAnimations(battleState.opponentPlayer.animations);
+    type inputType = { phase: string; player: string[]; opp: string[] };
+    const onUpdate = (input: inputType) => {
+      setPlayerAnimations(input.player);
+      setOpponentAnimations(input.opp);
 
-      if (phase === "execute") {
+      if (input.phase === "execute") {
         setShowStatusOverlays(true); // show after action resolved
-      } else if (phase === "prepare") {
+      } else if (input.phase === "prepare") {
         setShowStatusOverlays(false); // hide at new round / adventure reset
-      } else if (phase === "default") {
+      } else if (input.phase === "default") {
         setShowStatusOverlays(false); // hide at new round / adventure reset
       }
       console.log(
-        `${phase} - Player Animations: ${battleState.yourPlayer.animations}`
+        `${input.phase} - Player Animations: ${input.player}`
       );
       console.log(
-        `${phase} - Opponent Animations: ${battleState.opponentPlayer.animations}`
+        `${input.phase} - Opponent Animations: ${input.opp}`
       );
     };
 
     socket.on("update_animation", onUpdate);
     return () => socket.off("update_animation", onUpdate);
-  }, [battleState]);
+  },[]);
 
   const onRollDice = (_roll: number) => setShowStatusOverlays(true);
 
