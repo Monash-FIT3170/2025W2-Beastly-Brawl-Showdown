@@ -155,6 +155,30 @@
     ]
   },
   {
+    "id": "level5_update",
+    "level": [5],
+    "description": "level5_update",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "EQUIPMENT",
+        "equipmentId": "sharpened_claws",
+        "next": "equip_next"
+      },
+      {
+        "id": "equip_next",
+        "type": "EQUIPMENT",
+        "equipmentId": "life_fang",
+        "next": "equip_next_2"
+      },
+      {
+        "id": "equip_next_2",
+        "type": "EQUIPMENT",
+        "equipmentId": "basalt_shield"
+      }
+    ]
+  },
+  {
     "id": "slime_1",
     "level": [0],
     "description": "Stage 1, player fights slime 1.",

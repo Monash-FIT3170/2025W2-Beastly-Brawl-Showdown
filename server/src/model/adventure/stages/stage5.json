@@ -328,6 +328,18 @@
     ]
   },
   {
+    "id": "level5_update",
+    "level": [5],
+    "description": "level5_update",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["STAGE 5 UPDATE"],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
     "id": "slime_1",
     "level": [0],
     "description": "Stage 1, player fights slime 1.",

@@ -132,5 +132,17 @@
         "type": "DIALOGUE"
       }
     ]
+  },
+  {
+    "id": "level5_update",
+    "level": [5],
+    "description": "level5_update",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["STAGE 6 UPDATE"],
+        "type": "DIALOGUE"
+      }
+    ]
   }
 ]
