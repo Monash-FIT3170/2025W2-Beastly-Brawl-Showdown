@@ -21,22 +21,23 @@ import { StatInfoIcon } from "../cards/StatInfoIcon";
 import { AdventureStatBar } from "../bars/AdventureStatBar";
 import { StatusButton } from "../buttons/StatusButton";
 
-export interface AdventureInfoPopupProp {
+export interface MonsterInfoPopupProp {
   playerState: PlayerState | null | undefined;
   attackState: AttackState | null | undefined;
   onClose?: () => void;
 }
 
-export const AdventureInfoPopup = ({
+export const MonsterInfoPopup = ({
   playerState,
   attackState,
   onClose,
-}: AdventureInfoPopupProp) => {
+}: MonsterInfoPopupProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
   const [currentAbilities, setCurrentAbilities] = useState<ActionState[]>([]);
   const currentlyViewing = ["MONSTER STATS", "CURRENT STATUSES"];
 
   useEffect(() => {
+    console.log(attackState)
     //REMOVES ATTACK/DEFEND AND ANY DUPLICATE ABILITIES
     const uniqueActions = new Map<
       ActionIdentifier,
@@ -53,16 +54,6 @@ export const AdventureInfoPopup = ({
 
     setCurrentAbilities(Array.from(uniqueActions.values()));
     console.log(playerState)
-
-    // setCurrentAbilities([]);
-    // for (const action of playerState?.monster?.possibleActions!) {
-    //   if (
-    //     action.id !== ActionIdentifier.ATTACK &&
-    //     action.id !== ActionIdentifier.DEFEND
-    //   ) {
-    //     setCurrentAbilities((prevAbilities) => [...prevAbilities, action]);
-    //   }
-    // }
   }, [playerState?.monster?.possibleActions]);
   const monsterImgPath =
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
@@ -118,14 +109,18 @@ export const AdventureInfoPopup = ({
                 <StatInfoIcon
                   stat="AC"
                   statVal={playerState?.currentArmourClassStat!}
+                  monsterStat={playerState.monster.startingAC}
                 ></StatInfoIcon>
                 <StatInfoIcon
                   stat="HP"
                   statVal={playerState?.currentHealth!}
+                  monsterStat={playerState.monster.startingHP}
+
                 ></StatInfoIcon>
                 <StatInfoIcon
                   stat="ATK+"
                   statVal={playerState?.currentAttackStat!}
+                  monsterStat={playerState.monster.startingATK}
                 ></StatInfoIcon>
               </div>
 
@@ -188,7 +183,7 @@ export const AdventureInfoPopup = ({
                   </div>
                 )}
                 <div className="xl:mt-[1rem] mt-[2rem] grid grid-cols-3 gap-y-[2.5rem] gap-x-[3rem] xl:gap-y-[0.5rem] xl:gap-x-[3rem] items-center justify-center">
-                  {playerState?.statuses.map((c) => (
+                  {playerState?.statuses.map((c: Status) => (
                     <>
                       <StatusButton status={c}></StatusButton>
                     </>

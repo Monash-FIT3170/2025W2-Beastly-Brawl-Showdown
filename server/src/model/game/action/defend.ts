@@ -24,7 +24,7 @@ export class DefendAction extends Action {
       `${actingPlayer.getName()} defended and increased their armour class stat to ${actingPlayer.getArmourClassStat()}.`
     );
     actingPlayer.addBattleLog(
-      `${actingPlayer.getName()} defended and increased your armour class stat to ${actingPlayer.getArmourClassStat()}.`
+      `${actingPlayer.getName()} defended and increased their armour class stat to ${actingPlayer.getArmourClassStat()}.`
     );
   }
 
@@ -32,8 +32,8 @@ export class DefendAction extends Action {
     this.incCurrentUse(-1);
     return {
       appliedStatus: {
-        success: false
-      }
-    }
+        success: false,
+      },
+    };
   }
 }

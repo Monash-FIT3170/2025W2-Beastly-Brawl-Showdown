@@ -118,7 +118,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             p.resetStats();
             p.resetActions();
             p.getMonster()?.removeTemporaryActions();
+            p.endStatusEffects();
             p.tickStatuses();
+            p.startStatusEffects();
           });
 
           //update battlestate

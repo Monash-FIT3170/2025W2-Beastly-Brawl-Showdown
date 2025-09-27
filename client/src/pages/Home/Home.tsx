@@ -7,9 +7,11 @@ import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { ButtonResizableText } from "../../components/buttons/ButtonResizableText";
 import { LoginPopup } from "./Login";
+import { IconButton } from "../../components/buttons/IconButton";
+import { BlackText } from "../../components/texts/BlackText";
 
 export const Home = () => {
-    // Called on 'Host Lobby' button press
+  // Called on 'Host Lobby' button press
   const renderConfigPage = () => {
     FlowRouter.go("/host/choose-mode");
   };
@@ -61,28 +63,32 @@ export const Home = () => {
 
   return (
     <BlankPage>
-      <div className="flex flex-row h-1/2 w-full sm:items-end lg:items-center justify-around">
+      <div className="absolute lg:top-[3rem] lg:right-[3rem] top-[5rem] right-[5rem] items-center justify-center">
+        {!loggedInUser ? (
+          <ButtonGeneric
+            color={"ronchi"}
+            size={"squaremedium"}
+            onClick={() => setShowLogin(true)}
+          >
+            <div className="flex flex-col ">
+              <OutlineText size={"tiny"}>LOG</OutlineText>
+              <OutlineText size={"tiny"}>IN</OutlineText>
+            </div>
+          </ButtonGeneric>
+        ) : (
+          <IconButton
+            style="profile"
+            iconColour="black"
+            buttonColour="ronchi"
+            size="medium"
+            onClick={() => FlowRouter.go("/account")}
+          />
+        )}
+      </div>
+      <div className="flex flex-row w-full sm:items-end lg:items-center justify-around">
         <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
       </div>
       <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-5 sm:space-y-30">
-        {!loggedInUser ? (
-          <ButtonGeneric
-            color="ronchi"
-            size="large"
-            onClick={() => setShowLogin(true)}
-          >
-            <OutlineText size="large">LOGIN</OutlineText>
-          </ButtonGeneric>
-        ) : (
-          <ButtonGeneric
-            color="ronchi"
-            size="large"
-            onClick={() => FlowRouter.go("/account")}
-          >
-            <OutlineText size="large">ACCOUNT</OutlineText>
-          </ButtonGeneric>
-        )}
-
         <ButtonGeneric
           color="ronchi"
           size="large"

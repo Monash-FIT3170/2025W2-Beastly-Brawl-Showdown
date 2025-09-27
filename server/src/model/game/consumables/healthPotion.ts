@@ -1,5 +1,6 @@
 import { Player } from "../player";
 import { Consumable } from "./consumable";
+import { ConsumableType } from "/types/single/itemState";
 
 export class PercentageHealthPotion extends Consumable {
   private percent: number;
@@ -9,7 +10,7 @@ export class PercentageHealthPotion extends Consumable {
     //btw feel free to change descriptions this is just for now
     const description =
       "A vibrant liquid stored in an unsuspecting vial, there are rumours this red liquid cures even the toughest wounds.";
-    super(name, description);
+    super(name, description, ConsumableType.SELF_INFLICT);
     this.percent = percent;
     this.image = image ?? "HEALTHPOTIONFULL";
   }
@@ -19,6 +20,9 @@ export class PercentageHealthPotion extends Consumable {
       player.getMonster()!.getMaxHealth() * this.percent
     );
     player.incHealth(healAmount);
+    player.addLog(
+      `You consumed the Health Potion gaining a delicious ${healAmount} HP`
+    );
   }
 
   public getStatDescription(): string {

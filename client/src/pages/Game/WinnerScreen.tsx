@@ -4,7 +4,6 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { GenericHeader } from "../../components/cards/GenericHeader";
 import { OutlineText } from "../../components/texts/OutlineText";
-import { BaseCard } from "../../components/cards/BaseCard";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { MonsterState } from "/types/single/monsterState";
 
@@ -45,16 +44,11 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
   }
 
   return (
-    // <div>
-    //   You won!
-    // </div>
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-ronchi">
       <GenericHeader color="blue">
         <OutlineText size="extraLarge">VICTORY!</OutlineText>
       </GenericHeader>
       <div className="bg-peach flex items-center flex flex-col justify-around border-[4px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
-        {/* <BaseCard color="peach" width={60} height={70}> */}
-
         <OutlineText size="large">YOU WON!</OutlineText>
 
         <img
@@ -70,8 +64,6 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
             </div>
           </div>
         </ButtonGeneric>
-
-        {/* </BaseCard> */}
       </div>
     </div>
   );
