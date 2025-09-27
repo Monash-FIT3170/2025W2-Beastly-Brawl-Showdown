@@ -30,6 +30,6 @@ export class BlazingGauntlets extends Equipment {
   }
 
   protected getImageString(): string {
-    return "item";
+    return "BLAZING_GAUNTLETS";
   }
 }

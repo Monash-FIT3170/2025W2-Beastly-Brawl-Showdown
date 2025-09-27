@@ -12,7 +12,6 @@ export class PercentageHealthPotion extends Consumable {
       "A vibrant liquid stored in an unsuspecting vial, there are rumours this red liquid cures even the toughest wounds.";
     super(name, description, ConsumableType.SELF_INFLICT);
     this.percent = percent;
-    this.image = image ?? "HEALTHPOTIONFULL";
   }
 
   public consume(player: Player): void {
@@ -30,6 +29,6 @@ export class PercentageHealthPotion extends Consumable {
   }
 
   protected getImageString(): string {
-    return this.image;
+    return "HEALTH_POTION";
   }
 }

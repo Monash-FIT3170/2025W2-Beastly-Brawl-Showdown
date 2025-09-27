@@ -25,6 +25,6 @@ export class OozingBlade extends Equipment {
   }
 
   protected getImageString(): string {
-    return "oozingBlade";
+    return "OOZING_BLADE";
   }
 }

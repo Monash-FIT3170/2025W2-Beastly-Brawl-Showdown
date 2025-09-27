@@ -27,6 +27,6 @@ export class LifeFang extends Equipment {
   }
 
   protected getImageString(): string {
-    return "lifeFang";
+    return "LIFE_FANG";
   }
 }

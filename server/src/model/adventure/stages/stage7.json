@@ -52,7 +52,7 @@
       {
         "id": "red_reward",
         "type": "STATUS",
-        "statusId": "poisoned",
+        "statusId": ["poisoned", 5],
         "result": ["The berries have poisoned you."]
       }
     ]

@@ -6,6 +6,7 @@ import { PlayerAccountSchema } from "../../database/dbManager";
 import { Status } from "./status/status";
 import { Consumable } from "./consumables/consumable";
 import { Equipment } from "./equipment/equipment";
+import { StoryItem } from "./storyItem/storyItem";
 import { ActionIdentifier } from "/types/single/actionState";
 import { StartStatus } from "./status/startStatus";
 import { EndStatus } from "./status/endStatus";
@@ -32,6 +33,7 @@ export class Player {
   private consumables: Consumable[] = [];
   private consumableActions: Action[] = [];
   private equipment: Equipment[] = [];
+  private storyItems: StoryItem[] = [];
 
   private playerAccount: PlayerAccountSchema | null;
   private noNullAction: number = 0;
@@ -392,6 +394,42 @@ export class Player {
     this.equipment = [];
   }
 
+  public getStoryItems(): StoryItem[] {
+    return this.storyItems;
+  }
+
+  public hasStoryItem(name: string): boolean {
+    //checks inventory for item
+    return this.storyItems.some((c) => c.getName() === name);
+  }
+
+  public giveStoryItem(item: StoryItem): void {
+    this.storyItems.push(item);
+  }
+
+  public getStoryItem(name: string): StoryItem {
+    const storyItem = this.storyItems.find((c) => c.getName() === name);
+    if (!storyItem) {
+      throw new Error("Player does not have related story item");
+    }
+    return storyItem;
+  }
+
+  public removeStoryItem(item: string): void {
+    //done like this incase you have multiple of the same item
+    //TODO: might be done incorrectly needs to be tested.
+    const i = this.storyItems.findIndex(
+      (storyItem) => storyItem.getName() === item
+    );
+    if (i !== -1) {
+      this.storyItems.splice(i, 1);
+    }
+  }
+
+  public clearStoryItems(): void {
+    this.storyItems = [];
+  }
+
   //PLAYER STATE:
   public getPlayerState(): PlayerState {
     return {
@@ -415,6 +453,7 @@ export class Player {
       battleLogs: this.battleLogs,
       equipment: this.equipment.map((e) => e.getState()),
       consumables: this.consumables.map((c) => c.getState()),
+      storyItems: this.storyItems.map((c) => c.getState()),
       attackState: this.getMonster()?.getAttackAction().getAttackState()!,
     };
   }

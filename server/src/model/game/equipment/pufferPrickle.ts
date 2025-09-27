@@ -26,6 +26,6 @@ export class PufferPrickle extends Equipment {
   }
 
   protected getImageString(): string {
-    return "item";
+    return "PUFFER_PRICKLE";
   }
 }

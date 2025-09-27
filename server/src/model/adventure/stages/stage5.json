@@ -223,7 +223,7 @@
         "id": "drink_reward",
         "type": "STATUS",
         "result": ["You feel powerful"],
-        "statusId": "lake_blessing_mini"
+        "statusId": ["lake_blessing", 3]
       },
       {
         "id": "drink_curse",
@@ -238,7 +238,7 @@
         "id": "drink_punishment",
         "type": "STATUS",
         "result": ["You feel changed.."],
-        "statusId": "lake_curse_mini"
+        "statusId": ["lake_curse", 3]
       },
       {
         "id": "swim_power",
@@ -254,7 +254,7 @@
         "id": "swim_reward",
         "result": ["The lake has imbued you with power!"],
         "type": "STATUS",
-        "statusId": "lake_blessing"
+        "statusId": ["lake_blessing", 30]
       },
       {
         "id": "swim_curse",
@@ -270,7 +270,7 @@
         "id": "swim_punishment",
         "type": "STATUS",
         "result": ["The lake has left its mark on you."],
-        "statusId": "lake_curse"
+        "statusId": ["lake_curse", 10]
       },
       {
         "id": "no_investigation",
