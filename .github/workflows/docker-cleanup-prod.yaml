@@ -1,0 +1,16 @@
+name: Prod - Docker Cleanup
+
+on:
+  workflow_dispatch: # manual trigger
+  schedule:
+    - cron: "55 13 * * *"
+
+jobs:
+  call-prune-template:
+    name: Prune old Docker resources (Prod)
+    uses: ./.github/workflows/docker-cleanup-template.yaml
+    with:
+      env: prod
+    secrets:
+      DIGITAL_OCEAN_DROPLET_IP: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP_PROD }}
+      DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY_PROD }}
