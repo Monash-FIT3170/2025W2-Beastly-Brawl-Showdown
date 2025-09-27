@@ -52,6 +52,19 @@ function getMonsterImage(
   return image;
 }
 
+function getMonsterAnimation(animation: string): string {
+  switch (animation) {
+    case "attack":
+      return "animate-attack";
+    case "defend":
+      return "animate-defend";
+    case "damage":
+      return "animate-damage";
+    default:
+      return "";
+  }
+}
+
 //get status images
 function getStatusOverlay(status: string): string {
   //todo create actual overlays.
@@ -63,7 +76,7 @@ function getStatusOverlay(status: string): string {
 function getOverlay(animation: string): string {
   return (
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
-    animation.toUpperCase() +
+    animation.toUpperCase().replace(" ", "_") +
     ".png"
   );
 }
@@ -83,8 +96,10 @@ function splitAnimations(animations: string[]): [string, string[], string[]] {
   } else {
     monsterImage = "default";
   }
-  const underlayOptions = ["underlayexample"];
-  const underlayImage: string[] = []; //TODO: handle in the future.
+  const underlayOptions = ["lake_curse"];
+  const underlayImage: string[] = animations.filter((a) =>
+    underlayOptions.includes(a)
+  );
 
   const overlayImage: string[] = animations.filter(
     (a) => !monsterOptions.includes(a) && !underlayOptions.includes(a)
@@ -95,7 +110,7 @@ function splitAnimations(animations: string[]): [string, string[], string[]] {
 interface BattleMonsterImageProps {
   monster: MonsterIdentifier;
   side: "left" | "right";
-  statuses: Status[];
+  // statuses: Status[];
   animations: string[];
   biome: string;
 }
@@ -103,13 +118,14 @@ interface BattleMonsterImageProps {
 export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
   monster,
   side,
-  statuses,
+  // statuses,
   animations,
   biome,
 }) => {
   const [monsterImage, overlayImage, underlayImage] =
     splitAnimations(animations);
   const monsterPath = getMonsterImage(monster, monsterImage, biome);
+  const animation = getMonsterAnimation(monsterImage);
   const flip = side === "left" ? "transform -scale-x-100" : "";
   const shadow = `
     xl:w-[13rem]
@@ -126,33 +142,50 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
     `;
 
   return (
-    <div className=" relative inline-block xl:w-[50%]">
-      {/* Monster "Animations" */}
-      <div className="relative inset-0 flex items-center justify-center">
-        <img src={monsterPath} alt={monster} className={`z-10 ${flip}`}></img>
-        {/* will need to update to use actual overlays (once they exist) e.g. getOverlay()*/}
-        {overlayImage.map((item, i) => {
-          const overlay = getStatusOverlay(item);
-          const z = getZLevel(item, 20);
-          return (
-            <img
-              src={overlay}
-              style={{ zIndex: getZLevel(item, 20) }}
-              className={`
+    <div className={`${animation}`}>
+      <div className="relative inline-block xl:w-[50%]">
+        {/* Monster "Animations" */}
+        <div className="relative inset-0 flex items-center justify-center">
+          {underlayImage.map((item, i) => {
+            const overlay = getOverlay(item);
+            const z = 5;
+            return (
+              <img
+                src={overlay}
+                style={{ zIndex: z }}
+                className={`
                     absolute inset-0 
                     pointer-events-none 
                     select-none 
                     ${flip}
                     `}
-            />
-          );
-        })}
+              />
+            );
+          })}
+          <img src={monsterPath} alt={monster} className={`z-10 ${flip}`}></img>
+          {overlayImage.map((item, i) => {
+            const overlay = getOverlay(item);
+            const z = getZLevel(item, 20);
+            return (
+              <img
+                src={overlay}
+                style={{ zIndex: z }}
+                className={`
+                    absolute inset-0 
+                    pointer-events-none 
+                    select-none 
+                    ${flip}
+                    `}
+              />
+            );
+          })}
+        </div>
+        {/* Shadow */}
+        <img
+          className={`${shadow}`}
+          src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/SHADOW.png"
+        ></img>
       </div>
-      {/* Shadow */}
-      <img
-        className={`${shadow}`}
-        src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/SHADOW.png"
-      ></img>
     </div>
   );
 };

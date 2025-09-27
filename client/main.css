@@ -35,6 +35,40 @@
   --spacing-normalButtonWidth: 11.25rem;
   --spacing-normalButtonHeight: 5.625rem;
   --spacing-normalPhoneWidth: 23.0625rem;
+  --animate-attack: attack 2s linear infinite;
+  --animate-damage: damage 1s ease-in-out infinite;
+  --animate-defend: defend 3s ease-out infinite;
+
+  @keyframes attack {
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
+  }
+
+  @keyframes damage {
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
+  }
+
+  @keyframes defend {
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+      filter: drop-shadow(0 0 10px red);
+    }
+  }
 }
 
 body {

@@ -23,7 +23,7 @@ export class NullAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public prepareAnimation(): string | [string, number] {
-    return "null";
+    return "";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {

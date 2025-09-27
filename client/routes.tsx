@@ -18,6 +18,7 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
+import { Test } from "./src/pages/Home/Testing";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -25,6 +26,14 @@ function mount(Component: React.FC) {
     createRoot(container).render(<Component />);
   }
 }
+
+FlowRouter.route("/test", {
+  name: "Test",
+  action() {
+    document.title = "Animation Testing";
+    mount(Test);
+  },
+});
 
 FlowRouter.route("/", {
   name: "Home",

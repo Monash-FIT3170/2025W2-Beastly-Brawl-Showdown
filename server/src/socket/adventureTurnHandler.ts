@@ -99,17 +99,28 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
         player1.setStartStatusAnimations();
         player1.setEndStatusAnimations();
 
-        
-
         //update battlestate
         io.to(playerId).emit("adventure_state", {
           type: "battle",
           battle: battle?.getBattleState(playerId),
         });
 
-        console.log("[PREPARE] p1:", player1.getAnimations(), " | p2:", player2.getAnimations());
-        io.to(player1.getId()).emit("update_animation", {phase:"prepare", player: player1.getAnimations(), opp: player2.getAnimations()});
-        io.to(player2.getId()).emit("update_animation", {phase:"prepare", player: player2.getAnimations(), opp: player1.getAnimations()});
+        console.log(
+          "[PREPARE] p1:",
+          player1.getAnimations(),
+          " | p2:",
+          player2.getAnimations()
+        );
+        io.to(player1.getId()).emit("update_animation", {
+          phase: "prepare",
+          player: player1.getAnimations().filter((a) => a != ""),
+          opp: player2.getAnimations().filter((a) => a != ""),
+        });
+        io.to(player2.getId()).emit("update_animation", {
+          phase: "prepare",
+          player: player2.getAnimations().filter((a) => a != ""),
+          opp: player1.getAnimations().filter((a) => a != ""),
+        });
 
         // TIME OUT BETWEEN PREPARE AND ROLL = 1000
         setTimeout(() => {
@@ -158,10 +169,23 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
               battle: battle?.getBattleState(playerId),
             });
 
-            console.log("[EXECUTE] p1:", player1.getAnimations(), " | p2:", player2.getAnimations());
+            console.log(
+              "[EXECUTE] p1:",
+              player1.getAnimations(),
+              " | p2:",
+              player2.getAnimations()
+            );
             // Execute animations
-            io.to(player1.getId()).emit("update_animation", {phase:"execute", player: player1.getAnimations(), opp: player2.getAnimations()});
-            io.to(player2.getId()).emit("update_animation", {phase:"execute", player: player2.getAnimations(), opp: player1.getAnimations()});
+            io.to(player1.getId()).emit("update_animation", {
+              phase: "execute",
+              player: player1.getAnimations(),
+              opp: player2.getAnimations(),
+            });
+            io.to(player2.getId()).emit("update_animation", {
+              phase: "execute",
+              player: player2.getAnimations(),
+              opp: player1.getAnimations(),
+            });
             // TODO: figure out when(if?) to go back to normal
 
             //reset stats
@@ -184,8 +208,16 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
 
             //TIMEOUT BETWEEN EXECUTE AND DEFAULT = 3000
             setTimeout(() => {
-              io.to(player1.getId()).emit("update_animation", {phase:"default", player: player1.getAnimations(), opp: player2.getAnimations()});
-              io.to(player2.getId()).emit("update_animation", {phase:"default", player: player2.getAnimations(), opp: player1.getAnimations()});
+              io.to(player1.getId()).emit("update_animation", {
+                phase: "default",
+                player: player1.getAnimations(),
+                opp: player2.getAnimations(),
+              });
+              io.to(player2.getId()).emit("update_animation", {
+                phase: "default",
+                player: player2.getAnimations(),
+                opp: player1.getAnimations(),
+              });
 
               //check if battle is over
               if (battle?.isBattleOver()) {

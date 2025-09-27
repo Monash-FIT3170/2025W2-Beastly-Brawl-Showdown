@@ -18,7 +18,7 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   //todo: add sockets that handle which animations are which
   const [playerAnimations, setPlayerAnimations] = useState<string[]>([]);
   const [opponentAnimations, setOpponentAnimations] = useState<string[]>([]);
-  const [showStatusOverlays, setShowStatusOverlays] = useState(false);
+  // const [showStatusOverlays, setShowStatusOverlays] = useState(false);
 
   useEffect(() => {
     type inputType = { phase: string; player: string[]; opp: string[] };
@@ -26,26 +26,22 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
       setPlayerAnimations(input.player);
       setOpponentAnimations(input.opp);
 
-      if (input.phase === "execute") {
-        setShowStatusOverlays(true); // show after action resolved
-      } else if (input.phase === "prepare") {
-        setShowStatusOverlays(false); // hide at new round / adventure reset
-      } else if (input.phase === "default") {
-        setShowStatusOverlays(false); // hide at new round / adventure reset
-      }
-      console.log(
-        `${input.phase} - Player Animations: ${input.player}`
-      );
-      console.log(
-        `${input.phase} - Opponent Animations: ${input.opp}`
-      );
+      // if (input.phase === "execute") {
+      //   setShowStatusOverlays(true); // show after action resolved
+      // } else if (input.phase === "prepare") {
+      //   setShowStatusOverlays(false); // hide at new round / adventure reset
+      // } else if (input.phase === "default") {
+      //   setShowStatusOverlays(false); // hide at new round / adventure reset
+      // }
+      console.log(`${input.phase} - Player Animations: ${input.player}`);
+      console.log(`${input.phase} - Opponent Animations: ${input.opp}`);
     };
 
     socket.on("update_animation", onUpdate);
     return () => socket.off("update_animation", onUpdate);
-  },[]);
+  }, []);
 
-  const onRollDice = (_roll: number) => setShowStatusOverlays(true);
+  // const onRollDice = (_roll: number) => setShowStatusOverlays(true);
 
   const shadow = `
     xl:w-[13rem]
@@ -62,12 +58,12 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
 
     `;
 
-  const oppStatuses = showStatusOverlays
-    ? battleState.opponentPlayer.statuses
-    : [];
-  const yourStatuses = showStatusOverlays
-    ? battleState.yourPlayer.statuses
-    : [];
+  // const oppStatuses = showStatusOverlays
+  //   ? battleState.opponentPlayer.statuses
+  //   : [];
+  // const yourStatuses = showStatusOverlays
+  //   ? battleState.yourPlayer.statuses
+  //   : [];
 
   return (
     <div className="fixed flex flex-col w-full h-screen justify-center pb-[50%] xl:pb-[20%] pl-[5%] xl:pl-[0%] xl:pr-[0%] pr-[5%]">
@@ -78,7 +74,7 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
         <BattleMonsterImage
           monster={battleState.opponentPlayerMonster.id}
           side="right"
-          statuses={oppStatuses}
+          // statuses={oppStatuses}
           animations={opponentAnimations}
           biome={slimeString}
         ></BattleMonsterImage>
@@ -87,7 +83,7 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
         <BattleMonsterImage
           monster={battleState.yourPlayerMonster.id}
           side="left"
-          statuses={yourStatuses}
+          // statuses={yourStatuses}
           animations={playerAnimations}
           biome={slimeString}
         ></BattleMonsterImage>
