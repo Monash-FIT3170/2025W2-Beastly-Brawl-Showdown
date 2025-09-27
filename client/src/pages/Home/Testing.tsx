@@ -21,7 +21,7 @@ export const Test = () => {
             src={
               "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/ROCKY_RHINO.png"
             }
-            className={`relative inline-block xl:w-[90%] z-10 animate-attack`}
+            className={`relative inline-block xl:w-[90%] z-10 animate-attack transform -scale-x-100`}
           ></img>
         </div>
         <div>
@@ -29,6 +29,33 @@ export const Test = () => {
           <img
             src={
               "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/ROCKY_RHINO.png"
+            }
+            className={`relative inline-block xl:w-[90%] z-10 animate-defend`}
+          ></img>
+        </div>
+        <div>
+          <p>Damage Animation</p>
+          <img
+            src={
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POISON_POGO.png"
+            }
+            className={`relative inline-block xl:w-[90%] z-10 animate-damage`}
+          ></img>
+        </div>
+        <div>
+          <p>Attack Animation</p>
+          <img
+            src={
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/CHARMER_COBRA.png"
+            }
+            className={`relative inline-block xl:w-[90%] z-10 animate-attack`}
+          ></img>
+        </div>
+        <div>
+          <p>Defend Animation</p>
+          <img
+            src={
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POUNCING_BANDIT.png"
             }
             className={`relative inline-block xl:w-[90%] z-10 animate-defend`}
           ></img>

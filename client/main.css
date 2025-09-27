@@ -35,40 +35,70 @@
   --spacing-normalButtonWidth: 11.25rem;
   --spacing-normalButtonHeight: 5.625rem;
   --spacing-normalPhoneWidth: 23.0625rem;
-  --animate-attack: attack 2s linear infinite;
-  --animate-damage: damage 1s ease-in-out infinite;
+  --animate-attack: attack 3s ease-in infinite;
+  --animate-damage: damage 3s linear infinite;
   --animate-defend: defend 3s ease-out infinite;
 
   @keyframes attack {
-    0%,
-    100% {
-      transform: rotate(-3deg);
+    0% {
+      transform: translate(0, 0) scale(1);
     }
-    50% {
-      transform: rotate(3deg);
+    80% {
+      transform: translate(10px, 10px);
+    }
+    100% {
+      transform: translate(0, 0) scale(1);
     }
   }
 
   @keyframes damage {
     0%,
     100% {
-      transform: rotate(-3deg);
+      transform: translate(0, 0);
+      filter: drop-shadow(0 0 10px red);
+    }
+    25% {
+      transform: translate(-2px, 2px);
+      filter: drop-shadow(0 0 10px red);
     }
     50% {
-      transform: rotate(3deg);
+      transform: translate(2px, -2px);
+      filter: drop-shadow(0 0 10px red);
+    }
+    75% {
+      transform: translate(-2px, 2px);
+      filter: drop-shadow(0 0 10px red);
     }
   }
 
   @keyframes defend {
     0%,
     100% {
-      transform: rotate(-3deg);
+      filter: drop-shadow(0 0 80px #55a9ed);
+      /* clip-path: ellipse(54% 50% at 50% 50%); */
     }
     50% {
-      transform: rotate(3deg);
-      filter: drop-shadow(0 0 10px red);
+      filter: drop-shadow(0 0 20px #55a9ed);
+      /* clip-path: ellipse(54% 50% at 50% 50%); */
     }
   }
+  /* 
+  different things you can do:
+
+  filter: brightness(1.5);
+  filter: blur(2px);
+  filter: hue-rotate(30deg);
+  filter: drop-shadow(0 0 10px red);
+  opacity: 0;
+  transform: translate(x, y);
+  transform: rotate(45deg);
+  transform: scale(1.2);
+  transform: skewX(15deg);
+  transform: translateX(10px)
+  clip-path: rect(5px 145px 160px 5px round 20%);
+
+
+*/
 }
 
 body {
