@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
@@ -17,7 +17,9 @@ export const Home = () => {
   };
   const [showLogin, setShowLogin] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  <audio ref={audioRef} src="public\music\Beastly_brawl_menu_screen_music.mp3" loop />
   useEffect(() => {
     socket.emit("check-login");
 
