@@ -11,17 +11,17 @@ import { getBiomeString } from "./AdventureBattle";
 interface LevelSelectProps {}
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
-  const [observedLevel, setObservedLevel] = useState<number>(0);
+  const [observedLevel, setObservedLevel] = useState<number>(1);
   // const UNLOCKED_LEVELS = [0];
-  const [unlockedLevels, setUnlockedLevels] = useState<number[]>([0]);
+  const [unlockedLevels, setUnlockedLevels] = useState<number[]>([1]);
 
   //a levelMap exists in back end too - so update both appropriately
   const levelMap: Record<number, MonsterIdentifier> = {
-    0: MonsterIdentifier.POUNCING_BANDIT,
-    1: MonsterIdentifier.CINDER_TAIL,
-    2: MonsterIdentifier.FURIOUS_FLIPPER,
-    3: MonsterIdentifier.POISON_POGO,
-    4: MonsterIdentifier.CHARMER_COBRA,
+    1: MonsterIdentifier.POUNCING_BANDIT,
+    2: MonsterIdentifier.CINDER_TAIL,
+    3: MonsterIdentifier.FURIOUS_FLIPPER,
+    4: MonsterIdentifier.POISON_POGO,
+    5: MonsterIdentifier.CHARMER_COBRA,
   };
 
   const alterLevel = (val: number) => {
@@ -29,17 +29,18 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   };
 
   const renderAdventureMonsterSelect = () => {
-    socket.emit("adventure_level_selected", { level: observedLevel + 1 });
+    socket.emit("adventure_level_selected", { level: observedLevel });
     FlowRouter.go("/adventure/monster-select");
   };
 
-  const monster = levelMap[observedLevel] ?? "None";
+  const monster = levelMap[observedLevel ] ?? "None";
 
   useEffect(() => {
     socket.emit("request_unlocked_levels");
 
     socket.on("unlocked_levels", (levels: number[]) => {
       setUnlockedLevels(levels);
+      console.error(levels)
     });
 
     return () => {
@@ -107,7 +108,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         </div>
         <div className="grid grid-cols-3 justify-items-center">
           <div className="flex justify-center items-center">
-            {observedLevel != 0 && (
+            {observedLevel != 1 && (
               <IconButton
                 style="arrowleft"
                 buttonColour="blue"
@@ -129,7 +130,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
           </div>
 
           <div className="flex justify-center items-center">
-            {observedLevel != 4 && (
+            {observedLevel != 5 && (
               <IconButton
                 style="arrowright"
                 buttonColour="blue"
