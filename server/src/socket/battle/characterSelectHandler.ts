@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { players, activeGameSessions } from "../../../main";
+import { players, activeGameSessions, playerAccounts } from "../../../main";
 import { getMonster } from "../../model/game/monster/monsterMap";
 import { monsterMap } from "../../model/game/monster/monsterMap";
 import {
@@ -63,6 +63,22 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
     );
 
     socket.emit("monster_list", monsters);
+  });
+
+  socket.on("request_adventure_monster_list", () => {
+    console.log("ADV: Requesting monster list from server");
+    const user = playerAccounts.get(socket.id);
+    const unlockedMonsters = user?.adventureProgression.unlockedMonsters;
+    if (unlockedMonsters) {
+      const monsters = Array.from(monsterMap.entries())
+        .filter(([monster]) => unlockedMonsters[monster])
+        .map(([_, createMonster]) => createMonster().getMonsterState());
+      socket.emit("adventure_monster_list", monsters);
+    } else {
+      console.error(`${user?.username} Unlocked Monsters does not exist`);
+    }
+    //  adventureProgression.unlockedMonsters: Record<string, boolean>,
+    // // e.g  {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
   });
 
   socket.on("request_archetype_list", () => {

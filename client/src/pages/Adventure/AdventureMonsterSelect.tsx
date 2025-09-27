@@ -43,27 +43,17 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
     [ArchetypeIdentifier.BALANCED]: "bg-balanced",
   };
 
-  //TODO: implement getting genuine unlocked monsters
-  //dependent on how player accounts work :)
-  const [unlockedMonstersIDs, setUnlockedMonstersIDs] = useState<
-    MonsterIdentifier[]
-  >([MonsterIdentifier.ROCKY_RHINO]);
-
   useEffect(() => {
     // Request the monster list once when component mounts
-    socket.emit("request_monster_list");
+    socket.emit("request_adventure_monster_list");
 
     // Listen for the monster list from server
-    socket.on("monster_list", (monsterList: MonsterState[]) => {
-      // Mimic filtering by unlocked monsters
-      const filtered = monsterList.filter((monster) =>
-        unlockedMonstersIDs.includes(monster.id)
-      );
-      setMonsters(filtered);
+    socket.on("adventure_monster_list", (monsterList: MonsterState[]) => {
+      setMonsters(monsterList);
     });
 
     return () => {
-      socket.off("monster_list");
+      socket.off("adventure_monster_list");
     };
   }, []);
 
