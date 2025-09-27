@@ -79,7 +79,7 @@
         "result": [
           "You are victorious once again.",
           "Its body cracks apart, cooling into shards of obsidian.",
-          "You search the fragments, finding something buried within…"
+          "You search the fragments, finding something buried within..."
         ],
         "type": "DIALOGUE",
         "next": "ember_drop"
@@ -91,6 +91,139 @@
       }
     ]
   },
+  {
+    "id": "witch_encounter_1",
+    "level": [4],
+    "description": "Stage 2 first witch encounter ",
+    "outcomes": [
+      {
+        "id": "start",
+        "result": [
+          "You continues your journey through the swamp and sees someone infront of you.",
+          "A witch stirs her bubbling cauldron, purple smoke hissing into the mist. She turns to you, grinning.",
+          "Heeheehee! A traveler in my swamp? You're braver than you look.",
+          "What would you like? A bottle of my stew, or a riddle for a reward?"
+        ],
+        "type": "DIALOGUE",
+        "next": "witch_choice"
+
+      },
+      {
+        "id": "witch_choice",
+        "result": "What would you like from the witch?",
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "riddle",
+            "text": "Give me a riddle.",
+            "next": "witch_riddle"
+          },
+          {
+            "id": "drink_stew",
+            "text": "Take the stew",
+            "next": "stew_result"
+          }
+        ]  
+      },
+      {
+        "id":"witch_riddle",
+        "result": [
+          "I sit in the swamp, I sing in the rain. I leap without wings, I croak without pain.",
+          "What am I?"
+        ],
+        "type": "DIALOGUE",
+        "next": "answer_riddle"
+      },
+      {
+        "id": "answer_riddle",
+        "result": "Choose your answer.",
+        "type": "CHOICE",
+        "options":[
+          {
+            "id": "answer_frog",
+            "text": "A frog!",
+            "next": "riddle_frog"
+          },
+          {
+            "id": "answer_bird",
+            "text": "A bird!",
+            "next": "riddle_bird"
+          },
+          {
+            "id": "answer_me",
+            "text": "ME!",
+            "next": "riddle_me"
+          }
+        ]
+      },
+      {
+        "id": "riddle_frog",
+        "type": "DIALOGUE",
+        "result": [
+          "Yes! Yes! A frog!",
+          "You've got some brains.",
+          "Take this, the Everblooming Lotus.",
+          "Next time we cross paths, you'll see why it's more than just a flower."
+        ],
+        "next": "lotus_reward"
+
+      },
+      {
+        "id": "riddle_bird",
+        "result": [
+          "WHAT?! BIRD??",
+          "A bird in my swamp??",
+          "You foolish mouse."
+        ],
+        "type": "DIALOGUE",
+        "next": "witch_curse"
+      },
+      {
+        "id": "riddle_me",
+        "result": [
+          "HAHA! Do you croak? Ha ha ha! Wrong wrong wrong...",
+          "But you made me laugh.",
+          "Here, I'll help you alittle."
+        ],
+        "type": "DIALOGUE",
+        "next": "witch_reward"
+      },
+      {
+        "id": "lotus_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "everblooming_lotus"
+      },
+      {
+        "id": "witch_curse",
+        "type": "STATUS",
+        "statusId": "poisoned",
+        "result":[
+          "\"Blulaflu!\" the witch shouts",
+          "A green mist clings to your skin and seeps into your lungs.",
+          "You've been poisoned."
+        ]
+      },
+      {
+        "id": "witch_reward",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", 5],
+        "result":[
+          "A golden mist surrounds you as the witch says \"Akula Palusha!\"",
+          "You feel warmth bloom in your chest. You HP increased by 5."
+        ]
+      },
+      {
+        "id": "stew_result",
+        "result":[
+          "Heeheehee! A wise choice, or a foolish one?",
+          "Be careful now. One sip may heal, another may harm... but isn't that the fun?"
+        ],
+        "type": "CONSUMABLE",
+        "consumableId": "magic_stew"
+      }
+    ]
+
+},
   {
     "id": "desert_merchant",
     "level": [5],

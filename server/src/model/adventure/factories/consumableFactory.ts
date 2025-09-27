@@ -8,6 +8,8 @@ import { AbilityAntidote } from "../../game/consumables/abilityAntidote";
 import { ScorchPowder } from "../../game/consumables/scorchPowder";
 import { Coal } from "../../game/consumables/coal";
 import { CharredRoot } from "../../game/consumables/charredRoot";
+import { EverbloomingLotus } from "../../game/consumables/storyItem/everbloomingLotus";
+import { MagicStew } from "../../game/consumables/magicStew";
 
 const ConsumableFactory: Record<string, () => Consumable> = {
   mini_health_potion: () =>
@@ -23,6 +25,8 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   coal: () => new Coal(),
   scorch_powder: () => new ScorchPowder(),
   charred_root: () => new CharredRoot(),
+  everblooming_lotus: () => new EverbloomingLotus(),
+  magic_stew: () => new MagicStew(),
 };
 
 export function createConsumable(id: string): Consumable {
