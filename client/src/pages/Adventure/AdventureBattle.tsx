@@ -195,28 +195,23 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       console.log("Received adventure_consumable:", data);
       setReceivingConsumable(data.consumable);
       setConsumableId(data.consumableId);
-      setHasNewInventoryItem(true);
     });
 
     socket.on("adventure_storyItem", (data) => {
       console.log("Received adventure_storyItem:", data);
       setReceivingStoryItem(data.storyItem);
       setStoryItemId(data.storyItemId);
-      console.log("HERE", storyItemId);
-      setHasNewInventoryItem(true);
     });
 
     socket.on("adventure_equipment", (data) => {
       console.log("Received adventure_equipment:", data);
       setReceivingEquipment(data.equipment);
       setEquipmentId(data.equipmentId);
-      setHasNewInventoryItem(true);
     });
 
     socket.on("adventure_equipment_full", (data) => {
       setCurrentEquipment(data.currentEquipment); // array of 3 equipment that player has
       setIncomingEquipment(data.incomingEquipment); // a new equipment item
-      setEquipmentInventoryFull(true);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -278,6 +273,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             onTake={() => {
               setReceivingConsumable(null);
               setConsumableId(null);
+              setHasNewInventoryItem(true);
               socket.emit("adventure_take_consumable", {
                 consumableId,
                 stage,
@@ -286,7 +282,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             onDrop={() => {
               setReceivingConsumable(null);
               setConsumableId(null);
-              setHasNewInventoryItem(false);
               socket.emit("adventure_next", { stage });
             }}
           />
@@ -297,6 +292,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             onTake={() => {
               setReceivingStoryItem(null);
               setStoryItemId(null);
+              setHasNewInventoryItem(true);
               socket.emit("adventure_take_storyItem", {
                 storyItemId,
                 stage,
@@ -305,7 +301,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             onDrop={() => {
               setReceivingStoryItem(null);
               setStoryItemId(null);
-              setHasNewInventoryItem(false);
               socket.emit("adventure_next", { stage });
             }}
           />
@@ -318,6 +313,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
               onEquip={() => {
                 setReceivingEquipment(null);
                 setEquipmentId(null);
+                setHasNewInventoryItem(true);
                 socket.emit("adventure_take_equipment", {
                   equipmentId,
                   stage,
@@ -326,7 +322,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
               onDrop={() => {
                 setReceivingEquipment(null);
                 setEquipmentId(null);
-                setHasNewInventoryItem(false);
                 socket.emit("adventure_next", { stage });
               }}
             />
@@ -504,7 +499,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                          h-[26px] w-[26px]     
                          md:h-[20px] md:w-[20px] 
                          animate-ping 
-                         rounded-full bg-red-500 
+                         rounded-full bg-notification-accent 
                          opacity-75
                          -translate-y-1            
                          md:-translate-y-1.5"
@@ -513,9 +508,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                             className="relative inline-flex 
                          h-[26px] w-[26px] 
                          md:h-[20px] md:w-[20px] 
-                         rounded-full bg-red-600 
+                         rounded-full bg-notification 
                          -translate-y-1
-                         md:-translate-y-1.5"
+                         md:-translate-y-1.5
+                         border-3"
+                            style={{ borderColor: "var(--color-blackCurrant)" }}
                           ></span>
                         </span>
                       )}
@@ -606,7 +603,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                          h-[26px] w-[26px]          
                          md:h-[20px] md:w-[20px]     
                          animate-ping 
-                         rounded-full bg-red-500 
+                         rounded-full bg-notification-accent 
                          opacity-75
                          -translate-y-1             
                          md:-translate-y-1.5"
@@ -615,9 +612,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                           className="relative inline-flex 
                          h-[26px] w-[26px] 
                          md:h-[20px] md:w-[20px] 
-                         rounded-full bg-red-600 
+                         rounded-full bg-notification 
                          -translate-y-1
-                         md:-translate-y-1.5"
+                         md:-translate-y-1.5
+                         border-3"
+                          style={{ borderColor: "var(--color-blackCurrant)" }}
                         ></span>
                       </span>
                     )}
