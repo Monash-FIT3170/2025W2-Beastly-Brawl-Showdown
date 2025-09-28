@@ -69,8 +69,8 @@
       },
       {
         "id": "slime_item",
-        "type": "CONSUMABLE",
-        "consumableId": "slime_friend"
+        "type": "STORY_ITEM",
+        "storyItemId": "slime_baby"
       },
       {
         "id": "slime_fight",

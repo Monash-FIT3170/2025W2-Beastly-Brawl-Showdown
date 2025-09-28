@@ -24,9 +24,15 @@ import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfo
 import { PlayerState } from "/types/single/playerState";
 import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
-import { EquipmentState } from "/types/single/itemState";
+import { EquipmentState, StoryItemState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
 import { AdventureBattleHeader } from "../../components/player-screen/AdventureBattleHeader";
+import { ConsumablePopup } from "../../components/popups/ConsumablePopup";
+import { ConsumablePickupPopup } from "../../components/popups/ConsumablePickupPopup";
+import { ConsumableState } from "/types/single/itemState";
+import { EquipmentPickupPopup } from "../../components/popups/EquipmentPickupPopup";
+import { StoryItem } from "../../../../server/src/model/game/storyItem/storyItem";
+import { StoryItemPickupPopup } from "../../components/popups/StoryItemPickupPopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -56,13 +62,14 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
   const [viewingEnemyInfo, setViewingEnemyInfo] = useState<Boolean>(false);
   const [viewingInventory, setViewingInventory] = useState<Boolean>(false);
-  const [receivingConsumable, setReceivingConsumable] = useState<string | null>(
-    null
-  );
+  const [receivingConsumable, setReceivingConsumable] =
+    useState<ConsumableState | null>(null);
   const [consumableId, setConsumableId] = useState<string | null>(null);
-  const [receivingEquipment, setReceivingEquipment] = useState<string | null>(
-    null
-  );
+  const [receivingStoryItem, setReceivingStoryItem] =
+    useState<StoryItemState | null>(null);
+  const [storyItemId, setStoryItemId] = useState<string | null>(null);
+  const [receivingEquipment, setReceivingEquipment] =
+    useState<EquipmentState | null>(null);
   const [equipmentId, setEquipmentId] = useState<string | null>(null);
   const [equipmentInventoryFull, setEquipmentInventoryFull] = useState(false);
   const [currentEquipment, setCurrentEquipment] = useState<EquipmentState[]>(
@@ -75,14 +82,22 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
   const [statChange, setStatChange] = useState<string[] | null>(null);
   const [statusResult, setStatusResult] = useState<string[] | null>(null);
+  const [hasNewInventoryItem, setHasNewInventoryItem] = useState(false);
 
   //DICE
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
-  const handleChoiceSelect = (choiceId: string) => {
+  const handleChoiceSelect = (
+    choiceId: string,
+    itemNames: string[] | null = null
+  ) => {
     socket.emit("adventure_choice", { stage, choiceId });
     setChoices(null);
+    console.log("ITEM NAMES", itemNames);
+    if (itemNames) {
+      socket.emit("adventure_prereq_choice", { itemNames });
+    }
   };
 
   socket.on("adventure_defeat", () => {
@@ -178,20 +193,25 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
     socket.on("adventure_consumable", (data) => {
       console.log("Received adventure_consumable:", data);
-      setReceivingConsumable(data.name);
+      setReceivingConsumable(data.consumable);
       setConsumableId(data.consumableId);
+    });
+
+    socket.on("adventure_storyItem", (data) => {
+      console.log("Received adventure_storyItem:", data);
+      setReceivingStoryItem(data.storyItem);
+      setStoryItemId(data.storyItemId);
     });
 
     socket.on("adventure_equipment", (data) => {
       console.log("Received adventure_equipment:", data);
-      setReceivingEquipment(data.name);
+      setReceivingEquipment(data.equipment);
       setEquipmentId(data.equipmentId);
     });
 
     socket.on("adventure_equipment_full", (data) => {
       setCurrentEquipment(data.currentEquipment); // array of 3 equipment that player has
       setIncomingEquipment(data.incomingEquipment); // a new equipment item
-      setEquipmentInventoryFull(true);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -239,89 +259,70 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
           ></MonsterInfoPopup>
         )}
         {viewingInventory && (
-          <MonsterInfoPopup
+          <AdventureBagPopup
             playerState={playerState}
             onClose={() => setViewingInventory(false)}
             inBattle={battleState !== null}
-          ></MonsterInfoPopup>
+          ></AdventureBagPopup>
         )}
         {receivingConsumable && (
-          <div>
-            <PopupClean>
-              <div className="flex flex-col justify-around items-center">
-                <OutlineText size="extraLarge">
-                  {receivingConsumable}
-                </OutlineText>
-                <div className="flex flex-row justify-between gap-x-[3rem] items-center">
-                  <ButtonGeneric
-                    size="battle"
-                    color="blue"
-                    onClick={() => {
-                      setReceivingConsumable(null);
-                      setConsumableId(null);
-                      socket.emit("adventure_take_consumable", {
-                        consumableId,
-                        stage,
-                      });
-                    }}
-                  >
-                    TAKE!
-                  </ButtonGeneric>
-                  <ButtonGeneric
-                    size="battle"
-                    color="red"
-                    onClick={() => {
-                      setReceivingConsumable(null);
-                      setConsumableId(null);
-                      socket.emit("adventure_next", { stage });
-                    }}
-                  >
-                    DROP
-                  </ButtonGeneric>
-                </div>
-              </div>
-            </PopupClean>
-          </div>
+          <ConsumablePickupPopup
+            consumable={receivingConsumable}
+            onTake={() => {
+              setReceivingConsumable(null);
+              setConsumableId(null);
+              setHasNewInventoryItem(true);
+              socket.emit("adventure_take_consumable", {
+                consumableId,
+                stage,
+              });
+            }}
+            onDrop={() => {
+              setReceivingConsumable(null);
+              setConsumableId(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
+        )}
+        {receivingStoryItem && (
+          <StoryItemPickupPopup
+            storyItem={receivingStoryItem}
+            onTake={() => {
+              setReceivingStoryItem(null);
+              setStoryItemId(null);
+              setHasNewInventoryItem(true);
+              socket.emit("adventure_take_storyItem", {
+                storyItemId,
+                stage,
+              });
+            }}
+            onDrop={() => {
+              setReceivingStoryItem(null);
+              setStoryItemId(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
         )}
         {receivingEquipment &&
           !equipmentInventoryFull &&
           !incomingEquipment && (
-            <div>
-              <PopupClean>
-                <div className="flex flex-col justify-around items-center">
-                  <OutlineText size="extraLarge">
-                    {receivingEquipment}
-                  </OutlineText>
-                  <div className="flex flex-row justify-between gap-x-[3rem] items-center">
-                    <ButtonGeneric
-                      size="battle"
-                      color="blue"
-                      onClick={() => {
-                        setReceivingEquipment(null);
-                        setEquipmentId(null);
-                        socket.emit("adventure_take_equipment", {
-                          equipmentId,
-                          stage,
-                        });
-                      }}
-                    >
-                      EQUIP!
-                    </ButtonGeneric>
-                    <ButtonGeneric
-                      size="battle"
-                      color="red"
-                      onClick={() => {
-                        setReceivingEquipment(null);
-                        setEquipmentId(null);
-                        socket.emit("adventure_next", { stage });
-                      }}
-                    >
-                      DROP
-                    </ButtonGeneric>
-                  </div>
-                </div>
-              </PopupClean>
-            </div>
+            <EquipmentPickupPopup
+              equipment={receivingEquipment}
+              onEquip={() => {
+                setReceivingEquipment(null);
+                setEquipmentId(null);
+                setHasNewInventoryItem(true);
+                socket.emit("adventure_take_equipment", {
+                  equipmentId,
+                  stage,
+                });
+              }}
+              onDrop={() => {
+                setReceivingEquipment(null);
+                setEquipmentId(null);
+                socket.emit("adventure_next", { stage });
+              }}
+            />
           )}
         {equipmentInventoryFull && incomingEquipment && (
           <PopupClean>
@@ -474,14 +475,46 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                   <ButtonGeneric
                     color={"ronchi"}
                     size={"backpack"}
-                    onClick={() => setViewingInventory(true)}
+                    onClick={() => {
+                      setViewingInventory(true);
+                      setHasNewInventoryItem(false);
+                    }}
                   >
-                    <img
-                      src={
-                        "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
-                      }
-                      className={"w-[80%] h-[80%] object-contain mx-auto"}
-                    ></img>
+                    <div
+                      style={{ position: "relative", display: "inline-block" }}
+                    >
+                      <img
+                        src={
+                          "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
+                        }
+                        className={"w-[90%] h-[90%] object-contain mx-auto"}
+                      />
+                      {hasNewInventoryItem && (
+                        <span className="absolute -top-2 -right-2 flex items-center justify-center">
+                          {/* Ping animation with responsive sizing and translation */}
+                          <span
+                            className="absolute inline-flex 
+                         h-[26px] w-[26px]     
+                         md:h-[20px] md:w-[20px] 
+                         animate-ping 
+                         rounded-full bg-notification-accent 
+                         opacity-75
+                         -translate-y-1            
+                         md:-translate-y-1.5"
+                          ></span>
+                          <span
+                            className="relative inline-flex 
+                         h-[26px] w-[26px] 
+                         md:h-[20px] md:w-[20px] 
+                         rounded-full bg-notification 
+                         -translate-y-1
+                         md:-translate-y-1.5
+                         border-3"
+                            style={{ borderColor: "var(--color-blackCurrant)" }}
+                          ></span>
+                        </span>
+                      )}
+                    </div>
                   </ButtonGeneric>
                 </div>
               </div>
@@ -548,14 +581,44 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                 <ButtonGeneric
                   color={"ronchi"}
                   size={"squaremedium"}
-                  onClick={() => setViewingInventory(true)}
+                  onClick={() => {
+                    setViewingInventory(true);
+                    setHasNewInventoryItem(false);
+                  }}
                 >
-                  <img
-                    src={
-                      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
-                    }
-                    className={"w-[80%] h-[80%] object-contain mx-auto"}
-                  ></img>
+                  <div className="relative inline-block">
+                    <img
+                      src={
+                        "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/backpack.png"
+                      }
+                      className="w-[80%] h-[80%] object-contain mx-auto"
+                    />
+                    {hasNewInventoryItem && (
+                      <span className="absolute -top-2 -right-2 flex items-center justify-center">
+                        {/* Ping animation with responsive sizing and translation */}
+                        <span
+                          className="absolute inline-flex 
+                         h-[26px] w-[26px]          
+                         md:h-[20px] md:w-[20px]     
+                         animate-ping 
+                         rounded-full bg-notification-accent 
+                         opacity-75
+                         -translate-y-1             
+                         md:-translate-y-1.5"
+                        ></span>
+                        <span
+                          className="relative inline-flex 
+                         h-[26px] w-[26px] 
+                         md:h-[20px] md:w-[20px] 
+                         rounded-full bg-notification 
+                         -translate-y-1
+                         md:-translate-y-1.5
+                         border-3"
+                          style={{ borderColor: "var(--color-blackCurrant)" }}
+                        ></span>
+                      </span>
+                    )}
+                  </div>
                 </ButtonGeneric>
               </div>
             </div>

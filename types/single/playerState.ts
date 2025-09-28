@@ -1,7 +1,8 @@
 import { AttackState } from "./actionState";
-import { ConsumableState, EquipmentState } from "./itemState";
+import { ConsumableState, EquipmentState, StoryItemState } from "./itemState";
 import { MonsterState } from "./monsterState";
 import { Status } from "/server/src/model/game/status/status";
+import { StoryItem } from "/server/src/model/game/storyItem/storyItem";
 
 export interface PlayerState {
   id: string;
@@ -25,6 +26,7 @@ export interface PlayerState {
 
   equipment: EquipmentState[];
   consumables: ConsumableState[];
+  storyItems: StoryItemState[];
 
   attackState: AttackState;
 
