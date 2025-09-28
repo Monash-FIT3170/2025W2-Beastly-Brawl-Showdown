@@ -24,13 +24,15 @@ import { AdventureInfoPanel } from "../../components/player-screen/AdventureInfo
 import { PlayerState } from "/types/single/playerState";
 import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
 import { AdventureBagPopup } from "../../components/popups/AdventureBag";
-import { EquipmentState } from "/types/single/itemState";
+import { EquipmentState, StoryItemState } from "/types/single/itemState";
 import { EquipmentCard } from "../../components/cards/EquipmentCard";
 import { AdventureBattleHeader } from "../../components/player-screen/AdventureBattleHeader";
 import { ConsumablePopup } from "../../components/popups/ConsumablePopup";
 import { ConsumablePickupPopup } from "../../components/popups/ConsumablePickupPopup";
 import { ConsumableState } from "/types/single/itemState";
 import { EquipmentPickupPopup } from "../../components/popups/EquipmentPickupPopup";
+import { StoryItem } from "../../../../server/src/model/game/storyItem/storyItem";
+import { StoryItemPickupPopup } from "../../components/popups/StoryItemPickupPopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -63,6 +65,9 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [receivingConsumable, setReceivingConsumable] =
     useState<ConsumableState | null>(null);
   const [consumableId, setConsumableId] = useState<string | null>(null);
+  const [receivingStoryItem, setReceivingStoryItem] =
+    useState<StoryItemState | null>(null);
+  const [storyItemId, setStoryItemId] = useState<string | null>(null);
   const [receivingEquipment, setReceivingEquipment] =
     useState<EquipmentState | null>(null);
   const [equipmentId, setEquipmentId] = useState<string | null>(null);
@@ -83,9 +88,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
 
-  const handleChoiceSelect = (choiceId: string) => {
+  const handleChoiceSelect = (
+    choiceId: string,
+    itemNames: string[] | null = null
+  ) => {
     socket.emit("adventure_choice", { stage, choiceId });
     setChoices(null);
+    console.log("ITEM NAMES", itemNames);
+    if (itemNames) {
+      socket.emit("adventure_prereq_choice", { itemNames });
+    }
   };
 
   socket.on("adventure_defeat", () => {
@@ -183,20 +195,23 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       console.log("Received adventure_consumable:", data);
       setReceivingConsumable(data.consumable);
       setConsumableId(data.consumableId);
-      setHasNewInventoryItem(true);
+    });
+
+    socket.on("adventure_storyItem", (data) => {
+      console.log("Received adventure_storyItem:", data);
+      setReceivingStoryItem(data.storyItem);
+      setStoryItemId(data.storyItemId);
     });
 
     socket.on("adventure_equipment", (data) => {
       console.log("Received adventure_equipment:", data);
       setReceivingEquipment(data.equipment);
       setEquipmentId(data.equipmentId);
-      setHasNewInventoryItem(true);
     });
 
     socket.on("adventure_equipment_full", (data) => {
       setCurrentEquipment(data.currentEquipment); // array of 3 equipment that player has
       setIncomingEquipment(data.incomingEquipment); // a new equipment item
-      setEquipmentInventoryFull(true);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -258,6 +273,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             onTake={() => {
               setReceivingConsumable(null);
               setConsumableId(null);
+              setHasNewInventoryItem(true);
               socket.emit("adventure_take_consumable", {
                 consumableId,
                 stage,
@@ -270,6 +286,25 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             }}
           />
         )}
+        {receivingStoryItem && (
+          <StoryItemPickupPopup
+            storyItem={receivingStoryItem}
+            onTake={() => {
+              setReceivingStoryItem(null);
+              setStoryItemId(null);
+              setHasNewInventoryItem(true);
+              socket.emit("adventure_take_storyItem", {
+                storyItemId,
+                stage,
+              });
+            }}
+            onDrop={() => {
+              setReceivingStoryItem(null);
+              setStoryItemId(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
+        )}
         {receivingEquipment &&
           !equipmentInventoryFull &&
           !incomingEquipment && (
@@ -278,6 +313,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
               onEquip={() => {
                 setReceivingEquipment(null);
                 setEquipmentId(null);
+                setHasNewInventoryItem(true);
                 socket.emit("adventure_take_equipment", {
                   equipmentId,
                   stage,
@@ -445,26 +481,28 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                         className={"w-[90%] h-[90%] object-contain mx-auto"}
                       />
                       {hasNewInventoryItem && (
-                        <span
-                          className="
-                            absolute
-                            top-0
-                            right-0
-                            w-[36px] h-[36px]
-                            sm:w-[24px] sm:h-[24px]
-                            bg-red-600
-                            rounded-full
-                            flex items-center justify-center
-                            text-white
-                            text-[12px] sm:text-[16px]
-                            font-bold
-                            border-2 border-white
-                            pointer-events-none
-                            z-10
-                            select-none
-                          "
-                        >
-                          !
+                        <span className="absolute -top-2 -right-2 flex items-center justify-center">
+                          {/* Ping animation with responsive sizing and translation */}
+                          <span
+                            className="absolute inline-flex 
+                         h-[26px] w-[26px]     
+                         md:h-[20px] md:w-[20px] 
+                         animate-ping 
+                         rounded-full bg-notification-accent 
+                         opacity-75
+                         -translate-y-1            
+                         md:-translate-y-1.5"
+                          ></span>
+                          <span
+                            className="relative inline-flex 
+                         h-[26px] w-[26px] 
+                         md:h-[20px] md:w-[20px] 
+                         rounded-full bg-notification 
+                         -translate-y-1
+                         md:-translate-y-1.5
+                         border-3"
+                            style={{ borderColor: "var(--color-blackCurrant)" }}
+                          ></span>
                         </span>
                       )}
                     </div>
@@ -547,25 +585,28 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                       className="w-[80%] h-[80%] object-contain mx-auto"
                     />
                     {hasNewInventoryItem && (
-                      <span
-                        className="
-                        absolute
-                        -top-2 -right-2
-                        w-[22px] h-[22px]
-                        sm:w-[28px] sm:h-[28px]
-                        bg-red-600
-                        rounded-full
-                        flex items-center justify-center
-                        text-white
-                        text-[14px] sm:text-[18px]
-                        font-bold
-                        border-2 border-white
-                        pointer-events-none
-                        z-10
-                        select-none
-                      "
-                      >
-                        !
+                      <span className="absolute -top-2 -right-2 flex items-center justify-center">
+                        {/* Ping animation with responsive sizing and translation */}
+                        <span
+                          className="absolute inline-flex 
+                         h-[26px] w-[26px]          
+                         md:h-[20px] md:w-[20px]     
+                         animate-ping 
+                         rounded-full bg-notification-accent 
+                         opacity-75
+                         -translate-y-1             
+                         md:-translate-y-1.5"
+                        ></span>
+                        <span
+                          className="relative inline-flex 
+                         h-[26px] w-[26px] 
+                         md:h-[20px] md:w-[20px] 
+                         rounded-full bg-notification 
+                         -translate-y-1
+                         md:-translate-y-1.5
+                         border-3"
+                          style={{ borderColor: "var(--color-blackCurrant)" }}
+                        ></span>
                       </span>
                     )}
                   </div>
