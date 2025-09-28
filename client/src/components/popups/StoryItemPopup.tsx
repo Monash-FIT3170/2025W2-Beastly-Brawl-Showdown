@@ -1,30 +1,26 @@
 import React, { ReactNode, useState } from "react";
-import { ConsumableState } from "/types/single/itemState";
+import { StoryItemState } from "/types/single/itemState";
 import { PopupAdventure } from "./PopupAdventure";
 import { ButtonGeneric } from "../buttons/ButtonGeneric";
 import { OutlineText } from "../texts/OutlineText";
 import { BlackText } from "../texts/BlackText";
 import { on } from "events";
 
-export interface ConsumableProp {
-  consumable: ConsumableState;
+export interface StoryItemProp {
+  storyItem: StoryItemState;
   onClose: () => void;
-  onConsume: () => void;
-  isDisabled: boolean;
+  onTake?: () => void;
   backText?: string;
-  consumeText?: string;
-  confirmText?: string;
+  takeText?: string;
 }
 
-export const ConsumablePopup = ({
-  consumable,
+export const StoryItemPopup = ({
+  storyItem,
   onClose,
-  onConsume,
-  isDisabled,
+  onTake,
   backText = "BACK",
-  consumeText = "CONSUME",
-  confirmText = "Are you sure you want to consume this?",
-}: ConsumableProp) => {
+  takeText = "TAKE",
+}: StoryItemProp) => {
   const popupLayout = `z-100  items-center
         justify-center
         box-border
@@ -71,30 +67,29 @@ export const ConsumablePopup = ({
           >
             {/* Name */}
             <OutlineText size="large">
-              {consumable.name.toUpperCase()}
+              {storyItem.name.toUpperCase()}
             </OutlineText>
             {/* Image */}
             <div className="justify-center items-center p-[1rem]">
               <div
                 className="lg:h-[10rem] sm:h-[30rem] lg:outline-[0.25rem] sm:outline-[0.75rem] 
-                        rounded-2xl  bg-consumablePink outline-blackCurrant aspect-square mx-auto"
+                        rounded-2xl  bg-storycolour outline-blackCurrant aspect-square mx-auto"
               >
                 <img
                   className="w-full h-full object-contain"
-                  src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/${consumable.imageString}.png`}
+                  src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/items/${storyItem.imageString}.png`}
                 />
               </div>
             </div>
 
             {/* Description */}
             <div className="justify-center flex flex-col items-center p-[1rem] gap-5 ">
-              <BlackText size="medium">{consumable.description}</BlackText>
+              <BlackText size="medium">{storyItem.description}</BlackText>
               <div className="w-[90%] bg-ronchi outline-blackCurrant outline-[0.25rem] rounded-full items-center justify-center">
                 <OutlineText size="medium">
-                  {consumable.statDescription}
+                  {storyItem.hintDescription}
                 </OutlineText>
               </div>
-              <BlackText size="medium">{confirmText}</BlackText>
             </div>
 
             {/* Buttons */}
@@ -104,16 +99,13 @@ export const ConsumablePopup = ({
                   <OutlineText size="choice-text">{backText}</OutlineText>
                 </div>
               </ButtonGeneric>
-              <ButtonGeneric
-                color="blue"
-                size="battle"
-                isDisabled={isDisabled}
-                onClick={onConsume}
-              >
-                <div className="items-center">
-                  <OutlineText size="choice-text">{consumeText}</OutlineText>
-                </div>
-              </ButtonGeneric>
+              {onTake && (
+                <ButtonGeneric color="blue" size="battle" onClick={onTake}>
+                  <div className="items-center">
+                    <OutlineText size="choice-text">{takeText}</OutlineText>
+                  </div>
+                </ButtonGeneric>
+              )}
             </div>
           </div>
         </div>

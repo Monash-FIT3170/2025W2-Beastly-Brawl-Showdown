@@ -20,8 +20,9 @@ import { DamageHeal } from "../model/game/status/damageHeal";
 import { Poison } from "../model/game/status/poison";
 import { Stun } from "../model/game/status/stun";
 import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
-import { StoryItem } from "../model/game/consumables/storyItem/storyItem";
+import { StoryItem } from "../model/game/storyItem/storyItem";
 import { SlimeBoost } from "../model/game/status/slimeBoost";
+import { createStoryItem } from "../model/adventure/factories/storyItemFactory";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -169,22 +170,50 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     if (consumableId) {
       const consumable = createConsumable(consumableId);
       player.giveConsumable(consumable);
-      if (consumable instanceof StoryItem) {
-        consumable.setAdventure(adventure);
+      const lastOutcome = loadNextStory(io, adventure, socket);
+
+      if (lastOutcome && lastOutcome.next) {
+        adventure.currentOutcomeId = lastOutcome.next;
+        adventure.pastEncounters.push(adventure.currentOutcomeId);
+      } else {
+        // If no next, end or error
+        adventure.currentOutcomeId = "";
       }
+
+      progressAdventure(io, socket, adventure, stage);
     }
+  });
 
-    const lastOutcome = loadNextStory(io, adventure, socket);
+  socket.on("adventure_take_storyItem", ({ storyItemId, stage }) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+    const player = adventure.getPlayer();
 
-    if (lastOutcome && lastOutcome.next) {
-      adventure.currentOutcomeId = lastOutcome.next;
-      adventure.pastEncounters.push(adventure.currentOutcomeId);
-    } else {
-      // If no next, end or error
-      adventure.currentOutcomeId = "";
+    if (storyItemId) {
+      const storyItem = createStoryItem(storyItemId);
+      player.giveStoryItem(storyItem);
+      const lastOutcome = loadNextStory(io, adventure, socket);
+
+      if (lastOutcome && lastOutcome.next) {
+        adventure.currentOutcomeId = lastOutcome.next;
+        adventure.pastEncounters.push(adventure.currentOutcomeId);
+      } else {
+        // If no next, end or error
+        adventure.currentOutcomeId = "";
+      }
+
+      progressAdventure(io, socket, adventure, stage);
     }
+  });
 
-    progressAdventure(io, socket, adventure, stage);
+  socket.on("adventure_prereq_choice", ({ itemNames }) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+    const player = adventure.getPlayer();
+    console.log("THESE ARE THE ITEM NAMES", itemNames);
+    itemNames.forEach((item) => {
+      player.removeStoryItem(item);
+    });
   });
 
   socket.on("monster_request", ({ id }) => {
@@ -311,6 +340,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         }
         progressAdventure(io, socket, adventure, stage);
       } else if (resolved.type === "CHOICE") {
+        console.log(resolved);
         socket.emit("adventure_state", {
           type: "choice",
           result: resolved.result,
@@ -318,10 +348,11 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           stage: adventure.getStage(),
           player: adventure.getPlayer().getPlayerState(),
         });
+        console.log(resolved);
       } else if (resolved.type === "CONSUMABLE") {
         socket.emit("adventure_consumable", {
-          name: resolved.consumable?.getName() || "Unknown Consumable",
-          consumableId: resolved.consumableId || "unknown_consumable",
+          consumable: resolved.consumable.getState() || "Unknown Consumable",
+          consumableId: resolved.consumableId || "Unknown Consumable ID",
         });
       } else if (resolved.type === "STAT_CHANGE") {
         // Handle stat change
@@ -341,7 +372,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         }
       } else if (resolved.type === "EQUIPMENT") {
         socket.emit("adventure_equipment", {
-          name: resolved.equipment?.getName() || "Unknown equipment",
+          equipment: resolved.equipment?.getState() || "Unknown equipment",
           equipmentId: resolved.equipmentId || "unknown_equipment",
         });
       } else if (resolved.type === "PREREQUISITE") {
@@ -354,7 +385,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           const setB = new Set(
             adventure
               .getPlayer()
-              .getConsumables()
+              .getStoryItems()
               .map((c) => c.getName())
           );
           const allPresent = option.prerequisite?.every((item) =>
@@ -378,6 +409,13 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           stage: adventure.getStage(),
           player: adventure.getPlayer().getPlayerState(),
         });
+      } else if (resolved.type === "STORY_ITEM") {
+        console.log(resolved);
+        socket.emit("adventure_storyItem", {
+          storyItem: resolved.storyItem?.getState() || "Unknown story item",
+          storyItemId: resolved.storyItemId || "unknown_storyItem",
+        });
+        console.log(resolved);
       }
     } catch (err) {
       console.error("Adventure stage load error:", err);
