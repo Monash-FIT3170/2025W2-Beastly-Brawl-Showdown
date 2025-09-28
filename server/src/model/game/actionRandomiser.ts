@@ -52,6 +52,9 @@ export class ActionRandomiser {
     const actionToAdd = usableActions[randomIndex];
     console.log("Random Action Selected:", actionToAdd.getName());
 
+    //Used to test slime boost
+    // player.addAction(usableActions[usableActions.length - 1]);
+
     player.addAction(actionToAdd);
   }
 }
