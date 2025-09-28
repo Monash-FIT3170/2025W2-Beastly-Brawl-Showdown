@@ -33,14 +33,13 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     FlowRouter.go("/adventure/monster-select");
   };
 
-  const monster = levelMap[observedLevel ] ?? "None";
+  const monster = levelMap[observedLevel] ?? "None";
 
   useEffect(() => {
     socket.emit("request_unlocked_levels");
 
     socket.on("unlocked_levels", (levels: number[]) => {
       setUnlockedLevels(levels);
-      console.error(levels)
     });
 
     return () => {

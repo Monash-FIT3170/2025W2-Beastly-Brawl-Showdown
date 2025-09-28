@@ -30,10 +30,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
   socket.on("request_unlocked_levels", () => {
     console.log("ADV: Requesting unlocked levels from server");
     const user = playerAccounts.get(socket.id);
-    //TODO: get actual unlocked levels.
-    const unlockedLevels = user?.adventureProgression.unlockedLevels; 
+    const unlockedLevels = user?.adventureProgression.unlockedLevels;
     socket.emit("unlocked_levels", unlockedLevels);
-    console.error(unlockedLevels)
   });
 
   socket.on("adventure_level_selected", async ({ level }) => {
