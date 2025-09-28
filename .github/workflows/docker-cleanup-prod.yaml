@@ -1,9 +1,10 @@
 name: Prod - Docker Cleanup
 
 on:
-  workflow_dispatch: # manual trigger
+  workflow_dispatch:
   schedule:
-    - cron: "55 13 * * *"
+    # Runs every Sunday at 23:55 AEST
+    - cron: "55 13 * * 0"
 
 jobs:
   call-prune-template:
