@@ -424,6 +424,12 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
             consumableId: resolved.lootId || "unknown_consumable",
           });
         }
+      } else if (resolved.type === "STORY_ITEM") {
+        console.log(resolved);
+        socket.emit("adventure_storyItem", {
+          storyItem: resolved.storyItem?.getState() || "Unknown Story Item",
+          storyItemId: resolved.storyItemId || "unknown_story_item",
+        });
       }
     } catch (err) {
       console.error("Adventure stage load error:", err);
