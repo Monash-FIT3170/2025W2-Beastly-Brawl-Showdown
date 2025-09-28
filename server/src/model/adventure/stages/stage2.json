@@ -190,7 +190,7 @@
       },
       {
         "id": "lotus_reward",
-        "type": "CONSUMABLE",
+        "type": "STORY_ITEM",
         "consumableId": "everblooming_lotus"
       },
       {
