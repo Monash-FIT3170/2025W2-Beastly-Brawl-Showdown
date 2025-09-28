@@ -7,6 +7,8 @@ import { MagicShield } from "../../game/equipment/magicShield";
 import { OozingBlade } from "../../game/equipment/oozingBlade";
 import { PufferPrickle } from "../../game/equipment/pufferPrickle";
 import { SharpenedClaws } from "../../game/equipment/sharpenedClaws";
+import { SlimyHeart } from "../../game/equipment/slimyHeart";
+import { WitherbindBracelet } from "../../game/equipment/witherbindBracelet";
 
 const equipmentFactory: Record<string, () => Equipment> = {
   oozing_blade: () => new OozingBlade(),
@@ -17,6 +19,8 @@ const equipmentFactory: Record<string, () => Equipment> = {
   blazing_gauntlets: () => new BlazingGauntlets(),
   cooling_pendant: () => new CoolingPendant(),
   basalt_shield: () => new BasaltShield(),
+  slimy_heart: () => new SlimyHeart(),
+  witherbind_bracelet: () => new WitherbindBracelet(),
 };
 
 export function createEquipment(id: string): Equipment {

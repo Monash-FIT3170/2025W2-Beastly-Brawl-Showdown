@@ -159,13 +159,13 @@
           "*it lunges at you!*"
         ],
         "type": "DIALOGUE",
-        "enemyId": "slime_1",
+        "enemyId": "swamp_slime_1",
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_1",
+        "enemyId": "swamp_slime_1",
         "next": "fight_win"
       },
       {
