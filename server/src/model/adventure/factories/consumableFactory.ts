@@ -1,14 +1,14 @@
+import { SlimeBaby } from "./../../game/storyItem/slimeBaby";
 import { PercentageHealthPotion } from "../../game/consumables/healthPotion";
 import { Consumable } from "../../game/consumables/consumable";
 import { SlimeBoost } from "../../game/status/slimeBoost";
 import { SlimeSubstance } from "../../game/consumables/slimeSubstance";
-import { SlimeFriend } from "../../game/consumables/storyItem/slimeFriend";
 import { SparklingFriend } from "../../game/consumables/sparklingFriend";
 import { AbilityAntidote } from "../../game/consumables/abilityAntidote";
 import { ScorchPowder } from "../../game/consumables/scorchPowder";
 import { Coal } from "../../game/consumables/coal";
 import { CharredRoot } from "../../game/consumables/charredRoot";
-import { EverbloomingLotus } from "../../game/consumables/storyItem/everbloomingLotus";
+import { EverbloomingLotus } from "../../game/storyItem/everbloomingLotus";
 import { MagicStew } from "../../game/consumables/magicStew";
 
 const ConsumableFactory: Record<string, () => Consumable> = {
@@ -19,7 +19,7 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   super_health_potion: () =>
     new PercentageHealthPotion("Super Health Potion", 1.0),
   slime_substance: () => new SlimeSubstance(),
-  slime_friend: () => new SlimeFriend(),
+  slime_baby: () => new SlimeBaby(),
   sparkling_friend: () => new SparklingFriend(),
   ability_antidote: () => new AbilityAntidote(),
   coal: () => new Coal(),
