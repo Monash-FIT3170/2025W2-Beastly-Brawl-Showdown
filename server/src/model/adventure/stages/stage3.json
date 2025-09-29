@@ -335,7 +335,7 @@
     "outcomes":[
 
       {
-        "id": "start",
+        "id": "initial",
         "result": [
           "As you walk deeper into the swamp, your foot sinks into a sticky puddle of mud.",
           "The puddle bubbles... not mud at all!",
@@ -369,10 +369,10 @@
           "In the silence, something remains...",
           "A strange crystalized heart, shining with the swamp's strange energy."
         ],
-        "next": "slimy_heart"
+        "next": "reward_slimy_heart"
       },
       {
-        "id": "slimy_heart",
+        "id": "reward_slimy_heart",
         "type": "EQUIPMENT",
         "equipmentId": "slimy_heart"
       }

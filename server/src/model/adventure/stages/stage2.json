@@ -97,7 +97,7 @@
     "description": "Stage 2 first witch encounter ",
     "outcomes": [
       {
-        "id": "start",
+        "id": "initial",
         "result": [
           "You continues your journey through the swamp and sees someone infront of you.",
           "A witch stirs her bubbling cauldron, purple smoke hissing into the mist. She turns to you, grinning.",
@@ -110,7 +110,7 @@
       },
       {
         "id": "witch_choice",
-        "result": "What would you like from the witch?",
+        "result": ["What would you like from the witch?"],
         "type": "CHOICE",
         "options": [
           {
@@ -136,7 +136,7 @@
       },
       {
         "id": "answer_riddle",
-        "result": "Choose your answer.",
+        "result": ["Choose your answer."],
         "type": "CHOICE",
         "options":[
           {
@@ -160,8 +160,7 @@
         "id": "riddle_frog",
         "type": "DIALOGUE",
         "result": [
-          "Yes! Yes! A frog!",
-          "You've got some brains.",
+          "Yes! Yes! A frog! You've got some brains.",
           "Take this, the Everblooming Lotus.",
           "Next time we cross paths, you'll see why it's more than just a flower."
         ],
@@ -170,12 +169,11 @@
       },
       {
         "id": "riddle_bird",
+        "type": "DIALOGUE",
         "result": [
-          "WHAT?! BIRD??",
-          "A bird in my swamp??",
+          "WHAT?! BIRD?? A bird in my swamp??",
           "You foolish mouse."
         ],
-        "type": "DIALOGUE",
         "next": "witch_curse"
       },
       {
@@ -191,12 +189,12 @@
       {
         "id": "lotus_reward",
         "type": "STORY_ITEM",
-        "consumableId": "everblooming_lotus"
+        "storyItemId": "everblooming_lotus"
       },
       {
         "id": "witch_curse",
         "type": "STATUS",
-        "statusId": "poisoned",
+        "statusId": ["poisoned", 3],
         "result":[
           "\"Blulaflu!\" the witch shouts",
           "A green mist clings to your skin and seeps into your lungs.",

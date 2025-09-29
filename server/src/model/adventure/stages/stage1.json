@@ -96,12 +96,11 @@
       {
         "id": "initial",
         "result": [
-          "You step into the wetland.",
-          "A sweet–rot smell clings to the purple fog.",
-          "A low croak rolls through the trees… then fades.",
+          "You step into the wetland. A sweet-rot smell clings to the purple fog.",
+          "A low croak rolls through the trees... then fades.",
           "Something oozes into view",
           "A purple jelly with a tiny, flickering light trapped at its core.",
-          "It quivers, tasting the air and springs toward you."
+          "It quivers and springs toward you!"
         ],
         "type": "DIALOGUE",
         "next": "slime_dialogue_1"
@@ -125,8 +124,7 @@
           "The purple slime collapses into a slimy puddle.",
           "The trapped light wriggles free then settles on your hand.",
           "The fog thins a little in its glow.",
-          "Far off, a deep croak rolls through the fog.",
-          "The swamp is watching. . ."
+          "Far off, a deep croak rolls through the fog. The swamp is watching. . ."
         ],
         "type": "DIALOGUE",
         "next": "fire_fly_reward"

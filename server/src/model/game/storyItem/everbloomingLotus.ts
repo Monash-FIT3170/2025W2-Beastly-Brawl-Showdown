@@ -8,9 +8,9 @@ export class EverbloomingLotus extends StoryItem {
   constructor() {
     super(
       "Everblooming Lotus",
-      "A lotus that never wilts. It's magic sometimes blesses those who consume it with vitality, other times leaving only silence..",
-      ConsumableType.SELF_INFLICT,
-      "witch_lotus_bridge"
+      "A lotus that never wilts given by the witch. Maybe it will bring some blessing in the future.",
+      "A mysterious lotus flower",
+      "EVERBLOOMING_LOTUS"
     );
   }
 
