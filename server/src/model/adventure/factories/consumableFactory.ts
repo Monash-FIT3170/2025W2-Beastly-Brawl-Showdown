@@ -10,6 +10,7 @@ import { Coal } from "../../game/consumables/coal";
 import { CharredRoot } from "../../game/consumables/charredRoot";
 import { EverbloomingLotus } from "../../game/storyItem/everbloomingLotus";
 import { MagicStew } from "../../game/consumables/magicStew";
+import { CinderFlame } from "../../game/consumables/cinderFlame";
 
 const ConsumableFactory: Record<string, () => Consumable> = {
   mini_health_potion: () =>
@@ -25,6 +26,7 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   scorch_powder: () => new ScorchPowder(),
   charred_root: () => new CharredRoot(),
   magic_stew: () => new MagicStew(),
+  cinder_flame: () => new CinderFlame(),
 };
 
 export function createConsumable(id: string): Consumable {

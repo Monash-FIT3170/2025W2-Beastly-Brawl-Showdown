@@ -59,9 +59,9 @@ export class ShadowLeapAbilityAction extends Action {
     );
 
     return {
-      appliedStatus:{
-        success: false
-      }
-    }
+      appliedStatus: {
+        success: false,
+      },
+    };
   }
 }

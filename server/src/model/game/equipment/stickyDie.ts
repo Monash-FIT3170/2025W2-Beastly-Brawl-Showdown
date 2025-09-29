@@ -10,11 +10,10 @@ export class StickyDie extends Equipment {
   }
 
   public equip(player: Player): void {
-    //TODO: implement
-    console.error("Equip Not Implemented - Sticky Die");
+    player.getMonster()?.getAttackAction().incrementMinRoll(this.strength);
   }
   public unequip(player: Player): void {
-    console.error("Un-Equip Not Implemented - Sticky Die");
+    player.getMonster()?.getAttackAction().incrementMinRoll(-this.strength);
   }
 
   public getStatDescription(): string {
@@ -22,8 +21,7 @@ export class StickyDie extends Equipment {
   }
 
   public calculateStrength(stage: number): void {
-    //TODO: update formula - currently strength = stage
-    this.strength = stage + 2;
+    this.strength = Math.min(stage + 2, 10);
   }
 
   protected getImageString(): string {

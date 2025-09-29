@@ -10,14 +10,11 @@ export class BlazingGauntlets extends Equipment {
   }
 
   public equip(player: Player): void {
-    //TODO: implement
-    const attack = player.getMonster()?.getAttackAction();
-    attack?.incrementDamageDealt(this.strength);
+    player.getMonster()?.getAttackAction().incrementDamageDealt(this.strength);
   }
 
   public unequip(player: Player): void {
-    const attack = player.getMonster()?.getAttackAction();
-    attack?.incrementDamageDealt(-this.strength);
+    player.getMonster()?.getAttackAction().incrementDamageDealt(-this.strength);
   }
 
   public getStatDescription(): string {
@@ -25,7 +22,6 @@ export class BlazingGauntlets extends Equipment {
   }
 
   public calculateStrength(stage: number): void {
-    //TODO: update formula - currently strength = stage
     this.strength = stage;
   }
 

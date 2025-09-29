@@ -54,6 +54,7 @@ export class AttackAction extends Action {
   public incrementCritRate(number: number): void {
     this.critRate += number;
   }
+
   public getDiceRoll(): number {
     return this.d20;
   }

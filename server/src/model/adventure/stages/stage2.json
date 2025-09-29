@@ -106,7 +106,6 @@
         ],
         "type": "DIALOGUE",
         "next": "witch_choice"
-
       },
       {
         "id": "witch_choice",
@@ -123,10 +122,10 @@
             "text": "Take the stew",
             "next": "stew_result"
           }
-        ]  
+        ]
       },
       {
-        "id":"witch_riddle",
+        "id": "witch_riddle",
         "result": [
           "I sit in the swamp, I sing in the rain. I leap without wings, I croak without pain.",
           "What am I?"
@@ -138,7 +137,7 @@
         "id": "answer_riddle",
         "result": ["Choose your answer."],
         "type": "CHOICE",
-        "options":[
+        "options": [
           {
             "id": "answer_frog",
             "text": "A frog!",
@@ -165,7 +164,6 @@
           "Next time we cross paths, you'll see why it's more than just a flower."
         ],
         "next": "lotus_reward"
-
       },
       {
         "id": "riddle_bird",
@@ -194,8 +192,8 @@
       {
         "id": "witch_curse",
         "type": "STATUS",
-        "statusId": ["poisoned", 3],
-        "result":[
+        "statusId": [["poisoned", 5], 3],
+        "result": [
           "\"Blulaflu!\" the witch shouts",
           "A green mist clings to your skin and seeps into your lungs.",
           "You've been poisoned."
@@ -205,14 +203,14 @@
         "id": "witch_reward",
         "type": "STAT_CHANGE",
         "statChange": ["health", 5],
-        "result":[
+        "result": [
           "A golden mist surrounds you as the witch says \"Akula Palusha!\"",
           "You feel warmth bloom in your chest. You HP increased by 5."
         ]
       },
       {
         "id": "stew_result",
-        "result":[
+        "result": [
           "Heeheehee! A wise choice, or a foolish one?",
           "Be careful now. One sip may heal, another may harm... but isn't that the fun?"
         ],
@@ -220,8 +218,7 @@
         "consumableId": "magic_stew"
       }
     ]
-
-},
+  },
   {
     "id": "desert_merchant",
     "level": [5],
@@ -333,7 +330,7 @@
       {
         "id": "trigger_trap",
         "type": "STATUS",
-        "statusId": "poisoned",
+        "statusId": ["poisoned", 5],
         "result": [
           "A spring-loaded poison dart strikes you in the arm! You feel unwell...",
           "You feel unwell..."
