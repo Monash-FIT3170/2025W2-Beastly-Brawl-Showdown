@@ -19,13 +19,11 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   super_health_potion: () =>
     new PercentageHealthPotion("Super Health Potion", 1.0),
   slime_substance: () => new SlimeSubstance(),
-  slime_baby: () => new SlimeBaby(),
   sparkling_friend: () => new SparklingFriend(),
   ability_antidote: () => new AbilityAntidote(),
   coal: () => new Coal(),
   scorch_powder: () => new ScorchPowder(),
   charred_root: () => new CharredRoot(),
-  everblooming_lotus: () => new EverbloomingLotus(),
   magic_stew: () => new MagicStew(),
 };
 
