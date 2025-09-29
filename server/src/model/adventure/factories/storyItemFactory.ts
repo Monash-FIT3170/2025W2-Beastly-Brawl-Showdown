@@ -1,3 +1,4 @@
+import { GrandBadge } from "../../game/storyItem/grandBadge";
 import { MaladyBadge } from "../../game/storyItem/maladyBadge";
 import { SlimeBaby } from "../../game/storyItem/slimeBaby";
 import { StaminaBadge } from "../../game/storyItem/staminaBadge";
@@ -9,6 +10,7 @@ const StoryItemFactory: Record<string, () => StoryItem> = {
   titanic_badge: () => new TitanicBadge(),
   malady_badge: () => new MaladyBadge(),
   stamina_badge: () => new StaminaBadge(),
+  grand_badge: () => new GrandBadge(),
 };
 
 export function createStoryItem(id: string): StoryItem {

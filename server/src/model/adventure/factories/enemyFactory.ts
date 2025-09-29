@@ -1,5 +1,6 @@
 import { CharmerCobra } from "../../game/monster/charmerCobra";
 import { CinderTail } from "../../game/monster/cinderTail";
+import { FuriousFlipper } from "../../game/monster/furiousFlipper";
 import { PoisonPogo } from "../../game/monster/poisonPogo";
 import { PouncingBandit } from "../../game/monster/pouncingBandit";
 import { RockyRhino } from "../../game/monster/rockyRhino";
@@ -18,7 +19,9 @@ const enemyFactory: Record<string, () => any> = {
   colosseum_titan: () => new CinderTail("Titan Champion"),
   malady_pogo: () => new PoisonPogo("Colosseum Pogo"),
   curse_rhino: () => new RockyRhino("Colosseum Rhino"),
-  burn_dragon: () => new CinderTail("Malady Champion"),
+  burn_dragon: () => new CinderTail("Colosseum Dragon"),
+  colosseum_wolf: () => new PouncingBandit("Colosseum Bandit"),
+  colosseum_penguin: () => new FuriousFlipper("Colosseum Penguin"),
   colosseum_slime: () => new Slime("Colosseum Slime"),
 };
 
