@@ -1,8 +1,6 @@
 import { PercentageHealthPotion } from "../../game/consumables/healthPotion";
 import { Consumable } from "../../game/consumables/consumable";
-import { SlimeBoost } from "../../game/status/slimeBoost";
 import { SlimeSubstance } from "../../game/consumables/slimeSubstance";
-import { SlimeFriend } from "../../game/consumables/storyItem/slimeFriend";
 import { Equipment } from "../../game/equipment/equipment";
 import { OozingBlade } from "../../game/equipment/oozingBlade";
 import { Coal } from "../../game/consumables/coal";
@@ -12,6 +10,7 @@ import { CharredRoot } from "../../game/consumables/charredRoot";
 import { MoltenHeart } from "../../game/storyItem/moltenHeart";
 import { StoryItem } from "../../game/storyItem/storyItem";
 import { DragonScale } from "../../game/storyItem/dragonScale";
+import { CinderFlame } from "../../game/consumables/cinderFlame";
 
 interface LootEntry {
   loot: (() => Consumable) | (() => Equipment) | (() => StoryItem);
@@ -66,18 +65,18 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
       id: "coal",
     },
     {
-      loot: () => new BasaltShield(),
-      chance: 30,
-      id: "basalt_shield",
+      loot: () => new CinderFlame(),
+      chance: 20,
+      id: "cinder_flame",
     },
     {
-      loot: () => new ScorchPowder(),
-      chance: 30,
-      id: "scorch_powder",
+      loot: () => new PercentageHealthPotion("Super Health Potion", 1.0),
+      chance: 20,
+      id: "super_health_potion",
     },
     {
       loot: () => new CharredRoot(),
-      chance: 30,
+      chance: 50,
       id: "charred_root",
     },
     {
