@@ -9,7 +9,7 @@ export const monsterMeta: Record<MonsterIdentifier, MonsterMeta> = {
   [MonsterIdentifier.POUNCING_BANDIT]: {
     name: "Pouncing Bandit",
     description:
-      "Enter the grasslands where happy slime families live. Beware you may encounter a purple beast.",
+      "Enter the Grasslands where happy slime families live. Beware you may encounter a purple beast.",
   },
   [MonsterIdentifier.CINDER_TAIL]: {
     name: "Cinder Tail",
@@ -19,16 +19,16 @@ export const monsterMeta: Record<MonsterIdentifier, MonsterMeta> = {
   [MonsterIdentifier.FURIOUS_FLIPPER]: {
     name: "Furious Flipper",
     description:
-      "Dive into the coral shallows where currents run fast. A mischievous dolphin lurks here.",
+      "Dive into the Arctic where currents run fast. A very angry penguin guards the icy waters.",
   },
   [MonsterIdentifier.POISON_POGO]: {
     name: "Poison Pogo",
     description:
-      "Wade through the swamp where toxic lilies bloom. Beware of a frog that leaps with venom.",
+      "Wade through the Marsh where toxic mushrooms grow. Beware of the frog with a poisonous tongue.",
   },
   [MonsterIdentifier.CHARMER_COBRA]: {
     name: "Charmer Cobra",
     description:
-      "Explore the desert dunes where melodies carry far. A serpent waits to hypnotise intruders.",
+      "Explore the Desert Dunes where melodies carry far. A serpent waits to hypnotise intruders.",
   },
 };
