@@ -48,6 +48,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
       if (!playersInBattle) {
         console.error(`ADV: battle players empty ${playersInBattle}`);
       } else {
+        //ADDING ACTION TO BOT
         let player1 = playersInBattle[0];
         let player2 = playersInBattle[1];
         let bot = player2.isBotPlayer() ? player2 : player1;
@@ -128,9 +129,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             battle: battle?.getBattleState(playerId),
           });
 
-          console.log("Player hp", player1.getHealth());
-          console.log("Player ac", player1.getArmourClassStat());
-          console.log("Player atk", player1.getAttackStat());
+          // console.log("Player hp", player1.getHealth());
+          // console.log("Player ac", player1.getArmourClassStat());
+          // console.log("Player atk", player1.getAttackStat());
           //check if battle is over
           if (battle?.isBattleOver()) {
             console.log(`ADV: battle is over!`);

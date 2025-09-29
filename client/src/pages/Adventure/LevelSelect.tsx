@@ -12,7 +12,8 @@ interface LevelSelectProps {}
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(1);
-  const UNLOCKED_LEVELS = [1];
+  // const UNLOCKED_LEVELS = [0];
+  const [unlockedLevels, setUnlockedLevels] = useState<number[]>([1]);
 
   //a levelMap exists in back end too - so update both appropriately
   const levelMap: Record<number, MonsterIdentifier> = {
@@ -34,8 +35,20 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
 
   const monster = levelMap[observedLevel] ?? "None";
 
+  useEffect(() => {
+    socket.emit("request_unlocked_levels");
+
+    socket.on("unlocked_levels", (levels: number[]) => {
+      setUnlockedLevels(levels);
+    });
+
+    return () => {
+      socket.off("request_unlocked_levels");
+    };
+  }, []);
+
   // TODO: PUT SILHOUETTES AND
-  const monsterImage = UNLOCKED_LEVELS.includes(observedLevel)
+  const monsterImage = unlockedLevels.includes(observedLevel)
     ? "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
       monster +
       ".png"
@@ -81,15 +94,15 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             className="sm:w-[20rem] sm:h-[20rem] lg:w-[15rem] lg:h-[15rem]"
           />
           <ButtonGeneric
-            color={UNLOCKED_LEVELS.includes(observedLevel) ? `ronchi` : `alto`}
+            color={unlockedLevels.includes(observedLevel) ? `ronchi` : `alto`}
             size="battle"
             onClick={
-              UNLOCKED_LEVELS.includes(observedLevel)
+              unlockedLevels.includes(observedLevel)
                 ? renderAdventureMonsterSelect
                 : undefined
             }
           >
-            {UNLOCKED_LEVELS.includes(observedLevel) ? `PROCEED` : `LOCKED`}
+            {unlockedLevels.includes(observedLevel) ? `PROCEED` : `LOCKED`}
           </ButtonGeneric>
         </div>
         <div className="grid grid-cols-3 justify-items-center">

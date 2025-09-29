@@ -1,14 +1,12 @@
 import { Server, Socket } from "socket.io";
-import { activeAdventures, players, battles } from "../../main";
+import { activeAdventures, players, battles, playerAccounts } from "../../main";
 import { Adventure } from "../model/game/adventure";
 import { Player } from "../model/game/player";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { Battle } from "../model/game/battle";
-import { ActionIdentifier, ActionState } from "/types/single/actionState";
 import { loadStage } from "../model/adventure/stageLoader";
 import { resolveOutcome } from "../model/adventure/storyResolver";
 import { storyOutcomes, storyStruct } from "/types/composite/storyTypes";
-import { NullAction } from "../model/game/action/null";
 import { getMonster } from "../model/game/monster/monsterMap";
 import { Action } from "../model/game/action/action";
 import { AttackAction } from "../model/game/action/attack";
@@ -23,6 +21,7 @@ import { SlimeSubstance } from "../model/game/consumables/slimeSubstance";
 import { StoryItem } from "../model/game/storyItem/storyItem";
 import { SlimeBoost } from "../model/game/status/slimeBoost";
 import { Equipment } from "../model/game/equipment/equipment";
+import { updatePlayerAccount } from "../database/dbManager";
 import { createStoryItem } from "../model/adventure/factories/storyItemFactory";
 import { FightersBandana } from "../model/game/equipment/fightersBandana";
 import { BlackBelt } from "../model/game/equipment/blackBelt";
@@ -31,6 +30,13 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
 
   //LEVEL SELECT SOCKET
+  socket.on("request_unlocked_levels", () => {
+    console.log("ADV: Requesting unlocked levels from server");
+    const user = playerAccounts.get(socket.id);
+    const unlockedLevels = user?.adventureProgression.unlockedLevels;
+    socket.emit("unlocked_levels", unlockedLevels);
+  });
+
   socket.on("adventure_level_selected", async ({ level }) => {
     const player = new Player(socket.id, "Guest", null); // TODO: Use real player name
     players.set(socket.id, player);
@@ -67,6 +73,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
+      // player.addStatus(new SlimeBoost(3));
       //progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );
@@ -463,6 +470,29 @@ export function loadNextStory(
         monsterId: enemy,
       });
       io.to(socket.id).emit("adventure_win", { monsterId: enemy });
+      //unlock monster
+      const user = playerAccounts.get(socket.id);
+      console.log(
+        `${user?.username} has unlocked ${adventure.getLevelMonster()}`
+      );
+      var adventureProgression = user?.adventureProgression;
+      if (adventureProgression) {
+        adventureProgression.unlockedMonsters[adventure.getLevelMonster()] =
+          true;
+        adventureProgression.unlockedLevels.push(adventure.getLevel() + 1);
+        updatePlayerAccount(user?._id, {
+          adventureProgression: adventureProgression,
+        });
+        console.log(
+          `${
+            user?.username
+          } has unlocked ${adventure.getLevelMonster()} and level ${
+            adventure.getLevel() + 1
+          }`
+        );
+      } else {
+        console.error(`Failed to update ${user?._id}'s unlocked monsters.`);
+      }
     }
     const loadNodes = loadStage(stage % 8);
     const eligibleNodes = loadNodes.filter((node) => {
