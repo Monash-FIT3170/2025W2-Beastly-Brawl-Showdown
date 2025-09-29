@@ -26,7 +26,7 @@ export class FlameLashAbilityAction extends Action {
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
     // Deal 10 damage if the opponent is dodging, 5 damage otherwise
-    if (affectedPlayer.getArmourClassStat() >= 30) {
+    if (affectedPlayer.getArmourClassStat() >= 50) {
       //TODO FIGURE OUT A BALANCED AC
       this.damage = 10;
     }
