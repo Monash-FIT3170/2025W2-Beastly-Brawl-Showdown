@@ -1,5 +1,8 @@
 import { CharmerCobra } from "../../game/monster/charmerCobra";
+import { CinderTail } from "../../game/monster/cinderTail";
+import { PoisonPogo } from "../../game/monster/poisonPogo";
 import { PouncingBandit } from "../../game/monster/pouncingBandit";
+import { RockyRhino } from "../../game/monster/rockyRhino";
 import { Slime } from "/server/src/model/game/monster/slime";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
@@ -12,6 +15,10 @@ const enemyFactory: Record<string, () => any> = {
   pouncing_bandit: () => new PouncingBandit("Bandito"),
   martial_artist: () => new CharmerCobra("Martial Artist"),
   wolf: () => new PouncingBandit("Wolf"),
+  colosseum_titan: () => new CinderTail("Titan Champion"),
+  malady_pogo: () => new PoisonPogo("Colosseum Pogo"),
+  curse_rhino: () => new RockyRhino("Colosseum Rhino"),
+  burn_dragon: () => new CinderTail("Malady Champion"),
 };
 
 export function createEnemy(id: string) {

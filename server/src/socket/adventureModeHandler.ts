@@ -283,7 +283,12 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           null,
           true
         ); // Eventually use bot class
-        resolved.enemy?.pveScaling(adventure.getStage());
+        if (resolved.scaling) {
+          resolved.enemy?.pveScaling(adventure.getStage() * resolved.scaling);
+        } else {
+          resolved.enemy?.pveScaling(adventure.getStage());
+        }
+
         bot.setMonster(resolved.enemy!);
         players.set(resolved.enemy!.getId(), bot);
 

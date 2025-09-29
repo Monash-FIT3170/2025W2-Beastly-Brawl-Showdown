@@ -28,6 +28,7 @@ export interface storyOutcomes {
   lootId?: any;
   storyItemId?: string;
   storyItem?: any;
+  scaling?: number;
   next?: string;
 }
 
