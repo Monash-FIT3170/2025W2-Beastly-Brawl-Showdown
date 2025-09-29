@@ -5,6 +5,8 @@ import { SlimeSubstance } from "../../game/consumables/slimeSubstance";
 import { SlimeFriend } from "../../game/consumables/storyItem/slimeFriend";
 import { Equipment } from "../../game/equipment/equipment";
 import { OozingBlade } from "../../game/equipment/oozingBlade";
+import { BlackBelt } from "../../game/equipment/blackBelt";
+import { FightersBandana } from "../../game/equipment/fightersBandana";
 
 interface LootEntry {
   loot: (() => Consumable) | (() => Equipment);
@@ -40,6 +42,18 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
       loot: () => new PercentageHealthPotion("Super Health Potion", 1),
       chance: 10,
       id: "super_health_potion",
+    },
+  ],
+  martial_artist_pool: [
+    {
+      loot: () => new BlackBelt(),
+      chance: 50,
+      id: "blackBelt",
+    },
+    {
+      loot: () => new FightersBandana(),
+      chance: 50,
+      id: "fightersBandana",
     },
   ],
 };

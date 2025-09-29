@@ -24,6 +24,8 @@ import { StoryItem } from "../model/game/storyItem/storyItem";
 import { SlimeBoost } from "../model/game/status/slimeBoost";
 import { Equipment } from "../model/game/equipment/equipment";
 import { createStoryItem } from "../model/adventure/factories/storyItemFactory";
+import { FightersBandana } from "../model/game/equipment/fightersBandana";
+import { BlackBelt } from "../model/game/equipment/blackBelt";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start

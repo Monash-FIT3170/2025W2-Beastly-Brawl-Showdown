@@ -1,3 +1,4 @@
+import { CharmerCobra } from "../../game/monster/charmerCobra";
 import { PouncingBandit } from "../../game/monster/pouncingBandit";
 import { Slime } from "/server/src/model/game/monster/slime";
 import { MonsterIdentifier } from "/types/single/monsterState";
@@ -9,6 +10,7 @@ const enemyFactory: Record<string, () => any> = {
   slime_3: () => new Slime("BABY SLIME"),
   slime_4: () => new Slime("GRANDMA SLIME"),
   pouncing_bandit: () => new PouncingBandit("Bandito"),
+  martial_artist: () => new CharmerCobra("Martial Artist"),
   wolf: () => new PouncingBandit("Wolf"),
 };
 

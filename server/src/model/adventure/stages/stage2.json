@@ -47,14 +47,107 @@
     ]
   },
   {
-    "id": "slime_1",
+    "id": "stage2_waterfall",
     "level": [0],
-    "description": "Stage 2, player fights slime 2.",
+    "description": "Stage 2, player finds a waterfall",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["This is stage 2"],
-        "type": "DIALOGUE"
+        "result": [
+          "You hear a thundering roar in the distance.",
+          "As you get closer, a waterfall comes into view.",
+          "You see someone deep in medidation as you appraoch.",
+          "They seem to twitch as you get closer"
+        ],
+        "type": "DIALOGUE",
+        "next": "waterfall_meditator"
+      },
+      {
+        "id": "waterfall_meditator",
+        "result": [
+          ".....",
+          "If you seek what lies beyond the waterfall you must prove your worth with a show of strength."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": "martial_artist",
+        "next": "martial_artist_choice"
+      },
+      {
+        "id": "martial_artist_choice",
+        "type": "CHOICE",
+        "result": ["...."],
+        "options": [
+          {
+            "id": "battle",
+            "text": "Prove Your Worth In Battle",
+            "next": "battle"
+          },
+          {
+            "id": "leave",
+            "text": "Leave",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "battle",
+        "type": "DIALOGUE",
+        "result": ["You both bow your heads"],
+        "next": "martial_artist_battle"
+      },
+      {
+        "id": "martial_artist_battle",
+        "type": "FIGHT",
+        "enemyId": "martial_artist",
+        "next": "martial_artist_win"
+      },
+      {
+        "id": "martial_artist_win",
+        "result": [
+          "You've more than proven yourself.",
+          "Go behind the waterfall and make your choice."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": "martial_artist",
+        "next": "behind_water"
+      },
+      {
+        "id": "behind_water",
+        "result": ["You see 2 pedastals before you."],
+        "type": "DIALOGUE",
+        "next": "martial_artist_choice_reward"
+      },
+      {
+        "id": "martial_artist_choice_reward",
+        "type": "CHOICE",
+        "result": ["What Do You Take"],
+        "options": [
+          {
+            "id": "bandana",
+            "text": "Fighters Bandana",
+            "next": "bandana_reward"
+          },
+          {
+            "id": "belt",
+            "text": "Black Belt",
+            "next": "black_belt"
+          }
+        ]
+      },
+      {
+        "id": "black_belt",
+        "type": "EQUIPMENT",
+        "equipmentId": "blackBelt"
+      },
+      {
+        "id": "bandana_reward",
+        "type": "EQUIPMENT",
+        "equipmentId": "fightersBandana"
+      },
+      {
+        "id": "leave",
+        "type": "DIALOGUE",
+        "result": ["You turn down the challenge and continue onwards."]
       }
     ]
   }

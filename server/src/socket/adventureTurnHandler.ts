@@ -43,7 +43,6 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
 
       //ADDING ACTION TO BOT
       //TODO: set bots action
-
       //PREPARE/EXECUTE ACTIONS
       let playersInBattle = battle?.getPlayers();
       if (!playersInBattle) {
@@ -141,6 +140,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             console.log(winners);
             const playerName = player?.getName();
             if (playerName) {
+              player?.getStatuses().forEach((status) => {
+                status.endOfBattle(player);
+              });
               //if the winner is the player
               if (winners?.includes(playerName)) {
                 console.log(`ADV: player won!`);
