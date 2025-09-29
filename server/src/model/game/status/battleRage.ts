@@ -34,6 +34,7 @@ export class BattleRage extends BattleEffect {
     //by default, non damaging actions will have damage = 0
 
     if (action.getId() === ActionIdentifier.ATTACK) {
+      console.log("THIS IS ACTION ID", action.getId());
       actingPlayer.getMonster()?.getAttackAction().incrementDamageDealt(1);
       this.increment += 1;
       console.log(
@@ -49,7 +50,7 @@ export class BattleRage extends BattleEffect {
       actingPlayer
         .getMonster()
         ?.getAttackAction()
-        .incrementDamageDealt(this.increment);
+        .incrementDamageDealt(-this.increment);
       this.increment = 0;
       console.log(
         `BATTLE RAGE: ${actingPlayer.getName()} has reset their damage dealt`

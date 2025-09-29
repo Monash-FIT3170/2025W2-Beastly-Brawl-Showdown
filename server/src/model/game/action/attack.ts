@@ -94,9 +94,6 @@ export class AttackAction extends Action {
       const isCrit =
         this.d20 >
         this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
-      if (isCrit) {
-        this.damage *= 2; // Double the damage on a crit
-      }
       affectedPlayer.incHealth(isCrit ? -critDamage : -this.damage);
 
       // Log successful attack
