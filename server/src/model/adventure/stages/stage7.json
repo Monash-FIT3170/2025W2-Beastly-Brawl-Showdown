@@ -155,6 +155,77 @@
     ]
   },
   {
+    "id": "forge",
+    "level": [2],
+    "description": "Stage 7, player finds the forge.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["there's a forge"],
+        "type": "DIALOGUE",
+        "next": "check_heart"
+      },
+      {
+        "id": "check_heart",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "has_heart",
+            "prerequisite": ["Molten Heart"],
+            "next": "heart_choice"
+          },
+          {
+            "id": "no_item",
+            "next": "loot"
+          }
+        ]
+      },
+      {
+        "id": "heart_choice",
+        "result": ["that thing from earlier"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "present_child",
+            "text": "use the blah",
+            "next": "forge_heart",
+            "cost": ["Molten Heart"]
+          },
+          {
+            "id": "battle",
+            "text": "leave it",
+            "next": "loot"
+          }
+        ]
+      },
+      {
+        "id": "loot",
+        "type": "DIALOGUE",
+        "result": ["YOU GET LOOTIN"]
+      },
+      {
+        "id": "forge_heart",
+        "type": "DIALOGUE",
+        "result": [
+          "The forge awakens as you place the Molten Heart upon it.",
+          "The flames roar back to life! The Molten Heart melts from the extreme heat."
+        ],
+        "next": "forge_heart_2"
+      },
+      {
+        "id": "forge_heart_2",
+        "type": "DIALOGUE",
+        "result": ["you take damage because the fire burns you."],
+        "next": "forge_heart_3"
+      },
+      {
+        "id": "forge_heart_3",
+        "type": "DIALOGUE",
+        "result": ["you receive the new item."]
+      }
+    ]
+  },
+  {
     "id": "level5_update",
     "level": [5],
     "description": "level5_update",

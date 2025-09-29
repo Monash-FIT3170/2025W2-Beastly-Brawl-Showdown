@@ -9,9 +9,12 @@ import { Coal } from "../../game/consumables/coal";
 import { BasaltShield } from "../../game/equipment/basaltShield";
 import { ScorchPowder } from "../../game/consumables/scorchPowder";
 import { CharredRoot } from "../../game/consumables/charredRoot";
+import { MoltenHeart } from "../../game/storyItem/moltenHeart";
+import { StoryItem } from "../../game/storyItem/storyItem";
+import { DragonScale } from "../../game/storyItem/dragonScale";
 
 interface LootEntry {
-  loot: (() => Consumable) | (() => Equipment);
+  loot: (() => Consumable) | (() => Equipment) | (() => StoryItem);
   chance: number;
   id: string;
 }
@@ -37,7 +40,7 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
     },
     {
       loot: () => new BasaltShield(),
-      chance: 50,
+      chance: 30,
       id: "basalt_shield",
     },
     {
@@ -47,8 +50,40 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
     },
     {
       loot: () => new CharredRoot(),
-      chance: 15,
+      chance: 30,
       id: "charred_root",
+    },
+    {
+      loot: () => new MoltenHeart(),
+      chance: 5,
+      id: "molten_heart",
+    },
+  ],
+  cinder_pool: [
+    {
+      loot: () => new Coal(),
+      chance: 5,
+      id: "coal",
+    },
+    {
+      loot: () => new BasaltShield(),
+      chance: 30,
+      id: "basalt_shield",
+    },
+    {
+      loot: () => new ScorchPowder(),
+      chance: 30,
+      id: "scorch_powder",
+    },
+    {
+      loot: () => new CharredRoot(),
+      chance: 30,
+      id: "charred_root",
+    },
+    {
+      loot: () => new DragonScale(),
+      chance: 5,
+      id: "dragon_scale",
     },
   ],
 };
@@ -60,7 +95,7 @@ export function createLoot(id: string): LootEntry | null {
   for (const option of creator) {
     chanceTotal += option.chance!;
     if (roll < chanceTotal) {
-      console.log("THIS IS THE CHOSEN OPTION", option);
+      console.log(`ADV: Loot Pool (${id}) Selected Item: ${option.id}`);
       return option;
     }
   }

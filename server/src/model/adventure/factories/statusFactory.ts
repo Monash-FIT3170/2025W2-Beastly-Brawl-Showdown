@@ -29,6 +29,7 @@ const statusFactory: Record<string, (d: number) => Status> = {
   lake_curse: (d) => new LakeCurse(d),
   lake_blessing: (d) => new LakeBlessing(d),
   slime_boost: (d) => new SlimeBoost(d),
+  burn: (d) => new Burn(d),
 };
 
 export function createStatus(id: string, duration: number): Status {

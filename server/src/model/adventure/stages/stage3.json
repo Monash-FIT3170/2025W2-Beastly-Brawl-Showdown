@@ -276,7 +276,7 @@
       {
         "id": "search_burn",
         "type": "STATUS",
-        "statusId": "burn"
+        "statusId": ["burn", 3]
       },
       {
         "id": "rest_random",
