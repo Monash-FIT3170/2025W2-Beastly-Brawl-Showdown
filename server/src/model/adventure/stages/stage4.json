@@ -224,13 +224,13 @@
         "id": "pre_fight_3_opponent",
         "type": "DIALOGUE",
         "result": ["This is it.", "Get Ready!"],
-        "enemyId": "malady_champion",
+        "enemyId": "burn_dragon",
         "next": "opponent_3_battle"
       },
       {
         "id": "opponent_3_battle",
         "type": "FIGHT",
-        "enemyId": "malady_champion",
+        "enemyId": "burn_dragon",
         "next": "opponent_3_win"
       },
       {
