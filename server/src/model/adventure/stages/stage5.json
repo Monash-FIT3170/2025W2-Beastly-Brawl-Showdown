@@ -282,14 +282,133 @@
     ]
   },
   {
-    "id": "slime_1",
+    "id": "stage5_titan",
     "level": [0],
-    "description": "Stage 1, player fights slime 1.",
+    "description": "Stage 5, player finds the colosseum of stamina",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["This is stage 5"],
-        "type": "DIALOGUE"
+        "result": [
+          "You come upon a colosseum.",
+          "You hear cheers and applause.",
+          "A gatekeeper approaches you.",
+          "This is the Colosseum of Stamina",
+          "You could fight no opponents or fight 100.",
+          "There are incredible prizes to be won.",
+          "A victory here is required to enter the Grand Colosseum.",
+          "Are you here as a challenger?"
+        ],
+        "type": "DIALOGUE",
+        "next": "stamina_colosseum_entry"
+      },
+      {
+        "id": "stamina_colosseum_entry",
+        "type": "CHOICE",
+        "result": ["Are you a challenger?"],
+        "options": [
+          {
+            "id": "challenge",
+            "text": "Challenge",
+            "next": "challenge"
+          },
+          {
+            "id": "leave",
+            "text": "Leave",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "challenge",
+        "result": [
+          "Great!!!",
+          "Come in quickly and get ready!",
+          "The next fight is about to start"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_chance"
+      },
+      {
+        "id": "pre_fight_chance",
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "another_battle",
+            "chance": 80,
+            "next": "slime_battle_pre"
+          },
+          {
+            "id": "freedom",
+            "chance": 20,
+            "next": "no_enemy"
+          }
+        ]
+      },
+      {
+        "id": "slime_battle_pre",
+        "type": "DIALOGUE",
+        "result": [
+          "A slime comes out into the ring, with a ferocity in its eyes."
+        ],
+        "enemyId": "colosseum_titan",
+        "next": "slime_battle"
+      },
+      {
+        "id": "slime_battle",
+        "type": "FIGHT",
+        "enemyId": "colosseum_slime",
+        "next": "slime_win"
+      },
+      {
+        "id": "slime_win",
+        "result": [
+          "THAT'S A VICTORY FOR OUR CHALLENGER!!!!!!",
+          "BUT CAN THEY KEEP IT UP???",
+          "LETS SEE IF ANYONE HAS ANYTHING TO SAY ABOUT IT!!"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_chance"
+      },
+      {
+        "id": "no_enemy",
+        "result": ["Silence fills the ring"],
+        "type": "DIALOGUE",
+        "next": "no_enemy_end"
+      },
+      {
+        "id": "no_enemy_end",
+        "result": [
+          "THERE IS NO ONE WILLING TO FACE OUR CHALLENGER!!!!!!",
+          "WE HAVE A NEW CHAMPION!!",
+          "Please take this badge in honour of your victory here!"
+        ],
+        "type": "DIALOGUE",
+        "next": "stamina_prize"
+      },
+      {
+        "id": "stamina_prize",
+        "type": "STORY_ITEM",
+        "storyItemId": "stamina_badge",
+        "next": "regular_prize_pre"
+      },
+      {
+        "id": "regular_prize_pre",
+        "result": [
+          "Oh, and please take this ring as a reward for your victory here",
+          "OOZING BLADE IS A PLACEHOLDER"
+        ],
+        "type": "DIALOGUE",
+        "next": "regular_prize"
+      },
+      {
+        "id": "regular_prize",
+        "type": "EQUIPMENT",
+        "equipmentId": "oozingBlade"
+      },
+      {
+        "id": "leave",
+        "type": "DIALOGUE",
+        "result": ["You turn down the challenge and continue onwards."]
       }
     ]
   }

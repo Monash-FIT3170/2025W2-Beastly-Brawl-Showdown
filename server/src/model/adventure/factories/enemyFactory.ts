@@ -19,6 +19,7 @@ const enemyFactory: Record<string, () => any> = {
   malady_pogo: () => new PoisonPogo("Colosseum Pogo"),
   curse_rhino: () => new RockyRhino("Colosseum Rhino"),
   burn_dragon: () => new CinderTail("Malady Champion"),
+  colosseum_slime: () => new Slime("Colosseum Slime"),
 };
 
 export function createEnemy(id: string) {
