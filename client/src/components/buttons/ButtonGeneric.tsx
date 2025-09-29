@@ -105,6 +105,10 @@ export const ButtonGeneric = ({
 			${baseButton}
 			${isDisabled ? (isPassive ? passiveButton : disabledButton) : enabledButton}
 			${sizeToDisplay[size]}
+      ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
+      transition-transform duration-200 ease-in-out
+      hover:scale-103
+      hover:shadow-md
 		`}
       onClick={onClick}
     >

@@ -7,15 +7,16 @@ import { IconButton } from "../../components/buttons/IconButton";
 import socket from "../../socket";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { getBiomeString } from "./AdventureBattle";
+import { monsterMeta } from "../../data/monsterMeta";
+import { BlackText } from "../../components/texts/BlackText";
 
 interface LevelSelectProps {}
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(1);
-  // const UNLOCKED_LEVELS = [0];
   const [unlockedLevels, setUnlockedLevels] = useState<number[]>([1]);
 
-  //a levelMap exists in back end too - so update both appropriately
+  // Level → Monster mapping
   const levelMap: Record<number, MonsterIdentifier> = {
     1: MonsterIdentifier.POUNCING_BANDIT,
     2: MonsterIdentifier.CINDER_TAIL,
@@ -25,7 +26,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   };
 
   const alterLevel = (val: number) => {
-    setObservedLevel(observedLevel + val);
+    setObservedLevel((prev) => prev + val);
   };
 
   const renderAdventureMonsterSelect = () => {
@@ -33,7 +34,18 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     FlowRouter.go("/adventure/monster-select");
   };
 
-  const monster = levelMap[observedLevel] ?? "None";
+  // Resolve monster and metadata
+  const monster = levelMap[observedLevel] ?? MonsterIdentifier.POUNCING_BANDIT;
+  const { name: actualMonsterName, description: actualMonsterDescription } =
+    monsterMeta[monster];
+
+  // If the level is locked, show placeholders
+  const monsterName = unlockedLevels.includes(observedLevel)
+    ? actualMonsterName
+    : "???";
+  const monsterDescription = unlockedLevels.includes(observedLevel)
+    ? actualMonsterDescription
+    : "You haven't reached this part of your journey yet. Keep adventuring to unlock more levels!";
 
   useEffect(() => {
     socket.emit("request_unlocked_levels");
@@ -47,54 +59,88 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     };
   }, []);
 
-  // TODO: PUT SILHOUETTES AND
+  // Monster image (coloured or silhouette if locked)
   const monsterImage = unlockedLevels.includes(observedLevel)
-    ? "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
-      monster +
-      ".png"
-    : "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/silhouettes/" +
-      monster +
-      "_SILHOUETTE.png";
+    ? `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/${monster}.png`
+    : `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/silhouettes/${monster}_SILHOUETTE.png`;
 
-  const backgroundString =
-    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
-    getBiomeString(monster) +
-    ".jpg')";
+  // Background image
+  const backgroundString = `url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/${getBiomeString(
+    monster
+  )}.jpg')`;
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">
-        <GenericHeader color="lightYellow">
-          <OutlineText size="extraLarge">START YOUR JOURNEY</OutlineText>
-        </GenericHeader>
+    <div
+      className="flex flex-col items-center justify-center h-[100dvh] w-full px-4"
+      style={{
+        backgroundImage: backgroundString,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {/* Back button */}
+      <div className="absolute top-4 left-4">
+        <IconButton
+          style="arrowleft"
+          iconColour="black"
+          buttonColour="red"
+          size="medium"
+          onClick={() => FlowRouter.go("/")}
+        />
+      </div>
+
+      {/* Header */}
+      <GenericHeader color="lightYellow">
+        <OutlineText size="extraLarge">CLASSIC</OutlineText>
+      </GenericHeader>
+
+      {/* Content */}
+      <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 w-full max-w-5xl">
+        {/* Monster Image */}
+        <img
+          src={monsterImage}
+          className="
+            w-[18rem] h-[18rem] 
+            sm:w-[20rem] sm:h-[20rem]
+            lg:w-[14rem] lg:h-[14rem]
+          "
+        />
+
+        {/* Description box */}
         <div
-          className={`border-[4px] 
-            border-blackCurrant w-min h-min rounded-xl
-            bg-peach
-            sm:h-min
-            sm:w-[80dvw]
-            lg:h-min
-            lg:w-[40dvw]
-            border-[3px]
-            border-blackCurrant
-            rounded-[20px]
-            w-[60%]
-            box-border
-            flex flex-col  justify-evenly items-center gap-y-10 py-10`}
-          style={{
-            backgroundImage: backgroundString,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-          }}
+          className="
+            border-4 border-blackCurrant rounded-2xl bg-white/70 p-6 
+            w-[90%]
+            sm:w-[80%] 
+            lg:w-[50%] 
+            max-w-md 
+            text-center lg:text-center
+          "
         >
-          {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
-          <img
-            src={monsterImage}
-            className="sm:w-[20rem] sm:h-[20rem] lg:w-[15rem] lg:h-[15rem]"
-          />
+          <OutlineText size="large">{monsterName}</OutlineText>
+          <BlackText size="medium">{monsterDescription}</BlackText>
+        </div>
+      </div>
+
+      {/* Navigation Arrows */}
+      <div className="grid grid-cols-3 justify-items-center w-full max-w-md mt-6 gap-x-20">
+        <div className="flex justify-center items-center">
+          {observedLevel > 1 && (
+            <IconButton
+              style="arrowleft"
+              buttonColour="blue"
+              iconColour="black"
+              size="medium"
+              onClick={() => alterLevel(-1)}
+            />
+          )}
+        </div>
+
+        {/* Explore Button */}
+        <div>
           <ButtonGeneric
-            color={unlockedLevels.includes(observedLevel) ? `ronchi` : `alto`}
+            color={unlockedLevels.includes(observedLevel) ? "ronchi" : "alto"}
             size="battle"
             onClick={
               unlockedLevels.includes(observedLevel)
@@ -102,46 +148,23 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
                 : undefined
             }
           >
-            {unlockedLevels.includes(observedLevel) ? `PROCEED` : `LOCKED`}
+            {unlockedLevels.includes(observedLevel) ? "EXPLORE" : "LOCKED"}
           </ButtonGeneric>
         </div>
-        <div className="grid grid-cols-3 justify-items-center">
-          <div className="flex justify-center items-center">
-            {observedLevel != 1 && (
-              <IconButton
-                style="arrowleft"
-                buttonColour="blue"
-                iconColour="black"
-                size="medium"
-                onClick={() => alterLevel(-1)}
-              />
-            )}
-          </div>
 
-          <div className="w-min">
-            <ButtonGeneric
-              color="red"
-              size="battle"
-              onClick={() => FlowRouter.go("/")}
-            >
-              BACK
-            </ButtonGeneric>
-          </div>
-
-          <div className="flex justify-center items-center">
-            {observedLevel != 5 && (
-              <IconButton
-                style="arrowright"
-                buttonColour="blue"
-                iconColour="black"
-                size="medium"
-                onClick={() => alterLevel(1)}
-              />
-            )}
-          </div>
+        <div className="flex justify-center items-center">
+          {observedLevel < 5 && (
+            <IconButton
+              style="arrowright"
+              buttonColour="blue"
+              iconColour="black"
+              size="medium"
+              onClick={() => alterLevel(1)}
+            />
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
