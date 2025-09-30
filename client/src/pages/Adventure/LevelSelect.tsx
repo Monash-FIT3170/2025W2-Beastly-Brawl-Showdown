@@ -9,6 +9,7 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { getBiomeString } from "./AdventureBattle";
 import { monsterMeta } from "../../data/monsterMeta";
 import { BlackText } from "../../components/texts/BlackText";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface LevelSelectProps {}
 
@@ -70,98 +71,96 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   )}.jpg')`;
 
   return (
-    <div
-      className="flex flex-col items-center justify-center h-[100dvh] w-full px-4"
-      style={{
-        backgroundImage: backgroundString,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      {/* Back button */}
-      <div className="absolute top-4 left-4">
-        <IconButton
-          style="arrowleft"
-          iconColour="black"
-          buttonColour="red"
-          size="medium"
-          onClick={() => FlowRouter.go("/")}
+    <div className="relative flex flex-col items-center justify-center h-[100dvh] w-full px-4 overflow-hidden">
+      {/* AnimatePresence handles background transitions */}
+      <AnimatePresence>
+        <motion.div
+          key={observedLevel} // ensures re-render on level change
+          className="absolute inset-0 bg-center bg-cover bg-no-repeat"
+          style={{
+            backgroundImage: backgroundString,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
         />
-      </div>
+      </AnimatePresence>
 
-      {/* Header */}
-      <GenericHeader color="lightYellow">
-        <OutlineText size="extraLarge">CLASSIC</OutlineText>
-      </GenericHeader>
-
-      {/* Content */}
-      <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 w-full max-w-5xl">
-        {/* Monster Image */}
-        <img
-          src={monsterImage}
-          className="
-            w-[18rem] h-[18rem] 
-            sm:w-[20rem] sm:h-[20rem]
-            lg:w-[14rem] lg:h-[14rem]
-          "
-        />
-
-        {/* Description box */}
-        <div
-          className="
-            border-4 border-blackCurrant rounded-2xl bg-white/70 p-6 
-            w-[90%]
-            sm:w-[80%] 
-            lg:w-[50%] 
-            max-w-md 
-            text-center lg:text-center
-          "
-        >
-          <OutlineText size="large">{monsterName}</OutlineText>
-          <BlackText size="medium">{monsterDescription}</BlackText>
-        </div>
-      </div>
-
-      {/* Navigation Arrows */}
-      <div className="grid grid-cols-3 justify-items-center w-full max-w-md mt-6 gap-x-20">
-        <div className="flex justify-center items-center">
-          {observedLevel > 1 && (
-            <IconButton
-              style="arrowleft"
-              buttonColour="blue"
-              iconColour="black"
-              size="medium"
-              onClick={() => alterLevel(-1)}
-            />
-          )}
+      {/* Foreground content (your existing code) */}
+      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
+        {/* Back button */}
+        <div className="absolute top-4 left-4">
+          <IconButton
+            style="arrowleft"
+            iconColour="black"
+            buttonColour="red"
+            size="medium"
+            onClick={() => FlowRouter.go("/")}
+          />
         </div>
 
-        {/* Explore Button */}
-        <div>
-          <ButtonGeneric
-            color={unlockedLevels.includes(observedLevel) ? "ronchi" : "alto"}
-            size="battle"
-            onClick={
-              unlockedLevels.includes(observedLevel)
-                ? renderAdventureMonsterSelect
-                : undefined
-            }
-          >
-            {unlockedLevels.includes(observedLevel) ? "EXPLORE" : "LOCKED"}
-          </ButtonGeneric>
+        {/* Header */}
+        <GenericHeader color="lightYellow">
+          <OutlineText size="extraLarge">CLASSIC</OutlineText>
+        </GenericHeader>
+
+        {/* Content */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 w-full max-w-5xl">
+          <img
+            src={monsterImage}
+            className="
+              w-[18rem] h-[18rem] sm:w-[20rem] sm:h-[20rem] lg:w-[14rem] lg:h-[14rem]
+              drop-shadow-[0_0_4px_white] drop-shadow-[0_0_8px_white]
+            "
+            onLoad={(e) => e.currentTarget.classList.remove("opacity-0")}
+          />
+
+          <div className="border-4 border-blackCurrant rounded-2xl bg-white/70 p-6 w-[90%] sm:w-[80%] lg:w-[50%] max-w-md text-center">
+            <OutlineText size="large">{monsterName}</OutlineText>
+            <BlackText size="medium">{monsterDescription}</BlackText>
+          </div>
         </div>
 
-        <div className="flex justify-center items-center">
-          {observedLevel < 5 && (
-            <IconButton
-              style="arrowright"
-              buttonColour="blue"
-              iconColour="black"
-              size="medium"
-              onClick={() => alterLevel(1)}
-            />
-          )}
+        {/* Navigation */}
+        <div className="grid grid-cols-3 justify-items-center w-full max-w-md mt-6 gap-x-20">
+          <div className="flex justify-center items-center">
+            {observedLevel > 1 && (
+              <IconButton
+                style="arrowleft"
+                buttonColour="blue"
+                iconColour="black"
+                size="medium"
+                onClick={() => alterLevel(-1)}
+              />
+            )}
+          </div>
+
+          <div>
+            <ButtonGeneric
+              color={unlockedLevels.includes(observedLevel) ? "ronchi" : "alto"}
+              size="battle"
+              onClick={
+                unlockedLevels.includes(observedLevel)
+                  ? renderAdventureMonsterSelect
+                  : undefined
+              }
+            >
+              {unlockedLevels.includes(observedLevel) ? "EXPLORE" : "LOCKED"}
+            </ButtonGeneric>
+          </div>
+
+          <div className="flex justify-center items-center">
+            {observedLevel < 5 && (
+              <IconButton
+                style="arrowright"
+                buttonColour="blue"
+                iconColour="black"
+                size="medium"
+                onClick={() => alterLevel(1)}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
