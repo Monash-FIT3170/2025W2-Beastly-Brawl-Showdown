@@ -151,7 +151,7 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
           <div className="w-full flex justify-center items-center">
             <div className="w-full text-center">
               <BlackText size="medium">
-                NO DEFENDER MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE.
+                NO DEFENDER MONSTERS UNLOCKED. PLAY MORE CLASSIC MODE.
               </BlackText>
             </div>
           </div>
@@ -191,7 +191,7 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
           <div className="w-full flex justify-center items-center">
             <div className="w-full text-center">
               <BlackText size="medium">
-                NO BALANCED MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE.
+                NO BALANCED MONSTERS UNLOCKED. PLAY MORE CLASSIC MODE.
               </BlackText>
             </div>
           </div>
@@ -231,7 +231,7 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
           <div className="w-full flex justify-center items-center">
             <div className="w-full text-center">
               <BlackText size="medium">
-                NO ATTACKER MONSTERS UNLOCKED. PLAY MORE ADVENTURE MODE.
+                NO ATTACKER MONSTERS UNLOCKED. PLAY MORE CLASSIC MODE.
               </BlackText>
             </div>
           </div>
