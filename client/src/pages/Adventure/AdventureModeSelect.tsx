@@ -57,7 +57,7 @@ export const AdventureModeSelect: React.FC = () => {
       <div className="flex sm:flex-col lg:flex-row items-center justify-center h-screen gap-[8rem]">
         <div className="sm:w-[90vw] lg:w-[40vw] sm:min-h-[35vh] lg:min-h-[45vh] bg-peach outline-blackCurrant outline-consistent rounded-2xl flex flex-col items-center justify-evenly text-center">
           <div className="-mb-4">
-            <OutlineText size="extraLarge">CLASSIC</OutlineText>
+            <OutlineText size="extraLarge">CLASSIC MODE</OutlineText>
           </div>
           <BlackText size="choice-text">
             The base adventure game mode. Play through to unlock monsters!
@@ -72,7 +72,7 @@ export const AdventureModeSelect: React.FC = () => {
         </div>
         <div className="sm:w-[90vw] lg:w-[40vw] sm:min-h-[35vh] lg:min-h-[45vh] bg-peach outline-blackCurrant outline-consistent rounded-2xl flex flex-col items-center justify-evenly text-center">
           <div className="-mb-4">
-            <OutlineText size="extraLarge">ENDLESS</OutlineText>
+            <OutlineText size="extraLarge">ENDLESS MODE</OutlineText>
           </div>
 
           <BlackText size="choice-text">
