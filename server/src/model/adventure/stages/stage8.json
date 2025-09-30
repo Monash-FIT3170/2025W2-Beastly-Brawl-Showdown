@@ -17,13 +17,13 @@
           "I've toppled greater foes than you."
         ],
         "type": "DIALOGUE",
-        "enemyId": "pouncing_bandit",
+        "enemyId": ["pouncing_bandit", "bandito"],
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "pouncing_bandit",
+        "enemyId": ["pouncing_bandit", "bandito"],
         "next": "victory"
       },
       {
@@ -34,7 +34,7 @@
           "If you'd allow, I would like to join you.",
           "Maybe I could learn a thing or two."
         ],
-        "enemyId": "pouncing_bandit"
+        "enemyId": ["pouncing_bandit", "bandito"]
       }
     ]
   },

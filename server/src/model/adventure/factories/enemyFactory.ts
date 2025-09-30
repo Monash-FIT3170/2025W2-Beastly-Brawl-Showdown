@@ -8,27 +8,20 @@ import { Slime } from "/server/src/model/game/monster/slime";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
 // Should type these instead of 'any' but we don't know if an enemy is a monster or player yet.
-const enemyFactory: Record<string, () => any> = {
-  slime_1: () => new Slime("PAPA SLIME"),
-  slime_2: () => new Slime("MAMA SLIME"),
-  slime_3: () => new Slime("BABY SLIME"),
-  slime_4: () => new Slime("GRANDMA SLIME"),
-  pouncing_bandit: () => new PouncingBandit("Bandito"),
-  martial_artist: () => new CharmerCobra("Martial Artist"),
-  wolf: () => new PouncingBandit("Wolf"),
-  colosseum_titan: () => new CinderTail("Titan Champion"),
-  malady_pogo: () => new PoisonPogo("Colosseum Pogo"),
-  curse_rhino: () => new RockyRhino("Colosseum Rhino"),
-  burn_dragon: () => new CinderTail("Colosseum Dragon"),
-  colosseum_wolf: () => new PouncingBandit("Colosseum Bandit"),
-  colosseum_penguin: () => new FuriousFlipper("Colosseum Penguin"),
-  colosseum_slime: () => new Slime("Colosseum Slime"),
+const enemyFactory: Record<string, (n: string) => any> = {
+  slime: (n) => new Slime(n),
+  pouncing_bandit: (n) => new PouncingBandit(n),
+  rocky_rhino: (n) => new RockyRhino(n),
+  cinder_tail: (n) => new CinderTail(n),
+  poison_pogo: (n) => new PoisonPogo(n),
+  charmer_cobra: (n) => new CharmerCobra(n),
+  furious_flipper: (n) => new FuriousFlipper(n),
 };
 
-export function createEnemy(id: string) {
+export function createEnemy(id: string, name: string) {
   const creator = enemyFactory[id];
   if (!creator) {
     throw new Error(`Unknown enemy ID: ${id}`);
   }
-  return creator();
+  return creator(name);
 }

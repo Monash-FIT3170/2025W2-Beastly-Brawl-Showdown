@@ -50,7 +50,7 @@
       {
         "id": "fight_grandma",
         "type": "FIGHT",
-        "enemyId": "slime_4",
+        "enemyId": ["slime", "GRANDMA SLIME"],
         "next": "check_fight_win"
       },
       {

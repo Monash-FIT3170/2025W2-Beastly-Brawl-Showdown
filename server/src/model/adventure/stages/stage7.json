@@ -228,13 +228,13 @@
         "id": "pre_fight",
         "type": "DIALOGUE",
         "result": ["You don't stand a chance."],
-        "enemyId": "malady_pogo",
+        "enemyId": ["poison_pogo", "Colosseum Pogo"],
         "next": "battle_1"
       },
       {
         "id": "battle_1",
         "type": "FIGHT",
-        "enemyId": "malady_pogo",
+        "enemyId": ["poison_pogo", "Colosseum Pogo"],
         "next": "battle_1_win"
       },
       {
@@ -250,13 +250,13 @@
         "id": "battle_2_pre",
         "type": "DIALOGUE",
         "result": ["Are you starting to sweat?"],
-        "enemyId": "curse_rhino",
+        "enemyId": ["rocky_rhino", "Colosseum Rhino"],
         "next": "battle_2"
       },
       {
         "id": "battle_2",
         "type": "FIGHT",
-        "enemyId": "curse_rhino",
+        "enemyId": ["rocky_rhino", "Colosseum Rhino"],
         "scalling": 2,
         "next": "battle_2_win"
       },
@@ -273,13 +273,13 @@
         "id": "battle_3_pre",
         "type": "DIALOGUE",
         "result": ["This is the end of your run."],
-        "enemyId": "colosseum_penguin",
+        "enemyId": ["furious_flipper", "Colosseum Penguin"],
         "next": "battle_3"
       },
       {
         "id": "battle_3",
         "type": "FIGHT",
-        "enemyId": "colosseum_penguin",
+        "enemyId": ["furious_flipper", "Colosseum Penguin"],
         "scaling": 3,
         "next": "battle_3_win"
       },
@@ -296,13 +296,13 @@
         "id": "battle_4_pre",
         "type": "DIALOGUE",
         "result": ["I won't let you past me"],
-        "enemyId": "colosseum_wolf",
+        "enemyId": ["pouncing_bandit", "Colosseum Wolf"],
         "next": "battle_4"
       },
       {
         "id": "battle_4",
         "type": "FIGHT",
-        "enemyId": "colosseum_wolf",
+        "enemyId": ["pouncing_bandit", "Colosseum Wolf"],
         "scaling": 4,
         "next": "battle_4_win"
       },
@@ -319,13 +319,13 @@
         "id": "battle_5_pre",
         "type": "DIALOGUE",
         "result": ["Good Luck"],
-        "enemyId": "burn_dragon",
+        "enemyId": ["cinder_tail", "Colosseum Champion"],
         "next": "battle_5"
       },
       {
         "id": "battle_5",
         "type": "FIGHT",
-        "enemyId": "burn_dragon",
+        "enemyId": ["cinder_tail", "Colosseum Champion"],
         "scaling": 5,
         "next": "battle_5_win"
       },

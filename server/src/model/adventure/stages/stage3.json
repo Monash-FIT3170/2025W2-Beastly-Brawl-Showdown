@@ -75,7 +75,7 @@
       {
         "id": "slime_fight",
         "type": "FIGHT",
-        "enemyId": "slime_3",
+        "enemyId": ["slime", "BABY SLIME"],
         "next": "battle_conclusion"
       },
       {
@@ -153,13 +153,13 @@
         "id": "pre_fight",
         "type": "DIALOGUE",
         "result": ["*Thud* *Thud* *Thud*", "I WAS PROMISED A CHALLENGE"],
-        "enemyId": "colosseum_titan",
+        "enemyId": ["cinder_tail", "Colosseum Titan"],
         "next": "titan_battle"
       },
       {
         "id": "titan_battle",
         "type": "FIGHT",
-        "enemyId": "colosseum_titan",
+        "enemyId": ["cinder_tail", "Colosseum Titan"],
         "scaling": 2,
         "next": "titan_win"
       },
