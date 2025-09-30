@@ -18,7 +18,7 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
-import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
+import { AdventureModeSelect } from "./src/pages/Adventure/AdventureModeSelect";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -134,7 +134,7 @@ FlowRouter.route("/adventure/mode-select", {
   name: "LevelSelect",
   action() {
     document.title = "Mode Select - Adventure Mode | Beastly Brawl Showdown";
-    mount(AdventureSelectMode);
+    mount(AdventureModeSelect);
   },
 });
 
