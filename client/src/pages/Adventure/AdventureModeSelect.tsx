@@ -5,7 +5,7 @@ import socket from "../../socket";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { BlackText } from "../../components/texts/BlackText";
 
-export const AdventureSelectMode: React.FC = () => {
+export const AdventureModeSelect: React.FC = () => {
   const renderAdventureMonsterSelect = () => {
     socket.emit("adventure_level_selected", { level: 0 });
     FlowRouter.go("/adventure/monster-select");
@@ -35,7 +35,7 @@ export const AdventureSelectMode: React.FC = () => {
             size="battle"
             onClick={() => FlowRouter.go("/adventure/level-select")}
           >
-            SELECT
+            <OutlineText size="large">SELECT</OutlineText>
           </ButtonGeneric>
         </div>
         <div className="sm:w-[90vw] lg:w-[40vw] sm:min-h-[30vh] lg:min-h-[40vh] bg-peach outline-blackCurrant outline-[0.2rem] rounded-2xl flex flex-col items-center justify-around text-center">
@@ -48,7 +48,7 @@ export const AdventureSelectMode: React.FC = () => {
             size="battle"
             onClick={renderAdventureMonsterSelect}
           >
-            SELECT
+            <OutlineText size="large">SELECT</OutlineText>
           </ButtonGeneric>
         </div>
       </div>

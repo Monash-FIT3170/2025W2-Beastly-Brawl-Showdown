@@ -39,6 +39,142 @@
     ]
   },
   {
+    "id": "Cinder Tail Boss Encounter",
+    "level": [2],
+    "description": "The Final Encounter Level 2",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["you see cinder tail again."],
+        "type": "DIALOGUE",
+        "next": "stranger_dialogue"
+      },
+      {
+        "id": "stranger_dialogue",
+        "result": ["im back ."],
+        "type": "DIALOGUE",
+        "enemyId": "cinder_tail",
+        "next": "stranger_fight"
+      },
+      {
+        "id": "stranger_fight",
+        "type": "FIGHT",
+        "enemyId": "cinder_tail",
+        "next": "victory"
+      },
+      {
+        "id": "victory",
+        "type": "DIALOGUE",
+        "result": ["how the helly."],
+        "enemyId": "cinder_tail"
+      }
+    ]
+  },
+  {
+    "id": "Colosseum Encounter",
+    "level": [5],
+    "description": "Colosseum gauntlet",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You walk into a grand arena.",
+          "In front of you stands a familiar figure."
+        ],
+        "type": "DIALOGUE",
+        "next": "colosseum_stranger_dialogue"
+      },
+      {
+        "id": "colosseum_stranger_dialogue",
+        "result": [
+          "You beat me once, but I brought some friends this time.",
+          "I hope you're ready!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": "charmer_cobra",
+        "next": "colosseum_prefight_1"
+      },
+      {
+        "id": "colosseum_prefight_1",
+        "result": [
+          "You feel the ground tremble.",
+          "To your left, a large gate opens, and a very angry rhino charges at you."
+        ],
+        "type": "DIALOGUE",
+        "next": "colosseum_rhino_fight"
+      },
+      {
+        "id": "colosseum_rhino_fight",
+        "type": "FIGHT",
+        "enemyId": "rocky_rhino",
+        "next": "rhino_victory"
+      },
+      {
+        "id": "rhino_victory",
+        "type": "DIALOGUE",
+        "result": [
+          "The rhino collapses to the ground, defeated.",
+          "Before you can catch your breath, the gate to your right opens."
+        ],
+        "next": "colosseum_prefight_2"
+      },
+      {
+        "id": "colosseum_prefight_2",
+        "result": [
+          "Hi!",
+          "Oh no what happened to Mr. Rhino?",
+          "Don't worry, I'll avenge him!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": "slime_3",
+        "next": "colosseum_slime_fight"
+      },
+      {
+        "id": "colosseum_slime_fight",
+        "type": "FIGHT",
+        "enemyId": "slime_3",
+        "next": "slime_victory"
+      },
+      {
+        "id": "slime_victory",
+        "type": "DIALOGUE",
+        "result": [
+          "The slime dissipates into a puddle of goo.",
+          "The crowd goes wild!"
+        ],
+        "next": "colosseum_prefight_3"
+      },
+      {
+        "id": "colosseum_prefight_3",
+        "result": [
+          "You think you're pretty tough, huh?",
+          "Let's see how you handle this!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": "charmer_cobra",
+        "next": "colosseum_cobra_fight"
+      },
+      {
+        "id": "colosseum_cobra_fight",
+        "type": "FIGHT",
+        "enemyId": "charmer_cobra",
+        "next": "cobra_victory_1"
+      },
+      {
+        "id": "cobra_victory_1",
+        "type": "DIALOGUE",
+        "result": ["The cobra slithers to the ground, defeated."],
+        "enemyId": "cobra_victory_2"
+      },
+      {
+        "id": "cobra_victory_2",
+        "type": "DIALOGUE",
+        "result": ["Okay.. okay, you win.", "UPDATE FINAL DIALOGUE."],
+        "enemyId": "charmer_cobra"
+      }
+    ]
+  },
+  {
     "id": "slime_1",
     "level": [0],
     "description": "Stage 1, player fights slime 1.",

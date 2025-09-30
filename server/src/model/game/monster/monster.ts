@@ -133,6 +133,10 @@ export abstract class Monster {
     this.armourClass += armour;
   }
 
+  public incCritRate(rate: number): void {
+    this.critRate += rate;
+  }
+
   public pveScaling(stage: number): void {
     console.log("PVE SCALING DEBUG: HEALTH", this.maxHealth);
     console.log("PVE SCALING DEBUG: ATK BONUS", this.attackBonus);

@@ -10,7 +10,7 @@ import { getBiomeString } from "./AdventureBattle";
 
 interface LevelSelectProps {}
 
-const LevelSelect: React.FC<LevelSelectProps> = () => {
+const AdventureLevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(1);
   const UNLOCKED_LEVELS = [1, 2, 3, 4, 5];
 
@@ -132,4 +132,4 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   );
 };
 
-export default LevelSelect;
+export default AdventureLevelSelect;

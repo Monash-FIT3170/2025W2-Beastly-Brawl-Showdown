@@ -22,8 +22,8 @@ export class BasaltShield extends Equipment {
   }
 
   public calculateStrength(stage: number): void {
-    // TODO: update formula for endless - needs playtesting with monster scaling
-    this.strength = Math.min(stage, 20);
+    const x = Math.floor(stage * 1.5);
+    this.strength = Math.min(x, 10);
   }
 
   protected getImageString(): string {

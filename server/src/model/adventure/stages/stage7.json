@@ -52,7 +52,7 @@
       {
         "id": "red_reward",
         "type": "STATUS",
-        "statusId": "poisoned",
+        "statusId": ["poisoned", 5],
         "result": ["The berries have poisoned you."]
       }
     ]
@@ -151,6 +151,180 @@
         "result": [
           "You decide that nothing on the other side is worth the risk and adventure onwards."
         ]
+      }
+    ]
+  },
+  {
+    "id": "forge",
+    "level": [2],
+    "description": "Stage 7, player finds the forge.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You see a crumbling structure. Half buried in black rock, half glowing with veins of molten metal.",
+          "It looks like a forge, you decide to head towards it. Perhaps there's some loot to find.."
+        ],
+        "type": "DIALOGUE",
+        "next": "check_scale"
+      },
+      {
+        "id": "check_scale",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "has_scale",
+            "prerequisite": ["Dragon Scale"],
+            "next": "scale_dialogue"
+          },
+          {
+            "id": "no_item",
+            "next": "lame_dialogue"
+          }
+        ]
+      },
+      {
+        "id": "scale_dialogue",
+        "type": "DIALOGUE",
+        "result": [
+          "The forge awakens as you approach, the flames roaring back to life.",
+          "Your backpack starts to heat up, as if something inside is responding back to the forge.",
+          "A hole burns out of your backpack, and something falls out."
+        ],
+        "next": "scale_choice"
+      },
+      {
+        "id": "scale_choice",
+        "result": ["It's the dragon scale."],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "scale_give",
+            "text": "Give it to the forge.",
+            "next": "use_forge",
+            "cost": ["Dragon Scale"]
+          },
+          {
+            "id": "scale_leave",
+            "text": "Put it back in your backpack.",
+            "next": "reject_forge"
+          }
+        ]
+      },
+      {
+        "id": "use_forge",
+        "type": "DIALOGUE",
+        "result": [
+          "You pick up the dragon scale that dropped on the floor.",
+          "It burns in your hands, disintegrating into nothing.",
+          "The forge starts roaring at you!! The flames almost engulf you..",
+          "'MAKE YOUR CHOICE'",
+          "Is the forge speaking to you...?"
+        ],
+        "next": "pick_forge"
+      },
+      {
+        "id": "pick_forge",
+        "result": ["Make your choice."],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "item_1",
+            "text": "Infinite abilities.",
+            "next": "infinite"
+          },
+          {
+            "id": "item_2",
+            "text": "Extreme damage.",
+            "next": "damage"
+          },
+          {
+            "id": "item_3",
+            "text": "Burning fire.",
+            "next": "fire"
+          }
+        ]
+      },
+      {
+        "id": "infinite",
+        "type": "STATUS",
+        "result": ["You feel unlimited."],
+        "statusId": ["infinite_ability", 5]
+      },
+      {
+        "id": "damage",
+        "type": "EQUIPMENT",
+        "equipmentId": "blazing_gauntlets"
+      },
+      {
+        "id": "fire",
+        "type": "STATUS",
+        "result": ["You feel angry."],
+        "statusId": ["burning_rage", 5]
+      },
+      {
+        "id": "reject_forge",
+        "type": "DIALOGUE",
+        "result": [
+          "You place the scale back in your backpack.",
+          "It feels as though you've just missed out on something special.",
+          "This forge isn't like others, but for now it remains silent."
+        ],
+        "next": "loot_forge"
+      },
+      {
+        "id": "lame_dialogue",
+        "type": "DIALOGUE",
+        "result": [
+          "You peer into the forge. The flames inside are cold and lifeless, the great anvil cracked with age.",
+          "It feels as though the place is waiting... for something you do not possess."
+        ],
+        "next": "loot_forge"
+      },
+      {
+        "id": "loot_forge",
+        "type": "DIALOGUE",
+        "result": [
+          "You look around, for something worth taking.",
+          "There seems to be something behind the fire.."
+        ],
+        "next": "get_burnt"
+      },
+      {
+        "id": "get_burnt",
+        "type": "STATUS",
+        "result": ["The fire tinges at your arms as you grab the item."],
+        "statusId": ["burn", 2],
+        "next": "loot_drop"
+      },
+      {
+        "id": "loot_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      }
+    ]
+  },
+  {
+    "id": "level5_update",
+    "level": [5],
+    "description": "level5_update",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "EQUIPMENT",
+        "equipmentId": "sharpened_claws",
+        "next": "equip_next"
+      },
+      {
+        "id": "equip_next",
+        "type": "EQUIPMENT",
+        "equipmentId": "life_fang",
+        "next": "equip_next_2"
+      },
+      {
+        "id": "equip_next_2",
+        "type": "EQUIPMENT",
+        "equipmentId": "basalt_shield"
       }
     ]
   },
