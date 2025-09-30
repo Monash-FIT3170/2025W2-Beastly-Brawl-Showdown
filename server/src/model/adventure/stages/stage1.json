@@ -17,13 +17,13 @@
         "id": "slime_dialogue_1",
         "result": ["blob. blob.. blob...", "b l o b ."],
         "type": "DIALOGUE",
-        "enemyId": "slime_1",
+        "enemyId": ["slime", "PAPA SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_1",
+        "enemyId": ["slime", "PAPA SLIME"],
         "next": "fight_win"
       },
       {
@@ -134,7 +134,7 @@
       {
         "id": "wolf_fight",
         "type": "FIGHT",
-        "enemyId": "wolf",
+        "enemyId": ["pouncing_bandit", "wolf"],
         "next": "fight_win"
       },
       {

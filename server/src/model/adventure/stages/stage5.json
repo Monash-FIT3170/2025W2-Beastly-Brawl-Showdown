@@ -350,13 +350,13 @@
         "result": [
           "A slime comes out into the ring, with a ferocity in its eyes."
         ],
-        "enemyId": "colosseum_titan",
+        "enemyId": ["slime", "Colosseum Slime"],
         "next": "slime_battle"
       },
       {
         "id": "slime_battle",
         "type": "FIGHT",
-        "enemyId": "colosseum_slime",
+        "enemyId": ["slime", "Colosseum Slime"],
         "next": "slime_win"
       },
       {

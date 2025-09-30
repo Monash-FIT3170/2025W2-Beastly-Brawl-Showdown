@@ -21,13 +21,13 @@
           "Prepare yourself!"
         ],
         "type": "DIALOGUE",
-        "enemyId": "pouncing_bandit",
+        "enemyId": ["pouncing_bandit", "bandito"],
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "pouncing_bandit",
+        "enemyId": ["pouncing_bandit", "bandito"],
         "next": "victory"
       },
       {
@@ -113,13 +113,13 @@
         "result": [
           "How are you going to beat me when you health is seeping away."
         ],
-        "enemyId": "malady_pogo",
+        "enemyId": ["poison_pogo", "Malady Pogo"],
         "next": "opponent_1_battle"
       },
       {
         "id": "opponent_1_battle",
         "type": "FIGHT",
-        "enemyId": "malady_pogo",
+        "enemyId": ["poison_pogo", "Malady Pogo"],
         "next": "opponent_1_win"
       },
       {
@@ -167,13 +167,13 @@
         "id": "pre_fight_2_opponent",
         "type": "DIALOGUE",
         "result": ["How are you going to beat me when you can't even hit me?"],
-        "enemyId": "curse_rhino",
+        "enemyId": ["rocky_rhino", "Curse Rhino"],
         "next": "opponent_2_battle"
       },
       {
         "id": "opponent_2_battle",
         "type": "FIGHT",
-        "enemyId": "curse_rhino",
+        "enemyId": ["rocky_rhino", "Curse Rhino"],
         "next": "opponent_2_win"
       },
       {
@@ -224,13 +224,13 @@
         "id": "pre_fight_3_opponent",
         "type": "DIALOGUE",
         "result": ["This is it.", "Get Ready!"],
-        "enemyId": "burn_dragon",
+        "enemyId": ["cinder_tail", "Malady Champion"],
         "next": "opponent_3_battle"
       },
       {
         "id": "opponent_3_battle",
         "type": "FIGHT",
-        "enemyId": "burn_dragon",
+        "enemyId": ["cinder_tail", "Malady Champion"],
         "next": "opponent_3_win"
       },
       {

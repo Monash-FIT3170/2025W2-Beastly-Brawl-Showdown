@@ -17,7 +17,7 @@ export interface storyOutcomes {
   statChange?: [string, number];
   statusId?: [string, number];
   status: Status; // populated at runtime
-  enemyId?: string; // <-- NEW
+  enemyId?: [string, string]; // <-- NEW
   enemy?: Monster; // populated at runtime
   consumableId?: string; // <-- NEW
   consumable?: any; // populated at runtime

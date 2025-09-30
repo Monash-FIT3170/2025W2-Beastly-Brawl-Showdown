@@ -9,7 +9,7 @@ import { createStoryItem } from "./factories/storyItemFactory";
 export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
   switch (raw.type) {
     case EncounterType.FIGHT:
-      return { ...raw, enemy: createEnemy(raw.enemyId!) };
+      return { ...raw, enemy: createEnemy(raw.enemyId[0]!, raw.enemyId[1]!) };
 
     case EncounterType.CONSUMABLE:
       return { ...raw, consumable: createConsumable(raw.consumableId!) };
@@ -20,7 +20,7 @@ export function resolveOutcome(raw: storyOutcomes): storyOutcomes {
     case EncounterType.DIALOGUE:
       // If enemyId is present, attach the enemy object
       if (raw.enemyId) {
-        return { ...raw, enemy: createEnemy(raw.enemyId) };
+        return { ...raw, enemy: createEnemy(raw.enemyId[0], raw.enemyId[1]) };
       }
       return raw;
 

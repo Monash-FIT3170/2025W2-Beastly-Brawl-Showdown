@@ -18,13 +18,13 @@
         "id": "slime_dialogue_1",
         "result": ["papa blob?", "*angry blob*"],
         "type": "DIALOGUE",
-        "enemyId": "slime_2",
+        "enemyId": ["slime", "MAMA SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_2",
+        "enemyId": ["slime", "MAMA SLIME"],
         "next": "fight_win"
       },
       {
@@ -69,7 +69,7 @@
           "If you seek what lies beyond the waterfall you must prove your worth with a show of strength."
         ],
         "type": "DIALOGUE",
-        "enemyId": "martial_artist",
+        "enemyId": ["charmer_cobra", "Martial Artist"],
         "next": "martial_artist_choice"
       },
       {
@@ -98,7 +98,7 @@
       {
         "id": "martial_artist_battle",
         "type": "FIGHT",
-        "enemyId": "martial_artist",
+        "enemyId": ["charmer_cobra", "Martial Artist"],
         "next": "martial_artist_win"
       },
       {
@@ -108,7 +108,7 @@
           "Go behind the waterfall and make your choice."
         ],
         "type": "DIALOGUE",
-        "enemyId": "martial_artist",
+        "enemyId": ["charmer_cobra", "Martial Artist"],
         "next": "behind_water"
       },
       {
