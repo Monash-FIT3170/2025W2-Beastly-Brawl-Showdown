@@ -5,7 +5,7 @@ export class BlazingGauntlets extends Equipment {
   constructor() {
     super(
       "Blazing Gauntlets",
-      "The burning flames on this weapon burns enemies for extra damage."
+      "These gauntlets were made from raw molten metal, at the Cinder Forge. The strength of the metal deals more damage than any."
     );
   }
 

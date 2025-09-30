@@ -82,8 +82,8 @@
       },
       {
         "id": "mini_boss_reward",
-        "type": "EQUIPMENT",
-        "equipmentId": "magic_shield"
+        "type": "LOOT_POOL",
+        "lootPoolId": "cinder_pool"
       }
     ]
   },

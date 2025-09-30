@@ -186,7 +186,7 @@
         "id": "dodge_injury",
         "type": "STAT_CHANGE",
         "statChange": ["health", -5],
-        "result": ["Yeowch!!"]
+        "result": ["Yeowch!! -5 HP"]
       },
       {
         "id": "brace_next",
@@ -203,7 +203,7 @@
         "id": "brace_injury",
         "type": "STAT_CHANGE",
         "statChange": ["health", -2],
-        "result": ["Ouch..."]
+        "result": ["Ouch... -2 HP"]
       }
     ]
   },
@@ -276,6 +276,7 @@
       {
         "id": "search_burn",
         "type": "STATUS",
+        "result": ["Youg et burnt.."],
         "statusId": ["burn", 3]
       },
       {
