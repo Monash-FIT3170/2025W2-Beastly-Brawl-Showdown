@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { activeAdventures, players, battles } from "../../main";
+import { activeAdventures, players, battles, playerAccounts } from "../../main";
 
 import { ActionState } from "/types/single/actionState";
 import { NullAction } from "../model/game/action/null";
@@ -181,6 +181,21 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
               } else {
                 console.log(`ADV: GAME OVER!`);
                 socket.emit("adventure_defeat");
+                const adventure = activeAdventures.get(playerId);
+                if (adventure?.getLevel() === 0) {
+                  const user = playerAccounts.get(socket.id);
+                  var adventureProgression = user?.adventureProgression;
+                  if (adventureProgression) {
+                    const oldRecord = adventureProgression.stage;
+                    if (adventure.getStage() > oldRecord) {
+                      adventureProgression.stage = adventure.getStage();
+                    }
+                  } else {
+                    console.error(
+                      `Failed to load ${user?._id}'s endless record`
+                    );
+                  }
+                }
               }
             } else {
               console.error(`ADV: Player does not have name... ${playerName}`);

@@ -268,6 +268,17 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     }
   });
 
+  socket.on("request_adventure_endless_record", () => {
+    console.log("ADV: Requesting Adventure Record From Server");
+    const user = playerAccounts.get(socket.id);
+    const endlessRecord = user?.adventureProgression.stage;
+    if (endlessRecord) {
+      socket.emit("adventure_endless_record", endlessRecord);
+    } else {
+      console.error(`${user?.username} Unlocked Monsters does not exist`);
+    }
+  });
+
   // Helper function to progress adventure outcomes
   export async function progressAdventure(
     io: Server,
