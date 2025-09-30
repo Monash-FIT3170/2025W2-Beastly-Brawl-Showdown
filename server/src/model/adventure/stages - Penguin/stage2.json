@@ -1,0 +1,225 @@
+[
+  {
+    "id": "slime_2",
+    "level": [1],
+    "description": "Stage 1, player fights slime 2.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You step in something damp sticky and green.",
+          "An angry green mass of ooze lurches towards you.",
+          "Within the ooze you notice a disconnected set of eyes locked on to you."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["papa blob?", "*angry blob*"],
+        "type": "DIALOGUE",
+        "enemyId": "slime_2",
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": "slime_2",
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "As you strike the finishing blow, whatever force was keeping the ooze together seems to unravel before you.",
+          "A foul smell fills the surrounding area and makes its way into your nose and lungs.",
+          "The stench is so overwhelming that you pass out",
+          "By the time you wake up there is no evidence of the gruesome battle.",
+          "At least the smell is gone"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_health_potion"
+      },
+      {
+        "id": "slime_health_potion",
+        "type": "CONSUMABLE",
+        "consumableId": "large_health_potion"
+      }
+    ]
+  },
+  {
+    "id": "ember_slime_2",
+    "level": [2],
+    "description": "Stage 2, player fights slime 2.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "The basalt path narrows, rivers of lava bubbling on either side.",
+          "A molten shape rises from the cliff's edge.",
+          "It's a magma slime blocking your way."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["grrr... hisss... pop...", "s i z z l e."],
+        "type": "DIALOGUE",
+        "enemyId": "ember_2",
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": "ember_2",
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "You are victorious once again.",
+          "Its body cracks apart, cooling into shards of obsidian.",
+          "You search the fragments, finding something buried within…"
+        ],
+        "type": "DIALOGUE",
+        "next": "ember_drop"
+      },
+      {
+        "id": "ember_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      }
+    ]
+  },
+  {
+    "id": "desert_merchant",
+    "level": [5],
+    "description": "Stage 2, player encounters a desert merchant.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "As you slowly make your way through the desert, you spot a figure under a faded awning.",
+          "As you approach, you see a weary merchant sitting on a crate, polishing a collection of trinkets and artifacts.",
+          "\"Greetings, traveler! Care to browse my wares?\" he asks with a hopeful smile.",
+          "\"But I must warn you, it may cost you your health...\""
+        ],
+        "type": "DIALOGUE",
+        "next": "desert_merchant_choice"
+      },
+      {
+        "id": "desert_merchant_choice",
+        "result": ["What do you do with the merchant?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "trade",
+            "text": "Trade health for an item",
+            "next": "trade_lose_hp"
+          },
+          {
+            "id": "haggle",
+            "text": "Attempt to haggle",
+            "next": "haggle_random"
+          },
+          {
+            "id": "snoop",
+            "text": "Sneak a look at the guarded crate",
+            "next": "snoop_random"
+          }
+        ]
+      },
+      {
+        "id": "trade_lose_hp",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": [
+          "The merchant grins. \"A fair price.\"",
+          "You feel a sharp sting as he pricks your finger and draws power from you."
+        ],
+        "next": "trade_reward"
+      },
+      {
+        "id": "trade_reward",
+        "type": "EQUIPMENT",
+        "equipmentId": "cooling_pendant"
+      },
+      {
+        "id": "haggle_random",
+        "type": "RANDOM",
+        "result": ["You bargain with spirited words."],
+        "options": [
+          { "id": "success", "chance": 50, "next": "haggle_win" },
+          { "id": "fail", "chance": 50, "next": "haggle_lose" }
+        ]
+      },
+      {
+        "id": "haggle_win",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": [
+          "The merchant nods appreciatively. \"A clever deal!\"",
+          "You feel a slight sting as he pricks your finger and draws a small amount of power from you."
+        ],
+        "next": "haggle_reward"
+      },
+      {
+        "id": "haggle_reward",
+        "type": "EQUIPMENT",
+        "equipmentId": "cooling_pendant"
+      },
+      {
+        "id": "haggle_lose",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": [
+          "The offended merchant curses at you and throws hot sand in your face!",
+          "You lost 2 HP."
+        ]
+      },
+      {
+        "id": "snoop_random",
+        "type": "RANDOM",
+        "result": ["You sneak toward the crate."],
+        "options": [
+          { "id": "antidote", "chance": 60, "next": "find_antidote" },
+          { "id": "trap", "chance": 40, "next": "trigger_trap" }
+        ]
+      },
+      {
+        "id": "find_antidote",
+        "result": [
+          "While the merchant wasn't looking, you managed to grab a strange vial from the crate."
+        ],
+        "type": "DIALOGUE",
+        "next": "get_antidote"
+      },
+      {
+        "id": "get_antidote",
+        "type": "CONSUMABLE",
+        "consumableId": "ability_antidote"
+      },
+      {
+        "id": "trigger_trap",
+        "type": "STATUS",
+        "statusId": "poisoned",
+        "result": [
+          "A spring-loaded poison dart strikes you in the arm! You feel unwell...",
+          "You feel unwell..."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "slime_1",
+    "level": [0],
+    "description": "Stage 2, player fights slime 2.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 2"],
+        "type": "DIALOGUE"
+      }
+    ]
+  }
+]

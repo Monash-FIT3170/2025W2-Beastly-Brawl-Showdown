@@ -1,0 +1,136 @@
+[
+  {
+    "id": "slime_1",
+    "level": [1],
+    "description": "Stage 1, player fights slime 1.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You come across a cute green cottage that smells of freshly baked cookies.",
+          "You knock on the door and large slime slowly oozes out to meet you.",
+          "Within the slime you notice a rolling pin, an apron and glasses."
+        ],
+        "type": "DIALOGUE",
+        "next": "check_saved_child"
+      },
+      {
+        "id": "check_saved_child",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "child_safe",
+            "prerequisite": ["Slime Friend"],
+            "next": "choice_1"
+          },
+          {
+            "id": "child_not_safe",
+            "next": "fight_grandma"
+          }
+        ]
+      },
+      {
+        "id": "choice_1",
+        "result": ["You feel something in your backpack shift in excitement."],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "battle",
+            "text": "Battle",
+            "next": "fight_grandma"
+          },
+          {
+            "id": "present_child",
+            "text": "Take out the slime",
+            "next": "reunion"
+          }
+        ]
+      },
+      {
+        "id": "fight_grandma",
+        "type": "FIGHT",
+        "enemyId": "slime_4",
+        "next": "check_fight_win"
+      },
+      {
+        "id": "check_fight_win",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "child_safe",
+            "prerequisite": ["Slime Friend"],
+            "next": "fight_win"
+          },
+          {
+            "id": "child_not_safe",
+            "next": "fight_win_2"
+          }
+        ]
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "You defeated the slime!",
+          "Your slime friend works its way out of the backpack.",
+          "It looks around seems excited, almost as though it recognises the place.",
+          "It looks around but it seems dissapointed.",
+          "Was it expecting someone?"
+        ],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "fight_win_2",
+        "result": ["You defeated the slime!", "You feel empty."],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "reunion_bridge",
+        "result": ["THIS IS NOT MEANT TO BE READ"],
+        "type": "DIALOGUE",
+        "next": "reunion"
+      },
+      {
+        "id": "reunion",
+        "result": [
+          "You take out your slime friend from earlier.",
+          "Both slimes start squelching happily.",
+          "It looks as though you've bought the slime to one of its relatives.",
+          "The larger slime gives you what appears to be slime.",
+          "While you may have lost a friend, you gained an item and a sense of fulfilment"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_blessing"
+      },
+      {
+        "id": "slime_blessing",
+        "result": ["You have received the blessing of the slimes."],
+        "type": "STATUS",
+        "statusId": "grandma_blessing"
+      }
+    ]
+  },
+  {
+    "id": "slime_1",
+    "level": [0],
+    "description": "Stage 1, player fights slime 1.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 6"],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "forge",
+    "level": [2],
+    "description": "Stage 6, player finds forge.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["You at the forge baby!"],
+        "type": "DIALOGUE"
+      }
+    ]
+  }
+]

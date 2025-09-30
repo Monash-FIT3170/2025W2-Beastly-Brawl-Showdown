@@ -1,0 +1,169 @@
+[
+  {
+    "id": "berry_bush",
+    "level": [1],
+    "description": "Berry bushes",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": [
+          "You come across a clearing with two bushes.",
+          "One of them has red berries, while the other has blue.",
+          "You feel your stomach rumble..."
+        ],
+        "next": "berry_choice"
+      },
+      {
+        "id": "berry_choice",
+        "result": ["Which one do you eat..?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "blue",
+            "text": "Blue Berries",
+            "next": "blue_outcome"
+          },
+          {
+            "id": "red",
+            "text": "Red Berries",
+            "next": "red_outcome"
+          }
+        ]
+      },
+      {
+        "id": "blue_outcome",
+        "result": ["The berries are sweet and delicious."],
+        "type": "DIALOGUE",
+        "next": "blue_reward"
+      },
+      {
+        "id": "blue_reward",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", 5],
+        "result": ["You feel nourished"]
+      },
+      {
+        "id": "red_outcome",
+        "result": ["The berries are sweet but you start to feel a burning."],
+        "type": "DIALOGUE",
+        "next": "red_reward"
+      },
+      {
+        "id": "red_reward",
+        "type": "STATUS",
+        "statusId": "poisoned",
+        "result": ["The berries have poisoned you."]
+      }
+    ]
+  },
+  {
+    "id": "rope_bridge",
+    "level": [1],
+    "description": "Rope Bridge",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": [
+          "You come across an endlessly deep chasm.",
+          "The only way across is a worn down rope bridge.",
+          "You see something glimmering on the other side.",
+          "The gap is too large to jump."
+        ],
+        "next": "bridge_choice"
+      },
+      {
+        "id": "bridge_choice",
+        "result": ["Do you try to cross...?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "cross",
+            "text": "Cross",
+            "next": "cross_random"
+          },
+          {
+            "id": "ignore",
+            "text": "Ignore",
+            "next": "ignore_outcome"
+          }
+        ]
+      },
+      {
+        "id": "cross_random",
+        "result": ["You cross"],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 50,
+            "next": "bridge_crossed"
+          },
+          {
+            "id": "failure",
+            "chance": 50,
+            "next": "bridge_broke"
+          }
+        ]
+      },
+      {
+        "id": "bridge_crossed",
+        "result": [
+          "You put one foot after another, carefully moving forward.",
+          "The old wooden planks look like they could give out any second.",
+          "Before you know it, you're on the other side.",
+          "You find the source of the glimmering."
+        ],
+        "type": "DIALOGUE",
+        "next": "bridge_reward"
+      },
+      {
+        "id": "bridge_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion"
+      },
+      {
+        "id": "bridge_broke",
+        "type": "DIALOGUE",
+        "result": [
+          "You put one foot after another, carefully moving forward.",
+          "The rot on the planks does not give you confidence",
+          "You hear a snap and instinctively grab the rope."
+        ],
+        "next": "bridge_injury"
+      },
+      {
+        "id": "bridge_injury",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": ["You smack into the side of the cliff!"],
+        "next": "resolution"
+      },
+      {
+        "id": "resolution",
+        "result": ["It hurts, but you can muster the strength to climb out."],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "ignore_outcome",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide that nothing on the other side is worth the risk and adventure onwards."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "slime_1",
+    "level": [0],
+    "description": "Stage 1, player fights slime 1.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 7"],
+        "type": "DIALOGUE"
+      }
+    ]
+  }
+]
