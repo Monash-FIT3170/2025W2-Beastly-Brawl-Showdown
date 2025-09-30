@@ -5,6 +5,7 @@ import socket from "../../socket";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { BlackText } from "../../components/texts/BlackText";
 import { GenericIcon } from "../../components/icons/GenericIcon";
+import { IconButton } from "../../components/buttons/IconButton";
 
 export const AdventureModeSelect: React.FC = () => {
   const [endlessBest, setEndlessBest] = useState<number>(0);
@@ -36,7 +37,19 @@ export const AdventureModeSelect: React.FC = () => {
           "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/FOREST.jpg')",
       }}
     >
-      <div className="fixed w-full sm:h-[10vh] lg:h-[20vh] flex items-center justify-center ">
+      <div className="fixed z-2 lg:ml-5 lg:mt-5 sm:ml-6 sm:mt-6">
+        <IconButton
+          style="arrowleft"
+          iconColour="black"
+          buttonColour="red"
+          size="medium"
+          onClick={() => {
+            FlowRouter.go("/");
+            console.log("HELLLO");
+          }}
+        />
+      </div>
+      <div className="fixed w-full sm:h-[10vh] lg:h-[20vh] flex items-center justify-center invisible lg:visible">
         <div className="bg-ronchi outline-blackCurrant px-[2rem]  outline-consistent rounded-2xl flex flex-col items-center justify-center">
           <OutlineText size="extraLarge">CHOOSE YOUR PATH</OutlineText>
         </div>

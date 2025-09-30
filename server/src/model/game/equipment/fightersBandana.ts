@@ -21,7 +21,7 @@ export class FightersBandana extends Equipment {
   }
 
   public getStatDescription(): string {
-    return "+" + this.strength + " Critical Hit Rate";
+    return "+" + this.strength + "% Critical Hit Rate";
   }
 
   public calculateStrength(stage: number): void {
