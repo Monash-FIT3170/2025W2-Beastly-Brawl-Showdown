@@ -22,7 +22,7 @@ export class BlackBelt extends Equipment {
   }
 
   public getStatDescription(): string {
-    return "+" + this.strength + " Attack Damage";
+    return "Consecutive attacks deal more damage.";
   }
 
   public calculateStrength(stage: number): void {
