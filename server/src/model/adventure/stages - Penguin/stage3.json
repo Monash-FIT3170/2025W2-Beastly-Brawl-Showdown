@@ -1,0 +1,358 @@
+[
+  {
+    "id": "slime_child",
+    "level": [1],
+    "description": "Slime child encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Off in the distance you hear squelches.",
+          "Whatever creature is making these noises sounds as though it is small and helpless."
+        ],
+        "type": "DIALOGUE",
+        "next": "choice_1"
+      },
+      {
+        "id": "choice_1",
+        "result": ["Do you go and investigate?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "approach_slime",
+            "text": "Investigate",
+            "next": "encounter_child"
+          },
+          {
+            "id": "ignore",
+            "text": "Ignore it",
+            "next": "no_investigation"
+          }
+        ]
+      },
+      {
+        "id": "encounter_child",
+        "type": "DIALOGUE",
+        "result": [
+          "A small slime looks up at you helplessly.",
+          "It seems harmless enough.",
+          "Do you engage it in combat or try to befriend it?"
+        ],
+        "next": "slime_choice"
+      },
+      {
+        "id": "slime_choice",
+        "result": ["Do you engage it in combat or try to befriend it?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "befriend",
+            "text": "Befriend",
+            "next": "befriend_slime"
+          },
+          {
+            "id": "attack",
+            "text": "Attack",
+            "next": "slime_fight"
+          }
+        ]
+      },
+      {
+        "id": "befriend_slime",
+        "type": "DIALOGUE",
+        "result": [
+          "You reach your hand out to the slime.",
+          "It oozes happily and crawls from your hand to your bag.",
+          "You adventure onwards together."
+        ],
+        "next": "slime_item"
+      },
+      {
+        "id": "slime_item",
+        "type": "CONSUMABLE",
+        "consumableId": "slime_friend"
+      },
+      {
+        "id": "slime_fight",
+        "type": "FIGHT",
+        "enemyId": "slime_3",
+        "next": "battle_conclusion"
+      },
+      {
+        "id": "battle_conclusion",
+        "type": "DIALOGUE",
+        "result": [
+          "You aren't entirely sure why you felt you had to fight the young slime but nevertheless you emerged victorious.",
+          "A faint smell wafts from the lifeless pool of ooze."
+        ],
+        "next": "slime_scent"
+      },
+      {
+        "id": "slime_scent",
+        "type": "CONSUMABLE",
+        "consumableId": "slime_substance"
+      },
+      {
+        "id": "no_investigation",
+        "type": "DIALOGUE",
+        "result": [
+          "Trusting your gut you march onwards.",
+          "You've already seen enough combat to be taking unnecessary risks."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "falling_basalt",
+    "level": [2],
+    "description": "Falling Basalt",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": [
+          "The ground rumbles beneath your feet...",
+          "Cracks split along the cliffside.",
+          "Chunks of basalt break loose and start tumbling right for you!",
+          "You have only a moment to react.."
+        ],
+        "next": "basalt_choice"
+      },
+      {
+        "id": "basalt_choice",
+        "result": ["What do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "left",
+            "text": "Dodge to the left",
+            "next": "dodge_random"
+          },
+          {
+            "id": "right",
+            "text": "Dodge to the right",
+            "next": "dodge_random"
+          },
+          {
+            "id": "brace",
+            "text": "Brace for the damage",
+            "next": "brace_next"
+          }
+        ]
+      },
+      {
+        "id": "dodge_random",
+        "result": ["You move as quickly as you can."],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 50,
+            "next": "dodge_success"
+          },
+          {
+            "id": "failure",
+            "chance": 50,
+            "next": "dodge_fail"
+          }
+        ]
+      },
+      {
+        "id": "dodge_success",
+        "result": [
+          "KRRRSHH!",
+          "Basalt crashes down where you once stood.",
+          "Your heart races, but you're unharmed."
+        ],
+        "type": "DIALOGUE",
+        "next": "dodge_reward"
+      },
+      {
+        "id": "dodge_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion"
+      },
+      {
+        "id": "dodge_fail",
+        "type": "DIALOGUE",
+        "result": [
+          "SKKKRRAACK!",
+          "You move too late.",
+          "Stone slams into you with crushing force."
+        ],
+        "next": "dodge_injury"
+      },
+      {
+        "id": "dodge_injury",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": ["Yeowch!!"]
+      },
+      {
+        "id": "brace_next",
+        "type": "DIALOGUE",
+        "result": [
+          "You plant your feet and shield yourself.",
+          "KRRSHHHHHH!",
+          "The basalt smashes into you, rattling your bones.",
+          "The hit hurts, but your stance softened the blow."
+        ],
+        "next": "brace_injury"
+      },
+      {
+        "id": "brace_injury",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": ["Ouch..."]
+      }
+    ]
+  },
+  {
+    "id": "abandoned_camp",
+    "level": [2],
+    "description": "Stage 3, player finds an abandoned camp.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Amid the basalt cliffs, you spot an abandoned campsite.",
+          "Charred logs lie half buried in ash, the air tinged with sulfur.",
+          "You can tell no one is coming back to this place."
+        ],
+        "type": "DIALOGUE",
+        "next": "camp_choice"
+      },
+      {
+        "id": "camp_choice",
+        "result": ["What do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "search",
+            "text": "Search it",
+            "next": "search_random"
+          },
+          {
+            "id": "rest",
+            "text": "Rest briefly",
+            "next": "rest_random"
+          }
+        ]
+      },
+      {
+        "id": "search_random",
+        "result": ["You dig through the scorched remains."],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 20,
+            "next": "search_success"
+          },
+          {
+            "id": "failure",
+            "chance": 80,
+            "next": "search_failure"
+          }
+        ]
+      },
+      {
+        "id": "search_success",
+        "result": ["You dig through the scorched remains.", "TO-DO, REWARD"],
+        "type": "DIALOGUE",
+        "next": "search_reward"
+      },
+      {
+        "id": "search_failure",
+        "result": ["Failure!", "Youg et burnt.."],
+        "type": "DIALOGUE",
+        "next": "search_burn"
+      },
+      {
+        "id": "search_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion"
+      },
+      {
+        "id": "search_burn",
+        "type": "STATUS",
+        "statusId": "burn"
+      },
+      {
+        "id": "rest_random",
+        "result": [
+          "You settle by the firepit, letting your body finally rest."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 70,
+            "next": "rest_success"
+          },
+          {
+            "id": "failure",
+            "chance": 30,
+            "next": "rest_failure"
+          }
+        ]
+      },
+      {
+        "id": "rest_success",
+        "result": [
+          "For a moment, the cliffs feel calm.",
+          "You regain something...."
+        ],
+        "type": "DIALOGUE",
+        "next": "rest_reward"
+      },
+      {
+        "id": "rest_failure",
+        "result": [
+          "You close your eyes, just for a moment...",
+          "A loud hiss wakes you up! An ember slime has approached you.",
+          "It crackles and lunges as you quickly scramble to your feet."
+        ],
+        "type": "DIALOGUE",
+        "next": "rest_fight"
+      },
+      {
+        "id": "rest_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion"
+      },
+      {
+        "id": "rest_fight",
+        "type": "FIGHT",
+        "enemyId": "ember_1"
+      }
+    ]
+  },
+  {
+    "id": "desert_slime_2",
+    "level": [5],
+    "description": "Stage 3 desert encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "The desert sun beats down on you mercilessly.",
+          "A dune of sand rises up before you, and atop it sits a sand-coated creature."
+        ],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "endless",
+    "level": [0],
+    "description": "endless",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 3"],
+        "type": "DIALOGUE"
+      }
+    ]
+  }
+]
