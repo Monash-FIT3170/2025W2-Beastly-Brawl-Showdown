@@ -28,7 +28,7 @@ export class GroundSlamAbilityAction extends Action {
     this.incCurrentUse(-1);
 
     // Deal 3 damage + Stun
-    affectedPlayer.incHealth(-3);
+    affectedPlayer.incHealth(-this.damage);
     affectedPlayer.addStatus(new Stun(1));
 
     // Add logs
