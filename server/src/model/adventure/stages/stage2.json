@@ -86,8 +86,8 @@
       },
       {
         "id": "ember_drop",
-        "type": "LOOT_POOL",
-        "lootPoolId": "fire_pool"
+        "type": "EQUIPMENT",
+        "equipmentId": "basalt_shield"
       }
     ]
   },
@@ -168,10 +168,7 @@
       {
         "id": "riddle_bird",
         "type": "DIALOGUE",
-        "result": [
-          "WHAT?! BIRD?? A bird in my swamp??",
-          "You foolish mouse."
-        ],
+        "result": ["WHAT?! BIRD?? A bird in my swamp??", "You foolish mouse."],
         "next": "witch_curse"
       },
       {

@@ -34,28 +34,18 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
   fire_pool: [
     {
       loot: () => new Coal(),
-      chance: 5,
+      chance: 15,
       id: "coal",
     },
     {
-      loot: () => new BasaltShield(),
-      chance: 30,
-      id: "basalt_shield",
-    },
-    {
       loot: () => new ScorchPowder(),
-      chance: 30,
+      chance: 45,
       id: "scorch_powder",
     },
     {
       loot: () => new CharredRoot(),
-      chance: 30,
+      chance: 40,
       id: "charred_root",
-    },
-    {
-      loot: () => new MoltenHeart(),
-      chance: 5,
-      id: "molten_heart",
     },
   ],
   cinder_pool: [
