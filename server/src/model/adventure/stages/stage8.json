@@ -45,13 +45,18 @@
     "outcomes": [
       {
         "id": "initial",
-        "result": ["you see cinder tail again."],
+        "result": [
+          "You feel the shift again, it's the same as when the dragon arrived last.",
+          "It might have spoken in an odd manner, but it was not lying. This beast owned the land."
+        ],
         "type": "DIALOGUE",
         "next": "stranger_dialogue"
       },
       {
         "id": "stranger_dialogue",
-        "result": ["im back ."],
+        "result": [
+          "Adventurer, I have returned. Not only to avenge myself, but to avenge my lands."
+        ],
         "type": "DIALOGUE",
         "enemyId": "cinder_tail",
         "next": "stranger_fight"
@@ -65,7 +70,13 @@
       {
         "id": "victory",
         "type": "DIALOGUE",
-        "result": ["how the helly."],
+        "result": [
+          "AGAIN?!?! What... Losing twice in a row??",
+          "...",
+          "Hey.. so since you're so strong. Heh. Mind if I join you?",
+          "I'm not trying to figure out your secrets or anything, its all total respect.",
+          "Like Big Red totally respects you, so lets stick together? Right?"
+        ],
         "enemyId": "cinder_tail"
       }
     ]

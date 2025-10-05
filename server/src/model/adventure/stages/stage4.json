@@ -55,14 +55,20 @@
       {
         "id": "initial",
         "result": [
-          "pre-fight dialogue like omg whys it got all hot all a sudden??"
+          "The ground trembles as the air grows thick with heat.",
+          "It was already hot, but this is much worse. Something is wrong.",
+          "That's when you notice it, a large red beast flying down to you."
         ],
         "type": "DIALOGUE",
         "next": "pre_fight_dialogue"
       },
       {
         "id": "pre_fight_dialogue",
-        "result": ["bruzz get outta my territory"],
+        "result": [
+          "You tread upon my lands. This mountain, this sky, this breath of wind.. they all bow to me.",
+          "My body and soul keep the flames of the basalt cliffs alive.",
+          "I won't let your presence go unnoticed. Prepare yourself."
+        ],
         "type": "DIALOGUE",
         "enemyId": "cinder_tail",
         "next": "stranger_fight"
@@ -76,8 +82,21 @@
       {
         "id": "victory",
         "type": "DIALOGUE",
-        "result": ["you mighta won but im watching you... ill be here..."],
+        "result": [
+          "WHHHAAAAT! How did you win? I'm meant to be strong???",
+          "Give me some time, I'll... I'll... I don't know but I will win next time."
+        ],
         "enemyId": "cinder_tail",
+        "next": "victory_2"
+      },
+      {
+        "id": "victory_2",
+        "type": "DIALOGUE",
+        "result": [
+          "After besting the dragon, it seemed to have a personality change lol.",
+          "Perhaps it was all a front to scare you.",
+          "You continue with your journey."
+        ],
         "next": "mini_boss_reward"
       },
       {

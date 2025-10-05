@@ -229,19 +229,21 @@
         "options": [
           {
             "id": "search",
-            "text": "Search it",
+            "text": "Search the camp for loot.",
             "next": "search_random"
           },
           {
             "id": "rest",
-            "text": "Rest briefly",
+            "text": "Rest briefly by the dead campfire.",
             "next": "rest_random"
           }
         ]
       },
       {
         "id": "search_random",
-        "result": ["You dig through the scorched remains."],
+        "result": [
+          "You scour the abandoned campsite, eyes out for anything of value."
+        ],
         "type": "RANDOM",
         "options": [
           {
@@ -258,31 +260,36 @@
       },
       {
         "id": "search_success",
-        "result": ["You dig through the scorched remains.", "TO-DO, REWARD"],
+        "result": [
+          "Among the logs, you find something half buried in soot.",
+          "A glimmer of fortune in this forgotten place."
+        ],
         "type": "DIALOGUE",
         "next": "search_reward"
       },
       {
         "id": "search_failure",
-        "result": ["Failure!", "Youg et burnt.."],
+        "result": [
+          "You reach into the rubble.. eek! The stone is hotter than it looks!"
+        ],
         "type": "DIALOGUE",
         "next": "search_burn"
       },
       {
         "id": "search_reward",
-        "type": "CONSUMABLE",
-        "consumableId": "super_health_potion"
+        "type": "LOOT_POOL",
+        "lootPoolId": "cinder_pool"
       },
       {
         "id": "search_burn",
         "type": "STATUS",
-        "result": ["Youg et burnt.."],
+        "result": ["A burst of heat scorches your hand."],
         "statusId": ["burn", 3]
       },
       {
         "id": "rest_random",
         "result": [
-          "You settle by the firepit, letting your body finally rest."
+          "You settle by the firepit, letting your tired body sink into the warmth."
         ],
         "type": "RANDOM",
         "options": [
@@ -302,7 +309,7 @@
         "id": "rest_success",
         "result": [
           "For a moment, the cliffs feel calm.",
-          "You regain something...."
+          "The rest clears your mind and you feel reset."
         ],
         "type": "DIALOGUE",
         "next": "rest_reward"
@@ -311,7 +318,7 @@
         "id": "rest_failure",
         "result": [
           "You close your eyes, just for a moment...",
-          "A loud hiss wakes you up! An ember slime has approached you.",
+          "A loud hiss wakes you up! An ember slime is staring you down.",
           "It crackles and lunges as you quickly scramble to your feet."
         ],
         "type": "DIALOGUE",
@@ -319,8 +326,9 @@
       },
       {
         "id": "rest_reward",
-        "type": "CONSUMABLE",
-        "consumableId": "super_health_potion"
+        "result": ["Your abilities replenish."],
+        "type": "STATUS",
+        "statusId": ["infinite_ability", 2]
       },
       {
         "id": "rest_fight",
