@@ -30,7 +30,7 @@ export abstract class Consumable {
 
   public abstract getStatDescription(): string;
 
-  public abstract consume(player: Player): void;
+  public abstract consume(player: Player): [string, string];
 
   protected abstract getImageString(): string;
 

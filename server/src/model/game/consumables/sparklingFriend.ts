@@ -13,12 +13,15 @@ export class SparklingFriend extends Consumable {
   public getStatDescription(): string {
     return "Stun the opponent for 1 turn.";
   }
-  public consume(player: Player): void {
-
+  public consume(player: Player): [string, string] {
     player.addStatus(new Stun(1));
-    player.addLog(
-      `You called the fire fly. It streaks to the foe's eyes and erupts in white light. Your enemy is stunned!`
-    );
+    // player.addLog(
+    //   `You called the fire fly. It streaks to the foe's eyes and erupts in white light. Your enemy is stunned!`
+    // );
+
+    let actingLog = `You called the fire fly. It streaks to the foe's eyes and erupts in white light. Your enemy is stunned!`;
+    let affectedLog = `A firefly erupts in a white light. You are stunned!`;
+    return [actingLog, affectedLog];
   }
   protected getImageString(): string {
     return "SPARKLING_FRIEND";

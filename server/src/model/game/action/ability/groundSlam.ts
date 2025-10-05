@@ -10,9 +10,9 @@ export class GroundSlamAbilityAction extends Action {
       ActionIdentifier.GROUND_SLAM,
       "Ground Slam",
       "Stomp the earth with brutal force. Deal 3 damage and leave your opponent stunned, unable to act next turn.",
-      2
+      20
     );
-    this.damage = 3;
+    this.damage = 30;
   }
 
   // Clear the opponent's actions

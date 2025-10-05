@@ -13,11 +13,12 @@ export class ScorchPowder extends Consumable {
   public getStatDescription(): string {
     return "Burns your enemy for 3 turns.";
   }
-  public consume(player: Player): void {
+  public consume(player: Player): [string, string] {
     player.addStatus(new Burn(3));
-    player.addLog(
-      `You threw the scorch powder at your enemy. They will now burn for three turns!`
-    );
+
+    let actingLog = `You threw the Scorch Powder at your enemy. They will now burn for three turns!`;
+    let affectedLog = `You have been burned for three turns by Scorch Powder.`;
+    return [actingLog, affectedLog];
   }
   protected getImageString(): string {
     return "SCORCH_POWDER";

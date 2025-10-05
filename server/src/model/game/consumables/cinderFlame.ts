@@ -16,7 +16,7 @@ export class CinderFlame extends Consumable {
   public getStatDescription(): string {
     return "Deal 5 damage, double damage if dodging.";
   }
-  public consume(player: Player): void {
+  public consume(player: Player): [string, string] {
     const action = new FlameLashAbilityAction();
 
     // Deal 10 damage if the opponent is dodging, 5 damage otherwise
@@ -32,6 +32,9 @@ export class CinderFlame extends Consumable {
 
     player.incHealth(-this.damage);
     // Log the action ??
+    let actingLog = `You use Cinder Flame dealing ${this.damage} damage.`;
+    let affectedLog = `You have been struck by a Cinder Flame, taking ${this.damage} damage.`;
+    return [actingLog, affectedLog];
   }
 
   protected getImageString(): string {

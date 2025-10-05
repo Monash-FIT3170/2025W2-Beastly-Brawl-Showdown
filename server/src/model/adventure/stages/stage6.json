@@ -240,6 +240,7 @@
         "id": "pool_failure",
         "type": "DIALOGUE",
         "result": [
+          "Now that you're at the lava pool you feel silly. There's no way wood would survive here.",
           "You solemnly walk back to the ember, maybe you'll find something on your way back. Though there was nothing on your way here either.",
           "Returning to the ember you see its soft glow is even softer."
         ],
@@ -249,6 +250,7 @@
         "id": "pool_success",
         "type": "DIALOGUE",
         "result": [
+          "Now that you're at the lava pool you feel silly. There's no way wood would survive here.",
           "Wait...! Maybe you're not dumb? There's something laying just on the edge of the pool.",
           "It's firewood! You rush back to the ember, placing the wood gently around it.",
           "You watch as its light catches onto the pieces of wood, then pwooOOSH! It flares back to life."

@@ -10,14 +10,15 @@ export class AbilityAntidote extends Consumable {
     super("Ability Antidote", description, ConsumableType.SELF_INFLICT);
   }
 
-  public consume(player: Player): void {
+  public consume(player: Player): [string, string] {
     // Replenish all abilities (actions) to max uses
     player.getActions().forEach((action) => {
       action.incCurrentUse(action.getMaxUse() - action.getCurrentUse());
     });
-    player.addLog(
-      `${player.getName()} used Ability Antidote! All abilities replenished.`
-    );
+
+    let actingLog = `You used Ability Antidote! All abilities replenished.`;
+    let affectedLog = `${player.getName()} used Ability Antidote! Replenishing all their abilities.`;
+    return [actingLog, affectedLog];
   }
 
   public getStatDescription(): string {

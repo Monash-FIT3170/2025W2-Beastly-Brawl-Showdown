@@ -13,9 +13,13 @@ export class Coal extends Consumable {
   public getStatDescription(): string {
     return "Does nothing.";
   }
-  public consume(player: Player): void {
+  public consume(player: Player): [string, string] {
     //TODO: decide appropriate time for status
     player.addLog(`You use your coal. Leading to a feeble amount of nothing.`);
+
+    let actingLog = `You use your coal. Leading to a feeble amount of nothing.`;
+    let affectedLog = `${player.getName()} uses coal from their backpack!`;
+    return [actingLog, affectedLog];
   }
   protected getImageString(): string {
     return "COAL";

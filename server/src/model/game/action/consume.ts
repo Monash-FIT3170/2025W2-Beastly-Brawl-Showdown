@@ -26,13 +26,16 @@ export class ConsumeAction extends Action {
     console.error("Consume Action Preparation Unimplemented");
   }
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    let actingLog = `You use ${this.consumable.getName()} from your backpack!`;
+    let affectedLog = `${actingPlayer.getName()} used ${this.consumable.getName()} from their backpack!`;
+
     if (this.consumable?.getType() == ConsumableType.SELF_INFLICT) {
-      this.consumable.consume(actingPlayer);
+      [actingLog, affectedLog] = this.consumable.consume(actingPlayer);
       console.log(
         `${this.consumable.getName()} has been used on ${actingPlayer.getName()}`
       );
     } else if (this.consumable?.getType() == ConsumableType.ENEMY_INFLICT) {
-      this.consumable.consume(affectedPlayer);
+      [actingLog, affectedLog] = this.consumable.consume(affectedPlayer);
       console.log(
         `${this.consumable.getName()} has been used on ${affectedPlayer.getName()}`
       );
@@ -41,13 +44,8 @@ export class ConsumeAction extends Action {
     }
 
     //LOGS
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.consumable.getName()} from their backpack!
-      }.`
-    );
-    actingPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${this.consumable.getName()} from their backpack!`
-    );
+    affectedPlayer.addLog(affectedLog);
+    actingPlayer.addLog(actingLog);
 
     return {
       appliedStatus: {

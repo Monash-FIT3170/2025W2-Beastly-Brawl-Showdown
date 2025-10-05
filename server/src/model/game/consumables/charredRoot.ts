@@ -11,16 +11,20 @@ export class CharredRoot extends Consumable {
     super("Charred Root", description, ConsumableType.SELF_INFLICT);
   }
 
-  public consume(player: Player): void {
+  public consume(player: Player): [string, string] {
     console.error("TEST CHARRED ROOT");
     const healAmount = Math.ceil(player.getMonster()!.getMaxHealth() * 0.4);
     player.incHealth(healAmount);
     const statuses = player.getStatuses().filter((s) => s! instanceof Burn);
     player.clearStatuses();
     statuses.forEach((s) => player.addStatus(s));
-    player.addLog(
-      `You chew down on the root, healing any burns and restoring ${healAmount}HP.`
-    );
+    // player.addLog(
+    //   `You chew down on the root, healing any burns and restoring ${healAmount}HP.`
+    // );
+
+    let actingLog = `You chew down on the root, healing any burns and restoring ${healAmount}HP.`;
+    let affectedLog = `${player.getName()} uses Charred Root, healing any burns and restoring ${healAmount}HP.`;
+    return [actingLog, affectedLog];
   }
 
   public getStatDescription(): string {

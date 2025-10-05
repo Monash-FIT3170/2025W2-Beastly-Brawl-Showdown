@@ -31,7 +31,7 @@ export class BurningRage extends BattleEffect {
     success: boolean
   ): void {
     if (action.getId() == ActionIdentifier.ATTACK) {
-      const burnCount = 2;
+      const burnCount = 4;
       affectedPlayer.addStatus(new Burn(burnCount));
       console.log(
         `BURNING RAGE: ${actingPlayer.getName()} has given ${burnCount} burn to ${affectedPlayer.getName()}`

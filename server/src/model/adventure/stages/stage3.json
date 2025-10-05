@@ -170,7 +170,7 @@
       {
         "id": "dodge_reward",
         "type": "CONSUMABLE",
-        "consumableId": "super_health_potion"
+        "consumableId": "mini_health_potion"
       },
       {
         "id": "dodge_fail",
