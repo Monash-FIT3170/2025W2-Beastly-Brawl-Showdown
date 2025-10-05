@@ -123,17 +123,17 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
               The Top {top3Players?.length}:
             </OutlineText>
           </div>
-          <div className="w-full flex flex-col gap-[1rem]">
-            <div className="ml-[-1.65rem]">
+          <div className="w-full flex flex-col gap-[1.5rem] flex-grow">
+            <div className="ml-[-1.6rem] flex-1">
               <ScoringRankBar player={player1} rank={barRanks[0]} score={score1} />
             </div>
-            <div className="ml-[-1.65rem]">
+            <div className="ml-[-1.6rem] flex-1">
               <ScoringRankBar player={player2} rank={barRanks[1]} score={score2} />
             </div>
             {/* Only show the 3rd place bar if there exists a 3rd place player in the lobby */}
             {player3 ?
               score3 ?
-                <div className="ml-[-1.65rem]">
+                <div className="ml-[-1.6rem] flex-1">
                   <ScoringRankBar player={player3} rank={barRanks[2]} score={score3} />
                 </div>
               : null

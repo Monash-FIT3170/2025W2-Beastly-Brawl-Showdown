@@ -39,7 +39,7 @@ export const ScoringRankBar = ({ player, rank, score }: ScoringRankBarProps) => 
 
   return (
     <div className={`flex flex-row h-full ${widthToDisplay} items-center justify-between`}>
-      <div className="relative w-full h-17">
+      <div className="relative w-full h-full">
         <div className={`${rankingBarProperties}`}>
           <div className="flex justify-between items-center w-full px-3">
             <div className="flex flex-col leading-none pt-[0.25rem]">
