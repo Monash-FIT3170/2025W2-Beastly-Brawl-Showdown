@@ -192,7 +192,7 @@
       {
         "id": "witch_curse",
         "type": "STATUS",
-        "statusId": [["poisoned", 5], 3],
+        "statusId": ["poisoned", 5],
         "result": [
           "\"Blulaflu!\" the witch shouts",
           "A green mist clings to your skin and seeps into your lungs.",
