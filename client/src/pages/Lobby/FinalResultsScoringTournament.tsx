@@ -142,13 +142,13 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
         </div>
 
       <div className="flex flex-row items-center justify-center h-1/2 space-x-[5rem]">
-        <ButtonGeneric color="ronchi" size="longlarge" onClick={renderConfigPage}>
-          <OutlineText size="large">
+        <ButtonGeneric color="ronchi" size="medium" onClick={renderConfigPage}>
+          <OutlineText size="medium">
             NEW LOBBY
           </OutlineText>
         </ButtonGeneric>
-        <ButtonGeneric color="red" size="longlarge" onClick={exitToHome}>
-          <OutlineText size="large">
+        <ButtonGeneric color="red" size="medium" onClick={exitToHome}>
+          <OutlineText size="medium">
             EXIT TO HOME
           </OutlineText>
         </ButtonGeneric>
