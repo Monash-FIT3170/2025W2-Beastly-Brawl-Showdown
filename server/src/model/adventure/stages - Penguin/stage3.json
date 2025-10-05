@@ -69,8 +69,8 @@
       },
       {
         "id": "slime_item",
-        "type": "STORY_ITEM",
-        "storyItemId": "slime_baby"
+        "type": "CONSUMABLE",
+        "consumableId": "slime_friend"
       },
       {
         "id": "slime_fight",
@@ -186,7 +186,7 @@
         "id": "dodge_injury",
         "type": "STAT_CHANGE",
         "statChange": ["health", -5],
-        "result": ["Yeowch!! -5 HP"]
+        "result": ["Yeowch!!"]
       },
       {
         "id": "brace_next",
@@ -203,7 +203,7 @@
         "id": "brace_injury",
         "type": "STAT_CHANGE",
         "statChange": ["health", -2],
-        "result": ["Ouch... -2 HP"]
+        "result": ["Ouch..."]
       }
     ]
   },
@@ -276,8 +276,7 @@
       {
         "id": "search_burn",
         "type": "STATUS",
-        "result": ["Youg et burnt.."],
-        "statusId": ["burn", 3]
+        "statusId": "burn"
       },
       {
         "id": "rest_random",
@@ -326,51 +325,6 @@
         "id": "rest_fight",
         "type": "FIGHT",
         "enemyId": "ember_1"
-      }
-    ]
-  },
-  {
-    "id": "swamp_slime_2",
-    "level": [4],
-    "description": "Swamp slime 2 encounter",
-    "outcomes": [
-      {
-        "id": "initial",
-        "result": [
-          "As you walk deeper into the swamp, your foot sinks into a sticky puddle of mud.",
-          "The puddle bubbles... not mud at all!",
-          "A slime rises, oozing up your leg and dragging you off balance!"
-        ],
-        "type": "DIALOGUE",
-        "next": "swamp_slime_2_dialogue"
-      },
-      {
-        "id": "swamp_slime_2_dialogue",
-        "result": ["Gloooorp... shluuurrp... splaaat!", "Stickyyy!"],
-        "type": "DIALOGUE",
-        "enemyId": "swamp_slime_2",
-        "next": "swamp_slime_2_battle"
-      },
-      {
-        "id": "swamp_slime_2_battle",
-        "type": "FIGHT",
-        "enemyId": "swamp_slime_2",
-        "next": "swamp_slime_2_win"
-      },
-      {
-        "id": "swamp_slime_2_win",
-        "type": "DIALOGUE",
-        "result": [
-          "The slime shudders, collapsing back into a pool of mud.",
-          "In the silence, something remains...",
-          "A strange crystalized heart, shining with the swamp's strange energy."
-        ],
-        "next": "reward_slimy_heart"
-      },
-      {
-        "id": "reward_slimy_heart",
-        "type": "EQUIPMENT",
-        "equipmentId": "slimy_heart"
       }
     ]
   },

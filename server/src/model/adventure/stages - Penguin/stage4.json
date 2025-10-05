@@ -1,0 +1,62 @@
+[
+  {
+    "id": "First Encounter",
+    "level": [1],
+    "description": "Stage 1 miniboss",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "A stranger approaches you and challenges you to a fight.",
+          "You do not feel as though it is within your power to deny your opponent this challenge."
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_dialogue"
+      },
+      {
+        "id": "pre_fight_dialogue",
+        "result": [
+          "Oi, what'chu doin' on mah turf?!",
+          "A wise guy, huh?",
+          "Consider your aft grass!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": "pouncing_bandit",
+        "next": "stranger_fight"
+      },
+      {
+        "id": "stranger_fight",
+        "type": "FIGHT",
+        "enemyId": "pouncing_bandit",
+        "next": "victory"
+      },
+      {
+        "id": "victory",
+        "type": "DIALOGUE",
+        "result": [
+          "OUUUUGGHHH!!! THE PAIN!",
+          "This ain't good for my cred...",
+          "Tell NO ONE and I'll give you this."
+        ],
+        "next": "mini_boss_reward"
+      },
+      {
+        "id": "mini_boss_reward",
+        "type": "EQUIPMENT",
+        "equipmentId": "magic_shield"
+      }
+    ]
+  },
+  {
+    "id": "slime_1",
+    "level": [0],
+    "description": "Stage 1, player fights slime 1.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 4"],
+        "type": "DIALOGUE"
+      }
+    ]
+  }
+]

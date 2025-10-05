@@ -117,14 +117,264 @@
     ]
   },
   {
-    "id": "forge",
+    "id": "ember",
     "level": [2],
-    "description": "Stage 6, player finds forge.",
+    "description": "Basalt Cliffs Stage 6, player finds embers.",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["You at the forge baby!"],
-        "type": "DIALOGUE"
+        "result": [
+          "You find a pile of cooling embers that faintly tremble. It's the remains of an ember slime, flickering but almost gone.",
+          "It hurts you to see its glow struggling in its final moments."
+        ],
+        "type": "DIALOGUE",
+        "next": "other_dialogue"
+      },
+      {
+        "id": "other_dialogue",
+        "result": ["What should you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "blow",
+            "text": "Softly blow on the ember.",
+            "next": "blow_random"
+          },
+          {
+            "id": "feed",
+            "text": "Feed the ember firewood.",
+            "next": "feed_firewood"
+          },
+          {
+            "id": "snuff",
+            "text": "Put it out of its misery.",
+            "next": "revive_failure"
+          }
+        ]
+      },
+      {
+        "id": "blow_random",
+        "result": ["You kneel and blow gently upon the ember."],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 30,
+            "next": "blow_success"
+          },
+          {
+            "id": "failure",
+            "chance": 70,
+            "next": "blow_failure"
+          }
+        ]
+      },
+      {
+        "id": "blow_success",
+        "type": "DIALOGUE",
+        "result": [
+          "Your breath stirs the fading glow. The ember flares brightly, growing into a tiny flame... it worked!"
+        ],
+        "next": "revive_success"
+      },
+      {
+        "id": "blow_failure",
+        "type": "DIALOGUE",
+        "result": ["You blow and you blow, but the ember only grows colder."],
+        "next": "revive_failure"
+      },
+      {
+        "id": "feed_firewood",
+        "type": "DIALOGUE",
+        "result": [
+          "You glance around, desparate to find fuel for the dying slime.",
+          "You can hear the bubble of a lava pool, maybe there's something in there?",
+          "Further ahead, there's jagged rocks with something wedged between them. You think its firewood.",
+          "But if there's nothing... maybe use the basalt instead?"
+        ],
+        "next": "feed_options"
+      },
+      {
+        "id": "feed_options",
+        "result": ["what do you do"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "pool",
+            "text": "Check out the cooling lava pool.",
+            "next": "pool_next"
+          },
+          {
+            "id": "search",
+            "text": "Search the rocks.",
+            "next": "search_next"
+          },
+          {
+            "id": "rocks",
+            "text": "Pile basalt rocks around it.",
+            "next": "rocks_next"
+          }
+        ]
+      },
+      {
+        "id": "pool_next",
+        "result": [
+          "Now that you're at the lava pool you feel silly. There's no way wood would survive here."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 70,
+            "next": "pool_success"
+          },
+          {
+            "id": "failure",
+            "chance": 30,
+            "next": "pool_failure"
+          }
+        ]
+      },
+      {
+        "id": "pool_failure",
+        "type": "DIALOGUE",
+        "result": [
+          "You solemnly walk back to the ember, maybe you'll find something on your way back. Though there was nothing on your way here either.",
+          "Returning to the ember you see its soft glow is even softer."
+        ],
+        "next": "revive_failure"
+      },
+      {
+        "id": "pool_success",
+        "type": "DIALOGUE",
+        "result": [
+          "Wait...! Maybe you're not dumb? There's something laying just on the edge of the pool.",
+          "It's firewood! You rush back to the ember, placing the wood gently around it.",
+          "You watch as its light catches onto the pieces of wood, then pwooOOSH! It flares back to life."
+        ],
+        "next": "revive_success"
+      },
+      {
+        "id": "search_next",
+        "type": "DIALOGUE",
+        "result": [
+          "You scramble across the jagged terrain, scanning every crevice",
+          "Between two basalt spikes you spot blackened wood fragments, remnants of a burnt tree.",
+          "You gather what you can and run back."
+        ],
+        "next": "search_hurt"
+      },
+      {
+        "id": "search_hurt",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": ["You trip on the uneven terrain, losing 2 HP"],
+        "next": "search_continue"
+      },
+      {
+        "id": "search_continue",
+        "type": "DIALOGUE",
+        "result": [
+          "You get back up again, it's only a scratch. The ember is more important.",
+          "You place the burnt wood gently around the ember, it catches alight instantly!"
+        ],
+        "next": "revive_success"
+      },
+
+      {
+        "id": "rocks_next",
+        "type": "DIALOGUE",
+        "result": [
+          "You stack small basalt rocks around the ember, hoping it's good enough.",
+          "The rocks smother the last flicker of flame. Oh."
+        ],
+        "next": "revive_failure"
+      },
+      {
+        "id": "revive_success",
+        "type": "DIALOGUE",
+        "result": [
+          "The lively flame reshapes into a small fire slime.",
+          "It bounces around joyfully, sparks dancing in the air.",
+          "Though you feel happy, you were expecting a reward.",
+          "It senses your greed, but its still thankful."
+        ],
+        "next": "revive_dialogue"
+      },
+      {
+        "id": "revive_dialogue",
+        "type": "DIALOGUE",
+        "result": ["⸜(｡˃ ᵕ ˂ )⸝♡"],
+        "enemyId": "ember_4",
+        "next": "revive_success_status"
+      },
+      {
+        "id": "revive_success_status",
+        "type": "STATUS",
+        "result": ["The slime blesses you."],
+        "statusId": ["slime_boost", 5],
+        "next": "revive_success_random"
+      },
+      {
+        "id": "revive_success_random",
+        "result": [
+          "The slime continues to bounce around, and bounce, and oh? It's gone.",
+          "Wait.. it left something behind. Is this another gift? Or an accident? You don't care."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "item2",
+            "chance": 80,
+            "next": "root"
+          },
+          {
+            "id": "item3",
+            "chance": 20,
+            "next": "scale"
+          }
+        ]
+      },
+      {
+        "id": "revive_failure",
+        "result": [
+          "The ember shudders once, then fades to ash.",
+          "You feel cold.",
+          "As you stare solemnly at where the ember once was, you notice something."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "item1",
+            "chance": 50,
+            "next": "scorch"
+          },
+          {
+            "id": "item2",
+            "chance": 50,
+            "next": "coal"
+          }
+        ]
+      },
+      {
+        "id": "scorch",
+        "type": "CONSUMABLE",
+        "consumableId": "scorch_powder"
+      },
+      {
+        "id": "coal",
+        "type": "CONSUMABLE",
+        "consumableId": "coal"
+      },
+      {
+        "id": "root",
+        "type": "CONSUMABLE",
+        "consumableId": "charred_root"
+      },
+      {
+        "id": "scale",
+        "type": "STORY_ITEM",
+        "consumableId": "dragon_scale"
       }
     ]
   },

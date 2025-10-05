@@ -39,22 +39,19 @@
     ]
   },
   {
-    "id": "Final Encounter",
+    "id": "Cinder Tail Boss Encounter",
     "level": [2],
-    "description": "the final encounter",
+    "description": "The Final Encounter Level 2",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["In the distance you see a familiar face."],
+        "result": ["you see cinder tail again."],
         "type": "DIALOGUE",
         "next": "stranger_dialogue"
       },
       {
         "id": "stranger_dialogue",
-        "result": [
-          "You don't stand a chance against me now.",
-          "I've toppled greater foes than you."
-        ],
+        "result": ["im back ."],
         "type": "DIALOGUE",
         "enemyId": "cinder_tail",
         "next": "stranger_fight"
@@ -68,11 +65,7 @@
       {
         "id": "victory",
         "type": "DIALOGUE",
-        "result": [
-          "I concede defeat. You have well and truly bested me.",
-          "If you'd allow, I would like to join you.",
-          "Maybe I could learn a thing or two."
-        ],
+        "result": ["how the helly."],
         "enemyId": "cinder_tail"
       }
     ]

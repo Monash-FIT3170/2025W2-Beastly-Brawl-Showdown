@@ -24,6 +24,7 @@ import { StoryItem } from "../model/game/storyItem/storyItem";
 import { SlimeBoost } from "../model/game/status/slimeBoost";
 import { Equipment } from "../model/game/equipment/equipment";
 import { createStoryItem } from "../model/adventure/factories/storyItemFactory";
+import { Consumable } from "../model/game/consumables/consumable";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -372,9 +373,11 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           socket.emit("adventure_defeat");
         }
       } else if (resolved.type === "EQUIPMENT") {
-        resolved.equipment.calculateStrength(adventure.getStage());
+        const loot = resolved.equipment;
+        loot.calculateStrength(adventure.getStage());
+        // console.error("DEBUG: equipment", loot);
         socket.emit("adventure_equipment", {
-          equipment: resolved.equipment?.getState() || "Unknown equipment",
+          equipment: loot.getState() || "Unknown equipment",
           equipmentId: resolved.equipmentId || "unknown_equipment",
         });
       } else if (resolved.type === "PREREQUISITE") {
@@ -413,16 +416,23 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         });
       } else if (resolved.type === "LOOT_POOL") {
         if (resolved.randomLoot() instanceof Equipment) {
-          resolved.randomLoot().calculateStrength(adventure.getStage());
+          const loot = resolved.randomLoot();
+          loot.calculateStrength(adventure.getStage());
+          // console.error("DEBUG: random loot equipment", loot);
           socket.emit("adventure_equipment", {
-            equipment: resolved.randomLoot()?.getState() || "Unknown equipment",
+            equipment: loot.getState() || "Unknown equipment",
             equipmentId: resolved.lootId || "unknown_equipment",
           });
-        } else {
+        } else if (resolved.randomLoot() instanceof Consumable) {
           socket.emit("adventure_consumable", {
             consumable:
               resolved.randomLoot()?.getState() || "Unknown Consumable",
             consumableId: resolved.lootId || "unknown_consumable",
+          });
+        } else {
+          socket.emit("adventure_storyItem", {
+            storyItem: resolved.randomLoot()?.getState() || "Unkown Story Item",
+            storyItemId: resolved.lootId || "unknown_story_item",
           });
         }
       } else if (resolved.type === "STORY_ITEM") {

@@ -5,23 +5,13 @@ import { LakeCurse } from "../../game/status/lakeCurse";
 import { LakeBlessing } from "../../game/status/lakeBlessing";
 import { SlimeBoost } from "../../game/status/slimeBoost";
 import { Burn } from "../../game/status/burn";
+import { InfinityAbility } from "../../game/status/infinityAbility";
+import { BurningRage } from "../../game/status/burningRage";
 
 export interface StatusInfo {
   statusId: string;
   duration: number;
 }
-/**
-const statusFactory: Record<string, (duration) => Status> = {
-  stunned: () => new Stun(2),
-  poisoned: () => new Poison(5),
-  lake_curse_mini: () => new LakeCurse(3),
-  lake_curse: () => new LakeCurse(10),
-  lake_blessing: () => new LakeBlessing(30),
-  lake_blessing_mini: () => new LakeBlessing(10),
-  grandma_blessing: () => new SlimeBoost(10),
-  burn: () => new Burn(3),
-};
- */
 
 const statusFactory: Record<string, (d: number) => Status> = {
   stunned: (d) => new Stun(d),
@@ -30,6 +20,8 @@ const statusFactory: Record<string, (d: number) => Status> = {
   lake_blessing: (d) => new LakeBlessing(d),
   slime_boost: (d) => new SlimeBoost(d),
   burn: (d) => new Burn(d),
+  infinite_ability: (d) => new InfinityAbility(d),
+  burning_rage: (d) => new BurningRage(d),
 };
 
 export function createStatus(id: string, duration: number): Status {
