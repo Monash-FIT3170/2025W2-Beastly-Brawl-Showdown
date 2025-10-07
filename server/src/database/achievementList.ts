@@ -7,7 +7,8 @@ export function createAchievementSchema(
   objectives?: Record<string, boolean | number>,
   progress?: 0,
   goal?: number,
-  status: AchievementStatus = 'locked'
+  status: AchievementStatus = 'locked',
+  hidden: boolean = false
 ): AchievementSchema {
   return {
     name,
@@ -15,7 +16,8 @@ export function createAchievementSchema(
     status,
     progress,
     goal,
-    objectives
+    objectives,
+    hidden
   };
 }
 // Create acheivements Here

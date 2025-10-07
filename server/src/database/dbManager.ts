@@ -56,6 +56,7 @@ export interface AchievementSchema {
   progress?: number;
   goal?: number;
   objectives?: Record<string, boolean|number>;
+  hidden: boolean
 }
 
 
