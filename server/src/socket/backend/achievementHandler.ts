@@ -6,6 +6,7 @@ import {
   createDefaultPlayerAccountSchema,
 } from "../../database/dbManager";
 import { playerAccounts } from "../../../main";
+import { Achievements } from "../../database/achievementList";
 
 export const achievementHandler = (io: Server, socket: Socket) => {
 
@@ -57,7 +58,7 @@ export const achievementHandler = (io: Server, socket: Socket) => {
   });
 
 
-socket.on("fetchAchievement", async () => {
+   socket.on("fetchAchievement", async () => {
     const user = playerAccounts.get(socket.id);
 
     const achievements = user?.achievements;
@@ -69,6 +70,24 @@ socket.on("fetchAchievement", async () => {
     
   });
 
+
+  socket.on("syncAchievements", async () => {
+    const user = playerAccounts.get(socket.id);
+
+    const userAchievementIds = new Set(user.achievements.map(a => a._id));
+    
+    for (const masterAch of Achievements) {
+      if (!userAchievementIds.has(masterAch._id)) {
+        user.achievements.push(masterAch);
+        console.log(`Added new achievement "${masterAch.name}" for ${user.username}`);
+      }
+    }
+
+    // Persist updated achievements to database
+    await updatePlayerAccount(user._id, { achievements: user.achievements });
+
+    
+  });
 
 };
 
