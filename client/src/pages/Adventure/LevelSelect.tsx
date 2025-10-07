@@ -127,7 +127,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         </div>
 
         {/* Navigation (fixed to bottom) */}
-        <div className="fixed bottom-25 left-1/2 -translate-x-1/2 grid grid-cols-[64px_1fr_64px] items-center w-full max-w-md z-40">
+        <div className="fixed bottom-25 left-1/2 -translate-x-1/2 grid grid-cols-3 items-center w-[70%] lg:max-w-md z-40">
           {/* Left Arrow */}
           <div className="flex justify-center items-center">
             {observedLevel > 1 && (
