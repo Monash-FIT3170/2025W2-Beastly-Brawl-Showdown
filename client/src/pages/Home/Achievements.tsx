@@ -160,13 +160,14 @@ export const Achievements = () => {
               </div>
 
               {/* Achievement content */}
-              <OutlineText size="extraLarge" className="mb-4 text-center">
-                {selected.name}
+              <div className="absolute top-2 ">
+                <OutlineText size="extraLarge">{selected.name}</OutlineText>
+              </div>
+
+              <OutlineText size="large">{selected.description}</OutlineText>
+              <OutlineText size="large">
+                {"Progress: " + selected.progress + " / " + selected.goal}
               </OutlineText>
-              <p className="mb-2 text-center">{selected.description}</p>
-              <p className="text-center">
-                Progress: {selected.progress} / {selected.goal}
-              </p>
             </BaseCard>
           </div>
         )}
