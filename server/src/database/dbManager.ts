@@ -5,6 +5,7 @@ import { PouncingBandit } from '../model/game/monster/pouncingBandit';
 import { CharmerCobra } from '../model/game/monster/charmerCobra';
 import { PoisonPogo } from '../model/game/monster/poisonPogo';
 import { FuriousFlipper } from '../model/game/monster/furiousFlipper';
+import {Achievements} from "./achievementList"
 
 import bcrypt from 'bcrypt';
 
@@ -41,7 +42,6 @@ export interface AdventureProgressionSchema {
   unlockedMonsters: Record<string, boolean>, // e.g  {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
   unlockedLevels: number[], 
   stage: number,
-  achievements: string[],
   savedGameState: {} 
 
 }
@@ -55,7 +55,7 @@ export interface AchievementSchema {
   status: AchievementStatus;
   progress?: number;
   goal?: number;
-  objectives: Record<string, boolean|number>;
+  objectives?: Record<string, boolean|number>;
 }
 
 
@@ -163,9 +163,9 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       },
       unlockedLevels: [1],
       stage: 1,
-      achievements: [],
       savedGameState: {},
-    }
+    },
+    achievements: Achievements
   };
 }
 
@@ -220,9 +220,9 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
         },
         unlockedLevels: [1],
         stage: 1,
-        achievements: [],
         savedGameState: {},
-      }
+      },
+      achievements: Achievements
     };
 
     // Insert the new player into the collection
