@@ -1,6 +1,4 @@
-import { create } from "node:domain";
-import { AchievementSchema, AchievementStatus } from  "./dbManager"
-import { NullAction } from "../model/game/action/null";
+import { AchievementSchema } from  "./dbManager"
 
 
 export function createAchievementSchema(

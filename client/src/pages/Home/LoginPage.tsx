@@ -22,6 +22,7 @@ export const LoginPage = () => {
     const loginListener = (data: { success: boolean; message: string }) => {
       setMessage(data.message);
       if (data.success) {
+        socket.emit("syncAchievements");
         FlowRouter.go("/"); // Redirect to home on success
       }
     };
