@@ -6,10 +6,10 @@ import { NullAction } from "../model/game/action/null";
 export function createAchievementSchema(
   name: string,
   description: string,
-  objectives?: Record<string, boolean | number>,
+  objectives: Record<string, boolean | number> = {},
   progress: number = 0,
   goal: number = 0,
-  status: AchievementStatus = 'locked',
+  status: boolean = false,
   hidden: boolean = false
 ): AchievementSchema {
   return {

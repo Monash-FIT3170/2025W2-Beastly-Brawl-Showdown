@@ -45,17 +45,17 @@ export interface AdventureProgressionSchema {
   savedGameState: {} 
 
 }
-export type AchievementStatus = 'locked' | 'in_progress' | 'completed';
+
 
 
 export interface AchievementSchema {
   _id: string;
   name: string;
   description: string;
-  status: AchievementStatus;
-  progress?: number;
-  goal?: number;
-  objectives?: Record<string, boolean|number>;
+  status: boolean;
+  progress: number;
+  goal: number;
+  objectives: Record<string, boolean|number>;
   hidden: boolean
 }
 
