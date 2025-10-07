@@ -55,7 +55,7 @@ export const AdventureModeSelect: React.FC = () => {
         </div>
       </div>
       <div className="flex sm:flex-col lg:flex-row items-center justify-center h-screen gap-[8rem]">
-        <div className="sm:w-[90vw] lg:w-[40vw] sm:min-h-[35vh] lg:min-h-[45vh] bg-peach outline-blackCurrant outline-consistent rounded-2xl flex flex-col items-center justify-evenly text-center">
+        <div className="sm:w-[90vw] lg:w-[40vw] sm:min-h-[37vh] lg:min-h-[50vh] bg-peach outline-blackCurrant outline-consistent rounded-2xl flex flex-col items-center justify-evenly text-center">
           <div className="-mb-4">
             <OutlineText size="extraLarge">CLASSIC MODE</OutlineText>
           </div>
@@ -70,7 +70,7 @@ export const AdventureModeSelect: React.FC = () => {
             <OutlineText size={"choice-text"}>SELECT</OutlineText>
           </ButtonGeneric>
         </div>
-        <div className="sm:w-[90vw] lg:w-[40vw] sm:min-h-[35vh] lg:min-h-[45vh] bg-peach outline-blackCurrant outline-consistent rounded-2xl flex flex-col items-center justify-evenly text-center">
+        <div className="sm:w-[90vw] lg:w-[40vw] sm:min-h-[37vh] lg:min-h-[50vh] bg-peach outline-blackCurrant outline-consistent rounded-2xl flex flex-col items-center justify-evenly text-center">
           <div className="-mb-4">
             <OutlineText size="extraLarge">ENDLESS MODE</OutlineText>
           </div>
