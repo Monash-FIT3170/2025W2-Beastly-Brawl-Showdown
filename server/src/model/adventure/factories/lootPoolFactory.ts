@@ -11,6 +11,13 @@ import { MoltenHeart } from "../../game/storyItem/moltenHeart";
 import { StoryItem } from "../../game/storyItem/storyItem";
 import { DragonScale } from "../../game/storyItem/dragonScale";
 import { CinderFlame } from "../../game/consumables/cinderFlame";
+import { PercentageHealthPotion } from "../../game/consumables/healthPotion";
+import { BlueCrystal } from "../../game/consumables/blueCrystal";
+import { RedCrystal } from "../../game/equipment/redCrystal";
+import { GreyCrystal } from "../../game/consumables/greyCrystal";
+import { PurpleCrystal } from "../../game/equipment/purpleCrystal";
+import { BlackCrystal } from "../../game/consumables/blackCrystal";
+
 
 interface LootEntry {
   loot: (() => Consumable) | (() => Equipment) | (() => StoryItem);
@@ -75,6 +82,33 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
       id: "dragon_scale",
     },
   ],
+  swamp_slime_pool: [
+    {
+      loot: () => new BlueCrystal(),
+      chance: 10,
+      id: "blue_crystal",
+    },
+    {
+      loot: () => new BlackCrystal(),
+      chance: 10,
+      id: "black_crystal",
+    },
+    {
+      loot: () => new RedCrystal(),
+      chance: 20,
+      id: "red_crystal",
+    },
+    {
+      loot: () => new PurpleCrystal(),
+      chance: 20,
+      id: "purple_crystal",
+    },
+    {
+      loot: () => new GreyCrystal(),
+      chance: 40,
+      id: "grey_crystal",
+    }
+  ]
 };
 
 export function createLoot(id: string): LootEntry | null {

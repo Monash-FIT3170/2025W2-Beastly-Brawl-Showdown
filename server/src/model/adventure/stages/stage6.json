@@ -382,6 +382,54 @@
     ]
   },
   {
+    "id": "level_4_slime3",
+    "level": [4],
+    "description": "level4_slime3_encounter",
+    "outcomes":[
+      {
+        "id": "initial",
+        "result": [
+          "A loud SLOSH echos nearby, something heavy just droped into the muck.",
+          "The ground trembles as a huge, wobbling mass jumps into view."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue"
+      },
+      {
+        "id": "slime_dialogue",
+        "result": [
+          "It jiggles once... then twice... and lets out a deep blob",
+          "BlOOP! Blurrp! bloorb!",
+          "The massive slime jiggles proudly, as if daring you to hit it."
+        ],
+        "enemyId": "swamp_slime_3",
+        "next": "slime_fight"
+      },
+      {
+        "id": "slime_fight",
+        "type": "FIGHT",
+        "enemyId":"swamp_slime_3",
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "type": "DIALOGUE",
+        "result": [
+          "The slime trembles and slowly collapses into a sagging heap of jelly.",
+          "Inside the collapsing blob, you spot countless shiny things glimmering faintly.",
+          "With a hesitant breath, you close your eyes and shove your hand into the sticky jelly",
+          "You manage to pull something free before you lose your nerve."
+        ],
+        "next": "slime_reward_pool"
+      },
+      {
+        "id": "slime_reward_pool",
+        "type": "LOOT_POOL",
+        "lootPoolId": "swamp_slime_pool"
+      }
+    ]
+  },
+  {
     "id": "level5_update",
     "level": [5],
     "description": "level5_update",

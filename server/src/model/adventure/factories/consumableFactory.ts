@@ -12,6 +12,9 @@ import { EverbloomingLotus } from "../../game/storyItem/everbloomingLotus";
 import { MagicStew } from "../../game/consumables/magicStew";
 import { CinderFlame } from "../../game/consumables/cinderFlame";
 import { FroggySlime } from "../../game/consumables/froggySlime";
+import { BlueCrystal } from "../../game/consumables/blueCrystal";
+import { BlackCrystal } from "../../game/consumables/blackCrystal";
+import { GreyCrystal } from "../../game/consumables/greyCrystal";
 
 const ConsumableFactory: Record<string, () => Consumable> = {
   mini_health_potion: () =>
@@ -29,6 +32,9 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   magic_stew: () => new MagicStew(),
   cinder_flame: () => new CinderFlame(),
   froggy_slime: () => new FroggySlime(),
+  blue_crystal:() => new BlueCrystal(),
+  black_crystal: () => new BlackCrystal(),
+  grey_crystal: () => new GreyCrystal()
 };
 
 export function createConsumable(id: string): Consumable {

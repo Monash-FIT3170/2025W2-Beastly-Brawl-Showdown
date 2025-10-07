@@ -19,6 +19,7 @@ const enemyFactory: Record<string, () => any> = {
   ember_4: () => new Slime("LITTLE EMBER"),
   swamp_slime_1: () => new Slime("HUNGRY SLIME"),
   swamp_slime_2: () => new Slime("STICKY SLIME"),
+  swamp_slime_3: () => new Slime("BIG SLIME"),
   pouncing_bandit: () => new PouncingBandit("Bandito"),
   cinder_tail: () => new CinderTail("Big Red"),
   furious_flipper: () => new FuriousFlipper("Furious Flipper"), // UPDATE NAME

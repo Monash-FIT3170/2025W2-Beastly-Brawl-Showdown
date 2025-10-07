@@ -408,7 +408,8 @@
           "You stumble, almost falling asleep mid-step.",
           "A sharp prick wakes you, a thorny bracelet woven from swamp vines lies half-buried in the mud."
         ],
-        "type":"DIALOGUE",
+        "type":"STAT_CHANGE",
+        "statChange": ["health", -2],
         "next": "witherbindBracelet"
       },
       {
