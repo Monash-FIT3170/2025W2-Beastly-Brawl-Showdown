@@ -10,6 +10,7 @@ import { getBiomeString } from "./AdventureBattle";
 import { monsterMeta } from "../../data/monsterMeta";
 import { BlackText } from "../../components/texts/BlackText";
 import { motion, AnimatePresence } from "framer-motion";
+import { BaseCard } from "../../components/cards/BaseCard";
 
 interface LevelSelectProps {}
 
@@ -89,8 +90,9 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
 
       {/* Foreground content (your existing code) */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
-        {/* Back button */}
-        <div className="absolute top-4 left-4">
+        {/* Fixed top header */}
+        <div className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-3">
+          {/* Back arrow button */}
           <IconButton
             style="arrowleft"
             iconColour="black"
@@ -98,32 +100,35 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             size="medium"
             onClick={() => FlowRouter.go("/")}
           />
+
+          {/* “CLASSIC” header */}
+          <BaseCard color="peach" width={40} height={8}>
+            <OutlineText size="extraLarge">CLASSIC</OutlineText>
+          </BaseCard>
+
+          <div className="w-[3rem]" />
         </div>
 
-        {/* Header */}
-        <GenericHeader color="lightYellow">
-          <OutlineText size="extraLarge">CLASSIC</OutlineText>
-        </GenericHeader>
-
-        {/* Content */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 w-full max-w-5xl">
+        {/* Content (centered vertically) */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-20 w-full max-w-6xl">
           <img
             src={monsterImage}
             className="
-              w-[18rem] h-[18rem] sm:w-[20rem] sm:h-[20rem] lg:w-[14rem] lg:h-[14rem]
+              w-[22rem] h-[22rem] sm:w-[24rem] sm:h-[24rem] lg:w-[20rem] lg:h-[20rem]
               drop-shadow-[0_0_4px_white] drop-shadow-[0_0_8px_white]
             "
             onLoad={(e) => e.currentTarget.classList.remove("opacity-0")}
           />
 
-          <div className="border-4 border-blackCurrant rounded-2xl bg-white/70 p-6 w-[90%] sm:w-[80%] lg:w-[50%] max-w-md text-center">
+          <div className="border-4 border-blackCurrant rounded-2xl bg-white/70 p-8 w-[70%] sm:w-[90%] lg:w-[90%] max-w-2xl text-center">
             <OutlineText size="large">{monsterName}</OutlineText>
             <BlackText size="medium">{monsterDescription}</BlackText>
           </div>
         </div>
 
-        {/* Navigation */}
-        <div className="grid grid-cols-3 justify-items-center w-full max-w-md mt-6 gap-x-20">
+        {/* Navigation (fixed to bottom) */}
+        <div className="fixed bottom-25 left-1/2 -translate-x-1/2 grid grid-cols-[64px_1fr_64px] items-center w-full max-w-md z-40">
+          {/* Left Arrow */}
           <div className="flex justify-center items-center">
             {observedLevel > 1 && (
               <IconButton
@@ -136,7 +141,8 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             )}
           </div>
 
-          <div>
+          {/* Explore Button (centered) */}
+          <div className="flex justify-center">
             <ButtonGeneric
               color={unlockedLevels.includes(observedLevel) ? "ronchi" : "alto"}
               size="battle"
@@ -150,6 +156,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             </ButtonGeneric>
           </div>
 
+          {/* Right Arrow */}
           <div className="flex justify-center items-center">
             {observedLevel < 5 && (
               <IconButton
