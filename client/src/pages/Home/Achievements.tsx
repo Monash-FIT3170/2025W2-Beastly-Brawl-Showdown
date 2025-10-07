@@ -30,16 +30,21 @@ export const Achievements = () => {
   }, []);
 
   const handleClick = (ach: AchievementSchema) => {
-  if (!ach.hidden) {
-    setSelected(ach);
-  }
-};
+    if (!ach.hidden) {
+      setSelected(ach);
+    }
+  };
   const closePopup = () => setSelected(null);
 
   // Desktop Layout
   const DesktopView = () => (
     <div className="hidden lg:flex flex-col items-center w-full gap-6">
-      <BaseCard color="peach" width={70} height={8} className="flex justify-center mb-4">
+      <BaseCard
+        color="peach"
+        width={70}
+        height={8}
+        className="flex justify-center mb-4"
+      >
         <OutlineText size="extraLarge">Achievements</OutlineText>
       </BaseCard>
 
@@ -54,14 +59,16 @@ export const Achievements = () => {
               color="peach"
               width={53}
               height={5}
-               className="cursor-pointer flex flex-col justify-center items-center p-2 hover:shadow-lg hover:border-yellow-400 transition-all"
+              className="cursor-pointer flex flex-col justify-center items-center p-2 hover:shadow-lg hover:border-yellow-400 transition-all"
               onClick={() => handleClick(ach)}
             >
               <OutlineText size="medium" className="text-center">
                 {ach.hidden ? "Hidden Achievement" : ach.name}
               </OutlineText>
               <OutlineText size="tiny" className="text-center">
-                {ach.hidden ? "Unlock achievement to see" : `${ach.progress} / ${ach.goal}`}
+                {ach.hidden
+                  ? "Unlock achievement to see"
+                  : `${ach.progress} / ${ach.goal}`}
               </OutlineText>
             </BaseCard>
           ))}
@@ -73,7 +80,12 @@ export const Achievements = () => {
   // Mobile Layout
   const MobileView = () => (
     <div className="flex lg:hidden flex-col items-center w-full gap-6">
-      <BaseCard color="peach" width={50} height={8} className="flex justify-center mb-4">
+      <BaseCard
+        color="peach"
+        width={50}
+        height={8}
+        className="flex justify-center mb-4"
+      >
         <OutlineText size="large">Achievements</OutlineText>
       </BaseCard>
 
@@ -95,7 +107,9 @@ export const Achievements = () => {
                 {ach.hidden ? "Hidden Achievement" : ach.name}
               </OutlineText>
               <OutlineText size="tiny" className="text-center">
-                {ach.hidden ? "Unlock achievement to see" : `${ach.progress} / ${ach.goal}`}
+                {ach.hidden
+                  ? "Unlock achievement to see"
+                  : `${ach.progress} / ${ach.goal}`}
               </OutlineText>
             </BaseCard>
           ))}
@@ -124,7 +138,7 @@ export const Achievements = () => {
         {/* Achievement Popup */}
         {selected && (
           <div
-            className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
+            className="fixed inset-0 flex justify-center items-center bg-black/30 backdrop-blur-sm z-50"
             onClick={closePopup}
           >
             <BaseCard
@@ -134,6 +148,18 @@ export const Achievements = () => {
               className="p-6 relative flex flex-col justify-center items-center"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Top-left close button */}
+              <div className="absolute top-2 left-2">
+                <IconButton
+                  style="arrowleft"
+                  iconColour="black"
+                  buttonColour="red"
+                  size="large"
+                  onClick={closePopup}
+                />
+              </div>
+
+              {/* Achievement content */}
               <OutlineText size="extraLarge" className="mb-4 text-center">
                 {selected.name}
               </OutlineText>
@@ -141,12 +167,6 @@ export const Achievements = () => {
               <p className="text-center">
                 Progress: {selected.progress} / {selected.goal}
               </p>
-              <button
-                className="absolute top-2 right-2 text-red-600 font-bold"
-                onClick={closePopup}
-              >
-                X
-              </button>
             </BaseCard>
           </div>
         )}
