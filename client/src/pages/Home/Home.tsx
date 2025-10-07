@@ -22,17 +22,26 @@ export const Home = () => {
   const [adventurePopup, setAdventurePopup] = useState(false);
 
   useEffect(() => {
+    // Ask server for login status
     socket.emit("check-login");
 
-    const handleLoginStatus = ({ loggedIn }) => {
+    const handleLoginStatus = ({ loggedIn }: { loggedIn: boolean }) => {
       setLoggedInUser(loggedIn);
     };
 
     socket.on("login-status", handleLoginStatus);
 
-    return () => {
-      socket.off("login-status", handleLoginStatus);
+    return () => socket.off("login-status", handleLoginStatus);
+  }, []);
+
+
+  useEffect(() => {
+    const handleNewGame = ({ code }: { code: string }) => {
+      FlowRouter.go(`/host/${code}`);
     };
+
+    socket.on("new-game", handleNewGame);
+    return () => socket.off("new-game", handleNewGame);
   }, []);
 
   const createGame = () => {
@@ -107,7 +116,7 @@ export const Home = () => {
           <ButtonGeneric
             color={"ronchi"}
             size={"squaremedium"}
-            onClick={() => setShowLogin(true)}
+            onClick={() => FlowRouter.go("/login")}
           >
             <div className="flex flex-col ">
               <OutlineText size={"tiny"}>LOG</OutlineText>
@@ -175,13 +184,6 @@ export const Home = () => {
         </div>
         {/* </div> */}
       </div>
-
-      {showLogin && (
-        <LoginPopup
-          onLoginSuccess={handleLoginSuccess}
-          setExitPopup={handleExitLogin}
-        />
-      )}
     </BlankPage>
   );
 };

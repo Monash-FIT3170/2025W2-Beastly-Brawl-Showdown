@@ -2,6 +2,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Home } from "./src/pages/Home/Home";
+import { LoginPage } from "./src/pages/Home/LoginPage";
 import HostLobby from "./src/pages/Lobby/HostLobby";
 import JoinLobby from "./src/pages/Lobby/JoinLobby";
 import PathNotFound from "./src/pages/Home/PathNotFound";
@@ -18,6 +19,7 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
+import { Achievements } from "./src/pages/Home/Achievements";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -39,6 +41,20 @@ FlowRouter.route("/host", {
   action() {
     document.title = "Hosting... | Beastly Brawl Showdown";
     mount(HostLobby);
+  },
+});
+
+FlowRouter.route("/login", {
+  name: "LoginPage",
+  action() {
+    mount(LoginPage);
+  },
+});
+
+FlowRouter.route("/achievements", {
+  name: "Achievements",
+  action() {
+    mount(Achievements);
   },
 });
 
