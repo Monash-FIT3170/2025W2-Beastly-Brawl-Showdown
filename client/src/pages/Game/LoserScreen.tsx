@@ -1,12 +1,9 @@
 import socket from "../../socket";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { GenericHeader } from "../../components/cards/GenericHeader";
 import { OutlineText } from "../../components/texts/OutlineText";
-import { BaseCard } from "../../components/cards/BaseCard";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import React, { useEffect, useState } from "react";
-import { MonsterState } from "/types/single/monsterState";
 
 //
 const LoserScreen: React.FC = () => {
@@ -30,15 +27,8 @@ const LoserScreen: React.FC = () => {
         <OutlineText size="extraLarge">DEFEATED!</OutlineText>
       </GenericHeader>
       <div className="bg-peach flex items-center flex flex-col justify-around border-[4px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
-        {/* <BaseCard color="peach" width={60} height={70}> */}
-
-        {/* <div className="flex flex-col items-center justify-center space-y-1"> */}
-        {/* <OutlineText size="large">BETTER LUCK</OutlineText>
-            <OutlineText size="large">NEXT TIME!</OutlineText> */}
-
         <OutlineText size="large">BETTER LUCK NEXT TIME!</OutlineText>
 
-        {/* <img style={{ width: `${40}rem xl:${30}rem`, height: `${40}rem xl:${30}rem` }} src={`/GRAVE.png`} alt={`GRAVE image`} /> */}
         <img
           className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]"
           src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
@@ -52,9 +42,6 @@ const LoserScreen: React.FC = () => {
             </div>
           </div>
         </ButtonGeneric>
-        {/* </div> */}
-
-        {/* </BaseCard> */}
       </div>
     </div>
   );

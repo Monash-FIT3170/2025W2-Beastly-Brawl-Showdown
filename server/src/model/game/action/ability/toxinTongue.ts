@@ -40,6 +40,7 @@ export class ToxinTongue extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, ${affectedPlayer.getName()} is now poisoned for ${numberOfTurns} turns.`
     );
+    this.executeBattleEffect(actingPlayer, affectedPlayer, true);
 
     //Success evaluates true since the curren rate of poison for this ability is 100%...
     return {

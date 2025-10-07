@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import socket from "../../socket"; // Ensure you import the socket instance
 import { Screens } from "../../screens";
-import { MonsterSelection } from "../Game/MonsterSelection";
 import WaitingScreen from "../Game/WaitingScreen";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import { MonsterSelect } from "../Game/MonsterSelect";
 
 interface GameProps {
   gameSessionId: string; // Add battleId as a prop
@@ -22,11 +22,11 @@ export const Game: React.FC<GameProps> = ({ gameSessionId }) => {
   const renderScreen = () => {
     switch (screen) {
       case Screens.CHARACTER_SELECT_SCREEN:
-        return <MonsterSelection setScreen={setScreen} />;
+        return <MonsterSelect setScreen={setScreen} />;
       case Screens.WAITING_SCREEN:
         return <WaitingScreen setScreen={setScreen} />;
       default:
-        return <MonsterSelection setScreen={setScreen} />;
+        return <MonsterSelect setScreen={setScreen} />;
     }
   };
 

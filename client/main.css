@@ -6,6 +6,9 @@
   --color-pictonBlue: #55a9ed;
   --color-blackCurrant: #403245;
   --color-ronchi: #edaf55;
+  --color-defender: #7eacd5;
+  --color-attacker: #dc7466;
+  --color-balanced: #9dd786;
   --color-springLeaves: #557d5a;
   --color-terracotta: #e28454;
   --color-heliotrope: #bd55ed;
@@ -21,6 +24,9 @@
   --color-guardianblue: #bad5f6;
   --color-predatorpurple: #64467a;
   --color-wyvernred: #e83f5e;
+  --color-storycolour: #f69f3a;
+  --color-notification: #fe392b;
+  --color-notification-accent: #f7877f;
   --text-tiny: 0.9375rem;
   --text-smaller: 1.1rem;
   --text-small: 1.125rem;
@@ -59,6 +65,18 @@ h2 {
 
 .text-outline {
   -webkit-text-fill-color: var(--color-merino);
+  -webkit-text-stroke-width: 0.05em;
+  -webkit-text-stroke-color: var(--color-blackCurrant);
+}
+
+.text-outline-green {
+  -webkit-text-fill-color: #22c55e;
+  -webkit-text-stroke-width: 0.05em;
+  -webkit-text-stroke-color: var(--color-blackCurrant);
+}
+
+.text-outline-red {
+  -webkit-text-fill-color: #ef4444;
   -webkit-text-stroke-width: 0.05em;
   -webkit-text-stroke-color: var(--color-blackCurrant);
 }

@@ -1,20 +1,16 @@
 import socket from "../../socket";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { GenericHeader } from "../../components/cards/GenericHeader";
 import { OutlineText } from "../../components/texts/OutlineText";
-import { BaseCard } from "../../components/cards/BaseCard";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import React, { useEffect, useState } from "react";
 import {
-  ArchetypeIdentifier, ArchetypeInfo, MonsterIdentifier, MonsterState,
+  ArchetypeIdentifier,
+  MonsterState,
 } from "../../../../types/single/monsterState";
 import { MonsterImage } from "../../components/player-screen/monsters/MonsterImage";
-import { getMonster } from "/server/src/model/game/monster/monsterMap";
 
-interface AdventureWinProp{
-
-}
+interface AdventureWinProp {}
 
 const AdventureWin: React.FC = () => {
   const [monster, setMonster] = useState<MonsterState | null>(null);
@@ -27,7 +23,7 @@ const AdventureWin: React.FC = () => {
 
     const onMonster = (m: MonsterState) => setMonster(m);
     socket.on("monster_response", onMonster);
-    
+
     return () => {
       socket.off("monster_response", onMonster);
     };
@@ -40,10 +36,10 @@ const AdventureWin: React.FC = () => {
   };
 
   const colorLoader: Record<string, string> = {
-      [ArchetypeIdentifier.ATTACKER]: "bg-[#DC7466]",
-      [ArchetypeIdentifier.DEFENDER]: "bg-[#7EACD5]",
-      [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
-    };
+    [ArchetypeIdentifier.ATTACKER]: "bg-attacker",
+    [ArchetypeIdentifier.DEFENDER]: "bg-defender",
+    [ArchetypeIdentifier.BALANCED]: "bg-balanced",
+  };
 
   if (!monster) {
     return (
@@ -52,7 +48,7 @@ const AdventureWin: React.FC = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-ronchi ">
       <GenericHeader color="blue">
@@ -61,8 +57,9 @@ const AdventureWin: React.FC = () => {
       <div className="bg-peach flex items-center flex flex-col justify-around border-[6px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
         <OutlineText size="large">YOU'VE UNLOCKED</OutlineText>
 
-        <div className={`bg-[#FFA600] flex flex-col items-center justify-around border-[6px] border-blackCurrant w-[40rem] h-[50rem] xl:w-[20rem] xl:h-[20rem] rounded-xl`}>
-          
+        <div
+          className={`bg-[#FFA600] flex flex-col items-center justify-around border-[6px] border-blackCurrant w-[40rem] h-[50rem] xl:w-[20rem] xl:h-[20rem] rounded-xl`}
+        >
           <MonsterImage
             name={monster.id}
             className="sm:w-[30rem] sm:h-[30rem] lg:w-[15rem] lg:h-[15rem]"

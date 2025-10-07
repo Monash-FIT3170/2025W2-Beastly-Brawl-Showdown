@@ -64,7 +64,13 @@
           "You reach your hand out to the slime.",
           "It oozes happily and crawls from your hand to your bag.",
           "You adventure onwards together."
-        ]
+        ],
+        "next": "slime_item"
+      },
+      {
+        "id": "slime_item",
+        "type": "STORY_ITEM",
+        "storyItemId": "slime_baby"
       },
       {
         "id": "slime_fight",
