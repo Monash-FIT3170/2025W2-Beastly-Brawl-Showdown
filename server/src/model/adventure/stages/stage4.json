@@ -107,6 +107,66 @@
     ]
   },
   {
+    "id": "First Encounter",
+    "level": [4],
+    "description": "level 4 mini boss",
+    "outcomes":[
+      {
+        "id": "initial",
+        "result": [
+          "You come across a large pond. The surface lies calm and silent.",
+          "Suddenly, the ground trembles beneath you",
+          "Bubbles rise from the water as something big and blue stirs beneath the pond.",
+          "A giant blue frog bursts out, blinking slowly with a blank, emotionless stare that says it's strong... but not smart."
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_dialogue"
+      },
+      {
+        "id": "pre_fight_dialogue",
+        "result": [
+          "RRIBBITTT! Tiny food? Walking food?",
+          "It flicks it's tongue toward you, misses and slaps itself in the face...",
+          "OUCH!!!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": "poison_pogp",
+        "next": "frog_fight"
+      },
+      {
+        "id": "frog_fight",
+        "type": "FIGHT",
+        "enemyId": "poison_pogo",
+        "next": "win_dialogue"
+      },
+      {
+        "id": "win_dialogue",
+        "result": [
+          "Frog fall down but frog bounce back later.",
+        ],
+        "type": "DIALOGUE",
+        "enemyId": "poison_pogp",
+        "next": "win_naration"
+      },
+      {
+        "id": "win_narration",
+        "result":[
+          "With a panicked croak, it spins around and bounds away crashing through the reeds and vanishing deep into the woods.",
+          "A slick pool of glowing purple venom remains",
+          "You carefully bottle it before it fades away."
+        ],
+        "type":"DIALOGUE",
+        "next": "reward"
+      },
+      {
+        "id": "reward",
+        "type": "CONSUMABLE",
+        "consumable_id": "froggy_slime"
+
+      }
+    ]
+  },
+  {
     "id": "level5_update",
     "level": [5],
     "description": "level5_update",

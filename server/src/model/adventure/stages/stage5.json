@@ -328,6 +328,117 @@
     ]
   },
   {
+    "id": "frog_trail",
+    "level": [4],
+    "description": "choice two paths",
+    "outcomes":[
+
+     {
+      "id": "initial",
+      "result": [
+        "You continue deeper into the swamp until the path splits in two.",
+        "One path slopes deeper into the swamp, where the mist thickens and the silence feels heavier with every step.",
+        "The other path is a mess of flattened reeds, deep footprints, and slime everywhere.",
+        "It's clear the frog ran that way."
+
+      ],
+      "type": "DIALOGUE",
+      "next": "path_choice"
+     },
+     {
+        "id": "path_choice",
+        "result": ["You want to continue your journey. Do you..?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "choose_follow_frog",
+            "text": "Follow the frog.",
+            "next": "follow_frog"
+          },
+          {
+            "id": "choose_not_follow",
+            "text": "Do not follow.",
+            "next": "not_follow"
+          }
+        ]
+      },
+      {
+        "id": "follow_frog",
+        "result":[
+          "You follow the slime trail deeper into the swamp.The air thickens, heavy with damp heat.",
+          "Your steps slow as a strange calm seeps into your body.",
+          "Your eyelids grow heavy. You feel sleepy..."
+        ],
+        "type": "RANDOM",
+        "options":[
+          {
+            "id": "sleep",
+            "chance": 80,
+            "next": "swamps_whisper"
+          },
+          {
+            "id": "bracelet_reward",
+            "chance": 20,
+            "next": "witherbindBracelet_prick"
+          }
+        ]
+      },
+      {
+        "id": "swamps_whisper_dialogue",
+        "type": "DIALOGUE",
+        "result":[
+          "You shake your head, fighting the urge to close your eyes.",
+          "The world tilts, colors softening into a blur of green and blue.",
+          "You fall forward into the mud, asleep before you even hit the ground."
+        ],
+        "next": "swamps_whisper"
+      },
+      {
+        "id":"swamps_whisper",
+        "type": "STATUS",
+        "result":[
+          "You wake confused and unfocused.",
+          " The swamp's whisper still echoes in your mind, but your journey must continue."
+        ],
+        "status_id": ["swamps_whisper", 5]
+      },
+      {
+        "id": "witherbindBracelet_prick",
+        "result": [
+          "You stumble, almost falling asleep mid-step.",
+          "A sharp prick wakes you, a thorny bracelet woven from swamp vines lies half-buried in the mud."
+        ],
+        "type":"DIALOGUE",
+        "next": "witherbindBracelet"
+      },
+      {
+        "id": "witherbindBracelet",
+        "type": "EQUIPMENT",
+        "result": [
+          "You have found the Witherbind Bracelet."
+        ],
+        "equipmentId": "witherbind_bracelet"
+      },
+      {
+        "id": "not_follow",
+        "result":[
+          "The swamp quiets as you stay on the safe path. The mist settles and a rare peace surrounds you."
+        ],
+        "type": "DIALOGUE",
+        "next": "swamps_calm"
+      },
+      {
+        "id": "swamps_calm",
+        "type": "STATUS",
+        "result": [
+          "A gentle green glow swirls around you. The swamp itself seems to shield you."
+        ],
+        "status_id": ["swamps_calm", 5]
+      }
+      
+    ]
+  },
+  {
     "id": "level5_update",
     "level": [5],
     "description": "level5_update",
