@@ -33,7 +33,7 @@ export const Achievements = () => {
 
   return (
     <BlankPage>
-      <div className="flex flex-col w-full h-full p-4">
+      <div className="flex flex-col w-full p-4">
         {/* Back button */}
         <div className="flex flex-row w-full mb-4">
           <IconButton
@@ -41,37 +41,38 @@ export const Achievements = () => {
             iconColour="black"
             buttonColour="red"
             size="large"
-            onClick={() => FlowRouter.go("/")}
+            onClick={() => FlowRouter.go("/Account")}
           />
         </div>
 
-        {/* Header */}
-        <BaseCard color="peach" width={70} height={8} className="mb-6">
+        {/* Achievements Header */}
+        <BaseCard color="peach" width={70} height={8} className="mb-6 mx-auto flex justify-center">
           <OutlineText size="extraLarge">Achievements</OutlineText>
         </BaseCard>
 
-        {/* Scrollable achievements grid */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {achievements.map((ach) => (
-              <BaseCard
-                key={ach._id}
-                color={ach.status ? "green" : "gray"}
-                width={50}
-                height={5}
-                className="cursor-pointer flex flex-col justify-center items-center p-2 hover:scale-105 transition-transform"
-                onClick={() => handleClick(ach)}
-              >
-                <OutlineText size="medium">
-                  {ach.hidden ? "Hidden Achievement" : ach.name}
-                </OutlineText>
-                <p className="text-sm text-center mt-1">
-                  {ach.hidden
-                    ? "Unlock achievement to see"
-                    : `${ach.progress} / ${ach.goal}`}
-                </p>
-              </BaseCard>
-            ))}
+        {/* Outer container for achievement cards with static size */}
+        <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black mx-auto flex flex-col items-center"
+             style={{ width: "90%", maxWidth: "900px", height: "500px" }}>
+          <div className="w-full overflow-y-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 justify-center">
+              {achievements.map((ach) => (
+                <BaseCard
+                  key={ach._id}
+                  color="peach"
+                  width={50}
+                  height={5}
+                  className="cursor-pointer flex flex-col justify-center items-center p-2 hover:scale-105 transition-transform"
+                  onClick={() => handleClick(ach)}
+                >
+                  <OutlineText size="medium" className="text-center">
+                    {ach.hidden ? "Hidden Achievement" : ach.name}
+                  </OutlineText>
+                  <OutlineText size="tiny" className="text-center">
+                    {ach.hidden ? "Unlock achievement to see" : `${ach.progress} / ${ach.goal}`}
+                  </OutlineText>
+                </BaseCard>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -85,14 +86,14 @@ export const Achievements = () => {
               color="peach"
               width={60}
               height={40}
-              className="p-6 relative"
+              className="p-6 relative flex flex-col justify-center items-center"
               onClick={(e) => e.stopPropagation()}
             >
-              <OutlineText size="extraLarge" className="mb-4">
+              <OutlineText size="extraLarge" className="mb-4 text-center">
                 {selected.name}
               </OutlineText>
-              <p className="mb-2">{selected.description}</p>
-              <p>
+              <p className="mb-2 text-center">{selected.description}</p>
+              <p className="text-center">
                 Progress: {selected.progress} / {selected.goal}
               </p>
               <button
