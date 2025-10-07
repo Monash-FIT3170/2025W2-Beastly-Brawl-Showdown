@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
@@ -7,57 +7,93 @@ import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { LoginPopup } from "./Login";
 import { IconButton } from "../../components/buttons/IconButton";
-import {
-  initHomeMusic,
-  unmuteHomeMusic,
-  stopHomeMusic,
-  toggleMute,
-  isMuted,
-} from "../../audioController";
 
 export const Home = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(false);
-  const [muted, setMuted] = useState(isMuted());
+  const [musicStarted, setMusicStarted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // initialize music on mount
+  // --- Check login on mount
   useEffect(() => {
-    initHomeMusic();
-
     socket.emit("check-login");
-    const handleLoginStatus = ({ loggedIn }) => setLoggedInUser(loggedIn);
+
+    const handleLoginStatus = ({ loggedIn }) => {
+      setLoggedInUser(loggedIn);
+    };
+
     socket.on("login-status", handleLoginStatus);
 
     return () => {
       socket.off("login-status", handleLoginStatus);
-      stopHomeMusic(); // stop if leaving to gameplay
     };
   }, []);
 
-  // unmute when any button is clicked
-  const handleUserAction = (callback: () => void) => {
-    unmuteHomeMusic();
-    callback();
+  // --- Setup background music
+  useEffect(() => {
+    const audio = new Audio("/music/Beastly_brawl_menu_screen_music.mp3");
+    audio.loop = true;
+    audio.volume = 0.5;
+
+    // Attempt to autoplay (may fail due to browser policy)
+    audio.play().catch(() => {
+      console.log("Autoplay blocked — waiting for user click");
+    });
+
+    // Keep global reference
+    (window as any).homeMusic = audio;
+    audioRef.current = audio;
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
+
+  // --- Triggered by button press to allow playback
+  const handleStartMusic = () => {
+    const audio = (window as any).homeMusic;
+    if (audio) {
+      audio.play()
+        .then(() => {
+          console.log("🎶 Music is playing!");
+          setMusicStarted(true);
+        })
+        .catch((err: any) => {
+          console.error("❌ Failed to play music:", err);
+        });
+    }
   };
 
-  const renderConfigPage = () => handleUserAction(() => FlowRouter.go("/host/choose-mode"));
-  const renderJoinLobby = () => handleUserAction(() => FlowRouter.go("/join"));
-  const renderAdventure = () => handleUserAction(() => FlowRouter.go("/adventure/level-select"));
+  // --- Navigation handlers
+  const renderConfigPage = () => FlowRouter.go("/host/choose-mode");
+  const renderJoinLobby = () => FlowRouter.go("/join");
+  const renderAdventure = () => FlowRouter.go("/adventure/level-select");
 
-  const handleLoginSuccess = () => {
+  const handleLoginSuccess = (username: string) => {
     setShowLogin(false);
     setLoggedInUser(true);
   };
 
-  const handleExitLogin = () => setShowLogin(false);
-
-  const handleMuteToggle = () => {
-    toggleMute();
-    setMuted(isMuted());
+  const handleExitLogin = () => {
+    setShowLogin(false);
+    console.log("Exit login");
   };
 
+  // --- Game creation event
+  const createGame = () => {
+    socket.emit("create-game", {});
+    console.log("Game session created");
+  };
+
+  socket.on("new-game", ({ code }) => {
+    const codeString = code.toString();
+    FlowRouter.go(`/host/${codeString}`);
+  });
+
+  // --- Render
   return (
     <BlankPage>
+      {/* Login button or profile icon */}
       <div className="absolute lg:top-[3rem] lg:right-[3rem] top-[5rem] right-[5rem] items-center justify-center">
         {!loggedInUser ? (
           <ButtonGeneric
@@ -65,7 +101,7 @@ export const Home = () => {
             size="squaremedium"
             onClick={() => setShowLogin(true)}
           >
-            <div className="flex flex-col ">
+            <div className="flex flex-col">
               <OutlineText size="tiny">LOG</OutlineText>
               <OutlineText size="tiny">IN</OutlineText>
             </div>
@@ -81,19 +117,19 @@ export const Home = () => {
         )}
       </div>
 
-      {/* Optional mute/unmute toggle */}
-      <div className="absolute top-[3rem] left-[3rem]">
-        <ButtonGeneric color="ronchi" size="small" onClick={handleMuteToggle}>
-          <OutlineText size="tiny">{muted ? "UNMUTE" : "MUTE"}</OutlineText>
-        </ButtonGeneric>
-      </div>
-
+      {/* Logo */}
       <div className="flex flex-row w-full sm:items-end lg:items-center justify-around">
         <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
       </div>
 
+      {/* Main buttons */}
       <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-5 sm:space-y-30">
-        <ButtonGeneric color="ronchi" size="large" onClick={renderConfigPage} mobileHidden="true">
+        <ButtonGeneric
+          color="ronchi"
+          size="large"
+          onClick={renderConfigPage}
+          mobileHidden="true"
+        >
           <OutlineText size="large">HOST GAME</OutlineText>
         </ButtonGeneric>
 
@@ -106,6 +142,17 @@ export const Home = () => {
         </ButtonGeneric>
       </div>
 
+      {/* Music start button (only needed once) */}
+      <div className="flex flex-col items-center justify-center mt-10">
+        <button
+          onClick={handleStartMusic}
+          className="bg-yellow-400 px-4 py-2 rounded-lg shadow hover:bg-yellow-500 transition"
+        >
+          {musicStarted ? "Music Playing 🎵" : "Click to Start Music"}
+        </button>
+      </div>
+
+      {/* Login popup */}
       {showLogin && (
         <LoginPopup
           onLoginSuccess={handleLoginSuccess}
