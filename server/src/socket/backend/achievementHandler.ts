@@ -56,7 +56,19 @@ export const achievementHandler = (io: Server, socket: Socket) => {
     }
   });
 
-  
+
+socket.on("fetchAchievement", async () => {
+    const user = playerAccounts.get(socket.id);
+
+    const achievements = user?.achievements;
+
+    console.log(`Emitting player: ${user?.username} achievement data`);
+
+    socket.emit("achievementData", { achievements });
+
+    
+  });
+
 
 };
 
