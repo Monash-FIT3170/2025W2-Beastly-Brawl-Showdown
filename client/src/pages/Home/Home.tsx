@@ -27,7 +27,6 @@ export const Home = () => {
 
     const handleLoginStatus = ({ loggedIn }: { loggedIn: boolean }) => {
       setLoggedInUser(loggedIn);
-      setLoading(false); // Done loading once we get response
     };
 
     socket.on("login-status", handleLoginStatus);
@@ -35,9 +34,6 @@ export const Home = () => {
     return () => socket.off("login-status", handleLoginStatus);
   }, []);
 
-  const renderConfigPage = () => FlowRouter.go("/host/choose-mode");
-  const renderJoinLobby = () => FlowRouter.go("/join");
-  const renderAdventure = () => FlowRouter.go("/adventure/level-select");
 
   useEffect(() => {
     const handleNewGame = ({ code }: { code: string }) => {
