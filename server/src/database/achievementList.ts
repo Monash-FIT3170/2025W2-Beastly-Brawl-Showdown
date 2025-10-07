@@ -24,6 +24,7 @@ export function createAchievementSchema(
 
 // undefined is too skip the optional parameters 
 const ach1 = createAchievementSchema("Can't stop winning", "Get 100 wins in any gamemode", undefined,undefined,100);
+const ach2 = createAchievementSchema("Defeat the wolf", "Defeat the wolf", undefined,undefined,100,undefined,true);
 
 
 
@@ -31,5 +32,6 @@ const ach1 = createAchievementSchema("Can't stop winning", "Get 100 wins in any 
 //Add all created Achievements into this
 export const Achievements: AchievementSchema[] = [
     ach1,
+    ach2,
   
 ];

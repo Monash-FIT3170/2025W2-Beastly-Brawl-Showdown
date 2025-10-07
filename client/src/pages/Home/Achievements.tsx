@@ -1,3 +1,4 @@
+// Achievements.tsx
 import React, { useState, useEffect } from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
@@ -28,8 +29,80 @@ export const Achievements = () => {
     return () => socket.off("achievementData", handler);
   }, []);
 
-  const handleClick = (ach: AchievementSchema) => setSelected(ach);
+  const handleClick = (ach: AchievementSchema) => {
+  if (!ach.hidden) {
+    setSelected(ach);
+  }
+};
   const closePopup = () => setSelected(null);
+
+  // Desktop Layout
+  const DesktopView = () => (
+    <div className="hidden lg:flex flex-col items-center w-full gap-6">
+      <BaseCard color="peach" width={70} height={8} className="flex justify-center mb-4">
+        <OutlineText size="extraLarge">Achievements</OutlineText>
+      </BaseCard>
+
+      <div
+        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black w-full max-w-[900px] flex flex-col items-center"
+        style={{ height: "500px" }}
+      >
+        <div className="w-full overflow-y-auto flex flex-col gap-4">
+          {achievements.map((ach) => (
+            <BaseCard
+              key={ach._id}
+              color="peach"
+              width={50}
+              height={5}
+              className="cursor-pointer flex flex-col justify-center items-center p-2 hover:scale-105 transition-transform"
+              onClick={() => handleClick(ach)}
+            >
+              <OutlineText size="medium" className="text-center">
+                {ach.hidden ? "Hidden Achievement" : ach.name}
+              </OutlineText>
+              <OutlineText size="tiny" className="text-center">
+                {ach.hidden ? "Unlock achievement to see" : `${ach.progress} / ${ach.goal}`}
+              </OutlineText>
+            </BaseCard>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Mobile Layout
+  const MobileView = () => (
+    <div className="flex lg:hidden flex-col items-center w-full gap-6">
+      <BaseCard color="peach" width={90} height={8} className="flex justify-center mb-4">
+        <OutlineText size="large">Achievements</OutlineText>
+      </BaseCard>
+
+      <div
+        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black w-full flex flex-col items-center"
+        style={{ height: "500px" }}
+      >
+        <div className="w-full overflow-y-auto flex flex-col gap-4">
+          {achievements.map((ach) => (
+            <BaseCard
+              key={ach._id}
+              color="peach"
+              width={90}
+              height={5}
+              className="cursor-pointer flex flex-col justify-center items-center p-2 hover:scale-105 transition-transform"
+              onClick={() => handleClick(ach)}
+            >
+              <OutlineText size="medium" className="text-center">
+                {ach.hidden ? "Hidden Achievement" : ach.name}
+              </OutlineText>
+              <OutlineText size="tiny" className="text-center">
+                {ach.hidden ? "Unlock achievement to see" : `${ach.progress} / ${ach.goal}`}
+              </OutlineText>
+            </BaseCard>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <BlankPage>
@@ -45,36 +118,8 @@ export const Achievements = () => {
           />
         </div>
 
-        {/* Achievements Header */}
-        <BaseCard color="peach" width={70} height={8} className="mb-6 mx-auto flex justify-center">
-          <OutlineText size="extraLarge">Achievements</OutlineText>
-        </BaseCard>
-
-        {/* Outer container for achievement cards with static size */}
-        <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black mx-auto flex flex-col items-center"
-             style={{ width: "90%", maxWidth: "900px", height: "500px" }}>
-          <div className="w-full overflow-y-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 justify-center">
-              {achievements.map((ach) => (
-                <BaseCard
-                  key={ach._id}
-                  color="peach"
-                  width={50}
-                  height={5}
-                  className="cursor-pointer flex flex-col justify-center items-center p-2 hover:scale-105 transition-transform"
-                  onClick={() => handleClick(ach)}
-                >
-                  <OutlineText size="medium" className="text-center">
-                    {ach.hidden ? "Hidden Achievement" : ach.name}
-                  </OutlineText>
-                  <OutlineText size="tiny" className="text-center">
-                    {ach.hidden ? "Unlock achievement to see" : `${ach.progress} / ${ach.goal}`}
-                  </OutlineText>
-                </BaseCard>
-              ))}
-            </div>
-          </div>
-        </div>
+        <DesktopView />
+        <MobileView />
 
         {/* Achievement Popup */}
         {selected && (
