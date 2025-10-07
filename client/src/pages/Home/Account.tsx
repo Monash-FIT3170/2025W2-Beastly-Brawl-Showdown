@@ -228,8 +228,8 @@ export const Account = () => {
             style="arrowleft"
             iconColour="black"
             buttonColour="red"
-            size={isMobile ? "medium" : "large"}
-            onClick={() => FlowRouter.go("/")}
+            size={isMobile ? "large" : "large"}
+            onClick={() => FlowRouter.go("/Account")}
           />
         </div>
 

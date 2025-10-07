@@ -52,9 +52,9 @@ export const Achievements = () => {
             <BaseCard
               key={ach._id}
               color="peach"
-              width={50}
+              width={53}
               height={5}
-              className="cursor-pointer flex flex-col justify-center items-center p-2 hover:scale-105 transition-transform"
+               className="cursor-pointer flex flex-col justify-center items-center p-2 hover:shadow-lg hover:border-yellow-400 transition-all"
               onClick={() => handleClick(ach)}
             >
               <OutlineText size="medium" className="text-center">
@@ -73,21 +73,21 @@ export const Achievements = () => {
   // Mobile Layout
   const MobileView = () => (
     <div className="flex lg:hidden flex-col items-center w-full gap-6">
-      <BaseCard color="peach" width={90} height={8} className="flex justify-center mb-4">
+      <BaseCard color="peach" width={50} height={8} className="flex justify-center mb-4">
         <OutlineText size="large">Achievements</OutlineText>
       </BaseCard>
 
       <div
         className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black w-full flex flex-col items-center"
-        style={{ height: "500px" }}
+        style={{ height: "1600px" }}
       >
         <div className="w-full overflow-y-auto flex flex-col gap-4">
           {achievements.map((ach) => (
             <BaseCard
               key={ach._id}
               color="peach"
-              width={90}
-              height={5}
+              width={50}
+              height={8}
               className="cursor-pointer flex flex-col justify-center items-center p-2 hover:scale-105 transition-transform"
               onClick={() => handleClick(ach)}
             >
