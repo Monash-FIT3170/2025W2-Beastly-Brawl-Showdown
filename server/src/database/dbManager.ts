@@ -22,7 +22,7 @@ export interface PlayerAccountSchema {
     numGamesPlayed: number;
     numGamesWon: number;
   }
-  achievements: string[];
+  achievements: AchievementSchema[];
   monstersStat: PlayerMonsterStatSchema[]; 
   adventureProgression: AdventureProgressionSchema
 }
@@ -45,6 +45,20 @@ export interface AdventureProgressionSchema {
   savedGameState: {} 
 
 }
+export type AchievementStatus = 'locked' | 'in_progress' | 'completed';
+
+
+export interface AchievementSchema {
+  _id: string;
+  name: string;
+  description: string;
+  status: AchievementStatus;
+  progress?: number;
+  goal?: number;
+  objectives: Record<string, boolean|number>;
+}
+
+
 
 // Collections
 export const PlayersCollection = new Mongo.Collection('players');
