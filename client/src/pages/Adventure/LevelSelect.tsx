@@ -122,7 +122,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             <ButtonGeneric
               color="red"
               size="battle"
-              onClick={() => FlowRouter.go("/")}
+              onClick={() => FlowRouter.go("/adventure/mode-select")}
             >
               BACK
             </ButtonGeneric>

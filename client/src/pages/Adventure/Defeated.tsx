@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 const AdventureDefeated: React.FC = () => {
   const leave = () => {
     socket.emit("leave-game", { userID: socket.id });
-    FlowRouter.go("/adventure/level-select");
+    FlowRouter.go("/adventure/mode-select");
   };
 
   return (

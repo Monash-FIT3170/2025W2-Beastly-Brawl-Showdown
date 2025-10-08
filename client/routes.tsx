@@ -20,6 +20,7 @@ import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 import { FinalResultsScoringTournament } from "./src/pages/Lobby/FinalResultsScoringTournament";
 import { FinalResultsBattleRoyale } from "./src/pages/Lobby/FinalResultsBattleRoyale";
+import { AdventureModeSelect } from "./src/pages/Adventure/AdventureModeSelect";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -133,16 +134,24 @@ FlowRouter.route("/battles/:code?", {
 
 FlowRouter.route("/final-results-battle-royale/:code?", {
   name: "FinalResultsBattleRoyale",
-    action(params) {
-      mount(() => <FinalResultsBattleRoyale gameCode={params.code} />);
-    },
+  action(params) {
+    mount(() => <FinalResultsBattleRoyale gameCode={params.code} />);
+  },
 });
 
 FlowRouter.route("/final-results-scoring-tournament/:code?", {
   name: "FinalResultsScoringTournament",
-    action(params) {
-      mount(() => <FinalResultsScoringTournament gameCode={params.code} />);
-    },
+  action(params) {
+    mount(() => <FinalResultsScoringTournament gameCode={params.code} />);
+  },
+});
+
+FlowRouter.route("/adventure/mode-select", {
+  name: "LevelSelect",
+  action() {
+    document.title = "Mode Select - Adventure Mode | Beastly Brawl Showdown";
+    mount(AdventureModeSelect);
+  },
 });
 
 FlowRouter.route("/adventure/level-select", {
@@ -163,6 +172,7 @@ FlowRouter.route("/adventure/monster-select", {
 
 //hard coded list of current levels
 const adventureLevelMonsters = [
+  MonsterIdentifier.ENDLESS,
   MonsterIdentifier.POUNCING_BANDIT,
   MonsterIdentifier.CINDER_TAIL,
   MonsterIdentifier.FURIOUS_FLIPPER,

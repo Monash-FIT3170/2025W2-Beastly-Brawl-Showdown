@@ -94,7 +94,7 @@ export const ButtonGeneric = ({
 		`;
 
   const passiveButton = `
-		outline-[#43bf37]
+		outline-passive-green
 		cursor-not-allowed
 		`;
 
