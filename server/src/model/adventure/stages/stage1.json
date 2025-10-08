@@ -17,13 +17,13 @@
         "id": "slime_dialogue_1",
         "result": ["blob. blob.. blob...", "b l o b ."],
         "type": "DIALOGUE",
-        "enemyId": "slime_1",
+        "enemyId": ["slime", "PAPA SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_1",
+        "enemyId": ["slime", "PAPA SLIME"],
         "next": "fight_win"
       },
       {
@@ -40,6 +40,160 @@
         "id": "slime_stench",
         "type": "EQUIPMENT",
         "equipmentId": "oozingBlade"
+      }
+    ]
+  },
+  {
+    "id": "stage1_firepit",
+    "level": [0],
+    "description": "Stage 1, player finds a campfire",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You come across an abandoned campsite.",
+          "There is a firepit in the centre of everything.",
+          "It's still warm.",
+          "Whatever happened here was recent, and had people running scared."
+        ],
+        "type": "DIALOGUE",
+        "next": "firepit_choice"
+      },
+      {
+        "id": "firepit_choice",
+        "type": "CHOICE",
+        "result": ["Do you...?"],
+        "options": [
+          {
+            "id": "rest",
+            "text": "Rest",
+            "next": "rest"
+          },
+          {
+            "id": "loot",
+            "text": "Loot",
+            "next": "loot"
+          },
+          {
+            "id": "leave",
+            "text": "Leave",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "rest",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide to get some rest by what's left of the campfire.",
+          "You close your eyes and drift off to sleep"
+        ],
+        "next": "rest_random"
+      },
+      {
+        "id": "rest_random",
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "good_sleep",
+            "chance": 50,
+            "next": "good_sleep_cont"
+          },
+          {
+            "id": "surprise_visitor",
+            "chance": 50,
+            "next": "surprise_visitor_cont"
+          }
+        ]
+      },
+      {
+        "id": "good_sleep_cont",
+        "type": "STAT_CHANGE",
+        "result": ["You get a good sleep."],
+        "statChange": ["health", 10],
+        "next": "good_sleep_resolution"
+      },
+      {
+        "id": "good_sleep_resolution",
+        "type": "DIALOGUE",
+        "result": ["Feeling well rested you continue onwards."]
+      },
+      {
+        "id": "surprise_visitor_cont",
+        "type": "STATUS",
+        "statusId": ["stunned", 1],
+        "result": ["You're awoken by a snarling wolf."],
+        "next": "wolf_fight_test"
+      },
+      {
+        "id": "wolf_fight_test",
+        "type": "DIALOGUE",
+        "result": ["Still drowzy you get ready to fight."],
+        "next": "wolf_fight"
+      },
+      {
+        "id": "wolf_fight",
+        "type": "FIGHT",
+        "enemyId": ["pouncing_bandit", "wolf"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "type": "DIALOGUE",
+        "result": [
+          "Still annoyed at your rest being cut short you continue onwards."
+        ]
+      },
+      {
+        "id": "loot",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide to look through the tents to see if you can find any supplies."
+        ],
+        "next": "loot_random"
+      },
+      {
+        "id": "loot_random",
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "successful_find",
+            "chance": 90,
+            "next": "successful_find_cont"
+          },
+          {
+            "id": "no_luck",
+            "chance": 10,
+            "next": "no_luck_cont"
+          }
+        ]
+      },
+      {
+        "id": "successful_find_cont",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool",
+        "next": "successful_find_end"
+      },
+      {
+        "id": "successful_find_end",
+        "type": "DIALOGUE",
+        "result": ["Satisfied with your find you continue onwards."]
+      },
+      {
+        "id": "no_luck_cont",
+        "type": "DIALOGUE",
+        "result": [
+          "It feels like you've looked through the whole campsite but you don't find anything.",
+          "Disheartened, you continue onwards."
+        ]
+      },
+      {
+        "id": "leave",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide you want no part of what happened here.",
+          "You continue onwards."
+        ]
       }
     ]
   }

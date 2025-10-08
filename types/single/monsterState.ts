@@ -1,6 +1,7 @@
 import { ActionState } from "./actionState";
 
 export enum MonsterIdentifier {
+  ENDLESS = "ENDLESS",
   ROCKY_RHINO = "ROCKY_RHINO",
   POUNCING_BANDIT = "POUNCING_BANDIT",
   CINDER_TAIL = "CINDER_TAIL",

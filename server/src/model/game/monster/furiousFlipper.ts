@@ -4,10 +4,10 @@ import { Balanced } from "../archetype/balanced";
 import { PufferBlast } from "../action/ability/pufferBlast";
 
 export class FuriousFlipper extends Monster {
-  constructor() {
+  constructor(name = "Furious Flipper") {
     super(
       MonsterIdentifier.FURIOUS_FLIPPER,
-      "Furious Flipper",
+      name,
       "Just a little penguin with a penchant for destruction. It unleashes its spiky pufferfish to jab and harrass, turning the tide in its favour.",
       new Balanced(),
       new PufferBlast(),
