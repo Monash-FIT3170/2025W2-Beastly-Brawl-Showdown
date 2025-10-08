@@ -13,7 +13,9 @@ interface LevelSelectProps {}
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(1);
   // const UNLOCKED_LEVELS = [0];
-  const [unlockedLevels, setUnlockedLevels] = useState<number[]>([1]);
+  const [unlockedLevels, setUnlockedLevels] = useState<number[]>([
+    1, 2, 3, 4, 5,
+  ]);
 
   //a levelMap exists in back end too - so update both appropriately
   const levelMap: Record<number, MonsterIdentifier> = {
@@ -35,17 +37,17 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
 
   const monster = levelMap[observedLevel] ?? "None";
 
-  useEffect(() => {
-    socket.emit("request_unlocked_levels");
+  // useEffect(() => {
+  //   socket.emit("request_unlocked_levels");
 
-    socket.on("unlocked_levels", (levels: number[]) => {
-      setUnlockedLevels(levels);
-    });
+  //   socket.on("unlocked_levels", (levels: number[]) => {
+  //     setUnlockedLevels(levels);
+  //   });
 
-    return () => {
-      socket.off("request_unlocked_levels");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("request_unlocked_levels");
+  //   };
+  // }, []);
 
   // TODO: PUT SILHOUETTES AND
   const monsterImage = unlockedLevels.includes(observedLevel)

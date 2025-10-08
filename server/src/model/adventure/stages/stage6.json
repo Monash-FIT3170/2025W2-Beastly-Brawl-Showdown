@@ -197,7 +197,7 @@
       },
       {
         "id": "feed_options",
-        "result": ["what do you do"],
+        "result": ["What do you do?"],
         "type": "CHOICE",
         "options": [
           {
