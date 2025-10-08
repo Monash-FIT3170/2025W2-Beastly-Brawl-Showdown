@@ -98,7 +98,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             iconColour="black"
             buttonColour="red"
             size="medium"
-            onClick={() => FlowRouter.go("/")}
+            onClick={() => FlowRouter.go("/adventure/mode-select")}
           />
 
           {/* “CLASSIC” header */}
@@ -152,9 +152,13 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
                   : undefined
               }
             >
-              <OutlineText size={"choice-text"}>
-                {unlockedLevels.includes(observedLevel) ? "EXPLORE" : "LOCKED"}
-              </OutlineText>
+              <div className="min-w-[6rem] sm:min-w-[8rem] lg:min-w-[10rem] text-center">
+                <OutlineText size={"choice-text"}>
+                  {unlockedLevels.includes(observedLevel)
+                    ? "EXPLORE"
+                    : "LOCKED"}
+                </OutlineText>
+              </div>
             </ButtonGeneric>
           </div>
 
