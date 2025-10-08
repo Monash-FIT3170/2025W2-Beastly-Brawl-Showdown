@@ -11,7 +11,7 @@ interface ScoringRankBarProps {
 
 export const ScoringRankBar = ({ player, rank, score }: ScoringRankBarProps) => {
   const scoringRankBarStyleSets: Record<number, [string, string, string]> = {
-    1: ["1st", "bg-schoolBusYellow", "w-9/10"],
+    1: ["1st", "bg-shinygold", "w-9/10"],
     2: ["2nd", "bg-brightsilver", "w-8/10"],
     3: ["3rd", "bg-terracotta", "w-7/10"]
   };
