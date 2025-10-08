@@ -70,7 +70,7 @@ export const Home = () => {
   };
 
   const renderAdventure = () => {
-    FlowRouter.go("/adventure/level-select");
+    FlowRouter.go("/adventure/mode-select");
   };
 
   return (

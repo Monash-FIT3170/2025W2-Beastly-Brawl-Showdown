@@ -1,5 +1,7 @@
+import { BlackBelt } from "../../game/equipment/blackBelt";
 import { BlazingGauntlets } from "../../game/equipment/blazingGauntlets";
 import { Equipment } from "../../game/equipment/equipment";
+import { FightersBandana } from "../../game/equipment/fightersBandana";
 import { LifeFang } from "../../game/equipment/lifeFang";
 import { MagicShield } from "../../game/equipment/magicShield";
 import { OozingBlade } from "../../game/equipment/oozingBlade";
@@ -13,6 +15,8 @@ const equipmentFactory: Record<string, () => Equipment> = {
   pufferPrickle: () => new PufferPrickle(),
   sharpenedClaws: () => new SharpenedClaws(),
   blazingGauntlets: () => new BlazingGauntlets(),
+  fightersBandana: () => new FightersBandana(),
+  blackBelt: () => new BlackBelt(),
 };
 
 export function createEquipment(id: string): Equipment {

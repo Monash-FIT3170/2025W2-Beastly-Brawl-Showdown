@@ -63,7 +63,6 @@ export class AttackAction extends Action {
     this.d20 = this.rollDice();
     this.attackBonus = actingPlayer.getAttackStat();
     this.attackHit = this.d20 + this.attackBonus;
-    this.damage = 5;
     console.log(
       `${actingPlayer.getName()} Dice roll: ${this.d20} | Attack bonus: ${
         this.attackBonus
@@ -91,14 +90,11 @@ export class AttackAction extends Action {
       // Set the crit range starting from the maximum dice value and going down
       // Check if the dice roll is within the crit range
       // E.g. normal d20 roll is 1-20, with a crit rate of 10%, you need to roll 19 or 20 to crit
-      let tmpDamage = this.damage;
+      let critDamage = this.damage * 2;
       const isCrit =
         this.d20 >
         this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
-      if (isCrit) {
-        this.damage *= 2; // Double the damage on a crit
-      }
-      affectedPlayer.incHealth(-this.damage);
+      affectedPlayer.incHealth(isCrit ? -critDamage : -this.damage);
 
       // Log successful attack
       actingPlayer.addLog(
@@ -122,7 +118,7 @@ export class AttackAction extends Action {
           this.damage
         } damage.`
       );
-      this.damage = tmpDamage;
+
       // Increment successful hit for front end
       actingPlayer.incSuccessfulHit(1);
       this.executeBattleEffect(actingPlayer, affectedPlayer, true);
