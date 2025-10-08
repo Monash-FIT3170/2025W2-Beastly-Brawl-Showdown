@@ -4,7 +4,7 @@ import { Equipment } from "./equipment";
 export class FightersBandana extends Equipment {
   constructor() {
     super(
-      "Fighters Bandana",
+      "Fighters Bracelets",
       "Allows the user to hone their focus, increasing their critical hit rate."
     );
   }
@@ -30,6 +30,6 @@ export class FightersBandana extends Equipment {
   }
 
   protected getImageString(): string {
-    return "FIGHTERS_BANDANA";
+    return "FIGHTERS_BRACELETS";
   }
 }

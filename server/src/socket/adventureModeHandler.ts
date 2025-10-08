@@ -23,13 +23,14 @@ import { SlimeBoost } from "../model/game/status/slimeBoost";
 import { Equipment } from "../model/game/equipment/equipment";
 import { updatePlayerAccount } from "../database/dbManager";
 import { createStoryItem } from "../model/adventure/factories/storyItemFactory";
-import { FightersBandana } from "../model/game/equipment/fightersBandana";
+import { FightersBandana } from "../model/game/equipment/fightersBracelets";
 import { BlackBelt } from "../model/game/equipment/blackBelt";
 import { Consumable } from "../model/game/consumables/consumable";
 import { AfflictionGloves } from "../model/game/equipment/afflictionGloves";
 import { RegenerationAmulet } from "../model/game/equipment/regenerationAmulet";
 import { MeekHelmet } from "../model/game/equipment/meekHelmet";
 import { ColosseumCrown } from "../model/game/equipment/colosseumCrown";
+import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -78,7 +79,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
-      player.giveEquipment(new ColosseumCrown());
+      player.giveEquipment(new BlazingGauntlets());
       //progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );

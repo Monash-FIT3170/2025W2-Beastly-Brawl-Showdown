@@ -9,7 +9,7 @@ import { StatusType } from "/types/single/statusType";
 export class TitanSlayer extends BattleEffect {
   constructor(countdown: number = Infinity) {
     super(
-      "Titan Slayer",
+      "Titan_Slayer",
       "Attacks deal damage damage to opponents with more health.",
       countdown,
       StatusType.BUFF

@@ -3,7 +3,7 @@ import { BlackBelt } from "../../game/equipment/blackBelt";
 import { BlazingGauntlets } from "../../game/equipment/blazingGauntlets";
 import { CoolingPendant } from "../../game/equipment/coolingPendant";
 import { Equipment } from "../../game/equipment/equipment";
-import { FightersBandana } from "../../game/equipment/fightersBandana";
+import { FightersBandana } from "../../game/equipment/fightersBracelets";
 import { LifeFang } from "../../game/equipment/lifeFang";
 import { MagicShield } from "../../game/equipment/magicShield";
 import { OozingBlade } from "../../game/equipment/oozingBlade";
