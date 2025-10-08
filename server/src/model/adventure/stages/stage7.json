@@ -747,8 +747,7 @@
       {
         "id": "regular_prize_pre",
         "result": [
-          "Oh, and please take this as a reward for your achievements here.",
-          "OOZING BLADE IS A PLACEHOLDER"
+          "Oh, and please take this as a reward for your achievements here."
         ],
         "type": "DIALOGUE",
         "next": "regular_prize"
@@ -756,7 +755,7 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozing_blade"
+        "equipmentId": "colosseum_crown"
       },
       {
         "id": "deny_entry",

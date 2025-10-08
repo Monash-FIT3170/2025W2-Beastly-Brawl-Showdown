@@ -478,8 +478,7 @@
       {
         "id": "regular_prize_pre",
         "result": [
-          "Oh, and please take this armour as a reward for your victory here",
-          "OOZING BLADE IS A PLACEHOLDER"
+          "Oh, and please take this helmet as a reward for your victory here"
         ],
         "type": "DIALOGUE",
         "next": "regular_prize"
@@ -487,7 +486,7 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozing_blade"
+        "equipmentId": "meek_helmet"
       },
       {
         "id": "leave",

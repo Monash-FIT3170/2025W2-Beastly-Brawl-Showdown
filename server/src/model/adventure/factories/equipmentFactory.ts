@@ -3,7 +3,7 @@ import { BlackBelt } from "../../game/equipment/blackBelt";
 import { BlazingGauntlets } from "../../game/equipment/blazingGauntlets";
 import { CoolingPendant } from "../../game/equipment/coolingPendant";
 import { Equipment } from "../../game/equipment/equipment";
-import { FightersBandana } from "../../game/equipment/fightersBandana";
+import { FightersBandana } from "../../game/equipment/fightersBracelets";
 import { LifeFang } from "../../game/equipment/lifeFang";
 import { MagicShield } from "../../game/equipment/magicShield";
 import { OozingBlade } from "../../game/equipment/oozingBlade";
@@ -15,6 +15,8 @@ import { RedCrystal } from "../../game/equipment/redCrystal";
 import { PurpleCrystal } from "../../game/equipment/purpleCrystal";
 import { AfflictionGloves } from "../../game/equipment/afflictionGloves";
 import { RegenerationAmulet } from "../../game/equipment/regenerationAmulet";
+import { MeekHelmet } from "../../game/equipment/meekHelmet";
+import { ColosseumCrown } from "../../game/equipment/colosseumCrown";
 
 const equipmentFactory: Record<string, () => Equipment> = {
   oozing_blade: () => new OozingBlade(),
@@ -33,6 +35,8 @@ const equipmentFactory: Record<string, () => Equipment> = {
   purple_crystal: () => new PurpleCrystal(),
   affliction_gloves: () => new AfflictionGloves(),
   regeneration_amulet: () => new RegenerationAmulet(),
+  meek_helmet: () => new MeekHelmet(),
+  colosseum_crown: () => new ColosseumCrown(),
 };
 
 export function createEquipment(id: string): Equipment {

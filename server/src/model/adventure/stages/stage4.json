@@ -144,7 +144,7 @@
         "result": ["Frog fall down but frog bounce back later."],
         "type": "DIALOGUE",
         "enemyId": ["poison_pogo", "SWAMP FROG"],
-        "next": "win_naration"
+        "next": "win_narration"
       },
       {
         "id": "win_narration",
@@ -159,7 +159,7 @@
       {
         "id": "reward",
         "type": "CONSUMABLE",
-        "consumable_id": "froggy_slime"
+        "consumableId": "froggy_slime"
       }
     ]
   },
