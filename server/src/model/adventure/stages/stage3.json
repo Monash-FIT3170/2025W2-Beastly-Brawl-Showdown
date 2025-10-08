@@ -75,7 +75,7 @@
       {
         "id": "slime_fight",
         "type": "FIGHT",
-        "enemyId": "slime_3",
+        "enemyId": ["slime", "BABY SLIME"],
         "next": "battle_conclusion"
       },
       {
@@ -398,14 +398,101 @@
     ]
   },
   {
-    "id": "endless",
+    "id": "stage3_titan",
     "level": [0],
-    "description": "endless",
+    "description": "Stage 3, player finds the coliseum of slimes",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["This is stage 3"],
-        "type": "DIALOGUE"
+        "result": [
+          "You come upon a colosseum.",
+          "You hear cheers and applause.",
+          "A gatekeeper approaches you.",
+          "This is the Colosseum of Titans",
+          "Fight an incredibly strong opponent to claim glorious victory.",
+          "There are incredible prizes to be won.",
+          "A victory here is required to enter the Grand Colosseum.",
+          "Are you here as a challenger?"
+        ],
+        "type": "DIALOGUE",
+        "next": "titan_colosseum_entry"
+      },
+      {
+        "id": "titan_colosseum_entry",
+        "type": "CHOICE",
+        "result": ["Are you a challenger?"],
+        "options": [
+          {
+            "id": "challenge",
+            "text": "Challenge",
+            "next": "challenge"
+          },
+          {
+            "id": "leave",
+            "text": "Leave",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "challenge",
+        "result": [
+          "Great!!!",
+          "Come in quickly and get ready!",
+          "The next fight is about to start"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight"
+      },
+      {
+        "id": "pre_fight",
+        "type": "DIALOGUE",
+        "result": ["*Thud* *Thud* *Thud*", "I WAS PROMISED A CHALLENGE"],
+        "enemyId": ["cinder_tail", "Colosseum Titan"],
+        "next": "titan_battle"
+      },
+      {
+        "id": "titan_battle",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "Colosseum Titan"],
+        "scaling": 2,
+        "next": "titan_win"
+      },
+      {
+        "id": "titan_win",
+        "result": [
+          "INCREDIBLE!!!!!!",
+          "YOU'VE SEEN IT HERE FIRST FOLKS!!!",
+          "OUR CHALLENGER HAS DEFEATED THE REIGNING CHAMPION!!",
+          "Please accept this mark as a sign of your victory here!"
+        ],
+        "type": "DIALOGUE",
+        "next": "titan_prize"
+      },
+      {
+        "id": "titan_prize",
+        "type": "STORY_ITEM",
+        "storyItemId": "titanic_badge",
+        "next": "regular_prize_pre"
+      },
+      {
+        "id": "regular_prize_pre",
+        "result": [
+          "Oh, and please take this armour as a reward for your victory here",
+          "OOZING BLADE IS A PLACEHOLDER"
+        ],
+        "type": "DIALOGUE",
+        "next": "regular_prize"
+      },
+      {
+        "id": "regular_prize",
+        "type": "EQUIPMENT",
+        "equipmentId": "oozingBlade"
+      },
+      {
+        "id": "leave",
+        "type": "DIALOGUE",
+        "result": ["You turn down the challenge and continue onwards."]
       }
     ]
   }

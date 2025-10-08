@@ -4,7 +4,7 @@ import { Balanced } from "../archetype/balanced";
 import { FlameLashAbilityAction } from "../action/ability/flameLash";
 
 export class CinderTail extends Monster {
-  constructor(name: string = "Cinder Tail") {
+  constructor(name = "Cinder Tail") {
     super(
       MonsterIdentifier.CINDER_TAIL,
       name,

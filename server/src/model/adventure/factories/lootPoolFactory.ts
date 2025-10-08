@@ -11,13 +11,13 @@ import { MoltenHeart } from "../../game/storyItem/moltenHeart";
 import { StoryItem } from "../../game/storyItem/storyItem";
 import { DragonScale } from "../../game/storyItem/dragonScale";
 import { CinderFlame } from "../../game/consumables/cinderFlame";
-import { PercentageHealthPotion } from "../../game/consumables/healthPotion";
 import { BlueCrystal } from "../../game/consumables/blueCrystal";
 import { RedCrystal } from "../../game/equipment/redCrystal";
 import { GreyCrystal } from "../../game/consumables/greyCrystal";
 import { PurpleCrystal } from "../../game/equipment/purpleCrystal";
 import { BlackCrystal } from "../../game/consumables/blackCrystal";
-
+import { BlackBelt } from "../../game/equipment/blackBelt";
+import { FightersBandana } from "../../game/equipment/fightersBandana";
 
 interface LootEntry {
   loot: (() => Consumable) | (() => Equipment) | (() => StoryItem);
@@ -107,8 +107,37 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
       loot: () => new GreyCrystal(),
       chance: 40,
       id: "grey_crystal",
-    }
-  ]
+    },
+  ],
+  scavenger_pool: [
+    {
+      loot: () => new PercentageHealthPotion("Mini Health Potion", 0.25),
+      chance: 50,
+      id: "mini_health_potion",
+    },
+    {
+      loot: () => new PercentageHealthPotion("Large Health Potion", 0.5),
+      chance: 40,
+      id: "large_health_potion",
+    },
+    {
+      loot: () => new PercentageHealthPotion("Super Health Potion", 1),
+      chance: 10,
+      id: "super_health_potion",
+    },
+  ],
+  martial_artist_pool: [
+    {
+      loot: () => new BlackBelt(),
+      chance: 50,
+      id: "blackBelt",
+    },
+    {
+      loot: () => new FightersBandana(),
+      chance: 50,
+      id: "fightersBandana",
+    },
+  ],
 };
 
 export function createLoot(id: string): LootEntry | null {

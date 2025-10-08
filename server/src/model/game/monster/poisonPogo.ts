@@ -4,7 +4,7 @@ import { ToxinTongue } from "../action/ability/toxinTongue";
 import { Attacker } from "../archetype/attacker";
 
 export class PoisonPogo extends Monster {
-  constructor(name: string = "Poison Pogo") {
+  constructor(name = "Poison Pogo") {
     super(
       MonsterIdentifier.POISON_POGO,
       name,

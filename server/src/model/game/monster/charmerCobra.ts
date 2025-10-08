@@ -5,7 +5,7 @@ import { AlluringLullaby } from "./../action/ability/alluringLullaby";
 import { Defender } from "../archetype/defender";
 
 export class CharmerCobra extends Monster {
-  constructor(name: string = "Charmer Cobra") {
+  constructor(name = "Charmer Cobra") {
     super(
       MonsterIdentifier.CHARMER_COBRA,
       name,

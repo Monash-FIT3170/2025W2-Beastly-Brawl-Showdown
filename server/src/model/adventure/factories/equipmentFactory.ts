@@ -1,7 +1,9 @@
 import { BasaltShield } from "../../game/equipment/basaltShield";
+import { BlackBelt } from "../../game/equipment/blackBelt";
 import { BlazingGauntlets } from "../../game/equipment/blazingGauntlets";
 import { CoolingPendant } from "../../game/equipment/coolingPendant";
 import { Equipment } from "../../game/equipment/equipment";
+import { FightersBandana } from "../../game/equipment/fightersBandana";
 import { LifeFang } from "../../game/equipment/lifeFang";
 import { MagicShield } from "../../game/equipment/magicShield";
 import { OozingBlade } from "../../game/equipment/oozingBlade";
@@ -13,18 +15,20 @@ import { RedCrystal } from "../../game/equipment/redCrystal";
 import { PurpleCrystal } from "../../game/equipment/purpleCrystal";
 
 const equipmentFactory: Record<string, () => Equipment> = {
-  oozing_blade: () => new OozingBlade(),
-  life_fang: () => new LifeFang(),
-  magic_shield: () => new MagicShield(),
-  puffer_prickle: () => new PufferPrickle(),
-  sharpened_claws: () => new SharpenedClaws(),
-  blazing_gauntlets: () => new BlazingGauntlets(),
-  cooling_pendant: () => new CoolingPendant(),
-  basalt_shield: () => new BasaltShield(),
-  slimy_heart: () => new SlimyHeart(),
-  witherbind_bracelet: () => new WitherbindBracelet(),
-  red_crystal: () => new RedCrystal(),
-  purple_crystal: () => new PurpleCrystal,
+  oozingBlade: () => new OozingBlade(),
+  lifeFang: () => new LifeFang(),
+  magicShield: () => new MagicShield(),
+  pufferPrickle: () => new PufferPrickle(),
+  sharpenedClaws: () => new SharpenedClaws(),
+  blazingGauntlets: () => new BlazingGauntlets(),
+  fightersBandana: () => new FightersBandana(),
+  blackBelt: () => new BlackBelt(),
+  coolingPendant: () => new CoolingPendant(),
+  basaltShield: () => new BasaltShield(),
+  slimyHeart: () => new SlimyHeart(),
+  witherbindBracelet: () => new WitherbindBracelet(),
+  redCrystal: () => new RedCrystal(),
+  purpleCrystal: () => new PurpleCrystal(),
 };
 
 export function createEquipment(id: string): Equipment {

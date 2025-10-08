@@ -50,7 +50,7 @@
       {
         "id": "fight_grandma",
         "type": "FIGHT",
-        "enemyId": "slime_4",
+        "enemyId": ["slime", "GRANDMA SLIME"],
         "next": "check_fight_win"
       },
       {
@@ -385,7 +385,7 @@
     "id": "level_4_slime3",
     "level": [4],
     "description": "level4_slime3_encounter",
-    "outcomes":[
+    "outcomes": [
       {
         "id": "initial",
         "result": [
@@ -408,7 +408,7 @@
       {
         "id": "slime_fight",
         "type": "FIGHT",
-        "enemyId":"swamp_slime_3",
+        "enemyId": "swamp_slime_3",
         "next": "fight_win"
       },
       {

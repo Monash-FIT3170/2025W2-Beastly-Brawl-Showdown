@@ -21,13 +21,13 @@
           "Prepare yourself!"
         ],
         "type": "DIALOGUE",
-        "enemyId": "pouncing_bandit",
+        "enemyId": ["pouncing_bandit", "bandito"],
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "pouncing_bandit",
+        "enemyId": ["pouncing_bandit", "bandito"],
         "next": "victory"
       },
       {
@@ -187,6 +187,230 @@
         "id": "initial",
         "result": ["This is stage 4"],
         "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "stage4_colosseum_maladies",
+    "level": [0],
+    "description": "Stage 3, player finds the coliseum of maladies",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You come upon a colosseum.",
+          "You hear cheers and applause.",
+          "A gatekeeper approaches you.",
+          "This is the Colosseum of Maladies",
+          "Fight a series of 3 challenging opponents, while under the effect of negative statuses.",
+          "There are incredible prizes to be won.",
+          "A victory here is required to enter the Grand Colosseum.",
+          "Are you here as a challenger?"
+        ],
+        "type": "DIALOGUE",
+        "next": "malady_colosseum_entry"
+      },
+      {
+        "id": "malady_colosseum_entry",
+        "type": "CHOICE",
+        "result": ["Are you a challenger?"],
+        "options": [
+          {
+            "id": "challenge",
+            "text": "Challenge",
+            "next": "challenge"
+          },
+          {
+            "id": "leave",
+            "text": "Leave",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "challenge",
+        "result": [
+          "Great!!!",
+          "Come in quickly and get ready!",
+          "The first fight is about to start"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_1_aura"
+      },
+      {
+        "id": "pre_fight_1_aura",
+        "result": ["Sickly green gas seeps into the arena."],
+        "type": "DIALOGUE",
+        "next": "pre_fight_1_effect"
+      },
+      {
+        "id": "pre_fight_1_effect",
+        "result": ["It fills your lungs."],
+        "type": "STATUS",
+        "statusId": ["poisoned", 5],
+        "next": "pre_fight_1_opponent"
+      },
+      {
+        "id": "pre_fight_1_opponent",
+        "type": "DIALOGUE",
+        "result": [
+          "How are you going to beat me when you health is seeping away."
+        ],
+        "enemyId": ["poison_pogo", "Malady Pogo"],
+        "next": "opponent_1_battle"
+      },
+      {
+        "id": "opponent_1_battle",
+        "type": "FIGHT",
+        "enemyId": ["poison_pogo", "Malady Pogo"],
+        "next": "opponent_1_win"
+      },
+      {
+        "id": "opponent_1_win",
+        "result": [
+          "INCREDIBLE!!!!!!",
+          "OUR CHALLENGER HAS EMERGED VICTORIOUS!!!",
+          "CAN THEY DO IT AGAIN!!",
+          "WE'RE ALL ABOUT A FAIR FIGHT HERE SO LETS GIVE THEM A CHANCE TO REST!!!"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_opponent_2"
+      },
+      {
+        "id": "pre_opponent_2",
+        "statChange": ["health", 10],
+        "result": ["You prepare for your next fight."],
+        "type": "STAT_CHANGE",
+        "next": "pre_fight_2"
+      },
+      {
+        "id": "pre_fight_2",
+        "result": [
+          "Your next fight is ready for you!",
+          "The crowd is going crazy!",
+          "I hope you're ready!"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_2_aura"
+      },
+      {
+        "id": "pre_fight_2_aura",
+        "result": ["An immense pressure fills the arena."],
+        "type": "DIALOGUE",
+        "next": "pre_fight_2_effect"
+      },
+      {
+        "id": "pre_fight_2_effect",
+        "result": ["You feel cursed!"],
+        "type": "STATUS",
+        "statusId": ["lake_curse", 5],
+        "next": "pre_fight_2_opponent"
+      },
+      {
+        "id": "pre_fight_2_opponent",
+        "type": "DIALOGUE",
+        "result": ["How are you going to beat me when you can't even hit me?"],
+        "enemyId": ["rocky_rhino", "Curse Rhino"],
+        "next": "opponent_2_battle"
+      },
+      {
+        "id": "opponent_2_battle",
+        "type": "FIGHT",
+        "enemyId": ["rocky_rhino", "Curse Rhino"],
+        "next": "opponent_2_win"
+      },
+      {
+        "id": "opponent_2_win",
+        "result": [
+          "INCREDIBLE!!!!!!",
+          "OUR CHALLENGER HAS EMERGED VICTORIOUS YET AGAIN!!!",
+          "ONE MORE ROUND TILL WE HAVE A NEW CHAMPION!!",
+          "LETS GIVE THEM A MOMENT BECAUSE I'M SURE THEY NEED A BREAK!!!"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_opponent_3"
+      },
+      {
+        "id": "pre_opponent_3",
+        "statChange": ["health", 15],
+        "result": ["You prepare for your final fight."],
+        "type": "STAT_CHANGE",
+        "next": "pre_fight_3"
+      },
+      {
+        "id": "pre_fight_3",
+        "result": [
+          "The crowd can't get enough of you!",
+          "I hope you're ready!",
+          "The crowd is waiting for you!"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_3_aura"
+      },
+      {
+        "id": "pre_fight_3_aura",
+        "result": [
+          "Flames engulf the arena",
+          "BURN IS NOT YET IN THIS BRANCH AND NEEDS TO BE USED HERE INSTEAD OF POISON!"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_3_effect"
+      },
+      {
+        "id": "pre_fight_3_effect",
+        "result": ["You're left with a painful burn!"],
+        "type": "STATUS",
+        "statusId": ["poisoned", 5],
+        "next": "pre_fight_3_opponent"
+      },
+      {
+        "id": "pre_fight_3_opponent",
+        "type": "DIALOGUE",
+        "result": ["This is it.", "Get Ready!"],
+        "enemyId": ["cinder_tail", "Malady Champion"],
+        "next": "opponent_3_battle"
+      },
+      {
+        "id": "opponent_3_battle",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "Malady Champion"],
+        "next": "opponent_3_win"
+      },
+      {
+        "id": "opponent_3_win",
+        "result": [
+          "THEY'VE DONE IT!!!!!!",
+          "WE HAVE A NEW CHAMPION OF MALADIES!!!",
+          "*The crowd roars with applause*",
+          "Please take this badge as a sign of your victory here!"
+        ],
+        "type": "DIALOGUE",
+        "next": "malady_prize"
+      },
+      {
+        "id": "malady_prize",
+        "type": "STORY_ITEM",
+        "storyItemId": "malady_badge",
+        "next": "regular_prize_pre"
+      },
+      {
+        "id": "regular_prize_pre",
+        "result": [
+          "Oh, and please take this necklace as a reward for your victory here",
+          "OOZING BLADE IS A PLACEHOLDER"
+        ],
+        "type": "DIALOGUE",
+        "next": "regular_prize"
+      },
+      {
+        "id": "regular_prize",
+        "type": "EQUIPMENT",
+        "equipmentId": "oozingBlade"
+      },
+      {
+        "id": "leave",
+        "type": "DIALOGUE",
+        "result": ["You turn down the challenge and continue onwards."]
       }
     ]
   }

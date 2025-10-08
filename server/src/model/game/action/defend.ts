@@ -30,6 +30,7 @@ export class DefendAction extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
+    this.executeBattleEffect(actingPlayer, affectedPlayer, true);
     return {
       appliedStatus: {
         success: false,

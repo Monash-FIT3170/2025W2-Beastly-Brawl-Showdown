@@ -57,6 +57,8 @@ export abstract class Status {
     return false;
   }
 
+  public endOfBattle(player: Player | undefined): void {}
+
   // useful for removing statuses that might give temporary buffs or giving nerfs post buff
   public abstract expire(player: Player): void;
 }

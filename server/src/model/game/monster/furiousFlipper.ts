@@ -4,7 +4,7 @@ import { Balanced } from "../archetype/balanced";
 import { PufferBlast } from "../action/ability/pufferBlast";
 
 export class FuriousFlipper extends Monster {
-  constructor(name: string = "Furious Flipper") {
+  constructor(name = "Furious Flipper") {
     super(
       MonsterIdentifier.FURIOUS_FLIPPER,
       name,
