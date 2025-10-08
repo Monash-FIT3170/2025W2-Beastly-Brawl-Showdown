@@ -21,13 +21,13 @@
           "Prepare yourself!"
         ],
         "type": "DIALOGUE",
-        "enemyId": ["pouncing_bandit", "bandito"],
+        "enemyId": ["pouncing_bandit", "BANDITO"],
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": ["pouncing_bandit", "bandito"],
+        "enemyId": ["pouncing_bandit", "BANDITO"],
         "next": "victory"
       },
       {
@@ -70,13 +70,13 @@
           "I won't let your presence go unnoticed. Prepare yourself."
         ],
         "type": "DIALOGUE",
-        "enemyId": "cinder_tail",
+        "enemyId": ["cinder_tail", "BIG RED"],
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "cinder_tail",
+        "enemyId": ["cinder_tail", "BIG RED"],
         "next": "victory"
       },
       {
@@ -86,7 +86,7 @@
           "WHHHAAAAT! How did you win? I'm meant to be strong???",
           "Give me some time, I'll... I'll... I don't know but I will win next time."
         ],
-        "enemyId": "cinder_tail",
+        "enemyId": ["cinder_tail", "BIG RED"],
         "next": "victory_2"
       },
       {
@@ -110,7 +110,7 @@
     "id": "First Encounter",
     "level": [4],
     "description": "level 4 mini boss",
-    "outcomes":[
+    "outcomes": [
       {
         "id": "initial",
         "result": [
@@ -130,39 +130,36 @@
           "OUCH!!!"
         ],
         "type": "DIALOGUE",
-        "enemyId": "poison_pogp",
+        "enemyId": ["poison_pogo", "SWAMP FROG"],
         "next": "frog_fight"
       },
       {
         "id": "frog_fight",
         "type": "FIGHT",
-        "enemyId": "poison_pogo",
+        "enemyId": ["poison_pogo", "SWAMP FROG"],
         "next": "win_dialogue"
       },
       {
         "id": "win_dialogue",
-        "result": [
-          "Frog fall down but frog bounce back later.",
-        ],
+        "result": ["Frog fall down but frog bounce back later."],
         "type": "DIALOGUE",
-        "enemyId": "poison_pogp",
+        "enemyId": ["poison_pogo", "SWAMP FROG"],
         "next": "win_naration"
       },
       {
         "id": "win_narration",
-        "result":[
+        "result": [
           "With a panicked croak, it spins around and bounds away crashing through the reeds and vanishing deep into the woods.",
           "A slick pool of glowing purple venom remains",
           "You carefully bottle it before it fades away."
         ],
-        "type":"DIALOGUE",
+        "type": "DIALOGUE",
         "next": "reward"
       },
       {
         "id": "reward",
         "type": "CONSUMABLE",
         "consumable_id": "froggy_slime"
-
       }
     ]
   },
@@ -256,13 +253,13 @@
         "result": [
           "How are you going to beat me when you health is seeping away."
         ],
-        "enemyId": ["poison_pogo", "Malady Pogo"],
+        "enemyId": ["poison_pogo", "MALADY POGO"],
         "next": "opponent_1_battle"
       },
       {
         "id": "opponent_1_battle",
         "type": "FIGHT",
-        "enemyId": ["poison_pogo", "Malady Pogo"],
+        "enemyId": ["poison_pogo", "MALADY POGO"],
         "next": "opponent_1_win"
       },
       {
@@ -310,13 +307,13 @@
         "id": "pre_fight_2_opponent",
         "type": "DIALOGUE",
         "result": ["How are you going to beat me when you can't even hit me?"],
-        "enemyId": ["rocky_rhino", "Curse Rhino"],
+        "enemyId": ["rocky_rhino", "CURSE RHINO"],
         "next": "opponent_2_battle"
       },
       {
         "id": "opponent_2_battle",
         "type": "FIGHT",
-        "enemyId": ["rocky_rhino", "Curse Rhino"],
+        "enemyId": ["rocky_rhino", "CURSE RHINO"],
         "next": "opponent_2_win"
       },
       {
@@ -367,13 +364,13 @@
         "id": "pre_fight_3_opponent",
         "type": "DIALOGUE",
         "result": ["This is it.", "Get Ready!"],
-        "enemyId": ["cinder_tail", "Malady Champion"],
+        "enemyId": ["cinder_tail", "MALADY CHAMPION"],
         "next": "opponent_3_battle"
       },
       {
         "id": "opponent_3_battle",
         "type": "FIGHT",
-        "enemyId": ["cinder_tail", "Malady Champion"],
+        "enemyId": ["cinder_tail", "MALADY CHAMPION"],
         "next": "opponent_3_win"
       },
       {
@@ -405,7 +402,7 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "oozing_blade"
       },
       {
         "id": "leave",

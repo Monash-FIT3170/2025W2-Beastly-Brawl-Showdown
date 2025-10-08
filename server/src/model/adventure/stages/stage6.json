@@ -308,7 +308,7 @@
         "id": "revive_dialogue",
         "type": "DIALOGUE",
         "result": ["⸜(｡˃ ᵕ ˂ )⸝♡"],
-        "enemyId": "ember_4",
+        "enemyId": ["slime", "LITTLE EMBER"],
         "next": "revive_success_status"
       },
       {
@@ -402,13 +402,13 @@
           "BlOOP! Blurrp! bloorb!",
           "The massive slime jiggles proudly, as if daring you to hit it."
         ],
-        "enemyId": "swamp_slime_3",
+        "enemyId": ["slime", "BIG SLIME"],
         "next": "slime_fight"
       },
       {
         "id": "slime_fight",
         "type": "FIGHT",
-        "enemyId": "swamp_slime_3",
+        "enemyId": ["slime", "BIG SLIME"],
         "next": "fight_win"
       },
       {

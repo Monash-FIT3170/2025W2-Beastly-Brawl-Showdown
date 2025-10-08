@@ -17,13 +17,13 @@
           "I've toppled greater foes than you."
         ],
         "type": "DIALOGUE",
-        "enemyId": ["pouncing_bandit", "bandito"],
+        "enemyId": ["pouncing_bandit", "BANDITO"],
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": ["pouncing_bandit", "bandito"],
+        "enemyId": ["pouncing_bandit", "BANDITO"],
         "next": "victory"
       },
       {
@@ -34,7 +34,7 @@
           "If you'd allow, I would like to join you.",
           "Maybe I could learn a thing or two."
         ],
-        "enemyId": ["pouncing_bandit", "bandito"]
+        "enemyId": ["pouncing_bandit", "BANDITO"]
       }
     ]
   },
@@ -70,13 +70,13 @@
           "Adventurer, I have returned. Not only to avenge myself, but to avenge my lands."
         ],
         "type": "DIALOGUE",
-        "enemyId": "cinder_tail",
+        "enemyId": ["cinder_tail", "BIG RED"],
         "next": "stranger_fight"
       },
       {
         "id": "stranger_fight",
         "type": "FIGHT",
-        "enemyId": "cinder_tail",
+        "enemyId": ["cinder_tail", "BIG RED"],
         "next": "victory"
       },
       {
@@ -89,7 +89,7 @@
           "I'm not trying to figure out your secrets or anything, its all total respect.",
           "Like Big Red totally respects you, so lets stick together? Right?"
         ],
-        "enemyId": "cinder_tail"
+        "enemyId": ["cinder_tail", "BIG RED"]
       }
     ]
   },
@@ -114,7 +114,7 @@
           "I hope you're ready!"
         ],
         "type": "DIALOGUE",
-        "enemyId": "charmer_cobra",
+        "enemyId": ["charmer_cobra", "COBRIÑA"],
         "next": "colosseum_prefight_1"
       },
       {
@@ -129,7 +129,7 @@
       {
         "id": "colosseum_rhino_fight",
         "type": "FIGHT",
-        "enemyId": "rocky_rhino",
+        "enemyId": ["rocky_rhino", "STONEHIDE GUARDIAN"],
         "next": "rhino_victory"
       },
       {
@@ -149,13 +149,13 @@
           "Don't worry, I'll avenge him!"
         ],
         "type": "DIALOGUE",
-        "enemyId": "slime_3",
+        "enemyId": ["slime", "COLOSSEUM SLIME"],
         "next": "colosseum_slime_fight"
       },
       {
         "id": "colosseum_slime_fight",
         "type": "FIGHT",
-        "enemyId": "slime_3",
+        "enemyId": ["slime", "COLOSSEUM SLIME"],
         "next": "slime_victory"
       },
       {
@@ -174,26 +174,26 @@
           "Let's see how you handle this!"
         ],
         "type": "DIALOGUE",
-        "enemyId": "charmer_cobra",
+        "enemyId": ["charmer_cobra", "COBRIÑA"],
         "next": "colosseum_cobra_fight"
       },
       {
         "id": "colosseum_cobra_fight",
         "type": "FIGHT",
-        "enemyId": "charmer_cobra",
+        "enemyId": ["charmer_cobra", "COBRIÑA"],
         "next": "cobra_victory_1"
       },
       {
         "id": "cobra_victory_1",
         "type": "DIALOGUE",
         "result": ["The cobra slithers to the ground, defeated."],
-        "enemyId": "cobra_victory_2"
+        "next": "cobra_victory_2"
       },
       {
         "id": "cobra_victory_2",
         "type": "DIALOGUE",
         "result": ["Okay.. okay, you win.", "UPDATE FINAL DIALOGUE."],
-        "enemyId": "charmer_cobra"
+        "enemyId": ["charmer_cobra", "COBRIÑA"]
       }
     ]
   },

@@ -333,7 +333,7 @@
       {
         "id": "rest_fight",
         "type": "FIGHT",
-        "enemyId": "ember_1"
+        "enemyId": ["slime", "EMBER SLIME"]
       }
     ]
   },
@@ -356,13 +356,13 @@
         "id": "swamp_slime_2_dialogue",
         "result": ["Gloooorp... shluuurrp... splaaat!", "Stickyyy!"],
         "type": "DIALOGUE",
-        "enemyId": "swamp_slime_2",
+        "enemyId": ["slime", "STICKY SLIME"],
         "next": "swamp_slime_2_battle"
       },
       {
         "id": "swamp_slime_2_battle",
         "type": "FIGHT",
-        "enemyId": "swamp_slime_2",
+        "enemyId": ["slime", "STICKY SLIME"],
         "next": "swamp_slime_2_win"
       },
       {
@@ -448,13 +448,13 @@
         "id": "pre_fight",
         "type": "DIALOGUE",
         "result": ["*Thud* *Thud* *Thud*", "I WAS PROMISED A CHALLENGE"],
-        "enemyId": ["cinder_tail", "Colosseum Titan"],
+        "enemyId": ["cinder_tail", "COLOSSEUM TITAN"],
         "next": "titan_battle"
       },
       {
         "id": "titan_battle",
         "type": "FIGHT",
-        "enemyId": ["cinder_tail", "Colosseum Titan"],
+        "enemyId": ["cinder_tail", "COLOSSEUM TITAN"],
         "scaling": 2,
         "next": "titan_win"
       },
@@ -487,7 +487,7 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "oozing_blade"
       },
       {
         "id": "leave",

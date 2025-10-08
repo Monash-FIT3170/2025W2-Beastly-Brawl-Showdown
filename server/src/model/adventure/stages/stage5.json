@@ -301,13 +301,13 @@
         "id": "slime_dialogue_1",
         "result": ["i will win.", "b u r n."],
         "type": "DIALOGUE",
-        "enemyId": "ember_3",
+        "enemyId": ["slime", "INFERNO SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "ember_3",
+        "enemyId": ["slime", "INFERNO SLIME"],
         "next": "fight_win"
       },
       {
@@ -515,13 +515,13 @@
         "result": [
           "A slime comes out into the ring, with a ferocity in its eyes."
         ],
-        "enemyId": ["slime", "Colosseum Slime"],
+        "enemyId": ["slime", "COLOSSEUM SLIME"],
         "next": "slime_battle"
       },
       {
         "id": "slime_battle",
         "type": "FIGHT",
-        "enemyId": ["slime", "Colosseum Slime"],
+        "enemyId": ["slime", "COLOSSEUM SLIME"],
         "next": "slime_win"
       },
       {
@@ -568,7 +568,7 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "oozing_blade"
       },
       {
         "id": "leave",

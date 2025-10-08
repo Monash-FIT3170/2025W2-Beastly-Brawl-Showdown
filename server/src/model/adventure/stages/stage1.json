@@ -62,13 +62,13 @@
         "id": "slime_dialogue_1",
         "result": ["hsss.. crack... fwooosh..", "c r a c k l e."],
         "type": "DIALOGUE",
-        "enemyId": "ember_1",
+        "enemyId": ["slime", "EMBER SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "ember_1",
+        "enemyId": ["slime", "EMBER SLIME"],
         "next": "fight_win"
       },
       {
@@ -109,13 +109,13 @@
         "id": "slime_dialogue_1",
         "result": ["bloob bloob", "BLOB!"],
         "type": "DIALOGUE",
-        "enemyId": "slime_1",
+        "enemyId": ["slime", "SWAMP SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "slime_1",
+        "enemyId": ["slime", "SWAMP SLIME"],
         "next": "fight_win"
       },
       {
@@ -157,13 +157,13 @@
           "*it lunges at you!*"
         ],
         "type": "DIALOGUE",
-        "enemyId": "swamp_slime_1",
+        "enemyId": ["slime", "HUNGRY SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "swamp_slime_1",
+        "enemyId": ["slime", "HUNGRY SLIME"],
         "next": "fight_win"
       },
       {
@@ -179,19 +179,6 @@
         "id": "reward",
         "type": "EQUIPMENT",
         "equipmentId": "sharpened_claws"
-      }
-    ]
-  },
-  {
-    "id": "endless",
-    "level": [0],
-    "description": "Endless",
-    "outcomes": [
-      {
-        "id": "initial",
-        "result": ["This is stage 1"],
-        "type": "DIALOGUE",
-        "next": "slime_dialogue_1"
       }
     ]
   },
@@ -286,7 +273,7 @@
       {
         "id": "wolf_fight",
         "type": "FIGHT",
-        "enemyId": ["pouncing_bandit", "wolf"],
+        "enemyId": ["pouncing_bandit", "WOLF"],
         "next": "fight_win"
       },
       {

@@ -65,13 +65,13 @@
         "id": "slime_dialogue_1",
         "result": ["grrr... hisss... pop...", "s i z z l e."],
         "type": "DIALOGUE",
-        "enemyId": "ember_2",
+        "enemyId": ["slime", "MAGMA SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": "ember_2",
+        "enemyId": ["slime", "MAGMA SLIME"],
         "next": "fight_win"
       },
       {
@@ -358,7 +358,7 @@
           "If you seek what lies beyond the waterfall you must prove your worth with a show of strength."
         ],
         "type": "DIALOGUE",
-        "enemyId": ["charmer_cobra", "Martial Artist"],
+        "enemyId": ["charmer_cobra", "MARTIAL ARTIST"],
         "next": "martial_artist_choice"
       },
       {
@@ -387,7 +387,7 @@
       {
         "id": "martial_artist_battle",
         "type": "FIGHT",
-        "enemyId": ["charmer_cobra", "Martial Artist"],
+        "enemyId": ["charmer_cobra", "MARTIAL ARTIST"],
         "next": "martial_artist_win"
       },
       {
@@ -397,7 +397,7 @@
           "Go behind the waterfall and make your choice."
         ],
         "type": "DIALOGUE",
-        "enemyId": ["charmer_cobra", "Martial Artist"],
+        "enemyId": ["charmer_cobra", "MARTIAL ARTIST"],
         "next": "behind_water"
       },
       {
@@ -426,12 +426,12 @@
       {
         "id": "black_belt",
         "type": "EQUIPMENT",
-        "equipmentId": "blackBelt"
+        "equipmentId": "black_belt"
       },
       {
         "id": "bandana_reward",
         "type": "EQUIPMENT",
-        "equipmentId": "fightersBandana"
+        "equipmentId": "fighters_bandana"
       },
       {
         "id": "leave",

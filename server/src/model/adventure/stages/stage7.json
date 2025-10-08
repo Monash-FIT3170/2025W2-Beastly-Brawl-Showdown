@@ -403,13 +403,13 @@
         "id": "pre_fight",
         "type": "DIALOGUE",
         "result": ["You don't stand a chance."],
-        "enemyId": ["poison_pogo", "Colosseum Pogo"],
+        "enemyId": ["poison_pogo", "COLOSSEUM POGO"],
         "next": "battle_1"
       },
       {
         "id": "battle_1",
         "type": "FIGHT",
-        "enemyId": ["poison_pogo", "Colosseum Pogo"],
+        "enemyId": ["poison_pogo", "COLOSSEUM POGO"],
         "next": "battle_1_win"
       },
       {
@@ -425,13 +425,13 @@
         "id": "battle_2_pre",
         "type": "DIALOGUE",
         "result": ["Are you starting to sweat?"],
-        "enemyId": ["rocky_rhino", "Colosseum Rhino"],
+        "enemyId": ["rocky_rhino", "COLOSSEUM RHINO"],
         "next": "battle_2"
       },
       {
         "id": "battle_2",
         "type": "FIGHT",
-        "enemyId": ["rocky_rhino", "Colosseum Rhino"],
+        "enemyId": ["rocky_rhino", "COLOSSEUM RHINO"],
         "scalling": 2,
         "next": "battle_2_win"
       },
@@ -448,13 +448,13 @@
         "id": "battle_3_pre",
         "type": "DIALOGUE",
         "result": ["This is the end of your run."],
-        "enemyId": ["furious_flipper", "Colosseum Penguin"],
+        "enemyId": ["furious_flipper", "COLOSSEUM PENGUIN"],
         "next": "battle_3"
       },
       {
         "id": "battle_3",
         "type": "FIGHT",
-        "enemyId": ["furious_flipper", "Colosseum Penguin"],
+        "enemyId": ["furious_flipper", "COLOSSEUM PENGUIN"],
         "scaling": 3,
         "next": "battle_3_win"
       },
@@ -471,13 +471,13 @@
         "id": "battle_4_pre",
         "type": "DIALOGUE",
         "result": ["I won't let you past me"],
-        "enemyId": ["pouncing_bandit", "Colosseum Wolf"],
+        "enemyId": ["pouncing_bandit", "COLOSSEUM WOLF"],
         "next": "battle_4"
       },
       {
         "id": "battle_4",
         "type": "FIGHT",
-        "enemyId": ["pouncing_bandit", "Colosseum Wolf"],
+        "enemyId": ["pouncing_bandit", "COLOSSEUM WOLF"],
         "scaling": 4,
         "next": "battle_4_win"
       },
@@ -494,13 +494,13 @@
         "id": "battle_5_pre",
         "type": "DIALOGUE",
         "result": ["Good Luck"],
-        "enemyId": ["cinder_tail", "Colosseum Champion"],
+        "enemyId": ["cinder_tail", "COLOSSEUM CHAMPION"],
         "next": "battle_5"
       },
       {
         "id": "battle_5",
         "type": "FIGHT",
-        "enemyId": ["cinder_tail", "Colosseum Champion"],
+        "enemyId": ["cinder_tail", "COLOSSEUM CHAMPION"],
         "scaling": 5,
         "next": "battle_5_win"
       },
@@ -531,7 +531,7 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "oozing_blade"
       },
       {
         "id": "deny_entry",

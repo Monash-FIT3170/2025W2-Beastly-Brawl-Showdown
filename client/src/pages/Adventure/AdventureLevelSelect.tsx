@@ -145,4 +145,4 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   );
 };
 
-export default AdventureLevelSelect;
+export default LevelSelect;
