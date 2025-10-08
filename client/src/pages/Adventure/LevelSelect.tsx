@@ -152,7 +152,9 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
                   : undefined
               }
             >
-              {unlockedLevels.includes(observedLevel) ? "EXPLORE" : "LOCKED"}
+              <OutlineText size={"choice-text"}>
+                {unlockedLevels.includes(observedLevel) ? "EXPLORE" : "LOCKED"}
+              </OutlineText>
             </ButtonGeneric>
           </div>
 
