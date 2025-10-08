@@ -559,8 +559,7 @@
       {
         "id": "regular_prize_pre",
         "result": [
-          "Oh, and please take this ring as a reward for your victory here",
-          "OOZING BLADE IS A PLACEHOLDER"
+          "Oh, and please take this amulet as a reward for your victory here"
         ],
         "type": "DIALOGUE",
         "next": "regular_prize"
@@ -568,7 +567,7 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozing_blade"
+        "equipmentId": "regeneration_amulet"
       },
       {
         "id": "leave",

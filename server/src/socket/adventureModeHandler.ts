@@ -26,6 +26,8 @@ import { createStoryItem } from "../model/adventure/factories/storyItemFactory";
 import { FightersBandana } from "../model/game/equipment/fightersBandana";
 import { BlackBelt } from "../model/game/equipment/blackBelt";
 import { Consumable } from "../model/game/consumables/consumable";
+import { AfflictionGloves } from "../model/game/equipment/afflictionGloves";
+import { RegenerationAmulet } from "../model/game/equipment/regenerationAmulet";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -73,9 +75,8 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       }
 
       const player = adventure.getPlayer();
-
       player.setMonster(monster);
-      // player.addStatus(new SlimeBoost(3));
+      player.giveEquipment(new RegenerationAmulet());
       //progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );

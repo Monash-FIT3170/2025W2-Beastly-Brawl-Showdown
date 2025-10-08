@@ -346,10 +346,7 @@
       },
       {
         "id": "pre_fight_3_aura",
-        "result": [
-          "Flames engulf the arena",
-          "BURN IS NOT YET IN THIS BRANCH AND NEEDS TO BE USED HERE INSTEAD OF POISON!"
-        ],
+        "result": ["Flames engulf the arena"],
         "type": "DIALOGUE",
         "next": "pre_fight_3_effect"
       },
@@ -357,7 +354,7 @@
         "id": "pre_fight_3_effect",
         "result": ["You're left with a painful burn!"],
         "type": "STATUS",
-        "statusId": ["poisoned", 5],
+        "statusId": ["burn", 3],
         "next": "pre_fight_3_opponent"
       },
       {
@@ -393,8 +390,7 @@
       {
         "id": "regular_prize_pre",
         "result": [
-          "Oh, and please take this necklace as a reward for your victory here",
-          "OOZING BLADE IS A PLACEHOLDER"
+          "Oh, and please take these gloves as a reward for your victory here"
         ],
         "type": "DIALOGUE",
         "next": "regular_prize"
@@ -402,7 +398,7 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozing_blade"
+        "equipmentId": "affliction_gloves"
       },
       {
         "id": "leave",

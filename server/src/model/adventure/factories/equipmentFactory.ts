@@ -13,6 +13,8 @@ import { SlimyHeart } from "../../game/equipment/slimyHeart";
 import { WitherbindBracelet } from "../../game/equipment/witherbindBracelet";
 import { RedCrystal } from "../../game/equipment/redCrystal";
 import { PurpleCrystal } from "../../game/equipment/purpleCrystal";
+import { AfflictionGloves } from "../../game/equipment/afflictionGloves";
+import { RegenerationAmulet } from "../../game/equipment/regenerationAmulet";
 
 const equipmentFactory: Record<string, () => Equipment> = {
   oozing_blade: () => new OozingBlade(),
@@ -29,6 +31,8 @@ const equipmentFactory: Record<string, () => Equipment> = {
   witherbind_bracelet: () => new WitherbindBracelet(),
   red_crystal: () => new RedCrystal(),
   purple_crystal: () => new PurpleCrystal(),
+  affliction_gloves: () => new AfflictionGloves(),
+  regeneration_amulet: () => new RegenerationAmulet(),
 };
 
 export function createEquipment(id: string): Equipment {
