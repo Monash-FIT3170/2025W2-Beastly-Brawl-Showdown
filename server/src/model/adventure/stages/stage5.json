@@ -1,7 +1,7 @@
 [
   {
     "id": "obstructing_lake",
-    "level": [1],
+    "level": [0, 1],
     "description": "A large lake",
     "outcomes": [
       {
@@ -142,7 +142,7 @@
   },
   {
     "id": "cursed_lake",
-    "level": [1],
+    "level": [0, 1],
     "description": "Cursed lake encounter",
     "outcomes": [
       {
@@ -329,7 +329,7 @@
   },
   {
     "id": "frog_trail",
-    "level": [4],
+    "level": [0, 4],
     "description": "choice two paths",
     "outcomes": [
       {
@@ -367,6 +367,16 @@
           "Your steps slow as a strange calm seeps into your body.",
           "Your eyelids grow heavy. You feel sleepy..."
         ],
+        "type": "DIALOGUE",
+        "next": "follow_random"
+      },
+      {
+        "id": "follow_random",
+        "result": [
+          "You follow the slime trail deeper into the swamp.The air thickens, heavy with damp heat.",
+          "Your steps slow as a strange calm seeps into your body.",
+          "Your eyelids grow heavy. You feel sleepy..."
+        ],
         "type": "RANDOM",
         "options": [
           {
@@ -398,7 +408,7 @@
           "You wake confused and unfocused.",
           " The swamp's whisper still echoes in your mind, but your journey must continue."
         ],
-        "status_id": ["swamps_whisper", 5]
+        "statusId": ["swamps_whisper", 5]
       },
       {
         "id": "witherbindBracelet_prick",
@@ -419,7 +429,8 @@
       {
         "id": "not_follow",
         "result": [
-          "The swamp quiets as you stay on the safe path. The mist settles and a rare peace surrounds you."
+          "The swamp quiets as you stay on the safe path. The mist settles and a rare peace surrounds you.",
+          "A gentle green glow swirls around you. The swamp itself seems to shield you."
         ],
         "type": "DIALOGUE",
         "next": "swamps_calm"
@@ -428,9 +439,9 @@
         "id": "swamps_calm",
         "type": "STATUS",
         "result": [
-          "A gentle green glow swirls around you. The swamp itself seems to shield you."
+          "You feel calm."
         ],
-        "status_id": ["swamps_calm", 5]
+        "statusId": ["swamps_calm", 5]
       }
     ]
   },

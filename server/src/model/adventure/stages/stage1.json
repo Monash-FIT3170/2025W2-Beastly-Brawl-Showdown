@@ -359,5 +359,190 @@
         ]
       }
     ]
+  },
+  {
+    "id": "stage1_captured_prisoner",
+    "level": [0],
+    "description": "Stage 1, player finds a prisoner",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You see a faint glow in the distance.",
+          "As you approach, you notice a guard by a firepit, with a prisoner sitting upright in a cage.",
+          "The prisoner notices you and suddenly becomes alert.",
+          "They motion towards the lock on their cage and a key on the guard's waist.",
+          "The guard still hasn't noticed you yet."
+        ],
+        "type": "DIALOGUE",
+        "next": "guard_choice"
+      },
+      {
+        "id": "guard_choice",
+        "type": "CHOICE",
+        "result": ["Do you...?"],
+        "options": [
+          {
+            "id": "attack",
+            "text": "Attack The Guard",
+            "next": "attack"
+          },
+          {
+            "id": "stealth",
+            "text": "Try To Steal The Key Unnoticed",
+            "next": "stealth_random"
+          }
+        ]
+      },
+      {
+        "id": "attack",
+        "type": "DIALOGUE",
+        "result": ["You rush the guard and catch them unaware."],
+        "next": "guard_battle"
+      },
+      {
+        "id": "stealth_random",
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "successful_pickpocket",
+            "chance": 50,
+            "next": "good_lift"
+          },
+          {
+            "id": "no_luck",
+            "chance": 50,
+            "next": "bad_lift"
+          }
+        ]
+      },
+      {
+        "id": "bad_lift",
+        "type": "DIALOGUE",
+        "result": [
+          "You slowly approach, trying not to make a sound.",
+          "Before you can even reach the guard, a twig snaps.",
+          "The guard springs to action."
+        ],
+        "next": "guard_battle"
+      },
+      {
+        "id": "guard_battle",
+        "type": "FIGHT",
+        "enemyId": ["poison_pogo", "GUARD"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "type": "DIALOGUE",
+        "result": [
+          "The guard slumps over.",
+          "You take the key from their waist."
+        ],
+        "next": "receive_key"
+      },
+      {
+        "id": "good_lift",
+        "type": "DIALOGUE",
+        "result": [
+          "You slowly approach, trying not to make a sound.",
+          "The guard appears to be dozing off.",
+          "You carefully lift the key from the guard's belt."
+        ],
+        "next": "receive_key"
+      },
+      {
+        "id": "receive_key",
+        "type": "STORY_ITEM",
+        "storyItemId": "pristine_key",
+        "next": "approach_prisoner"
+      },
+      {
+        "id": "approach_prisoner",
+        "type": "DIALOGUE",
+        "result": ["You make your way over to the prisoner's cage."],
+        "next": "choose_unlock"
+      },
+      {
+        "id": "choose_unlock",
+        "type": "CHOICE",
+        "result": ["Do you...?"],
+        "options": [
+          {
+            "id": "free",
+            "text": "Free The Prisoner",
+            "next": "free_prisoner",
+            "cost": ["Pristine Key"]
+          },
+          {
+            "id": "ignore",
+            "text": "Leave Them Locked Up",
+            "next": "leave_prisoner"
+          }
+        ]
+      },
+      {
+        "id": "free_prisoner",
+        "type": "DIALOGUE",
+        "result": ["The lock springs open, and the prisoner walks out."],
+        "next": "prisoner_dialogue"
+      },
+      {
+        "id": "prisoner_dialogue",
+        "type": "DIALOGUE",
+        "result": [
+          "Thank you so much for saving me!",
+          "I don't have much to give you, but I am quite proficcient in healing magic.",
+          "Please accept this blessing."
+        ],
+        "enemyId": ["charmer_cobra", "PRISONER"],
+        "next": "prisoner_heal"
+      },
+      {
+        "id": "prisoner_heal",
+        "type": "STAT_CHANGE",
+        "result": ["You feel a warmth spread over your body."],
+        "statChange": ["health", 15],
+        "next": "prisoner_regen"
+      },
+      {
+        "id": "prisoner_regen",
+        "type": "STATUS",
+        "statusId": ["regeneration", 15],
+        "result": ["The magic lingers."],
+        "next": "prisoner_happy_conclusion"
+      },
+      {
+        "id": "prisoner_happy_conclusion",
+        "type": "DIALOGUE",
+        "result": [
+          "I have many more brothers and sisters who I believe are suffering similar fates!",
+          "Please free them if you see them."
+        ],
+        "enemyId": ["charmer_cobra", "PRISONER"]
+      },
+      {
+        "id": "leave_prisoner",
+        "type": "DIALOGUE",
+        "result": [
+          "The prisoner looks on in horror as you start to walk away.",
+          "You hear them slowly start to mutter.",
+          "Before you can make out what they're saying you double over in pain."
+        ],
+        "next": "prisoner_curse"
+      },
+      {
+        "id": "prisoner_curse",
+        "type": "STATUS",
+        "statusId": ["lake_curse", 5],
+        "result": ["You have been cursed."],
+        "next": "prisoner_sad_conclusion"
+      },
+      {
+        "id": "prisoner_sad_conclusion",
+        "type": "DIALOGUE",
+        "result": ["You ran away before anything else can happen."]
+      }
+    ]
   }
 ]
