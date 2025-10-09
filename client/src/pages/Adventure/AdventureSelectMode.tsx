@@ -7,7 +7,7 @@ import { BlackText } from "../../components/texts/BlackText";
 import { GenericIcon } from "../../components/icons/GenericIcon";
 import { IconButton } from "../../components/buttons/IconButton";
 
-export const AdventureModeSelect: React.FC = () => {
+export const AdventureSelectMode: React.FC = () => {
   const [endlessBest, setEndlessBest] = useState<number>(0);
 
   useEffect(() => {
@@ -45,7 +45,6 @@ export const AdventureModeSelect: React.FC = () => {
           size="medium"
           onClick={() => {
             FlowRouter.go("/");
-            console.log("HELLLO");
           }}
         />
       </div>
