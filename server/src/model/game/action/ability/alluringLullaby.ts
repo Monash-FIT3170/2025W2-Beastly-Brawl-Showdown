@@ -15,13 +15,22 @@ export class AlluringLullaby extends Action {
       1
     );
     this.setDodgeable(false);
+    this.damage = 5;
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     this.affectedPlayerActions = affectedPlayer.getActions();
     const action = new AttackAction(1, 1, 1, 1);
     affectedPlayer.removeAction(action); //remove attack action - any other action can continue
-    affectedPlayer.addAction(new NullAction("Null", ActionIdentifier.NULL, "Your attacked yourself", `${affectedPlayer.getName()} attacked themself`, `${affectedPlayer.getName()} attacked themself`))
+    affectedPlayer.addAction(
+      new NullAction(
+        "Null",
+        ActionIdentifier.NULL,
+        "Your attacked yourself",
+        `${affectedPlayer.getName()} attacked themself`,
+        `${affectedPlayer.getName()} attacked themself`
+      )
+    );
   }
 
   public prepareAnimation(): string | [string, number] {
@@ -34,7 +43,7 @@ export class AlluringLullaby extends Action {
     this.affectedPlayerActions.forEach((action) => {
       // If the action is an attack, apply confusion
       if (action.getActionState().id === ActionIdentifier.ATTACK) {
-        affectedPlayer.incHealth(-5);
+        affectedPlayer.incHealth(-this.damage); //TODO: can they ever crit themselves?
 
         // Add logs
         actingPlayer.addLog(
@@ -46,6 +55,7 @@ export class AlluringLullaby extends Action {
         affectedPlayer.addBattleLog(
           `${actingPlayer.getName()} used ${this.getName()}, confusing ${affectedPlayer.getName()} and hitting themselves.`
         );
+        this.executeBattleEffect(actingPlayer, affectedPlayer, true);
       } else {
         // Add logs
         actingPlayer.addLog(`Your ${this.getName()} was ineffective!`);
@@ -55,6 +65,7 @@ export class AlluringLullaby extends Action {
         affectedPlayer.addBattleLog(
           `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
         );
+        this.executeBattleEffect(actingPlayer, affectedPlayer, false);
       }
     });
 
@@ -62,7 +73,7 @@ export class AlluringLullaby extends Action {
     return {
       appliedStatus: {
         success: false,
-      }
-    }
+      },
+    };
   }
 }

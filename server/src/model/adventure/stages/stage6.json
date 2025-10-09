@@ -20,12 +20,12 @@
         "options": [
           {
             "id": "child_safe",
-            "prerequisite": ["befriend_slime"],
+            "prerequisite": ["Slime Baby"],
             "next": "choice_1"
           },
           {
             "id": "child_not_safe",
-            "next": "fight_1"
+            "next": "fight_grandma"
           }
         ]
       },
@@ -35,21 +35,22 @@
         "type": "CHOICE",
         "options": [
           {
-            "id": "battle",
-            "text": "Battle",
-            "next": "fight_1"
+            "id": "present_child",
+            "text": "Take the slime out of the backpack",
+            "next": "reunion",
+            "cost": ["Slime Baby"]
           },
           {
-            "id": "present_child",
-            "text": "Take out the slime",
-            "next": "reunion"
+            "id": "battle",
+            "text": "Battle grandma slime",
+            "next": "fight_grandma"
           }
         ]
       },
       {
-        "id": "fight_1",
+        "id": "fight_grandma",
         "type": "FIGHT",
-        "enemyId": "slime_4",
+        "enemyId": ["slime", "GRANDMA SLIME"],
         "next": "check_fight_win"
       },
       {
@@ -58,7 +59,7 @@
         "options": [
           {
             "id": "child_safe",
-            "prerequisite": ["befriend_slime"],
+            "prerequisite": ["Slime Baby"],
             "next": "fight_win"
           },
           {
@@ -86,7 +87,7 @@
       {
         "id": "reunion",
         "result": [
-          "You take out your slime friend from early.",
+          "You take out your slime baby from earlier.",
           "Both slimes start squelching happily.",
           "It looks as though you've bought the slime to one of its relatives.",
           "The larger slime gives you what appears to be slime.",
@@ -99,7 +100,19 @@
         "id": "slime_blessing",
         "result": ["You have received the blessing of the slimes."],
         "type": "STATUS",
-        "statusId": "grandma_blessing"
+        "statusId": ["slime_boost", 10]
+      }
+    ]
+  },
+  {
+    "id": "slime_1",
+    "level": [0],
+    "description": "Stage 1, player fights slime 1.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 6"],
+        "type": "DIALOGUE"
       }
     ]
   }

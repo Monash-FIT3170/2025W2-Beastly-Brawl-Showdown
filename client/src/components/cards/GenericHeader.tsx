@@ -21,13 +21,15 @@ export const GenericHeader = ({ children, color }: HeaderProps) => {
         text-large
         text-white
         font-[Jua]
-        w-[95%]
-        xl:w-[60%]
+        min-w-[95%]
+        xl:min-w-[60%]
+        max-w-[95dvw]
         h-normalPhoneHeight
         rounded-bl-xl
         rounded-br-xl
         border-[4px]
         border-blackCurrant
+        w-fit
         border-t-0
         text-center
         text-wrap

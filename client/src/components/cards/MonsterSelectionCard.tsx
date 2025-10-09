@@ -18,10 +18,10 @@ export const MonsterSelectionCard = ({
   onClick,
 }: MonsterSelectionProps) => {
   const colorLoader: Record<ArchetypeIdentifier, string> = {
-    [ArchetypeIdentifier.ATTACKER]: "bg-[#DC7466]",
-    [ArchetypeIdentifier.DEFENDER]: "bg-[#7EACD5]",
-    [ArchetypeIdentifier.BALANCED]: "bg-[#9DD786]",
-    [ArchetypeIdentifier.NEUTRAL]: "bg-[#DC7466]",
+    [ArchetypeIdentifier.ATTACKER]: "bg-attacker",
+    [ArchetypeIdentifier.DEFENDER]: "bg-defender",
+    [ArchetypeIdentifier.BALANCED]: "bg-balanced",
+    [ArchetypeIdentifier.NEUTRAL]: "bg-quillGray",
   };
 
   return (
@@ -32,7 +32,13 @@ export const MonsterSelectionCard = ({
                 sm:w-[95%]
                 lg:w-[70%]
                 flex flex-row items-center
-                min-h-[17rem]`}
+                min-h-[17rem]
+                cursor-pointer
+                transition-transform
+                duration-200
+                ease-in-out 
+                hover:scale-102 
+                hover:shadow-lg`}
       onClick={onClick}
     >
       <div className="flex flex-col shrink-0 justify-center items-center">

@@ -52,7 +52,7 @@
       {
         "id": "red_reward",
         "type": "STATUS",
-        "statusId": "poisoned",
+        "statusId": ["poisoned", 5],
         "result": ["The berries have poisoned you."]
       }
     ]
@@ -151,6 +151,230 @@
         "result": [
           "You decide that nothing on the other side is worth the risk and adventure onwards."
         ]
+      }
+    ]
+  },
+  {
+    "id": "stage7_grand_colosseum",
+    "level": [0],
+    "description": "Stage 7, player finds the grand colosseum",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You come upon a sprawling colosseum.",
+          "The cheers are deafening.",
+          "A gatekeeper approaches you.",
+          "This is the Grand Colosseum.",
+          "You may only enter if you've overcome all other colosseums."
+        ],
+        "type": "DIALOGUE",
+        "next": "entry_check"
+      },
+      {
+        "id": "entry_check",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "entry",
+            "prerequisite": ["Malady Badge", "Titanic Badge", "Stamina Badge"],
+            "next": "start_col"
+          },
+          {
+            "id": "no_entry",
+            "next": "deny_entry"
+          }
+        ]
+      },
+      {
+        "id": "start_col",
+        "result": [
+          "It looks like you've proven yourself!",
+          "In the grand colosseum you will face 5 enemies.",
+          "Each will become increasingly more difficult.",
+          "Are you here as a challenger?"
+        ],
+        "type": "DIALOGUE",
+        "next": "grand_colosseum_entry"
+      },
+      {
+        "id": "stamina_colosseum_entry",
+        "type": "CHOICE",
+        "result": ["Are you a challenger?"],
+        "options": [
+          {
+            "id": "challenge",
+            "text": "Challenge",
+            "next": "challenge"
+          },
+          {
+            "id": "leave",
+            "text": "Leave",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "challenge",
+        "result": [
+          "Great!!!",
+          "Come in quickly and get ready!",
+          "The next fight is about to start"
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_1"
+      },
+      {
+        "id": "pre_fight",
+        "type": "DIALOGUE",
+        "result": ["You don't stand a chance."],
+        "enemyId": ["poison_pogo", "Colosseum Pogo"],
+        "next": "battle_1"
+      },
+      {
+        "id": "battle_1",
+        "type": "FIGHT",
+        "enemyId": ["poison_pogo", "Colosseum Pogo"],
+        "next": "battle_1_win"
+      },
+      {
+        "id": "battle_1_win",
+        "type": "DIALOGUE",
+        "result": [
+          "THAT'S ONE OPPONENT DOWN!",
+          "CAN OUR CHALLENGER SURVIVE FOUR MORE!"
+        ],
+        "next": "battle_2_pre"
+      },
+      {
+        "id": "battle_2_pre",
+        "type": "DIALOGUE",
+        "result": ["Are you starting to sweat?"],
+        "enemyId": ["rocky_rhino", "Colosseum Rhino"],
+        "next": "battle_2"
+      },
+      {
+        "id": "battle_2",
+        "type": "FIGHT",
+        "enemyId": ["rocky_rhino", "Colosseum Rhino"],
+        "scalling": 2,
+        "next": "battle_2_win"
+      },
+      {
+        "id": "battle_2_win",
+        "type": "DIALOGUE",
+        "result": [
+          "THAT'S TWO OPPONENTS DOWN!",
+          "OUR CHALLENGER IS ON A HOT STREAK!"
+        ],
+        "next": "battle_3_pre"
+      },
+      {
+        "id": "battle_3_pre",
+        "type": "DIALOGUE",
+        "result": ["This is the end of your run."],
+        "enemyId": ["furious_flipper", "Colosseum Penguin"],
+        "next": "battle_3"
+      },
+      {
+        "id": "battle_3",
+        "type": "FIGHT",
+        "enemyId": ["furious_flipper", "Colosseum Penguin"],
+        "scaling": 3,
+        "next": "battle_3_win"
+      },
+      {
+        "id": "battle_3_win",
+        "type": "DIALOGUE",
+        "result": [
+          "THAT'S THREE OPPONENTS DOWN!",
+          "TWO MORE AND WE HAVE A NEW CHAMPION!"
+        ],
+        "next": "battle_4_pre"
+      },
+      {
+        "id": "battle_4_pre",
+        "type": "DIALOGUE",
+        "result": ["I won't let you past me"],
+        "enemyId": ["pouncing_bandit", "Colosseum Wolf"],
+        "next": "battle_4"
+      },
+      {
+        "id": "battle_4",
+        "type": "FIGHT",
+        "enemyId": ["pouncing_bandit", "Colosseum Wolf"],
+        "scaling": 4,
+        "next": "battle_4_win"
+      },
+      {
+        "id": "battle_4_win",
+        "type": "DIALOGUE",
+        "result": [
+          "THIS IS UNBELIEVABLE!",
+          "ARE WE ABOUT TO HAVE A NEW GRAND CHAMPION!"
+        ],
+        "next": "battle_5_pre"
+      },
+      {
+        "id": "battle_5_pre",
+        "type": "DIALOGUE",
+        "result": ["Good Luck"],
+        "enemyId": ["cinder_tail", "Colosseum Champion"],
+        "next": "battle_5"
+      },
+      {
+        "id": "battle_5",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "Colosseum Champion"],
+        "scaling": 5,
+        "next": "battle_5_win"
+      },
+      {
+        "id": "battle_5_win",
+        "type": "DIALOGUE",
+        "result": [
+          "WE HAVE A NEW GRAND CHAMPION!!!!!",
+          "Please take this badge as a symbol of your incredible accomplishment here!"
+        ],
+        "next": "grand_prize"
+      },
+      {
+        "id": "grand_prize",
+        "type": "STORY_ITEM",
+        "storyItemId": "grand_badge",
+        "next": "regular_prize_pre"
+      },
+      {
+        "id": "regular_prize_pre",
+        "result": [
+          "Oh, and please take this as a reward for your achievements here.",
+          "OOZING BLADE IS A PLACEHOLDER"
+        ],
+        "type": "DIALOGUE",
+        "next": "regular_prize"
+      },
+      {
+        "id": "regular_prize",
+        "type": "EQUIPMENT",
+        "equipmentId": "oozingBlade"
+      },
+      {
+        "id": "deny_entry",
+        "type": "DIALOGUE",
+        "result": [
+          "I'm sorry but I can't let you in until you've proven yourself."
+        ],
+        "next": "leave_sad"
+      },
+      {
+        "id": "leave_sad",
+        "type": "DIALOGUE",
+        "result": ["Dejected, you continue onwards."]
+      },
+      {
+        "id": "leave",
+        "type": "DIALOGUE",
+        "result": ["You turn down the challenge and continue onwards."]
       }
     ]
   }

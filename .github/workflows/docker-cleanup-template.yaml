@@ -1,0 +1,44 @@
+name: Docker Cleanup Template
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+    secrets:
+      DIGITAL_OCEAN_DROPLET_IP:
+        required: true
+      DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY:
+        required: true
+
+env:
+  droplet_user: root
+  droplet_name: droplet-bbs-game-server-${{ inputs.env }}
+
+jobs:
+  prune:
+    name: Prune old Docker images and volumes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Docker prune on droplet
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_DROPLET_IP }}
+          username: ${{ env.droplet_user }}
+          key: ${{ secrets.DIGITAL_OCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          script: |
+            echo "=== Running Docker cleanup on $HOSTNAME ==="
+
+            echo "--- BEFORE ---"
+            docker system df
+
+            echo "--- PRUNING ---"
+            docker image prune -af
+            docker volume prune -f
+
+            echo "--- AFTER ---"
+            docker system df
