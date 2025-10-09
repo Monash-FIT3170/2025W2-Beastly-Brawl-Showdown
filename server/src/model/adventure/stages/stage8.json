@@ -114,7 +114,7 @@
           "I hope you're ready!"
         ],
         "type": "DIALOGUE",
-        "enemyId": ["charmer_cobra", "COBRIÑA"],
+        "enemyId": ["charmer_cobra", "COBRINA"],
         "next": "colosseum_prefight_1"
       },
       {
@@ -174,13 +174,13 @@
           "Let's see how you handle this!"
         ],
         "type": "DIALOGUE",
-        "enemyId": ["charmer_cobra", "COBRIÑA"],
+        "enemyId": ["charmer_cobra", "COBRINA"],
         "next": "colosseum_cobra_fight"
       },
       {
         "id": "colosseum_cobra_fight",
         "type": "FIGHT",
-        "enemyId": ["charmer_cobra", "COBRIÑA"],
+        "enemyId": ["charmer_cobra", "COBRINA"],
         "next": "cobra_victory_1"
       },
       {
@@ -193,7 +193,7 @@
         "id": "cobra_victory_2",
         "type": "DIALOGUE",
         "result": ["Okay.. okay, you win.", "UPDATE FINAL DIALOGUE."],
-        "enemyId": ["charmer_cobra", "COBRIÑA"]
+        "enemyId": ["charmer_cobra", "COBRINA"]
       }
     ]
   },

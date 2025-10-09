@@ -92,11 +92,9 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
         />
       </AnimatePresence>
 
-      {/* Foreground content (your existing code) */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
-        {/* Fixed top header */}
-        <div className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-3">
-          {/* Back arrow button */}
+        {/* Back arrow button */}
+        <div className="fixed top-0 left-0 z-50 lg:ml-5 lg:mt-5 sm:ml-6 sm:mt-6">
           <IconButton
             style="arrowleft"
             iconColour="black"
@@ -104,16 +102,16 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             size="medium"
             onClick={() => FlowRouter.go("/adventure/mode-select")}
           />
+        </div>
 
-          {/* “CLASSIC” header */}
+        {/* "CLASSIC" header */}
+        <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 pt-3">
           <BaseCard color="peach" width={40} height={8}>
             <OutlineText size="extraLarge">CLASSIC</OutlineText>
           </BaseCard>
-
-          <div className="w-[3rem]" />
         </div>
 
-        {/* Content (centered vertically) */}
+        {/* Content */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-20 w-full max-w-6xl">
           <img
             src={monsterImage}
@@ -130,7 +128,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
           </div>
         </div>
 
-        {/* Navigation (fixed to bottom) */}
+        {/* Navigation */}
         <div className="fixed bottom-25 left-1/2 -translate-x-1/2 grid grid-cols-3 items-center w-[70%] lg:max-w-md z-40">
           {/* Left Arrow */}
           <div className="flex justify-center items-center">
@@ -145,7 +143,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             )}
           </div>
 
-          {/* Explore Button (centered) */}
+          {/* Explore Button */}
           <div className="flex justify-center">
             <ButtonGeneric
               color={unlockedLevels.includes(observedLevel) ? "ronchi" : "alto"}

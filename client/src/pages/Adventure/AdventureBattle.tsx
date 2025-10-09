@@ -212,6 +212,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     socket.on("adventure_equipment_full", (data) => {
       setCurrentEquipment(data.currentEquipment); // array of 3 equipment that player has
       setIncomingEquipment(data.incomingEquipment); // a new equipment item
+      setEquipmentInventoryFull(true);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -341,7 +342,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                       {currentEquipment[i] ? (
                         <EquipmentCard
                           equipment={currentEquipment[i]}
-                          onClick={() => {}} // Optional: show details if you want
+                          onClick={() => {}}
                         />
                       ) : (
                         <span className="text-gray-400">Empty Slot</span>

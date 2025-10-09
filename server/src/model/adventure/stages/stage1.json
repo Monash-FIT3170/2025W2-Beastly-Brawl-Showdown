@@ -148,6 +148,27 @@
           "A dune of sand rises up before you, and atop it sits a sand-coated creature."
         ],
         "type": "DIALOGUE",
+        "next": "status_1"
+      },
+      {
+        "id": "status_1",
+        "type": "STATUS",
+        "result": ["test", "test2"],
+        "statusId": ["lake_blessing", 5],
+        "next": "status_2"
+      },
+      {
+        "id": "status_2",
+        "type": "STATUS",
+        "result": ["test", "test2"],
+        "statusId": ["lake_blessing", 5],
+        "next": "status_3"
+      },
+      {
+        "id": "status_3",
+        "type": "STATUS",
+        "result": ["test", "test2"],
+        "statusId": ["lake_blessing", 5],
         "next": "slime_dialogue_1"
       },
       {
