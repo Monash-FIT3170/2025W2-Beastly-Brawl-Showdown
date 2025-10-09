@@ -16,15 +16,25 @@ export const AbilityCard = ({image, name, body, uses}: AbilityProps) => {
         image +
         ".webp";
 
+
     return (
-        <div className="flex flex-row h-[4rem] w-[40rem] bg-alto">
-            <img>
+        <div className="flex flex-row h-[10rem] w-[100rem] bg-alto justify-start items-center whitespace-pre-line p-[1rem] space-x-[1rem] border-[0.4rem] border-blackCurrant rounded-xl">
+            <img
                 src={imagePath}
-            </img>
+                className="w-[8rem] h-[8rem]"
+            />
             
-            <OutlineTextBP size="medium">
-                {name}
-            </OutlineTextBP>
+            <div className="w-[16rem]">
+                <OutlineTextBP size="medium">
+                    {name}
+                </OutlineTextBP>
+            </div>
+
+            <div>
+                <BlackText size="medium">
+                    {`${body} \nUses: ${uses}`} 
+                </BlackText>
+            </div>
         </div>
     );
 }
