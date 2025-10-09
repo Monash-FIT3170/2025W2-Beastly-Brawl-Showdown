@@ -9,6 +9,7 @@ import { InfinityAbility } from "../../game/status/infinityAbility";
 import { BurningRage } from "../../game/status/burningRage";
 import { SwampsCalm } from "../../game/status/swampsCalm";
 import { SwampsWhisper } from "../../game/status/swampsWhisper";
+import { Regeneration } from "../../game/status/regeneration";
 
 export interface StatusInfo {
   statusId: string;
@@ -25,7 +26,8 @@ const statusFactory: Record<string, (d: number) => Status> = {
   infinite_ability: (d) => new InfinityAbility(d),
   burning_rage: (d) => new BurningRage(d),
   swamps_calm: (d) => new SwampsCalm(d),
-  swamps_whisper: (d)=> new SwampsWhisper(d),
+  swamps_whisper: (d) => new SwampsWhisper(d),
+  regeneration: (d) => new Regeneration(d),
 };
 
 export function createStatus(id: string, duration: number): Status {

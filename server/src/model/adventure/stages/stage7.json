@@ -1,7 +1,7 @@
 [
   {
     "id": "berry_bush",
-    "level": [1],
+    "level": [0, 1],
     "description": "Berry bushes",
     "outcomes": [
       {
@@ -59,7 +59,7 @@
   },
   {
     "id": "rope_bridge",
-    "level": [1],
+    "level": [0, 1],
     "description": "Rope Bridge",
     "outcomes": [
       {
@@ -348,9 +348,7 @@
       },
       {
         "id": "have_lotus_choice",
-        "result": [
-          "What would you like to do?"
-        ],
+        "result": ["What would you like to do?"],
         "type": "CHOICE",
         "options": [
           {
@@ -378,9 +376,7 @@
       },
       {
         "id": "no_lotus_choice",
-        "result": [
-          "What would you like to do?"
-        ],
+        "result": ["What would you like to do?"],
         "type": "CHOICE",
         "options": [
           {
@@ -413,9 +409,7 @@
       {
         "id": "pick_stew",
         "type": "CHOICE",
-        "result": [
-          "Pick your poison."
-        ],
+        "result": ["Pick your poison."],
         "options": [
           {
             "id": "blue",
@@ -454,9 +448,7 @@
       },
       {
         "id": "brown_stew",
-        "result": [
-          "You accept the mud brown brew. It smells... questionable."
-        ],
+        "result": ["You accept the mud brown brew. It smells... questionable."],
         "type": "DIALOGUE",
         "next": "croak_posion"
       },
@@ -524,9 +516,7 @@
       },
       {
         "id": "guidance",
-        "result": [
-          ""
-        ]
+        "result": [""]
       }
     ]
   },

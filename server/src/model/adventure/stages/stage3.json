@@ -104,7 +104,7 @@
   },
   {
     "id": "falling_basalt",
-    "level": [2],
+    "level": [0, 2],
     "description": "Falling Basalt",
     "outcomes": [
       {
@@ -339,7 +339,7 @@
   },
   {
     "id": "swamp_slime_2",
-    "level": [4],
+    "level": [0, 4],
     "description": "Swamp slime 2 encounter",
     "outcomes": [
       {
