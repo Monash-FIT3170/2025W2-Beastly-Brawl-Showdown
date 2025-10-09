@@ -7,6 +7,7 @@ import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { LoginPopup } from "./Login";
 import { IconButton } from "../../components/buttons/IconButton";
+import { playBGM, playSFX } from "../../audioManager";
 
 export const Home = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -16,6 +17,7 @@ export const Home = () => {
 
   // --- Check login on mount
   useEffect(() => {
+    
     socket.emit("check-login");
 
     const handleLoginStatus = ({ loggedIn }) => {
@@ -35,10 +37,6 @@ export const Home = () => {
     audio.loop = true;
     audio.volume = 0.5;
 
-    // Attempt to autoplay (may fail due to browser policy)
-    audio.play().catch(() => {
-      console.log("Autoplay blocked — waiting for user click");
-    });
 
     // Keep global reference
     (window as any).homeMusic = audio;
@@ -55,19 +53,30 @@ export const Home = () => {
     if (audio) {
       audio.play()
         .then(() => {
-          console.log("🎶 Music is playing!");
+          console.log(" Music is playing!");
           setMusicStarted(true);
         })
         .catch((err: any) => {
-          console.error("❌ Failed to play music:", err);
+          console.error("Failed to play music:", err);
         });
     }
   };
 
-  // --- Navigation handlers
-  const renderConfigPage = () => FlowRouter.go("/host/choose-mode");
-  const renderJoinLobby = () => FlowRouter.go("/join");
-  const renderAdventure = () => FlowRouter.go("/adventure/level-select");
+
+  const renderConfigPage = () => {
+    playSFX("click");
+    FlowRouter.go("/host/choose-mode");
+  };
+
+  const renderJoinLobby = () => {
+    playSFX("click");
+    FlowRouter.go("/join");
+  };
+
+  const renderAdventure = () => {
+    playSFX("click");
+    FlowRouter.go("/adventure/level-select");
+  };
 
   const handleLoginSuccess = (username: string) => {
     setShowLogin(false);
