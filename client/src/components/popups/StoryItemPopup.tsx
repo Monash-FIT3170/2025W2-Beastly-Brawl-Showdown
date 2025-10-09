@@ -53,7 +53,8 @@ export const StoryItemPopup = ({
         lg:w-[45%]
         sm:w-[85%]
         lg:h-[85%]
-        sm:h-[75%]`;
+        sm:h-[75%]
+        overflow-auto`;
 
   //TODO: centre the rest of this poop
   //TODO: can't click
@@ -62,8 +63,8 @@ export const StoryItemPopup = ({
       <div className={`${popupLayout}`}>
         <div className={`${popup}`}>
           <div
-            className="flex flex-col items-center justify-center gap-2 
-             outline-offset-0 xl:pt-[2rem] xl:px-[2rem] pt-[3rem] pointer-events-auto"
+            className="flex flex-col items-center gap-2 w-full h-full outline-offset-0 
+                       xl:pt-[2rem] xl:px-[2rem] pt-[3rem] pointer-events-auto justify-center overflow-auto"
           >
             {/* Name */}
             <OutlineText size="large">
@@ -91,22 +92,21 @@ export const StoryItemPopup = ({
                 </OutlineText>
               </div>
             </div>
-
-            {/* Buttons */}
-            <div className="justify-center items-center flex lg:gap-5 sm:gap-10">
-              <ButtonGeneric color="red" size="battle" onClick={onClose}>
+          </div>
+          {/* Buttons */}
+          <div className="justify-center items-center flex lg:gap-5 sm:gap-10 pb-[1rem]">
+            <ButtonGeneric color="red" size="battle" onClick={onClose}>
+              <div className="items-center">
+                <OutlineText size="choice-text">{backText}</OutlineText>
+              </div>
+            </ButtonGeneric>
+            {onTake && (
+              <ButtonGeneric color="blue" size="battle" onClick={onTake}>
                 <div className="items-center">
-                  <OutlineText size="choice-text">{backText}</OutlineText>
+                  <OutlineText size="choice-text">{takeText}</OutlineText>
                 </div>
               </ButtonGeneric>
-              {onTake && (
-                <ButtonGeneric color="blue" size="battle" onClick={onTake}>
-                  <div className="items-center">
-                    <OutlineText size="choice-text">{takeText}</OutlineText>
-                  </div>
-                </ButtonGeneric>
-              )}
-            </div>
+            )}
           </div>
         </div>
       </div>

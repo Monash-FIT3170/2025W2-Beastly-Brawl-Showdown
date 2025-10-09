@@ -39,18 +39,6 @@
     ]
   },
   {
-    "id": "slime_1",
-    "level": [0],
-    "description": "Stage 1, player fights slime 1.",
-    "outcomes": [
-      {
-        "id": "initial",
-        "result": ["This is stage 8"],
-        "type": "DIALOGUE"
-      }
-    ]
-  },
-  {
     "id": "Cinder Tail Boss Encounter",
     "level": [2],
     "description": "The Final Encounter Level 2",
@@ -114,7 +102,7 @@
           "I hope you're ready!"
         ],
         "type": "DIALOGUE",
-        "enemyId": ["charmer_cobra", "COBRIÑA"],
+        "enemyId": ["charmer_cobra", "COBRINA"],
         "next": "colosseum_prefight_1"
       },
       {
@@ -174,13 +162,13 @@
           "Let's see how you handle this!"
         ],
         "type": "DIALOGUE",
-        "enemyId": ["charmer_cobra", "COBRIÑA"],
+        "enemyId": ["charmer_cobra", "COBRINA"],
         "next": "colosseum_cobra_fight"
       },
       {
         "id": "colosseum_cobra_fight",
         "type": "FIGHT",
-        "enemyId": ["charmer_cobra", "COBRIÑA"],
+        "enemyId": ["charmer_cobra", "COBRINA"],
         "next": "cobra_victory_1"
       },
       {
@@ -193,18 +181,90 @@
         "id": "cobra_victory_2",
         "type": "DIALOGUE",
         "result": ["Okay.. okay, you win.", "UPDATE FINAL DIALOGUE."],
-        "enemyId": ["charmer_cobra", "COBRIÑA"]
+        "enemyId": ["charmer_cobra", "COBRINA"]
       }
     ]
   },
   {
-    "id": "slime_1",
+    "id": "final_encounter_wolf",
     "level": [0],
-    "description": "Stage 1, player fights slime 1.",
+    "description": "Stage 8 damage check against wolf",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["This is stage 8"],
+        "result": [
+          "You come across a snarling wolf.",
+          "It sees you and attacks"
+        ],
+        "type": "DIALOGUE",
+        "next": "wolf_fight"
+      },
+      {
+        "id": "wolf_fight",
+        "type": "FIGHT",
+        "enemyId": ["pouncing_bandit", "WOLF"],
+        "next": "victory",
+        "scaling": 3
+      },
+      {
+        "id": "victory",
+        "result": ["It was a tough battle but you emerge victorious"],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "final_encounter_rhino",
+    "level": [0],
+    "description": "Stage 8 damage check against rhino",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You come across a rampaging rhino.",
+          "It sees you and attacks"
+        ],
+        "type": "DIALOGUE",
+        "next": "rhino_fight"
+      },
+      {
+        "id": "rhino_fight",
+        "type": "FIGHT",
+        "enemyId": ["rocky_rhino", "RHINO"],
+        "next": "victory",
+        "scaling": 3
+      },
+      {
+        "id": "victory",
+        "result": ["It was a tough battle but you emerge victorious"],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "final_encounter_dragon",
+    "level": [0],
+    "description": "Stage 8 damage check against dragon",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You come across an angry dragon.",
+          "It sees you and attacks"
+        ],
+        "type": "DIALOGUE",
+        "next": "dragon_fight"
+      },
+      {
+        "id": "dragon_fight",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "DRAGON"],
+        "next": "victory",
+        "scaling": 3
+      },
+      {
+        "id": "victory",
+        "result": ["It was a tough battle but you emerge victorious"],
         "type": "DIALOGUE"
       }
     ]

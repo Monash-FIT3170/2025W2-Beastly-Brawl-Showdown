@@ -31,6 +31,7 @@ import { RegenerationAmulet } from "../model/game/equipment/regenerationAmulet";
 import { MeekHelmet } from "../model/game/equipment/meekHelmet";
 import { ColosseumCrown } from "../model/game/equipment/colosseumCrown";
 import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
+import { PristineKey } from "../model/game/storyItem/pristineKey";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -79,7 +80,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
-      player.giveEquipment(new BlazingGauntlets());
+      player.giveStoryItem(new PristineKey());
       //progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );

@@ -212,6 +212,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     socket.on("adventure_equipment_full", (data) => {
       setCurrentEquipment(data.currentEquipment); // array of 3 equipment that player has
       setIncomingEquipment(data.incomingEquipment); // a new equipment item
+      setEquipmentInventoryFull(true);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -341,7 +342,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                       {currentEquipment[i] ? (
                         <EquipmentCard
                           equipment={currentEquipment[i]}
-                          onClick={() => {}} // Optional: show details if you want
+                          onClick={() => {}}
                         />
                       ) : (
                         <span className="text-gray-400">Empty Slot</span>
@@ -485,21 +486,25 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                           {/* Ping animation with responsive sizing and translation */}
                           <span
                             className="absolute inline-flex 
-                         h-[26px] w-[26px]     
-                         md:h-[20px] md:w-[20px] 
+                         size-[80px]
+                         md:size-[30px]
+                         lg:size-[20px]
                          animate-ping 
                          rounded-full bg-notification-accent 
                          opacity-75
                          -translate-y-1            
-                         md:-translate-y-1.5"
+                         md:-translate-y-4
+                         lg:-translate-y-1.5"
                           ></span>
                           <span
                             className="relative inline-flex 
-                         h-[26px] w-[26px] 
-                         md:h-[20px] md:w-[20px] 
+                         size-[80px]
+                         md:size-[30px]
+                         lg:size-[20px]
                          rounded-full bg-notification 
                          -translate-y-1
-                         md:-translate-y-1.5
+                         md:-translate-y-4
+                         lg:-translate-y-1.5
                          border-3"
                             style={{ borderColor: "var(--color-blackCurrant)" }}
                           ></span>
@@ -589,21 +594,21 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                         {/* Ping animation with responsive sizing and translation */}
                         <span
                           className="absolute inline-flex 
-                         h-[26px] w-[26px]          
-                         md:h-[20px] md:w-[20px]     
+                         size-[80px]
+                         md:size-[30px]
+                         lg:size-[20px]    
                          animate-ping 
                          rounded-full bg-notification-accent 
                          opacity-75
-                         -translate-y-1             
-                         md:-translate-y-1.5"
+                         -translate-y-2"
                         ></span>
                         <span
                           className="relative inline-flex 
-                         h-[26px] w-[26px] 
-                         md:h-[20px] md:w-[20px] 
+                         size-[80px]
+                         md:size-[30px]
+                         lg:size-[20px]
                          rounded-full bg-notification 
-                         -translate-y-1
-                         md:-translate-y-1.5
+                         -translate-y-2
                          border-3"
                           style={{ borderColor: "var(--color-blackCurrant)" }}
                         ></span>
