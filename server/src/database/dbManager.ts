@@ -337,7 +337,7 @@ export async function getTopPlayersByWins(_limit: number) {
 
     console.log('Top Players:', topPlayers);
 
-    // Filter out documents with missing or invalid stats
+    // Filter out documents with missing or invalid stats (just in case)
     const validPlayers = topPlayers.filter(player => player.stats && player.stats.numGamesWon !== undefined);
 
     // Return player name, numGamesWon, numGamesPlayed
