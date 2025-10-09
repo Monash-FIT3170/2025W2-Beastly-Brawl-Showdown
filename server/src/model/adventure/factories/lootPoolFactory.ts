@@ -18,6 +18,16 @@ import { PurpleCrystal } from "../../game/equipment/purpleCrystal";
 import { BlackCrystal } from "../../game/consumables/blackCrystal";
 import { BlackBelt } from "../../game/equipment/blackBelt";
 import { FightersBandana } from "../../game/equipment/fightersBracelets";
+import { PristineKey } from "../../game/storyItem/pristineKey";
+import { AbilityAntidote } from "../../game/consumables/abilityAntidote";
+import { BlazingGauntlets } from "../../game/equipment/blazingGauntlets";
+import { MagicShield } from "../../game/equipment/magicShield";
+import { LifeFang } from "../../game/equipment/lifeFang";
+import { StickyDie } from "../../game/equipment/stickyDie";
+import { PufferPrickle } from "../../game/equipment/pufferPrickle";
+import { RegenerationAmulet } from "../../game/equipment/regenerationAmulet";
+import { AfflictionGloves } from "../../game/equipment/afflictionGloves";
+import { MeekHelmet } from "../../game/equipment/meekHelmet";
 
 interface LootEntry {
   loot: (() => Consumable) | (() => Equipment) | (() => StoryItem);
@@ -112,18 +122,85 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
   scavenger_pool: [
     {
       loot: () => new PercentageHealthPotion("Mini Health Potion", 0.25),
-      chance: 50,
+      chance: 40,
       id: "mini_health_potion",
     },
     {
       loot: () => new PercentageHealthPotion("Large Health Potion", 0.5),
-      chance: 40,
+      chance: 8,
       id: "large_health_potion",
     },
     {
       loot: () => new PercentageHealthPotion("Super Health Potion", 1),
-      chance: 10,
+      chance: 2,
       id: "super_health_potion",
+    },
+    {
+      loot: () => new PristineKey(),
+      chance: 40,
+      id: "pristine_key",
+    },
+    {
+      loot: () => new AbilityAntidote(),
+      chance: 10,
+      id: "ability_antidote",
+    },
+  ],
+  pristine_treasure_pool: [
+    {
+      loot: () => new PercentageHealthPotion("Super Health Potion", 1),
+      chance: 20,
+      id: "super_health_potion",
+    },
+    {
+      loot: () => new AbilityAntidote(),
+      chance: 10,
+      id: "ability_antidote",
+    },
+    {
+      loot: () => new BlazingGauntlets(),
+      chance: 10,
+      id: "blazing_gauntlets",
+    },
+    {
+      loot: () => new MagicShield(),
+      chance: 10,
+      id: "magic_shield",
+    },
+    {
+      loot: () => new LifeFang(),
+      chance: 10,
+      id: "life_fang",
+    },
+    {
+      loot: () => new StickyDie(),
+      chance: 10,
+      id: "sticky_die",
+    },
+    {
+      loot: () => new PufferPrickle(),
+      chance: 10,
+      id: "puffer_prickle",
+    },
+    {
+      loot: () => new SlimeSubstance(),
+      chance: 17,
+      id: "slime_substance",
+    },
+    {
+      loot: () => new RegenerationAmulet(),
+      chance: 1,
+      id: "regeneration_amulet",
+    },
+    {
+      loot: () => new AfflictionGloves(),
+      chance: 1,
+      id: "affliction_gloves",
+    },
+    {
+      loot: () => new MeekHelmet(),
+      chance: 1,
+      id: "meek_helmet",
     },
   ],
   martial_artist_pool: [

@@ -176,18 +176,6 @@
     ]
   },
   {
-    "id": "slime_1",
-    "level": [0],
-    "description": "Stage 1, player fights slime 1.",
-    "outcomes": [
-      {
-        "id": "initial",
-        "result": ["This is stage 4"],
-        "type": "DIALOGUE"
-      }
-    ]
-  },
-  {
     "id": "stage4_colosseum_maladies",
     "level": [0],
     "description": "Stage 3, player finds the coliseum of maladies",

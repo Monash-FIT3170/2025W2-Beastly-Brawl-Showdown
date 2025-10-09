@@ -105,18 +105,6 @@
     ]
   },
   {
-    "id": "slime_1",
-    "level": [0],
-    "description": "Stage 1, player fights slime 1.",
-    "outcomes": [
-      {
-        "id": "initial",
-        "result": ["This is stage 6"],
-        "type": "DIALOGUE"
-      }
-    ]
-  },
-  {
     "id": "ember",
     "level": [2],
     "description": "Basalt Cliffs Stage 6, player finds embers.",
@@ -437,6 +425,127 @@
       {
         "id": "initial",
         "result": ["STAGE 6 UPDATE"],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "bandits",
+    "level": [0],
+    "description": "gang of bandits attack",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "It's been a long time since you last saw anyone.",
+          "You hear a twig snap in the distance.",
+          "Three bandits come out from the trees."
+        ],
+        "type": "DIALOGUE",
+        "next": "bandit_leader"
+      },
+      {
+        "id": "bandit_leader",
+        "result": [
+          "You're either gonna have to part with a bit of that health, by choice or we'll take all of it forcefully."
+        ],
+        "type": "DIALOGUE",
+        "next": "bandit_choice",
+        "enemyId": ["rocky_rhino", "BANDIT LEADER"]
+      },
+      {
+        "id": "bandit_choice",
+        "result": ["Do you..."],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "attack",
+            "text": "Attack The Leader",
+            "next": "leader_attack"
+          },
+          {
+            "id": "give_in",
+            "text": "Surrender 10 health",
+            "next": "give_health_pre"
+          }
+        ]
+      },
+      {
+        "id": "leader_attack",
+        "result": [
+          "Before the leader can react, you charge head first at him."
+        ],
+        "type": "DIALOGUE",
+        "next": "leader_battle"
+      },
+      {
+        "id": "leader_battle",
+        "type": "FIGHT",
+        "enemyId": ["rocky_rhino", "BANDIT LEADER"],
+        "next": "leader_win"
+      },
+      {
+        "id": "leader_win",
+        "result": [
+          "The leader is knocked out.",
+          "You glare at the now frightened thugs."
+        ],
+        "type": "DIALOGUE",
+        "next": "thug_reaction"
+      },
+      {
+        "id": "thug_reaction",
+        "result": ["Hey pal I don't want any trouble!"],
+        "type": "DIALOGUE",
+        "next": "other_thug_reaction",
+        "enemyId": ["poison_pogo", "BANDIT THUG"]
+      },
+      {
+        "id": "other_thug_reaction",
+        "result": [
+          "Yeah look just take what's in my pockets and we'll get out of here."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["charmer_cobra", "BANDIT THUG"],
+        "next": "bandit_reward"
+      },
+      {
+        "id": "bandit_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool",
+        "next": "bandit_conclusion"
+      },
+      {
+        "id": "bandit_conclusion",
+        "result": ["The thugs grab their leader and run away"],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "give_health_pre",
+        "result": ["Begrudgingly, you hand over 10 health"],
+        "type": "DIALOGUE",
+        "next": "give_health"
+      },
+      {
+        "id": "give_health",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -10],
+        "result": ["You feel weaker"],
+        "next": "leader_reaction"
+      },
+      {
+        "id": "leader_reaction",
+        "result": ["Smart move pal."],
+        "type": "DIALOGUE",
+        "next": "bandit_leave",
+        "enemyId": ["rocky_rhino", "BANDIT LEADER"]
+      },
+      {
+        "id": "bandit_leave",
+        "result": [
+          "The bandits return to the shadows.",
+          "You wonder if you would've been better off fighting them."
+        ],
         "type": "DIALOGUE"
       }
     ]
