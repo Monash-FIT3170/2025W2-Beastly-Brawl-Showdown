@@ -306,6 +306,231 @@
     ]
   },
   {
+    "id": "witch_again",
+    "level": [4],
+    "description": "witch_reunion",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "The swamp feels endless...",
+          "Each step sinks into the same patch of mud you swore you left behind.",
+          "You're starting to wonder if the swamp is walking you instead.",
+          "Just as your boots start to sink again, a familiar laugh ripples through the mist."
+        ],
+        "type": "DIALOGUE",
+        "next": "witch_encounter"
+      },
+      {
+        "id": "witch_encounter",
+        "result": [
+          "Back again huh? The swamp didn't chew you up yet?",
+          "You smell like frog sweat. I like that.",
+          "So, what brings you here, little wanderer?"
+        ],
+        "type": "DIALOGUE",
+        "next": "check_lotus"
+      },
+      {
+        "id": "check_lotus",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "have_lotus",
+            "prerequisite": ["Everblooming Lotus"],
+            "next": "have_lotus_choice"
+          },
+          {
+            "id": "no_lotus",
+            "next": "no_lotus_choice"
+          }
+        ]
+      },
+      {
+        "id": "have_lotus_choice",
+        "result": [
+          "What would you like to do?"
+        ],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "new_stew_option",
+            "text": "Ask for another stew.",
+            "next": "new_stew"
+          },
+          {
+            "id": "lost_option",
+            "text": "Tell her your lost",
+            "next": "lost"
+          },
+          {
+            "id": "lotus_option",
+            "text": "Ask about the lotus.",
+            "cost": ["Everblooming Lotus"],
+            "next": "lotus"
+          },
+          {
+            "id": "ignore_option",
+            "text": "Ignore her and leave.",
+            "next": "ignore"
+          }
+        ]
+      },
+      {
+        "id": "no_lotus_choice",
+        "result": [
+          "What would you like to do?"
+        ],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "new_stew_option",
+            "text": "Ask for another stew.",
+            "next": "new_stew"
+          },
+          {
+            "id": "lost_option",
+            "text": "Tell her your lost",
+            "next": "lost"
+          },
+          {
+            "id": "ignore_option",
+            "text": "Ignore her and leave.",
+            "next": "ignore"
+          }
+        ]
+      },
+      {
+        "id": "new_stew",
+        "result": [
+          "Hungry, are we? Fine, fine, I've been working on new flavors!",
+          "She claps her hands and suddenly, dozens of bottles pop into existence, spinning around her in mid-air.",
+          "Go on then, Pick your poison! Each one's perfectly safe... probably."
+        ],
+        "type": "DIALOGUE",
+        "next": "pick_stew"
+      },
+      {
+        "id": "pick_stew",
+        "type": "CHOICE",
+        "result": [
+          "Pick your poison."
+        ],
+        "options": [
+          {
+            "id": "blue",
+            "text": "Blue bottle",
+            "next": "blue_stew"
+          },
+          {
+            "id": "brown",
+            "text": "Brown bottle",
+            "next": "brown_stew"
+          },
+          {
+            "id": "purple",
+            "text": "Purple bottle",
+            "next": "purple_stew"
+          },
+          {
+            "id": "yellow",
+            "text": "Yellow bottle",
+            "next": "yellow_stew"
+          }
+        ]
+      },
+      {
+        "id": "blue_stew",
+        "result": [
+          "You accept the bright blue brew. It smells... questionable."
+        ],
+        "type": "DIALOGUE",
+        "next": "burp_posion"
+      },
+      {
+        "id": "burp_posion",
+        "type": "CONSUMABLE",
+        "consumableId": "burp_of_power"
+      },
+      {
+        "id": "brown_stew",
+        "result": [
+          "You accept the mud brown brew. It smells... questionable."
+        ],
+        "type": "DIALOGUE",
+        "next": "croak_posion"
+      },
+      {
+        "id": "croak_posion",
+        "type": "CONSUMABLE",
+        "consumableId": "croak_of_strength"
+      },
+      {
+        "id": "purple_stew",
+        "result": [
+          "You accept the deep purple brew. It smells... questionable."
+        ],
+        "type": "DIALOGUE",
+        "next": "hiccup_posion"
+      },
+      {
+        "id": "hiccup_posion",
+        "type": "CONSUMABLE",
+        "consumableId": "hiccup_of_doom"
+      },
+      {
+        "id": "yellow_stew",
+        "result": [
+          "You accept the glowing yellow brew. It smells... questionable."
+        ],
+        "type": "DIALOGUE",
+        "next": "glow_posion"
+      },
+      {
+        "id": "glow_posion",
+        "type": "CONSUMABLE",
+        "consumableId": "glow_of_insite"
+      },
+      {
+        "id": "lost",
+        "type": "DIALOGUE",
+        "result": [
+          "Lost? You're in my swamp, no one's ever \"found\" here.",
+          "Fine, fine. I'll point you somewhere... though the swamp might have other plans.",
+          "She waves her spoon and the fog thickens into varying shapes."
+        ],
+        "next": "lost_result"
+      },
+      {
+        "id": "lost_result",
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "swamp_good",
+            "chance": 40,
+            "next": "guidance"
+          },
+          {
+            "id": "swamp_neutral",
+            "chance": 30,
+            "next": "neutral"
+          },
+          {
+            "id": "swamp_bad",
+            "chance": 30,
+            "next": "whisper"
+          }
+        ]
+      },
+      {
+        "id": "guidance",
+        "result": [
+          ""
+        ]
+      }
+    ]
+  },
+  {
     "id": "level5_update",
     "level": [5],
     "description": "level5_update",
