@@ -1,7 +1,7 @@
 [
   {
     "id": "obstructing_lake",
-    "level": [1],
+    "level": [0, 1],
     "description": "A large lake",
     "outcomes": [
       {
@@ -142,7 +142,7 @@
   },
   {
     "id": "cursed_lake",
-    "level": [1],
+    "level": [0, 1],
     "description": "Cursed lake encounter",
     "outcomes": [
       {
@@ -329,7 +329,7 @@
   },
   {
     "id": "frog_trail",
-    "level": [4],
+    "level": [0, 4],
     "description": "choice two paths",
     "outcomes": [
       {

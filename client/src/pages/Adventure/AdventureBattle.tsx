@@ -33,6 +33,8 @@ import { ConsumableState } from "/types/single/itemState";
 import { EquipmentPickupPopup } from "../../components/popups/EquipmentPickupPopup";
 import { StoryItem } from "../../../../server/src/model/game/storyItem/storyItem";
 import { StoryItemPickupPopup } from "../../components/popups/StoryItemPickupPopup";
+import { Status } from "../../../../server/src/model/game/status/status";
+import { StatusPickupPopup } from "../../components/popups/StatusPickupPopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -82,6 +84,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
   const [statChange, setStatChange] = useState<string[] | null>(null);
   const [statusResult, setStatusResult] = useState<string[] | null>(null);
+  const [receivingStatus, setReceivingStatus] = useState<Status | null>(null);
   const [hasNewInventoryItem, setHasNewInventoryItem] = useState(false);
 
   //DICE
@@ -195,6 +198,12 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       console.log("Received adventure_consumable:", data);
       setReceivingConsumable(data.consumable);
       setConsumableId(data.consumableId);
+    });
+
+    socket.on("adventure_status", (data) => {
+      console.log("Received adventure_status:", data);
+      setStatusResult(data.messages);
+      setReceivingStatus(data.status);
     });
 
     socket.on("adventure_storyItem", (data) => {
@@ -425,16 +434,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           </div>
         )}
-        {statusResult && (
-          <div>
-            <StatChangePopup
-              messages={statusResult}
-              onClose={() => {
-                setStatusResult(null);
-                socket.emit("adventure_next", { stage });
-              }}
-            />
-          </div>
+        {statusResult && receivingStatus && (
+          <StatusPickupPopup
+            messages={statusResult}
+            status={receivingStatus}
+            onComplete={() => {
+              setStatusResult(null);
+              setReceivingStatus(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
         )}
         {choices && (
           <>
