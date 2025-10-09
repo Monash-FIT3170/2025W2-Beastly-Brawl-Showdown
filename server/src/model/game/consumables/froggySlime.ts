@@ -6,7 +6,7 @@ import { Poison } from "../status/poison";
 export class FroggySlime extends Consumable {
   constructor() {
     const description =
-      "A small bottle of purple liquid gathered from the giant frog's trail. It smells sharp and earthy, with bubbles that never pop.";
+      "A small bottle of purple liquid gathered from the giant frog's trail.";
     super("Froggy Slime", description, ConsumableType.ENEMY_INFLICT);
   }
 

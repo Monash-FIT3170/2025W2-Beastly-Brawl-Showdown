@@ -390,6 +390,7 @@
           "BlOOP! Blurrp! bloorb!",
           "The massive slime jiggles proudly, as if daring you to hit it."
         ],
+        "type": "DIALOGUE",
         "enemyId": ["slime", "BIG SLIME"],
         "next": "slime_fight"
       },

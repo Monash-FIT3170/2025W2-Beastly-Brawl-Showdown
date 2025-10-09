@@ -82,6 +82,60 @@
     ]
   },
   {
+    "id": "final_frog",
+    "level": [4],
+    "description": "final_boss_fight",
+    "outcomes":[
+      {
+        "id": "initial",
+        "result": [
+          "The swamp grows eerily still.",
+          "You follow the same faint croaks you once heard and there it is.",
+          "The giant blue frog, sitting in the middle of the glowing pond, larger, calmer, and somehow... stronger."
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight"
+      },
+      {
+        "id": "pre_fight",
+        "result": [
+          "Croak! Round two!"
+
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "SWAMP FROG"],
+        "next": "boss_fight"
+      },
+      {
+        "id": "boss_fight",
+        "type": "FIGHT",
+        "enemyId": ["poison_pogo", "SWAMP FROG"],
+        "next": "end_level_4"
+      },
+      {
+        "id": "end_level_4",
+        "type": "DIALOGUE",
+        "result":[
+          "The frog wobbles, then collapses back into the pond with a heavy SPLASH!",
+          "For a long moment, it doesn't move. Only ripples spread through the pond.",
+          "Then the frog hops back up from where it fell, wobbling, but refusing to stay down."
+        ],
+        "next": "unlock_frog"
+      },
+      {
+        "id": "unlock_frog",
+        "result": [
+          "Hah... frog still standing.",
+          "You strong...Frog impressed! Also dizzy.",
+          "But frog still handsome! Handsome frog your friend now!"
+          
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "SWAMP FROG"]
+      }
+    ]
+  },
+  {
     "id": "Colosseum Encounter",
     "level": [5],
     "description": "Colosseum gauntlet",
