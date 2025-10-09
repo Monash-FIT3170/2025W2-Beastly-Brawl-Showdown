@@ -148,27 +148,30 @@
           "A dune of sand rises up before you, and atop it sits a sand-coated creature."
         ],
         "type": "DIALOGUE",
-        "next": "status_1"
+        "next": "equip_next_3"
       },
       {
-        "id": "status_1",
-        "type": "STATUS",
-        "result": ["test", "test2"],
-        "statusId": ["lake_blessing", 5],
-        "next": "status_2"
+        "id": "equip_next_3",
+        "type": "EQUIPMENT",
+        "equipmentId": "sharpened_claws",
+        "next": "equip_next"
       },
       {
-        "id": "status_2",
-        "type": "STATUS",
-        "result": ["test", "test2"],
-        "statusId": ["lake_blessing", 5],
-        "next": "status_3"
+        "id": "equip_next",
+        "type": "EQUIPMENT",
+        "equipmentId": "life_fang",
+        "next": "equip_next_2"
       },
       {
-        "id": "status_3",
-        "type": "STATUS",
-        "result": ["test", "test2"],
-        "statusId": ["lake_blessing", 5],
+        "id": "equip_next_2",
+        "type": "EQUIPMENT",
+        "equipmentId": "meek_helmet",
+        "next": "equip_next_4"
+      },
+      {
+        "id": "equip_next_4",
+        "type": "EQUIPMENT",
+        "equipmentId": "basalt_shield",
         "next": "slime_dialogue_1"
       },
       {

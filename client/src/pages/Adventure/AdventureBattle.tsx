@@ -35,6 +35,7 @@ import { StoryItem } from "../../../../server/src/model/game/storyItem/storyItem
 import { StoryItemPickupPopup } from "../../components/popups/StoryItemPickupPopup";
 import { Status } from "../../../../server/src/model/game/status/status";
 import { StatusPickupPopup } from "../../components/popups/StatusPickupPopup";
+import { EquipmentInventoryFullPopup } from "../../components/popups/EquipmentInventoryFullPopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -79,6 +80,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   );
   const [incomingEquipment, setIncomingEquipment] =
     useState<EquipmentState | null>(null);
+  const [isReplacingEquipment, setIsReplacingEquipment] = useState(false);
   const [question, setQuestion] = useState<string[] | null>(null);
   const [choices, setChoices] = useState<option[] | null>(null);
 
@@ -191,6 +193,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         setEquipmentInventoryFull(false);
         setIncomingEquipment(null);
         setCurrentEquipment([]);
+        setIsReplacingEquipment(false);
       }
     });
 
@@ -317,7 +320,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         )}
         {receivingEquipment &&
           !equipmentInventoryFull &&
-          !incomingEquipment && (
+          !incomingEquipment &&
+          !isReplacingEquipment && (
             <EquipmentPickupPopup
               equipment={receivingEquipment}
               onEquip={() => {
@@ -337,72 +341,28 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           )}
         {equipmentInventoryFull && incomingEquipment && (
-          <PopupClean>
-            <div className="flex flex-col items-center gap-4">
-              <OutlineText size="large">YOUR BAG IS TOO HEAVY!</OutlineText>
-              <OutlineText size="medium">REMOVE AN ITEM!</OutlineText>
-              <div className="grid grid-flow-row h-full w-full auto-rows-auto gap-2 my-4">
-                {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className="flex items-center bg-gray-100 rounded p-2"
-                  >
-                    <div className="flex-1">
-                      {currentEquipment[i] ? (
-                        <EquipmentCard
-                          equipment={currentEquipment[i]}
-                          onClick={() => {}}
-                        />
-                      ) : (
-                        <span className="text-gray-400">Empty Slot</span>
-                      )}
-                    </div>
-                    {currentEquipment[i] && (
-                      <ButtonGeneric
-                        color="red"
-                        size="small"
-                        onClick={() => {
-                          setEquipmentInventoryFull(false);
-                          setIncomingEquipment(null);
-                          setCurrentEquipment([]);
-                          setReceivingEquipment(null);
-                          socket.emit("adventure_replace_equipment", {
-                            removeIndex: i,
-                            newEquipment: incomingEquipment,
-                          });
-                        }}
-                      >
-                        🗑️
-                      </ButtonGeneric>
-                    )}
-                  </div>
-                ))}
-                {/* Incoming equipment */}
-                <div className="flex items-center bg-yellow-100 rounded p-2">
-                  <div className="flex-1">
-                    <EquipmentCard
-                      equipment={incomingEquipment}
-                      onClick={() => {}} // Optional: show details if you want
-                    />
-                  </div>
-                  <ButtonGeneric
-                    color="red"
-                    size="small"
-                    onClick={() => {
-                      // Reject the new equipment
-                      setEquipmentInventoryFull(false);
-                      setIncomingEquipment(null);
-                      setCurrentEquipment([]);
-                      setReceivingEquipment(null);
-                      socket.emit("adventure_next", { stage });
-                    }}
-                  >
-                    🗑️
-                  </ButtonGeneric>
-                </div>
-              </div>
-            </div>
-          </PopupClean>
+          <EquipmentInventoryFullPopup
+            currentEquipment={currentEquipment}
+            incomingEquipment={incomingEquipment}
+            onReplaceEquipment={(removeIndex) => {
+              setEquipmentInventoryFull(false);
+              setIncomingEquipment(null);
+              setCurrentEquipment([]);
+              setReceivingEquipment(null);
+              setIsReplacingEquipment(true);
+              socket.emit("adventure_replace_equipment", {
+                removeIndex,
+                newEquipment: incomingEquipment,
+              });
+            }}
+            onRejectIncoming={() => {
+              setEquipmentInventoryFull(false);
+              setIncomingEquipment(null);
+              setCurrentEquipment([]);
+              setReceivingEquipment(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
         )}
         {dialogue && (
           <>

@@ -327,9 +327,9 @@
       {
         "id": "trigger_trap",
         "type": "STATUS",
-        "statusId": ["poisoned", 5],
+        "statusId": ["poisoned", 3],
         "result": [
-          "A spring-loaded poison dart strikes you in the arm! You feel unwell...",
+          "A spring-loaded poison dart strikes you in the arm!",
           "You feel unwell..."
         ]
       }
