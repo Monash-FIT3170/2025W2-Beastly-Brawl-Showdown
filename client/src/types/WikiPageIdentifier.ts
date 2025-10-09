@@ -1,4 +1,5 @@
 import { WikiAbilitiesPage } from "../pages/Wiki/WikiAbilitiesPage";
+import { WikiArchetypesPage } from "../pages/Wiki/WikiArchetypesPage";
 
 const VALID_WIKI_PAGES = [
     "howtoplay", 
@@ -11,7 +12,8 @@ const VALID_WIKI_PAGES = [
 export type WikiPageIdentifier = typeof VALID_WIKI_PAGES[number];
 
 export const wikitopage = [
-    {name: "abilities", page: WikiAbilitiesPage()}
+    {name: "abilities", page: WikiAbilitiesPage()},
+    {name: "archetypes", page: WikiArchetypesPage()}
 ]
 
 export default VALID_WIKI_PAGES;
