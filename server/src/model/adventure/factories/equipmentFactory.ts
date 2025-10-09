@@ -17,6 +17,7 @@ import { AfflictionGloves } from "../../game/equipment/afflictionGloves";
 import { RegenerationAmulet } from "../../game/equipment/regenerationAmulet";
 import { MeekHelmet } from "../../game/equipment/meekHelmet";
 import { ColosseumCrown } from "../../game/equipment/colosseumCrown";
+import { EverbloomingFragment } from "../../game/equipment/everbloomingFragment";
 
 const equipmentFactory: Record<string, () => Equipment> = {
   oozing_blade: () => new OozingBlade(),
@@ -37,6 +38,7 @@ const equipmentFactory: Record<string, () => Equipment> = {
   regeneration_amulet: () => new RegenerationAmulet(),
   meek_helmet: () => new MeekHelmet(),
   colosseum_crown: () => new ColosseumCrown(),
+  everblooming_fragment: () => new EverbloomingFragment(),
 };
 
 export function createEquipment(id: string): Equipment {
