@@ -15,6 +15,10 @@ import { FroggySlime } from "../../game/consumables/froggySlime";
 import { BlueCrystal } from "../../game/consumables/blueCrystal";
 import { BlackCrystal } from "../../game/consumables/blackCrystal";
 import { GreyCrystal } from "../../game/consumables/greyCrystal";
+import { HiccupOfDoom } from "../../game/consumables/hiccupOfDoom";
+import { CroakOfStrength } from "../../game/consumables/croakOfStrength";
+import { BurpOfPower } from "../../game/consumables/burpOfPower";
+import { GlowOfInsight } from "../../game/consumables/glowOfInsight";
 
 const ConsumableFactory: Record<string, () => Consumable> = {
   mini_health_potion: () =>
@@ -34,7 +38,11 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   froggy_slime: () => new FroggySlime(),
   blue_crystal:() => new BlueCrystal(),
   black_crystal: () => new BlackCrystal(),
-  grey_crystal: () => new GreyCrystal()
+  grey_crystal: () => new GreyCrystal(),
+  hiccup_of_doom: () => new HiccupOfDoom(),
+  burp_of_power: () => new BurpOfPower,
+  glow_of_insight: () => new GlowOfInsight(),
+  croak_of_strength: () => new CroakOfStrength(),
 };
 
 export function createConsumable(id: string): Consumable {

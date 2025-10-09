@@ -489,7 +489,7 @@
         "result": [
           "Lost? You're in my swamp, no one's ever \"found\" here.",
           "Fine, fine. I'll point you somewhere... though the swamp might have other plans.",
-          "She waves her spoon and the fog thickens into varying shapes."
+          "She waves her spoon and the fog swirls into varying shapes."
         ],
         "next": "lost_result"
       },
@@ -516,7 +516,85 @@
       },
       {
         "id": "guidance",
-        "result": [""]
+        "result": [
+          "The fog shifts, curling around your legs and forming a faint, winding path.",
+          "Looks like the swamp likes you..."
+        ],
+        "type": "DIALOGUE",
+        "next": "swamps_guidance"
+      },
+      {
+        "id": "swamps_guidance",
+        "type": "STATUS",
+        "statusId": ["swamps_guidance", 2]
+      },
+      {
+        "id": "neutral",
+        "result": [
+          "The fog twists around you, shaping itself into a faint trail of light.",
+          "You walk toward it, hoping it's the way out.",
+          "But after a few turns, you stop. Everything around you became more and more famillier.",
+          "\"Hi again!\" the witch cracles.",
+          "\"You've gone in a perfect circle! What brings you back again?\""
+        ],
+        "type": "DIALOGUE",
+        "next": "check_lotus"
+      },
+      {
+        "id": "whisper",
+        "result": [
+          "The mist thickens instead. Soft murmurs echo all around, words you can't quite understand.",
+          "Your thoughts grow heavy."
+        ],
+        "type": "DIALOGUE",
+        "next": "swamps_whisper"
+      },
+      {
+        "id": "swamps_whisper",
+        "type": "STATUS",
+        "statusId": ["swamps_whisper", 2]
+      },
+      {
+        "id": "lotus",
+        "result": [
+          "\"Ahh, so you did keep it. Not many would. Care to see what it truly does?\" She smirks, flicking her fingers.",
+          "The lotus flew to the witches' hand and the petals begins to harden.",
+          "\"There,\" the witch murmurs, \"An Everbloom Fragment\"",
+          "\"Hold it close. It'll sharpen your strikes and if you're lucky, maybe it'll bring you back.\""
+        ],
+        "type": "DIALOGUE",
+        "next": "everblooming_fragment"
+      },
+      {
+        "id": "everblooming_fragment",
+        "type": "EQUIPMENT",
+        "equipmentId": "everblooming_fragment"
+      },
+      {
+        "id": "ignore",
+        "result": [
+          "You turn away, stepping past her cauldron as if she's invisible",
+          "\"How rude!\" her voice sharpens.",
+          "\"Don't have manners, do you? Fine, I'll teach you manners.\"",
+          "The mud erupts. A huge slime rolls out, wobbling beside her.",
+          "\"Meet Bloop! He's terrible at cleaning, but wonderful at teaching manners.\""
+        ],
+        "type": "DIALOGUE",
+        "next": "swamp_slime_4"
+      },
+      {
+        "id": "swamp_slime_4",
+        "type": "FIGHT",
+        "enemyId": ["slime", "WITCH SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "The slime lets out one last sad gurgle before collapsing into a puddle.",
+          "\"Ugh, fine! You win. Bloop was still in training anyway.\" said the with while vanishing before your eyes."
+        ],
+        "type": "DIALOGUE"
       }
     ]
   },

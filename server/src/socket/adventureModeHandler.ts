@@ -32,6 +32,7 @@ import { MeekHelmet } from "../model/game/equipment/meekHelmet";
 import { ColosseumCrown } from "../model/game/equipment/colosseumCrown";
 import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
 import { PristineKey } from "../model/game/storyItem/pristineKey";
+import { createStatus } from "../model/adventure/factories/statusFactory";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -215,6 +216,29 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         adventure.pastEncounters.push(adventure.currentOutcomeId);
       } else {
         // If no next, end or error
+        adventure.currentOutcomeId = "";
+      }
+
+      progressAdventure(io, socket, adventure, stage);
+    }
+  });
+
+  socket.on("adventure_take_status", ({ statusId, stage }) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+    const player = adventure.getPlayer();
+
+    if (statusId) {
+      // Apply the status to the player
+      const status = createStatus(statusId); // You'll need this factory function
+      player.addStatus(status);
+
+      const lastOutcome = loadNextStory(io, adventure, socket);
+
+      if (lastOutcome && lastOutcome.next) {
+        adventure.currentOutcomeId = lastOutcome.next;
+        adventure.pastEncounters.push(adventure.currentOutcomeId);
+      } else {
         adventure.currentOutcomeId = "";
       }
 
@@ -436,13 +460,17 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       } else if (resolved.type === "STATUS") {
         // Handle status
         adventure.getPlayer().addStatus(resolved.status!);
-        console.log(resolved.statusId);
-        socket.emit("adventure_state", {
-          type: "status",
-          result: resolved.result,
-          next: resolved.next,
-          stage: adventure.getStage(),
-          player: adventure.getPlayer().getPlayerState(),
+        // console.log(resolved.statusId);
+        // socket.emit("adventure_state", {
+        //   type: "status",
+        //   result: resolved.result,
+        //   next: resolved.next,
+        //   stage: adventure.getStage(),
+        //   player: adventure.getPlayer().getPlayerState(),
+        // });
+        socket.emit("adventure_status", {
+          messages: resolved.result || [],
+          status: resolved.status!,
         });
       } else if (resolved.type === "LOOT_POOL") {
         if (resolved.randomLoot() instanceof Equipment) {

@@ -1,4 +1,4 @@
-9import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { PopupClean } from "./PopupClean";
 import { ChoicePopup } from "./ChoicePopup";
 import socket from "../../socket";
@@ -37,7 +37,7 @@ export const MonsterInfoPopup = ({
   const currentlyViewing = ["MONSTER STATS", "CURRENT STATUSES"];
 
   useEffect(() => {
-    console.log(attackState)
+    console.log(attackState);
     //REMOVES ATTACK/DEFEND AND ANY DUPLICATE ABILITIES
     const uniqueActions = new Map<
       ActionIdentifier,
@@ -53,7 +53,7 @@ export const MonsterInfoPopup = ({
     }
 
     setCurrentAbilities(Array.from(uniqueActions.values()));
-    console.log(playerState)
+    console.log(playerState);
   }, [playerState?.monster?.possibleActions]);
   const monsterImgPath =
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
@@ -70,9 +70,7 @@ export const MonsterInfoPopup = ({
     <PopupAdventure colour="goldenRod">
       <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-full h-full">
         <div className="mt-[1rem] xl:mt-[0.5rem] bg-pictonBlue outline-blackCurrant lg:outline-[0.2rem] sm:outline-[0.3rem] rounded-2xl flex flex-col px-[1rem] items-center justify-center">
-          <OutlineText size="choice-text">
-            {playerName}
-          </OutlineText>
+          <OutlineText size="choice-text">{playerName}</OutlineText>
         </div>
         <img className="sm:size-[30vw] lg:size-[20vh]" src={monsterImgPath} />
         <div
@@ -115,7 +113,6 @@ export const MonsterInfoPopup = ({
                   stat="HP"
                   statVal={playerState?.currentHealth!}
                   monsterStat={playerState.monster.startingHP}
-
                 ></StatInfoIcon>
                 <StatInfoIcon
                   stat="ATK+"
@@ -179,7 +176,9 @@ export const MonsterInfoPopup = ({
                   <div className="items-center justify-center xl:mt-[4rem] mt-[6rem] absolute ">
                     {/* <BlackText size="medium">You are normal...</BlackText> */}
                     {/* <OutlineText size="medium">You are normal...</OutlineText> */}
-                    <BlackText size="medium">You feel perfectly healthy!</BlackText>
+                    <BlackText size="medium">
+                      You feel perfectly healthy!
+                    </BlackText>
                   </div>
                 )}
                 <div className="xl:mt-[1rem] mt-[2rem] grid grid-cols-3 gap-y-[2.5rem] gap-x-[3rem] xl:gap-y-[0.5rem] xl:gap-x-[3rem] items-center justify-center">
