@@ -27,6 +27,6 @@ export const GlobalLeaderboard = () => {
     
 
    return (
-    <div>hi</div>
+    <div>hi, page in progress</div>
    )
 }
