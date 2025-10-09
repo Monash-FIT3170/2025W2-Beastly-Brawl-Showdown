@@ -20,6 +20,7 @@ import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 import { Achievements } from "./src/pages/Home/Achievements";
+import { GlobalLeaderboard } from "./src/pages/GlobalLeaderboard";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -102,7 +103,7 @@ FlowRouter.route("/leaderboard", {
   name: "Leaderboard",
   action() {
     document.title = "Leaderboard | Beastly Brawl Showdown";
-    mount(() => <BlankPage />);
+    mount(() => <GlobalLeaderboard />);
   },
 });
 
