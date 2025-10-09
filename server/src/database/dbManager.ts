@@ -327,40 +327,26 @@ export async function updatePlayerAccount(
 
 // Retrieves the top N players sorted by number of games won
 
-export async function getTopPlayersByWins(limit: number): Promise<PlayerAccountSchema[]> {
+export async function getTopPlayersByWins(_limit: number) {
   try {
-    // const topPlayers = await PlayersCollection.find(
-    //   {
-    //     sort: { 'stats.numGamesWon': -1 },
-    //     limit,
-    //   }
-    // ).fetch();
-    
-    // for testing purposes, grab all players instead of top N
-    const topPlayers = await PlayersCollection.find({}).fetch();
+    // Get the top players sorted by numGamesWon in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'stats.numGamesWon': -1 }, limit: _limit }
+    ).fetch();
 
-    console.log(topPlayers)
-      
-    if (topPlayers.length === 0) {
-      console.log('No players found in the database or result is not an array.');
-      return [];
-    }
-  
-    return topPlayers.map(player => ({
-      _id: player._id?.toString(),
-      email: player.email,
+    console.log('Top Players:', topPlayers);
+
+    // Filter out documents with missing or invalid stats
+    const validPlayers = topPlayers.filter(player => player.stats && player.stats.numGamesWon !== undefined);
+
+    // Return player name, numGamesWon, numGamesPlayed
+    return validPlayers.map(player => ({
       username: player.username,
-      password: player.password,
-      level: player.level,
-      online: player.online,
-      stats: {
-        numGamesPlayed: player.stats.numGamesPlayed,
-        numGamesWon: player.stats.numGamesWon,
-      },
-      achievements: player.achievements,
-      monstersStat: player.monstersStat,
-      adventureProgression: player.adventureProgression
+      numGamesWon: player.stats.numGamesWon,
+      numGamesPlayed: player.stats.numGamesPlayed
     }));
+
   } catch (error) {
     console.error(`Error fetching top players: ${error.message}`);
     return [];
