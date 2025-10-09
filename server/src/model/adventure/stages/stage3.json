@@ -383,17 +383,56 @@
     ]
   },
   {
-    "id": "desert_slime_2",
+    "id": "desert_first_encounter",
     "level": [5],
-    "description": "Stage 3 desert encounter",
+    "description": "Stage 5 miniboss",
     "outcomes": [
       {
         "id": "initial",
         "result": [
-          "The desert sun beats down on you mercilessly.",
-          "A dune of sand rises up before you, and atop it sits a sand-coated creature."
+          "As you walk away from the off-putting merchant, you notice a dust devil form around you.",
+          "You hear a faint hissing sound.",
+          "A cobra emerges from the swirling sand, its hood flared and eyes locked on you."
         ],
-        "type": "DIALOGUE"
+        "type": "DIALOGUE",
+        "next": "pre_fight_dialogue"
+      },
+      {
+        "id": "pre_fight_dialogue",
+        "result": [
+          "Sssso you think you can ignore me, ssstranger?",
+          "I am Cobrina, the dessssert charmer!",
+          "Prepare to be sssslain!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["charmer_cobra", "COBRINA"],
+        "next": "stranger_fight"
+      },
+      {
+        "id": "stranger_fight",
+        "type": "FIGHT",
+        "enemyId": ["charmer_cobra", "COBRINA"],
+        "next": "victory"
+      },
+      {
+        "id": "victory",
+        "type": "DIALOGUE",
+        "result": ["I'll ssssee you ssssoon..."],
+        "enemyId": ["charmer_cobra", "COBRINA"],
+        "next": "victory_2"
+      },
+      {
+        "id": "victory_2",
+        "type": "DIALOGUE",
+        "result": [
+          "Cobrina slithers away into the desert, leaving behind a small pile of treasure."
+        ],
+        "next": "mini_boss_reward"
+      },
+      {
+        "id": "mini_boss_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "desert_pool"
       }
     ]
   },

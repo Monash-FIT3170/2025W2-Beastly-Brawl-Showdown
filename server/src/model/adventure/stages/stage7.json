@@ -599,29 +599,56 @@
     ]
   },
   {
-    "id": "level5_update",
+    "id": "serpent_echo",
     "level": [5],
-    "description": "level5_update",
+    "description": "Stage 7 — Ancient whisper triggered by the Serpent Amulet.",
     "outcomes": [
       {
         "id": "initial",
-        "type": "EQUIPMENT",
-        "equipmentId": "sharpened_claws",
-        "next": "equip_next"
+        "result": ["The desert hums with unseen energy."],
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "have_amulet",
+            "prerequisite": ["Serpent Amulet"],
+            "next": "serpent_voice"
+          },
+          {
+            "id": "no_amulet",
+            "next": "leave"
+          }
+        ]
       },
       {
-        "id": "equip_next",
-        "type": "EQUIPMENT",
-        "equipmentId": "life_fang",
-        "next": "equip_next_2"
+        "id": "serpent_voice",
+        "result": [
+          "Your serpent amulet begins to glow faintly...",
+          "A voice hisses through the wind:",
+          "\"Sssseeker of wisdom... prove your calm in the storm.\""
+        ],
+        "type": "DIALOGUE",
+        "next": "gift"
       },
       {
-        "id": "equip_next_2",
-        "type": "EQUIPMENT",
-        "equipmentId": "basalt_shield"
+        "id": "gift",
+        "result": [
+          "You feel energy flow through your body — your reflexes sharpen.",
+          "The amulet crumbles into dust."
+        ],
+        "type": "CONSUMABLE",
+        "consumableId": "dune_dust"
+      },
+      {
+        "id": "leave",
+        "result": [
+          "Nothing seems to happen.",
+          "You feel like you're missing something..."
+        ],
+        "type": "DIALOGUE"
       }
     ]
   },
+
   {
     "id": "stage7_grand_colosseum",
     "level": [0],

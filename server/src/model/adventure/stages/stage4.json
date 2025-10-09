@@ -164,17 +164,32 @@
     ]
   },
   {
-    "id": "level5_update",
+    "id": "desert_ruins",
     "level": [5],
-    "description": "level5_update",
+    "description": "Stage 43 — Discover ancient ruins half-buried in sand.",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["STAGE 4 UPDATE"],
-        "type": "DIALOGUE"
+        "result": [
+          "You find half-buried ruins jutting from the dunes.",
+          "Etchings of serpents and dancers twist across the stone.",
+          "Something glimmers between the cracks of the altar..."
+        ],
+        "type": "DIALOGUE",
+        "next": "find_charm"
+      },
+      {
+        "id": "find_charm",
+        "result": [
+          "You pick up a small amulet shaped like a coiled snake.",
+          "The sand shifts slightly under your feet."
+        ],
+        "type": "STORY_ITEM",
+        "storyItemId": "serpent_amulet"
       }
     ]
   },
+
   {
     "id": "stage4_colosseum_maladies",
     "level": [0],

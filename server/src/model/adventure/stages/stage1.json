@@ -148,30 +148,6 @@
           "A dune of sand rises up before you, and atop it sits a sand-coated creature."
         ],
         "type": "DIALOGUE",
-        "next": "equip_next_3"
-      },
-      {
-        "id": "equip_next_3",
-        "type": "EQUIPMENT",
-        "equipmentId": "sharpened_claws",
-        "next": "equip_next"
-      },
-      {
-        "id": "equip_next",
-        "type": "EQUIPMENT",
-        "equipmentId": "life_fang",
-        "next": "equip_next_2"
-      },
-      {
-        "id": "equip_next_2",
-        "type": "EQUIPMENT",
-        "equipmentId": "meek_helmet",
-        "next": "equip_next_4"
-      },
-      {
-        "id": "equip_next_4",
-        "type": "EQUIPMENT",
-        "equipmentId": "basalt_shield",
         "next": "slime_dialogue_1"
       },
       {
@@ -181,13 +157,13 @@
           "*it lunges at you!*"
         ],
         "type": "DIALOGUE",
-        "enemyId": ["slime", "HUNGRY SLIME"],
+        "enemyId": ["slime", "DUSTY SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": ["slime", "HUNGRY SLIME"],
+        "enemyId": ["slime", "DUSTY SLIME"],
         "next": "fight_win"
       },
       {
@@ -201,8 +177,8 @@
       },
       {
         "id": "reward",
-        "type": "EQUIPMENT",
-        "equipmentId": "sharpened_claws"
+        "type": "LOOT_POOL",
+        "lootPoolId": "desert_pool"
       }
     ]
   },

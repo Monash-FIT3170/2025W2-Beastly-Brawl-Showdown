@@ -28,6 +28,10 @@ import { PufferPrickle } from "../../game/equipment/pufferPrickle";
 import { RegenerationAmulet } from "../../game/equipment/regenerationAmulet";
 import { AfflictionGloves } from "../../game/equipment/afflictionGloves";
 import { MeekHelmet } from "../../game/equipment/meekHelmet";
+import { CoolingPendant } from "../../game/equipment/coolingPendant";
+import { CactusNectar } from "../../game/consumables/cactusNectar";
+import { SandyEyes } from "../../game/status/sandyEyes";
+import { DuneDust } from "../../game/consumables/duneDust";
 
 interface LootEntry {
   loot: (() => Consumable) | (() => Equipment) | (() => StoryItem);
@@ -117,6 +121,33 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
       loot: () => new GreyCrystal(),
       chance: 40,
       id: "grey_crystal",
+    },
+  ],
+  desert_pool: [
+    {
+      loot: () => new CoolingPendant(),
+      chance: 20,
+      id: "cooling_pendant",
+    },
+    {
+      loot: () => new PercentageHealthPotion("Large Health Potion", 0.5),
+      chance: 20,
+      id: "large_health_potion",
+    },
+    {
+      loot: () => new DuneDust(),
+      chance: 25,
+      id: "dune_dust",
+    },
+    {
+      loot: () => new CactusNectar(),
+      chance: 25,
+      id: "cactus_nectar",
+    },
+    {
+      loot: () => new AbilityAntidote(),
+      chance: 10,
+      id: "ability_antidote",
     },
   ],
   scavenger_pool: [
