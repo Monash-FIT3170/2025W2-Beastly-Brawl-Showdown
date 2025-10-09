@@ -324,3 +324,45 @@ export async function updatePlayerAccount(
   }
 }
 
+
+// Retrieves the top N players sorted by number of games won
+
+export async function getTopPlayersByWins(limit: number): Promise<PlayerAccountSchema[]> {
+  try {
+    // const topPlayers = await PlayersCollection.find(
+    //   {
+    //     sort: { 'stats.numGamesWon': -1 },
+    //     limit,
+    //   }
+    // ).fetch();
+    
+    // for testing purposes, grab all players instead of top N
+    const topPlayers = await PlayersCollection.find({}).fetch();
+
+    console.log(topPlayers)
+      
+    if (topPlayers.length === 0) {
+      console.log('No players found in the database or result is not an array.');
+      return [];
+    }
+  
+    return topPlayers.map(player => ({
+      _id: player._id?.toString(),
+      email: player.email,
+      username: player.username,
+      password: player.password,
+      level: player.level,
+      online: player.online,
+      stats: {
+        numGamesPlayed: player.stats.numGamesPlayed,
+        numGamesWon: player.stats.numGamesWon,
+      },
+      achievements: player.achievements,
+      monstersStat: player.monstersStat,
+      adventureProgression: player.adventureProgression
+    }));
+  } catch (error) {
+    console.error(`Error fetching top players: ${error.message}`);
+    return [];
+  }
+}
