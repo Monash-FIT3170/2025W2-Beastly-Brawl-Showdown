@@ -10,12 +10,12 @@ export const GlobalLeaderboard = () => {
         socket.emit("fetchGlobalLeaderboard");
     
         const leaderboardListener = (data: { success: boolean; data?: any[]; message?: string }) => {
-          if (data.success && data.data) {
-            console.log("Leaderboard Data:", data.data);
-            // Here you would typically set state to display the data
-          } else {
-            console.error("Failed to fetch leaderboard:", data.message);
-          }
+        //   if (data.success && data.data) {
+        //     console.log("Leaderboard Data:", data.data);
+        //     // Here you would typically set state to display the data
+        //   } else {
+        //     console.error("Failed to fetch leaderboard:", data.message);
+        //   }
         };
     
         socket.on("globalLeaderboardData", leaderboardListener);
