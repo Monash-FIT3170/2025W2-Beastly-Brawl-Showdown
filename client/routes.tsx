@@ -18,6 +18,8 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
+import { FinalResultsScoringTournament } from "./src/pages/Lobby/FinalResultsScoringTournament";
+import { FinalResultsBattleRoyale } from "./src/pages/Lobby/FinalResultsBattleRoyale";
 import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
 
 function mount(Component: React.FC) {
@@ -127,6 +129,20 @@ FlowRouter.route("/battles/:code?", {
   action(params) {
     document.title = "Host Battles | Beastly Brawl Showdown";
     mount(() => <MatchSummary gameCode={params.code} />);
+  },
+});
+
+FlowRouter.route("/final-results-battle-royale/:code?", {
+  name: "FinalResultsBattleRoyale",
+  action(params) {
+    mount(() => <FinalResultsBattleRoyale gameCode={params.code} />);
+  },
+});
+
+FlowRouter.route("/final-results-scoring-tournament/:code?", {
+  name: "FinalResultsScoringTournament",
+  action(params) {
+    mount(() => <FinalResultsScoringTournament gameCode={params.code} />);
   },
 });
 

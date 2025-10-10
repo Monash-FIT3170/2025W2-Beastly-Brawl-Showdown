@@ -2,7 +2,7 @@ import { Player } from "../game/player";
 import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
-import { GameSessionState,GameSessionStateMetaData } from "/types/composite/gameSessionState";
+import { GameSessionState, GameSessionStateMetaData, GameSessionFinalResults } from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
@@ -32,7 +32,7 @@ export default class GameSession {
   private mode: IGameMode;
   private monsters: Array<String>;
   private botInLobby: boolean = false; // whether has been added to this session or not
-  private finalWinner: PlayerState | null = null;
+  private finalResults: GameSessionFinalResults;
 
   // Initialise sample data
   private gameSessionData: GameSessionData = {
@@ -397,7 +397,8 @@ export default class GameSession {
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
       waitingPlayers: this.getPlayersNotInBattle(),
-      metadata: this.getMetadata()
+      metadata: this.getMetadata(),
+      isGameModeFinished: this.isGameModeFinished()
     };
   }
 
@@ -447,12 +448,12 @@ export default class GameSession {
     return playersNotInBattle;
   }
 
-  public setFinalWinner(finalWinner: PlayerState | null): void {
-    this.finalWinner = finalWinner;
+  public setFinalResults(finalResults: GameSessionFinalResults): void {
+    this.finalResults = finalResults;
   }
 
-  public getFinalWinner(): PlayerState | null {
-    return this.finalWinner;
+  public getFinalResults(): GameSessionFinalResults {
+    return this.finalResults;
   }
 
   public getMode(): GameModeIdentifier {
@@ -461,5 +462,9 @@ export default class GameSession {
 
   public getMetadata(): GameSessionStateMetaData{
     return this.mode.getMetadata()
+  }
+
+  public isGameModeFinished(): boolean {
+    return this.mode.isGameModeFinished();
   }
 }
