@@ -50,10 +50,6 @@ export const Home = () => {
     FlowRouter.go("/join");
   };
 
-  const renderWiki = () => {
-    FlowRouter.go("/wiki");
-  };
-
   const handleLoginSuccess = (username: string) => {
     setShowLogin(false);
     setLoggedInUser(true);
@@ -159,7 +155,7 @@ export const Home = () => {
               iconColour="black"
               buttonColour="blue"
               size="medium"
-              onClick={() => FlowRouter.go("/help")}
+              onClick={() => FlowRouter.go("/wiki")}
             />
             <IconButton
               style="leaderboard"
@@ -177,10 +173,7 @@ export const Home = () => {
             />
           </div>
         </div>
-        {/* </div> */}
-        <ButtonGeneric color="ronchi" size="large" onClick={renderWiki}>
-          <OutlineText size="large">RULES</OutlineText>
-        </ButtonGeneric>
+        
       </div>
 
       {showLogin && (

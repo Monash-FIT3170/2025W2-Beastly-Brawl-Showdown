@@ -107,14 +107,6 @@ FlowRouter.route("/leaderboard", {
   },
 });
 
-FlowRouter.route("/help", {
-  name: "Help",
-  action() {
-    document.title = "Help | Beastly Brawl Showdown";
-    mount(() => <BlankPage />);
-  },
-});
-
 FlowRouter.route("/dev-notes", {
   name: "Dev Notes",
   action() {
