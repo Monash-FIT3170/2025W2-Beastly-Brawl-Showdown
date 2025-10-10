@@ -65,7 +65,7 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
         </div>
         <div className="flex flex-row lg:h-full lg:w-3/4 sm:h-3/4 lg:items-start sm:items-end justify-around">
           <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
-            <BaseCard color="peach" width={50} height={8}>
+            <BaseCard color="springLeaves" width={50} height={8}>
               <OutlineText size="extraLarge">
                 {finalWinner ? "FINAL WINNER" : "NO SURVIVORS"}
               </OutlineText>
