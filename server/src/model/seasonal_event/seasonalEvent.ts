@@ -1,4 +1,4 @@
-import { Monster } from "./../game/monster/monster";
+import { Monster } from "../game/monster/monster";
 
 export abstract class SeasonalEvent {
     private id: string;
