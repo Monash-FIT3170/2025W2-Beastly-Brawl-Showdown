@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { playBGM, playSFX } from "../../audioManager"
 
 export interface ButtonGenericProps {
   color:
@@ -106,7 +107,7 @@ export const ButtonGeneric = ({
 			${isDisabled ? (isPassive ? passiveButton : disabledButton) : enabledButton}
 			${sizeToDisplay[size]}
 		`}
-      onClick={onClick}
+      onClick={onClick ? () => { playSFX("click"); onClick(); } : undefined }
     >
       {children}
     </button>
