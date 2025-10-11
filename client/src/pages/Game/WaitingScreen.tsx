@@ -7,6 +7,8 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { Screens } from "../../screens";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { BlackText } from "../../components/texts/BlackText";
+import { PlayerState } from "/types/single/playerState";
+import WinnerScreen from "./WinnerScreen";
 
 interface WaitingScreenProps {
   setScreen: (screen: Screens) => void;
@@ -29,12 +31,26 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
   const [timer, setTimer] = useState<number>(10);
   const [time, setTime] = useState<number>(5);
   const [gameCode, setGameCode] = useState<string>(); // game code for directing player back to game session
+  const [hasWon, setHasWon] = useState<Boolean>(false)
+  const [player, setPlayer] = useState<PlayerState | null>(null);
 
   // Listen for battle start event + send req to server for player's detail
   useEffect(() => {
     socket.emit("request_waiting_screen_data");
     socket.on("battle_started", (battleId: string) => {
       FlowRouter.go(`/battle/${battleId}`);
+    });
+
+    socket.on("final-winner-response", (finalWinner: PlayerState) => {
+      console.log("[WINNER]: ", finalWinner);
+      console.log("[TOPLAYER]:", socket.id, finalWinner.finalWinner.id)
+      console.log("[TOPLAYER]:", socket.id == finalWinner.finalWinner.id)
+
+      if (finalWinner.finalWinner?.id == socket?.id) {
+        console.log("[TOPLAYER]: YOU HAVE WON THE GAME!")
+        // setHasWon(true)
+        setHasWon(true)
+      }
     });
 
     return () => {
@@ -64,6 +80,7 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
   }, [isBattleFound]);
 
   useEffect(() => {
+    socket.removeAllListeners("battle-found");
     if (!isBattleRoyaleStarted) {return;}
 
     // Countdown before player get redirected 
@@ -113,8 +130,9 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
   // We can use this to pass in more of the player's information for the lobby stats page later...
   useEffect(() => {
     socket.removeAllListeners("waiting_screen_data")
-    const waitingScreenDataHandler = (data: { monsterName: string }) => {
+    const waitingScreenDataHandler = (data: { monsterName: string, playerState: PlayerState }) => {
       const monsterName = data.monsterName.toUpperCase();
+      setPlayer(data.playerState);
       console.log(`Received waiting screen data: ${monsterName}`);
       setPlayerMonster(monsterName);
 
@@ -182,10 +200,15 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
         </PopupClean>
       )}
 
-      {/* Monster Image - Centered */}
-      <div className="flex justify-center">
-        <MonsterImageResizable name={playerMonster} width={13} height={13} />
-      </div>
+      {/* Body switches between WinnerScreen and Lobby */}
+      {hasWon ? (
+        <WinnerScreen playerMonster={player} />
+      ) : (
+        <>
+          {/* Monster image */}
+          <div className="flex justify-center">
+            <MonsterImageResizable name={playerMonster} width={13} height={13} />
+          </div>
 
       {/* Lobby stats (Using <BlankPage> styling but resized)*/}
       <div className="bg-goldenRod outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col justify-around items-center p-4">
@@ -195,13 +218,13 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
         <div className="flex flex-col items-center w-full max-w-md space-y-2">
           <div className="grid grid-cols-1 gap-y-2 max-w-md w-full text-center">
             <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-              Battle Won: {battleStats.battleWon}
+              Battle Won: {player?.battleWon ?? 0}
             </p>
             <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
               Abilities Used: {battleStats.abilitiesUsed}
             </p>
             <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-              Most Damage Dealt: {battleStats.mostDamageDealt}
+              Most Damage Dealt: {player?.mostDamageDealt ?? 0}
             </p>
             <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
               Successful Blocks: {battleStats.successfulBlocks}
@@ -238,18 +261,20 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
           </PopupClean>
         )}
 
-        {/* For now, EXIT just changes the screen to the home page. TODO: Route users who exit the game appropriately + disconnects them from battle appropriately */}
-        <ButtonGeneric color="red" size="medium" onClick={() => setExit(true)}>
-          <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
-            <div>
-              <OutlineText size="medium">EXIT LOBBY</OutlineText>
-            </div>
+            {/* Exit button */}
+            <ButtonGeneric color="red" size="medium" onClick={() => setExit(true)}>
+              <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+                <div>
+                  <OutlineText size="medium">EXIT LOBBY</OutlineText>
+                </div>
+              </div>
+            </ButtonGeneric>
           </div>
-        </ButtonGeneric>
-      </div>
+        </>
+      )}
     </div>
-    </>
-  );
-};
+  </>
+);
+}
 
 export default WaitingScreen;
