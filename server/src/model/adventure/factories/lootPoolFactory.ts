@@ -95,12 +95,12 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
   swamp_slime_pool: [
     {
       loot: () => new BlueCrystal(),
-      chance: 10,
+      chance: 15,
       id: "blue_crystal",
     },
     {
       loot: () => new BlackCrystal(),
-      chance: 10,
+      chance: 15,
       id: "black_crystal",
     },
     {
@@ -115,7 +115,7 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
     },
     {
       loot: () => new GreyCrystal(),
-      chance: 40,
+      chance: 30,
       id: "grey_crystal",
     },
   ],

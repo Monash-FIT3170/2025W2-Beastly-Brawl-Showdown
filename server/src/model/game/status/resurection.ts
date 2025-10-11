@@ -1,8 +1,9 @@
 import { StatusType } from "../../../../../types/single/statusType";
 import { Player } from "../player";
+import { EndStatus } from "./endStatus";
 import { Status } from "./status";
 
-export class Resurection extends Status {
+export class Resurection extends EndStatus {
 
     private used: boolean = false;
   //TODO: pick a statustype..
@@ -19,17 +20,20 @@ export class Resurection extends Status {
         return this.used;
     }
 
-    public static effect(player: Player): boolean {
+    public endingEffect(player: Player): boolean {
+        //not working, need fix
         const resurrect = player
         .getStatuses()
         .find((s) => s.getName() === "Resurection") as Resurection | undefined;
 
-        if (!resurrect || resurrect.isUsed()) return false;
+        if (!resurrect || resurrect.isUsed()) {
+            return false;
+        }
 
         const roll = Math.random();
-        resurrect.used = true;
 
-        if (roll < 30) {
+        if (roll < 300 && player.getHealth()==0) {
+        resurrect.used = true;
         const monster = player.getMonster();
         const maxHp = monster ? monster.getMaxHealth() : 0;
         const newHp = Math.max(1, Math.ceil(maxHp * 0.5));

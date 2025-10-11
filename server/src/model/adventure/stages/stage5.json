@@ -416,6 +416,14 @@
           "You stumble, almost falling asleep mid-step.",
           "A sharp prick wakes you, a thorny bracelet woven from swamp vines lies half-buried in the mud."
         ],
+        "type": "DIALOGUE",
+        "next": "prick"
+      },
+      {
+        "id": "prick",
+        "result": [
+          "Your HP droped by 2"
+        ],
         "type": "STAT_CHANGE",
         "statChange": ["health", -2],
         "next": "witherbindBracelet"

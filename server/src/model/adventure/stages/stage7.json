@@ -543,14 +543,14 @@
       {
         "id": "whisper",
         "result": [
-          "The mist thickens instead. Soft murmurs echo all around, words you can't quite understand.",
-          "Your thoughts grow heavy."
+          "The mist thickens instead. Soft murmurs echo all around, words you can't quite understand."
         ],
         "type": "DIALOGUE",
         "next": "swamps_whisper"
       },
       {
         "id": "swamps_whisper",
+        "result": ["Your thoughts grow heavy."],
         "type": "STATUS",
         "statusId": ["swamps_whisper", 2]
       },

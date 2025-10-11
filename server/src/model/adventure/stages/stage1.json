@@ -31,7 +31,7 @@
         "result": [
           "You defeated the slime!",
           "You hear something clatter on the ground.",
-          "It's green and slimy to the touch."
+          "Its green and slimy to the touch."
         ],
         "type": "DIALOGUE",
         "next": "slime_stench"

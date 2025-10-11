@@ -40,7 +40,7 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   black_crystal: () => new BlackCrystal(),
   grey_crystal: () => new GreyCrystal(),
   hiccup_of_doom: () => new HiccupOfDoom(),
-  burp_of_power: () => new BurpOfPower,
+  burp_of_power: () => new BurpOfPower(),
   glow_of_insight: () => new GlowOfInsight(),
   croak_of_strength: () => new CroakOfStrength(),
 };
