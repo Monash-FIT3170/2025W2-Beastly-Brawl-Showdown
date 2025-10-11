@@ -38,7 +38,7 @@ export class TipTheScalesAbilityAction extends Action {
   public prepareAnimation(): string | [string, number] {
     if (this.attackAction) {
       const diceRollNumber = this.getDiceRoll();
-      return ["archetype", diceRollNumber];
+      return ["attack", diceRollNumber];
     }
     throw new Error("Tip The Scales: Attack Action was not created.");
   }

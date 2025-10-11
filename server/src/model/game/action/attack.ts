@@ -141,6 +141,7 @@ export class AttackAction extends Action {
       );
       // Increment successful block for front end
       affectedPlayer.incSuccessfulBlock(1);
+      affectedPlayer.addAnimation("miss");
 
       this.executeBattleEffect(actingPlayer, affectedPlayer, false);
     }

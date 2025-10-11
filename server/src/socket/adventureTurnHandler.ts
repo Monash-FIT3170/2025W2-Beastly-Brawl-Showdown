@@ -71,9 +71,6 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
         var player1DiceRoll = 0;
         var player2DiceRoll = 0;
 
-        console.error("player 1", player1.getActions());
-        console.error("player 2", player2.getActions());
-
         player1.getActions().forEach((action) => {
           const animationInfo = action.prepareAnimation();
           if (typeof animationInfo === "string") {
@@ -102,7 +99,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
 
         //add statuses to animation.
         player1.setStartStatusAnimations();
-        player1.setEndStatusAnimations();
+        player2.setStartStatusAnimations();
 
         //update battlestate
         io.to(playerId).emit("adventure_state", {
@@ -127,7 +124,12 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
           opp: player1.getAnimations().filter((a) => a != ""),
         });
 
-        // TIME OUT BETWEEN PREPARE AND ROLL = 1000
+        //TIME OUT CONSTANTS
+        const prepareTimeOut = 1000; // -> between prepare animation and roll animation
+        const rollTimeOut = 2000; // -> between prepare/roll and execute animation
+        const executeTimeOut = 3000; // -> between execute and next turn/default animation
+
+        // TIME OUT BETWEEN PREPARE AND ROLL
         setTimeout(() => {
           // Roll animations
           if (player1DiceRoll > 0) {
@@ -140,7 +142,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
           // Remove possible actions essentially hiding the battle footer until animations and calculations are done.
           io.to(playerId).emit("possible_actions", []);
 
-          //TIME OUT BETWEEN PREPARE/ROLL AND EXECUTE = 2000 + (1000)
+          //TIME OUT BETWEEN PREPARE/ROLL AND EXECUTE
           setTimeout(() => {
             player1.clearAnimations();
             player2.clearAnimations();
@@ -149,6 +151,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             player1.getActions().forEach((action) => {
               action.execute(player1, player2);
               if (action instanceof NullAction) {
+                //TODO: why doesn't this just exist in null action?
                 console.log(`P1 - ${player1.getName()} did nothing.`);
               }
             });
@@ -183,15 +186,14 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             // Execute animations
             io.to(player1.getId()).emit("update_animation", {
               phase: "execute",
-              player: player1.getAnimations(),
-              opp: player2.getAnimations(),
+              player: player1.getAnimations().filter((a) => a != ""),
+              opp: player2.getAnimations().filter((a) => a != ""),
             });
             io.to(player2.getId()).emit("update_animation", {
               phase: "execute",
-              player: player2.getAnimations(),
-              opp: player1.getAnimations(),
+              player: player2.getAnimations().filter((a) => a != ""),
+              opp: player1.getAnimations().filter((a) => a != ""),
             });
-            // TODO: figure out when(if?) to go back to normal
 
             //reset stats
             playersInBattle.forEach((p) => {
@@ -211,7 +213,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
               battle: battle?.getBattleState(playerId),
             });
 
-            //TIMEOUT BETWEEN EXECUTE AND DEFAULT = 3000
+            //TIMEOUT BETWEEN EXECUTE AND DEFAULT
             setTimeout(() => {
               io.to(player1.getId()).emit("update_animation", {
                 phase: "default",
@@ -297,9 +299,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                 let actions = player?.getMonster()?.getPossibleActionStates();
                 io.to(playerId).emit("possible_actions", actions);
               }
-            }, 3000);
-          }, 2000);
-        }, 1000);
+            }, executeTimeOut);
+          }, rollTimeOut);
+        }, prepareTimeOut);
       }
     }
   );

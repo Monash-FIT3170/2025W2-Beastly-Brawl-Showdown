@@ -95,7 +95,7 @@ function splitAnimations(
   animations: string[]
 ): [string, string, string[], string[]] {
   //MONSTER IMAGE/GIF
-  const monsterOptions = ["defend", "ability", "damage", "archetype"];
+  const monsterOptions = ["defend", "ability", "archetype"];
   const mImage = animations.filter((a) => monsterOptions.includes(a));
   let monsterImage: string;
 
@@ -142,7 +142,10 @@ function splitAnimations(
 
   //OVERLAYS
   const overlayImage: string[] = animations.filter(
-    (a) => !monsterOptions.includes(a) && !underlayOptions.includes(a)
+    (a) =>
+      !monsterOptions.includes(a) &&
+      !underlayOptions.includes(a) &&
+      !animationOptions.includes(a)
   );
   return [monsterImage, animationImage, overlayImage, underlayImage];
 }
