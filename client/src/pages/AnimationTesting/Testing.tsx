@@ -10,7 +10,7 @@ export const Test = () => {
           <p>Damage Animation</p>
           <img
             src={
-              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/ROCKY_RHINO.png"
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/ROCKY_RHINO_DAMAGE.png"
             }
             className={`relative inline-block xl:w-[90%] z-10 animate-damage`}
           ></img>
@@ -61,12 +61,12 @@ export const Test = () => {
           ></img>
         </div>
         <div>
-          <p>Defend Break Animation</p>
+          <p>Shadow Leap</p>
           <img
             src={
               "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POUNCING_BANDIT.png"
             }
-            className={`relative inline-block xl:w-[90%] z-10 animate-shield-break`}
+            className={`relative inline-block xl:w-[90%] z-10 animate-shadow-leap`}
           ></img>
         </div>
         <div>

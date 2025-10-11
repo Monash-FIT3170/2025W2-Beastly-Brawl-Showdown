@@ -40,13 +40,16 @@
   --spacing-normalButtonHeight: 5.625rem;
   --spacing-normalPhoneWidth: 23.0625rem;
   --animate-glow: glow-pulse 1.5s ease-in-out infinite;
-  --animate-attack: attack 3s linear;
-  --animate-damage: damage 3s linear infinite;
+  --animate-attack-right: attack-flip 3s linear infinite;
+  --animate-attack-left: attack 3s linear infinite;
+  --animate-damage: damage 3s ease-in-out infinite;
   --animate-shield: shield 3s ease-out infinite;
   --animate-defend: shield-create 3s ease-out;
   --animate-shield-break: shield-break 3s linear;
   --animate-shield-fade: shield-fade 3s ease-in;
   --animate-shadow: shadow 1s linear infinite;
+  --animate-shadow-leap: shadow-leap 3s ease-in-out infinite;
+  --animate-slime-support: green-glow 3s ease-in-out infinite;
 }
 
 body {
@@ -110,7 +113,19 @@ h2 {
     transform: translate(0, 0) scale(1);
   }
   20% {
-    transform: translate(15px, 15px) scale(1);
+    transform: translate(15px, -15px) scale(1);
+    /* filter: blur(1px); */
+  }
+}
+
+@keyframes attack-flip {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    filter: drop-shadow(10px, 10px 10px red);
+  }
+  20% {
+    transform: translate(-15px, 15px) scale(1);
     /* filter: blur(1px); */
   }
 }
@@ -119,19 +134,29 @@ h2 {
   0%,
   100% {
     /* transform: translate(0, 0); */
-    filter: drop-shadow(0 0 10px red) opacity(1);
+    filter: drop-shadow(0 0 10px red) saturate(1) opacity(1);
   }
   25% {
-    /* transform: translate(-2px, 2px); */
-    filter: drop-shadow(0 0 10px red) opacity(0.8) saturate(3.15);
+    /* transform: translate(-1px, 1px); */
+    filter: drop-shadow(0 0 10px red) saturate(1) opacity(0.9);
   }
   50% {
-    /* transform: translate(2px, -2px); */
-    filter: drop-shadow(0 0 10px red) opacity(1) saturate(3.15);
+    /* transform: translate(1px, -1px); */
+    filter: drop-shadow(0 0 10px red) saturate(1) opacity(1);
   }
   75% {
-    /* transform: translate(-2px, 2px); */
-    filter: drop-shadow(0 0 10px red) opacity(0.8) saturate(3.15);
+    /* transform: translate(-1px, 1px); */
+    filter: drop-shadow(0 0 10px red) saturate(1) opacity(0.9);
+  }
+}
+
+@keyframes green-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 80px #7be850);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px #77e24d);
   }
 }
 
@@ -183,6 +208,20 @@ h2 {
   0%,
   100% {
     filter: drop-shadow(20px 30px 10px #403245);
+  }
+}
+
+@keyframes shadow-leap {
+  0% {
+    filter: brightness(1);
+    transform: translate(0, 0) scale(1);
+  }
+  20% {
+    transform: translate(15px, 15px) scale(1);
+  }
+  100% {
+    filter: brightness(0.15) opacity(0.9);
+    transform: translate(0, 0) scale(1);
   }
 }
 

@@ -71,6 +71,7 @@ export class AlluringLullaby extends Action {
       );
       this.executeBattleEffect(actingPlayer, affectedPlayer, true);
       affectedPlayer.addAnimation("damage");
+      actingPlayer.addAnimation("miss");
     } else {
       // Add logs
       actingPlayer.addLog(`Your ${this.getName()} was ineffective!`);

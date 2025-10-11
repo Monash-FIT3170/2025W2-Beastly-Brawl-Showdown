@@ -18,8 +18,10 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
-import { Test } from "./src/pages/Home/Testing";
+import { Test } from "./src/pages/AnimationTesting/Testing";
 import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
+import { AttackPage } from "./src/pages/AnimationTesting/Attack";
+import { DamagePage } from "./src/pages/AnimationTesting/Damage";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -33,6 +35,22 @@ FlowRouter.route("/test", {
   action() {
     document.title = "Animation Testing";
     mount(Test);
+  },
+});
+
+FlowRouter.route("/attack", {
+  name: "Test",
+  action() {
+    document.title = "Animation Testing";
+    mount(AttackPage);
+  },
+});
+
+FlowRouter.route("/damage", {
+  name: "Test",
+  action() {
+    document.title = "Animation Testing";
+    mount(DamagePage);
   },
 });
 

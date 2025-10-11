@@ -92,10 +92,11 @@ function getOverlay(animation: string): string {
 }
 
 function splitAnimations(
-  animations: string[]
+  animations: string[],
+  side: string
 ): [string, string, string[], string[]] {
   //MONSTER IMAGE/GIF
-  const monsterOptions = ["defend", "ability", "archetype"];
+  const monsterOptions = ["ability", "archetype"];
   const mImage = animations.filter((a) => monsterOptions.includes(a));
   let monsterImage: string;
 
@@ -118,19 +119,26 @@ function splitAnimations(
     "shield-active",
     "shield-break",
     "shield-fade",
+    "shadow-leap",
+    "slime-support",
   ];
   const aImage = animations.filter((a) => animationOptions.includes(a));
   let animationImage: string;
 
   if (aImage.length === 1) {
-    animationImage = aImage[0];
+    animationImage = "animate-" + aImage[0];
   } else if (aImage.length > 1) {
     console.error(
       `ANIMATION ERROR: expected only one monster animation: ${aImage}`
     );
-    animationImage = aImage[0];
+    animationImage = "animate-" + aImage[0];
   } else {
     animationImage = "";
+  }
+
+  if (animationImage == "animate-attack") {
+    animationImage = "animate-attack-" + side;
+    console.error(animationImage);
   }
 
   //UNDERLAYS
@@ -164,9 +172,8 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
   biome,
 }) => {
   const [monsterImage, animationImage, overlayImage, underlayImage] =
-    splitAnimations(animations);
+    splitAnimations(animations, side);
   const monsterPath = getMonsterImage(monster, monsterImage, biome);
-  const animation = getMonsterAnimation(animationImage);
   const flip = side === "left" ? "transform -scale-x-100" : "";
   const shadow = `
     xl:w-[13rem]
@@ -183,7 +190,7 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
     `;
 
   return (
-    <div className={`${animation}`}>
+    <div className={`${animationImage}`}>
       <div className="relative inline-block xl:w-[50%]">
         {/* Monster "Animations" */}
         <div className="relative inset-0 flex items-center justify-center">

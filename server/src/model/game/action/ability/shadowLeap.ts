@@ -16,7 +16,7 @@ export class ShadowLeapAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "ability";
+    return "shadow-leap";
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
