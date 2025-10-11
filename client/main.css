@@ -27,6 +27,7 @@
   --color-storycolour: #f69f3a;
   --color-notification: #fe392b;
   --color-notification-accent: #f7877f;
+  --color-passive-green: #43bf37;
   --text-tiny: 0.9375rem;
   --text-smaller: 1.1rem;
   --text-small: 1.125rem;
@@ -38,6 +39,7 @@
   --spacing-normalButtonWidth: 11.25rem;
   --spacing-normalButtonHeight: 5.625rem;
   --spacing-normalPhoneWidth: 23.0625rem;
+  --animate-glow: glow-pulse 1.5s infinite ease-in-out;
   --animate-attack: attack 3s ease-in infinite;
   --animate-damage: damage 3s linear infinite;
   --animate-defend: defend 3s ease-out infinite;
@@ -143,4 +145,18 @@ h2 {
   -webkit-text-fill-color: #ef4444;
   -webkit-text-stroke-width: 0.05em;
   -webkit-text-stroke-color: var(--color-blackCurrant);
+}
+
+.outline-consistent {
+  @apply sm:outline-[0.75rem] md:outline-[0.5rem] lg:outline-[0.25rem];
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0.25rem #edaf55); /* soft start */
+  }
+  50% {
+    filter: drop-shadow(0 0 0.5rem #403245); /* strong mid glow */
+  }
 }

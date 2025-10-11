@@ -200,6 +200,13 @@ export class Player {
 
   public resetStats(): void {
     if (this.monster) {
+      console.error(
+        `DEBUG: Resetting stats for ${this.name}, ATK: ${
+          this.currentAttackStat
+        } to ${this.monster.getAttackBonus()}, AC: ${
+          this.currentArmourClassStat
+        } to ${this.monster.getArmourClass()}`
+      );
       this.currentAttackStat = this.monster.getAttackBonus();
       this.currentArmourClassStat = this.monster.getArmourClass();
       this.dodging = false; //TODO: fix
@@ -243,17 +250,14 @@ export class Player {
     metadata?: unknown;
   } {
     // console.log(`DEBUG: ${this.name} pushing ${status.name}`);
+    // console.log(`DEBUG: ${this.name} pushing ${status.name}`);
     this.statuses.push(status);
+    // console.log("DEBUG, statuses", this.statuses);
     // console.log("DEBUG, statuses", this.statuses);
     return { success: true };
   }
 
   public tickStatuses() {
-    // console.log(
-    //   `DEBUG: Pre-Tick Statuses of ${
-    //     this.name
-    //   } (names)" ${this.statuses.forEach((status) => status.getName())}`
-    // );
     this.statuses.forEach((status) => status.tick(this));
     //removes statuses that have expired after the tick
     this.statuses = this.statuses.filter((status) => !status.isExpired(this));

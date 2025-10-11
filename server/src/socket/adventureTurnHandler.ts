@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
-import { activeAdventures, players, battles } from "../../main";
+import { activeAdventures, players, battles, playerAccounts } from "../../main";
+
 import { ActionState } from "/types/single/actionState";
 import { NullAction } from "../model/game/action/null";
 import { loadNextStory, progressAdventure } from "./adventureModeHandler";
@@ -44,6 +45,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
       if (!playersInBattle) {
         console.error(`ADV: battle players empty ${playersInBattle}`);
       } else {
+        //ADDING ACTION TO BOT
         let player1 = playersInBattle[0];
         let player2 = playersInBattle[1];
         let bot = player2.isBotPlayer() ? player2 : player1;
@@ -221,13 +223,15 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
 
               //check if battle is over
               if (battle?.isBattleOver()) {
-                console.log(`ADV: battle is over!`);
                 const winners = battle
                   .getWinners()
                   ?.map((player) => player.getName());
-                console.log(winners);
+                console.log("ADV: Battle over! Winners:", winners);
                 const playerName = player?.getName();
                 if (playerName) {
+                  player?.getStatuses().forEach((status) => {
+                    status.endOfBattle(player);
+                  });
                   //if the winner is the player
                   if (winners?.includes(playerName)) {
                     console.log(`ADV: player won!`);
@@ -237,7 +241,6 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                     // console.log("adventure", adventure);
                     if (adventure && stage) {
                       // Get current story node and outcome
-
                       const outcome = loadNextStory(io, adventure, socket);
 
                       // If outcome has a next, update currentOutcomeId
@@ -250,30 +253,44 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                         adventure.currentOutcomeId = null;
                         adventure.currentStory = null; // Or handle end of adventure
                       }
-
-                      //console.log("stageData", stageData);
                       console.log("outcome", outcome);
                       console.log("outcome.next", outcome?.next);
                       adventure.getPlayer().clearLogs();
-                      //adventure.getPlayer().clearBattleLogs();
-
                       progressAdventure(io, socket, adventure, stage);
                     } else {
                       console.error(
                         `ADV: adventure or stage does not exist for player id: ${playerId} \n
-                    ${adventure}, ${stage}`
+                        ${adventure}, ${stage}`
                       );
                     }
                   } else {
                     console.log(`ADV: GAME OVER!`);
                     socket.emit("adventure_defeat");
+                    const adventure = activeAdventures.get(playerId);
+
+                    //update endless high score
+                    if (adventure?.getLevel() === 0) {
+                      const user = playerAccounts.get(socket.id);
+                      var adventureProgression = user?.adventureProgression;
+                      if (adventureProgression) {
+                        const oldRecord = adventureProgression.stage;
+                        if (adventure.getStage() > oldRecord) {
+                          adventureProgression.stage = adventure.getStage();
+                        }
+                      } else {
+                        console.error(
+                          `ADV: Failed to load ${user?._id}'s endless record.`
+                        );
+                      }
+                    }
                   }
                 } else {
                   console.error(
-                    `ADV: Player does not have name... ${playerName}`
+                    `ADV: Player does not have name. ${playerName}`
                   );
                 }
               } else {
+                //if battle not over - prepare next turn
                 let actions = player?.getMonster()?.getPossibleActionStates();
                 io.to(playerId).emit("possible_actions", actions);
               }

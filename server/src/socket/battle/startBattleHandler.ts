@@ -142,9 +142,16 @@ export default function proceedBattleTurn(
         }
       });
 
-      io.to(player1.getId()).emit("update_animation", {phase:"prepare", player: player1.getAnimations(), opp: player2.getAnimations()});
-      io.to(player2.getId()).emit("update_animation", {phase:"prepare", player: player2.getAnimations(), opp: player1.getAnimations()});
-
+      io.to(player1.getId()).emit("update_animation", {
+        phase: "prepare",
+        player: player1.getAnimations(),
+        opp: player2.getAnimations(),
+      });
+      io.to(player2.getId()).emit("update_animation", {
+        phase: "prepare",
+        player: player2.getAnimations(),
+        opp: player1.getAnimations(),
+      });
 
       // Roll animations
       //TODO: add time out before dice roll
@@ -201,8 +208,16 @@ export default function proceedBattleTurn(
         });
 
         // Execute animations
-        io.to(player1.getId()).emit("update_animation", {phase:"execute", player: player1.getAnimations(), opp: player2.getAnimations()});
-        io.to(player2.getId()).emit("update_animation", {phase:"execute", player: player2.getAnimations(), opp: player1.getAnimations()});
+        io.to(player1.getId()).emit("update_animation", {
+          phase: "execute",
+          player: player1.getAnimations(),
+          opp: player2.getAnimations(),
+        });
+        io.to(player2.getId()).emit("update_animation", {
+          phase: "execute",
+          player: player2.getAnimations(),
+          opp: player1.getAnimations(),
+        });
 
         // TODO: figure out when(if?) to go back to normal
 

@@ -27,7 +27,7 @@ export class FlameLashAbilityAction extends Action {
     this.incCurrentUse(-1);
     affectedPlayer.addAnimation("damage");
     // Deal 10 damage if the opponent is dodging, 5 damage otherwise
-    if (affectedPlayer.getArmourClassStat() >= 30) {
+    if (affectedPlayer.getArmourClassStat() >= 50) {
       //TODO FIGURE OUT A BALANCED AC
       this.damage = 10;
       affectedPlayer.addAnimation("crit");
