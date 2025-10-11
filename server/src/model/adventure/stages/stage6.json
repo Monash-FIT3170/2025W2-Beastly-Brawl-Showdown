@@ -419,14 +419,39 @@
     ]
   },
   {
-    "id": "level5_update",
+    "id": "desert_slime_2",
     "level": [5],
-    "description": "level5_update",
+    "description": "Stage 5 - slime 2 encounter",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["STAGE 6 UPDATE"],
-        "type": "DIALOGUE"
+        "result": ["UPDATE"],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["UPDATE"],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "DUSTY SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "DUSTY SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": ["UPDATE"],
+        "type": "DIALOGUE",
+        "next": "reward"
+      },
+      {
+        "id": "reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "desert_pool"
       }
     ]
   },

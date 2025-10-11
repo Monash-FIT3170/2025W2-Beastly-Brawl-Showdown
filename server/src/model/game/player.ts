@@ -396,6 +396,18 @@ export class Player {
     this.resetStats();
   }
 
+  public removeEquipmentAt(index: number): void {
+    if (index < 0 || index >= this.equipment.length) {
+      console.error(`Invalid equipment index: ${index}`);
+      return;
+    }
+
+    const equip = this.equipment[index];
+    this.equipment.splice(index, 1);
+    equip.unequip(this);
+    this.resetStats();
+  }
+
   public clearEquipment(): void {
     this.equipment = [];
   }

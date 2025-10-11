@@ -14,7 +14,8 @@ interface IconProps {
     | "profile"
     | "leaderboard"
     | "notes"
-    | "cog";
+    | "cog"
+    | "bin";
   buttonColour:
     | "ronchi"
     | "blue"

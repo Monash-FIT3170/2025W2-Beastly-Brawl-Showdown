@@ -19,6 +19,8 @@ import { HiccupOfDoom } from "../../game/consumables/hiccupOfDoom";
 import { CroakOfStrength } from "../../game/consumables/croakOfStrength";
 import { BurpOfPower } from "../../game/consumables/burpOfPower";
 import { GlowOfInsight } from "../../game/consumables/glowOfInsight";
+import { CactusNectar } from "../../game/consumables/cactusNectar";
+import { DuneDust } from "../../game/consumables/duneDust";
 
 const ConsumableFactory: Record<string, () => Consumable> = {
   mini_health_potion: () =>
@@ -36,13 +38,15 @@ const ConsumableFactory: Record<string, () => Consumable> = {
   magic_stew: () => new MagicStew(),
   cinder_flame: () => new CinderFlame(),
   froggy_slime: () => new FroggySlime(),
-  blue_crystal:() => new BlueCrystal(),
+  blue_crystal: () => new BlueCrystal(),
   black_crystal: () => new BlackCrystal(),
   grey_crystal: () => new GreyCrystal(),
   hiccup_of_doom: () => new HiccupOfDoom(),
   burp_of_power: () => new BurpOfPower(),
   glow_of_insight: () => new GlowOfInsight(),
   croak_of_strength: () => new CroakOfStrength(),
+  cactus_nectar: () => new CactusNectar(),
+  dune_dust: () => new DuneDust(),
 };
 
 export function createConsumable(id: string): Consumable {

@@ -446,25 +446,74 @@
       {
         "id": "swamps_calm",
         "type": "STATUS",
-        "result": [
-          "You feel calm."
-        ],
+        "result": ["You feel calm."],
         "statusId": ["swamps_calm", 5]
       }
     ]
   },
   {
-    "id": "level5_update",
+    "id": "mirage_camp",
     "level": [5],
-    "description": "level5_update",
+    "description": "Stage 5 — You stumble upon an oasis that may not be real.",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["STAGE 5 UPDATE"],
-        "type": "DIALOGUE"
+        "result": [
+          "You spot a cool oasis ahead — palm trees and shimmering water.",
+          "Your throat aches for relief..."
+        ],
+        "type": "DIALOGUE",
+        "next": "mirage_choice"
+      },
+      {
+        "id": "mirage_choice",
+        "result": ["Do you trust the oasis?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "drink",
+            "text": "Drink from the oasis",
+            "next": "mirage_random"
+          },
+          { "id": "ignore", "text": "Ignore and move on", "next": "safe_pass" }
+        ]
+      },
+      {
+        "id": "mirage_random",
+        "type": "RANDOM",
+        "options": [
+          { "id": "heal", "chance": 60, "next": "mirage_heal" },
+          { "id": "poison", "chance": 40, "next": "mirage_confusion" }
+        ]
+      },
+      {
+        "id": "mirage_heal",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", 4],
+        "result": [
+          "The water is real! Cool and refreshing, your body feels lighter.",
+          "+4 HP."
+        ]
+      },
+      {
+        "id": "mirage_confusion",
+        "type": "STATUS",
+        "statusId": ["sandy_eyes", 3],
+        "result": [
+          "You realise that the oasis was a mirage.",
+          "Your vision blurs, and you feel disoriented."
+        ]
+      },
+      {
+        "id": "safe_pass",
+        "type": "DIALOGUE",
+        "result": [
+          "You walk past the oasis. It flickers, vanishing in the heat haze."
+        ]
       }
     ]
   },
+
   {
     "id": "stage5_stamina",
     "level": [0],

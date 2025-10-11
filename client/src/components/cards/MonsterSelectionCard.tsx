@@ -38,7 +38,8 @@ export const MonsterSelectionCard = ({
                 duration-200
                 ease-in-out 
                 hover:scale-102 
-                hover:shadow-lg`}
+                hover:shadow-lg
+                z-10`}
       onClick={onClick}
     >
       <div className="flex flex-col shrink-0 justify-center items-center">

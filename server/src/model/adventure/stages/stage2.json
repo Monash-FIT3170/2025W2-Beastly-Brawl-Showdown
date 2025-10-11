@@ -257,7 +257,7 @@
       {
         "id": "trade_lose_hp",
         "type": "STAT_CHANGE",
-        "statChange": ["health", -5],
+        "statChange": ["health", -4],
         "result": [
           "The merchant grins. \"A fair price.\"",
           "You feel a sharp sting as he pricks your finger and draws power from you."
@@ -266,8 +266,8 @@
       },
       {
         "id": "trade_reward",
-        "type": "EQUIPMENT",
-        "equipmentId": "cooling_pendant"
+        "type": "LOOT_POOL",
+        "lootPoolId": "desert_pool"
       },
       {
         "id": "haggle_random",
@@ -290,16 +290,16 @@
       },
       {
         "id": "haggle_reward",
-        "type": "EQUIPMENT",
-        "equipmentId": "cooling_pendant"
+        "type": "LOOT_POOL",
+        "lootPoolId": "desert_pool"
       },
       {
         "id": "haggle_lose",
         "type": "STAT_CHANGE",
-        "statChange": ["health", -2],
+        "statChange": ["health", -3],
         "result": [
           "The offended merchant curses at you and throws hot sand in your face!",
-          "You lost 2 HP."
+          "You lost 3 HP."
         ]
       },
       {
@@ -307,8 +307,8 @@
         "type": "RANDOM",
         "result": ["You sneak toward the crate."],
         "options": [
-          { "id": "antidote", "chance": 60, "next": "find_antidote" },
-          { "id": "trap", "chance": 40, "next": "trigger_trap" }
+          { "id": "antidote", "chance": 70, "next": "find_antidote" },
+          { "id": "trap", "chance": 30, "next": "trigger_trap" }
         ]
       },
       {
@@ -327,9 +327,9 @@
       {
         "id": "trigger_trap",
         "type": "STATUS",
-        "statusId": ["poisoned", 5],
+        "statusId": ["poisoned", 3],
         "result": [
-          "A spring-loaded poison dart strikes you in the arm! You feel unwell...",
+          "A spring-loaded poison dart strikes you in the arm!",
           "You feel unwell..."
         ]
       }
