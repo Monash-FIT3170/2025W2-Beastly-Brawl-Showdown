@@ -5,7 +5,7 @@ export const DamagePage = () => {
   return (
     <BlankPage>
       <p>Animation Testing Page</p>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2 overflow-auto">
         {/* <div>
           <p>Damage Animation</p>
           <img
