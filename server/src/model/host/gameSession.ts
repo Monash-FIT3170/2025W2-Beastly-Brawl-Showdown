@@ -413,8 +413,8 @@ export default class GameSession {
     return this.mode.init(this, io, socket)
   }
 
-  public onActionExecuted(player1Id:string,  player1Result: ActionResult, player2Id: string, player2Result:ActionResult):void {
-    return this.mode.onActionExecuted(this, player1Id, player1Result, player2Id, player2Result);
+  public onActionExecuted(player1:Player,  player1Result: ActionResult, player2: Player, player2Result:ActionResult):void {
+    return this.mode.onActionExecuted(this, player1, player1Result, player2, player2Result);
   }
 
   public onBattleEnded(winner: Player | null,battle: Battle, io: Server, socket: Socket): void {

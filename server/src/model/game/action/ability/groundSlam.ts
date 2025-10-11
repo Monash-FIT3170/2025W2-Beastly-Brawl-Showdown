@@ -46,6 +46,9 @@ export class GroundSlamAbilityAction extends Action {
       appliedStatus: {
         success: true,
       },
+      damageDealt: {
+        damage: 3
+      }
     };
   }
 }

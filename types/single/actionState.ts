@@ -42,4 +42,8 @@ export interface ActionResult {
     type?: StatusType; //need to state whether it is StatusType.BUFF or StatusType.DEBUFF when success is true
     message?: string; //message is (optionally) for reasoning whether success is true or false
   };
+  damageDealt?: {
+    damage: number;
+    message?: string;
+  }
 }

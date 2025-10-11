@@ -21,6 +21,7 @@ export class PufferBlast extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    let damage: number = 0;
     this.incCurrentUse(-1);
 
     var hitFishes = 0;
@@ -34,6 +35,7 @@ export class PufferBlast extends Action {
     }
     // Apply damage to the affected player
     affectedPlayer.incHealth(-hitDamage);
+    damage = hitDamage
 
     // Add logs
     actingPlayer.addLog(
@@ -49,6 +51,9 @@ export class PufferBlast extends Action {
     return {
       appliedStatus:{
         success: false
+      },
+      damageDealt: {
+        damage: damage
       }
     }
   }

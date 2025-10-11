@@ -22,13 +22,16 @@ export class FlameLashAbilityAction extends Action {
 
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    let damage: number = 0;
     this.incCurrentUse(-1);
 
     // Deal 10 damage if the opponent is dodging, 5 damage otherwise
     if (affectedPlayer.getDodgingPosition()) {
       affectedPlayer.incHealth(-10);
+      damage = 10
     } else {
       affectedPlayer.incHealth(-5);
+      damage = 5
     }
 
     // Log the action
@@ -52,6 +55,9 @@ export class FlameLashAbilityAction extends Action {
     return {
       appliedStatus: {
         success: false
+      },
+      damageDealt: {
+        damage: damage
       }
     }
   }

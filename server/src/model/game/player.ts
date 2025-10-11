@@ -36,6 +36,13 @@ export class Player {
   private noNullAction: number = 0;
   static roundToCheck: number = 5; //change the value here
 
+  //have to store the player's stats here since PlayerState interface does not allow variable initialisation
+  //which will be then passed to the PlayerState on request
+  private battleWon: number = 0;
+  private abilitiesUsed: number = 0;
+  private mostDamageDealt: number = 0;
+  private criticalHitsDealt: number = 0;
+
   constructor(
     id: string,
     name: string,
@@ -384,6 +391,38 @@ export class Player {
     this.equipment = [];
   }
 
+  public getBattleWon(): number{
+    return this.battleWon
+  }
+
+  public incBattleWon(num:number):void {
+    this.battleWon += num
+  }
+
+  public getAbilitiesUsed(): number{
+    return this.abilitiesUsed
+  }
+
+  public incAbilitiesUsed(num:number):void {
+    this.battleWon += num
+  }
+
+  public getMostDamageDealt(): number {
+    return this.mostDamageDealt
+  }
+
+  public setMostDamageDelt(num: number): void {
+    this.mostDamageDealt = num
+  }
+
+  public getCriticalHitsDealt(): number {
+    return this.criticalHitsDealt
+  }
+
+  public incCriticalHitsDealt(num: number): void {
+    this.criticalHitsDealt += num
+  }
+
   //PLAYER STATE:
   public getPlayerState(): PlayerState {
     return {
@@ -408,6 +447,11 @@ export class Player {
       equipment: this.equipment.map((e) => e.getState()),
       consumables: this.consumables.map((c) => c.getState()),
       attackState: this.getMonster()?.getAttackAction().getAttackState()!,
+      battleWon: this.getBattleWon(),
+      abilitiesUsed: this.getAbilitiesUsed(),
+      mostDamageDealt: this.getMostDamageDealt(),
+      successfulBlocks: this.getSuccessfulBlock(),
+      criticalHitsDealt: this.getCriticalHitsDealt()
     };
   }
 }

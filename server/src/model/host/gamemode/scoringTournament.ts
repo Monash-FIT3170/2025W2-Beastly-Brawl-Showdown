@@ -33,17 +33,29 @@ export class ScoringTournament implements IGameMode{
 	}
 
 	//TODO: calculate bonus points for the previous turn
-	onActionExecuted(sesion: GameSession, player1Id: string, player1Result: ActionResult, player2Id: string, player2Result: ActionResult): void {
+	onActionExecuted(sesion: GameSession, player1: Player, player1Result: ActionResult, player2: Player, player2Result: ActionResult): void {
 		if (player1Result.appliedStatus.success){
-			this.board.setScore(player1Id, {
+			this.board.setScore(player1.getId(), {
 				bonuses: this.bonus.debuff
 			})
 		}
 
 		if (player2Result.appliedStatus.success){
-			this.board.setScore(player2Id, {
+			this.board.setScore(player2.getId(), {
 				bonuses: this.bonus.debuff
 			})
+		}
+
+		if (player1Result.damageDealt != null){
+			if (player1Result.damageDealt.damage > player1.getMostDamageDealt()){
+				player1.setMostDamageDelt(player1Result.damageDealt.damage)
+			}
+		}
+
+		if (player2Result.damageDealt != null){
+			if (player2Result.damageDealt.damage > player2.getMostDamageDealt()){
+				player2.setMostDamageDelt(player2Result.damageDealt.damage)
+			}
 		}
 		console.log("Scoreboard: ", this.board.showBoard())
 	}
@@ -70,6 +82,8 @@ export class ScoringTournament implements IGameMode{
 				bonuses: this.bonus.finishedWithHpAbove.bonus
 			})
 			}
+
+			winner.incBattleWon(1);
 		}
 
 		//Calculate score for the previous battle

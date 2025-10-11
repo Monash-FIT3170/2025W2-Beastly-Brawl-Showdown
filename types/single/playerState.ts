@@ -27,4 +27,9 @@ export interface PlayerState {
   consumables: ConsumableState[];
 
   attackState: AttackState;
+  battleWon: number;
+  abilitiesUsed: number;
+  mostDamageDealt: number;
+  successfulBlocks: number;
+  criticalHitsDealt: number;
 }

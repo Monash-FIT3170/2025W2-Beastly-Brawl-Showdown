@@ -19,6 +19,7 @@ export default function proceedBattleTurn(
   battle.clearBattleLogs();
   battle.incTurn();
 
+  console.log("[BATTLE INFO]:", battle)
   let playersInBattle = battle.getPlayers();
 
   // checks/ticks statuses for each player
@@ -87,7 +88,9 @@ export default function proceedBattleTurn(
       // Check each player in battle has a selected action
       playersInBattle.forEach((player) => {
         if (player.getActions().length === 0) {
+          console.log("[BEFORE ADDING]:", player.getActions())
           player.addAction(new NullAction());
+          console.log("[AFTER ADDING]:", player.getActions())
         }
 
         if (player.getNoNullAction() === Player.roundToCheck) {
@@ -177,16 +180,21 @@ export default function proceedBattleTurn(
             console.log(`P2 - ${player2.getName()} did nothing.`);
           }
         });
-
         console.log("P1: ", player1);
 
         console.log("P2: ", player2);
 
+        console.log("[BEFORE EXECUTE]:",player1.getActions())
+        console.log("[BEFORE EXECUTE]:",player2.getActions())
+        console.log("[BEFORE EXECUTE]:",p1_result)
+        console.log("[BEFORE EXECUTE]:",p2_result)
+        console.log("Battle turn:", battle.getTurn())
+
         //Handle logic after actions are executed (see GameMode)
         gameSession.onActionExecuted(
-          player1.getId(),
+          player1,
           p1_result,
-          player2.getId(),
+          player2,
           p2_result
         );
 
