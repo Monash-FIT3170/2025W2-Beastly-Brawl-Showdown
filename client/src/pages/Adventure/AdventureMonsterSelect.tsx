@@ -44,11 +44,13 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
   };
 
   useEffect(() => {
+    //TODO: turn back to adventure list
+
     // Request the monster list once when component mounts
-    socket.emit("request_adventure_monster_list");
+    socket.emit("request_monster_list");
 
     // Listen for the monster list from server
-    socket.on("adventure_monster_list", (monsterList: MonsterState[]) => {
+    socket.on("monster_list", (monsterList: MonsterState[]) => {
       setMonsters(monsterList);
     });
 

@@ -29,7 +29,7 @@ export abstract class Action {
     this.description = description;
     this.currentUse = maxUse;
     this.maxUse = maxUse;
-    this.dodgeable = dodgeable ?? true;
+    this.dodgeable = dodgeable ?? false;
   }
 
   public incCurrentUse(value: number): void {

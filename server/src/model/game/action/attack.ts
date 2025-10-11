@@ -23,7 +23,7 @@ export class AttackAction extends Action {
     diceMin: number = 1,
     diceMax: number = 20
   ) {
-    super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity);
+    super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity, true);
     this.attackBonus = attackBonus;
     this.diceMin = diceMin;
     this.diceMax = diceMax;

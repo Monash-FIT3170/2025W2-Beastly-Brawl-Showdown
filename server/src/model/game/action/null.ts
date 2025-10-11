@@ -6,6 +6,7 @@ export class NullAction extends Action {
   private actingMessage: string | null;
   private affectedMessage: string | null;
   private battleLogMessage: string | null;
+  private animation: string | [string, number];
 
   constructor(
     name: string = "Null",
@@ -18,12 +19,18 @@ export class NullAction extends Action {
     this.actingMessage = actingMessage;
     this.affectedMessage = affectedMessage;
     this.battleLogMessage = battleLogMessage;
+    this.animation = "";
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
+  public updateAnimation(animation: string | [string, number]) {
+    this.animation = animation;
+  }
+
   public prepareAnimation(): string | [string, number] {
-    return "";
+    console.error("animation", this.animation);
+    return this.animation;
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {

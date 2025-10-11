@@ -16,6 +16,7 @@ const overlayOrder: string[] = [
   "strong",
   "weak",
   "crit",
+  "miss",
 ] as const; //order for each status from lowest layer to highest.
 const prio = new Map(overlayOrder.map((s, i) => [s, i]));
 
@@ -43,6 +44,17 @@ function getMonsterImage(
       ".png"
     );
   }
+
+  //TODO: handle abilities without animations!
+  if (animation === "ability") {
+    return (
+      "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
+      monsterName +
+      "_" +
+      animation.toUpperCase() +
+      ".gif"
+    );
+  }
   const image =
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
     monsterName +
@@ -60,17 +72,15 @@ function getMonsterAnimation(animation: string): string {
       return "animate-defend";
     case "damage":
       return "animate-damage";
+    case "shield-active":
+      return "animate-shield";
+    case "shield-break":
+      return "animate-shield-break";
+    case "shield-fade":
+      return "animate-shield-fade";
     default:
       return "";
   }
-}
-
-//get status images
-function getStatusOverlay(status: string): string {
-  //todo create actual overlays.
-  return `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status
-    .replace(" ", "_")
-    .toUpperCase()}.png`;
 }
 
 function getOverlay(animation: string): string {
@@ -81,36 +91,65 @@ function getOverlay(animation: string): string {
   );
 }
 
-function splitAnimations(animations: string[]): [string, string[], string[]] {
-  const monsterOptions = ["attack", "defend", "ability", "damage", "archetype"];
-  const matched = animations.filter((a) => monsterOptions.includes(a));
+function splitAnimations(
+  animations: string[]
+): [string, string, string[], string[]] {
+  //MONSTER IMAGE/GIF
+  const monsterOptions = ["defend", "ability", "damage", "archetype"];
+  const mImage = animations.filter((a) => monsterOptions.includes(a));
   let monsterImage: string;
 
-  if (matched.length === 1) {
-    monsterImage = matched[0];
-  } else if (matched.length > 1) {
+  if (mImage.length === 1) {
+    monsterImage = mImage[0];
+  } else if (mImage.length > 1) {
     console.error(
-      `ANIMATION ERROR: expected only one monster image: ${matched}`
+      `ANIMATION ERROR: expected only one monster image: ${mImage}`
     );
-    monsterImage = matched[0];
+    monsterImage = mImage[0];
   } else {
     monsterImage = "default";
   }
+
+  //ANIMATIONS
+  const animationOptions = [
+    "attack",
+    "defend",
+    "damage",
+    "shield-active",
+    "shield-break",
+    "shield-fade",
+  ];
+  const aImage = animations.filter((a) => animationOptions.includes(a));
+  let animationImage: string;
+
+  if (aImage.length === 1) {
+    animationImage = aImage[0];
+  } else if (aImage.length > 1) {
+    console.error(
+      `ANIMATION ERROR: expected only one monster animation: ${aImage}`
+    );
+    animationImage = aImage[0];
+  } else {
+    animationImage = "";
+  }
+
+  //UNDERLAYS
+  //todo: include underlays
   const underlayOptions = ["lake_curse"];
   const underlayImage: string[] = animations.filter((a) =>
     underlayOptions.includes(a)
   );
 
+  //OVERLAYS
   const overlayImage: string[] = animations.filter(
     (a) => !monsterOptions.includes(a) && !underlayOptions.includes(a)
   );
-  return [monsterImage, overlayImage, underlayImage];
+  return [monsterImage, animationImage, overlayImage, underlayImage];
 }
 
 interface BattleMonsterImageProps {
   monster: MonsterIdentifier;
   side: "left" | "right";
-  // statuses: Status[];
   animations: string[];
   biome: string;
 }
@@ -118,14 +157,13 @@ interface BattleMonsterImageProps {
 export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
   monster,
   side,
-  // statuses,
   animations,
   biome,
 }) => {
-  const [monsterImage, overlayImage, underlayImage] =
+  const [monsterImage, animationImage, overlayImage, underlayImage] =
     splitAnimations(animations);
   const monsterPath = getMonsterImage(monster, monsterImage, biome);
-  const animation = getMonsterAnimation(monsterImage);
+  const animation = getMonsterAnimation(animationImage);
   const flip = side === "left" ? "transform -scale-x-100" : "";
   const shadow = `
     xl:w-[13rem]
@@ -180,11 +218,6 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
             );
           })}
         </div>
-        {/* Shadow */}
-        <img
-          className={`${shadow}`}
-          src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/SHADOW.png"
-        ></img>
       </div>
     </div>
   );

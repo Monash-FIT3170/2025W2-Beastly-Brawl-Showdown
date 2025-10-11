@@ -31,15 +31,18 @@ export class ShadowLeapAbilityAction extends Action {
         const actingMessage = `${actingPlayer.getName()} dodged your attack!`;
         const affectedMessage = `You dodged ${affectedPlayer.getName()}'s attack!`;
         const battleLogMessage = `${actingPlayer.getName()} dodged ${affectedPlayer.getName()}'s attack!`;
-        affectedPlayer.addAction(
-          new NullAction(
-            "Attack Dodged",
-            ActionIdentifier.NULL,
-            actingMessage,
-            affectedMessage,
-            battleLogMessage
-          )
+        const nullAction = new NullAction(
+          "Attack Dodged",
+          ActionIdentifier.NULL,
+          actingMessage,
+          affectedMessage,
+          battleLogMessage
         );
+        nullAction.updateAnimation([
+          "attack",
+          Math.floor(Math.random() * 15) + 5, //TODO: update roll
+        ]);
+        affectedPlayer.addAction(nullAction);
       }
     });
   }

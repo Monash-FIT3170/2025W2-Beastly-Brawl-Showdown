@@ -71,6 +71,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
         var player1DiceRoll = 0;
         var player2DiceRoll = 0;
 
+        console.error("player 1", player1.getActions());
+        console.error("player 2", player2.getActions());
+
         player1.getActions().forEach((action) => {
           const animationInfo = action.prepareAnimation();
           if (typeof animationInfo === "string") {

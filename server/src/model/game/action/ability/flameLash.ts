@@ -11,7 +11,6 @@ export class FlameLashAbilityAction extends Action {
       "Whip your blazing tail for 5 damage. If your foe tries to dodge, the flames bend and strike again for another 5 damage.",
       1
     );
-    this.setDodgeable(false);
     this.damage = 5;
   }
 

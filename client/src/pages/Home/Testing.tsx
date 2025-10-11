@@ -30,7 +30,7 @@ export const Test = () => {
             src={
               "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/ROCKY_RHINO.png"
             }
-            className={`relative inline-block xl:w-[90%] z-10 animate-defend`}
+            className={`relative inline-block xl:w-[90%] z-10 animate-shield`}
           ></img>
         </div>
         <div>
@@ -52,12 +52,30 @@ export const Test = () => {
           ></img>
         </div>
         <div>
-          <p>Defend Animation</p>
+          <p>Defend Action Animation</p>
           <img
             src={
               "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POUNCING_BANDIT.png"
             }
             className={`relative inline-block xl:w-[90%] z-10 animate-defend`}
+          ></img>
+        </div>
+        <div>
+          <p>Defend Break Animation</p>
+          <img
+            src={
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POUNCING_BANDIT.png"
+            }
+            className={`relative inline-block xl:w-[90%] z-10 animate-shield-break`}
+          ></img>
+        </div>
+        <div>
+          <p>Defend Fade Animation</p>
+          <img
+            src={
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POUNCING_BANDIT.png"
+            }
+            className={`relative inline-block xl:w-[90%] z-10 animate-shield-fade`}
           ></img>
         </div>
       </div>

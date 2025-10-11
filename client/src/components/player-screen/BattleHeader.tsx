@@ -25,13 +25,13 @@ export const BattleHeader: React.FC<BattleHeaderProps> = ({
 
   let p1Score;
   let p2Score;
-  if (metadata) {
-    console.log("[METADATA]:", metadata.playerScore);
-    if (metadata.playerScore) {
-      p1Score = metadata.playerScore[player1Id].points;
-      p2Score = metadata.playerScore[player2Id].points;
-    }
-  }
+  // if (metadata) {
+  //   console.log("[METADATA]:", metadata.playerScore);
+  //   if (metadata.playerScore) {
+  //     p1Score = metadata.playerScore[player1Id].points;
+  //     p2Score = metadata.playerScore[player2Id].points;
+  //   }
+  // }
 
   return (
     <div
