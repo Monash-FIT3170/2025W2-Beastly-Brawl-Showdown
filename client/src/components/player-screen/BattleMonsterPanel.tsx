@@ -15,24 +15,14 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
   battleState,
   biome: slimeString,
 }) => {
-  //todo: add sockets that handle which animations are which
   const [playerAnimations, setPlayerAnimations] = useState<string[]>([]);
   const [opponentAnimations, setOpponentAnimations] = useState<string[]>([]);
-  // const [showStatusOverlays, setShowStatusOverlays] = useState(false);
 
   useEffect(() => {
     type inputType = { phase: string; player: string[]; opp: string[] };
     const onUpdate = (input: inputType) => {
       setPlayerAnimations(input.player);
       setOpponentAnimations(input.opp);
-
-      // if (input.phase === "execute") {
-      //   setShowStatusOverlays(true); // show after action resolved
-      // } else if (input.phase === "prepare") {
-      //   setShowStatusOverlays(false); // hide at new round / adventure reset
-      // } else if (input.phase === "default") {
-      //   setShowStatusOverlays(false); // hide at new round / adventure reset
-      // }
       console.log(`${input.phase} - Player Animations: ${input.player}`);
       console.log(`${input.phase} - Opponent Animations: ${input.opp}`);
     };
@@ -40,30 +30,6 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
     socket.on("update_animation", onUpdate);
     return () => socket.off("update_animation", onUpdate);
   }, []);
-
-  // const onRollDice = (_roll: number) => setShowStatusOverlays(true);
-
-  const shadow = `
-    xl:w-[13rem]
-    xl:h-[2rem]
-    opacity-70
-    xl:-mt-[3rem]
-    xl:mb-[2rem]
-    w-[30rem]
-    h-[4rem]
-    -mt-[7rem]
-    mb-[8rem]
-    z-0
-    flex
-
-    `;
-
-  // const oppStatuses = showStatusOverlays
-  //   ? battleState.opponentPlayer.statuses
-  //   : [];
-  // const yourStatuses = showStatusOverlays
-  //   ? battleState.yourPlayer.statuses
-  //   : [];
 
   return (
     <div className="fixed flex flex-col w-full h-screen justify-center pb-[50%] xl:pb-[20%] pl-[5%] xl:pl-[0%] xl:pr-[0%] pr-[5%]">

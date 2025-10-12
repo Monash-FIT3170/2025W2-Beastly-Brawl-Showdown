@@ -22,6 +22,7 @@ import { Test } from "./src/pages/AnimationTesting/Testing";
 import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
 import { AttackPage } from "./src/pages/AnimationTesting/Attack";
 import { DamagePage } from "./src/pages/AnimationTesting/Damage";
+import { DefendPage } from "./src/pages/AnimationTesting/Defend";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -51,6 +52,14 @@ FlowRouter.route("/damage", {
   action() {
     document.title = "Animation Testing";
     mount(DamagePage);
+  },
+});
+
+FlowRouter.route("/defend", {
+  name: "Test",
+  action() {
+    document.title = "Animation Testing";
+    mount(DefendPage);
   },
 });
 

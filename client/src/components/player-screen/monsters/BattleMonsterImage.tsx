@@ -64,32 +64,21 @@ function getMonsterImage(
   return image;
 }
 
-function getMonsterAnimation(animation: string): string {
-  switch (animation) {
-    case "attack":
-      return "animate-attack";
-    case "defend":
-      return "animate-defend";
-    case "damage":
-      return "animate-damage";
-    case "shield-active":
-      return "animate-shield";
-    case "shield-break":
-      return "animate-shield-break";
-    case "shield-fade":
-      return "animate-shield-fade";
-    default:
-      return "";
-  }
-}
-
-function getOverlay(animation: string): string {
+function getOverlay(overlay: string): string {
   return (
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
-    animation.toUpperCase().replace(" ", "_") +
+    overlay.toUpperCase().replace(" ", "_") +
     ".png"
   );
 }
+
+//TODO: update defend/shield animations depending on what art Tinesia creates.
+const shieldAnimations = [
+  "shield-break",
+  "shield-block",
+  "shield-fade",
+  "shield",
+];
 
 function splitAnimations(
   animations: string[],
@@ -116,9 +105,10 @@ function splitAnimations(
     "attack",
     "defend",
     "damage",
-    "shield-active",
-    "shield-break",
-    "shield-fade",
+    // "shield",
+    // "shield-break",
+    // "shield-fade",
+    // "shield-block",
     "shadow-leap",
     "slime-support",
   ];
@@ -153,9 +143,19 @@ function splitAnimations(
     (a) =>
       !monsterOptions.includes(a) &&
       !underlayOptions.includes(a) &&
-      !animationOptions.includes(a)
+      !animationOptions.includes(a) &&
+      !shieldAnimations.includes(a) //TO UPDATE DEPENDING ON WHAT SHIELD IMAGES WILL EXIST
   );
   return [monsterImage, animationImage, overlayImage, underlayImage];
+}
+
+function getShieldAnimation(animations: string[]): string {
+  for (const a of shieldAnimations) {
+    if (animations.includes(a)) {
+      return "animate-" + a;
+    }
+  }
+  return "";
 }
 
 interface BattleMonsterImageProps {
@@ -174,23 +174,11 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
   const [monsterImage, animationImage, overlayImage, underlayImage] =
     splitAnimations(animations, side);
   const monsterPath = getMonsterImage(monster, monsterImage, biome);
+  const shieldAnimation = getShieldAnimation(animations);
   const flip = side === "left" ? "transform -scale-x-100" : "";
-  const shadow = `
-    xl:w-[13rem]
-    xl:h-[2rem]
-    opacity-70
-    xl:-mt-[3rem]
-    xl:mb-[2rem]
-    w-[30rem]
-    h-[4rem]
-    -mt-[7rem]
-    mb-[8rem]
-    z-0
-    flex
-    `;
 
   return (
-    <div className={`${animationImage}`}>
+    <div>
       <div className="relative inline-block xl:w-[50%]">
         {/* Monster "Animations" */}
         <div className="relative inset-0 flex items-center justify-center">
@@ -210,7 +198,13 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
               />
             );
           })}
-          <img src={monsterPath} alt={monster} className={`z-10 ${flip}`}></img>
+          <div className={`${shieldAnimation}`}>
+            <img
+              src={monsterPath}
+              alt={monster}
+              className={`z-10 ${flip} ${animationImage}`}
+            ></img>
+          </div>
           {overlayImage.map((item, i) => {
             const overlay = getOverlay(item);
             const z = getZLevel(item, 20);
@@ -222,7 +216,6 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
                     absolute inset-0 
                     pointer-events-none 
                     select-none 
-                    ${flip}
                     `}
               />
             );
