@@ -47,6 +47,7 @@
   --animate-defend: shield-create 3s ease-out;
   --animate-shield-break: shield-break 3s linear;
   --animate-shield-fade: shield-fade 3s ease-in;
+  --animate-shield-crack: shield-crack-pop 900ms ease-out 1 forwards;
   --animate-shadow: shadow 1s linear infinite;
   --animate-shadow-leap: shadow-leap 3s ease-in-out infinite;
   --animate-slime-support: green-glow 3s ease-in-out infinite;
@@ -202,6 +203,19 @@ h2 {
   50% {
     filter: drop-shadow(0 0 20px #55a9ed);
   }
+}
+
+@keyframes fade-in-out-pop {
+  0%   { opacity: 0; transform: scale(0.96); }
+  15%  { opacity: 1; transform: scale(1.00); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.03); }
+}
+
+.animate-fade-in-out {
+  animation: fade-in-out-pop 900ms ease-out forwards;
+  pointer-events: none;
+  will-change: opacity, transform;
 }
 
 @keyframes shadow {
