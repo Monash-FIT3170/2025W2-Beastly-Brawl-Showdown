@@ -98,6 +98,7 @@ export class AttackAction extends Action {
       if (isCrit) {
         this.damageDealt *= 2; // Double the damage on a crit
         damage *= 2
+        actingPlayer.incCriticalHitsDealt(1)
       }
       affectedPlayer.incHealth(-this.damageDealt);
 
