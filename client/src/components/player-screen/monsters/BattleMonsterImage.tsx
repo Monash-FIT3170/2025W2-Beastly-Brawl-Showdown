@@ -1,8 +1,5 @@
 import React from "react";
-import { ArchetypeIdentifier, MonsterState } from "/types/single/monsterState";
 import { MonsterIdentifier } from "/types/single/monsterState";
-import { MonsterImage } from "../player-screen/monsters/MonsterImage";
-import { Status } from "./status/status";
 
 //Calculate the level of each layer
 const overlayOrder: string[] = [
@@ -73,11 +70,11 @@ function getOverlay(overlay: string): string {
   );
 }
 
-//TODO: update defend/shield animations depending on what art Tinesia creates.
 const shieldAnimations = [
-  "shield-break",
-  "shield-block",
-  "shield-fade",
+  "shield-broken",
+  "shield-crack",
+  "defend",
+  "shield-expire",
   "shield",
 ];
 
@@ -104,14 +101,10 @@ function splitAnimations(
   //ANIMATIONS
   const animationOptions = [
     "attack",
-    "defend",
     "damage",
-    // "shield",
-    // "shield-break",
-    // "shield-fade",
-    // "shield-block",
     "shadow-leap",
     "slime-support",
+    "fortress-stance",
   ];
   const aImage = animations.filter((a) => animationOptions.includes(a));
   let animationImage: string;
@@ -129,7 +122,6 @@ function splitAnimations(
 
   if (animationImage == "animate-attack") {
     animationImage = "animate-attack-" + side;
-    console.error(animationImage);
   }
 
   //UNDERLAYS
@@ -139,26 +131,35 @@ function splitAnimations(
     underlayOptions.includes(a)
   );
 
-  const shieldAnimation = ["shield-block", "shield-fade"];
-
   //OVERLAYS
   const overlayImage: string[] = animations.filter(
     (a) =>
       !monsterOptions.includes(a) &&
       !underlayOptions.includes(a) &&
       !animationOptions.includes(a) &&
-      !shieldAnimation.includes(a) //TO UPDATE DEPENDING ON WHAT SHIELD IMAGES WILL EXIST
+      !shieldAnimations.includes(a)
   );
+  console.error([monsterImage, animationImage, overlayImage, underlayImage]);
   return [monsterImage, animationImage, overlayImage, underlayImage];
 }
 
-function getShieldAnimation(animations: string[]): string {
+function getShieldAnimation(animations: string[]): [string, string] {
+  let animation = "invisible";
+  let image = "";
+
+  //TODO: handle shield expiring
+
   for (const a of shieldAnimations) {
     if (animations.includes(a)) {
-      return "animate-" + a;
+      animation = "animate-" + a;
+      image =
+        "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
+        a.toUpperCase().replace("-", "_") +
+        ".png";
+      return [animation, image];
     }
   }
-  return "";
+  return [animation, image];
 }
 
 interface BattleMonsterImageProps {
@@ -177,7 +178,7 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
   const [monsterImage, animationImage, overlayImage, underlayImage] =
     splitAnimations(animations, side);
   const monsterPath = getMonsterImage(monster, monsterImage, biome);
-  const shieldAnimation = getShieldAnimation(animations);
+  const [shieldAnimation, shieldImage] = getShieldAnimation(animations);
   const flip = side === "left" ? "transform -scale-x-100" : "";
 
   return (
@@ -201,13 +202,11 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
               />
             );
           })}
-          <div className={`${shieldAnimation}`}>
-            <img
-              src={monsterPath}
-              alt={monster}
-              className={`z-10 ${flip} ${animationImage}`}
-            ></img>
-          </div>
+          <img
+            src={monsterPath}
+            alt={monster}
+            className={`z-10 ${flip} ${animationImage}`}
+          ></img>
           {overlayImage.map((item, i) => {
             const overlay = getOverlay(item);
             const z = getZLevel(item, 20);
@@ -223,6 +222,11 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
               />
             );
           })}
+          <img
+            src={shieldImage}
+            style={{ zIndex: 1000 }}
+            className={`absolute inset-0 pointer-events-none select-none ${shieldAnimation}`}
+          ></img>
         </div>
       </div>
     </div>
