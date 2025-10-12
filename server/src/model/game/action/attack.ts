@@ -137,7 +137,7 @@ export class AttackAction extends Action {
           affectedPlayer.addLog(
             `${actingPlayer.getName()}'s attack hit your shield but didn't break it!`
           );
-          affectedPlayer.addAnimation("shield_block");
+          affectedPlayer.addAnimation("shield_block"); // to be updated in battlemonsterimage.tsx
         }
       } else {
         // No shield - normal damage calculation

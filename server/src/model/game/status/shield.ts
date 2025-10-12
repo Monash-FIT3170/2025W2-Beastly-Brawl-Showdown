@@ -34,7 +34,7 @@ export class Shield extends Status {
   }
 
   public expire(player: Player): void {
-    player.addLog("Your defensive shield has faded away.");
+    player.addAnimation("shield_expire"); // to be updated in battlemonsterimage.tsx
   }
 
   public getState() {
