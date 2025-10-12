@@ -41,6 +41,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     ".jpg')";
 
   useEffect(() => {
+    socket.removeAllListeners("host-closed");
     socket.on("battle_state", (data) => {
       console.log("[BATTLESTATE]: ", data.battle);
       console.log("[METADATA]: ", data.metadata);
