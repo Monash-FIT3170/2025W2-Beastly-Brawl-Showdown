@@ -135,6 +135,7 @@ FlowRouter.route("/battles/:code?", {
 FlowRouter.route("/final-results-battle-royale/:code?", {
   name: "FinalResultsBattleRoyale",
   action(params) {
+    document.title = "Final Results | Beastly Brawl Showdown";
     mount(() => <FinalResultsBattleRoyale gameCode={params.code} />);
   },
 });
@@ -142,6 +143,7 @@ FlowRouter.route("/final-results-battle-royale/:code?", {
 FlowRouter.route("/final-results-scoring-tournament/:code?", {
   name: "FinalResultsScoringTournament",
   action(params) {
+    document.title = "Final Results | Beastly Brawl Showdown";
     mount(() => <FinalResultsScoringTournament gameCode={params.code} />);
   },
 });
