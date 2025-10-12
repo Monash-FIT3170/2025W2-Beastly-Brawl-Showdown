@@ -32,6 +32,12 @@ export const DefendPage = () => {
             }
             className={`relative inline-block xl:w-[90%] z-10 animate-shield`}
           ></img>
+          <img
+            src={
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/SHIELD.png"
+            }
+            className={`relative inline-block xl:w-[90%] z-12`}
+          ></img>
         </div>
         <div>
           <p>Shield Block!</p>

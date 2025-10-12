@@ -6,6 +6,7 @@ import { Status } from "./status/status";
 
 //Calculate the level of each layer
 const overlayOrder: string[] = [
+  "shield",
   "poison",
   "stun",
   "slimeBoost",
@@ -138,13 +139,15 @@ function splitAnimations(
     underlayOptions.includes(a)
   );
 
+  const shieldAnimation = ["shield-block", "shield-fade"];
+
   //OVERLAYS
   const overlayImage: string[] = animations.filter(
     (a) =>
       !monsterOptions.includes(a) &&
       !underlayOptions.includes(a) &&
       !animationOptions.includes(a) &&
-      !shieldAnimations.includes(a) //TO UPDATE DEPENDING ON WHAT SHIELD IMAGES WILL EXIST
+      !shieldAnimation.includes(a) //TO UPDATE DEPENDING ON WHAT SHIELD IMAGES WILL EXIST
   );
   return [monsterImage, animationImage, overlayImage, underlayImage];
 }
