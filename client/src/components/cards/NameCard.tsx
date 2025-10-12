@@ -5,6 +5,7 @@ import { MonsterImageResizable } from "../player-screen/monsters/MonsterImageRes
 import { BlackText } from "../texts/BlackText";
 import { PlayerState } from "/types/single/playerState";
 import { MonsterIdentifier } from "/types/single/monsterState";
+import { ArchetypeIdentifier } from "../../../../types/single/monsterState";
 
 interface NameCardProps {
   player: PlayerState;
@@ -12,13 +13,10 @@ interface NameCardProps {
 }
 
 export const NameCard = ({ player, onClick }: NameCardProps) => {
-  const monsterCardColour = {
-    [MonsterIdentifier.ROCKY_RHINO]: "rhino",
-    [MonsterIdentifier.POUNCING_BANDIT]: "bandit",
-    [MonsterIdentifier.CINDER_TAIL]: "cinderTail",
-    [MonsterIdentifier.FURIOUS_FLIPPER]: "flipper",
-    [MonsterIdentifier.POISON_POGO]: "pogo",
-    [MonsterIdentifier.CHARMER_COBRA]: "cobra",
+  const colourLoader: Record<ArchetypeIdentifier | string, string> = {
+    [ArchetypeIdentifier.ATTACKER]: "attacker",
+    [ArchetypeIdentifier.DEFENDER]: "defender",
+    [ArchetypeIdentifier.BALANCED]: "balanced",
     NONE: "quillGray",
   };
 
@@ -30,7 +28,7 @@ export const NameCard = ({ player, onClick }: NameCardProps) => {
         height={8}
       />
       <BaseCard
-        color={monsterCardColour[player.monster?.id ?? "NONE"]}
+        color={colourLoader[player.monster?.archetypeId ?? "NONE"]}
         width={8}
       >
         <div className="flex flex-row items-center justify-apart space-x-4 m-2">

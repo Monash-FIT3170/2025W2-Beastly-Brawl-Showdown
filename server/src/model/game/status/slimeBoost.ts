@@ -1,36 +1,41 @@
+import { StatusType } from "../../../../../types/single/statusType";
 import { Player } from "../player";
-import { Status } from "./status";
+import { StartStatus } from "./startStatus";
 
-export class SlimeBoost extends Status {
+export class SlimeBoost extends StartStatus {
   constructor(countdown: number) {
-    super("Slime Boost", "Buff your lowest rated stat!", countdown);
+    super(
+      "Slime Boost",
+      "Buff your lowest rated stat!",
+      countdown,
+      StatusType.BUFF
+    );
   }
 
-  public effect(player: Player): void {
-    //CURRENTLY: only checks AC, HP, ATK+
-    //TODO: add logs!!
+  public startingEffect(player: Player): void {
     const buffedStat = this.getLowestStat(player);
-    var current = 0;
+    // console.error(
+    //   `SLIME BOOST DEBUG for ${player.getName()}, Stat Boosted: ${buffedStat}`
+    // );
     switch (buffedStat) {
       case "AC":
-        //Doubles AC for this round.
-        current = player.getArmourClassStat();
         player.incArmourClassStat(5);
-        console.log(`Slime Boost: Boosted AC +5`);
-      // case "HP":
-      //   // Heals for 3 HP
-      //   current = player.getHealth();
-      //   player.incHealth(3);
-      //   console.log(`Slime Boost: ${player.getName()} Healed 3 HP`);
-      default:
-        //Doubles ATK+
-        current = player.getAttackStat();
+        player.addLog("Your Slime Boost has increased your Armour Class by 5!");
+        console.log(`Slime Boost: ${player.getName()} Boosted AC +5`);
+        break;
+      case "HP":
+        player.incHealth(+2);
+        player.addLog("Your Slime Boost has increased your HP by 2!");
+        console.log(`Slime Boost: ${player.getName()} Boosted HP + 2`);
+        break;
+      case "ATK":
         player.incAttackStat(2);
+        player.addLog("Your Slime Boost has increased your Attack Bonus by 2!");
         console.log(`Slime Boost: ${player.getName()} Boosted ATK Bonus +2`);
+        break;
     }
 
-    console.error("Slime Support NOT TESTED");
-    //TODO: check how long stats are affected
+    //TODO: add a different animation to show which stat has been buffed.
   }
 
   private getLowestStat(player: Player): string {
@@ -48,11 +53,19 @@ export class SlimeBoost extends Status {
     const currentATK = player.getAttackStat();
     const currentHP = player.getHealth();
 
-    const stats = {
-      // AC: this.getRelativeValue(currentAC, acScale),
+    var stats = {
+      AC: this.getRelativeValue(currentAC, acScale),
       ATK: this.getRelativeValue(currentATK, atkScale),
       HP: this.getRelativeValue(currentHP, hpScale),
     };
+
+    if (currentHP < 1) {
+      stats = {
+        AC: this.getRelativeValue(currentAC, acScale),
+        ATK: this.getRelativeValue(currentATK, atkScale),
+        HP: 100,
+      };
+    }
 
     // Find the lowest entry
     const [lowestStatName, lowestStatValue] = Object.entries(stats).reduce(
@@ -69,4 +82,8 @@ export class SlimeBoost extends Status {
     if (max === min) return (value - min) / 1; // avoid divide by zero
     return (value - min) / (max - min);
   }
+
+  public updateLogs(player: Player): void {}
+
+  public expire(): void {}
 }

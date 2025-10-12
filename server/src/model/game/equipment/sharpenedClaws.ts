@@ -26,6 +26,6 @@ export class SharpenedClaws extends Equipment {
   }
 
   protected getImageString(): string {
-    return "item";
+    return "SHARPENED_CLAWS";
   }
 }

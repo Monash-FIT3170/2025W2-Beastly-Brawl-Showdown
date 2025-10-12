@@ -1,6 +1,7 @@
 import { ActionState } from "./actionState";
 
 export enum MonsterIdentifier {
+  ENDLESS = "ENDLESS",
   ROCKY_RHINO = "ROCKY_RHINO",
   POUNCING_BANDIT = "POUNCING_BANDIT",
   CINDER_TAIL = "CINDER_TAIL",
@@ -27,12 +28,16 @@ export interface MonsterState {
   attackBonus: number;
   armourClass: number;
 
+  startingHP: number;
+  startingATK: number;
+  startingAC: number;
+
   possibleActions: ActionState[];
 }
 
 export interface ArchetypeInfo {
   id: ArchetypeIdentifier;
   name: string;
-  ability: string;
-  abilityDesc: string;
+  description: string;
+  ability: ActionState;
 }

@@ -14,7 +14,9 @@ export class PufferBlast extends Action {
   }
 
   // Clear the opponent's actions
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+    this.damage = 0;
+  }
 
   public prepareAnimation(): string | [string, number] {
     return "Puffer_Blast_Animation";
@@ -37,6 +39,7 @@ export class PufferBlast extends Action {
     // Apply damage to the affected player
     affectedPlayer.incHealth(-hitDamage);
     damage = hitDamage
+    this.damage = hitDamage;
 
     // Add logs
     actingPlayer.addLog(
@@ -49,6 +52,12 @@ export class PufferBlast extends Action {
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage to ${affectedPlayer.getName()}.`
     );
 
+    if (hitDamage > 0) {
+      this.executeBattleEffect(actingPlayer, affectedPlayer, true);
+    } else {
+      this.executeBattleEffect(actingPlayer, affectedPlayer, false);
+    }
+
     return {
       appliedStatus:{
         success: false
@@ -56,6 +65,6 @@ export class PufferBlast extends Action {
       damageDealt: {
         damage: damage
       }
-    }
   }
+}
 }

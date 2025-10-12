@@ -32,6 +32,7 @@ export interface AttackState {
   critRate: number;
   diceRange: number;
 }
+
 //Holds information regarding the execution of the result
 //this should display the effects of the executed action in a structured format
 //can be used to expose more about information regarding execution of the action

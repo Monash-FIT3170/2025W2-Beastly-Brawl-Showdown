@@ -32,7 +32,7 @@ export class TipTheScalesAbilityAction extends Action {
     if (this.attackAction) {
       return this.attackAction.getDiceRoll();
     }
-    return 0;
+    throw new Error("Tip The Scales: Attack Action was not created.");
   }
 
   public prepareAnimation(): string | [string, number] {
@@ -40,7 +40,7 @@ export class TipTheScalesAbilityAction extends Action {
       const diceRollNumber = this.getDiceRoll();
       return ["roll_dice", diceRollNumber];
     }
-    return "roll_dice";
+    throw new Error("Tip The Scales: Attack Action was not created.");
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
@@ -64,8 +64,8 @@ export class TipTheScalesAbilityAction extends Action {
 
     return {
       appliedStatus: {
-        success: false
-      }
-    }
+        success: false,
+      },
+    };
   }
 }

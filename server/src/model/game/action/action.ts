@@ -4,6 +4,7 @@ import {
   ActionResult,
   ActionState,
 } from "/types/single/actionState";
+import { BattleEffect } from "../status/battleEffect";
 
 export abstract class Action {
   private id: ActionIdentifier;
@@ -13,6 +14,8 @@ export abstract class Action {
   private currentUse: number;
   private maxUse: number;
   private dodgeable: boolean = true;
+
+  protected damage: number = 0;
 
   constructor(
     id: ActionIdentifier,
@@ -51,6 +54,10 @@ export abstract class Action {
   public resetUse(): void{
     this.currentUse = this.maxUse
   }
+  
+  public getDamage(): number {
+    return this.damage;
+  }
 
   public abstract prepare(actingPlayer: Player, affectedPlayer: Player): void;
 
@@ -82,5 +89,25 @@ export abstract class Action {
       currentUse: this.currentUse,
       maxUse: this.maxUse,
     };
+  }
+
+  protected executeBattleEffect(
+    actingPlayer: Player,
+    affectedPlayer: Player,
+    success: boolean
+  ): void {
+    const actingStatuses = actingPlayer
+      .getStatuses()
+      .filter((s) => s instanceof BattleEffect);
+    const affectedStatuses = affectedPlayer
+      .getStatuses()
+      .filter((s) => s instanceof BattleEffect);
+
+    actingStatuses.forEach((s) =>
+      s.actingPlayerEffect(actingPlayer, affectedPlayer, this, success)
+    );
+    affectedStatuses.forEach((s) =>
+      s.affectedPlayerEffect(actingPlayer, affectedPlayer, this, success)
+    );
   }
 }

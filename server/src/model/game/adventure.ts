@@ -17,7 +17,7 @@ export class Adventure {
   constructor(player: Player, level: number) {
     this.player = player;
     this.level = level;
-    this.levelMonster = levelMap[level - 1];
+    this.levelMonster = levelMap[level];
     this.stage = 0;
     this.playerMonster = player.getMonster();
     this.currentStory = null;
@@ -50,9 +50,5 @@ export class Adventure {
 
   public getPlayerMonster(): Monster | null {
     return this.playerMonster;
-  }
-
-  public getLevelMonster(): MonsterIdentifier | null {
-    return this.levelMonster;
   }
 }
