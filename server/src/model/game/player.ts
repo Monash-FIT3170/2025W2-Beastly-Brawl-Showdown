@@ -117,6 +117,7 @@ export class Player {
       this.currentArmourClassStat = this.monster.getArmourClass();
       this.statuses = [];
       this.noNullAction = 0;
+      this.monster.getPossibleActions().forEach((action) => action.resetUse())
     }
   }
 
@@ -404,7 +405,7 @@ export class Player {
   }
 
   public incAbilitiesUsed(num:number):void {
-    this.battleWon += num
+    this.abilitiesUsed += num
   }
 
   public getMostDamageDealt(): number {

@@ -46,4 +46,8 @@ export interface ActionResult {
     damage: number;
     message?: string;
   }
+  usedAbility?: {
+    isAbility: boolean;
+    message?: string
+  }
 }

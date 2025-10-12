@@ -221,16 +221,16 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
               Battle Won: {player?.battleWon ?? 0}
             </p>
             <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-              Abilities Used: {battleStats.abilitiesUsed}
+              Abilities Used: {player?.abilitiesUsed ?? 0}
             </p>
             <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
               Most Damage Dealt: {player?.mostDamageDealt ?? 0}
             </p>
             <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-              Successful Blocks: {battleStats.successfulBlocks}
+              Successful Blocks: {player?.successfulBlocks ?? 0}
             </p>
             <p className="text-[3rem] xl:text-medium font-[Jua] text-outline">
-              Critical Hits Dealt: {battleStats.criticalHitsDealt}
+              Critical Hits Dealt: {player?.criticalHitsDealt ?? 0}
             </p>
           </div>
         </div>

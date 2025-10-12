@@ -299,6 +299,10 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Request failed. Invalid Battle`);
       return;
     }
+
+    for (const player of battle.getPlayers()) {
+      player.prepareForNextBattle()
+    }
     socket.emit("battle_started", battle.getId());
     proceedBattleTurn(io, socket, session, battle);
   });

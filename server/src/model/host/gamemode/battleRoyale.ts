@@ -31,12 +31,25 @@ export class BattleRoyale implements IGameMode {
 			}
 		}
 
+
 		if (player2Result.damageDealt != null){
 			if (player2Result.damageDealt.damage > player2.getMostDamageDealt()){
 				player2.setMostDamageDelt(player2Result.damageDealt.damage)
 			}
 		}
+
+    console.log("[ACTION RESULT]:", player1Result)
+    console.log("[ACTION RESULT]:", player2Result)
+
+    if (player1Result.usedAbility != null && player1Result.usedAbility.isAbility == true){
+        player1.incAbilitiesUsed(1)
+    } 
+
+    if (player2Result.usedAbility != null && player2Result.usedAbility.isAbility == true){
+        player2.incAbilitiesUsed(1)
+    } 
   } 
+
 
   public isPlayerInWaitingQueue(session: GameSession, playerFinding: Player): boolean {
     for (let i = 0; i < session.getWaitQueue().size(); i++) {

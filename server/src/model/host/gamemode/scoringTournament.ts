@@ -57,6 +57,14 @@ export class ScoringTournament implements IGameMode{
 				player2.setMostDamageDelt(player2Result.damageDealt.damage)
 			}
 		}
+
+		if (player1Result.usedAbility != null && player1Result.usedAbility.isAbility == true){
+			player1.incAbilitiesUsed(1)
+		} 
+
+		if (player2Result.usedAbility != null && player2Result.usedAbility.isAbility == true){
+			player2.incAbilitiesUsed(1)
+		} 
 		console.log("Scoreboard: ", this.board.showBoard())
 	}
 

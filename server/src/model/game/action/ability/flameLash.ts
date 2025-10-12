@@ -22,6 +22,7 @@ export class FlameLashAbilityAction extends Action {
 
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    actingPlayer.incAbilitiesUsed(1)
     let damage: number = 0;
     this.incCurrentUse(-1);
 

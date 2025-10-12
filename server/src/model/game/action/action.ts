@@ -48,6 +48,10 @@ export abstract class Action {
     return this.maxUse;
   }
 
+  public resetUse(): void{
+    this.currentUse = this.maxUse
+  }
+
   public abstract prepare(actingPlayer: Player, affectedPlayer: Player): void;
 
   //Return the "effects" caused by action

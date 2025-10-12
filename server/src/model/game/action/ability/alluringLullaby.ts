@@ -29,6 +29,7 @@ export class AlluringLullaby extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    actingPlayer.incAbilitiesUsed(1)
     this.incCurrentUse(-1);
 
     this.affectedPlayerActions.forEach((action) => {
