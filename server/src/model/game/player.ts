@@ -10,6 +10,7 @@ import { StoryItem } from "./storyItem/storyItem";
 import { ActionIdentifier } from "/types/single/actionState";
 import { StartStatus } from "./status/startStatus";
 import { EndStatus } from "./status/endStatus";
+import { Shield } from "./status/shield";
 
 export class Player {
   private id: string;
@@ -420,7 +421,7 @@ export class Player {
 
   public setStartStatusAnimations(): void {
     this.statuses
-      .filter((s) => s instanceof StartStatus)
+      .filter((s) => s instanceof StartStatus || s instanceof Shield)
       .forEach((s) => this.animations.push(s.getName().toLowerCase()));
   }
 

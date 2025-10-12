@@ -103,13 +103,14 @@ export class AttackAction extends Action {
           affectedPlayer.removeStatus(shield);
           shield.breakShield();
           shieldBroken = true;
-          affectedPlayer.addAnimation("shield_break"); // to be updated in battlemonsterimage.tsx
+          affectedPlayer.addAnimation("shield-broken");
 
           if (isCrit) {
             // Critical hit breaks shield AND deals damage
             affectedPlayer.incHealth(-this.damage);
             damageDealt = this.damage;
             affectedPlayer.addAnimation("crit");
+            affectedPlayer.addAnimation("damage");
             actingPlayer.addLog(
               `Critical hit! You broke ${affectedPlayer.getName()}'s shield and dealt ${
                 this.damage
@@ -137,12 +138,13 @@ export class AttackAction extends Action {
           affectedPlayer.addLog(
             `${actingPlayer.getName()}'s attack hit your shield but didn't break it!`
           );
-          affectedPlayer.addAnimation("shield_block"); // to be updated in battlemonsterimage.tsx
+          affectedPlayer.addAnimation("shield-crack");
         }
       } else {
         // No shield - normal damage calculation
         if (isCrit) {
           affectedPlayer.addAnimation("crit");
+          affectedPlayer.addAnimation("damage");
           affectedPlayer.incHealth(-critDamage);
           damageDealt = critDamage;
         } else {

@@ -39,19 +39,25 @@
   --spacing-normalButtonWidth: 11.25rem;
   --spacing-normalButtonHeight: 5.625rem;
   --spacing-normalPhoneWidth: 23.0625rem;
+
   --animate-glow: glow-pulse 1.5s ease-in-out infinite;
-  --animate-attack-right: attack-flip 3s linear infinite;
-  --animate-attack-left: attack 3s linear infinite;
+  --animate-attack-right: attack-flip 1s linear;
+  --animate-attack-left: attack 1s linear;
   --animate-damage: damage 3s ease-in-out infinite;
-  --animate-shield: shield 3s ease-out infinite;
-  --animate-defend: shield-create 3s ease-out;
-  --animate-shield-break: shield-break 3s linear;
-  --animate-shield-fade: shield-fade 3s ease-in;
-  --animate-shield-crack: shield-crack-pop 900ms ease-out 1 forwards;
+
+  --animate-defend: shield-create 3s ease-out infinite;
+  --animate-shield: shield 3s linear infinite;
+  --animate-shield-crack: shield-block 3s ease-in-out infinite;
+  --animate-shield-broken: shield-break 3s linear infinite;
+  --animate-shield-expire: shield-fade 3s ease-in infinite;
+
   --animate-shadow: shadow 1s linear infinite;
   --animate-shadow-leap: shadow-leap 3s ease-in-out infinite;
   --animate-slime-support: green-glow 3s ease-in-out infinite;
+  --animate-fortress-stance: blue-glow 3s ease-in-out infinite;
 }
+
+/* TODO: add fortress stance animation */
 
 body {
   font-family: sans-serif;
@@ -110,20 +116,20 @@ h2 {
 
 @keyframes attack {
   0%,
-  100% {
+  50% {
     transform: translate(0, 0) scale(1);
   }
   20% {
-    transform: translate(15px, -15px) scale(1);
+    transform: translate(-15px, -15px) scale(1);
     /* filter: blur(1px); */
   }
 }
 
 @keyframes attack-flip {
   0%,
-  100% {
+  50% {
     transform: translate(0, 0) scale(1);
-    filter: drop-shadow(10px, 10px 10px red);
+    /* filter: drop-shadow(10px, 10px 10px red); */
   }
   20% {
     transform: translate(-15px, 15px) scale(1);
@@ -139,7 +145,7 @@ h2 {
   }
   25% {
     /* transform: translate(-1px, 1px); */
-    filter: drop-shadow(0 0 10px red) saturate(1) opacity(0.9);
+    filter: drop-shadow(0 0 10px red) saturate(1) opacity(0.8);
   }
   50% {
     /* transform: translate(1px, -1px); */
@@ -147,62 +153,95 @@ h2 {
   }
   75% {
     /* transform: translate(-1px, 1px); */
-    filter: drop-shadow(0 0 10px red) saturate(1) opacity(0.9);
+    filter: drop-shadow(0 0 10px red) saturate(1) opacity(0.8);
   }
 }
 
 @keyframes green-glow {
   0%,
   100% {
-    filter: drop-shadow(0 0 80px #7be850);
+    filter: drop-shadow(0 0 20px green);
   }
   50% {
-    filter: drop-shadow(0 0 20px #77e24d);
+    filter: drop-shadow(0 0 80px #5dff1d);
+  }
+}
+
+@keyframes blue-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 20px blue);
+  }
+  50% {
+    filter: drop-shadow(0 0 80px #55a9ed);
   }
 }
 
 @keyframes shield {
   0%,
   100% {
-    filter: drop-shadow(0 0 80px #55a9ed);
+    filter: drop-shadow(0 0 20px #55a9ed) opacity(0.8);
   }
   50% {
-    filter: drop-shadow(0 0 20px #55a9ed);
+    filter: drop-shadow(0 0 10px #55a9ed) opacity(0.8);
   }
 }
 
 @keyframes shield-create {
-  100% {
-    filter: drop-shadow(0 0 80px #55a9ed);
+  0% {
+    filter: drop-shadow(0 0 1px #55a9ed) opacity(0.1);
   }
   50% {
-    filter: drop-shadow(0 0 20px #55a9ed);
+    filter: drop-shadow(0 0 10px #55a9ed) opacity(0.5);
+  }
+  100% {
+    filter: drop-shadow(0 0 20px #55a9ed) opacity(0.8);
   }
 }
 
-/* IGNORE WHAT IS BELOW: I WILL NEED HELP FOR THIS ONE!! */
 @keyframes shield-break {
-  0% {
-    filter: drop-shadow(0 0 80px #55a9ed) opacity(1);
-  }
-  20% {
-    filter: drop-shadow(0 0 40px #fb7eab) opacity(0.5);
+  0%,
+  100% {
+    filter: drop-shadow(0 0 1px red) opacity(0.8);
   }
   50% {
-    filter: drop-shadow(0 0 40px #fb7eab) opacity(0.5) blur(2px);
+    filter: drop-shadow(0 0 10px red) opacity(0.8);
   }
-  75% {
-    filter: drop-shadow(0 0 20px #fb7eab) opacity(0.9);
+}
+
+@keyframes shield-block {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 1px blue) opacity(0.8);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px blue) opacity(0.8);
   }
 }
 
 @keyframes shield-fade {
-  0% {
-    filter: drop-shadow(0 0 80px #55a9ed);
+  100% {
+    filter: drop-shadow(0 0 1px #55a9ed) opacity(0.1);
   }
   50% {
-    filter: drop-shadow(0 0 20px #55a9ed);
+    filter: drop-shadow(0 0 10px #55a9ed) opacity(0.5);
   }
+  0% {
+    filter: drop-shadow(0 0 20px #55a9ed) opacity(0.8);
+  }
+}
+
+@keyframes fade-in-out-pop {
+  0%   { opacity: 0; transform: scale(0.96); }
+  15%  { opacity: 1; transform: scale(1.00); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.03); }
+}
+
+.animate-fade-in-out {
+  animation: fade-in-out-pop 900ms ease-out forwards;
+  pointer-events: none;
+  will-change: opacity, transform;
 }
 
 @keyframes fade-in-out-pop {

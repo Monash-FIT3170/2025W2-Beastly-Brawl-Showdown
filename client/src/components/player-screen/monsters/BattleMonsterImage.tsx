@@ -1,11 +1,9 @@
 import React from "react";
-import { ArchetypeIdentifier, MonsterState } from "/types/single/monsterState";
 import { MonsterIdentifier } from "/types/single/monsterState";
-import { MonsterImage } from "../player-screen/monsters/MonsterImage";
-import { Status } from "./status/status";
 
 //Calculate the level of each layer
 const overlayOrder: string[] = [
+  "shield",
   "poison",
   "stun",
   "slimeBoost",
@@ -66,29 +64,10 @@ function getMonsterImage(
   return image;
 }
 
-function getMonsterAnimation(animation: string): string {
-  switch (animation) {
-    case "attack":
-      return "animate-attack";
-    case "defend":
-      return "animate-defend";
-    case "damage":
-      return "animate-damage";
-    case "shield-active":
-      return "animate-shield";
-    case "shield-break":
-      return "animate-shield-break";
-    case "shield-fade":
-      return "animate-shield-fade";
-    default:
-      return "";
-  }
-}
-
-function getOverlay(animation: string): string {
+function getOverlay(overlay: string): string {
   return (
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
-    animation.toUpperCase().replace(" ", "_") +
+    overlay.toUpperCase().replace(" ", "_") +
     ".png"
   );
 }
@@ -116,6 +95,14 @@ const ABILITY_TUNING: Partial<Record<MonsterIdentifier, { scale: number; x: numb
 
 const DEFAULT_TUNING = { scale: 1, x: 0, y: 0 };
 
+const shieldAnimations = [
+  "shield-broken",
+  "shield-crack",
+  "defend",
+  "shield-expire",
+  "shield",
+];
+
 function splitAnimations(
   animations: string[],
   side: string
@@ -139,13 +126,10 @@ function splitAnimations(
   //ANIMATIONS
   const animationOptions = [
     "attack",
-    "defend",
     "damage",
-    "shield-active",
-    "shield-break",
-    "shield-fade",
     "shadow-leap",
     "slime-support",
+    "fortress-stance",
   ];
   const aImage = animations.filter((a) => animationOptions.includes(a));
   let animationImage: string;
@@ -163,7 +147,6 @@ function splitAnimations(
 
   if (animationImage == "animate-attack") {
     animationImage = "animate-attack-" + side;
-    console.error(animationImage);
   }
 
   //UNDERLAYS
@@ -178,14 +161,30 @@ function splitAnimations(
     (a) =>
       !monsterOptions.includes(a) &&
       !underlayOptions.includes(a) &&
-      !animationOptions.includes(a)
+      !animationOptions.includes(a) &&
+      !shieldAnimations.includes(a)
   );
-
-  if (aImage.includes("defend")) {
-    overlayImage.push("shield");
-  }
-
+  console.error([monsterImage, animationImage, overlayImage, underlayImage]);
   return [monsterImage, animationImage, overlayImage, underlayImage];
+}
+
+function getShieldAnimation(animations: string[]): [string, string] {
+  let animation = "invisible";
+  let image = "";
+
+  //TODO: handle shield expiring
+
+  for (const a of shieldAnimations) {
+    if (animations.includes(a)) {
+      animation = "animate-" + a;
+      image =
+        "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
+        a.toUpperCase().replace("-", "_") +
+        ".png";
+      return [animation, image];
+    }
+  }
+  return [animation, image];
 }
 
 interface BattleMonsterImageProps {
@@ -208,6 +207,7 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
   const abilitySrc = hasAbility ? getAbilityOverlay(monster, biome) : "";
   const tune = ABILITY_TUNING[monster] ?? DEFAULT_TUNING;
 
+  const [shieldAnimation, shieldImage] = getShieldAnimation(animations);
   const flip = side === "left" ? "transform -scale-x-100" : "";
   const shadow = `
     xl:w-[13rem]
@@ -276,11 +276,15 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
                     absolute inset-0 
                     pointer-events-none 
                     select-none 
-                    ${flip}
                     `}
               />
             );
           })}
+          <img
+            src={shieldImage}
+            style={{ zIndex: 1000 }}
+            className={`absolute inset-0 pointer-events-none select-none ${shieldAnimation}`}
+          ></img>
         </div>
       </div>
   );

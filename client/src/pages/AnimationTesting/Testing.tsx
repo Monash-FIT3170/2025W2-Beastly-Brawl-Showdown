@@ -7,7 +7,7 @@ export const Test = () => {
       <p>Animation Testing Page</p>
       <div className="grid grid-cols-4 gap-2 overflow-auto">
         <div>
-          <p>Damage Animation</p>
+          <p>Damage Animation (Red Image)</p>
           <img
             src={
               "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/ROCKY_RHINO_DAMAGE.png"
@@ -25,12 +25,12 @@ export const Test = () => {
           ></img>
         </div>
         <div>
-          <p>Defend Animation</p>
+          <p>Slime Boost Animation</p>
           <img
             src={
-              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/ROCKY_RHINO.png"
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/SLIME_FOREST.png"
             }
-            className={`relative inline-block xl:w-[90%] z-10 animate-shield`}
+            className={`relative inline-block xl:w-[90%] z-10 animate-slime-support`}
           ></img>
         </div>
         <div>
@@ -48,16 +48,16 @@ export const Test = () => {
             src={
               "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/CHARMER_COBRA.png"
             }
-            className={`relative inline-block xl:w-[90%] z-10 animate-attack`}
+            className={`relative inline-block xl:w-[90%] z-10 animate-attack-right`}
           ></img>
         </div>
         <div>
-          <p>Defend Action Animation</p>
+          <p>Fortress Stance Animation</p>
           <img
             src={
-              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POUNCING_BANDIT.png"
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/CHARMER_COBRA.png"
             }
-            className={`relative inline-block xl:w-[90%] z-10 animate-defend`}
+            className={`relative inline-block xl:w-[90%] z-10 animate-fortress-stance`}
           ></img>
         </div>
         <div>
@@ -67,15 +67,6 @@ export const Test = () => {
               "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POUNCING_BANDIT.png"
             }
             className={`relative inline-block xl:w-[90%] z-10 animate-shadow-leap`}
-          ></img>
-        </div>
-        <div>
-          <p>Defend Fade Animation</p>
-          <img
-            src={
-              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/POUNCING_BANDIT.png"
-            }
-            className={`relative inline-block xl:w-[90%] z-10 animate-shield-fade`}
           ></img>
         </div>
       </div>

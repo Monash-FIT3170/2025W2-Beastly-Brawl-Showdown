@@ -32,12 +32,6 @@ const MonsterDisplay: React.FC<MonsterDisplayProps> = ({
           className="monster-image"
           draggable={false}
         />
-        <img
-          className="monster-shadow"
-          src="https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/SHADOW.png"
-          alt="shadow"
-          draggable={false}
-        />
       </div>
     </div>
   );

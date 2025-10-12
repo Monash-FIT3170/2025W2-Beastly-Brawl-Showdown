@@ -16,7 +16,7 @@ export class FortressStanceAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "defend";
+    return "fortress-stance";
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
