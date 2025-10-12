@@ -179,7 +179,7 @@ export const MonsterInfoPopup = ({
                   <div className="items-center justify-center xl:mt-[4rem] mt-[6rem] absolute ">
                     {/* <BlackText size="medium">You are normal...</BlackText> */}
                     {/* <OutlineText size="medium">You are normal...</OutlineText> */}
-                    <BlackText size="medium">You feel perfectly healthy!</BlackText>
+                    <BlackText size="medium">{playerState?.monster?.name} feels perfectly fine!!</BlackText>
                   </div>
                 )}
                 <div className="xl:mt-[1rem] mt-[2rem] grid grid-cols-3 gap-y-[2.5rem] gap-x-[3rem] xl:gap-y-[0.5rem] xl:gap-x-[3rem] items-center justify-center">

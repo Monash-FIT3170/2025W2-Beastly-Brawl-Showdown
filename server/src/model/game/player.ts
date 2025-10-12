@@ -287,6 +287,10 @@ export class Player {
     this.statuses = this.statuses.filter((status) => status !== statusToRemove);
   }
 
+  public getStatusByName(name: string): Status | undefined {
+    return this.statuses.find((status) => status.getName() === name);
+  }
+
   //HIT/BLOCK METHODS:
   public getSuccessfulHit() {
     return this.successfulHit;
