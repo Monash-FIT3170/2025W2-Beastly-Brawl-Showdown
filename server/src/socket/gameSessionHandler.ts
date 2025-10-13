@@ -7,8 +7,6 @@ import { ScoringTournament } from "../model/host/gamemode/scoringTournament";
 import { BattleRoyale } from "../model/host/gamemode/battleRoyale";
 import { playerAccounts } from "../../main";
 import { GameModeIdentifier } from "/types/single/gameMode";
-import { BattleRoyale } from "../model/host/gamemode/battleRoyale";
-
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
@@ -299,6 +297,10 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Request failed. Invalid Battle`);
       return;
     }
+
+    // onBattleStarted
+    // Loop through both players' spectators and check for isSpectator = true
+    // If isSpectator = true, add them to Battle spectator list
 
     for (const player of battle.getPlayers()) {
       player.prepareForNextBattle()

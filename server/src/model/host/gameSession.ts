@@ -316,6 +316,7 @@ export default class GameSession {
     this.botInLobby = true
     return oddPlayer;
   }
+  
   public calculateMostChosenMonster() {
     // Map from monster name to { monster: Monster, count: number }
     const monsterCount: Record<string, { monster: Monster; count: number }> =

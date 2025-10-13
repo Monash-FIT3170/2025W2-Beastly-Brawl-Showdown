@@ -171,6 +171,14 @@ export default function proceedBattleTurn(
         //clear previous battlelogs
         battle.clearBattleLogs();
 
+        // spectators.forEach((spectator) => {
+        //   io.to(spectator.getId()).emit("battle_state", {
+        //     battle: battle.getBattleState(spectator.getId()),
+        //     metadata: gameSession.getMetadata(),
+        //     isSpectator: true, UPDATE THE ACTUAL BATTLE STATE OF THE SPECTATOR
+        //   });
+        // });
+
         // Emit the result of the battle state after the turn is complete
         playersInBattle.forEach((player) => {
           if (!player.isBotPlayer()) {

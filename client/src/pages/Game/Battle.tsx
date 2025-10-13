@@ -52,6 +52,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       console.log("[METADATA]: ", data.metadata);
       setBattleState(data.battle);
       setMetadata(data.metadata);
+      // setIsSpectating(data.isSpectating);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {

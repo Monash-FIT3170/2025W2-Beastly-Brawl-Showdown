@@ -10,9 +10,14 @@ export interface IGameMode {
 	name: GameModeIdentifier
 	init(session: GameSession, io: Server, socket: Socket): void; //prepare anything necessary for the mode
 	onActionExecuted(sesion: GameSession, player1: Player, player1Result: ActionResult, player2: Player, player2Result: ActionResult): void //handle logic after a turn ends
-	onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void //handle logic after a (single) battle ends
 	onBattlesEnded(session: GameSession, io: Server, socket: Socket):void //handle logic after all the battle instances end
 	isSessionConcluded(session: GameSession): boolean; //check the end condition for the game mode
 	getMetadata(): GameSessionStateMetaData; //any meta data that is specifically passed on certain game mode
 	isGameModeFinished(): boolean;  // Returns true if the entire game mode is finished, or false otherwise
+	
+	// Move the list of spectators from the loser to the winner
+	onBattleEnded(session: GameSession, battle: Battle, winner: Player | null, io: Server, socket: Socket): void;
+
+	// Loop through spectators of each player, check if they are spectating, and if so, send the socket to tell the player to watch this specific battle
+	onBattleStarted(session: GameSession, battle: Battle, io: Server, socket: Socket): void;
 }
