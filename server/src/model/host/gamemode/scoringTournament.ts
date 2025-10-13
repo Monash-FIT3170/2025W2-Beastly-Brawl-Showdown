@@ -263,7 +263,7 @@ export class ScoringTournament implements IGameMode {
           playerSocket?.join(battle.getId());
         }
 
-        io.to(battle.getId()).emit("battle_started", battle.getId());
+        io.to(battle.getId()).emit("battle-started", battle.getId());
         proceedBattleTurn(io, socket, session, battle);
       }
 

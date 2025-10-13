@@ -186,11 +186,13 @@ export class BattleRoyale implements IGameMode {
               .get(player1Indexed.getId())
               ?.emit("battle-found", {
                 gameCode: session.getGameCode().toString(),
+                role: "initiator",
               });
             io.sockets.sockets
               .get(player2Indexed.getId())
               ?.emit("battle-found", {
                 gameCode: session.getGameCode().toString(),
+                role: "opponent",
               });
           }
         }
@@ -247,11 +249,13 @@ export class BattleRoyale implements IGameMode {
                     .get(player1Indexed.getId())
                     ?.emit("battle-found", {
                       gameCode: session.getGameCode().toString(),
+                      role: "initiator",
                     });
                   io.sockets.sockets
                     .get(player2Indexed.getId())
                     ?.emit("battle-found", {
                       gameCode: session.getGameCode().toString(),
+                      role: "opponent",
                     });
                 }
               }
