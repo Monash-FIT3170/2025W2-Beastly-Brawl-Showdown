@@ -14,4 +14,5 @@ export interface IGameMode {
 	onBattlesEnded(session: GameSession, io: Server, socket: Socket):void //handle logic after all the battle instances end
 	isSessionConcluded(session: GameSession): boolean; //check the end condition for the game mode
 	getMetadata(): GameSessionStateMetaData; //any meta data that is specifically passed on certain game mode
+	isGameModeFinished(): boolean;  // Returns true if the entire game mode is finished, or false otherwise
 }
