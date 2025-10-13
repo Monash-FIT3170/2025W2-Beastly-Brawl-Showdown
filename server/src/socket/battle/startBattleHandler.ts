@@ -19,7 +19,7 @@ export default function proceedBattleTurn(
   battle.clearBattleLogs();
   battle.incTurn();
 
-  console.log("[BATTLE INFO]:", battle)
+  console.log("[BATTLE INFO]:", battle);
   let playersInBattle = battle.getPlayers();
 
   // checks/ticks statuses for each player
@@ -88,9 +88,9 @@ export default function proceedBattleTurn(
       // Check each player in battle has a selected action
       playersInBattle.forEach((player) => {
         if (player.getActions().length === 0) {
-          console.log("[BEFORE ADDING]:", player.getActions())
+          console.log("[BEFORE ADDING]:", player.getActions());
           player.addAction(new NullAction());
-          console.log("[AFTER ADDING]:", player.getActions())
+          console.log("[AFTER ADDING]:", player.getActions());
         }
 
         if (player.getNoNullAction() === Player.roundToCheck) {
@@ -154,19 +154,14 @@ export default function proceedBattleTurn(
 
         console.log("P2: ", player2);
 
-        console.log("[BEFORE EXECUTE]:",player1.getActions())
-        console.log("[BEFORE EXECUTE]:",player2.getActions())
-        console.log("[BEFORE EXECUTE]:",p1_result)
-        console.log("[BEFORE EXECUTE]:",p2_result)
-        console.log("Battle turn:", battle.getTurn())
+        console.log("[BEFORE EXECUTE]:", player1.getActions());
+        console.log("[BEFORE EXECUTE]:", player2.getActions());
+        console.log("[BEFORE EXECUTE]:", p1_result);
+        console.log("[BEFORE EXECUTE]:", p2_result);
+        console.log("Battle turn:", battle.getTurn());
 
         //Handle logic after actions are executed (see GameMode)
-        gameSession.onActionExecuted(
-          player1,
-          p1_result,
-          player2,
-          p2_result
-        );
+        gameSession.onActionExecuted(player1, p1_result, player2, p2_result);
 
         //clear previous battlelogs
         battle.clearBattleLogs();
@@ -187,6 +182,7 @@ export default function proceedBattleTurn(
           player.resetStats();
           player.resetActions();
           player.getMonster()?.removeTemporaryActions();
+          player.endStatusEffects();
         });
 
         if (battle.isBattleOver()) {
@@ -221,7 +217,6 @@ export default function proceedBattleTurn(
         } else {
           playersInBattle.forEach((p) => {
             p.startStatusEffects();
-            p.endStatusEffects();
             p.tickStatuses();
           });
         }
