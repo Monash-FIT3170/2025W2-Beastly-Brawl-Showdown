@@ -11,6 +11,7 @@ import { PlayerStats } from "../../types/data";
 import { IconButton } from "../../components/buttons/IconButton";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
+import { OutlineTextResizable } from "../../components/texts/ResizableOutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
@@ -273,9 +274,9 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
               isDisabled={!gameSession.isGameModeFinished}
               onClick={showFinalResults}
             >
-              <OutlineText size="medium">
+              <OutlineTextResizable size="small">
                 SHOW FINAL RESULTS
-              </OutlineText>
+              </OutlineTextResizable>
             </ButtonGeneric>
           </div>
         </div>
