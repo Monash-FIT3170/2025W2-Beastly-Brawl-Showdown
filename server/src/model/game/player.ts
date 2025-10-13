@@ -37,7 +37,7 @@ export class Player {
 
   private playerAccount: PlayerAccountSchema | null;
   private noNullAction: number = 0;
-  static roundToCheck: number = 5; //change the value here
+  static roundToCheck: number = 2; // TODO: CHANGE THIS BACK TO 5 AFTER TESTING
 
   //have to store the player's stats here since PlayerState interface does not allow variable initialisation
   //which will be then passed to the PlayerState on request
@@ -120,7 +120,7 @@ export class Player {
       this.currentArmourClassStat = this.monster.getArmourClass();
       this.statuses = [];
       this.noNullAction = 0;
-      this.monster.getPossibleActions().forEach((action) => action.resetUse())
+      this.monster.getPossibleActions().forEach((action) => action.resetUse());
     }
   }
 
@@ -404,38 +404,38 @@ export class Player {
     this.equipment = [];
   }
 
-  public getBattleWon(): number{
-    return this.battleWon
+  public getBattleWon(): number {
+    return this.battleWon;
   }
 
-  public incBattleWon(num:number):void {
-    this.battleWon += num
+  public incBattleWon(num: number): void {
+    this.battleWon += num;
   }
 
-  public getAbilitiesUsed(): number{
-    return this.abilitiesUsed
+  public getAbilitiesUsed(): number {
+    return this.abilitiesUsed;
   }
 
-  public incAbilitiesUsed(num:number):void {
-    this.abilitiesUsed += num
+  public incAbilitiesUsed(num: number): void {
+    this.abilitiesUsed += num;
   }
 
   public getMostDamageDealt(): number {
-    return this.mostDamageDealt
+    return this.mostDamageDealt;
   }
 
   public setMostDamageDelt(num: number): void {
-    this.mostDamageDealt = num
+    this.mostDamageDealt = num;
   }
 
   public getCriticalHitsDealt(): number {
-    return this.criticalHitsDealt
+    return this.criticalHitsDealt;
   }
 
   public incCriticalHitsDealt(num: number): void {
-    this.criticalHitsDealt += num
+    this.criticalHitsDealt += num;
   }
-  
+
   public getStoryItems(): StoryItem[] {
     return this.storyItems;
   }
@@ -501,7 +501,7 @@ export class Player {
       abilitiesUsed: this.getAbilitiesUsed(),
       mostDamageDealt: this.getMostDamageDealt(),
       successfulBlocks: this.getSuccessfulBlock(),
-      criticalHitsDealt: this.getCriticalHitsDealt()
+      criticalHitsDealt: this.getCriticalHitsDealt(),
     };
   }
 }
