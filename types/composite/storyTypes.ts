@@ -7,6 +7,7 @@ export interface storyStruct {
   level: number[] | null;
   description: string;
   outcomes: storyOutcomes[];
+  background?: string;
 }
 
 export interface storyOutcomes {

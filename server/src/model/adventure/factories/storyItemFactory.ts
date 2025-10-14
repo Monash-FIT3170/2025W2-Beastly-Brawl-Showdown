@@ -6,7 +6,7 @@ import { StoryItem } from "../../game/storyItem/storyItem";
 import { EverbloomingLotus } from "../../game/storyItem/everbloomingLotus";
 import { DragonScale } from "../../game/storyItem/dragonScale";
 import { TitanicBadge } from "../../game/storyItem/titanicBadge";
-import { PristineKey } from "../../game/storyItem/pristineKey";
+import { PristineKey } from "../../game/storyItem/PristineKey";
 import { SerpentAmulet } from "../../game/storyItem/serpentAmulet";
 
 const StoryItemFactory: Record<string, () => StoryItem> = {

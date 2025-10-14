@@ -18,7 +18,7 @@ import { PurpleCrystal } from "../../game/equipment/purpleCrystal";
 import { BlackCrystal } from "../../game/consumables/blackCrystal";
 import { BlackBelt } from "../../game/equipment/blackBelt";
 import { FightersBandana } from "../../game/equipment/fightersBracelets";
-import { PristineKey } from "../../game/storyItem/pristineKey";
+import { PristineKey } from "../../game/storyItem/PristineKey";
 import { AbilityAntidote } from "../../game/consumables/abilityAntidote";
 import { BlazingGauntlets } from "../../game/equipment/blazingGauntlets";
 import { MagicShield } from "../../game/equipment/magicShield";

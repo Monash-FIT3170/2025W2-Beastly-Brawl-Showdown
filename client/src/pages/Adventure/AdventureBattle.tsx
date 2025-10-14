@@ -45,13 +45,10 @@ interface AdventureProps {
 const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const battleId = "ADVENTURE";
   var backgroundLocation = getBiomeString(levelMonster); //TODO: change this to be based off level/monster?
-  var backgroundString =
-    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
-    backgroundLocation +
-    ".jpg')";
 
   //ADVENTURE PAGE:
   const [dialogue, setDialogue] = useState<string[] | null>([]);
+  const [background, setBackground] = useState<string>(backgroundLocation);
   const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const [stage, setStage] = useState<number>(1);
 
@@ -92,6 +89,11 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   //DICE
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
+
+  var backgroundString =
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
+    background +
+    ".jpg')";
 
   const handleChoiceSelect = (
     choiceId: string,
@@ -209,6 +211,15 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       setReceivingStatus(data.status);
     });
 
+    socket.on("adventure_background", (data) => {
+      console.log("Adventure background changing", data);
+      if (!data) {
+        setBackground(backgroundLocation);
+      } else {
+        setBackground(data);
+      }
+    });
+
     socket.on("adventure_storyItem", (data) => {
       console.log("Received adventure_storyItem:", data);
       setReceivingStoryItem(data.storyItem);
@@ -246,6 +257,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       socket.off("roll_dice");
       socket.off("adventure_equipment");
       socket.off("adventure_consumable");
+      socket.off("adenture_background");
     };
   });
 
@@ -633,6 +645,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 };
 
 const biomeMap = new Map([
+  [MonsterIdentifier.ENDLESS, () => "ENDLESS"],
   [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
   [MonsterIdentifier.POUNCING_BANDIT, () => "FOREST"],
   [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],

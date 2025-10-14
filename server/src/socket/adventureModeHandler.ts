@@ -31,7 +31,7 @@ import { RegenerationAmulet } from "../model/game/equipment/regenerationAmulet";
 import { MeekHelmet } from "../model/game/equipment/meekHelmet";
 import { ColosseumCrown } from "../model/game/equipment/colosseumCrown";
 import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
-import { PristineKey } from "../model/game/storyItem/pristineKey";
+import { PristineKey } from "../model/game/storyItem/PristineKey";
 import { createStatus } from "../model/adventure/factories/statusFactory";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
@@ -557,6 +557,11 @@ export function loadNextStory(
     });
     const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
     stageData = eligibleNodes[randomNode];
+    if (!stageData.background) {
+      socket.emit("adventure_background", null);
+    } else {
+      socket.emit("adventure_background", stageData.background);
+    }
     adventure.currentStory = stageData;
   }
   const outcome = stageData?.outcomes.find(
