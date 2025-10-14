@@ -53,15 +53,16 @@ export const EquipmentPopup = ({
         lg:w-[45%]
         sm:w-[85%]
         lg:h-[85%]
-        sm:h-[75%]`;
+        sm:h-[75%]
+        overflow-auto`;
 
   return (
     <>
       <div className={`${popupLayout}`}>
         <div className={`${popup}`}>
           <div
-            className="flex flex-col items-center justify-center gap-2 w-full h-full 
-             outline-offset-0 xl:pt-[2rem] xl:px-[2rem] pt-[3rem] pointer-events-auto"
+            className="flex flex-col items-center gap-2 w-full h-full outline-offset-0 
+                       xl:pt-[2rem] xl:px-[2rem] pt-[3rem] pointer-events-auto justify-center overflow-auto"
           >
             {/* Name */}
             <div>
@@ -92,22 +93,21 @@ export const EquipmentPopup = ({
                 </OutlineText>
               </div>
             </div>
-
-            {/* Buttons */}
-            <div className="justify-center p-[1rem] items-center flex lg:gap-5 sm:gap-10">
-              <ButtonGeneric color="red" size="battle" onClick={onClose}>
+          </div>
+          {/* Buttons */}
+          <div className="justify-center p-[1rem] items-center flex lg:gap-5 sm:gap-10 pb-[1rem]">
+            <ButtonGeneric color="red" size="battle" onClick={onClose}>
+              <div className="items-center">
+                <OutlineText size="choice-text">{backText}</OutlineText>
+              </div>
+            </ButtonGeneric>
+            {onEquip && (
+              <ButtonGeneric color="blue" size="battle" onClick={onEquip}>
                 <div className="items-center">
-                  <OutlineText size="choice-text">{backText}</OutlineText>
+                  <OutlineText size="choice-text">{equipText}</OutlineText>
                 </div>
               </ButtonGeneric>
-              {onEquip && (
-                <ButtonGeneric color="blue" size="battle" onClick={onEquip}>
-                  <div className="items-center">
-                    <OutlineText size="choice-text">{equipText}</OutlineText>
-                  </div>
-                </ButtonGeneric>
-              )}
-            </div>
+            )}
           </div>
         </div>
       </div>

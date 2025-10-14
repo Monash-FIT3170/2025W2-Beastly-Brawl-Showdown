@@ -50,7 +50,7 @@
       {
         "id": "fight_grandma",
         "type": "FIGHT",
-        "enemyId": "slime_4",
+        "enemyId": ["slime", "GRANDMA SLIME"],
         "next": "check_fight_win"
       },
       {
@@ -101,6 +101,18 @@
         "result": ["You have received the blessing of the slimes."],
         "type": "STATUS",
         "statusId": ["slime_boost", 10]
+      }
+    ]
+  },
+  {
+    "id": "slime_1",
+    "level": [0],
+    "description": "Stage 1, player fights slime 1.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["This is stage 6"],
+        "type": "DIALOGUE"
       }
     ]
   }

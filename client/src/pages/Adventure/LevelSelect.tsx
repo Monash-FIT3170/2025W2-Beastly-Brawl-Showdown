@@ -7,15 +7,18 @@ import { IconButton } from "../../components/buttons/IconButton";
 import socket from "../../socket";
 import { MonsterIdentifier } from "/types/single/monsterState";
 import { getBiomeString } from "./AdventureBattle";
+import { monsterMeta } from "../../data/monsterMeta";
+import { BlackText } from "../../components/texts/BlackText";
+import { motion, AnimatePresence } from "framer-motion";
+import { BaseCard } from "../../components/cards/BaseCard";
 
 interface LevelSelectProps {}
 
 const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(1);
-  // const UNLOCKED_LEVELS = [0];
   const [unlockedLevels, setUnlockedLevels] = useState<number[]>([1]);
 
-  //a levelMap exists in back end too - so update both appropriately
+  // Level → Monster mapping
   const levelMap: Record<number, MonsterIdentifier> = {
     1: MonsterIdentifier.POUNCING_BANDIT,
     2: MonsterIdentifier.CINDER_TAIL,
@@ -25,7 +28,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   };
 
   const alterLevel = (val: number) => {
-    setObservedLevel(observedLevel + val);
+    setObservedLevel((prev) => prev + val);
   };
 
   const renderAdventureMonsterSelect = () => {
@@ -33,7 +36,18 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     FlowRouter.go("/adventure/monster-select");
   };
 
-  const monster = levelMap[observedLevel] ?? "None";
+  // Resolve monster and metadata
+  const monster = levelMap[observedLevel] ?? MonsterIdentifier.POUNCING_BANDIT;
+  const { name: actualMonsterName, description: actualMonsterDescription } =
+    monsterMeta[monster];
+
+  // If the level is locked, show placeholders
+  const monsterName = unlockedLevels.includes(observedLevel)
+    ? actualMonsterName
+    : "???";
+  const monsterDescription = unlockedLevels.includes(observedLevel)
+    ? actualMonsterDescription
+    : "You haven't reached this part of your journey yet. Keep adventuring to unlock more levels!";
 
   useEffect(() => {
     socket.emit("request_unlocked_levels");
@@ -47,67 +61,76 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     };
   }, []);
 
-  // TODO: PUT SILHOUETTES AND
+  // Monster image (coloured or silhouette if locked)
   const monsterImage = unlockedLevels.includes(observedLevel)
-    ? "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
-      monster +
-      ".png"
-    : "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/silhouettes/" +
-      monster +
-      "_SILHOUETTE.png";
+    ? `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/${monster}.png`
+    : `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/silhouettes/${monster}_SILHOUETTE.png`;
 
-  const backgroundString =
-    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
-    getBiomeString(monster) +
-    ".jpg')";
+  // Background image
+  const backgroundString = `url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/${getBiomeString(
+    monster
+  )}.jpg')`;
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center h-[100dvh] gap-8">
-        <GenericHeader color="lightYellow">
-          <OutlineText size="extraLarge">START YOUR JOURNEY</OutlineText>
-        </GenericHeader>
-        <div
-          className={`border-[4px] 
-            border-blackCurrant w-min h-min rounded-xl
-            bg-peach
-            sm:h-min
-            sm:w-[80dvw]
-            lg:h-min
-            lg:w-[40dvw]
-            border-[3px]
-            border-blackCurrant
-            rounded-[20px]
-            w-[60%]
-            box-border
-            flex flex-col  justify-evenly items-center gap-y-10 py-10`}
+    <div className="relative flex flex-col items-center justify-center h-[100dvh] w-full px-4 overflow-hidden">
+      {/* AnimatePresence handles background transitions */}
+      <AnimatePresence>
+        <motion.div
+          key={observedLevel} // ensures re-render on level change
+          className="absolute inset-0 bg-center bg-cover bg-no-repeat"
           style={{
             backgroundImage: backgroundString,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
           }}
-        >
-          {/*Add the monster image from the chapter and make the proceed button's colour and text conditional on the user's eligbility*/}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.7 }}
+        />
+      </AnimatePresence>
+
+      {/* Foreground content (your existing code) */}
+      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
+        {/* Fixed top header */}
+        <div className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-3">
+          {/* Back arrow button */}
+          <IconButton
+            style="arrowleft"
+            iconColour="black"
+            buttonColour="red"
+            size="medium"
+            onClick={() => FlowRouter.go("/adventure/mode-select")}
+          />
+
+          {/* “CLASSIC” header */}
+          <BaseCard color="peach" width={40} height={8}>
+            <OutlineText size="extraLarge">CLASSIC</OutlineText>
+          </BaseCard>
+
+          <div className="w-[3rem]" />
+        </div>
+
+        {/* Content (centered vertically) */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-20 w-full max-w-6xl">
           <img
             src={monsterImage}
-            className="sm:w-[20rem] sm:h-[20rem] lg:w-[15rem] lg:h-[15rem]"
+            className="
+              w-[22rem] h-[22rem] sm:w-[24rem] sm:h-[24rem] lg:w-[20rem] lg:h-[20rem]
+              drop-shadow-[0_0_4px_white] drop-shadow-[0_0_8px_white]
+            "
+            onLoad={(e) => e.currentTarget.classList.remove("opacity-0")}
           />
-          <ButtonGeneric
-            color={unlockedLevels.includes(observedLevel) ? `ronchi` : `alto`}
-            size="battle"
-            onClick={
-              unlockedLevels.includes(observedLevel)
-                ? renderAdventureMonsterSelect
-                : undefined
-            }
-          >
-            {unlockedLevels.includes(observedLevel) ? `PROCEED` : `LOCKED`}
-          </ButtonGeneric>
+
+          <div className="border-4 border-blackCurrant rounded-2xl bg-white/70 p-8 w-[70%] sm:w-[90%] lg:w-[90%] max-w-2xl text-center">
+            <OutlineText size="large">{monsterName}</OutlineText>
+            <BlackText size="medium">{monsterDescription}</BlackText>
+          </div>
         </div>
-        <div className="grid grid-cols-3 justify-items-center">
+
+        {/* Navigation (fixed to bottom) */}
+        <div className="fixed bottom-25 left-1/2 -translate-x-1/2 grid grid-cols-3 items-center w-[70%] lg:max-w-md z-40">
+          {/* Left Arrow */}
           <div className="flex justify-center items-center">
-            {observedLevel != 1 && (
+            {observedLevel > 1 && (
               <IconButton
                 style="arrowleft"
                 buttonColour="blue"
@@ -118,18 +141,30 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
             )}
           </div>
 
-          <div className="w-min">
+          {/* Explore Button (centered) */}
+          <div className="flex justify-center">
             <ButtonGeneric
-              color="red"
+              color={unlockedLevels.includes(observedLevel) ? "ronchi" : "alto"}
               size="battle"
-              onClick={() => FlowRouter.go("/")}
+              onClick={
+                unlockedLevels.includes(observedLevel)
+                  ? renderAdventureMonsterSelect
+                  : undefined
+              }
             >
-              BACK
+              <div className="min-w-[6rem] sm:min-w-[8rem] lg:min-w-[10rem] text-center">
+                <OutlineText size={"choice-text"}>
+                  {unlockedLevels.includes(observedLevel)
+                    ? "EXPLORE"
+                    : "LOCKED"}
+                </OutlineText>
+              </div>
             </ButtonGeneric>
           </div>
 
+          {/* Right Arrow */}
           <div className="flex justify-center items-center">
-            {observedLevel != 5 && (
+            {observedLevel < 5 && (
               <IconButton
                 style="arrowright"
                 buttonColour="blue"
@@ -141,7 +176,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

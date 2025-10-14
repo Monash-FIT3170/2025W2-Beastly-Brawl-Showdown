@@ -1,10 +1,8 @@
-import React, { ReactNode, useState } from "react";
+import React from "react";
 import { ConsumableState } from "/types/single/itemState";
-import { PopupAdventure } from "./PopupAdventure";
 import { ButtonGeneric } from "../buttons/ButtonGeneric";
 import { OutlineText } from "../texts/OutlineText";
 import { BlackText } from "../texts/BlackText";
-import { on } from "events";
 
 export interface ConsumableProp {
   consumable: ConsumableState;
@@ -57,7 +55,8 @@ export const ConsumablePopup = ({
         lg:w-[45%]
         sm:w-[85%]
         lg:h-[85%]
-        sm:h-[75%]`;
+        sm:h-[75%]
+        overflow-auto`;
 
   //TODO: centre the rest of this poop
   //TODO: can't click
@@ -66,8 +65,8 @@ export const ConsumablePopup = ({
       <div className={`${popupLayout}`}>
         <div className={`${popup}`}>
           <div
-            className="flex flex-col items-center justify-center gap-2 
-             outline-offset-0 xl:pt-[2rem] xl:px-[2rem] pt-[3rem] pointer-events-auto"
+            className="flex flex-col items-center gap-2 w-full h-full outline-offset-0 
+                       xl:pt-[2rem] xl:px-[2rem] pt-[3rem] pointer-events-auto justify-center overflow-auto"
           >
             {/* Name */}
             <OutlineText size="large">
@@ -96,25 +95,24 @@ export const ConsumablePopup = ({
               </div>
               <BlackText size="medium">{confirmText}</BlackText>
             </div>
-
-            {/* Buttons */}
-            <div className="justify-center items-center flex lg:gap-5 sm:gap-10">
-              <ButtonGeneric color="red" size="battle" onClick={onClose}>
-                <div className="items-center">
-                  <OutlineText size="choice-text">{backText}</OutlineText>
-                </div>
-              </ButtonGeneric>
-              <ButtonGeneric
-                color="blue"
-                size="battle"
-                isDisabled={isDisabled}
-                onClick={onConsume}
-              >
-                <div className="items-center">
-                  <OutlineText size="choice-text">{consumeText}</OutlineText>
-                </div>
-              </ButtonGeneric>
-            </div>
+          </div>
+          {/* Buttons */}
+          <div className="justify-center items-center flex lg:gap-5 sm:gap-10 pb-[1rem]">
+            <ButtonGeneric color="red" size="battle" onClick={onClose}>
+              <div className="items-center">
+                <OutlineText size="choice-text">{backText}</OutlineText>
+              </div>
+            </ButtonGeneric>
+            <ButtonGeneric
+              color="blue"
+              size="battle"
+              isDisabled={isDisabled}
+              onClick={onConsume}
+            >
+              <div className="items-center">
+                <OutlineText size="choice-text">{consumeText}</OutlineText>
+              </div>
+            </ButtonGeneric>
           </div>
         </div>
       </div>

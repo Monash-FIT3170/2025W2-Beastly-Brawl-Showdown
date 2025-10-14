@@ -17,14 +17,18 @@ export interface storyOutcomes {
   statChange?: [string, number];
   statusId?: [string, number];
   status: Status; // populated at runtime
-  enemyId?: string; // <-- NEW
+  enemyId?: [string, string]; // <-- NEW
   enemy?: Monster; // populated at runtime
   consumableId?: string; // <-- NEW
   consumable?: any; // populated at runtime
   equipmentId?: string;
+  lootPoolId: string;
   equipment?: any; //populated at runtime
+  randomLoot?: any;
+  lootId?: any;
   storyItemId?: string;
   storyItem?: any;
+  scaling?: number;
   next?: string;
 }
 
@@ -48,4 +52,5 @@ export enum EncounterType {
   CHOICE = "CHOICE",
   PREREQUISITE = "PREREQUISITE",
   STATUS = "STATUS",
+  LOOT_POOL = "LOOT_POOL",
 }
