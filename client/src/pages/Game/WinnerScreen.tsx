@@ -12,7 +12,6 @@ interface WinningScreenProps {
 }
 
 const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
-  socket.emit("updateWin");
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
     // UPDATE: add pop up when kicked
