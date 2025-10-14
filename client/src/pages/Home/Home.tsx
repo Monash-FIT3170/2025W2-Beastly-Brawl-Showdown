@@ -134,7 +134,6 @@ export const Home = () => {
         )}
       </div>
       <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] ">
-      <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] overflow-auto">
         <div className="flex flex-row w-full sm:items-end lg:items-center justify-around">
           <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
         </div>
