@@ -324,3 +324,31 @@ export async function updatePlayerAccount(
   }
 }
 
+
+// Retrieves the top N players sorted by number of games won
+
+export async function getTopPlayersByWins(_limit: number) {
+  try {
+    // Get the top players sorted by numGamesWon in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'stats.numGamesWon': -1 }, limit: _limit }
+    ).fetch();
+
+    console.log('Top Players:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.stats && player.stats.numGamesWon !== undefined);
+
+    // Return player name, numGamesWon, numGamesPlayed
+    return validPlayers.map(player => ({
+      username: player.username,
+      numGamesWon: player.stats.numGamesWon,
+      numGamesPlayed: player.stats.numGamesPlayed
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players: ${error.message}`);
+    return [];
+  }
+}
