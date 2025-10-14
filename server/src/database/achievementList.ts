@@ -1,4 +1,5 @@
 import { AchievementSchema } from "./dbManager";
+import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
 
 export function createAchievementSchema(
   name: string,
@@ -43,5 +44,19 @@ const ach2 = createAchievementSchema(
 //What this lets you do is when you call updateAchievement you putin the secondary input which is for updating the object this lets
 //you create achievements like see all slime varients etc
 
+const list = {
+  [MonsterIdentifier.SLIME]: false,
+  [MonsterIdentifier.ROCKY_RHINO]: false,
+};
+
+const ach3 = createAchievementSchema(
+  "Defeat All Monster Types",
+  "Defeat All Monster Types",
+  list,
+  Object.keys(list).length,
+  100,
+  undefined,
+  true
+);
 //Add all created Achievements into this
-export const Achievements: AchievementSchema[] = [ach1, ach2];
+export const Achievements: AchievementSchema[] = [ach1, ach2, ach3];
