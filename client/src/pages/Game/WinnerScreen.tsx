@@ -19,6 +19,8 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
   });
 
   const leave = () => {
+    socket.emit("updateAchievement", "Can't stop winning");
+    socket.emit("updateWin");
     socket.emit("leave-game", { userID: socket.id });
     FlowRouter.go("/");
   };

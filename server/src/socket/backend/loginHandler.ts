@@ -144,7 +144,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
       await updatePlayerAccount(user._id, updates);
       Object.assign(user, updates);
       playerAccounts.set(socket.id, user);
-      console.log(`Player ${user.username} updated successfully.`);
+      console.log(`Player ${user.username} updated successfully for win.`);
     } catch (error: any) {
       console.error(`Error updating player ${user.username}: ${error.message}`);
     }
