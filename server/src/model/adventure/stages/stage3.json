@@ -718,5 +718,136 @@
         ]
       }
     ]
+  },
+  {
+    "id": "hole",
+    "level": [0],
+    "description": "player come across a hole in the ground",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Theres a hole in the ground. It's perfectly circle. No noise, no smell... just a hole."
+        ],
+        "type": "DIALOGUE",
+        "next": "hole_choice"
+      },
+      {
+        "id": "hole_choice",
+        "result":[
+          "What do you do?"
+        ],
+        "options":[
+          {
+            "id": "choice_rock",
+            "text": "Drop in a rock.",
+            "next": "drop_rock"
+          },
+          {
+            "id": "choice_hand",
+            "text": "Stick your hand in.",
+            "next": "stick_hand"
+          },
+          {
+            "id": "choice_yell",
+            "text": "Yell into it.",
+            "next": "yell"
+          },
+          {
+            "id": "choice_leave",
+            "text": "Do nothing and leave.",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "drop_rock",
+        "result":[
+          "You grabed a rock next to you and droped it into the hole.",
+          "You waited....",
+          "Waited....",
+          "Nothing happened. You have simply wasted your time."
+        ],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "stick_hand",
+        "result": [
+          "You take a deep breath and stick your hand into the hole."
+        ],
+        "type": "RANDOM",
+        "options":[
+          {
+            "id": "good",
+            "chance": 50,
+            "next": "reward"
+          },
+          {
+            "id": "bad",
+            "chance": 50,
+            "next": "bite"
+          }
+        ]
+
+      },
+      {
+        "id": "reward",
+        "result": [
+          "Your fingers brush against something smooth and hard.",
+          "You grabed it and pulled it out."
+        ],
+        "type": "DIALOGUE",
+        "next": "hole_loot_pool"
+      },
+      {
+        "id": "hole_loot_pool",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool"
+      },
+      {
+        "id": "bite",
+        "result":[
+          "Something moved inside.",
+          "Before you can react, sharp teeth clamp down on your fingers!",
+          "You yelp and yank your hand back.",
+          "A mysterious laughter rises from deep inside the hole..."
+        ],
+        "type": "DIALOGUE",
+        "next": "bite_HP"
+      },
+      {
+        "id": "bite_HP",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": ["You loss 5 HP"]
+      },
+      {
+        "id": "yell",
+        "result": [
+          "You take a deep breath and yell into the hole as loud as you can.",
+          "Your voice echos down and bounces back to you even louder like a bomb exploding in your ear.",
+          "Pain shoots through your head and the world starts to spin around you.",
+          "You stumble backward, dizzy and disoriented."
+        ],
+        "type": "DIALOGUE",
+        "next": "yell_status"
+      },
+      {
+        "id": "yell_status",
+        "type": "STATUS",
+        "result": ["You will be stunned for 1 round."],
+        "statusId": ["stun", 1]
+      },
+      {
+        "id": "leave",
+        "result": [
+          "You decided it's best not to mess with mysterious holes today.",
+          "As you walk away, you hear a faint whisper:",
+          "\"coward...\"",
+          "You walk faster."
+        ],
+        "type": "DIALOGUE"
+      }
+    ]
   }
 ]
