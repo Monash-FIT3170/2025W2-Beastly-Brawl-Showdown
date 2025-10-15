@@ -12,8 +12,8 @@ export const globalLeaderboardHandler = (io: Server, socket: Socket) => {
       const topPlayersByNumGamesPlayed = await getTopPlayersByNumGamesPlayed(5);
 
       // Emit to client (GlobalLeaderboard)
-      socket.emit("globalLeaderboardData", { success: true, data: [topPlayersByWins] });
-      
+      socket.emit("globalLeaderboardData", { success: true, data: [topPlayersByWins, topPlayersByNumGamesPlayed] });
+
     } catch (error) {
       console.error("Error fetching global leaderboard:", error);
       socket.emit("globalLeaderboardData", {
