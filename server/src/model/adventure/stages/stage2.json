@@ -439,5 +439,44 @@
         "result": ["You turn down the challenge and continue onwards."]
       }
     ]
+  },
+  {
+    "id": "stage2_penguin_guarding",
+    "level": [0],
+    "description": "Stage 2, player finds a waterfall",
+    "background": "ARCTIC",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": ["You come across a penguin standing over something shiny."],
+        "next": "penguin_encounter"
+      },
+      {
+        "id": "penguin_encounter",
+        "type": "DIALOGUE",
+        "result": ["Back off I found it first!"],
+        "next": "penguin_fight",
+        "enemyId": ["furious_flipper", "GUARDIAN PENGUIN"]
+      },
+      {
+        "id": "penguin_fight",
+        "type": "FIGHT",
+        "enemyId": ["furious_flipper", "GUARDIAN PENGUIN"],
+        "next": "penguin_defeat"
+      },
+      {
+        "id": "penguin_encounter",
+        "type": "DIALOGUE",
+        "result": ["Take it. I didn't have any use for it anyway."],
+        "next": "penguin_reward",
+        "enemyId": ["furious_flipper", "GUARDIAN PENGUIN"]
+      },
+      {
+        "id": "penguin_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool"
+      }
+    ]
   }
 ]
