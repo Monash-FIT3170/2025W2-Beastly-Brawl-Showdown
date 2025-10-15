@@ -3,6 +3,7 @@
     "id": "obstructing_lake",
     "level": [0, 1],
     "description": "A large lake",
+    "background": "FOREST",
     "outcomes": [
       {
         "id": "initial",
@@ -144,6 +145,7 @@
     "id": "cursed_lake",
     "level": [0, 1],
     "description": "Cursed lake encounter",
+    "background": "FOREST",
     "outcomes": [
       {
         "id": "initial",
@@ -331,6 +333,7 @@
     "id": "frog_trail",
     "level": [0, 4],
     "description": "choice two paths",
+    "background": "MARSH",
     "outcomes": [
       {
         "id": "initial",
@@ -421,9 +424,7 @@
       },
       {
         "id": "prick",
-        "result": [
-          "Your HP droped by 2"
-        ],
+        "result": ["Your HP droped by 2"],
         "type": "STAT_CHANGE",
         "statChange": ["health", -2],
         "next": "witherbindBracelet"
