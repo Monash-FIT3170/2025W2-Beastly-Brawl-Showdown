@@ -179,7 +179,7 @@
       {
         "id": "reward",
         "type": "LOOT_POOL",
-        "lootPoolId": "desert_pool"
+        "lootPoolId": "slime_pool"
       }
     ]
   },

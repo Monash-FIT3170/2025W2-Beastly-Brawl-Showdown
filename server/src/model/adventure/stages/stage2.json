@@ -298,7 +298,8 @@
         "type": "STAT_CHANGE",
         "statChange": ["health", -3],
         "result": [
-          "The offended merchant curses at you and throws hot sand in your face!",
+          "The merchant snarls and kicks sand into your face.",
+          "\"No deals for fools!\" you hear as you stagger away.",
           "You lost 3 HP."
         ]
       },
