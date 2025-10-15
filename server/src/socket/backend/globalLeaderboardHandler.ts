@@ -6,8 +6,8 @@ import { getTopPlayersByWins } from "../../database/dbManager";
 export const globalLeaderboardHandler = (io: Server, socket: Socket) => {
   socket.on("fetchGlobalLeaderboard", async () => {
     try {
-      const topPlayers = await getTopPlayersByWins(3);
-      socket.emit("globalLeaderboardData", { success: true, data: topPlayers });
+      const topPlayersByWins = await getTopPlayersByWins(5);
+      socket.emit("globalLeaderboardData", { success: true, data: [topPlayersByWins] });
     } catch (error) {
       console.error("Error fetching global leaderboard:", error);
       socket.emit("globalLeaderboardData", {
