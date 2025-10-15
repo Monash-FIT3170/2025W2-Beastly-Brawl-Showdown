@@ -3,17 +3,24 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 
 //Calculate the level of each layer
 const overlayOrder: string[] = [
+  //UNDERLAY
   "lake_curse",
+  "swamps_calm",
+  "swamps_whisper",
+  //MONSTER IMAGE
   "monster",
-  "shield",
+  //OVERLAY
+  "infinity_ability",
   "poison",
+  "burn",
   "stun",
-  "slimeBoost",
-  "battleEffect",
-  "damageHeal",
-  "lakeBlessing",
+  "slime_boost",
+  "damage_heal",
+  "regeneration",
+  "lake_blessing",
   "strong",
   "weak",
+  //
   "shield",
   "crit",
   "miss",
