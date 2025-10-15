@@ -4,20 +4,20 @@ import { MonsterIdentifier } from "/types/single/monsterState";
 //Calculate the level of each layer
 const overlayOrder: string[] = [
   //UNDERLAY
-  "lake_curse",
-  "swamps_calm",
-  "swamps_whisper",
+  "lake curse",
+  "swamps calm",
+  "swamps whisper",
   //MONSTER IMAGE
   "monster",
   //OVERLAY
-  "infinity_ability",
+  "infinity ability",
   "poison",
   "burn",
   "stun",
-  "slime_boost",
-  "damage_heal",
+  "slime boost",
+  "damage heal",
   "regeneration",
-  "lake_blessing",
+  "lake blessing",
   "strong",
   "weak",
   //
@@ -30,7 +30,7 @@ const prio = new Map(overlayOrder.map((s, i) => [s, i]));
 function getZLevel(status: string, z: number): number {
   const p = prio.get(status);
   const priority = p !== undefined ? p : overlayOrder.length + 999;
-  return z + priority;
+  return z*1000 + priority;
 }
 
 //get monster image
@@ -87,6 +87,7 @@ const ABILITY_TUNING: Partial<
   [MonsterIdentifier.CHARMER_COBRA]: { scale: 1.2, x: 0, y: 0 },
   [MonsterIdentifier.FURIOUS_FLIPPER]: { scale: 1.65, x: -60, y: 60 },
   [MonsterIdentifier.POISON_POGO]: { scale: 1.05, x: 0, y: 0 },
+  [MonsterIdentifier.ROCKY_RHINO]: { scale: 1.5, x: 0, y: 60 },
 };
 
 const DEFAULT_TUNING = { scale: 1, x: 0, y: 0 };
@@ -106,7 +107,7 @@ const animationOptions = [
   "slime-support",
   "fortress-stance",
 ];
-const underlayOptions = ["lake_curse"];
+const underlayOptions = ["lake curse", "swamps calm", "swamps whisper"];
 
 function splitAnimations(
   animations: string[],
@@ -196,9 +197,12 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
   const flip = side === "left" ? "transform -scale-x-100" : "";
   const shieldFlip = side === "right" ? "transform -scale-x-100" : "";
 
+  console.log('[BattleMonsterImage] underlayImage:', underlayImage, 'overlay:', overlayImage);
+
+
   return (
     <div className={`justify-self-center w-full flex justify-center`}>
-      <div className="relative mx-auto w-full xl:w-1/2 max-w-[28rem] aspect-square overflow-visible">
+      <div className="relative mx-auto w-full xl:w-1/2 max-w-[28rem] aspect-square overflow-visible isolate">
         {/* Status/Underlay Images */}
         {underlayImage.map((item, i) => {
           const overlay = getOverlay(item);
@@ -206,22 +210,22 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
             <img
               src={overlay}
               // style={{ zIndex: getZLevel(item, 20) }}
+              style={{ zIndex: getZLevel(item, 0) }}
               className={`
                     absolute inset-0 
                     pointer-events-none 
                     select-none 
                     ${flip}
-                    z-0
+                    
                     `}
             />
           );
         })}
-
         {/* Main Monster Image */}
         <img
           src={monsterSrc}
           alt={monster}
-          style={{ transform: `scale(1)`, zIndex: getZLevel("monster", 20) }}
+          style={{ transform: `scale(1)`, zIndex: getZLevel("monster", 2) }}
           className={`absolute inset-0 w-full h-full object-contain object-bottom ${animationImage} ${flip}  ${
             hasAbility ? "opacity-0" : "opacity-100"
           }`}
@@ -234,7 +238,7 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
             alt=""
             aria-hidden="true"
             style={{
-              zIndex: 20,
+              zIndex: 2000,
               transform: `${side === "left" ? "scaleX(-1) " : ""} scale(${
                 tune.scale
               }) translateY(${tune.y}px) translateX(${tune.x}px)`,
@@ -246,7 +250,7 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
         {/* Status/Overlay Animations */}
         {overlayImage.map((item, i) => {
           const overlay = getOverlay(item);
-          const z = getZLevel(item, 20);
+          const z = getZLevel(item, 3);
           return (
             <img
               src={overlay}
@@ -262,7 +266,7 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
         {/* Shield Animations */}
         <img
           src={shieldImage}
-          style={{ zIndex: getZLevel("shield", 20) }}
+          style={{ zIndex: getZLevel("shield", 4) }}
           className={`absolute inset-0 pointer-events-none select-none ${shieldFlip} ${shieldAnimation}`}
         ></img>
       </div>
