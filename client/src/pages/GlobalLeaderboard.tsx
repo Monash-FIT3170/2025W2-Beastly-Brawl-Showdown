@@ -13,18 +13,15 @@ function testLog(input) {
     console.log("Test Log:", input);
 }
 
-interface LeaderboardEntryByWins {
+interface LeaderboardEntry {
     username: string;
     score: number;
-}
-interface LeaderboardEntryByNumGamesPlayed {
-    username: string;
-    score: number; // num games played
 }
 
 export const GlobalLeaderboard = () => {
 
-    const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntryByWins[]>([]);
+    const [leaderboardDataByWins, setLeaderboardDataByWins] = useState<LeaderboardEntry[]>([]);
+    const [leaderboardDataByNumGamesPlayed, setLeaderboardDataByNumGamesPlayed] = useState<LeaderboardEntry[]>([]);
 
     // Use the GlobalLeaderboardHandler to fetch and display the leaderboard
     useEffect(() => {
@@ -35,7 +32,8 @@ export const GlobalLeaderboard = () => {
 
             // Data retrieved and set as a state. 
             console.log("Leaderboard Data:", data.data);
-            setLeaderboardData(data.data[0]);
+            setLeaderboardDataByWins(data.data[0]);
+            setLeaderboardDataByNumGamesPlayed(data.data[1]);
 
           } else {
             console.error("Failed to fetch leaderboard:", data.message);
@@ -74,13 +72,13 @@ export const GlobalLeaderboard = () => {
     
             {/* Player Cards */}
             <div className="w-full max-w-4xl flex flex-col gap-4">
-              {leaderboardData && leaderboardData.length > 0 ? (
-                leaderboardData.map((entry, index) => (
+              {leaderboardDataByWins && leaderboardDataByWins.length > 0 ? (
+                leaderboardDataByWins.map((entry, index) => (
                   testLog(entry),
                   <GlobalLeaderboardPlayerCard
                     key={index}
                     username={entry.username}
-                    score={entry.numGamesWon}
+                    score={entry.score}
                     rank={index + 1}
                   />
                 ))
