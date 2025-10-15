@@ -35,18 +35,22 @@ export class NullAction extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     actingPlayer.addLog(
-      `${this.actingMessage ? this.actingMessage + " " : ""}You did nothing.`
+      this.actingMessage ? this.actingMessage : "You did nothing."
     );
+
     affectedPlayer.addLog(
-      `${
-        this.affectedMessage ? this.affectedMessage + " " : ""
-      }${actingPlayer.getName()} did nothing.`
+      this.affectedMessage
+        ? this.affectedMessage
+        : `${actingPlayer.getName()} did nothing.`
     );
+
     actingPlayer.addBattleLog(
-      `${
-        this.battleLogMessage ? this.battleLogMessage + " " : ""
-      }${actingPlayer.getName()} did nothing.`
+      this.battleLogMessage
+        ? this.battleLogMessage
+        : `${actingPlayer.getName()} did nothing.`
     );
+
+    this.executeBattleEffect(actingPlayer, affectedPlayer, false);
 
     return {
       appliedStatus: {

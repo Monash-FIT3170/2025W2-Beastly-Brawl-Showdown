@@ -32,20 +32,16 @@ export class FlameLashAbilityAction extends Action {
     affectedPlayer.incHealth(-this.damage);
 
     // Log the action
-    actingPlayer.addLog(
-      `You used ${this.getName()}, dealing ${
-        this.damage
-      } damage to ${affectedPlayer.getName()}. ${
-        shield ? `` : ` Your attack broke the opponent's shield.`
-      }`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, dealing ${
-        this.damage
-      } damage to you.${
-        shield ? `` : ` Your shield was broken by the opponent's attack`
-      }`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, dealing ${
+    //     this.damage
+    //   } damage to ${affectedPlayer.getName()}.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, dealing ${
+    //     this.damage
+    //   } damage to you.`
+    // );
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${
         this.damage

@@ -40,10 +40,12 @@
   --spacing-normalButtonHeight: 5.625rem;
   --spacing-normalPhoneWidth: 23.0625rem;
 
+  --animate-shadow: shadow 1s linear infinite;
   --animate-glow: glow-pulse 1.5s ease-in-out infinite;
-  --animate-attack-right: attack-flip 1s linear;
-  --animate-attack-left: attack 1s linear;
+
   --animate-damage: damage 3s ease-in-out infinite;
+  --animate-attack-right: attack-right 0.5s linear;
+  --animate-attack-left: attack-left 0.5s linear;
 
   --animate-defend: shield-create 3s ease-out infinite;
   --animate-shield: shield 3s linear infinite;
@@ -51,13 +53,12 @@
   --animate-shield-broken: shield-break 3s linear infinite;
   --animate-shield-expire: shield-fade 3s ease-in infinite;
 
-  --animate-shadow: shadow 1s linear infinite;
   --animate-shadow-leap: shadow-leap 3s ease-in-out infinite;
   --animate-slime-support: green-glow 3s ease-in-out infinite;
   --animate-fortress-stance: blue-glow 3s ease-in-out infinite;
+  --animate-scales-right: scales-right 0.5s linear;
+  --animate-scales-left: scales-left 0.5s linear;
 }
-
-/* TODO: add fortress stance animation */
 
 body {
   font-family: sans-serif;
@@ -114,26 +115,50 @@ h2 {
   }
 }
 
-@keyframes attack {
+@keyframes attack-left {
   0%,
   50% {
     transform: translate(0, 0) scale(1);
   }
   20% {
-    transform: translate(-15px, -15px) scale(1);
+    transform: translate(-30px, -30px) scale(1);
     /* filter: blur(1px); */
   }
 }
 
-@keyframes attack-flip {
+@keyframes attack-right {
   0%,
   50% {
     transform: translate(0, 0) scale(1);
     /* filter: drop-shadow(10px, 10px 10px red); */
   }
   20% {
-    transform: translate(-15px, 15px) scale(1);
+    transform: translate(-30px, 30px) scale(1);
     /* filter: blur(1px); */
+  }
+}
+
+@keyframes scales-left {
+  0%,
+  50% {
+    transform: translate(0, 0) scale(1);
+    filter: drop-shadow(0 0 80px #9dd786);
+  }
+  20% {
+    transform: translate(-30px, -30px) scale(1);
+    filter: drop-shadow(0 0 80px #9dd786);
+  }
+}
+
+@keyframes scales-right {
+  0%,
+  50% {
+    transform: translate(0, 0) scale(1);
+    filter: drop-shadow(0 0 80px #9dd786);
+  }
+  20% {
+    transform: translate(-30px, 30px) scale(1);
+    filter: drop-shadow(0 0 80px #9dd786);
   }
 }
 
@@ -191,9 +216,10 @@ h2 {
   0% {
     filter: drop-shadow(0 0 1px #55a9ed) opacity(0.1);
   }
-  50% {
+  /* 50% {
     filter: drop-shadow(0 0 10px #55a9ed) opacity(0.5);
-  }
+  } */
+  50%,
   100% {
     filter: drop-shadow(0 0 20px #55a9ed) opacity(0.8);
   }
@@ -220,11 +246,9 @@ h2 {
 }
 
 @keyframes shield-fade {
+  50%,
   100% {
-    filter: drop-shadow(0 0 1px #55a9ed) opacity(0.1);
-  }
-  50% {
-    filter: drop-shadow(0 0 10px #55a9ed) opacity(0.5);
+    filter: drop-shadow(0 0 10px #55a9ed) opacity(0);
   }
   0% {
     filter: drop-shadow(0 0 20px #55a9ed) opacity(0.8);
@@ -232,10 +256,21 @@ h2 {
 }
 
 @keyframes fade-in-out-pop {
-  0%   { opacity: 0; transform: scale(0.96); }
-  15%  { opacity: 1; transform: scale(1.00); }
-  75%  { opacity: 1; }
-  100% { opacity: 0; transform: scale(1.03); }
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.03);
+  }
 }
 
 .animate-fade-in-out {
@@ -245,10 +280,21 @@ h2 {
 }
 
 @keyframes fade-in-out-pop {
-  0%   { opacity: 0; transform: scale(0.96); }
-  15%  { opacity: 1; transform: scale(1.00); }
-  75%  { opacity: 1; }
-  100% { opacity: 0; transform: scale(1.03); }
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.03);
+  }
 }
 
 .animate-fade-in-out {

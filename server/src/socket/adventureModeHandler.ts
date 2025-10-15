@@ -25,6 +25,7 @@ import { updatePlayerAccount } from "../database/dbManager";
 import { createStoryItem } from "../model/adventure/factories/storyItemFactory";
 import { FightersBandana } from "../model/game/equipment/fightersBandana";
 import { BlackBelt } from "../model/game/equipment/blackBelt";
+import { LakeCurse } from "../model/game/status/lakeCurse";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -38,7 +39,9 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
   });
 
   socket.on("adventure_level_selected", async ({ level }) => {
-    const player = new Player(socket.id, "Guest", null); // TODO: Use real player name
+    const playerSchema = playerAccounts.get(socket.id);
+    const name = playerSchema?.username ?? "Guest";
+    const player = new Player(socket.id, name, playerSchema ?? null);
     players.set(socket.id, player);
     const adventure = new Adventure(player, level);
     // Track which outcome we're on
@@ -72,7 +75,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       }
 
       const player = adventure.getPlayer();
-
+      player.addStatus(new LakeCurse(20));
       player.setMonster(monster);
       //progressAdventure(io, socket, adventure, adventure.getStage());
     }
@@ -323,20 +326,35 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         // Send battle state to client
         battle.getPlayers().forEach((p) => {
           p.startStatusEffects();
+          p.clearAnimations();
+          p.setStartStatusAnimations();
         });
+
+        // Update adventure state
         socket.emit("adventure_state", {
           type: "battle",
           battle: battle.getBattleState(socket.id),
           stage: adventure.getStage(),
           player: adventure.getPlayer().getPlayerState(),
         });
+
+        // Update actions
         let actions = adventure
           .getPlayer()
           ?.getMonster()
           ?.getPossibleActionStates();
         socket.emit("possible_actions", actions);
-        //Clear logs from previous battle.
-        //um note i did this but it didn't clear lmfaoo??
+
+        // Update animations
+        socket.emit("update_animation", {
+          phase: "default",
+          player: adventure.getPlayer().getAnimations(),
+          opp: battle
+            .getPlayers()
+            .filter((p) => p.getId() != adventure.getPlayer().getId())[0]
+            .getAnimations(), //FIXME: there has got to be a better way to do this lol
+        });
+
         // Optionally, proceed with the battle logic
         // proceedAdventureTurn(io, socket, adventure, battle);
       } else if (resolved.type === "DIALOGUE") {

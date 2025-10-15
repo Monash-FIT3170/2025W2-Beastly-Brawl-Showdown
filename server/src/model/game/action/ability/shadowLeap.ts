@@ -58,12 +58,12 @@ export class ShadowLeapAbilityAction extends Action {
     this.incCurrentUse(-1);
 
     // Log the action
-    actingPlayer.addLog(
-      `You used ${this.getName()}, preparing to dodge an attack.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, preparing to dodge an attack.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, preparing to dodge an attack.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, preparing to dodge an attack.`
+    // );
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, preparing to dodge an attack.`
     );

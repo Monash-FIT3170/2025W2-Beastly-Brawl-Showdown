@@ -60,12 +60,12 @@ export class AlluringLullaby extends Action {
       affectedPlayer.incHealth(-this.damage); //TODO: can they ever crit themselves?
 
       // Add logs
-      actingPlayer.addLog(
-        `You successfully used ${this.getName()}. They hit themselves in confusion.`
-      );
-      affectedPlayer.addLog(
-        `${actingPlayer.getName()} used ${this.getName()}, you hit yourself in confusion.`
-      );
+      // actingPlayer.addLog(
+      //   `You successfully used ${this.getName()}. They hit themselves in confusion.`
+      // );
+      // affectedPlayer.addLog(
+      //   `${actingPlayer.getName()} used ${this.getName()}, you hit yourself in confusion.`
+      // );
       affectedPlayer.addBattleLog(
         `${actingPlayer.getName()} used ${this.getName()}, confusing ${affectedPlayer.getName()} and hitting themselves.`
       );
@@ -74,13 +74,14 @@ export class AlluringLullaby extends Action {
       actingPlayer.addAnimation("miss");
     } else {
       // Add logs
-      actingPlayer.addLog(`Your ${this.getName()} was ineffective!`);
-      affectedPlayer.addLog(
-        `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
-      );
+      // actingPlayer.addLog(`Your ${this.getName()} was ineffective!`);
+      // affectedPlayer.addLog(
+      //   `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
+      // );
       affectedPlayer.addBattleLog(
         `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
       );
+      affectedPlayer.addAnimation("miss");
       this.executeBattleEffect(actingPlayer, affectedPlayer, false);
     }
 

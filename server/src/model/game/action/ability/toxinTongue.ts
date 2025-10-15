@@ -30,12 +30,12 @@ export class ToxinTongue extends Action {
     affectedPlayer.addStatus(new Poison(numberOfTurns));
 
     // Add logs
-    actingPlayer.addLog(
-      `You used ${this.getName()}, ${affectedPlayer.getName()} is now poisoned for ${numberOfTurns} turns.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, you are now poisoned for ${numberOfTurns} turns.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, ${affectedPlayer.getName()} is now poisoned for ${numberOfTurns} turns.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, you are now poisoned for ${numberOfTurns} turns.`
+    // );
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, ${affectedPlayer.getName()} is now poisoned for ${numberOfTurns} turns.`
     );
