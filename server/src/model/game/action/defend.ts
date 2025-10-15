@@ -8,7 +8,13 @@ export class DefendAction extends Action {
   private armourBonus: number;
 
   constructor(armourBonus: number) {
-    super(ActionIdentifier.DEFEND, "Defend", "Defend against an attack", 3);
+    super(
+      ActionIdentifier.DEFEND,
+      "Defend",
+      "Defend against an attack",
+      3,
+      false
+    );
     this.armourBonus = armourBonus;
   }
 

@@ -38,10 +38,17 @@ export class ShadowLeapAbilityAction extends Action {
           affectedMessage,
           battleLogMessage
         );
-        nullAction.updateAnimation([
-          "attack",
-          Math.floor(Math.random() * 15) + 5, //TODO: update roll
-        ]);
+        if (
+          action.getId() === ActionIdentifier.ATTACK ||
+          action.getId() === ActionIdentifier.TIP_THE_SCALES
+        ) {
+          nullAction.updateAnimation([
+            "attack",
+            Math.floor(Math.random() * 15) + 5, //TODO: update roll
+          ]);
+        } else {
+          nullAction.updateAnimation("ability");
+        }
         affectedPlayer.addAction(nullAction);
       }
     });

@@ -14,7 +14,7 @@ export class AlluringLullaby extends Action {
       "Sing a wicked little tune, confusing your opponent. If your opponent dares attack, they'll hit themselves instead",
       100
     );
-    this.setDodgeable(false);
+
     this.damage = 5;
   }
 

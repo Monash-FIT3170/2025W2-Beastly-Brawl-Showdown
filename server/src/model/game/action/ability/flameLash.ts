@@ -11,11 +11,10 @@ export class FlameLashAbilityAction extends Action {
       "Whip your blazing tail for 5 damage. If your foe tries to dodge, the flames bend and strike again for another 5 damage.",
       1
     );
-    this.damage = 5;
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    this.damage = 5;
+    this.damage = actingPlayer.getMonster()?.getAttackAction().getDamage()!;
   }
 
   public prepareAnimation(): string | [string, number] {
@@ -25,17 +24,10 @@ export class FlameLashAbilityAction extends Action {
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
     affectedPlayer.addAnimation("damage");
-    // Deal 10 damage if the opponent is dodging, 5 damage otherwise
-    if (affectedPlayer.getArmourClassStat() >= 50) {
-      //TODO FIGURE OUT A BALANCED AC
-      this.damage = 10;
-      affectedPlayer.addAnimation("crit");
-    }
-
-    //to remove once dodge is reworked?
-    if (affectedPlayer.getDodgingPosition()) {
-      this.damage = 10;
-      affectedPlayer.addAnimation("crit");
+    const shield = affectedPlayer.getStatusByName("Shield");
+    if (shield) {
+      affectedPlayer.removeStatus(shield);
+      affectedPlayer.addAnimation("shield-broken");
     }
     affectedPlayer.incHealth(-this.damage);
 
@@ -53,7 +45,11 @@ export class FlameLashAbilityAction extends Action {
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${
         this.damage
-      } damage to ${affectedPlayer.getName()}.`
+      } damage to ${affectedPlayer.getName()}.${
+        shield
+          ? ``
+          : `${actingPlayer.getName()}'s attack broke ${affectedPlayer.getName()}'s shield.`
+      }`
     );
 
     this.executeBattleEffect(actingPlayer, affectedPlayer, true);
