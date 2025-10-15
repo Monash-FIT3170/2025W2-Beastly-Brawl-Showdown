@@ -40,16 +40,16 @@ export class FlameLashAbilityAction extends Action {
     affectedPlayer.incHealth(-this.damage);
 
     // Log the action
-    actingPlayer.addLog(
-      `You used ${this.getName()}, dealing ${
-        this.damage
-      } damage to ${affectedPlayer.getName()}.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, dealing ${
-        this.damage
-      } damage to you.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, dealing ${
+    //     this.damage
+    //   } damage to ${affectedPlayer.getName()}.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, dealing ${
+    //     this.damage
+    //   } damage to you.`
+    // );
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${
         this.damage

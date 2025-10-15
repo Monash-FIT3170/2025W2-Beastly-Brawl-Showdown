@@ -142,10 +142,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   }, []);
 
   useEffect(() => {
-    //socket.emit("adventure_request", { stage }); //TODO: WHO IS THIS, WHY IS SHE HERE?
-    //if (!playerState) {
-    //  socket.emit("failed_connection", { stage });
-    //}
     socket.on("adventure_state", (state) => {
       if (state.stage) {
         setStage(state.stage);
@@ -601,10 +597,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                       <span className="absolute -top-2 -right-2 flex items-center justify-center">
                         {/* Ping animation with responsive sizing and translation */}
                         <span
-                          className="absolute inline-flex 
-                         size-[80px]
-                         md:size-[30px]
-                         lg:size-[20px]    
+                          className="absolute inline-flex size-[80px] md:size-[30px] lg:size-[20px]    
                          animate-ping 
                          rounded-full bg-notification-accent 
                          opacity-75

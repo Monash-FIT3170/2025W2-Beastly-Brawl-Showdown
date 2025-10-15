@@ -111,33 +111,33 @@ export class AttackAction extends Action {
             damageDealt = this.damage;
             affectedPlayer.addAnimation("crit");
             affectedPlayer.addAnimation("damage");
-            actingPlayer.addLog(
-              `Critical hit! You broke ${affectedPlayer.getName()}'s shield and dealt ${
-                this.damage
-              } damage!`
-            );
-            affectedPlayer.addLog(
-              `Critical hit! ${actingPlayer.getName()} broke your shield and dealt ${
-                this.damage
-              } damage!`
-            );
+            // actingPlayer.addLog(
+            //   `Critical hit! You broke ${affectedPlayer.getName()}'s shield and dealt ${
+            //     this.damage
+            //   } damage!`
+            // );
+            // affectedPlayer.addLog(
+            //   `Critical hit! ${actingPlayer.getName()} broke your shield and dealt ${
+            //     this.damage
+            //   } damage!`
+            // );
           } else {
             // Normal hit only breaks shield
-            actingPlayer.addLog(
-              `You broke ${affectedPlayer.getName()}'s shield!`
-            );
-            affectedPlayer.addLog(
-              `${actingPlayer.getName()} broke your shield!`
-            );
+            // actingPlayer.addLog(
+            //   `You broke ${affectedPlayer.getName()}'s shield!`
+            // );
+            // affectedPlayer.addLog(
+            //   `${actingPlayer.getName()} broke your shield!`
+            // );
           }
         } else {
           // Attack hits but not strong enough to break shield
-          actingPlayer.addLog(
-            `Your attack hit ${affectedPlayer.getName()}'s shield but wasn't strong enough to break it!`
-          );
-          affectedPlayer.addLog(
-            `${actingPlayer.getName()}'s attack hit your shield but didn't break it!`
-          );
+          // actingPlayer.addLog(
+          //   `Your attack hit ${affectedPlayer.getName()}'s shield but wasn't strong enough to break it!`
+          // );
+          // affectedPlayer.addLog(
+          //   `${actingPlayer.getName()}'s attack hit your shield but didn't break it!`
+          // );
           affectedPlayer.addAnimation("shield-crack");
         }
       } else {
@@ -153,16 +153,16 @@ export class AttackAction extends Action {
           damageDealt = this.damage;
         }
 
-        actingPlayer.addLog(
-          `${
-            isCrit ? "Critical hit! " : ""
-          }You attacked ${affectedPlayer.getName()}, dealing ${damageDealt} damage.`
-        );
-        affectedPlayer.addLog(
-          `${
-            isCrit ? "Critical hit! " : ""
-          }${actingPlayer.getName()} attacked you, dealing ${damageDealt} damage.`
-        );
+        // actingPlayer.addLog(
+        //   `${
+        //     isCrit ? "Critical hit! " : ""
+        //   }You attacked ${affectedPlayer.getName()}, dealing ${damageDealt} damage.`
+        // );
+        // affectedPlayer.addLog(
+        //   `${
+        //     isCrit ? "Critical hit! " : ""
+        //   }${actingPlayer.getName()} attacked you, dealing ${damageDealt} damage.`
+        // );
       }
 
       // Battle log for successful hit
@@ -183,12 +183,12 @@ export class AttackAction extends Action {
       this.executeBattleEffect(actingPlayer, affectedPlayer, true);
     } else {
       // Attack missed entirely
-      actingPlayer.addLog(
-        `You attacked ${affectedPlayer.getName()} and failed to hit.`
-      );
-      affectedPlayer.addLog(
-        `${actingPlayer.getName()} tried to attack and failed to hit.`
-      );
+      // actingPlayer.addLog(
+      //   `You attacked ${affectedPlayer.getName()} and failed to hit.`
+      // );
+      // affectedPlayer.addLog(
+      //   `${actingPlayer.getName()} tried to attack and failed to hit.`
+      // );
       affectedPlayer.addBattleLog(
         `${affectedPlayer.getName()} has successfully avoided an attack`
       );

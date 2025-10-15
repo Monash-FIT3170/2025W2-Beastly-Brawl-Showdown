@@ -21,14 +21,14 @@ export class SlimeSupportAction extends Action {
     this.incCurrentUse(-1);
     actingPlayer.addStatus(new SlimeBoost(3));
     // Add logs
-    actingPlayer.addLog(
-      `You used ${this.getName()}, giving yourself the Slime Boost buff.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, giving themself the Slime Boost buff.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, giving yourself the Slime Boost buff.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, giving themself the Slime Boost buff.`
+    // );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${this.getName()}, giving yourself the Slime Boost buff.`
+      `${actingPlayer.getName()} used ${this.getName()}, giving themself the Slime Boost buff.`
     );
     this.executeBattleEffect(actingPlayer, affectedPlayer, true);
   }

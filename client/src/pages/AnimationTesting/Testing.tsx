@@ -69,6 +69,15 @@ export const Test = () => {
             className={`relative inline-block xl:w-[90%] z-10 animate-shadow-leap`}
           ></img>
         </div>
+        <div>
+          <p>Tip the Scales</p>
+          <img
+            src={
+              "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/CINDER_TAIL.png"
+            }
+            className={`relative inline-block xl:w-[90%] z-10 animate-scales-left`}
+          ></img>
+        </div>
       </div>
     </BlankPage>
   );

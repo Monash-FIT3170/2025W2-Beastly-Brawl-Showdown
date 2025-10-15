@@ -28,14 +28,14 @@ export class FortressStanceAbilityAction extends Action {
     actingPlayer.incArmourClassStat(this.armourBonus);
 
     // Add logs
-    actingPlayer.addLog(
-      `You used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, gaining ${
-        this.armourBonus
-      } AC for 1 turn.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, gaining ${this.armourBonus} AC for 1 turn.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, gaining ${
+    //     this.armourBonus
+    //   } AC for 1 turn.`
+    // );
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, gaining ${
         this.armourBonus

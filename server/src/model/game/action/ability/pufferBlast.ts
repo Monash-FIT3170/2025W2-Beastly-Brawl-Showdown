@@ -38,12 +38,12 @@ export class PufferBlast extends Action {
     this.damage = hitDamage;
 
     // Add logs
-    actingPlayer.addLog(
-      `You used ${this.getName()}. ${hitFishes} fish hit inflicting ${hitDamage}.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}. ${hitFishes} fish hit inflicting ${hitDamage}.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage.`
+    // );
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage to ${affectedPlayer.getName()}.`
     );
