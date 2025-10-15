@@ -466,7 +466,7 @@
         "next": "penguin_defeat"
       },
       {
-        "id": "penguin_encounter",
+        "id": "penguin_defeat",
         "type": "DIALOGUE",
         "result": ["Take it. I didn't have any use for it anyway."],
         "next": "penguin_reward",
