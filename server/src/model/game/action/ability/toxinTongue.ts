@@ -12,7 +12,6 @@ export class ToxinTongue extends Action {
       "Whip out your grotesque tongue. Your foe is poisoned, taking 1 damage each turn for 5 turns.",
       2
     );
-    this.setDodgeable(false);
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
