@@ -59,7 +59,7 @@ export const playSFX = (name: string, volume = 1.0) => {
     sfx = new Audio(path);
     sfxCache[name] = sfx;
   }
-  sfx.volume = volume;
+  sfx.volume = volume/2;
   sfx.currentTime = 0;
   sfx.play().catch(err => console.warn(`Could not play ${name}:`, err));
 };
