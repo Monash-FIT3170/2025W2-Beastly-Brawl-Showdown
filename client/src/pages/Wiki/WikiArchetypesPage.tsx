@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import { ActionIdentifier } from "../../../../types/single/actionState"
-import { BaseCard } from "../../components/cards/BaseCard";
-import { OutlineTextBP } from "../../components/texts/OutlineTextBP";
 import { BlackText } from "../../components/texts/BlackText";
 import { WikiArchetypeCard } from "../../components/wiki/WikiArchetypeCard";
+import { WikiHeader } from "../../components/wiki/WikiHeader";
 
 export const WikiArchetypesPage = () => {
     return (
     <div className="flex flex-col h-full w-full space-y-[1rem] overflow-y-scroll justify-around items-center m-[2rem]">
     
-        <BaseCard color="peach" width={50} height={8}>
-            <OutlineTextBP size="extraLarge">Archetypes</OutlineTextBP>
-        </BaseCard>
+        <WikiHeader title="Archetypes"></WikiHeader>
 
         <BlackText size="medium">
             {"Each monster falls under one of three classifications known as archetypes. \nA monster's archetype defines its playstyle as well as one of the moves it has access to."}

@@ -1,18 +1,15 @@
 import React, { useState } from "react";
 import { ActionIdentifier } from "../../../../types/single/actionState"
 import { WikiAbilityCard } from "../../components/wiki/WikiAbilityCard"
-import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { OutlineTextBP } from "../../components/texts/OutlineTextBP";
-import { BaseCard } from "../../components/cards/BaseCard";
+import { WikiHeader } from "../../components/wiki/WikiHeader";
 
 export const WikiAbilitiesPage = () => {
     return (
 
-        <div className="flex flex-col space-y-[1rem] overflow-y-scroll justify-around items-center m-[2rem]">
+        <div className="flex flex-col w-full h-full space-y-[1rem] overflow-y-scroll justify-around items-center m-[2rem]">
 
-            <BaseCard color="peach" width={50} height={8}>
-                <OutlineTextBP size="extraLarge">Abilities</OutlineTextBP>
-            </BaseCard>
+            <WikiHeader title="Abilities"></WikiHeader>
 
             <OutlineTextBP size="large">
                 Common Abilities

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { OutlineTextBP } from "../../components/texts/OutlineTextBP";
-import { BaseCard } from "../../components/cards/BaseCard";
 import { WikiMonsterCard } from "../../components/wiki/WikiMonsterCard";
 import { MonsterIdentifier } from "../../../../types/single/monsterState";
 import { ActionIdentifier } from "../../../../types/single/actionState";
+import { WikiHeader } from "../../components/wiki/WikiHeader";
 
 export const WikiMonstersPage = () => {
     
@@ -11,9 +10,7 @@ export const WikiMonstersPage = () => {
 
         <div className="flex flex-col h-full w-full space-y-[1rem] overflow-y-scroll justify-around items-center m-[2rem]">
 
-            <BaseCard color="peach" width={50} height={8}>
-                <OutlineTextBP size="extraLarge">Monsters</OutlineTextBP>
-            </BaseCard>
+            <WikiHeader title="Monsters"></WikiHeader>
 
             <WikiMonsterCard 
                 image={MonsterIdentifier.ROCKY_RHINO} 
