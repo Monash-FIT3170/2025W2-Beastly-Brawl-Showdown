@@ -34,7 +34,6 @@ export const Home = () => {
     return () => socket.off("login-status", handleLoginStatus);
   }, []);
 
-
   useEffect(() => {
     const handleNewGame = ({ code }: { code: string }) => {
       FlowRouter.go(`/host/${code}`);
@@ -169,7 +168,7 @@ export const Home = () => {
             <ButtonGeneric
               color={"ronchi"}
               size={"squaremedium"}
-              onClick={() => setShowLogin(true)}
+              onClick={() => FlowRouter.go("/login")}
             >
               <div className="flex flex-col ">
                 <OutlineText size={"tiny"}>LOG</OutlineText>
