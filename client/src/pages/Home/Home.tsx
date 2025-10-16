@@ -7,13 +7,13 @@ import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { LoginPopup } from "./Login";
 import { IconButton } from "../../components/buttons/IconButton";
-import { playBGM,toggleBGM } from "../../audioManager";
+import { isBGMEnabled, playBGM,toggleBGM } from "../../audioManager";
 
 
 export const Home = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(false);
-  const [musicOn, setMusicOn] = useState(true);
+  const [musicOn, setMusicOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -69,17 +69,16 @@ export const Home = () => {
 
   return (
     <BlankPage>
-      {/* Music Toggle */}
       <div className="absolute top-4 left-4 z-50">
-        <button
+        <ButtonGeneric
           onClick={handleToggleMusic}
-          className="bg-yellow-400 px-3 py-1 rounded-lg shadow font-semibold"
+          color="ronchi"
+          size="square"
         >
-          {musicOn ? "🔊 Music On" : "🔇 Music Off"}
-        </button>
+          {isBGMEnabled() == true ? "🔊"  : "🔇"}
+        </ButtonGeneric>
       </div>
 
-      {/* Login/Profile */}
       <div className="absolute lg:top-[3rem] lg:right-[3rem] top-[5rem] right-[5rem]">
         {!loggedInUser ? (
           <ButtonGeneric
