@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { IconButton } from "../buttons/IconButton";
 import { OutlineText } from "../texts/OutlineText";
-import { BlackText } from "../texts/BlackText";
-import { SelectorOption } from "/types/single/selectorOption";
+import { BackgroundThemeSelectorOption } from "../../types/SelectorOptions";
 
-interface CardSelectorProps {
-  options: SelectorOption[];
+interface BackgroundThemeSelectorProps {
+  options: BackgroundThemeSelectorOption[];
   selectedIndex: number;
   setSelectedIndex: (index: number) => void;
 }
 
-const CardSelector: React.FC<CardSelectorProps> = ({
+const BackgroundThemeSelector: React.FC<BackgroundThemeSelectorProps> = ({
   options,
   selectedIndex,
   setSelectedIndex,
@@ -32,8 +31,7 @@ const CardSelector: React.FC<CardSelectorProps> = ({
       
       {/* Card */}
       <div className="outline-[0.25rem] bg-pictonBlue p-6 rounded-xl w-120 text-center">
-        <OutlineText size="large">{options[selectedIndex].title}</OutlineText>
-        <BlackText size="medium">{options[selectedIndex].description}</BlackText>
+        <OutlineText size="large">{options[selectedIndex].name}</OutlineText>
       </div>
 
       {/* Right Arrow */}
@@ -42,4 +40,4 @@ const CardSelector: React.FC<CardSelectorProps> = ({
   );
 };
 
-export default CardSelector;
+export default BackgroundThemeSelector;
