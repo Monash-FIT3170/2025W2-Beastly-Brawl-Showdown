@@ -85,7 +85,7 @@
     "id": "final_frog",
     "level": [4],
     "description": "final_boss_fight",
-    "outcomes":[
+    "outcomes": [
       {
         "id": "initial",
         "result": [
@@ -98,10 +98,7 @@
       },
       {
         "id": "pre_fight",
-        "result": [
-          "Croak! Round two!"
-
-        ],
+        "result": ["Croak! Round two!"],
         "type": "DIALOGUE",
         "enemyId": ["poison_pogo", "SWAMP FROG"],
         "next": "boss_fight"
@@ -115,7 +112,7 @@
       {
         "id": "end_level_4",
         "type": "DIALOGUE",
-        "result":[
+        "result": [
           "The frog wobbles, then collapses back into the pond with a heavy SPLASH!",
           "For a long moment, it doesn't move. Only ripples spread through the pond.",
           "Then the frog hops back up from where it fell, wobbling, but refusing to stay down."
@@ -128,7 +125,6 @@
           "Hah... frog still standing.",
           "You strong...Frog impressed! Also dizzy.",
           "But frog still handsome! Handsome frog your friend now!"
-          
         ],
         "type": "DIALOGUE",
         "enemyId": ["poison_pogo", "SWAMP FROG"]
@@ -242,6 +238,7 @@
   {
     "id": "final_encounter_wolf",
     "level": [0],
+    "background": "FOREST",
     "description": "Stage 8 damage check against wolf",
     "outcomes": [
       {
@@ -270,6 +267,7 @@
   {
     "id": "final_encounter_rhino",
     "level": [0],
+    "background": "FOREST",
     "description": "Stage 8 damage check against rhino",
     "outcomes": [
       {
@@ -298,6 +296,7 @@
   {
     "id": "final_encounter_dragon",
     "level": [0],
+    "background": "BASALT",
     "description": "Stage 8 damage check against dragon",
     "outcomes": [
       {

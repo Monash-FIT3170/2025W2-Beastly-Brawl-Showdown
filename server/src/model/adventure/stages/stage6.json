@@ -420,7 +420,7 @@
   },
   {
     "id": "level_4_slime3",
-    "level": [4],
+    "level": [0, 4],
     "description": "level4_slime3_encounter",
     "outcomes": [
       {

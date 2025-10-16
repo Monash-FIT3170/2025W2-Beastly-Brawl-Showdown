@@ -469,5 +469,192 @@
         "result": ["You turn down the challenge and continue onwards."]
       }
     ]
+  },
+
+  {
+    "id": "stage4_dragon_guarding_chest",
+    "level": [0],
+    "background": "BASALT",
+    "description": "Stage 3, player finds the coliseum of maladies",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": [
+          "You come across a dragon fiddling with a chest.",
+          "As you approach it seems to notice you."
+        ],
+        "next": "dragon_frustration"
+      },
+      {
+        "id": "dragon_frustration",
+        "type": "DIALOGUE",
+        "result": [
+          "Back off, this treasure is mine, the second I figure out how to open this lock."
+        ],
+        "enemyId": ["cinder_tail", "GREEDY DRAGON"],
+        "next": "key_evaluation"
+      },
+      {
+        "id": "key_evaluation",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "have_key",
+            "prerequisite": ["Pristine Key"],
+            "next": "key_response"
+          },
+          {
+            "id": "no_key",
+            "next": "fight_anyway"
+          }
+        ]
+      },
+      {
+        "id": "key_response",
+        "type": "DIALOGUE",
+        "result": [
+          "Oh!",
+          "That key around your neck looks like it would be a perfect fit.",
+          "I can share the secrets of fire with you, if you give me the key"
+        ],
+        "enemyId": ["cinder_tail", "GREEDY DRAGON"],
+        "next": "key_give_choice"
+      },
+      {
+        "id": "key_give_choice",
+        "result": ["The dragon looks at you eagerly."],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "use_key",
+            "text": "Give The Key",
+            "next": "give_the_key",
+            "cost": ["Pristine Key"]
+          },
+          {
+            "id": "save_key",
+            "text": "Keep The Key",
+            "next": "keep_the_key"
+          }
+        ]
+      },
+      {
+        "id": "give_the_key",
+        "type": "DIALOGUE",
+        "result": ["You hand over the key to the dragon."],
+        "next": "dragon_receive"
+      },
+      {
+        "id": "dragon_receive",
+        "type": "DIALOGUE",
+        "result": ["Smart choice!", "Come closer and let me share my wisdom."],
+        "enemyId": ["cinder_tail", "GREEDY DRAGON"],
+        "next": "fire_secret"
+      },
+      {
+        "id": "fire_secret",
+        "result": ["Your mind is filled with a burning rage!"],
+        "type": "STATUS",
+        "statusId": ["burning_rage", 15],
+        "next": "final_happy"
+      },
+      {
+        "id": "final_happy",
+        "type": "DIALOGUE",
+        "result": ["Now get out of here!", "I have treasure to open."],
+        "enemyId": ["cinder_tail", "GREEDY DRAGON"]
+      },
+      {
+        "id": "keep_the_key",
+        "type": "DIALOGUE",
+        "result": ["I tried to be nice.", "I'm getting that key!"],
+        "enemyId": ["cinder_tail", "GREEDY DRAGON"],
+        "next": "dragon_fight_one"
+      },
+      {
+        "id": "dragon_fight_one",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "GREEDY DRAGON"],
+        "next": "victory_one"
+      },
+      {
+        "id": "victory_one",
+        "type": "DIALOGUE",
+        "result": [
+          "The dragon flies away in a hurry",
+          "You approach the chest"
+        ],
+        "next": "key_chest"
+      },
+      {
+        "id": "key_chest",
+        "result": ["Do you use the key?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "use_key",
+            "text": "Open The Chest",
+            "next": "use_the_key",
+            "cost": ["Pristine Key"]
+          },
+          {
+            "id": "save_key",
+            "text": "Save The Key",
+            "next": "chest_locked"
+          }
+        ]
+      },
+      {
+        "id": "use_the_key",
+        "type": "DIALOGUE",
+        "result": ["The chest springs open."],
+        "next": "chest_reward"
+      },
+      {
+        "id": "chest_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "pristine_treasure_pool",
+        "next": "happy_leave"
+      },
+      {
+        "id": "happy_leave",
+        "type": "DIALOGUE",
+        "result": ["You continue onwards."]
+      },
+      {
+        "id": "chest_locked",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide it would be best to save the key for later.",
+          "You continue onwards"
+        ]
+      },
+      {
+        "id": "fight_anyway",
+        "type": "DIALOGUE",
+        "result": [
+          "I'm not letting you leave.",
+          "You'll tell everyone about my treasure."
+        ],
+        "enemyId": ["cinder_tail", "GREEDY DRAGON"],
+        "next": "dragon_fight_two"
+      },
+      {
+        "id": "dragon_fight_two",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "GREEDY DRAGON"],
+        "next": "dragon_fight_two_post"
+      },
+      {
+        "id": "dragon_fight_two_post",
+        "type": "DIALOGUE",
+        "result": [
+          "The dragon flies away in a hurry.",
+          "You approach the chest.",
+          "Without a key, there's nothing for you."
+        ]
+      }
+    ]
   }
 ]

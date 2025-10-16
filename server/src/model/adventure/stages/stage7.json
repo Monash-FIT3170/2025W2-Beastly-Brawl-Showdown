@@ -3,6 +3,7 @@
     "id": "berry_bush",
     "level": [0, 1],
     "description": "Berry bushes",
+    "background": "FOREST",
     "outcomes": [
       {
         "id": "initial",
@@ -61,6 +62,7 @@
     "id": "rope_bridge",
     "level": [0, 1],
     "description": "Rope Bridge",
+    "background": "FOREST",
     "outcomes": [
       {
         "id": "initial",

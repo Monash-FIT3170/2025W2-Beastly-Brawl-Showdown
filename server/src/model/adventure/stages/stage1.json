@@ -2,7 +2,6 @@
   {
     "id": "green_slime",
     "level": [1],
-    "background": "ARCTIC",
     "description": "Stage 1, player fights slime 1.",
     "outcomes": [
       {
