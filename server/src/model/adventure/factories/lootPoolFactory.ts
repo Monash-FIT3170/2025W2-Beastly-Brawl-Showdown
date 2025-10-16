@@ -150,6 +150,33 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
       id: "ability_antidote",
     },
   ],
+  ice_pool: [
+    {
+      loot: () => new CoolingPendant(),
+      chance: 20,
+      id: "cooling_pendant",
+    },
+    {
+      loot: () => new PercentageHealthPotion("Large Health Potion", 0.5),
+      chance: 20,
+      id: "large_health_potion",
+    },
+    {
+      loot: () => new DuneDust(),
+      chance: 25,
+      id: "dune_dust",
+    },
+    {
+      loot: () => new CactusNectar(),
+      chance: 25,
+      id: "cactus_nectar",
+    },
+    {
+      loot: () => new AbilityAntidote(),
+      chance: 10,
+      id: "ability_antidote",
+    },
+  ],
   scavenger_pool: [
     {
       loot: () => new PercentageHealthPotion("Mini Health Potion", 0.25),

@@ -90,6 +90,51 @@
     ]
   },
   {
+    "id": "ice_slime",
+    "level": [3],
+    "description": "Stage 1, player fights Ice slime.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "OH SNAP OH BALLERS",
+          "ITS AN ICE THINGY",
+          "THERE IS AN ICE SLIME COMING TOWARDS YOU"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["ICE SLIME SOUNDS", "ICE NOISES"],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "ICE SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "ICE SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "You defeated the slime!",
+          "It inexplicably violently explodes.",
+          "It turned into a puddle of water with a thing in it!"
+        ],
+        "type": "DIALOGUE",
+        "next": "ice_drop"
+      },
+      {
+        "id": "ice_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "ice_pool"
+      }
+    ]
+  },
+  {
     "id": "purple_slime",
     "level": [4],
     "description": "Stage 1, player fights purple slime.",

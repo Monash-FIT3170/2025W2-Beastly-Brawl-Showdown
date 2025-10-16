@@ -92,6 +92,51 @@
     ]
   },
   {
+    "id": "ice_slime_2",
+    "level": [3],
+    "description": "Ice Stage 2, player fights slime 2.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "It's bitingly cold.", 
+          "Another very cold object rolls out of the snow and ice.",
+          "It's an even bigger ice slime!"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["*ice slime sounds*", "sploosh"],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "ICE SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "ICE SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "You are victorious once again.",
+          "Its body cracks apart, before exploding into shards of hardened water.",
+          "You search the soggy fragments, finding something buried within..."
+        ],
+        "type": "DIALOGUE",
+        "next": "ice_drop"
+      },
+      {
+        "id": "ice_drop",
+        "type": "EQUIPMENT",
+        "equipmentId": "basalt_shield"
+      }
+    ]
+  },
+  {
     "id": "witch_encounter_1",
     "level": [4],
     "description": "Stage 2 first witch encounter ",

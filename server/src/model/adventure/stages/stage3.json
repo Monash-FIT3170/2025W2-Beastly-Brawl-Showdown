@@ -338,6 +338,143 @@
     ]
   },
   {
+    "id": "rival_mob",
+    "level": [3],
+    "description": "Stage 3, the player stumbles on a RIVAL MOB GANG",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "As you continue to wander the frozen wastes, you come across...",
+          "A RIVAL MOB GANG!",
+          "Think fast! The gang isn't exactly going to let you hang around!"
+        ],
+        "type": "DIALOGUE",
+        "next": "mob_gang_choice"
+      },
+      {
+        "id": "mob_gang_choice",
+        "result": ["What do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "search",
+            "text": "Bust a cap in their afts.",
+            "next": "mob_gang_driveby"
+          },
+          {
+            "id": "rest",
+            "text": "Pretend to be one of them.",
+            "next": "mob_rest_random"
+          }
+        ]
+      },
+      {
+        "id": "mob_gang_driveby",
+        "result": [
+          "You draw your hypothetical weapon and hypothetically shoot at them"
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 50,
+            "next": "driveby_success"
+          },
+          {
+            "id": "failure",
+            "chance": 50,
+            "next": "driveby_failure"
+          }
+        ]
+      },
+      {
+        "id": "driveby_success",
+        "result": [
+          "You successfully succeed in hypothetically shooting up the entire gang.",
+          "Allegedly, you also hypothetically make off with some random hypothetical stuff they had.",
+          "Hypothetically."
+        ],
+        "type": "DIALOGUE",
+        "next": "driveby_reward"
+      },
+      {
+        "id": "driveby_failure",
+        "result": [
+          "OH SNAP ONE OF THEM HAD A FLAME THROWER",
+          "ABORT ABORT"
+        ],
+        "type": "DIALOGUE",
+        "next": "driveby_burn"
+      },
+      {
+        "id": "driveby_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "ice_pool"
+      },
+      {
+        "id": "driveby_burn",
+        "type": "STATUS",
+        "result": ["Damn, that flamethrower guy got you really bad!"],
+        "statusId": ["burn", 3]
+      },
+      {
+        "id": "mob_rest_random",
+        "result": [
+          "They suspect nothing, they let you in.",
+          "You decide to take this opportunity to sleep on the comfiest bed in their camp.",
+          "By that I mean the boss's bed."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 70,
+            "next": "mob_rest_success"
+          },
+          {
+            "id": "failure",
+            "chance": 30,
+            "next": "mob_rest_failure"
+          }
+        ]
+      },
+      {
+        "id": "mob_rest_success",
+        "result": [
+          "It was the best sleep you ever had.",
+          "You wake up totally refreshed,",
+          "And ready to hypothetically cap more hypothetical kneecaps.",
+          "Allegedly."
+        ],
+        "type": "DIALOGUE",
+        "next": "mob_rest_reward"
+      },
+      {
+        "id": "mob_rest_failure",
+        "result": [
+          "It was the best sleep you ever had.",
+          "Unfortunately, THE BOSS himself returns.",
+          "He loves his bed. You must hypothetically cap his kneecaps now."
+        ],
+        "type": "DIALOGUE",
+        "next": "mob_rest_fight"
+      },
+      {
+        "id": "mob_rest_reward",
+        "result": ["Your abilities replenish."],
+        "type": "STATUS",
+        "statusId": ["infinite_ability", 2]
+      },
+      {
+        "id": "mob_rest_fight",
+        "type": "FIGHT",
+        "enemyId": ["slime", "ICE SLIME"]
+      }
+    ]
+  },
+  
+  {
     "id": "swamp_slime_2",
     "level": [0, 4],
     "description": "Swamp slime 2 encounter",

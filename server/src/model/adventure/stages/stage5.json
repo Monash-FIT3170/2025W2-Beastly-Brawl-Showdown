@@ -141,6 +141,194 @@
     ]
   },
   {
+    "id": "casino_gaming",
+    "level": [0, 3],
+    "description": "LETS GO GAMBLING!!!",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "AIN'T NO WAY ITS A WHOLE CASINO WOAAAAAA",
+          "Ignore the logistics of there being a casino in the middle of nowhere."
+        ],
+        "type": "DIALOGUE",
+        "next": "choice_1"
+      },
+      {
+        "id": "choice_1",
+        "result": ["Do you..?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "eat_casino",
+            "text": "am hongry monch monch",
+            "next": "eat_casino_random"
+          },
+          {
+            "id": "gamblecore",
+            "text": "LET'S GO GAMBLING!!!!",
+            "next": "gamblecore_random"
+          },
+          {
+            "id": "ignore",
+            "text": "LET'S BE FINANCIALLY RESPONSIBLE!!!",
+            "next": "no_investigation"
+          }
+        ]
+      },
+      {
+        "id": "eat_casino_random",
+        "result": ["You go up to the vending machine and buy something at random.",
+      "This is because you can't read."],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "power",
+            "chance": 50,
+            "next": "eat_casino_power"
+          },
+          {
+            "id": "curse",
+            "chance": 50,
+            "next": "eat_casino_curse"
+          }
+        ]
+      },
+      {
+        "id": "gamblecore_random",
+        "result": ["YOU GAMBLE!!!!!"],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "power",
+            "chance": 10,
+            "next": "gamble_power"
+          },
+          {
+            "id": "curse",
+            "chance": 90,
+            "next": "gamble_curse"
+          }
+        ]
+      },
+      {
+        "id": "eat_casino_power",
+        "type": "DIALOGUE",
+        "result": [
+          "You eat the suspicious food",
+          "It actually didn't kill you!"
+        ],
+        "next": "drink_reward"
+      },
+      {
+        "id": "drink_reward",
+        "type": "STATUS",
+        "result": ["Somehow it came from a lake or something idk"],
+        "statusId": ["lake_blessing", 3]
+      },
+      {
+        "id": "eat_casino_curse",
+        "type": "DIALOGUE",
+        "result": [
+          "You eat the suspicious food",
+          "But it was secretly EVIL FOOD!!!!!!!"
+        ],
+        "next": "drink_punishment"
+      },
+      {
+        "id": "drink_punishment",
+        "type": "STATUS",
+        "result": ["THE EVIL FOOD CAME FROM A LAKE OR SOMETHING IDK"],
+        "statusId": ["lake_curse", 3]
+      },
+      {
+        "id": "gamble_power",
+        "type": "DIALOGUE",
+        "result": [
+          "YOU GAMBLE!!!!!",
+          "WOW YOU HIT A JACKPOT OR  SOMETHING",
+          "RULE NUMBER 1, ALWAYS GAMBLE"
+        ],
+        "next": "gamble_reward"
+      },
+      {
+        "id": "gamble_reward",
+        "result": ["hey you wanna see something funny?"],
+        "type": "STATUS",
+        "statusId": ["lake_blessing", 99]
+      },
+      {
+        "id": "gamble_curse",
+        "type": "DIALOGUE",
+        "result": [
+          "YOU GAMBLE!!!!!",
+          "ERRRRT! AW DANGIT!",
+          "YOU PROLLY SHOULDN'T HAVE GAMBLED!!!!"
+        ],
+        "next": "gamble_punishment"
+      },
+      {
+        "id": "gamble_punishment",
+        "type": "STATUS",
+        "result": ["you are forced to sell your soul to accounting to make up gambling debts"],
+        "statusId": ["lake_curse", 10]
+      },
+      {
+        "id": "no_investigation",
+        "type": "DIALOGUE",
+        "result": [
+          "okay mister responsible geez try to live a little smh my head"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ember_slime_3",
+    "level": [2],
+    "description": "Stage 5, player fights slime 3.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Between the large walls of basalt you spot a cavern, you go inside, because why not?",
+          "The cavern opens into a vast chamber, lava crashes from the cliffs above.",
+          "From the lava, a towering shape arises.",
+          "It's an inferno slime, its body blazing like a wildfire."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["i will win.", "b u r n."],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "INFERNO SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "INFERNO SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "Somehow, you survive the inferno's wrath.",
+          "Its blaze collapses, leaving scorched stone and glowing embers.",
+          "Amid the smoldering remains, you spot something pulsing with heat..."
+        ],
+        "type": "DIALOGUE",
+        "next": "ember_drop"
+      },
+      {
+        "id": "ember_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      }
+    ]
+  },
+  {
     "id": "cursed_lake",
     "level": [0, 1],
     "description": "Cursed lake encounter",

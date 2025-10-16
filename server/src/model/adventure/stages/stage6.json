@@ -370,6 +370,55 @@
     ]
   },
   {
+    "id": "tax slime",
+    "level": [3],
+    "description": "OH SNAP TIS A TAX SLIME",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "So there you were minding your own stinky business.",
+          "WHEN suddenly, a slime wearing a hypothetical business suit emerges from a hypothetical trash can!"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue"
+      },
+      {
+        "id": "slime_dialogue",
+        "result": [
+          "IT IS I! THE TAX SLIME!",
+          "YOU HAVEN'T PAID YOUR TAXES!",
+          "WE TAKE TAX FRAUD FAR TOO SERIOUSLY! PREPARE TO hypothetically DIE!!!!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "THE TAX SLIME"],
+        "next": "slime_fight"
+      },
+      {
+        "id": "slime_fight",
+        "type": "FIGHT",
+        "enemyId": ["slime", "TAX SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "type": "DIALOGUE",
+        "result": [
+          "OUUUGGGHHHHH WHYYYYYYYY",
+          "HOW COULD YOU DO THIS TO MEEEEE",
+          "I HAD A WIFE AND THREE CHILDREN",
+          "As the life allegedly dies from his eyes, you manage to successfully steal his wallet. GGWP"
+        ],
+        "next": "slime_reward_pool"
+      },
+      {
+        "id": "slime_reward_pool",
+        "type": "LOOT_POOL",
+        "lootPoolId": "ice_slime_pool"
+      }
+    ]
+  },
+  {
     "id": "level_4_slime3",
     "level": [4],
     "description": "level4_slime3_encounter",

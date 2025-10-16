@@ -108,6 +108,66 @@
   },
   {
     "id": "First Encounter",
+    "level": [3],
+    "description": "Stage 3 miniboss",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You feel... a presence.",
+          "The icy plains beneath you rumble with the sound of muffled music.",
+          "A comically expensive sports car rolls up to you."
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_dialogue"
+      },
+      {
+        "id": "pre_fight_dialogue",
+        "result": [
+          "AYO WHAT THE SIGMA",
+          "YO YOU THINK YOU CAN HYPOTHETICALLY POP A CAP IN MY GUYS AND IMMA LET IT SLIDE??",
+          "AIN'T NO WAY IMMA DO THAT, IMMA HYPOTHETICALLY BEAT YOUR AFT!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["furious_flipper", "THE SKIBIDI SIGMA"],
+        "next": "stranger_fight"
+      },
+      {
+        "id": "stranger_fight",
+        "type": "FIGHT",
+        "enemyId": ["furious_flipper", "THE SKIBIDI SIGMA"],
+        "next": "victory"
+      },
+      {
+        "id": "victory",
+        "type": "DIALOGUE",
+        "result": [
+          "BROOOOOOOOO AINT NO WAYYY CHIIILLLLLL",
+          "WHAT THE GYATT I LOST this is so not cash money",
+          "Finna log off and hit the griddy bro"
+        ],
+        "enemyId": ["furious_flipper", "THE SKIBIDI SIGMA"],
+        "next": "victory_2"
+      },
+      {
+        "id": "victory_2",
+        "type": "DIALOGUE",
+        "result": [
+          "The SKIBIDI SIGMA hops back into his whip and drives off.",
+          "Though he is no longer in the area, you can feel his AURA.",
+          "You have made a dangerous enemy."
+        ],
+        "next": "mini_boss_reward"
+      },
+      {
+        "id": "mini_boss_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "ice_pool"
+      }
+    ]
+  },
+  {
+    "id": "First Encounter",
     "level": [4],
     "description": "level 4 mini boss",
     "outcomes": [
