@@ -7,6 +7,33 @@ import { loadNextStory, progressAdventure } from "./adventureModeHandler";
 import { ActionRandomiser } from "../model/game/actionRandomiser";
 import { ActionIdentifier } from "../../../types/single/actionState";
 import { Action } from "../model/game/action/action";
+import { Player } from "../model/game/player";
+
+//function to show status at begining of turn 1 in a batle
+function showDefaultStatusAnimations(
+  io: Server,
+  player1: Player,
+  player2: Player
+) {
+  // Build status-only animations for both players
+  player1.clearAnimations();
+  player1.setStartStatusAnimations();
+
+  player2.clearAnimations();
+  player2.setStartStatusAnimations();
+
+  // default phase
+  io.to(player1.getId()).emit("update_animation", {
+    phase: "default",
+    player: player1.getAnimations().filter((a) => a !== ""),
+    opp: player2.getAnimations().filter((a) => a !== ""),
+  });
+  io.to(player2.getId()).emit("update_animation", {
+    phase: "default",
+    player: player2.getAnimations().filter((a) => a !== ""),
+    opp: player1.getAnimations().filter((a) => a !== ""),
+  });
+}
 
 export const adventureTurnHandler = (io: Server, socket: Socket) => {
   // Handle player actions in adventure
@@ -19,6 +46,18 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
       var player = battle?.getPlayer(playerId);
       var actionToAdd: Action | undefined = undefined;
       player?.clearLogs();
+
+      //show status at begining of turn 1 battle 
+      let players = battle?.getPlayers();
+
+      if (!players) {
+        console.error(`ADV: battle players empty ${players}`);
+      } else{
+        if (battle?.getTurn() === 0){
+          showDefaultStatusAnimations(io, players[0], players[1])
+        }
+      }
+
       if (action.name == ActionIdentifier.CONSUME) {
         //CHECK IF CONSUME ACTION and just continue???
         //TODO: fix my methods because its ew just tryna get it to work lol...
@@ -123,6 +162,8 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
           player: player2.getAnimations().filter((a) => a != ""),
           opp: player1.getAnimations().filter((a) => a != ""),
         });
+
+        
 
         //TIME OUT CONSTANTS
         const prepareTimeOut = 1000; // -> between prepare animation and roll animation
@@ -298,6 +339,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                 //if battle not over - prepare next turn
                 let actions = player?.getMonster()?.getPossibleActionStates();
                 io.to(playerId).emit("possible_actions", actions);
+                battle?.incTurn();
               }
             }, executeTimeOut);
           }, rollTimeOut);

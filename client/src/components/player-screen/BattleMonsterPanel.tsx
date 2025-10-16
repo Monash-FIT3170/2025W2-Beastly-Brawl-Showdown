@@ -31,6 +31,20 @@ const BattleMonsterPanel: React.FC<BattleMonsterPanelProps> = ({
     return () => socket.off("update_animation", onUpdate);
   }, []);
 
+  useEffect(() => {
+  const onAdventureState = (payload: any) => {
+    if (payload.type === "battle") {
+      const you = payload.battle.yourPlayer?.animations ?? [];
+      const opp = payload.battle.opponentPlayer?.animations ?? [];
+      setPlayerAnimations(you.filter(Boolean));
+      setOpponentAnimations(opp.filter(Boolean));
+    }
+  };
+
+  socket.on("adventure_state", onAdventureState);
+  return () => socket.off("adventure_state", onAdventureState);
+}, []);
+
   return (
     <div className="fixed flex flex-col w-full h-screen justify-center pb-[50%] xl:pb-[20%] pl-[5%] xl:pl-[0%] xl:pr-[0%] pr-[5%]">
       {/* Generate 2 by 2 grid and placed monster at top right and bottom left colums */}
