@@ -1,4 +1,5 @@
 import React from 'react';
+import { getSelectedBackgroundTheme } from '../../selectedBackgroundTheme';
 
 interface BackgroundProps {
   children?: React.ReactNode;
@@ -6,10 +7,16 @@ interface BackgroundProps {
 
 
 const Background: React.FC<BackgroundProps> = ({ children }) => {
+  var backgroundLocation = getSelectedBackgroundTheme().toUpperCase();
+  var backgroundString =
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
+    backgroundLocation +
+    ".jpg')";
+
   return (
     <div 
       style={{
-        backgroundImage: "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/FOREST.jpg')",
+        backgroundImage: backgroundString,
         backgroundRepeat: 'no-repeat',
         backgroundSize: "cover",
         height: '100vh',        // Change from minHeight to height

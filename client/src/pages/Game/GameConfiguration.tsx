@@ -10,6 +10,7 @@ import { CardWithHeader } from "../../components/cards/CardWithHeader";
 import GameModeSelector from "../../components/selectors/GameModeSelector";
 import BackgroundThemeSelector from "../../components/selectors/BackgroundThemeSelector";
 import { OutlineTextResizable } from "../../components/texts/ResizableOutlineText";
+import { setSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 export const GameConfiguration = () => {
   // Use selectedGameModeIndex to retrieve currently selected mode.
@@ -23,6 +24,7 @@ export const GameConfiguration = () => {
 
   // Called on 'Host Lobby' button press
   const createGame = (mode: GameModeIdentifier) => {
+    setSelectedBackgroundTheme(backgroundThemeOptions[selectedBackgroundThemeIndex].name);
     socket.emit("create-game", { mode, selectedSliderValue });
     console.log("Game session created");
   };

@@ -18,6 +18,7 @@ import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { IconButton } from "../../components/buttons/IconButton";
 import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
+import { getSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -39,7 +40,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
   const [viewingEnemyInfo, setViewingEnemyInfo] = useState<Boolean>(false);
 
-  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
+  var backgroundLocation = getSelectedBackgroundTheme().toUpperCase();
   var backgroundString =
     "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
     backgroundLocation +
