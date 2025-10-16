@@ -107,7 +107,7 @@ export const ButtonGeneric = ({
 			${isDisabled ? (isPassive ? passiveButton : disabledButton) : enabledButton}
 			${sizeToDisplay[size]}
 		`}
-      onClick={onClick ? () => { playSFX("click"); onClick(); } : undefined }
+    onClick={onClick ? () => { playSFX("click"); onClick(); } : undefined }
     >
       {children}
     </button>
