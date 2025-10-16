@@ -1,16 +1,16 @@
 import React, { ReactNode } from "react"
-import { BlackText } from "../../components/texts/BlackText";
-import { OutlineTextBP } from "../../components/texts/OutlineTextBP";
+import { BlackText } from "../texts/BlackText";
+import { OutlineTextBP } from "../texts/OutlineTextBP";
 import { ActionIdentifier } from "../../../../types/single/actionState";
 
-interface AbilityProps {
+interface WikiAbilityProps {
     image: ActionIdentifier,
     name: string,
     body: string, 
     uses: string,
 }
 
-export const AbilityCard = ({image, name, body, uses}: AbilityProps) => {
+export const WikiAbilityCard = ({image, name, body, uses}: WikiAbilityProps) => {
     const imagePath =
         "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/action/" +
         image +

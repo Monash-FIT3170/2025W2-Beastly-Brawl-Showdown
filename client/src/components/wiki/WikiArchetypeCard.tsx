@@ -1,16 +1,16 @@
 import React, { ReactNode } from "react"
-import { BlackText } from "../../components/texts/BlackText";
-import { OutlineTextBP } from "../../components/texts/OutlineTextBP";
+import { BlackText } from "../texts/BlackText";
+import { OutlineTextBP } from "../texts/OutlineTextBP";
 import { ActionIdentifier } from "../../../../types/single/actionState";
 
-interface ArchetypeProps {
+interface WikiArchetypeProps {
     image: ActionIdentifier,
     name: string,
     body: string,
     action: string,
 }
 
-export const ArchetypeCard = ({image, name, body, action}: ArchetypeProps) => {
+export const WikiArchetypeCard = ({image, name, body, action}: WikiArchetypeProps) => {
     const imagePath =
         "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/action/" +
         image +

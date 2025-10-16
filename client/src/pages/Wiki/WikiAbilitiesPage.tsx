@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ActionIdentifier } from "../../../../types/single/actionState"
-import { AbilityCard } from "../../components/wiki/AbilityCard"
+import { WikiAbilityCard } from "../../components/wiki/WikiAbilityCard"
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { OutlineTextBP } from "../../components/texts/OutlineTextBP";
 import { BaseCard } from "../../components/cards/BaseCard";
@@ -18,13 +18,13 @@ export const WikiAbilitiesPage = () => {
                 Common Abilities
             </OutlineTextBP>
 
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.ATTACK}
                 name="Attack"
                 body={"The basic form of offence that all monsters have access to. \nMakes an attack roll, dealing 5 damage on a successful hit."}
                 uses="Unlimited"
             />
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.DEFEND}
                 name="Defend"
                 body={"The basic form of defence that all monsters have access to. \nIncreases AC by 5 this turn."}
@@ -35,49 +35,49 @@ export const WikiAbilitiesPage = () => {
                 Regular Abilities
             </OutlineTextBP>
 
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.FORTRESS_STANCE}
                 name="Fortress Stance"
                 body={"The user toughens their body, anticipating an attack. \nIncreases AC by 20 this turn."}
                 uses="1"
             />
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.TIP_THE_SCALES}
                 name="Tip the Scales"   
                 body={"The user's natural luck manifests in an attack. \nMakes an attack roll that will never roll below a 10, dealing 5 damage on a successful hit."}
                 uses="1"
             />
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.GROUND_SLAM}
                 name="Ground Slam"
                 body={"The user stomps the earth, disorientating the opponent. \nDeals 3 damage and stuns the enemy, preventing them from acting next turn."}
                 uses="2"
             />  
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.SHADOW_LEAP}
                 name="Shadow Leap"
                 body={"The user moves fast enough to become invisible, evading an attack. \nAny damage this turn is nullified."}
                 uses="1"
             />
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.FLAME_LASH}
                 name="Flame Lash"
                 body={"The user whips a blazing tail that seeks the opponent. \nDeals 5 damage, plus 5 more damage if the opponent tries to use an ability to dodge this attack."}
                 uses="1"
             />
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.ALLURING_LULLABY}
                 name="Alluring Lullaby"
                 body={"The user sings a strange tune that confuses the opponent. \nIf this monster would be hit by an attack this turn, the opponent takes the damage instead."}
                 uses="1"
             />
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.TOXIN_TONGUE}
                 name="Toxin Tongue"
                 body={"The user whips their venomous tongue as a weapon. \nThe opponent becomes poisoned, taking 1 damage at the start of their next 5 turns."}
                 uses="2"
             />
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.PUFFER_BLAST}
                 name="Puffer Blast"
                 body={"The user launches a burst of three pufferfish at the opponent. \nAttacks 3 times. Each attack has a 50% chance to hit and deals 2 damage if successful."}
@@ -88,7 +88,7 @@ export const WikiAbilitiesPage = () => {
                 Passive Abilities
             </OutlineTextBP>
 
-            <AbilityCard
+            <WikiAbilityCard
                 image={ActionIdentifier.FERAL_STRIKE}
                 name="Feral Strike"
                 body={"The user's savage nature causes it to deal crippling blows more easily. \nThis monster triggers a critical hit on a roll of 18-20."}
