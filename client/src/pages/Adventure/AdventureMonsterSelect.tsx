@@ -327,7 +327,7 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
             <div className="pt-4" />
             <BaseCard
               color="goldenRod"
-              className="flex flex-col justify-around sm:w-[55rem] lg:w:[95rem] h-min"
+              className="flex flex-col justify-around sm:w-[55rem] lg:w-[80rem] h-min"
             >
               <MonsterImage
                 name={selectedMonster.id}
