@@ -291,7 +291,7 @@ export const MonsterSelect: React.FC<MonsterSelectProps> = ({ setScreen }) => {
             <div className="pt-[2dvh]" />
             <BaseCard
               color="goldenRod"
-              className="flex flex-col justify-around sm:w-[80dvw] lg:w:[90dvw] h-min"
+              className="flex flex-col justify-around sm:w-[80dvw] lg:w-[80dvw] h-min"
             >
               <MonsterImage
                 name={selectedMonster.id}

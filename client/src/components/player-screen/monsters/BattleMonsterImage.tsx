@@ -30,7 +30,7 @@ const prio = new Map(overlayOrder.map((s, i) => [s, i]));
 function getZLevel(status: string, z: number): number {
   const p = prio.get(status);
   const priority = p !== undefined ? p : overlayOrder.length + 999;
-  return z*1000 + priority;
+  return z * 1000 + priority;
 }
 
 //get monster image
@@ -154,8 +154,6 @@ function getShieldAnimation(animations: string[]): [string, string] {
   let animation = "invisible";
   let image = "";
 
-  //TODO: handle shield expiring
-
   for (const a of shieldAnimations) {
     if (animations.includes(a)) {
       animation = "animate-" + a;
@@ -196,9 +194,6 @@ export const BattleMonsterImage: React.FC<BattleMonsterImageProps> = ({
   const [shieldAnimation, shieldImage] = getShieldAnimation(animations);
   const flip = side === "left" ? "transform -scale-x-100" : "";
   const shieldFlip = side === "right" ? "transform -scale-x-100" : "";
-
-  console.log('[BattleMonsterImage] underlayImage:', underlayImage, 'overlay:', overlayImage);
-
 
   return (
     <div className={`justify-self-center w-full flex justify-center`}>

@@ -146,6 +146,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
           battle: battle?.getBattleState(playerId),
         });
 
+        //FIXME: consider not emitting to two "sockets" as adventure only has one!
         console.log(
           "[PREPARE] p1:",
           player1.getAnimations(),
@@ -212,6 +213,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             player2.setEndStatusAnimations();
             //battle effect handled in effect()
 
+            player1.endStatusEffects();
+            player2.endStatusEffects();
+
             //update battlestate
             io.to(playerId).emit("adventure_state", {
               type: "battle",
@@ -236,15 +240,14 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
               opp: player1.getAnimations().filter((a) => a != ""),
             });
 
-            //reset stats
+            //reset players
             playersInBattle.forEach((p) => {
+              p.clearAnimations();
               p.resetStats();
               p.resetActions();
               p.getMonster()?.removeTemporaryActions();
-              p.endStatusEffects();
-              p.tickStatuses();
               p.startStatusEffects();
-              p.clearAnimations();
+              p.tickStatuses();
               p.setStartStatusAnimations(); //always see stunned etc.
             });
 

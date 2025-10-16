@@ -81,7 +81,7 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
                 color="red"
                 onClick={() => setErrors([])}
               >
-                BACK
+                <p className="text-outline text-blackCurrant">BACK</p>
               </ButtonGeneric>
             </div>
           </div>

@@ -24,6 +24,8 @@
   --color-guardianblue: #bad5f6;
   --color-predatorpurple: #64467a;
   --color-wyvernred: #e83f5e;
+  --color-saffron: #f5d12e;
+  --color-brightsilver: #d9d9d9;
   --color-storycolour: #f69f3a;
   --color-notification: #fe392b;
   --color-notification-accent: #f7877f;
@@ -47,11 +49,11 @@
   --animate-attack-right: attack-right 0.5s linear;
   --animate-attack-left: attack-left 0.5s linear;
 
-  --animate-defend: shield-create 3s ease-out infinite;
+  --animate-defend: shield-create 3s ease-out forwards;
   --animate-shield: shield 3s linear infinite;
   --animate-shield-crack: shield-block 3s ease-in-out infinite;
   --animate-shield-broken: shield-break 3s linear infinite;
-  --animate-shield-expire: shield-fade 3s ease-in infinite;
+  --animate-shield-expire: shield-fade 3s ease-in forwards;
 
   --animate-shadow-leap: shadow-leap 3s ease-in-out infinite;
   --animate-slime-support: green-glow 3s ease-in-out infinite;
@@ -253,30 +255,6 @@ h2 {
   0% {
     filter: drop-shadow(0 0 20px #55a9ed) opacity(0.8);
   }
-}
-
-@keyframes fade-in-out-pop {
-  0% {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  15% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  75% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.03);
-  }
-}
-
-.animate-fade-in-out {
-  animation: fade-in-out-pop 900ms ease-out forwards;
-  pointer-events: none;
-  will-change: opacity, transform;
 }
 
 @keyframes fade-in-out-pop {

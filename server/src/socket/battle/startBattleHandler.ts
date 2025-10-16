@@ -44,6 +44,9 @@ export default function proceedBattleTurn(
     }
   }
 
+  //clear previous battlelogs
+  battle.clearBattleLogs();
+
   //Players' states before the turn start
   gameSession.setCurrentPhase(BattlePhase.CHOOSE_ACTION);
   io.to(gameSession.getHost()).emit("game-session-state", {
@@ -203,6 +206,8 @@ export default function proceedBattleTurn(
           player2.setStartStatusAnimations();
           player2.setEndStatusAnimations();
           //battle effect handled in effect()
+          player1.endStatusEffects();
+          player2.endStatusEffects();
 
           console.log(
             "[EXECUTE] p1:",
@@ -211,17 +216,6 @@ export default function proceedBattleTurn(
             player2.getAnimations()
           );
 
-          io.to(player1.getId()).emit("update_animation", {
-            phase: "execute",
-            player: player1.getAnimations().filter((a) => a != ""),
-            opp: player2.getAnimations().filter((a) => a != ""),
-          });
-          io.to(player2.getId()).emit("update_animation", {
-            phase: "execute",
-            player: player2.getAnimations().filter((a) => a != ""),
-            opp: player1.getAnimations().filter((a) => a != ""),
-          });
-
           //Handle logic after actions are executed (see GameMode)
           gameSession.onActionExecuted(
             player1.getId(),
@@ -229,9 +223,6 @@ export default function proceedBattleTurn(
             player2.getId(),
             p2_result
           );
-
-          //clear previous battlelogs
-          battle.clearBattleLogs();
 
           // Emit the result of the battle state after the turn is complete
           playersInBattle.forEach((player) => {
@@ -244,39 +235,38 @@ export default function proceedBattleTurn(
             }
           });
 
-          // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
-          playersInBattle.forEach((player) => {
-            player.resetStats();
-            player.resetActions();
-            player.getMonster()?.removeTemporaryActions();
-            player.clearAnimations();
-            player.setStartStatusAnimations();
+          io.to(player1.getId()).emit("update_animation", {
+            phase: "execute",
+            player: player1.getAnimations().filter((a) => a != ""),
+            opp: player2.getAnimations().filter((a) => a != ""),
+          });
+          io.to(player2.getId()).emit("update_animation", {
+            phase: "execute",
+            player: player2.getAnimations().filter((a) => a != ""),
+            opp: player1.getAnimations().filter((a) => a != ""),
           });
 
-          if (battle.isBattleOver()) {
-            const winners = battle.getWinners();
-            if (winners.length == 0) {
-              //Handler after a battle ended
-              gameSession.onBattleEnded(null, battle, io, socket);
-            } else {
-              //Handler after a battle ended
-              gameSession.onBattleEnded(winners[0], battle, io, socket);
-            }
-            //Emit to host one last time before shutting down the handler
-            gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
-            io.to(gameSession.getHost()).emit("game-session-state", {
-              session: gameSession.getGameSessionState(),
-            });
+          // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
+          playersInBattle.forEach((p) => {
+            p.clearAnimations();
+            p.resetStats();
+            p.resetActions();
+            p.getMonster()?.removeTemporaryActions();
+            p.startStatusEffects();
+            p.tickStatuses();
+            p.setStartStatusAnimations();
+          });
 
-            //Shutting down the handler
-            return;
-          } else {
-            playersInBattle.forEach((p) => {
-              p.startStatusEffects();
-              p.endStatusEffects();
-              p.tickStatuses();
-            });
-          }
+          // Emit the result of the battle state after the turn is complete
+          playersInBattle.forEach((player) => {
+            if (!player.isBotPlayer()) {
+              // Only emit the battle state of human player
+              io.to(player.getId()).emit("battle_state", {
+                battle: battle.getBattleState(player.getId()),
+                metadata: gameSession.getMetadata(),
+              });
+            }
+          });
 
           // TODO: ONLY update the current battle to be more memory efficient...
           //Players' states after the turn ends
@@ -287,24 +277,6 @@ export default function proceedBattleTurn(
 
           //TIMEOUT BETWEEN EXECUTE AND DEFAULT
           setTimeout(() => {
-            if (gameSession.areBattlesConcluded()) {
-              //Handler after all battles have ended
-              gameSession.onBattlesEnded(io, socket);
-
-              console.log(`Only one player remains.`);
-
-              //TODO: for future, this can be used to handle what happens after a game session ends
-
-              socket.emit("game_session_ended", {
-                message: `Game session ${gameSession.getGameCode()} has ended.`,
-              });
-              return;
-            }
-
-            if (battle.isBattleOver()) {
-              console.log(`Battle ${battle.getId} has ended`);
-              return;
-            }
             io.to(player1.getId()).emit("update_animation", {
               phase: "default",
               player: player1.getAnimations(),
@@ -315,7 +287,41 @@ export default function proceedBattleTurn(
               player: player2.getAnimations(),
               opp: player1.getAnimations(),
             });
-            proceedBattleTurn(io, socket, gameSession, battle);
+
+            if (battle.isBattleOver()) {
+              const winners = battle.getWinners();
+              if (winners?.length == 0) {
+                //Handler after a battle ended
+                gameSession.onBattleEnded(null, battle, io, socket);
+              } else {
+                //Handler after a battle ended
+                gameSession.onBattleEnded(winners[0], battle, io, socket);
+              }
+              //Emit to host one last time before shutting down the handler
+              gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
+              io.to(gameSession.getHost()).emit("game-session-state", {
+                session: gameSession.getGameSessionState(),
+              });
+
+              //Shutting down the handler
+              console.log(`Battle ${battle.getId} has ended`);
+
+              if (gameSession.areBattlesConcluded()) {
+                //Handler after all battles have ended
+                gameSession.onBattlesEnded(io, socket);
+
+                console.log(`Only one player remains.`);
+
+                //TODO: for future, this can be used to handle what happens after a game session ends
+
+                socket.emit("game_session_ended", {
+                  message: `Game session ${gameSession.getGameCode()} has ended.`,
+                });
+              }
+              return;
+            } else {
+              proceedBattleTurn(io, socket, gameSession, battle);
+            }
           }, executeTimeOut);
         }, rollTimeOut);
       }, prepareTimeOut);

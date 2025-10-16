@@ -9,20 +9,20 @@ import { playerAccounts } from "../../main";
 import { GameModeIdentifier } from "/types/single/gameMode";
 import { BattleRoyale } from "../model/host/gamemode/battleRoyale";
 
-
 export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
   socket.on("create-game", (data) => {
     console.log("Attempting game session creation...");
 
-    console.log("[MODE SELECTION]: ", data)
+    console.log("[MODE SELECTION]: ", data);
     let session: GameSession;
     //TODO: move this to a separate function if we have more multiplayer modes.
-    if (data.mode === GameModeIdentifier.SCORING){
-      session = new GameSession(socket.id, {mode: new ScoringTournament({rounds : data.selectedValue})});
-    }
-    else{
-      session = new GameSession(socket.id, {mode: new BattleRoyale()});
+    if (data.mode === GameModeIdentifier.SCORING) {
+      session = new GameSession(socket.id, {
+        mode: new ScoringTournament({ rounds: data.selectedValue }),
+      });
+    } else {
+      session = new GameSession(socket.id, { mode: new BattleRoyale() });
     }
 
     // Check if game code already exists, if so, generate a new one
@@ -32,8 +32,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
     activeGameSessions.set(session.getGameCode(), session);
 
-
-
     console.log(
       `Game session created: ${session.getGameCode()} | hostId: ${socket.id}`
     );
@@ -41,7 +39,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
     socket.emit("new-game", {
       // UPDATE: change who this emits to because potentially two ppl clicking host at same time would call this
-      code: session.getGameCode()
+      code: session.getGameCode(),
     });
   });
 
@@ -57,7 +55,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       if (!session) {
         // If session of given game code doesn't exist
         console.log(`Join request failed. Invalid Code`);
-        socket.emit("join-reject", ["The code entered is invalid. Please verify and try again"]);
+        socket.emit("join-reject", [
+          "The code entered is invalid. Please verify and try again",
+        ]);
         return;
       }
 
@@ -65,14 +65,18 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       // Ensure that playerAccount exists
       if (!playerAccounts.has(socket.id)) {
         console.log(`Player account not found for socket ID: ${socket.id}`);
-        socket.emit("join-reject", ["Player account not found. Please register or login."]);
+        socket.emit("join-reject", [
+          "Player account not found. Please register or login.",
+        ]);
         return;
       }
       // Ensure that playerAccount is valid (socket maps correctly to PlayerAccount)
       const playerAccount = playerAccounts.get(socket.id);
       if (!playerAccount) {
         console.log(`Player account not found for socket ID: ${socket.id}`);
-        socket.emit("join-reject", ["Player account not found. Please register or login."]);
+        socket.emit("join-reject", [
+          "Player account not found. Please register or login.",
+        ]);
         return;
       }
 
@@ -85,11 +89,12 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
         while (numberTaken) {
           guestNumber++;
-          numberTaken = currentPlayers.some(p => p.name === `Guest ${guestNumber}`);
+          numberTaken = currentPlayers.some(
+            (p) => p.name === `Guest ${guestNumber}`
+          );
         }
 
         finalName = `Guest ${guestNumber}`;
-
       } else {
         finalName = name;
       }
@@ -112,12 +117,18 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
       // Update host information
       io.to(`game-${gameCode}`).emit("update-players", {
-        message: `Player ${name} - PlayerEmail ${newPlayer.getPlayerAccountEmail()} - ${socket.id} added to current game session.`,
+        message: `Player ${name} - PlayerEmail ${newPlayer.getPlayerAccountEmail()} - ${
+          socket.id
+        } added to current game session.`,
         players: session.getPlayerStates(),
       });
 
       // Player is accepted
-      console.log(`Join request accepted. UserID: ${socket.id} | UserAcc email: ${newPlayer.getPlayerAccountEmail()} | UserAcc name: ${newPlayer.getPlayerAccountUsername()}.`);
+      console.log(
+        `Join request accepted. UserID: ${
+          socket.id
+        } | UserAcc email: ${newPlayer.getPlayerAccountEmail()} | UserAcc name: ${newPlayer.getPlayerAccountUsername()}.`
+      );
 
       // Update player success message
       socket.emit("join-accept", {
@@ -125,7 +136,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       });
     } catch (err) {
       console.error("Unexpected join error:", err);
-      socket.emit("join-reject", ["An unexpected error occurred. Please try again."]);
+      socket.emit("join-reject", [
+        "An unexpected error occurred. Please try again.",
+      ]);
     }
   });
 
@@ -217,7 +230,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Return request failed. Invalid Code`);
       return;
     }
-
   });
 
   // Emits current player list on request
@@ -270,7 +282,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     session.calculateMostChosenMonster();
 
     session.createMatches();
-    session.initGame(io, socket)
+    session.initGame(io, socket);
 
     for (const battle of session.getBattles().getItems()) {
       for (const player of battle.getPlayers()) {
@@ -285,7 +297,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
   // Starting a recently added battle
   socket.on("start-new-battle", ({ gameCode }) => {
-
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
     const battle = session?.getBattles().getFrontItem();
@@ -308,18 +319,21 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     console.log("Session cancelling...");
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
-    
-    session.closeAllBattles() //close all the ongoing battles in the current game session (host)
 
-    //Notify all players that the host is closed
-    session?.getBattles().getItems().forEach((curBattle)=> {
-      io.to(curBattle.getId()).emit("host-closed")
-    })
     if (!session) {
       // If session of given game code doesn't exist
       console.log(`Cancel Request failed. Invalid Code`);
       return;
     }
+    session.closeAllBattles(); //close all the ongoing battles in the current game session (host)
+
+    //Notify all players that the host is closed
+    session
+      ?.getBattles()
+      .getItems()
+      .forEach((curBattle) => {
+        io.to(curBattle.getId()).emit("host-closed");
+      });
 
     io.to(`game-${gameCodeN}`).emit("close-warning", {
       message: "Current game session is closing.",
@@ -341,18 +355,20 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }, 100);
   });
 
-  // Get final winner
-  socket.on("get-final-winner", ({ gameCode }) => {
+  // Get final results
+  socket.on("request-final-results", ({ gameCode }) => {
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
-    const finalWinner = session?.getFinalWinner();
+    const finalResults = session?.getFinalResults();
 
-    if (finalWinner) {
-      console.log(`Successfully retrieved final winner for game code ${gameCode}`);
-      socket.emit("final-winner-response", { finalWinner });
+    if (finalResults) {
+      console.log(
+        `Successfully retrieved final results for game code ${gameCode}`
+      );
+      socket.emit("final-results", { finalResults });
     } else {
-      console.log(`Failed to retrieve final winner for game code ${gameCode}`);
-      socket.emit("final-winner-response", { finalWinner: null });
+      console.log(`Failed to retrieve final results for game code ${gameCode}`);
+      socket.emit("final-results", { finalResults: null });
     }
   });
 };
