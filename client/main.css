@@ -49,11 +49,11 @@
   --animate-attack-right: attack-right 0.5s linear;
   --animate-attack-left: attack-left 0.5s linear;
 
-  --animate-defend: shield-create 3s ease-out infinite;
+  --animate-defend: shield-create 3s ease-out forwards;
   --animate-shield: shield 3s linear infinite;
   --animate-shield-crack: shield-block 3s ease-in-out infinite;
   --animate-shield-broken: shield-break 3s linear infinite;
-  --animate-shield-expire: shield-fade 3s ease-in infinite;
+  --animate-shield-expire: shield-fade 3s ease-in forwards;
 
   --animate-shadow-leap: shadow-leap 3s ease-in-out infinite;
   --animate-slime-support: green-glow 3s ease-in-out infinite;

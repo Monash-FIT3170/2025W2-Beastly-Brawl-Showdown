@@ -34,7 +34,7 @@ export class Shield extends Status {
   }
 
   public expire(player: Player): void {
-    player.addAnimation("shield-expire"); // to be updated in battlemonsterimage.tsx
+    player.addAnimation("shield-expire");
   }
 
   public getState() {
