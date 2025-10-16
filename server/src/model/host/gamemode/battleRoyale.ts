@@ -14,6 +14,7 @@ export class BattleRoyale implements IGameMode {
   private remainingPlayers: Player[] = [];
   private io: Server | null = null;
   private playerFinished = 0;
+  private gameModeFinished = false;
 
   public init(session: GameSession, io: Server, socket: Socket): void {
     this.io = io;
@@ -46,10 +47,8 @@ export class BattleRoyale implements IGameMode {
 
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
-        winners: [winner.getName()]
-,
+        winners: [winner.getName()],
       });
-
     } 
 
     // Case 2: It is a draw - there are no winners
@@ -61,10 +60,8 @@ export class BattleRoyale implements IGameMode {
 
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
-        winners: []
-,
+        winners: [],
       });
-
     }
 
     console.log("[ELIMINATED PLAYERS]: ", this.eliminatedPlayers.map(player => player.getName()));
@@ -182,7 +179,7 @@ export class BattleRoyale implements IGameMode {
     });
   }
 
-	public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
+  public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
     if (this.isSessionConcluded(session)) {
       let finalWinner: PlayerState | null;
 
@@ -198,37 +195,44 @@ export class BattleRoyale implements IGameMode {
         console.log("[FINAL RESULTS]: There are no winners, everyone got eliminated");
       }
 
-      const gameCode = session.getGameCode();
-      this.io?.to(`game-${gameCode}`).emit("final-winner-response", { finalWinner });
-      session.setFinalWinner(finalWinner);
+      session.setFinalResults({
+        finalWinner
+      });
 
+      // Properly end the battle for each player
       const playersInSession = session.getPlayers().getItems();
-				playersInSession.forEach((player) => {
-					if (finalWinner) {
-						if (!player.isBotPlayer()) {
-							io.sockets.sockets.get(player.getId())?.emit("battle_end", {
-                result: "concluded",
-                winners: [finalWinner.name]
-              });
-						}
-					} else {
-						if (!player.isBotPlayer()) {
-							io.sockets.sockets.get(player.getId())?.emit("battle_end", {
-                result: "draw",
-                winners: []
-              });
-						}
-					}
-				});
+      playersInSession.forEach((player) => {
+        if (finalWinner) {
+          if (!player.isBotPlayer()) {
+            io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+              result: "concluded",
+              winners: [finalWinner.name]
+            });
+          }
+        } else {
+          if (!player.isBotPlayer()) {
+            io.sockets.sockets.get(player.getId())?.emit("battle_end", {
+              result: "draw",
+              winners: []
+            });
+          }
+        }
+      });
+
+      this.gameModeFinished = true;
     }
   }
 
-	public isSessionConcluded(session: GameSession): boolean {
+  public isSessionConcluded(session: GameSession): boolean {
     return this.remainingPlayers.length <= 1;
   }
 
-	public getMetadata(): GameSessionStateMetaData {
+  public getMetadata(): GameSessionStateMetaData {
     return {};
+  }
+
+  public isGameModeFinished(): boolean {
+    return this.gameModeFinished;
   }
 
   private eliminatePlayer(player: Player): void {
