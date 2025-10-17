@@ -246,8 +246,8 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
               p.resetStats();
               p.resetActions();
               p.getMonster()?.removeTemporaryActions();
-              p.startStatusEffects();
               p.tickStatuses();
+              p.startStatusEffects();
               p.setStartStatusAnimations(); //always see stunned etc.
             });
 
@@ -269,6 +269,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                 player: player2.getAnimations(),
                 opp: player1.getAnimations(),
               });
+
 
               //check if battle is over
               if (battle?.isBattleOver()) {
@@ -341,7 +342,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
               } else {
                 //if battle not over - prepare next turn
                 let actions = player?.getMonster()?.getPossibleActionStates();
-                io.to(playerId).emit("possible_actions", actions);
+                io.to(playerId).emit("possible_actions", actions);  
                 battle?.incTurn();
               }
             }, executeTimeOut);

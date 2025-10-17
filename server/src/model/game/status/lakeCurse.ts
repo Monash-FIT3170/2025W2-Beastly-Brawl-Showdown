@@ -11,7 +11,7 @@ export class LakeCurse extends StartStatus {
     super(
       "Lake Curse",
       "Monster's actions may be disabled at random",
-      countDown,
+      countDown +1,
       StatusType.DEBUFF
     );
   }

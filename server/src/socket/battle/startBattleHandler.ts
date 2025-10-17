@@ -252,8 +252,8 @@ export default function proceedBattleTurn(
             p.resetStats();
             p.resetActions();
             p.getMonster()?.removeTemporaryActions();
-            p.startStatusEffects();
             p.tickStatuses();
+            p.startStatusEffects();
             p.setStartStatusAnimations();
           });
 

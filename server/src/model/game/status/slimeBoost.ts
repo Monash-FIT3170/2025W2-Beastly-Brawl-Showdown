@@ -7,7 +7,7 @@ export class SlimeBoost extends StartStatus {
     super(
       "Slime Boost",
       "Buff your lowest rated stat!",
-      countdown,
+      countdown +1,
       StatusType.BUFF
     );
   }
