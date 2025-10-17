@@ -15,7 +15,7 @@ export const WikiTutorialPage = () => {
 
             <WikiHeader title="How to Play"></WikiHeader>
 
-            <div className="flex flex-col w-[80rem] space-y-[1rem] whitespace-pre-line">
+            <div className="flex flex-col md:w-[50rem] xl:w-[100rem] space-y-[1rem] whitespace-pre-line">
                 <BlackText size="medium">
                     Welcome to Beastly Brawl Showdown! This guide will walk you through the basics of how to play the game.
                 </BlackText>

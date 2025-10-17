@@ -19,7 +19,7 @@ export const WikiArchetypeCard = ({image, name, body, action}: WikiArchetypeProp
     const colour = name.toLowerCase();
 
     return (
-        <div className={`flex flex-col h-[20rem] w-[100rem] bg-${colour} justify-start items-center whitespace-pre-line p-[1rem] space-y-[1rem] border-[0.4rem] border-blackCurrant rounded-xl`}>
+        <div className={`flex flex-col xl:h-[20rem] md:h-[35rem] md:w-[50rem] xl:w-[100rem] bg-${colour} justify-start items-center whitespace-pre-line p-[1rem] space-y-[1rem] border-[0.4rem] border-blackCurrant rounded-xl`}>
             
             
             <div>

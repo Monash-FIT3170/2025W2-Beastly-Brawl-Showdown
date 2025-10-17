@@ -10,9 +10,11 @@ export const WikiArchetypesPage = () => {
     
         <WikiHeader title="Archetypes"></WikiHeader>
 
+        <div className="md:w-[50rem] xl:w-[100rem]">
         <BlackText size="medium">
             {"Each monster falls under one of three classifications known as archetypes. \nA monster's archetype defines its playstyle as well as one of the moves it has access to."}
         </BlackText>
+        </div>
 
         <div className="flex flex-col space-y-[2rem] justify-around items-center">
             <WikiArchetypeCard

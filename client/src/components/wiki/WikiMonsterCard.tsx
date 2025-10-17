@@ -37,7 +37,7 @@ export const WikiMonsterCard = ({image, name, description, ability1, ability2, a
     const stats = `HP: ${HP}\nAttack Bonus: ${attackBonus}\nAC: ${AC}`;
 
     return (
-        <div className={`flex flex-col h-[40rem] w-[100rem] bg-alto justify-start items-center whitespace-pre-line p-[1rem] space-y-[1rem] border-[0.4rem] border-blackCurrant rounded-xl`}>
+        <div className={`flex flex-col h-[40rem] md:w-[50rem] xl:w-[100rem] bg-alto justify-start items-center whitespace-pre-line p-[1rem] space-y-[1rem] border-[0.4rem] border-blackCurrant rounded-xl`}>
             
             <div className="flex flex-row items-center justify-around w-[80rem]">
                 <OutlineTextBP size="large">

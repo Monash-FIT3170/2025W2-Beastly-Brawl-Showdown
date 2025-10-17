@@ -17,7 +17,7 @@ export const WikiIndex = () => {
             <div className="flex flex-col h-full w-full space-y-[1rem] overflow-y-scroll justify-start items-center m-[2rem]">
                 <WikiHeader title="Rules"></WikiHeader>
 
-                <BaseCard color="peach" width={100} height={48}>
+                <div className={`flex flex-col xl:h-[80rem] md:h-[35rem] md:w-[50rem] xl:w-[100rem] bg-peach justify-start items-center whitespace-pre-line p-[1rem] space-y-[1rem] border-[0.4rem] border-blackCurrant rounded-xl`}>
                     <div className="flex flex-col h-full w-full justify-start items-start p-[2rem] space-y-[2rem]">
                         {VALID_WIKI_PAGES.map((page) => (
                             <li key={page}>
@@ -27,7 +27,7 @@ export const WikiIndex = () => {
                             </li>
                         ))}
                     </div>
-                </BaseCard>
+                </div>
             </div>
         </BlankPage>
     );
