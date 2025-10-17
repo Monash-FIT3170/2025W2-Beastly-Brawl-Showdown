@@ -143,7 +143,7 @@
   },
   {
     "id": "casino_gaming",
-    "level": [0, 3],
+    "level": [3],
     "description": "LETS GO GAMBLING!!!",
     "outcomes": [
       {
@@ -179,8 +179,10 @@
       },
       {
         "id": "eat_casino_random",
-        "result": ["You go up to the vending machine and buy something at random.",
-      "This is because you can't read."],
+        "result": [
+          "You go up to the vending machine and buy something at random.",
+          "This is because you can't read."
+        ],
         "type": "RANDOM",
         "options": [
           {
@@ -271,7 +273,9 @@
       {
         "id": "gamble_punishment",
         "type": "STATUS",
-        "result": ["you are forced to sell your soul to accounting to make up gambling debts"],
+        "result": [
+          "you are forced to sell your soul to accounting to make up gambling debts"
+        ],
         "statusId": ["lake_curse", 10]
       },
       {
@@ -707,6 +711,7 @@
     "id": "stage5_stamina",
     "level": [0],
     "description": "Stage 5, player finds the colosseum of stamina",
+    "background": "COLOSSEUM",
     "outcomes": [
       {
         "id": "initial",

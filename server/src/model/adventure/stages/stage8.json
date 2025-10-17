@@ -135,6 +135,7 @@
     "id": "Colosseum Encounter",
     "level": [5],
     "description": "Colosseum gauntlet",
+    "background": "COLOSSEUM",
     "outcomes": [
       {
         "id": "initial",
