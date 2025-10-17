@@ -18,6 +18,7 @@ import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { IconButton } from "../../components/buttons/IconButton";
 import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
+import { GameModeIdentifier } from "../../../../types/single/gameMode";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
@@ -38,6 +39,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [waitForConclusion, setWaitForConclusion] = useState<boolean>(false);
   const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
   const [viewingEnemyInfo, setViewingEnemyInfo] = useState<Boolean>(false);
+  const [isSpectating, setIsSpectating] = useState<boolean>(false);
+  const [gameMode, setGameMode] = useState<GameModeIdentifier>(
+    GameModeIdentifier.SCORING
+  );
 
   var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   var backgroundString =
@@ -50,8 +55,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.on("battle_state", (data) => {
       console.log("[BATTLESTATE]: ", data.battle);
       console.log("[METADATA]: ", data.metadata);
+      console.log("[ISSPECTATING]: ", data.isSpectating);
       setBattleState(data.battle);
       setMetadata(data.metadata);
+      setIsSpectating(data.isSpectating);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -63,9 +70,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setTimer(time);
     });
 
-    socket.on("battle_end", ({ result, winners }) => {
+    socket.on("battle_end", ({ result, winners, mode }) => {
       setWaitForConclusion(false);
-      console.log(result, winners);
+      setGameMode(mode);
+      console.log(result, winners, mode);
       if (result === "draw") {
         setWinner("Draw");
       } else if (result === "concluded") {
@@ -222,11 +230,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         ) : */}
         {winner ? (
           winner === "Draw" ? (
-            <DrawScreen />
+            <DrawScreen mode={gameMode} />
           ) : battleState?.yourPlayer.name === winner ? (
             <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
           ) : (
-            <LoserScreen />
+            <LoserScreen mode={gameMode} />
           )
         ) : (
           <>
@@ -303,6 +311,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                 <BattleFooter
                   possibleActions={possibleActions}
                   battleId={battleId}
+                  isSpectating={isSpectating}
                 />
               )}
             </div>

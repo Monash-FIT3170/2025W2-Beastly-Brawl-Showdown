@@ -4,9 +4,12 @@ import { GenericHeader } from "../../components/cards/GenericHeader";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import React, { useEffect, useState } from "react";
-
+import { GameModeIdentifier } from "../../../../types/single/gameMode";
+interface DrawScreenProps {
+  mode: GameModeIdentifier;
+}
 //
-const DrawScreen: React.FC = () => {
+const DrawScreen: React.FC<DrawScreenProps> = ({ mode }) => {
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
     // UPDATE: add pop up when kicked
@@ -16,6 +19,10 @@ const DrawScreen: React.FC = () => {
   const leave = () => {
     socket.emit("leave-game", { userID: socket.id });
     FlowRouter.go("/");
+  };
+
+  const spectate = () => {
+    socket.emit("spectate-game", { userID: socket.id });
   };
 
   return (
@@ -31,6 +38,16 @@ const DrawScreen: React.FC = () => {
           src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
           alt={`GRAVE image`}
         />
+
+        {mode === GameModeIdentifier.BATTLE_ROYALE && (
+          <ButtonGeneric color="red" size="medium" onClick={() => spectate()}>
+            <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+              <div>
+                <OutlineText size="medium">SPECTATE</OutlineText>
+              </div>
+            </div>
+          </ButtonGeneric>
+        )}
 
         <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
           <div className="flex flex-row items-center justify-around w-full h-full space-x-3">

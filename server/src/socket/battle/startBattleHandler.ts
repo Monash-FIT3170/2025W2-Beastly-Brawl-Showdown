@@ -21,6 +21,10 @@ export default function proceedBattleTurn(
 
   console.log("[BATTLE INFO]:", battle);
   let playersInBattle = battle.getPlayers();
+  let spectatorsInBattle = battle.getSpectators();
+
+  // Let's just have the spectator spectate the first person. This can be changed later.
+  let playerToSpectate = playersInBattle[0];
 
   // checks/ticks statuses for each player
   //playersInBattle.forEach((player) => {
@@ -38,6 +42,7 @@ export default function proceedBattleTurn(
       io.to(battle.getId()).emit("battle_end", {
         result: "draw",
         winners: winners.map((player) => player.getName()),
+        mode: gameSession.getMode().name,
       });
     } else {
       const winningPlayer = winners[0];
@@ -47,6 +52,7 @@ export default function proceedBattleTurn(
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
         winners: winners.map((player) => player.getName()),
+        mode: gameSession.getMode().name,
       });
     }
   }
@@ -64,6 +70,7 @@ export default function proceedBattleTurn(
       io.to(player.getId()).emit("battle_state", {
         battle: battle.getBattleState(player.getId()),
         metadata: gameSession.getMetadata(), //metadata received from the game session
+        isSpectating: false,
       }); // Emit the battle state to each player
 
       let actions = player.getMonster().getPossibleActionStates();
@@ -72,6 +79,19 @@ export default function proceedBattleTurn(
       ActionRandomiser.randomAction(player);
     }
   });
+
+  if (playerToSpectate) {
+    spectatorsInBattle.forEach((spectator) => {
+      io.to(spectator.getId()).emit("battle_state", {
+        battle: battle.getBattleState(playerToSpectate.getId()),
+        metadata: gameSession.getMetadata(),
+        isSpectating: true,
+      });
+
+      let actions = playerToSpectate.getMonster().getPossibleActionStates();
+      io.to(playerToSpectate.getId()).emit("possible_actions", actions);
+    });
+  }
 
   let player1 = playersInBattle[0];
   let player2 = playersInBattle[1];
@@ -173,9 +193,25 @@ export default function proceedBattleTurn(
             io.to(player.getId()).emit("battle_state", {
               battle: battle.getBattleState(player.getId()),
               metadata: gameSession.getMetadata(),
+              isSpectating: false,
             });
           }
         });
+
+        if (playerToSpectate) {
+          spectatorsInBattle.forEach((spectator) => {
+            io.to(spectator.getId()).emit("battle_state", {
+              battle: battle.getBattleState(playerToSpectate.getId()),
+              metadata: gameSession.getMetadata(),
+              isSpectating: true,
+            });
+
+            let actions = playerToSpectate
+              .getMonster()
+              .getPossibleActionStates();
+            io.to(playerToSpectate.getId()).emit("possible_actions", actions);
+          });
+        }
 
         // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
         playersInBattle.forEach((player) => {

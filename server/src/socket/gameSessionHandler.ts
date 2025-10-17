@@ -170,6 +170,17 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     socket.join(`game-${gameCodeN}`);
   });
 
+  socket.on("spectate-game", ({ userID = socket.id }) => {
+    //debugging
+    if (!players.get(userID)) {
+      console.log(`Player not in map.`);
+    }
+
+    const player = players.get(userID);
+
+    player?.setIsSpectating(true);
+  });
+
   // Leave request
   socket.on("leave-game", ({ userID = socket.id }) => {
     const gameCode = players.get(userID)?.getGameCode();
@@ -316,6 +327,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       player.prepareForNextBattle();
     }
     socket.emit("battle-started", battle.getId());
+    session.getMode().onBattleStarted(session, battle, io, socket);
     proceedBattleTurn(io, socket, session, battle);
   });
 

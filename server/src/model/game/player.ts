@@ -46,6 +46,9 @@ export class Player {
   private mostDamageDealt: number = 0;
   private criticalHitsDealt: number = 0;
 
+  private potentialSpectators: Player[] = [];
+  private spectating: boolean = false;
+
   constructor(
     id: string,
     name: string,
@@ -470,6 +473,22 @@ export class Player {
 
   public clearStoryItems(): void {
     this.storyItems = [];
+  }
+
+  public isSpectating(): boolean {
+    return this.spectating;
+  }
+
+  public setIsSpectating(value: boolean): void {
+    this.spectating = value;
+  }
+
+  public getPotentialSpectators(): Player[] {
+    return this.potentialSpectators;
+  }
+
+  public addPotentialSpectators(players: Player[]): void {
+    this.potentialSpectators.push(...players);
   }
 
   //PLAYER STATE:
