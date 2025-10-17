@@ -1,4 +1,4 @@
-import { MonsterIdentifier, MonsterState } from "/types/single/monsterState";
+import { MonsterIdentifier } from "/types/single/monsterState";
 import { Monster } from "./monster";
 import { Neutral } from "../archetype/neutral";
 import { NullAction } from "../action/null";
@@ -6,7 +6,7 @@ import { GroundSlamAbilityAction } from "../action/ability/groundSlam";
 import { SlimeSupportAction } from "../action/ability/slimeSupport";
 
 export class Slime extends Monster {
-  constructor(name: string) {
+  constructor(name: string = "Slime") {
     super(
       MonsterIdentifier.SLIME,
       name,
