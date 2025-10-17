@@ -1,4 +1,4 @@
-import { RockyRhino } from "../game/monster/rockyRhino";
+import { JackedOLantern } from "../game/monster/jackedOLantern";
 import { SeasonalEvent } from "./seasonalEvent";
 
 export class SpookGarden extends SeasonalEvent {
@@ -7,7 +7,7 @@ export class SpookGarden extends SeasonalEvent {
             "placeHolderID",
             "Spook Garden",
             // Temporarily RockyRhino, but will be a new monster called Jacked o' Lantern
-            new RockyRhino(),
+            new JackedOLantern(),
             "Fight a buff pumpkin monster in the yearly Halloween event."
         )
     }
