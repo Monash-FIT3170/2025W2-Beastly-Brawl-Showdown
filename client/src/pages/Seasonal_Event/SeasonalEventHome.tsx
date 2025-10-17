@@ -10,7 +10,7 @@ import { MonsterIdentifier } from "../../../../types/single/monsterState";
 import { SeasonalEventIdentifier } from "../../../../types/single/seasonalEventState";
 import { motion, AnimatePresence } from "framer-motion";
 import { BaseCard } from "../../components/cards/BaseCard";
-import { monsterMeta } from "../../data/monsterMeta";
+import { eventMeta } from "../../data/eventMeta";
 
 interface SeasonalEventHomeProps {}
 
@@ -26,8 +26,11 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
   const event = eventMap[observedEvent] ?? SeasonalEventIdentifier.SPOOK_GARDEN;
   const monster = MonsterIdentifier.JACKEDOLANTERN;
 
-  const eventName = "Spook Garden";
-  const eventDescription = "Fight a buff pumpkin monster in the yearly Halloween event.";
+  const { name: eventName, description: eventDescription } =
+    eventMeta[event];
+
+//   const eventName = "Spook Garden";
+//   const eventDescription = "Fight a buff pumpkin monster in the yearly Halloween event.";
 
 
   // Monster image (coloured or silhouette if locked)
