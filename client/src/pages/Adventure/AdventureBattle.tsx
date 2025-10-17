@@ -381,10 +381,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         {dialogue && (
           <>
             {currentEnemy && (
-              <MonsterDisplay
-                biomeString={getBiomeString(levelMonster)}
-                monster={currentEnemy}
-              />
+              <MonsterDisplay biomeString={background} monster={currentEnemy} />
             )}
             <DialogueBox
               monster={currentEnemy ?? undefined}
@@ -604,7 +601,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 
             <BattleMonsterPanel
               battleState={battleState}
-              slimeString={backgroundLocation}
+              slimeString={background}
             />
 
             <div

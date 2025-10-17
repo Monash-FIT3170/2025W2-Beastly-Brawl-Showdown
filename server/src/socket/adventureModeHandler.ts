@@ -81,7 +81,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
-      player.giveStoryItem(new PristineKey());
+
       //progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );

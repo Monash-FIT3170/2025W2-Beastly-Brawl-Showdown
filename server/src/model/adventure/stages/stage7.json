@@ -753,6 +753,7 @@
     "id": "stage7_grand_colosseum",
     "level": [0],
     "description": "Stage 7, player finds the grand colosseum",
+    "background": "COLOSSEUM",
     "outcomes": [
       {
         "id": "initial",

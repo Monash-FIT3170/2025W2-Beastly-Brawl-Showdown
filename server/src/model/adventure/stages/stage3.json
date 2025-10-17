@@ -401,10 +401,7 @@
       },
       {
         "id": "driveby_failure",
-        "result": [
-          "OH SNAP ONE OF THEM HAD A FLAME THROWER",
-          "ABORT ABORT"
-        ],
+        "result": ["OH SNAP ONE OF THEM HAD A FLAME THROWER", "ABORT ABORT"],
         "type": "DIALOGUE",
         "next": "driveby_burn"
       },
@@ -474,7 +471,7 @@
       }
     ]
   },
-  
+
   {
     "id": "swamp_slime_2",
     "level": [0, 4],
@@ -579,6 +576,7 @@
     "id": "stage3_titan",
     "level": [0],
     "description": "Stage 3, player finds the coliseum of slimes",
+    "background": "COLOSSEUM",
     "outcomes": [
       {
         "id": "initial",
@@ -871,10 +869,8 @@
       },
       {
         "id": "hole_choice",
-        "result":[
-          "What do you do?"
-        ],
-        "options":[
+        "result": ["What do you do?"],
+        "options": [
           {
             "id": "choice_rock",
             "text": "Drop in a rock.",
@@ -899,7 +895,7 @@
       },
       {
         "id": "drop_rock",
-        "result":[
+        "result": [
           "You grabed a rock next to you and droped it into the hole.",
           "You waited....",
           "Waited....",
@@ -909,11 +905,9 @@
       },
       {
         "id": "stick_hand",
-        "result": [
-          "You take a deep breath and stick your hand into the hole."
-        ],
+        "result": ["You take a deep breath and stick your hand into the hole."],
         "type": "RANDOM",
-        "options":[
+        "options": [
           {
             "id": "good",
             "chance": 50,
@@ -925,7 +919,6 @@
             "next": "bite"
           }
         ]
-
       },
       {
         "id": "reward",
@@ -943,7 +936,7 @@
       },
       {
         "id": "bite",
-        "result":[
+        "result": [
           "Something moved inside.",
           "Before you can react, sharp teeth clamp down on your fingers!",
           "You yelp and yank your hand back.",
