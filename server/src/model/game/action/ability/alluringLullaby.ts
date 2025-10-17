@@ -12,7 +12,7 @@ export class AlluringLullaby extends Action {
       ActionIdentifier.ALLURING_LULLABY,
       "Alluring Lullaby",
       "Sing a wicked little tune, confusing your opponent. If your opponent dares attack, they'll hit themselves instead",
-      100
+      1
     );
 
     this.damage = 5;

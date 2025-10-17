@@ -75,7 +75,6 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       }
 
       const player = adventure.getPlayer();
-      player.addStatus(new LakeCurse(20));
       player.setMonster(monster);
       //progressAdventure(io, socket, adventure, adventure.getStage());
     }
