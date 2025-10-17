@@ -47,6 +47,20 @@ export interface AdventureProgressionSchema {
 
 }
 
+
+
+
+export interface AchievementSchema {
+  _id: string;
+  name: string;
+  description: string;
+  status: boolean;
+  progress: number;
+  goal: number;
+  objectives: Record<string, boolean|number>;
+  hidden: boolean
+}
+
 // Collections
 export const PlayersCollection = new Mongo.Collection('players');
 
