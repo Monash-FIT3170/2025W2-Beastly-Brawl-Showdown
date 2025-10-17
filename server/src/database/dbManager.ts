@@ -21,8 +21,10 @@ export interface PlayerAccountSchema {
   stats: {
     numGamesPlayed: number;
     numGamesWon: number;
+    raidScore: number; // Waiting on team cobra 
+    endlessScore: number; // Waiting for team... to do it
   }
-  achievements: string[];
+  achievements: AchievementSchema[];
   monstersStat: PlayerMonsterStatSchema[]; 
   adventureProgression: AdventureProgressionSchema
 }
