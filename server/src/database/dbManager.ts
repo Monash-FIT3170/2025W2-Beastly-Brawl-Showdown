@@ -22,6 +22,8 @@ export interface PlayerAccountSchema {
   stats: {
     numGamesPlayed: number;
     numGamesWon: number;
+    raidScore: number; // Waiting on team cobra 
+    endlessScore: number; // Waiting for team... to do it
   }
   achievements: AchievementSchema[];
   monstersStat: PlayerMonsterStatSchema[]; 
@@ -375,6 +377,30 @@ export async function getTopPlayersByNumGamesPlayed(_limit: number) {
     console.error(`Error fetching top players by games played: ${error.message}`);
     return [];
   }
+}
 
+// Retrieves the top N players sorted by raid score
+export async function getTopPlayersByRaidScore(_limit: number) {
+  try {
+    // Get the top players sorted by raidScore in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'stats.raidScore': -1 }, limit: _limit }
+    ).fetch();
 
+    console.log('Top Players by Raid Score:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.stats && player.stats.raidScore !== undefined);
+
+    // Return player name, raidScore (called score for consistency)
+    return validPlayers.map(player => ({
+      username: player.username,
+      score: player.stats.raidScore
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players by raid score: ${error.message}`);
+    return [];
+  }
 }

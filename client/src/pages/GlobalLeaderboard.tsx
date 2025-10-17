@@ -18,7 +18,7 @@ interface LeaderboardEntry {
     score: number;
 }
 
-type SortOption = "wins" | "gamesPlayed";
+type SortOption = "wins" | "gamesPlayed" | "raidScore";
 interface SortConfig {
   key: SortOption;
   label: string;
@@ -29,7 +29,7 @@ export const GlobalLeaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[][]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const sortLabels = ["Wins", "Games Played"];
+  const sortLabels = ["Wins", "Games Played", "Raid Score"];
 
   // Use the GlobalLeaderboardHandler to fetch and display the leaderboard
   useEffect(() => {
@@ -42,6 +42,7 @@ export const GlobalLeaderboard = () => {
         setLeaderboardData(data.data);
         console.log('batch0',data.data[0])
         console.log('batch1', data.data[1])
+        console.log('batch2 RAID', data.data[2])
       } else {
         console.error("Failed to fetch leaderboard:", data.message);
       }
