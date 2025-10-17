@@ -100,6 +100,7 @@ export class BattleRoyale implements IGameMode {
         result: "concluded",
         winners: [winner.getName()],
       });
+      
     }
 
     // Case 2: It is a draw - there are no winners
@@ -130,6 +131,10 @@ export class BattleRoyale implements IGameMode {
       this.isSessionConcluded(session),
       this.eliminatedPlayers.length
     );
+    
+    if (this.isSessionConcluded(session)){
+      return
+    }
 
     if (winner != null && !this.isSessionConcluded(session)) {
       io.sockets.sockets
