@@ -98,3 +98,13 @@ h2 {
     filter: drop-shadow(0 0 0.5rem #403245); /* strong mid glow */
   }
 }
+
+/* Hide scrollbar but keep scroll */
+::-webkit-scrollbar {
+  display: none;
+}
+html,
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
