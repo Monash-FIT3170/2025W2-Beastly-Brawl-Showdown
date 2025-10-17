@@ -7,9 +7,10 @@ import React, { useEffect, useState } from "react";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 interface LoserScreenProps {
   mode: GameModeIdentifier;
+  gameCode?: string;
 }
 //
-const LoserScreen: React.FC<LoserScreenProps> = ({ mode }) => {
+const LoserScreen: React.FC<LoserScreenProps> = ({ mode, gameCode }) => {
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
     // UPDATE: add pop up when kicked
@@ -23,6 +24,7 @@ const LoserScreen: React.FC<LoserScreenProps> = ({ mode }) => {
 
   const spectate = () => {
     socket.emit("spectate-game", { userID: socket.id });
+    FlowRouter.go(`/session/${gameCode}`, {}, { fromBattle: "true" });
   };
 
   return (

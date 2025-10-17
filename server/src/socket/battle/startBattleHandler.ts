@@ -43,6 +43,7 @@ export default function proceedBattleTurn(
         result: "draw",
         winners: winners.map((player) => player.getName()),
         mode: gameSession.getMode().name,
+        gameCode: session.getGameCode().toString(),
       });
     } else {
       const winningPlayer = winners[0];
@@ -53,6 +54,7 @@ export default function proceedBattleTurn(
         result: "concluded",
         winners: winners.map((player) => player.getName()),
         mode: gameSession.getMode().name,
+        gameCode: session.getGameCode().toString(),
       });
     }
   }

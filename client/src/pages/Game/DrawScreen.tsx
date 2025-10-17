@@ -7,9 +7,10 @@ import React, { useEffect, useState } from "react";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 interface DrawScreenProps {
   mode: GameModeIdentifier;
+  gameCode?: string;
 }
 //
-const DrawScreen: React.FC<DrawScreenProps> = ({ mode }) => {
+const DrawScreen: React.FC<DrawScreenProps> = ({ mode, gameCode }) => {
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
     // UPDATE: add pop up when kicked
@@ -23,6 +24,7 @@ const DrawScreen: React.FC<DrawScreenProps> = ({ mode }) => {
 
   const spectate = () => {
     socket.emit("spectate-game", { userID: socket.id });
+    FlowRouter.go(`/session/${gameCode}`, {}, { fromBattle: "true" });
   };
 
   return (

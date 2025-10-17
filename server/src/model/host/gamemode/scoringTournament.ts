@@ -175,6 +175,7 @@ export class ScoringTournament implements IGameMode {
                 result: "concluded",
                 winners: [playerName],
                 mode: this.name,
+                gameCode: session.getGameCode().toString(),
               });
             }
           } else {
@@ -184,6 +185,7 @@ export class ScoringTournament implements IGameMode {
                 result: "draw",
                 winners: [],
                 mode: this.name,
+                gameCode: session.getGameCode().toString(),
               });
             }
           }

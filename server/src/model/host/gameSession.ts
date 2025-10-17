@@ -448,6 +448,15 @@ export default class GameSession {
     return this.mode.onBattlesEnded(this, io, socket);
   }
 
+  public onBattleStarted(
+    session: GameSession,
+    battle: Battle,
+    io: Server,
+    socket: Socket
+  ): void {
+    return this.mode.onBattleStarted(session, battle, io, socket);
+  }
+
   public isSessionConcluded(): boolean {
     return this.mode.isSessionConcluded(this);
   }

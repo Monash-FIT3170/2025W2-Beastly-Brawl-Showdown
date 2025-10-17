@@ -70,9 +70,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setTimer(time);
     });
 
-    socket.on("battle_end", ({ result, winners, mode }) => {
+    socket.on("battle_end", ({ result, winners, mode, gameCode }) => {
       setWaitForConclusion(false);
       setGameMode(mode);
+      setGameCode(gameCode);
       console.log(result, winners, mode);
       if (result === "draw") {
         setWinner("Draw");
@@ -230,11 +231,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         ) : */}
         {winner ? (
           winner === "Draw" ? (
-            <DrawScreen mode={gameMode} />
+            <DrawScreen mode={gameMode} gameCode={gameCode} />
           ) : battleState?.yourPlayer.name === winner ? (
             <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
           ) : (
-            <LoserScreen mode={gameMode} />
+            <LoserScreen mode={gameMode} gameCode={gameCode} />
           )
         ) : (
           <>

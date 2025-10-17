@@ -96,6 +96,12 @@ export class BattleRoyale implements IGameMode {
         }
       }
     }
+
+    for (let spectator of battle.getSpectators()) {
+      io.sockets.sockets
+        .get(spectator.getId())
+        ?.emit("battle-started", battle.getId());
+    }
   }
 
   public onBattleEnded(
@@ -113,13 +119,14 @@ export class BattleRoyale implements IGameMode {
         .filter((player) => player.getId() != winner.getId())[0];
 
       // If a battle is won, add the losers potential spectators to the winners potential spectators list
-      winner.addPotentialSpectators(loser.getPotentialSpectators());
+      winner.addPotentialSpectators([...loser.getPotentialSpectators(), loser]);
       this.eliminatePlayer(loser);
 
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
         winners: [winner.getName()],
         mode: this.name,
+        gameCode: session.getGameCode().toString(),
       });
     }
 
@@ -136,14 +143,22 @@ export class BattleRoyale implements IGameMode {
           this.remainingPlayers[
             Math.floor(Math.random() * this.remainingPlayers.length)
           ];
-        randomPlayer.addPotentialSpectators(player1.getPotentialSpectators());
-        randomPlayer.addPotentialSpectators(player2.getPotentialSpectators());
+        randomPlayer.addPotentialSpectators([
+          ...player1.getPotentialSpectators(),
+          player1,
+        ]);
+
+        randomPlayer.addPotentialSpectators([
+          ...player2.getPotentialSpectators(),
+          player2,
+        ]);
       }
 
       io.to(battle.getId()).emit("battle_end", {
         result: "draw",
         winners: [],
         mode: this.name,
+        gameCode: session.getGameCode().toString(),
       });
     }
 
@@ -423,6 +438,7 @@ export class BattleRoyale implements IGameMode {
                 result: "concluded",
                 winners: [finalWinner.name],
                 mode: this.name,
+                gameCode: session.getGameCode().toString(),
               });
             }
           } else {
@@ -431,6 +447,7 @@ export class BattleRoyale implements IGameMode {
                 result: "draw",
                 winners: [],
                 mode: this.name,
+                gameCode: session.getGameCode().toString(),
               });
             }
           }

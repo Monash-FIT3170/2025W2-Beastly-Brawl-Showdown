@@ -327,7 +327,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       player.prepareForNextBattle();
     }
     socket.emit("battle-started", battle.getId());
-    session.getMode().onBattleStarted(session, battle, io, socket);
+    session.onBattleStarted(session, battle, io, socket);
     proceedBattleTurn(io, socket, session, battle);
   });
 
