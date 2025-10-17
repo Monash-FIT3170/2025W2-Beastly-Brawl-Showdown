@@ -22,26 +22,17 @@ export const Home = () => {
   const [adventurePopup, setAdventurePopup] = useState(false);
 
   useEffect(() => {
-    // Ask server for login status
     socket.emit("check-login");
 
-    const handleLoginStatus = ({ loggedIn }: { loggedIn: boolean }) => {
+    const handleLoginStatus = ({ loggedIn }) => {
       setLoggedInUser(loggedIn);
     };
 
     socket.on("login-status", handleLoginStatus);
 
-    return () => socket.off("login-status", handleLoginStatus);
-  }, []);
-
-
-  useEffect(() => {
-    const handleNewGame = ({ code }: { code: string }) => {
-      FlowRouter.go(`/host/${code}`);
+    return () => {
+      socket.off("login-status", handleLoginStatus);
     };
-
-    socket.on("new-game", handleNewGame);
-    return () => socket.off("new-game", handleNewGame);
   }, []);
 
   const createGame = () => {
@@ -84,56 +75,7 @@ export const Home = () => {
 
   return (
     <BlankPage>
-      <div className="absolute lg:top-[3rem] lg:right-[3rem] top-[5rem] right-[5rem] items-center justify-center">
-        {adventurePopup && (
-          <PopupClean>
-            <div className="flex flex-col justify-around">
-              <OutlineText size="extraLarge">Play Adventure?</OutlineText>
-              <BlackText size="large">
-                YOU ARE NOT LOGGED IN. YOU CAN PLAY ADVENTURE, BUT NO PROGRESS
-                WILL BE SAVED.
-              </BlackText>
-              <div className="flex flex-row justify-center gap-[2rem] pt-[2rem] items-center">
-                <ButtonGeneric
-                  size="medium"
-                  color="red"
-                  onClick={() => setAdventurePopup(false)}
-                >
-                  <OutlineText size="choice-text"> BACK </OutlineText>
-                </ButtonGeneric>
-                <ButtonGeneric
-                  size="medium"
-                  color="blue"
-                  onClick={renderAdventure}
-                >
-                  <OutlineText size="choice-text"> CONTINUE </OutlineText>
-                </ButtonGeneric>
-              </div>
-            </div>
-          </PopupClean>
-        )}
-        {!loggedInUser ? (
-          <ButtonGeneric
-            color={"ronchi"}
-            size={"squaremedium"}
-            onClick={() => FlowRouter.go("/login")}
-          >
-            <div className="flex flex-col ">
-              <OutlineText size={"tiny"}>LOG</OutlineText>
-              <OutlineText size={"tiny"}>IN</OutlineText>
-            </div>
-          </ButtonGeneric>
-        ) : (
-          <IconButton
-            style="profile"
-            iconColour="black"
-            buttonColour="ronchi"
-            size="medium"
-            onClick={() => FlowRouter.go("/account")}
-          />
-        )}
-      </div>
-      <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] ">
+      <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] overflow-auto">
         <div className="flex flex-row w-full sm:items-end lg:items-center justify-around">
           <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
         </div>
@@ -169,7 +111,7 @@ export const Home = () => {
             <ButtonGeneric
               color={"ronchi"}
               size={"squaremedium"}
-              onClick={() => setShowLogin(true)}
+              onClick={() => FlowRouter.go("/login")}
             >
               <div className="flex flex-col ">
                 <OutlineText size={"tiny"}>LOG</OutlineText>
@@ -236,3 +178,4 @@ export const Home = () => {
     </BlankPage>
   );
 };
+
