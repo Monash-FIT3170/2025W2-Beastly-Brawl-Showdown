@@ -110,12 +110,16 @@ export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProp
 
   const handleConfirmSelection = () => {
     if (selectedMonster) {
-      socket.emit("monster_selected", {
+      // Emit the selected monster to the server
+      // TODO: Use in next page
+
+      socket.emit("event_monster_selected", {
         monsterID: selectedMonster.id,
       });
 
-      console.log(`Monster ${selectedMonster.name} selected for player`);
-      setScreen(Screens.WAITING_SCREEN);
+      console.log(
+        `Event Monster ${selectedMonster.name} selected for player`
+      );
     }
   };
 
