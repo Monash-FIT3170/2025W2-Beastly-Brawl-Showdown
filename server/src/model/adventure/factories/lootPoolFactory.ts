@@ -123,6 +123,33 @@ const LootPoolFactory: Record<string, LootEntry[]> = {
       id: "grey_crystal",
     },
   ],
+  ice_slime_pool: [
+    {
+      loot: () => new BlueCrystal(),
+      chance: 15,
+      id: "blue_crystal",
+    },
+    {
+      loot: () => new BlackCrystal(),
+      chance: 15,
+      id: "black_crystal",
+    },
+    {
+      loot: () => new RedCrystal(),
+      chance: 20,
+      id: "red_crystal",
+    },
+    {
+      loot: () => new PurpleCrystal(),
+      chance: 20,
+      id: "purple_crystal",
+    },
+    {
+      loot: () => new GreyCrystal(),
+      chance: 30,
+      id: "grey_crystal",
+    },
+  ],
   desert_pool: [
     {
       loot: () => new CoolingPendant(),

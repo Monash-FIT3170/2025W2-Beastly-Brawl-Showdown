@@ -157,6 +157,104 @@
     ]
   },
   {
+    "id": "BIGGER GANG HIDEOUT",
+    "level": [0, 3],
+    "description": "It's a bigger gang hideout oh noooooo",
+    "background": "CAVE",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": [
+          "You come across an endlessly deep chasm.",
+          "The only way across is a worn down rope bridge.",
+          "You see something glimmering on the other side.",
+          "The gap is too large to jump."
+        ],
+        "next": "bridge_choice"
+      },
+      {
+        "id": "bridge_choice",
+        "result": ["Do you try to cross...?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "cross",
+            "text": "Cross",
+            "next": "cross_random"
+          },
+          {
+            "id": "ignore",
+            "text": "Ignore",
+            "next": "ignore_outcome"
+          }
+        ]
+      },
+      {
+        "id": "cross_random",
+        "result": ["You cross"],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 50,
+            "next": "bridge_crossed"
+          },
+          {
+            "id": "failure",
+            "chance": 50,
+            "next": "bridge_broke"
+          }
+        ]
+      },
+      {
+        "id": "bridge_crossed",
+        "result": [
+          "You put one foot after another, carefully moving forward.",
+          "The old wooden planks look like they could give out any second.",
+          "Before you know it, you're on the other side.",
+          "You find the source of the glimmering."
+        ],
+        "type": "DIALOGUE",
+        "next": "bridge_reward"
+      },
+      {
+        "id": "bridge_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion"
+      },
+      {
+        "id": "bridge_broke",
+        "type": "DIALOGUE",
+        "result": [
+          "You put one foot after another, carefully moving forward.",
+          "The rot on the planks does not give you confidence",
+          "You hear a snap and instinctively grab the rope."
+        ],
+        "next": "bridge_injury"
+      },
+      {
+        "id": "bridge_injury",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": ["You smack into the side of the cliff!"],
+        "next": "resolution"
+      },
+      {
+        "id": "resolution",
+        "result": ["It hurts, but you can muster the strength to climb out."],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "ignore_outcome",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide that nothing on the other side is worth the risk and adventure onwards."
+        ]
+      }
+    ]
+  },
+  {
     "id": "forge",
     "level": [2],
     "description": "Stage 7, player finds the forge.",

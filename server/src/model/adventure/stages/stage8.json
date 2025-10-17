@@ -82,6 +82,45 @@
     ]
   },
   {
+    "id": "Final Encounter Penguin",
+    "level": [3],
+    "description": "skibidi",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["AYO GUESS WHOS BACK HOMIE"],
+        "type": "DIALOGUE",
+        "next": "stranger_dialogue"
+      },
+      {
+        "id": "stranger_dialogue",
+        "result": [
+          "YOURE DONE BRO",
+          "I HAVE RETURNED FROM HELL ITSELF TO SKIBIDI YOUR OHIO."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["furious_flipper", "THE BIGGEST SIGMA"],
+        "next": "stranger_fight"
+      },
+      {
+        "id": "stranger_fight",
+        "type": "FIGHT",
+        "enemyId": ["furious_flipper", "THE BIGGEST SIGMA"],
+        "next": "victory"
+      },
+      {
+        "id": "victory",
+        "type": "DIALOGUE",
+        "result": [
+          "OUGGGHHHGHGHGHGHGHGH",
+          "NOW IM DEAAAAADDDDDDDD",
+          "also take my identical clone im dying now okay bye AAAAAAAAAAA."
+        ],
+        "enemyId": ["furious_flipper", "THE BIGGEST SIGMA"]
+      }
+    ]
+  },
+  {
     "id": "final_frog",
     "level": [4],
     "description": "final_boss_fight",
