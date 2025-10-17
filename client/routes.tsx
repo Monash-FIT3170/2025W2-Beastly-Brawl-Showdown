@@ -19,7 +19,7 @@ import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
-import { SeasonalEventHome } from "./src/pages/Seasonal_Event/SeasonalEventHome";
+import SeasonalEventHome from "./src/pages/Seasonal_Event/SeasonalEventHome";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
