@@ -11,6 +11,7 @@ import { SeasonalEventIdentifier } from "../../../../types/single/seasonalEventS
 import { motion, AnimatePresence } from "framer-motion";
 import { BaseCard } from "../../components/cards/BaseCard";
 import { eventMeta } from "../../data/eventMeta";
+import { monsterMeta } from "../../data/monsterMeta";
 
 interface SeasonalEventHomeProps {}
 
@@ -21,16 +22,19 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
   const eventMap: Record<number, SeasonalEventIdentifier> = {
     10: SeasonalEventIdentifier.SPOOK_GARDEN
   };
+  const monsterMap: Record<number, MonsterIdentifier> = {
+    10: MonsterIdentifier.JACKEDOLANTERN
+  };
 
-  // Resolve event data
+  // Resolve event and monster data
   const event = eventMap[observedEvent] ?? SeasonalEventIdentifier.SPOOK_GARDEN;
-  const monster = MonsterIdentifier.JACKEDOLANTERN;
+  const monster = monsterMap[observedEvent] ?? MonsterIdentifier.JACKEDOLANTERN;
 
   const { name: eventName, description: eventDescription } =
     eventMeta[event];
 
-//   const eventName = "Spook Garden";
-//   const eventDescription = "Fight a buff pumpkin monster in the yearly Halloween event.";
+  const { name: monsterName, description: monsterDescription } =
+    monsterMeta[monster];
 
 
   // Monster image (coloured or silhouette if locked)
@@ -93,6 +97,8 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
           <div className="border-4 border-blackCurrant rounded-2xl bg-white/70 p-8 w-[70%] sm:w-[90%] lg:w-[90%] max-w-2xl text-center">
             <OutlineText size="large">{eventName}</OutlineText>
             <BlackText size="medium">{eventDescription}</BlackText>
+            <OutlineText size="large">{monsterName}</OutlineText>
+            <BlackText size="medium">{monsterDescription}</BlackText>
           </div>
         </div>
       </div>
