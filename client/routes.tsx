@@ -20,6 +20,7 @@ import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
 import SeasonalEventHome from "./src/pages/Seasonal_Event/SeasonalEventHome";
+import SeasonalEventMonsterSelect from "./src/pages/Seasonal_Event/SeasonalEventMonsterSelect";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -136,6 +137,14 @@ FlowRouter.route("/seasonal-event", {
   action() {
     document.title = "Home - Seasonal Event | Beastly Brawl Showdown";
     mount(SeasonalEventHome);
+  },
+});
+
+FlowRouter.route("/seasonal-event/monster-select", {
+  name: "MonsterSelect",
+  action() {
+    document.title = "Monster Select - Seasonal Event | Beastly Brawl Showdown";
+    mount(SeasonalEventMonsterSelect);
   },
 });
 

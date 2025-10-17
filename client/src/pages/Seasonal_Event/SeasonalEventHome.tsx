@@ -45,6 +45,11 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
     monster
   )}.jpg')`;
 
+  const renderEventMonsterSelect = () => {
+    socket.emit("event_selected", { event: event });
+    FlowRouter.go("/seasonal-event/monster-select");
+  };
+
   return (
     <div className="relative flex flex-col items-center justify-center h-[100dvh] w-full px-4 overflow-hidden">
       {/* AnimatePresence handles background transitions */}
@@ -100,6 +105,25 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
             <OutlineText size="large">{monsterName}</OutlineText>
             <BlackText size="medium">{monsterDescription}</BlackText>
           </div>
+        </div>
+        {/* Navigation (fixed to bottom) */}
+        <div className="fixed bottom-25 left-1/2 -translate-x-1/2 grid grid-cols-3 items-center w-[70%] lg:max-w-md z-40">
+            {/* Explore Button (centered) */}
+            <div className="flex justify-center">
+            <ButtonGeneric
+                color="ronchi"
+                size="battle"
+                onClick={
+                renderEventMonsterSelect
+                }
+            >
+                <div className="min-w-[6rem] sm:min-w-[8rem] lg:min-w-[10rem] text-center">
+                <OutlineText size={"choice-text"}>
+                    ENTER
+                </OutlineText>
+                </div>
+            </ButtonGeneric>
+            </div>
         </div>
       </div>
     </div>

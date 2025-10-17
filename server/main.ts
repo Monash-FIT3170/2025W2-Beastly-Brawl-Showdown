@@ -33,10 +33,12 @@ import {
   PlayerAccountSchema,
   createDefaultPlayerAccountSchema,
 } from "./src/database/dbManager";
+import { SeasonalEvent } from "./src/model/seasonal_event/seasonalEvent";
 export const playerAccounts = new Map<string, PlayerAccountSchema>();
 
 // Helper function that
 export const activeAdventures = new Map<string, Adventure>();
+export const activeEvents = new Map<string, SeasonalEvent>();
 
 Meteor.startup(async () => {
   // Initialise socket
