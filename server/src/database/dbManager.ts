@@ -21,8 +21,10 @@ export interface PlayerAccountSchema {
   stats: {
     numGamesPlayed: number;
     numGamesWon: number;
+    raidScore: number; // Waiting on team cobra 
+    endlessScore: number; // Waiting for team... to do it
   }
-  achievements: string[];
+  achievements: AchievementSchema[];
   monstersStat: PlayerMonsterStatSchema[]; 
   adventureProgression: AdventureProgressionSchema
 }
@@ -43,6 +45,20 @@ export interface AdventureProgressionSchema {
   achievements: string[],
   savedGameState: {} 
 
+}
+
+
+
+
+export interface AchievementSchema {
+  _id: string;
+  name: string;
+  description: string;
+  status: boolean;
+  progress: number;
+  goal: number;
+  objectives: Record<string, boolean|number>;
+  hidden: boolean
 }
 
 // Collections
