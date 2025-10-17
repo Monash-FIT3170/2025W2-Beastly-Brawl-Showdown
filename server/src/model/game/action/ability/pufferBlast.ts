@@ -41,7 +41,7 @@ export class PufferBlast extends Action {
     // Apply damage to the affected player
     affectedPlayer.incHealth(-hitDamage);
     for (let i = 0; i < poisonStacks; i++) {
-      affectedPlayer.addStatus(new Poison(5));
+      affectedPlayer.addStatus(new Poison(3));
     }
     this.damage = hitDamage;
 
