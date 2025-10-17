@@ -91,7 +91,7 @@ export const Achievements = () => {
 
       <div
         className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black w-full flex flex-col items-center"
-        style={{ height: "1600px" }}
+        style={{ height: "1300px" }}
       >
         <div className="w-full overflow-y-auto flex flex-col gap-4">
           {achievements.map((ach) => (
