@@ -133,7 +133,7 @@ export const Account = () => {
   // Profile View Form
   const ProfileView = () => (
     <>
-      <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black max-w-[800px] w-full relative">
+      <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black max-w-[800px] w-full relative ">
         <div className="text-center mb-4">
           <OutlineText size={isMobile ? "large" : "large"}>Profile</OutlineText>
         </div>
@@ -156,16 +156,16 @@ export const Account = () => {
         </div>
       </div>
       <div className="block lg:hidden">
-  <ButtonGeneric
-    color="blue"
-    size="battle"  // mobile size
-    onClick={startEditing}
-  >
-    Edit Profile
-  </ButtonGeneric>
-</div>
+        <ButtonGeneric
+          color="blue"
+          size="battle" // mobile size
+          onClick={startEditing}
+        >
+          Edit Profile
+        </ButtonGeneric>
+      </div>
 
-      <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black max-w-[800px] w-full mt-4">
+      <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black max-w-[800px] w-full mt-4 ">
         <div className="text-center mb-4">
           <OutlineText size={isMobile ? "large" : "large"}>Stats</OutlineText>
         </div>
@@ -177,7 +177,7 @@ export const Account = () => {
         </OutlineText>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-5 justify-center mt-4">
+      <div className="flex flex-col sm:flex-row gap-5 justify-center mt-4 ">
         <ButtonGeneric
           color="purple"
           size={isMobile ? "battle" : "large"}
@@ -199,7 +199,7 @@ export const Account = () => {
   // -----------------------------
   // Desktop Component
   const DesktopView = () => (
-    <div className="hidden lg:flex flex-col items-center w-full mt-0 gap-6">
+    <div className="hidden lg:flex flex-col items-center w-full mt-0 gap-6 ">
       <BaseCard color="peach" width={70} height={8}>
         <OutlineText size="extraLarge">MY ACCOUNT</OutlineText>
       </BaseCard>
@@ -221,17 +221,17 @@ export const Account = () => {
 
   return (
     <BlankPage>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-row w-full p-4">
+        <IconButton
+          style="arrowleft"
+          iconColour="black"
+          buttonColour="red"
+          size={isMobile ? "large" : "large"}
+          onClick={() => FlowRouter.go("/")}
+        />
+      </div>
+      <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem]  relative -top-12">
         {/* Back button */}
-        <div className="flex flex-row w-full p-4">
-          <IconButton
-            style="arrowleft"
-            iconColour="black"
-            buttonColour="red"
-            size={isMobile ? "large" : "large"}
-            onClick={() => FlowRouter.go("/")}
-          />
-        </div>
 
         {/* Render Desktop or Mobile */}
         <DesktopView />
