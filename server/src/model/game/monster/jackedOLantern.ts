@@ -9,7 +9,7 @@ export class JackedOLantern extends Monster {
     super(
       MonsterIdentifier.JACKEDOLANTERN,
       name,
-      "A serpent with a hypnotic sway and haunting lullaby. Those who hear its song soon find themselves striking their own instead.",
+      "The raid boss of The Spook Garden Event. A large pumpkin with arms and legs to devour its prey.",
       new Attacker(),
       new GroundSlamAbilityAction(),
       50,
