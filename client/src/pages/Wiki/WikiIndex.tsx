@@ -14,18 +14,21 @@ export const WikiIndex = () => {
     
     return (
         <BlankPage>
-            <WikiHeader title="Rules"></WikiHeader>
-            <BaseCard color="peach" width={110} height={48}>
-                <div className="flex flex-col h-full w-full justify-start items-start p-[2rem] space-y-[2rem]">
-                    {VALID_WIKI_PAGES.map((page) => (
-                        <li key={page}>
-                            <a className="font-jua text-blue-600 text-[2rem] underline" href={`/wiki/${page}`}>
-                                {getTitle(page)}
-                            </a>
-                        </li>
-                    ))}
-                </div>
-            </BaseCard>
+            <div className="flex flex-col h-full w-full space-y-[1rem] overflow-y-scroll justify-start items-center m-[2rem]">
+                <WikiHeader title="Rules"></WikiHeader>
+
+                <BaseCard color="peach" width={100} height={48}>
+                    <div className="flex flex-col h-full w-full justify-start items-start p-[2rem] space-y-[2rem]">
+                        {VALID_WIKI_PAGES.map((page) => (
+                            <li key={page}>
+                                <a className="font-jua text-blue-600 text-[2rem] underline" href={`/wiki/${page}`}>
+                                    {getTitle(page)}
+                                </a>
+                            </li>
+                        ))}
+                    </div>
+                </BaseCard>
+            </div>
         </BlankPage>
     );
 };

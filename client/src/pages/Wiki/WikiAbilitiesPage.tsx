@@ -7,7 +7,7 @@ import { WikiHeader } from "../../components/wiki/WikiHeader";
 export const WikiAbilitiesPage = () => {
     return (
 
-        <div className="flex flex-col w-full h-full space-y-[1rem] overflow-y-scroll justify-around items-center m-[2rem]">
+        <div className="flex flex-col w-full h-full space-y-[1rem] overflow-y-scroll justify-start items-center m-[2rem]">
 
             <WikiHeader title="Abilities"></WikiHeader>
 

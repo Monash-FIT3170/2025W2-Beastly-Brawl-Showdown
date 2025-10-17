@@ -20,7 +20,7 @@ export const WikiHeader = ({ title }: WikiHeaderProps) => {
                     onClick={() => FlowRouter.go(title === "Rules" ? "/" : "/wiki")}
                 />
             </div>
-            <div className="flex w-1/2 h-full items-center justify-around">
+            <div className="flex w-1/2 h-full items-start justify-center">
             <BaseCard color="peach" width={50} height={8}>
                 <OutlineTextBP size="extraLarge">{title}</OutlineTextBP>
             </BaseCard>
