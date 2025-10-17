@@ -266,7 +266,7 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
 
         {/* Body switches between WinnerScreen and Lobby */}
         {hasWon ? (
-          <WinnerScreen playerMonster={player} />
+          <WinnerScreen playerMonster={player.monster} />
         ) : (
           <>
             {/* Monster image */}

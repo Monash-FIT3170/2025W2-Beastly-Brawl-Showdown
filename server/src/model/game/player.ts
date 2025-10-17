@@ -37,7 +37,7 @@ export class Player {
 
   private playerAccount: PlayerAccountSchema | null;
   private noNullAction: number = 0;
-  static roundToCheck: number = 2; // TODO: CHANGE THIS BACK TO 5 AFTER TESTING
+  static roundToCheck: number = 5; // TODO: CHANGE THIS BACK TO 5 AFTER TESTING
 
   //have to store the player's stats here since PlayerState interface does not allow variable initialisation
   //which will be then passed to the PlayerState on request
