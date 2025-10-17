@@ -182,6 +182,7 @@ export class BattleRoyale implements IGameMode {
               io.sockets.sockets.get(player.getId())?.join(battle.getId());
             }
             console.log(`Check to start battle ${battle.getId()}`);
+            console.log('[CASE 1]:', player1Indexed.getId(),player2Indexed.getId())
             io.sockets.sockets
               .get(player1Indexed.getId())
               ?.emit("battle-found", {
@@ -192,7 +193,7 @@ export class BattleRoyale implements IGameMode {
               .get(player2Indexed.getId())
               ?.emit("battle-found", {
                 gameCode: session.getGameCode().toString(),
-                role: "opponent",
+                role: "initiator",
               });
           }
         }
@@ -239,24 +240,43 @@ export class BattleRoyale implements IGameMode {
                   session.getBattles().enqueuefront(battle);
 
                   console.log(`Connecting to ${socket.id}`);
+                  let hasBot = false;
                   for (const player of battle.getPlayers()) {
                     io.sockets.sockets
                       .get(player.getId())
                       ?.join(battle.getId());
+                    if (player.isBotPlayer()){
+                      hasBot = true
+                    }
                   }
                   console.log(`Check to start battle ${battle.getId()}`);
-                  io.sockets.sockets
-                    .get(player1Indexed.getId())
-                    ?.emit("battle-found", {
-                      gameCode: session.getGameCode().toString(),
-                      role: "initiator",
-                    });
-                  io.sockets.sockets
-                    .get(player2Indexed.getId())
-                    ?.emit("battle-found", {
-                      gameCode: session.getGameCode().toString(),
-                      role: "opponent",
-                    });
+                  if (hasBot == true){
+                    io.sockets.sockets
+                      .get(player1Indexed.getId())
+                      ?.emit("battle-found", {
+                        gameCode: session.getGameCode().toString(),
+                        role: "initiator",
+                      });
+                    io.sockets.sockets
+                      .get(player2Indexed.getId())
+                      ?.emit("battle-found", {
+                        gameCode: session.getGameCode().toString(),
+                        role: "initiator",
+                      });
+                  } else {
+                    io.sockets.sockets
+                      .get(player1Indexed.getId())
+                      ?.emit("battle-found", {
+                        gameCode: session.getGameCode().toString(),
+                        role: "initiator",
+                      });
+                    io.sockets.sockets
+                      .get(player2Indexed.getId())
+                      ?.emit("battle-found", {
+                        gameCode: session.getGameCode().toString(),
+                        role: "opponent",
+                      });
+                  }
                 }
               }
             }

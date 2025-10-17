@@ -300,6 +300,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
     const battle = session?.getBattles().getFrontItem();
+    console.log('[INITIATOR: starting new battle...')
 
     if (!session) {
       // If session of given game code doesnt exist
