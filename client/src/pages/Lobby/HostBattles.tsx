@@ -11,6 +11,7 @@ import { PlayerStats } from "../../types/data";
 import { IconButton } from "../../components/buttons/IconButton";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
+import { OutlineTextResizable } from "../../components/texts/ResizableOutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
@@ -80,6 +81,15 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       // return to home
       FlowRouter.go("/");
     };
+  
+  // Take host to 'Final Results' page for either battle royale or scoring tournament mode
+  const showFinalResults = () => {
+    if (gameSession.mode === GameModeIdentifier.BATTLE_ROYALE) {
+      FlowRouter.go(`/final-results-battle-royale/${code}`);
+    } else {
+      FlowRouter.go(`/final-results-scoring-tournament/${code}`);
+    }
+  };
 
   useEffect(() => {
     {
@@ -256,6 +266,18 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
                 <RightPanel battleStates={gameSession.battleStates} /> 
               }
             </div>
+          </div>
+          <div style={{ position: "absolute", top: "1.5rem", right: "1.5rem" }}>
+            <ButtonGeneric
+              size="medium"
+              color="blue"
+              isDisabled={!gameSession.isGameModeFinished}
+              onClick={showFinalResults}
+            >
+              <OutlineTextResizable size="small">
+                SHOW FINAL RESULTS
+              </OutlineTextResizable>
+            </ButtonGeneric>
           </div>
         </div>
       ) : null}

@@ -31,9 +31,10 @@ export const biomeMap = new Map([
 
 //NOTE: levelMap exists in front end so update both accordingly
 export const levelMap: Record<number, MonsterIdentifier> = {
-  0: MonsterIdentifier.POUNCING_BANDIT,
-  1: MonsterIdentifier.CINDER_TAIL,
-  2: MonsterIdentifier.FURIOUS_FLIPPER,
-  3: MonsterIdentifier.POISON_POGO,
-  4: MonsterIdentifier.CHARMER_COBRA,
+  0: MonsterIdentifier.ENDLESS,
+  1: MonsterIdentifier.POUNCING_BANDIT,
+  2: MonsterIdentifier.CINDER_TAIL,
+  3: MonsterIdentifier.FURIOUS_FLIPPER,
+  4: MonsterIdentifier.POISON_POGO,
+  5: MonsterIdentifier.CHARMER_COBRA,
 };

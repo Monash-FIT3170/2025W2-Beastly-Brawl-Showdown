@@ -27,6 +27,6 @@ export class StickyDie extends Equipment {
   }
 
   protected getImageString(): string {
-    return "item";
+    return "STICKY_DIE";
   }
 }

@@ -8,7 +8,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 export interface ChoicePopupProp {
   question: string;
   choices: option[];
-  onClick: (choiceId: string) => void;
+  onClick: (choiceId: string, cost?: string[] | null) => void;
 }
 
 export const ChoicePopup = ({
@@ -68,7 +68,9 @@ export const ChoicePopup = ({
           {choices.map((choice, idx) => (
             <DialogueChoiceButton
               key={idx}
-              onClick={() => onClick(choice.next)}
+              onClick={() =>
+                onClick(choice.next, choice.cost ? choice.cost : null)
+              }
             >
               <OutlineText size="medium"> {choice.text} </OutlineText>
             </DialogueChoiceButton>

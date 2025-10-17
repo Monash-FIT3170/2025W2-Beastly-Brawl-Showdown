@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { activeAdventures, players, battles } from "../../main";
+import { activeAdventures, players, battles, playerAccounts } from "../../main";
 
 import { ActionState } from "/types/single/actionState";
 import { NullAction } from "../model/game/action/null";
@@ -43,12 +43,12 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
 
       //ADDING ACTION TO BOT
       //TODO: set bots action
-
       //PREPARE/EXECUTE ACTIONS
       let playersInBattle = battle?.getPlayers();
       if (!playersInBattle) {
         console.error(`ADV: battle players empty ${playersInBattle}`);
       } else {
+        //ADDING ACTION TO BOT
         let player1 = playersInBattle[0];
         let player2 = playersInBattle[1];
         let bot = player2.isBotPlayer() ? player2 : player1;
@@ -129,9 +129,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             battle: battle?.getBattleState(playerId),
           });
 
-          console.log("Player hp", player1.getHealth());
-          console.log("Player ac", player1.getArmourClassStat());
-          console.log("Player atk", player1.getAttackStat());
+          // console.log("Player hp", player1.getHealth());
+          // console.log("Player ac", player1.getArmourClassStat());
+          // console.log("Player atk", player1.getAttackStat());
           //check if battle is over
           if (battle?.isBattleOver()) {
             console.log(`ADV: battle is over!`);
@@ -141,6 +141,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
             console.log(winners);
             const playerName = player?.getName();
             if (playerName) {
+              player?.getStatuses().forEach((status) => {
+                status.endOfBattle(player);
+              });
               //if the winner is the player
               if (winners?.includes(playerName)) {
                 console.log(`ADV: player won!`);
@@ -178,6 +181,21 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
               } else {
                 console.log(`ADV: GAME OVER!`);
                 socket.emit("adventure_defeat");
+                const adventure = activeAdventures.get(playerId);
+                if (adventure?.getLevel() === 0) {
+                  const user = playerAccounts.get(socket.id);
+                  var adventureProgression = user?.adventureProgression;
+                  if (adventureProgression) {
+                    const oldRecord = adventureProgression.stage;
+                    if (adventure.getStage() > oldRecord) {
+                      adventureProgression.stage = adventure.getStage();
+                    }
+                  } else {
+                    console.error(
+                      `Failed to load ${user?._id}'s endless record`
+                    );
+                  }
+                }
               }
             } else {
               console.error(`ADV: Player does not have name... ${playerName}`);
