@@ -300,7 +300,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
     const battle = session?.getBattles().getFrontItem();
-    console.log('[INITIATOR: starting new battle...')
+    console.log("[INITIATOR: starting new battle...");
 
     if (!session) {
       // If session of given game code doesnt exist
@@ -349,21 +349,24 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     session.closeAllBattles(); //close all the ongoing battles in the current game session (host)
 
     //Notify all players that the host is closed
-    session
-      ?.getBattles()
-      .getItems()
-      .forEach((curBattle) => {
-        io.to(curBattle.getId()).emit("host-closed");
-      });
+    //      socketToKick.leave(`game-${gameCodeN}`);
+
+    io.to(`game-${gameCodeN}`).emit("host-closed");
+    // session
+    //   ?.getBattles()
+    //   .getItems()
+    //   .forEach((curBattle) => {
+    //     io.to(curBattle.getId()).emit("host-closed");
+    //   });
     if (!session) {
       // If session of given game code doesn't exist
       console.log(`Cancel Request failed. Invalid Code`);
       return;
     }
 
-    io.to(`game-${gameCodeN}`).emit("close-warning", {
-      message: "Current game session is closing.",
-    });
+    // io.to(`game-${gameCodeN}`).emit("close-warning", {
+    //   message: "Current game session is closing.",
+    // });
 
     // Timeout to allow the message to send before closure
     setTimeout(() => {
