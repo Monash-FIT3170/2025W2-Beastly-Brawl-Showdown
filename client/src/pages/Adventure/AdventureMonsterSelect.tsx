@@ -44,11 +44,13 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
   };
 
   useEffect(() => {
+    //TODO: turn back to adventure list
+
     // Request the monster list once when component mounts
-    socket.emit("request_adventure_monster_list");
+    socket.emit("request_monster_list");
 
     // Listen for the monster list from server
-    socket.on("adventure_monster_list", (monsterList: MonsterState[]) => {
+    socket.on("monster_list", (monsterList: MonsterState[]) => {
       setMonsters(monsterList);
     });
 
@@ -325,7 +327,7 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
             <div className="pt-4" />
             <BaseCard
               color="goldenRod"
-              className="flex flex-col justify-around sm:w-[55rem] lg:w:[95rem] h-min"
+              className="flex flex-col justify-around sm:w-[55rem] lg:w-[80rem] h-min"
             >
               <MonsterImage
                 name={selectedMonster.id}
@@ -392,7 +394,7 @@ const AdventureMonsterSelect: React.FC<AdventureMonsterSelectProps> = ({}) => {
                           {ability.name}
                         </p>
                         {/**<BlackText size="medium">{ability.description}</BlackText>*/}
-                        <p className="text-blackCurrant font-[Jua] sm:text-[2rem] md:text[1rem] lg:text[0.5rem] text-ellipses">
+                        <p className="text-blackCurrant font-[Jua] sm:text-[2rem] lg:text-[1.3rem] text-ellipses">
                           {ability.description}
                         </p>
                       </div>

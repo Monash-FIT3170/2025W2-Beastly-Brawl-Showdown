@@ -10,6 +10,7 @@ import { StoryItem } from "./storyItem/storyItem";
 import { ActionIdentifier } from "/types/single/actionState";
 import { StartStatus } from "./status/startStatus";
 import { EndStatus } from "./status/endStatus";
+import { Shield } from "./status/shield";
 
 export class Player {
   private id: string;
@@ -38,6 +39,8 @@ export class Player {
   private playerAccount: PlayerAccountSchema | null;
   private noNullAction: number = 0;
   static roundToCheck: number = 5; //change the value here
+
+  private animations: string[] = [];
 
   constructor(
     id: string,
@@ -248,7 +251,9 @@ export class Player {
     metadata?: unknown;
   } {
     // console.log(`DEBUG: ${this.name} pushing ${status.name}`);
+    // console.log(`DEBUG: ${this.name} pushing ${status.name}`);
     this.statuses.push(status);
+    // console.log("DEBUG, statuses", this.statuses);
     // console.log("DEBUG, statuses", this.statuses);
     return { success: true };
   }
@@ -281,6 +286,10 @@ export class Player {
 
   public removeStatus(statusToRemove: Status) {
     this.statuses = this.statuses.filter((status) => status !== statusToRemove);
+  }
+
+  public getStatusByName(name: string): Status | undefined {
+    return this.statuses.find((status) => status.getName() === name);
   }
 
   //HIT/BLOCK METHODS:
@@ -396,6 +405,34 @@ export class Player {
     this.equipment = [];
   }
 
+  //ANIMATION METHODS:
+
+  public clearAnimations(): void {
+    this.animations = [];
+  }
+
+  public getAnimations(): string[] {
+    return this.animations;
+  }
+
+  public addAnimation(a: string): void {
+    this.animations.push(a);
+  }
+
+  public setStartStatusAnimations(): void {
+    this.statuses
+      .filter((s) => s instanceof StartStatus || s instanceof Shield)
+      .forEach((s) => this.animations.push(s.getName().toLowerCase()));
+  }
+
+  public setEndStatusAnimations(): void {
+    this.statuses
+      .filter((s) => s instanceof EndStatus)
+      .forEach((s) => this.animations.push(s.getName().toLowerCase()));
+  }
+
+  // STORY ITEM METHODS:
+
   public getStoryItems(): StoryItem[] {
     return this.storyItems;
   }
@@ -457,6 +494,7 @@ export class Player {
       consumables: this.consumables.map((c) => c.getState()),
       storyItems: this.storyItems.map((c) => c.getState()),
       attackState: this.getMonster()?.getAttackAction().getAttackState()!,
+      animations: this.animations,
     };
   }
 }

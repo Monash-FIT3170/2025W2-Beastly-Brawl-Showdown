@@ -16,7 +16,7 @@ export abstract class Status {
     this.name = name;
     this.description = description;
     this.countDown = countDown;
-    this.type = type;
+    this.type = type; 
   }
 
   public tick(player: Player): void {
