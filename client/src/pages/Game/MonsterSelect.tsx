@@ -25,6 +25,7 @@ import { PopupClean } from "../../components/popups/PopupClean";
 import { IconButton } from "../../components/buttons/IconButton";
 import { Popup } from "../../components/popups/Popup";
 import { ArchetypePopup } from "../../components/popups/ArchetypePopup";
+import { setSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface MonsterSelectProps {
   setScreen: (screen: Screens) => void;
@@ -82,6 +83,16 @@ export const MonsterSelect: React.FC<MonsterSelectProps> = ({ setScreen }) => {
 
     return () => {
       socket.off("kick-warning");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("selected-background-theme", ({ selectedBackgroundTheme }) => {
+      setSelectedBackgroundTheme(selectedBackgroundTheme);
+    });
+
+    return () => {
+      socket.off("selected-background-theme");
     };
   }, []);
 

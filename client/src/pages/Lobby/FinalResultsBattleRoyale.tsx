@@ -7,6 +7,7 @@ import { BaseCard } from "../../components/cards/BaseCard";
 import socket from "../../socket";
 import { PlayerState } from "../../../../types/single/playerState";
 import { BackgroundThemePage } from "../../components/pagelayouts/BackgroundThemePage";
+import { removeSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface FinalResultsBattleRoyaleProps {
   gameCode?: string;
@@ -46,12 +47,14 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
   // Button handler for restarting a new lobby
   const renderConfigPage = () => {
     socket.emit("cancel-game", { gameCode });
+    removeSelectedBackgroundTheme();
     FlowRouter.go("/host/choose-mode");
   };
 
   // Button handler for exiting to home
   const exitToHome = () => {
     socket.emit("cancel-game", { gameCode });
+    removeSelectedBackgroundTheme();
     FlowRouter.go("/");
   };
 

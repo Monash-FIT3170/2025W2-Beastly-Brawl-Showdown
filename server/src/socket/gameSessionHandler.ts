@@ -24,6 +24,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     else{
       session = new GameSession(socket.id, {mode: new BattleRoyale()});
     }
+    session.setSelectedBackgroundTheme(data.selectedBackgroundTheme);
 
     // Check if game code already exists, if so, generate a new one
     while (activeGameSessions.has(session.getGameCode())) {
@@ -353,6 +354,21 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     } else {
       console.log(`Failed to retrieve final results for game code ${gameCode}`);
       socket.emit("final-results", { finalResults: null });
+    }
+  });
+
+  // Get selected background theme
+  socket.on("request-selected-background-theme", ({ gameCode }) => {
+    const gameCodeN = Number(gameCode);
+    const session = activeGameSessions.get(gameCodeN);
+    const selectedBackgroundTheme = session?.getSelectedBackgroundTheme();
+
+    if (selectedBackgroundTheme) {
+      console.log(`Successfully retrieved selected background theme (${selectedBackgroundTheme}) for game code ${gameCode}`);
+      socket.emit("selected-background-theme", { selectedBackgroundTheme });
+    } else {
+      console.log(`Failed to retrieve selected background theme for game code ${gameCode}`);
+      socket.emit("selected-background-theme", { selectedBackgroundTheme: null });
     }
   });
 };

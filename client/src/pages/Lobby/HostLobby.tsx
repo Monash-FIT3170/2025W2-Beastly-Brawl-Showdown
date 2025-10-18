@@ -13,6 +13,7 @@ import { PopupClean } from "../../components/popups/PopupClean";
 import { BlackText } from "../../components/texts/BlackText";
 import { Meteor } from "meteor/meteor";
 import { BackgroundThemePage } from "../../components/pagelayouts/BackgroundThemePage";
+import { removeSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 // Defines code for the game session
 interface HostLobbyProps {
@@ -88,6 +89,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const closeGame = () => {
     // UPDATE: popup asking if they are sure before returning to game setup screen
     socket.emit("cancel-game", { gameCode: code });
+    removeSelectedBackgroundTheme();
     // return game setup screen
     FlowRouter.go("/host/choose-mode");
   };

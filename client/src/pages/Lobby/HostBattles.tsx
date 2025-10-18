@@ -17,6 +17,7 @@ import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import ScoringLeaderboard from "../../components/match-summary/ScoringLeaderboard";
+import { removeSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -78,6 +79,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     const closeGame = () => {
       // UPDATE: popup asking if they are sure before returning to home
       socket.emit("cancel-game", { gameCode: code });
+      removeSelectedBackgroundTheme();
       // return to home
       FlowRouter.go("/");
     };

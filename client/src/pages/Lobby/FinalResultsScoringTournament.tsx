@@ -9,6 +9,7 @@ import { ScoringRankBar } from "../../components/bars/ScoringRankBar";
 import { PlayerState } from "../../../../types/single/playerState";
 import { PlayerScore } from "../../../../types/single/playerScore";
 import { BackgroundThemePage } from "../../components/pagelayouts/BackgroundThemePage";
+import { removeSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface FinalResultsScoringTournamentProps {
   gameCode?: string;
@@ -50,12 +51,14 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
   // Button handler for restarting a new lobby
   const renderConfigPage = () => {
     socket.emit("cancel-game", { gameCode });
+    removeSelectedBackgroundTheme();
     FlowRouter.go("/host/choose-mode");
   };
 
   // Button handler for exiting to home
   const exitToHome = () => {
     socket.emit("cancel-game", { gameCode });
+    removeSelectedBackgroundTheme();
     FlowRouter.go("/");
   };
 

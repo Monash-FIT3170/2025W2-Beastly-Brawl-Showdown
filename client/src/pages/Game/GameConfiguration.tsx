@@ -24,8 +24,9 @@ export const GameConfiguration = () => {
 
   // Called on 'Host Lobby' button press
   const createGame = (mode: GameModeIdentifier) => {
-    setSelectedBackgroundTheme(backgroundThemeOptions[selectedBackgroundThemeIndex].name);
-    socket.emit("create-game", { mode, selectedSliderValue });
+    const selectedBackgroundTheme = backgroundThemeOptions[selectedBackgroundThemeIndex].name;
+    setSelectedBackgroundTheme(selectedBackgroundTheme);
+    socket.emit("create-game", { mode, selectedBackgroundTheme, selectedSliderValue });
     console.log("Game session created");
   };
 
