@@ -29,4 +29,6 @@ export interface PlayerState {
   storyItems: StoryItemState[];
 
   attackState: AttackState;
+
+  animations: string[];
 }

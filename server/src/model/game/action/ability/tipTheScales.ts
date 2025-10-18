@@ -38,7 +38,7 @@ export class TipTheScalesAbilityAction extends Action {
   public prepareAnimation(): string | [string, number] {
     if (this.attackAction) {
       const diceRollNumber = this.getDiceRoll();
-      return ["roll_dice", diceRollNumber];
+      return ["scales", diceRollNumber];
     }
     throw new Error("Tip The Scales: Attack Action was not created.");
   }
@@ -49,12 +49,12 @@ export class TipTheScalesAbilityAction extends Action {
     // Log actions
 
     //TODO: update log writing to be better
-    actingPlayer.addLog(
-      `You used ${this.getName()}, attacking with an increased minimum roll of 10.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, attacking with an increased minimum roll of 10.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, attacking with an increased minimum roll of 10.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, attacking with an increased minimum roll of 10.`
+    // );
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, attacking with an increased minimum roll of 10.`
     );

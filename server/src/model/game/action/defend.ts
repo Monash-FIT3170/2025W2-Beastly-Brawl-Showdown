@@ -2,12 +2,19 @@ import { Action } from "./action";
 import { Player } from "../player";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { act } from "react";
+import { Shield } from "../status/shield";
 
 export class DefendAction extends Action {
   private armourBonus: number;
 
   constructor(armourBonus: number) {
-    super(ActionIdentifier.DEFEND, "Defend", "Defend against an attack", 3);
+    super(
+      ActionIdentifier.DEFEND,
+      "Defend",
+      "Defend against an attack",
+      3,
+      false
+    );
     this.armourBonus = armourBonus;
   }
 
@@ -16,15 +23,22 @@ export class DefendAction extends Action {
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    actingPlayer.incArmourClassStat(this.armourBonus);
-    actingPlayer.addLog(
-      `You defended and increased your armour class stat to ${actingPlayer.getArmourClassStat()}.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} defended and increased their armour class stat to ${actingPlayer.getArmourClassStat()}.`
-    );
+    if (actingPlayer.hasStatus("Shield")) {
+      const existingShield = actingPlayer.getStatusByName("Shield") as Shield;
+      existingShield.setCountDown(3);
+      // actingPlayer.addLog("You reinforced your shield!");
+    } else {
+      // Create new shield
+      const shield = new Shield(3, this.armourBonus);
+      actingPlayer.addStatus(shield);
+      // actingPlayer.addLog("You raised a defensive shield!");
+    }
+
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} defended and raised a shield!`
+    // );
     actingPlayer.addBattleLog(
-      `${actingPlayer.getName()} defended and increased their armour class stat to ${actingPlayer.getArmourClassStat()}.`
+      `${actingPlayer.getName()} defended and raised a shield!`
     );
   }
 

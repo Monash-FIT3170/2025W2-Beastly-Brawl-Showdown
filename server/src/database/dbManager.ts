@@ -136,7 +136,7 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
 export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
   return {
     email: '',
-    username: 'Default',
+    username: 'Guest',
     password: '',
     level: 1,
     online: false,

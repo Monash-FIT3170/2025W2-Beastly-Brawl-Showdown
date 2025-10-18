@@ -6,11 +6,16 @@ import { monsterMap } from "./monster/monsterMap";
 
 export class BotPlayer extends Player {
   private static nameList = [
-    "Big Bum Loser",
-    "Chimp on a typewriter",
+    "Newbie",
     "George",
-    "Brain in a jar",
-    "Very intelligent fetus",
+    "T800",
+    "Omega",
+    "Alpha",
+    "Delta",
+    "Phoenix",
+    "Neon",
+    "Viper",
+    "Killjoy",
   ];
 
   private static getRandomName(): string {
@@ -20,9 +25,8 @@ export class BotPlayer extends Player {
 
   constructor(name?: string) {
     var botName = name ?? BotPlayer.getRandomName();
-    
 
-    super("placeholder", botName, null ,true); //TODO: give proper id??? - i guess id is never used properly??? - adding a TODO in case...
+    super("placeholder", botName, null, true); //TODO: give proper id??? - i guess id is never used properly??? - adding a TODO in case...
   }
 
   public setRandomMonster(): void {

@@ -23,7 +23,11 @@ import { Achievements } from "./src/pages/Home/Achievements";
 import { GlobalLeaderboard } from "./src/pages/GlobalLeaderboard";
 import { FinalResultsScoringTournament } from "./src/pages/Lobby/FinalResultsScoringTournament";
 import { FinalResultsBattleRoyale } from "./src/pages/Lobby/FinalResultsBattleRoyale";
+import { Test } from "./src/pages/AnimationTesting/Testing";
 import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
+import { AttackPage } from "./src/pages/AnimationTesting/Attack";
+import { DamagePage } from "./src/pages/AnimationTesting/Damage";
+import { DefendPage } from "./src/pages/AnimationTesting/Defend";
 import { WikiPage } from "./src/pages/Wiki/WikiPage";
 import { WikiIndex } from "./src/pages/Wiki/WikiIndex";
 
@@ -33,6 +37,38 @@ function mount(Component: React.FC) {
     createRoot(container).render(<Component />);
   }
 }
+
+// FlowRouter.route("/test", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(Test);
+//   },
+// });
+
+// FlowRouter.route("/attack", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(AttackPage);
+//   },
+// });
+
+// FlowRouter.route("/damage", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(DamagePage);
+//   },
+// });
+
+// FlowRouter.route("/defend", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(DefendPage);
+//   },
+// });
 
 FlowRouter.route("/", {
   name: "Home",

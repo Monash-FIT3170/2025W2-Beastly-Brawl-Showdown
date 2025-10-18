@@ -15,24 +15,24 @@ export class SlimeSupportAction extends Action {
     );
   }
 
-  public prepare(actingPlayer: Player, affectedPlayer: Player): void {
-    actingPlayer.addStatus(new SlimeBoost(3));
-  }
+  public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
+
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
+    actingPlayer.addStatus(new SlimeBoost(4));
     // Add logs
-    actingPlayer.addLog(
-      `You used ${this.getName()}, giving yourself the Slime Boost buff.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, giving themself the Slime Boost buff.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, giving yourself the Slime Boost buff.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, giving themself the Slime Boost buff.`
+    // );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${this.getName()}, giving yourself the Slime Boost buff.`
+      `${actingPlayer.getName()} used ${this.getName()}, giving themself the Slime Boost buff.`
     );
     this.executeBattleEffect(actingPlayer, affectedPlayer, true);
   }
   public prepareAnimation(): string | [string, number] {
-    return "Slime_Support_Animation";
+    return "slime-support";
   }
 }
