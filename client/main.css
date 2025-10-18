@@ -288,6 +288,15 @@ h2 {
   }
 }
 
+/* Hide scrollbar but keep scroll */
+::-webkit-scrollbar {
+  display: none;
+}
+html,
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
 @keyframes shadow-leap {
   0% {
     filter: brightness(1);

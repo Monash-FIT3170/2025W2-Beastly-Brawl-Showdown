@@ -12,7 +12,6 @@ interface WinningScreenProps {
 }
 
 const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
-  socket.emit("updateWin");
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
     // UPDATE: add pop up when kicked
@@ -20,6 +19,8 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
   });
 
   const leave = () => {
+    socket.emit("updateAchievement", "Can't stop winning");
+    socket.emit("updateWin");
     socket.emit("leave-game", { userID: socket.id });
     FlowRouter.go("/");
   };
