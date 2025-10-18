@@ -51,7 +51,7 @@ Meteor.startup(async () => {
   const io = new Server(server, {
     cors: {
       origin: (origin, callback) => {
-        console.log("CORS request from:", origin);
+        // console.log("CORS request from:", origin);
         if (!origin || allowedOrigins.includes(origin)) {
           callback(null, true);
         } else {

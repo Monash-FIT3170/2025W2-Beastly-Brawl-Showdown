@@ -14,60 +14,76 @@ export class AlluringLullaby extends Action {
       "Sing a wicked little tune, confusing your opponent. If your opponent dares attack, they'll hit themselves instead",
       1
     );
-    this.setDodgeable(false);
+
     this.damage = 5;
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
     this.affectedPlayerActions = affectedPlayer.getActions();
     const action = new AttackAction(1, 1, 1, 1);
-    affectedPlayer.removeAction(action); //remove attack action - any other action can continue
-    affectedPlayer.addAction(
-      new NullAction(
+    affectedPlayer.removeAction(action);
+    if (this.checkEnemyAction(this.affectedPlayerActions)) {
+      //give null action :)
+      const nullAction = new NullAction(
         "Null",
         ActionIdentifier.NULL,
-        "Your attacked yourself",
-        `${affectedPlayer.getName()} attacked themself`,
-        `${affectedPlayer.getName()} attacked themself`
-      )
-    );
+        `♫ You attacked yourself. ♫`,
+        `♫ ${affectedPlayer.getName()} attacked themself. ♫`,
+        `♫ ${affectedPlayer.getName()} attacked themself. ♫`
+      );
+      nullAction.updateAnimation([
+        "attack",
+        Math.floor(Math.random() * 15) + 5, //TODO: update roll
+      ]);
+      //TODO: handle crit?
+      affectedPlayer.addAction(nullAction);
+    }
+  }
+
+  public checkEnemyAction(actions: Action[]): boolean {
+    for (const action of actions) {
+      if (action.getActionState().id === ActionIdentifier.ATTACK) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "AlluringLullaby_Animation";
+    return "ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     this.incCurrentUse(-1);
+    const hasAttack = this.checkEnemyAction(this.affectedPlayerActions);
+    if (hasAttack) {
+      affectedPlayer.incHealth(-this.damage); //TODO: can they ever crit themselves?
 
-    this.affectedPlayerActions.forEach((action) => {
-      // If the action is an attack, apply confusion
-      if (action.getActionState().id === ActionIdentifier.ATTACK) {
-        affectedPlayer.incHealth(-this.damage); //TODO: can they ever crit themselves?
-
-        // Add logs
-        actingPlayer.addLog(
-          `You successfully used ${this.getName()}. They hit themselves in confusion.`
-        );
-        affectedPlayer.addLog(
-          `${actingPlayer.getName()} used ${this.getName()}, you hit yourself in confusion.`
-        );
-        affectedPlayer.addBattleLog(
-          `${actingPlayer.getName()} used ${this.getName()}, confusing ${affectedPlayer.getName()} and hitting themselves.`
-        );
-        this.executeBattleEffect(actingPlayer, affectedPlayer, true);
-      } else {
-        // Add logs
-        actingPlayer.addLog(`Your ${this.getName()} was ineffective!`);
-        affectedPlayer.addLog(
-          `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
-        );
-        affectedPlayer.addBattleLog(
-          `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
-        );
-        this.executeBattleEffect(actingPlayer, affectedPlayer, false);
-      }
-    });
+      // Add logs
+      // actingPlayer.addLog(
+      //   `You successfully used ${this.getName()}. They hit themselves in confusion.`
+      // );
+      // affectedPlayer.addLog(
+      //   `${actingPlayer.getName()} used ${this.getName()}, you hit yourself in confusion.`
+      // );
+      affectedPlayer.addBattleLog(
+        `${actingPlayer.getName()} used ${this.getName()}, confusing ${affectedPlayer.getName()} and hitting themselves.`
+      );
+      this.executeBattleEffect(actingPlayer, affectedPlayer, true);
+      affectedPlayer.addAnimation("damage");
+      actingPlayer.addAnimation("miss");
+    } else {
+      // Add logs
+      // actingPlayer.addLog(`Your ${this.getName()} was ineffective!`);
+      // affectedPlayer.addLog(
+      //   `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
+      // );
+      affectedPlayer.addBattleLog(
+        `${actingPlayer.getName()} used ${this.getName()}, it was ineffective.`
+      );
+      affectedPlayer.addAnimation("miss");
+      this.executeBattleEffect(actingPlayer, affectedPlayer, false);
+    }
 
     //Assuming Confusion is not a status...
     return {

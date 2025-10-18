@@ -31,11 +31,11 @@ export const LeavePopup = ({ open, onClose }: LeavePopupProp) => {
         </OutlineText>
         <div className="flex mt-4 space-x-[3rem]">
           <ButtonGeneric color="red" size="adventure" onClick={leave}>
-            <OutlineText size="choice-text">Exit</OutlineText>
+            <OutlineText size="choice-text">EXIT</OutlineText>
           </ButtonGeneric>
           {/* <ButtonGeneric color="blue" size="adventure" onClick={() => setVisible(false)}><OutlineText size="choice-text">Back</OutlineText></ButtonGeneric> */}
           <ButtonGeneric color="blue" size="adventure" onClick={onClose}>
-            <OutlineText size="choice-text">Back</OutlineText>
+            <OutlineText size="choice-text">BACK</OutlineText>
           </ButtonGeneric>
           {/* <DialogueChoiceButton onClick={leave}><OutlineText size="medium">Exit</OutlineText></DialogueChoiceButton>
                     <DialogueChoiceButton onClick={() => setVisible(false)}><OutlineText size="medium">Back</OutlineText></DialogueChoiceButton> */}
