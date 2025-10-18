@@ -14,7 +14,7 @@ import LevelSelect from "./src/pages/Adventure/LevelSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
-import { MonsterIdentifier } from "/types/single/monsterState";
+import { MonsterIdentifier } from "../types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
@@ -25,6 +25,8 @@ import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
 import { AttackPage } from "./src/pages/AnimationTesting/Attack";
 import { DamagePage } from "./src/pages/AnimationTesting/Damage";
 import { DefendPage } from "./src/pages/AnimationTesting/Defend";
+import { WikiPage } from "./src/pages/Wiki/WikiPage";
+import { WikiIndex } from "./src/pages/Wiki/WikiIndex";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -70,6 +72,20 @@ FlowRouter.route("/", {
   action() {
     document.title = "Beastly Brawl Showdown";
     mount(Home);
+  },
+});
+
+FlowRouter.route("/wiki", {
+  name: "WikiIndex",
+  action() {
+    mount(WikiIndex);
+  },
+});
+
+FlowRouter.route("/wiki/:slug", {
+  name: "WikiPage",
+  action(params: any) {
+    mount(() => <WikiPage pageName={params.slug as WikiPageIdentifier} />);
   },
 });
 
@@ -125,14 +141,6 @@ FlowRouter.route("/leaderboard", {
   name: "Leaderboard",
   action() {
     document.title = "Leaderboard | Beastly Brawl Showdown";
-    mount(() => <BlankPage />);
-  },
-});
-
-FlowRouter.route("/help", {
-  name: "Help",
-  action() {
-    document.title = "Help | Beastly Brawl Showdown";
     mount(() => <BlankPage />);
   },
 });
