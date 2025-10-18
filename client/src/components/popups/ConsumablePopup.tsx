@@ -58,16 +58,11 @@ export const ConsumablePopup = ({
         sm:h-[75%]
         overflow-auto`;
 
-  //TODO: centre the rest of this poop
-  //TODO: can't click
   return (
     <>
       <div className={`${popupLayout}`}>
         <div className={`${popup}`}>
-          <div
-            className="flex flex-col items-center gap-2 w-full h-full outline-offset-0 
-                       xl:pt-[2rem] xl:px-[2rem] pt-[3rem] pointer-events-auto justify-center overflow-auto"
-          >
+          <div className="flex flex-col items-center gap-2 w-full h-full outline-offset-0 xl:pt-[2rem] xl:px-[2rem] pt-[3rem] pointer-events-auto justify-center overflow-auto">
             {/* Name */}
             <OutlineText size="large">
               {consumable.name.toUpperCase()}

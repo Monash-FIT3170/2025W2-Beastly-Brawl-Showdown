@@ -138,8 +138,8 @@ export abstract class Monster {
   }
 
   public pveScaling(stage: number): void {
-    console.log("PVE SCALING DEBUG: HEALTH", this.maxHealth);
-    console.log("PVE SCALING DEBUG: ATK BONUS", this.attackBonus);
+    // console.log("PVE SCALING DEBUG: HEALTH", this.maxHealth);
+    // console.log("PVE SCALING DEBUG: ATK BONUS", this.attackBonus);
 
     if (stage === 4) {
       //mini boss
@@ -160,8 +160,8 @@ export abstract class Monster {
         this.attackBonus + stage * 0.75
       );
     }
-    console.log("PVE SCALING DEBUG: HEALTH SCALED", this.maxHealth);
-    console.log("PVE SCALING DEBUG: ATK BONUS SCALED", this.attackBonus);
+    // console.log("PVE SCALING DEBUG: HEALTH SCALED", this.maxHealth);
+    // console.log("PVE SCALING DEBUG: ATK BONUS SCALED", this.attackBonus);
   }
 
   public getMonsterState(): MonsterState {
