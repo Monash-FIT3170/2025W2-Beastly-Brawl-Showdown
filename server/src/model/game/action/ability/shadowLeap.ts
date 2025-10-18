@@ -20,6 +20,7 @@ export class ShadowLeapAbilityAction extends Action {
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
+    actingPlayer.incAbilitiesUsed(1)
     // Set dodge to true
     actingPlayer.dodge();
 

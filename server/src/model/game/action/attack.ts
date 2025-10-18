@@ -76,6 +76,7 @@ export class AttackAction extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    let damage: number = 0;
     // Attack is calculated by adding dice roll and attack bonus.
     // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
     if (this.attackHit >= affectedPlayer.getArmourClassStat()) {
@@ -90,11 +91,17 @@ export class AttackAction extends Action {
       // Set the crit range starting from the maximum dice value and going down
       // Check if the dice roll is within the crit range
       // E.g. normal d20 roll is 1-20, with a crit rate of 10%, you need to roll 19 or 20 to crit
-      let critDamage = this.damage * 2;
+      let tmpDamage = this.damage;
+      damage = this.damage
       const isCrit =
         this.d20 >
         this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
-      affectedPlayer.incHealth(isCrit ? -critDamage : -this.damage);
+      if (isCrit) {
+        this.damage *= 2; // Double the damage on a crit
+        damage *= 2
+        actingPlayer.incCriticalHitsDealt(1)
+      }
+      affectedPlayer.incHealth(-this.damage);
 
       // Log successful attack
       actingPlayer.addLog(
@@ -145,6 +152,9 @@ export class AttackAction extends Action {
       appliedStatus: {
         success: false,
       },
+      damageDealt: {
+        damage: damage
+      }
     };
   }
 

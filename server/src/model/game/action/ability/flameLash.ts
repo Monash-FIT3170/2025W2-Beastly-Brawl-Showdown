@@ -24,11 +24,16 @@ export class FlameLashAbilityAction extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    actingPlayer.incAbilitiesUsed(1)
+    let damage: number = 0;
     this.incCurrentUse(-1);
     // Deal 10 damage if the opponent is dodging, 5 damage otherwise
     if (affectedPlayer.getArmourClassStat() >= 50) {
       //TODO FIGURE OUT A BALANCED AC
       this.damage = 10;
+      damage = 10
+    } else {
+      damage = 5
     }
 
     //to remove once dodge is reworked?
@@ -59,8 +64,11 @@ export class FlameLashAbilityAction extends Action {
     //No status applied in this action/ability
     return {
       appliedStatus: {
-        success: false,
+        success: false
       },
-    };
+      damageDealt: {
+        damage: damage
+      }
+    }
   }
 }

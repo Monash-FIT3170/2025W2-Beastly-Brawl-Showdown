@@ -29,4 +29,9 @@ export interface PlayerState {
   storyItems: StoryItemState[];
 
   attackState: AttackState;
+  battleWon: number;
+  abilitiesUsed: number;
+  mostDamageDealt: number;
+  successfulBlocks: number;
+  criticalHitsDealt: number;
 }
