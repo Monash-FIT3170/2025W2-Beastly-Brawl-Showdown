@@ -13,7 +13,7 @@ export abstract class Action {
 
   private currentUse: number;
   private maxUse: number;
-  private dodgeable: boolean = true;
+  private dodgeable: boolean;
 
   protected damage: number = 0;
 
@@ -22,14 +22,14 @@ export abstract class Action {
     name: string,
     description: string,
     maxUse: number,
-    dodgeable?: boolean
+    dodgeable: boolean = true
   ) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.currentUse = maxUse;
     this.maxUse = maxUse;
-    this.dodgeable = dodgeable ?? true;
+    this.dodgeable = dodgeable;
   }
 
   public incCurrentUse(value: number): void {

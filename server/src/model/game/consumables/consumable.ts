@@ -5,6 +5,7 @@ export abstract class Consumable {
   protected name: string;
   protected description: string;
   protected type: ConsumableType;
+  protected animation: string = ""; // blank string results in no animation!
 
   constructor(name: string, description: string, type: ConsumableType) {
     this.name = name;
@@ -33,6 +34,11 @@ export abstract class Consumable {
   public abstract consume(player: Player): [string, string];
 
   protected abstract getImageString(): string;
+
+  public getAnimationString(): string {
+    //TODO: in constructor - edit animations for any consumables we want :)
+    return this.animation;
+  }
 
   public getState(): ConsumableState {
     return {

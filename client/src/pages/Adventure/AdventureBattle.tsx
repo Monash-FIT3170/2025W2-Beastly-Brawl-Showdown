@@ -132,27 +132,23 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   });
 
   useEffect(() => {
-    console.log("playerState updated:", playerState);
+    console.log("---ADV: Player State Updated:", playerState);
   }, [playerState]);
 
   useEffect(() => {
-    console.log("BATTLE STATE UPDATED");
+    console.log("---ADV: Battle State Updated---");
     if (battleState !== null) {
       setPlayerState(battleState.yourPlayer);
     }
   }, [battleState]);
 
   useEffect(() => {
-    console.log("ADVENTURE LOADED");
+    console.log("---ADV: Adventure State Updated---");
 
     socket.emit("failed_connection", { stage });
   }, []);
 
   useEffect(() => {
-    //socket.emit("adventure_request", { stage }); //TODO: WHO IS THIS, WHY IS SHE HERE?
-    //if (!playerState) {
-    //  socket.emit("failed_connection", { stage });
-    //}
     socket.on("adventure_state", (state) => {
       if (state.stage) {
         setStage(state.stage);
@@ -260,8 +256,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       socket.off("adenture_background");
     };
   });
-
-  console.log("PLAYER LOGS:", battleState?.yourPlayer.logs); //TODO: remove once log bug is solved
 
   return (
     <>
@@ -573,10 +567,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
                       <span className="absolute -top-2 -right-2 flex items-center justify-center">
                         {/* Ping animation with responsive sizing and translation */}
                         <span
-                          className="absolute inline-flex 
-                         size-[80px]
-                         md:size-[30px]
-                         lg:size-[20px]    
+                          className="absolute inline-flex size-[80px] md:size-[30px] lg:size-[20px]    
                          animate-ping 
                          rounded-full bg-notification-accent 
                          opacity-75
@@ -599,10 +590,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
               </div>
             </div>
 
-            <BattleMonsterPanel
-              battleState={battleState}
-              slimeString={background}
-            />
+            <BattleMonsterPanel battleState={battleState} biome={background} />
 
             <div
               className=" h-screen flex flex-col items-center justify-center content-center mt-[60%] xl:mt-[15%]"
