@@ -155,7 +155,7 @@ export const Home = () => {
               iconColour="black"
               buttonColour="blue"
               size="medium"
-              onClick={() => FlowRouter.go("/help")}
+              onClick={() => FlowRouter.go("/wiki")}
             />
             <IconButton
               style="leaderboard"
@@ -173,7 +173,7 @@ export const Home = () => {
             />
           </div>
         </div>
-        {/* </div> */}
+        
       </div>
     </BlankPage>
   );
