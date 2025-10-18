@@ -10,19 +10,6 @@ export class Stun extends StartStatus {
     super("Stun", "Monster is unable to attack", countDown, StatusType.DEBUFF);
   }
 
-  /**
-  public effect(player: Player): void {
-    const temporaryActions = [];
-    temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));
-    temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));
-    temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));
-    temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));
-
-    player.getMonster()?.setTemporaryActions(temporaryActions);
-    console.log(`${player.getName()} is stunned. Cannot make a move.`);
-  }
-    */
-
   public startingEffect(player: Player): void {
     const temporaryActions = [];
     temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));

@@ -8,6 +8,7 @@ import { ActionIdentifier, ActionResult } from "/types/single/actionState";
 import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
 import { ActionRandomiser } from "../../model/game/actionRandomiser";
 import { Player } from "../../model/game/player";
+import { exec } from "child_process";
 
 export default function proceedBattleTurn(
   io: Server,
@@ -16,20 +17,13 @@ export default function proceedBattleTurn(
   battle: Battle
 ) {
   // TODO: Set a property in the battle instance to object it is in the 10 sec waiting stage (for the host match summary page)
+  let timer = 10;
   battle.clearBattleLogs();
   battle.incTurn();
 
   let playersInBattle = battle.getPlayers();
 
-  // checks/ticks statuses for each player
-  //playersInBattle.forEach((player) => {
-  //player.tickStatuses();
-  // let statuses = player.getStatuses();
-  // statuses.forEach((status) => {
-  //   status.tick(player);
-  // })
-  //});
-
+  //check if end of battle
   if (battle.isBattleOver()) {
     const winners = battle.getWinners();
     if (winners.length == 0) {
@@ -50,6 +44,9 @@ export default function proceedBattleTurn(
     }
   }
 
+  //clear previous battlelogs
+  battle.clearBattleLogs();
+
   //Players' states before the turn start
   gameSession.setCurrentPhase(BattlePhase.CHOOSE_ACTION);
   io.to(gameSession.getHost()).emit("game-session-state", {
@@ -57,7 +54,6 @@ export default function proceedBattleTurn(
   });
 
   playersInBattle.forEach((player) => {
-    // player.tickStatuses();
     if (!player.isBotPlayer()) {
       //only emit to socket if the player is a human
       io.to(player.getId()).emit("battle_state", {
@@ -75,7 +71,6 @@ export default function proceedBattleTurn(
   let player1 = playersInBattle[0];
   let player2 = playersInBattle[1];
 
-  let timer = 10; // Set the initial timer value (e.g., 60 seconds)
   const interval = setInterval(() => {
     if (timer >= 0) {
       io.to(battle.getId()).emit("timer", timer);
@@ -112,142 +107,224 @@ export default function proceedBattleTurn(
         action.prepare(player2, player1);
       });
 
+      // Prepare animations
+      var player1DiceRoll = 0;
+      var player2DiceRoll = 0;
+
       player1.getActions().forEach((action) => {
         const animationInfo = action.prepareAnimation();
-        const animationType = animationInfo[0];
-        const diceRollNumber = animationInfo[1];
-        console.log(`ADV: Animation P1 - ${animationType}, ${diceRollNumber}`);
-        io.to(player1.getId()).emit(String(animationType), diceRollNumber);
+        if (typeof animationInfo === "string") {
+          player1.addAnimation(animationInfo.toLowerCase());
+          console.log(`ADV: Animation P1 - ${animationInfo}`);
+        } else {
+          const [animationType, diceRoll] = animationInfo;
+          player1.addAnimation(animationType.toLowerCase());
+          player1DiceRoll = diceRoll;
+          console.log(`ADV: Animation P1 - ${animationType}, ${diceRoll}`);
+        }
       });
 
       player2.getActions().forEach((action) => {
         const animationInfo = action.prepareAnimation();
-        const animationType = animationInfo[0];
-        const diceRollNumber = animationInfo[1];
-
-        console.log(`ADV: Animation P2 - ${animationType}, ${diceRollNumber}`);
-        io.to(player2.getId()).emit(String(animationType), diceRollNumber);
+        if (typeof animationInfo === "string") {
+          player2.addAnimation(animationInfo.toLowerCase());
+          console.log(`ADV: Animation P2 - ${animationInfo}`);
+        } else {
+          const [animationType, diceRoll] = animationInfo;
+          player2.addAnimation(animationType.toLowerCase());
+          player2DiceRoll = diceRoll;
+          console.log(`ADV: Animation P2 - ${animationType}, ${diceRoll}`);
+        }
       });
 
+      //add statuses to animation.
+      player1.setStartStatusAnimations();
+      player2.setStartStatusAnimations();
+
+      //TODO: update battle state?
+
+      console.log(
+        "[PREPARE] p1:",
+        player1.getAnimations(),
+        " | p2:",
+        player2.getAnimations()
+      );
+
+      io.to(player1.getId()).emit("update_animation", {
+        phase: "prepare",
+        player: player1.getAnimations().filter((a) => a != ""),
+        opp: player2.getAnimations().filter((a) => a != ""),
+      });
+      io.to(player2.getId()).emit("update_animation", {
+        phase: "prepare",
+        player: player2.getAnimations().filter((a) => a != ""),
+        opp: player1.getAnimations().filter((a) => a != ""),
+      });
+
+      //TIME OUT CONSTANTS
+      const prepareTimeOut = 1000; // -> between prepare animation and roll animation
+      const rollTimeOut = 2000; // -> between prepare/roll and execute animation
+      const executeTimeOut = 3000; // -> between execute and next turn/default animation
+
+      // TIME OUT BETWEEN PREPARE AND ROLL
       setTimeout(() => {
-        let p1_result;
-        let p2_result;
+        if (player1DiceRoll > 0) {
+          io.to(player1.getId()).emit("roll_dice", player1DiceRoll);
+        }
+        if (player2DiceRoll > 0) {
+          io.to(player2.getId()).emit("roll_dice", player2DiceRoll);
+        }
 
-        // Execute method
-        player1.getActions().forEach((action) => {
-          p1_result = action.execute(player1, player2);
-          if (action instanceof NullAction) {
-            console.log(`P1 - ${player1.getName()} did nothing.`);
-          }
-        });
+        // TIME OUT BETWEEN PREPARE/ROLL AND EXECUTE
+        setTimeout(() => {
+          player1.clearAnimations();
+          player2.clearAnimations();
 
-        player2.getActions().forEach((action) => {
-          p2_result = action.execute(player2, player1);
-          if (action instanceof NullAction) {
-            console.log(`P2 - ${player2.getName()} did nothing.`);
-          }
-        });
+          let p1_result;
+          let p2_result;
 
-        console.log("P1: ", player1);
+          // Execute method
+          player1.getActions().forEach((action) => {
+            p1_result = action.execute(player1, player2);
+            if (action instanceof NullAction) {
+              //TODO: why doesn't this just exist in null action?
+              console.log(`P1 - ${player1.getName()} did nothing.`);
+            }
+          });
 
-        console.log("P2: ", player2);
+          player2.getActions().forEach((action) => {
+            p2_result = action.execute(player2, player1);
+            if (action instanceof NullAction) {
+              //TODO: why doesn't this just exist in null action?
+              console.log(`P2 - ${player2.getName()} did nothing.`);
+            }
+          });
 
-        //Handle logic after actions are executed (see GameMode)
-        gameSession.onActionExecuted(
-          player1.getId(),
-          p1_result,
-          player2.getId(),
-          p2_result
-        );
+          //add statuses to animation.
+          player1.setStartStatusAnimations();
+          player1.setEndStatusAnimations();
+          player2.setStartStatusAnimations();
+          player2.setEndStatusAnimations();
+          //battle effect handled in effect()
+          player1.endStatusEffects();
+          player2.endStatusEffects();
 
-        //clear previous battlelogs
-        battle.clearBattleLogs();
+          console.log(
+            "[EXECUTE] p1:",
+            player1.getAnimations(),
+            " | p2:",
+            player2.getAnimations()
+          );
 
-        // Emit the result of the battle state after the turn is complete
-        playersInBattle.forEach((player) => {
-          if (!player.isBotPlayer()) {
-            // Only emit the battle state of human player
-            io.to(player.getId()).emit("battle_state", {
-              battle: battle.getBattleState(player.getId()),
-              metadata: gameSession.getMetadata(),
-            });
-          }
-        });
+          //Handle logic after actions are executed (see GameMode)
+          gameSession.onActionExecuted(
+            player1.getId(),
+            p1_result,
+            player2.getId(),
+            p2_result
+          );
 
-        // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
-        playersInBattle.forEach((player) => {
-          player.resetStats();
-          player.resetActions();
-          player.getMonster()?.removeTemporaryActions();
-        });
+          // Emit the result of the battle state after the turn is complete
+          playersInBattle.forEach((player) => {
+            if (!player.isBotPlayer()) {
+              // Only emit the battle state of human player
+              io.to(player.getId()).emit("battle_state", {
+                battle: battle.getBattleState(player.getId()),
+                metadata: gameSession.getMetadata(),
+              });
+            }
+          });
 
-        if (battle.isBattleOver()) {
-          const winners = battle.getWinners();
-          if (winners.length == 0) {
-            //Handler after a battle ended
-            gameSession.onBattleEnded(null, battle, io, socket);
+          io.to(player1.getId()).emit("update_animation", {
+            phase: "execute",
+            player: player1.getAnimations().filter((a) => a != ""),
+            opp: player2.getAnimations().filter((a) => a != ""),
+          });
+          io.to(player2.getId()).emit("update_animation", {
+            phase: "execute",
+            player: player2.getAnimations().filter((a) => a != ""),
+            opp: player1.getAnimations().filter((a) => a != ""),
+          });
 
-            // if battle is over, the array length is guaranteed to be either 0 or 1
-            // io.to(battle.getId()).emit("battle_end", {
-            //   result: "draw",
-            //   winners: winners.map((player) => player.getName()),
-            // });
-          } else {
-            //Handler after a battle ended
-            gameSession.onBattleEnded(winners[0], battle, io, socket);
+          // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
+          playersInBattle.forEach((p) => {
+            p.clearAnimations();
+            p.resetStats();
+            p.resetActions();
+            p.getMonster()?.removeTemporaryActions();
+            p.tickStatuses();
+            p.startStatusEffects();
+            p.setStartStatusAnimations();
+          });
 
-            //             io.to(battle.getId()).emit("battle_end", {
-            //               result: "concluded",
-            //               winners: winners.map((player) => player.getName())
-            // ,
-            //             });
-          }
-          //Emit to host one last time before shutting down the handler
+          // Emit the result of the battle state after the turn is complete
+          playersInBattle.forEach((player) => {
+            if (!player.isBotPlayer()) {
+              // Only emit the battle state of human player
+              io.to(player.getId()).emit("battle_state", {
+                battle: battle.getBattleState(player.getId()),
+                metadata: gameSession.getMetadata(),
+              });
+            }
+          });
+
+          // TODO: ONLY update the current battle to be more memory efficient...
+          //Players' states after the turn ends
           gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
           io.to(gameSession.getHost()).emit("game-session-state", {
             session: gameSession.getGameSessionState(),
           });
 
-          //Shutting down the handler
-          return;
-        } else {
-          playersInBattle.forEach((p) => {
-            p.startStatusEffects();
-            p.endStatusEffects();
-            p.tickStatuses();
-          });
-        }
-        // TODO: ONLY update the current battle to be more memory efficient...
-        //Players' states after the turn ends
-        gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
-        io.to(gameSession.getHost()).emit("game-session-state", {
-          session: gameSession.getGameSessionState(),
-        });
-
-        //
-        setTimeout(() => {
-          if (gameSession.areBattlesConcluded()) {
-            //Handler after all battles have ended
-            gameSession.onBattlesEnded(io, socket);
-
-            console.log(`Only one player remains.`);
-
-            //TODO: for future, this can be used to handle what happens after a game session ends
-
-            socket.emit("game_session_ended", {
-              message: `Game session ${gameSession.getGameCode()} has ended.`,
+          //TIMEOUT BETWEEN EXECUTE AND DEFAULT
+          setTimeout(() => {
+            io.to(player1.getId()).emit("update_animation", {
+              phase: "default",
+              player: player1.getAnimations(),
+              opp: player2.getAnimations(),
             });
-            return;
-          }
+            io.to(player2.getId()).emit("update_animation", {
+              phase: "default",
+              player: player2.getAnimations(),
+              opp: player1.getAnimations(),
+            });
 
-          if (battle.isBattleOver()) {
-            console.log(`Battle ${battle.getId} has ended`);
-            return;
-          }
+            if (battle.isBattleOver()) {
+              const winners = battle.getWinners();
+              if (winners?.length == 0) {
+                //Handler after a battle ended
+                gameSession.onBattleEnded(null, battle, io, socket);
+              } else {
+                //Handler after a battle ended
+                gameSession.onBattleEnded(winners[0], battle, io, socket);
+              }
+              //Emit to host one last time before shutting down the handler
+              gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
+              io.to(gameSession.getHost()).emit("game-session-state", {
+                session: gameSession.getGameSessionState(),
+              });
 
-          proceedBattleTurn(io, socket, gameSession, battle);
-        }, 3000);
-      }, 3000);
+              //Shutting down the handler
+              console.log(`Battle ${battle.getId} has ended`);
+
+              if (gameSession.areBattlesConcluded()) {
+                //Handler after all battles have ended
+                gameSession.onBattlesEnded(io, socket);
+
+                console.log(`Only one player remains.`);
+
+                //TODO: for future, this can be used to handle what happens after a game session ends
+
+                socket.emit("game_session_ended", {
+                  message: `Game session ${gameSession.getGameCode()} has ended.`,
+                });
+              }
+              return;
+            } else {
+              proceedBattleTurn(io, socket, gameSession, battle);
+            }
+          }, executeTimeOut);
+        }, rollTimeOut);
+      }, prepareTimeOut);
     }
   }, 1000); // Emit every second
 }

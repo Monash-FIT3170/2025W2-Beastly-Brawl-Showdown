@@ -16,7 +16,7 @@ export class ShadowLeapAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "Shadow_Leap_Animation";
+    return "shadow-leap";
   }
 
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {
@@ -31,15 +31,25 @@ export class ShadowLeapAbilityAction extends Action {
         const actingMessage = `${actingPlayer.getName()} dodged your attack!`;
         const affectedMessage = `You dodged ${affectedPlayer.getName()}'s attack!`;
         const battleLogMessage = `${actingPlayer.getName()} dodged ${affectedPlayer.getName()}'s attack!`;
-        affectedPlayer.addAction(
-          new NullAction(
-            "Attack Dodged",
-            ActionIdentifier.NULL,
-            actingMessage,
-            affectedMessage,
-            battleLogMessage
-          )
+        const nullAction = new NullAction(
+          "Attack Dodged",
+          ActionIdentifier.NULL,
+          actingMessage,
+          affectedMessage,
+          battleLogMessage
         );
+        if (
+          action.getId() === ActionIdentifier.ATTACK ||
+          action.getId() === ActionIdentifier.TIP_THE_SCALES
+        ) {
+          nullAction.updateAnimation([
+            "attack",
+            Math.floor(Math.random() * 15) + 5, //TODO: update roll
+          ]);
+        } else {
+          nullAction.updateAnimation("ability");
+        }
+        affectedPlayer.addAction(nullAction);
       }
     });
   }
@@ -48,20 +58,20 @@ export class ShadowLeapAbilityAction extends Action {
     this.incCurrentUse(-1);
 
     // Log the action
-    actingPlayer.addLog(
-      `You used ${this.getName()}, preparing to dodge an attack.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, preparing to dodge an attack.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, preparing to dodge an attack.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, preparing to dodge an attack.`
+    // );
     affectedPlayer.addBattleLog(
       `${actingPlayer.getName()} used ${this.getName()}, preparing to dodge an attack.`
     );
 
     return {
-      appliedStatus:{
-        success: false
-      }
-    }
+      appliedStatus: {
+        success: false,
+      },
+    };
   }
 }

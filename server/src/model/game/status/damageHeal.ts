@@ -36,6 +36,7 @@ export class DamageHeal extends BattleEffect {
         `${actingPlayer.getName()} healed for ${action.getDamage()} thanks to Damage Heal`
       );
       actingPlayer.incHealth(action.getDamage());
+      actingPlayer.addAnimation("damageHeal");
     }
   }
 
