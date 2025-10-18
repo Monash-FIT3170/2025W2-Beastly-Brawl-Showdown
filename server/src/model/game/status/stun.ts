@@ -7,12 +7,10 @@ import { StatusType } from "/types/single/statusType";
 
 export class Stun extends StartStatus {
   constructor(countDown: number) {
-    super("Stun", "Monster is unable to attack", countDown +1, StatusType.DEBUFF);
+    super("Stun", "Monster is unable to attack", countDown, StatusType.DEBUFF);
   }
 
-
   public startingEffect(player: Player): void {
-    console.error("DEBUG: STUN STARTING EFFECT")
     const temporaryActions = [];
     temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));
     temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));

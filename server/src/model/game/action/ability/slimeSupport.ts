@@ -19,7 +19,7 @@ export class SlimeSupportAction extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): void {
     this.incCurrentUse(-1);
-    actingPlayer.addStatus(new SlimeBoost(3));
+    actingPlayer.addStatus(new SlimeBoost(4));
     // Add logs
     // actingPlayer.addLog(
     //   `You used ${this.getName()}, giving yourself the Slime Boost buff.`

@@ -35,37 +35,37 @@ function mount(Component: React.FC) {
   }
 }
 
-FlowRouter.route("/test", {
-  name: "Test",
-  action() {
-    document.title = "Animation Testing";
-    mount(Test);
-  },
-});
+// FlowRouter.route("/test", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(Test);
+//   },
+// });
 
-FlowRouter.route("/attack", {
-  name: "Test",
-  action() {
-    document.title = "Animation Testing";
-    mount(AttackPage);
-  },
-});
+// FlowRouter.route("/attack", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(AttackPage);
+//   },
+// });
 
-FlowRouter.route("/damage", {
-  name: "Test",
-  action() {
-    document.title = "Animation Testing";
-    mount(DamagePage);
-  },
-});
+// FlowRouter.route("/damage", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(DamagePage);
+//   },
+// });
 
-FlowRouter.route("/defend", {
-  name: "Test",
-  action() {
-    document.title = "Animation Testing";
-    mount(DefendPage);
-  },
-});
+// FlowRouter.route("/defend", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(DefendPage);
+//   },
+// });
 
 FlowRouter.route("/", {
   name: "Home",
