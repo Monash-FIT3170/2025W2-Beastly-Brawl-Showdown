@@ -12,7 +12,7 @@ export const WikiStatusCard = ({name, body}: WikiStatusProps) => {
     const imagePath =`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${name.toUpperCase()}.png`
               
     return (
-        <div className="flex flex-row h-[10rem] md:w-[50rem] xl:w-[100rem] bg-alto justify-start items-center whitespace-pre-line p-[1rem] space-x-[1rem] border-[0.4rem] border-blackCurrant rounded-xl">
+        <div className="flex flex-row md:h-[17rem] xl:h-[10rem] md:w-[50rem] xl:w-[100rem] bg-alto justify-start items-center whitespace-pre-line p-[1rem] space-x-[1rem] border-[0.4rem] border-blackCurrant rounded-xl">
             <img
                 src={imagePath}
                 className="w-[8rem] h-[8rem]"
