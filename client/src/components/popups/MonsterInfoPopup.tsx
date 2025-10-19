@@ -38,7 +38,7 @@ export const MonsterInfoPopup = ({
   const [currentAbilities, setCurrentAbilities] = useState<ActionState[]>([]);
   const currentlyViewing = ["MONSTER STATS", "CURRENT STATUSES"];
 
-  const nameLabelColour = opponent ? `wyvernred` : `pictonBlue` 
+  const nameLabelColour = opponent ? `wyvernred` : `pictonBlue`;
 
   useEffect(() => {
     console.log(attackState);
@@ -73,7 +73,9 @@ export const MonsterInfoPopup = ({
   return (
     <PopupAdventure colour="goldenRod">
       <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-full h-full">
-        <div className={`mt-[1rem] xl:mt-[0.5rem] bg-${nameLabelColour} outline-blackCurrant lg:outline-[0.2rem] sm:outline-[0.3rem] rounded-2xl flex flex-col px-[1rem] items-center justify-center`}>
+        <div
+          className={`mt-[1rem] xl:mt-[0.5rem] bg-${nameLabelColour} outline-blackCurrant lg:outline-[0.2rem] sm:outline-[0.3rem] rounded-2xl flex flex-col px-[1rem] items-center justify-center`}
+        >
           <OutlineText size="choice-text">{playerName}</OutlineText>
         </div>
         <img className="sm:size-[30vw] lg:size-[20vh]" src={monsterImgPath} />
@@ -181,7 +183,7 @@ export const MonsterInfoPopup = ({
                     {/* <BlackText size="medium">You are normal...</BlackText> */}
                     {/* <OutlineText size="medium">You are normal...</OutlineText> */}
                     <BlackText size="medium">
-                      You feel perfectly healthy!
+                      {playerState?.monster?.name} feels perfectly fine!!
                     </BlackText>
                   </div>
                 )}

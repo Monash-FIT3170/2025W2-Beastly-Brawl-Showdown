@@ -870,6 +870,7 @@
       {
         "id": "hole_choice",
         "result": ["What do you do?"],
+        "type": "CHOICE",
         "options": [
           {
             "id": "choice_rock",
@@ -966,7 +967,7 @@
         "id": "yell_status",
         "type": "STATUS",
         "result": ["You will be stunned for 1 round."],
-        "statusId": ["stun", 1]
+        "statusId": ["stunned", 1]
       },
       {
         "id": "leave",

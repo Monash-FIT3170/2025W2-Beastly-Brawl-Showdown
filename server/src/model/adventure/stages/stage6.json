@@ -624,5 +624,266 @@
         "type": "DIALOGUE"
       }
     ]
+  },
+  {
+    "id": "vocano_cooking",
+    "level": [0],
+    "description": "two_dragon_cooking",
+    "background": "BASALT",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You walked into the burning mountain overlooking a bubbling river of lava.",
+          "You hear furious shouting echoing from deep inside the fiery caverns.",
+          "You follow the sound of shouting and sizzling until you find two dragons standing over bubbling vents.",
+          "They're waving spoons and spatulas, arguing so loudly that your eardrums ache."
+
+        ],
+        "type": "DIALOGUE",
+        "next": "dragon1"
+      },
+      {
+        "id": "dragon1",
+        "result": [
+          "\"Mine's clearly the best!\" argues the red dragon, slamming his tail against the ground."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["cinder_tail", "VOCANIA"],
+        "next": "dragon2"
+      },
+      {
+        "id": "dragon2",
+        "result": [
+          "\"Yours tastes like a burnt pebble!\" shouts the other, another red dragon puffing smoke."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["cinder_tail", "LARVAL"],
+        "next": "spot_you"
+      },
+      {
+        "id": "spot_you",
+        "result": [
+          "When they spot you, their eyes light up. \"Perfect! A taster!\"",
+          "\"Perfect timing, traveler! Tell us whose cooking is the best chief in this land!\""
+        ],
+        "type": "DIALOGUE",
+        "next": "choice"
+      },
+      {
+        "id": "choice",
+        "result": [
+          "WHat do you do?"
+        ],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "taste_first",
+            "text": "Taste the first dragon's stew.",
+            "next": "first_stew"
+          },
+          {
+            "id": "taste_second",
+            "text": "Taste the second dragon's stew.",
+            "next": "second_stew"
+          },
+          {
+            "id": "no",
+            "text": "Refuse and leave",
+            "next": "refuse"
+          },
+          {
+            "id": "taste_both",
+            "text": "Try both",
+            "next": "both"
+          }
+        ]
+      },
+      {
+        "id": "first_stew",
+        "result": [
+          "You took a small sip of the first dragon's stew. While he stares at you with confidence.",
+          "It's smoky, rich and immediately sets your tongue on fire.",
+          "The dragon grins proudly as you cough smoke."
+        ],
+        "type": "DIALOGUE",
+        "next": "burn_HP"
+      },
+      {
+        "id": "burn_HP",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": ["Your throat burns and loss 2 HP"],
+        "next": "burn"
+      },
+      {
+        "id": "burn",
+        "type": "STATUS", 
+        "statusId": ["burning_rage", 3],
+        "result": [
+          "But you can now burn your opponent with your firery breath."
+        ],
+        "next": "escape"
+      },
+      {
+        "id": "escape",
+        "type": "DIALOGUE",
+        "result": [
+          "You complemented his cooking and thanked him for his unique cuisine while slowly slipping away.",
+          "The first dragon is still boasting, and the second is rolling his eyes.",
+          "Before they start arguing again, you make your escape, lips still tingling from the taste of stew."
+        ]
+      },
+      {
+        "id": "second_stew",
+        "result": [
+          "You try the second stew, it smells sweet, like caramelized rock.",
+          "As it flows down your throat, your stomach twists, then rumbles.",
+          "Heat spreads through your whole body. You feel lightheaded, like you've swallowed a small volcano.",
+          "The black dragon grins. \"Refined, isn't it? It warms up your whole body.\""
+        ],
+        "type": "DIALOGUE",
+        "next": "burn_bad"
+      },
+      {
+        "id": "burn_bad",
+        "type": "STATUS",
+        "statusId": ["burn", 3],
+        "result": [
+          "Your feel hot...",
+          "fire's burnning inside you."
+        ],
+        "next": "escape"
+      },
+      {
+        "id": "both",
+        "result": [
+          "You bravely take a spoonful from both bowls at once.",
+          "The stews react together, sweet, smoky, and painfully spicy.",
+          "A volcano seems to erupt in your stomach, but somehow, you feel stronger from it."
+        ],
+        "type": "DIALOGUE",
+        "next": "burp_power"
+      },
+      {
+        "id": "burp_power",
+        "type": "STATUS",
+        "statusId": ["hiccup_of_doom_buff", 3],
+        "result":[
+          "You gained the status hiccup of doom."
+        ],
+        "next": "opinion"
+      },
+      {
+        "id": "opinion",
+        "result": [
+          "Both dragons stares at you waiting for your response.",
+          "\"Well?\" they both lean in close.\"Which one is better\" they ask in perfect union."
+        ],
+        "type": "DIALOGUE",
+        "next": "choose_opinion"
+      },
+      {
+        "id": "choose_opinion",
+        "type": "CHOICE",
+        "result": [
+          "Who do you pick?"
+        ],
+        "options": [
+          {
+            "id": "first_dragon",
+            "text": "Complement the first dragon.",
+            "next": "first_happy"
+          },
+          {
+            "id": "second_dragon",
+            "text": "Complement the second dragon.",
+            "next": "second_happy"
+          }
+        ]
+      },
+      {
+        "id": "first_happy",
+        "result":[
+          "The dragon laughs, \"Finally! Someone with taste!\"",
+          "\"Here, take this... A little present from the greatest chief in this land.\""
+        ],
+        "enemyId": ["cinder_tail", "VOCANIA"],
+        "type": "DIALOGUE",
+        "next": "first_reward"
+      },
+      {
+        "id": "first_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      },
+      {
+        "id": "second_happy",
+        "result": [
+          "The second dragon gives a satisfied snort.",
+          "\"Finally! Someone who appreciates true spice!\"",
+          "He scoops up a ladle of his bubbling stew and carefully pours it into a thick glass bottle.",
+          "Here, if you like it so much, I'll give you more..."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["cinder_tail", "LARVAL"],
+        "next": "magic_stew"
+      },
+      {
+        "id": "magic_stew",
+        "type": "CONSUMABLE",
+        "consumableId": "magic_stew"
+      },
+      {
+        "id": "refuse",
+        "result": [
+          "You try to refuse politely, saying you're full.",
+          "Both chefs gasp in offense.",
+          "\"Full? No one leaves a dragon's feast untasted!\"they roar together in anger.",
+          "They toss aside their spoons, smoke curling from their nostrils.",
+          "You're about to regret your life choices."
+        ],
+        "type": "DIALOGUE",
+        "next": "battle1"
+      },
+      {
+        "id": "battle1",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "VOCANIA"],
+        "next": "battle2_start"
+      },
+      {
+        "id": "battle2_start",
+        "type": "DIALOGUE",
+        "result": [
+          "The first dragon backs up while the second rushes toward you.",
+          "Prepare for the second round!"
+        ],
+        "next": "battle2"
+      },
+      {
+        "id": "battle2",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "LARVAL"],
+        "next": "end_battle"
+      },
+      {
+        "id": "end_battle",
+        "result": [
+          "As the smoke clears, both dragons lie slumped against the lava vents, exhausted and steaming.",
+          "\"Fine... maybe you just weren't ready for true flavor,\" mutters the first one.",
+          "\"Come back when your stomach is braver,\" adds the second dragon, faintly amused.",
+          "You leave the cavern smelling of chili and victory."
+        ],
+        "type": "DIALOGUE",
+        "next": "battle_reward"
+      },
+      {
+        "id": "battle_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool"
+      }
+
+    ]
   }
 ]

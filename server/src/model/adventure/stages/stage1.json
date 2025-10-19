@@ -227,5 +227,219 @@
         "lootPoolId": "slime_pool"
       }
     ]
+  },
+  {
+    "id": "Thief_encounter",
+    "level": [0],
+    "description": "Stage 1 endless bridge encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You hear yelling in the distance.",
+          "You see two guards chasing someone."
+        ],
+        "type": "DIALOGUE",
+        "next": "guard_yell"
+      },
+      {
+        "id": "guard_yell",
+        "result": ["HEY STOP!", "THIEF!", "GET BACK HERE"],
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "next": "thief_encounter"
+      },
+      {
+        "id": "thief_encounter",
+        "result": [
+          "Please you have to help me!",
+          "I stole some potions.",
+          "I promise to make it worth your while if you help me out."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["rocky_rhino", "THIEF"],
+        "next": "thief_choice"
+      },
+      {
+        "id": "thief_choice",
+        "result": ["Do you...?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "help",
+            "text": "Help The Thief",
+            "next": "help_thief"
+          },
+          {
+            "id": "stop",
+            "text": "Stop The Thief",
+            "next": "stop_thief"
+          }
+        ]
+      },
+      {
+        "id": "help_thief",
+        "type": "DIALOGUE",
+        "result": [
+          "You move yourself in between the thief and the approaching guards.",
+          "They notice your defensive stance."
+        ],
+        "next": "guard_catchup"
+      },
+      {
+        "id": "guard_catchup",
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "result": [
+          "We just want the thief.",
+          "Aiding a criminal will get you in a lot of trouble."
+        ],
+        "next": "battle_ready"
+      },
+      {
+        "id": "battle_ready",
+        "type": "DIALOGUE",
+        "result": ["You prepare for battle"],
+        "next": "guard_fight"
+      },
+      {
+        "id": "guard_fight",
+        "type": "FIGHT",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "next": "fight_captain_win"
+      },
+      {
+        "id": "fight_captain_win",
+        "result": ["S...Sir, are you okay"],
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD TRAINEE"],
+        "next": "trainee_turn"
+      },
+      {
+        "id": "trainee_turn",
+        "result": ["The trainee turns, with determination to face you."],
+        "type": "DIALOGUE",
+        "next": "trainee_anger"
+      },
+      {
+        "id": "trainee_anger",
+        "result": [
+          "I'll finish what my teacher started, you won't get away with this."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD TRAINEE"],
+        "next": "trainee_fight"
+      },
+      {
+        "id": "trainee_fight",
+        "type": "FIGHT",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "next": "trainee_fight_win"
+      },
+      {
+        "id": "trainee_fight_win",
+        "result": ["The trainee turns, slumps to the ground."],
+        "type": "DIALOGUE",
+        "next": "thief_happy"
+      },
+      {
+        "id": "thief_happy",
+        "result": [
+          "Thank you!",
+          "I owe you my freedom.",
+          "As promised here's a little something for helping me"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["rocky_rhino", "THIEF"],
+        "next": "trainee_potion"
+      },
+      {
+        "id": "trainee_potion",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion",
+        "next": "thief_pre_key"
+      },
+      {
+        "id": "thief_pre_key",
+        "result": [
+          "Oh and I was saving this to get myself out of a bind.",
+          "But I think you should take this."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["rocky_rhino", "THIEF"],
+        "next": "thief_give_key"
+      },
+      {
+        "id": "thief_give_key",
+        "type": "STORY_ITEM",
+        "storyItemId": "pristine_key",
+        "next": "help_final"
+      },
+      {
+        "id": "help_final",
+        "result": ["You part ways with the thief and continue your journey."],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "stop_thief",
+        "result": ["You attack the thief."],
+        "type": "DIALOGUE",
+        "next": "thief_battle"
+      },
+      {
+        "id": "thief_battle",
+        "type": "FIGHT",
+        "enemyId": ["rocky_rhino", "THIEF"],
+        "next": "thief_battle_win"
+      },
+      {
+        "id": "thief_battle_win",
+        "type": "DIALOGUE",
+        "result": ["The thief falls to the ground, unconscious."],
+        "next": "guard_good"
+      },
+      {
+        "id": "guard_good",
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "result": [
+          "Great work citizen.",
+          "Shopkeepers have been complaining about this guy for the past few months.",
+          "Let me give you something for your trouble."
+        ],
+        "next": "guard_help_reward"
+      },
+      {
+        "id": "guard_help_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "large_health_potion",
+        "next": "guard_happy_final"
+      },
+      {
+        "id": "guard_happy_final",
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "result": [
+          "Alright rookie.",
+          "Help me get this criminal back to town."
+        ],
+        "next": "rookie_response"
+      },
+      {
+        "id": "rookie_response",
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD TRAINEE"],
+        "result": ["Y..Yes Sir", "Right away sir."],
+        "next": "encounter_final"
+      },
+      {
+        "id": "encounter_final",
+        "type": "DIALOGUE",
+        "result": [
+          "The guards carry the prisoner away.",
+          "You continue on your journey."
+        ]
+      }
+    ]
   }
 ]
