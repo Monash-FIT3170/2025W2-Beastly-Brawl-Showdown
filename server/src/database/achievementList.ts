@@ -30,6 +30,15 @@ const ach1 = createAchievementSchema(
   undefined,
   100
 );
+
+const ach4 = createAchievementSchema(
+  "First Achievement",
+  "Find the Achievement's Page",
+  undefined,
+  1,
+  1,
+  true
+);
 const ach2 = createAchievementSchema(
   "Defeat the wolf",
   "Defeat the wolf",
@@ -59,4 +68,4 @@ const ach3 = createAchievementSchema(
   true
 );
 //Add all created Achievements into this
-export const Achievements: AchievementSchema[] = [ach1, ach2, ach3];
+export const Achievements: AchievementSchema[] = [ach1, ach2, ach3, ach4];
