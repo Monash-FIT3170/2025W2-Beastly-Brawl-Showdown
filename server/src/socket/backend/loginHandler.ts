@@ -178,7 +178,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
 export const startChecker = (io: Server, socket: Socket) => {
   socket.on("check-login", async () => {
     const user = playerAccounts.get(socket.id);
-    const check = user?.username !== "Default";
+    const check = user?.username !== "Guest";
     socket.emit("login-status", { loggedIn: Boolean(check) });
   });
 };
