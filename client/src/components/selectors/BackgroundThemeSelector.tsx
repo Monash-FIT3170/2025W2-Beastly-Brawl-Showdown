@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import { IconButton } from "../buttons/IconButton";
 import { OutlineText } from "../texts/OutlineText";
-import { BackgroundThemeSelectorOption } from "../../types/SelectorOptions";
+import { BackgroundThemeCardData } from "../../types/SelectorCardData";
 
 interface BackgroundThemeSelectorProps {
-  options: BackgroundThemeSelectorOption[];
+  cardData: BackgroundThemeCardData[];
   selectedIndex: number;
   setSelectedIndex: (index: number) => void;
 }
 
 const BackgroundThemeSelector: React.FC<BackgroundThemeSelectorProps> = ({
-  options,
+  cardData,
   selectedIndex,
   setSelectedIndex,
 }) => {
   const prev = () =>
     setSelectedIndex(
-      selectedIndex === 0 ? options.length - 1 : selectedIndex - 1
+      selectedIndex === 0 ? cardData.length - 1 : selectedIndex - 1
     );
 
   const next = () =>
     setSelectedIndex(
-      selectedIndex === options.length - 1 ? 0 : selectedIndex + 1
+      selectedIndex === cardData.length - 1 ? 0 : selectedIndex + 1
     );
 
   return (
@@ -29,9 +29,9 @@ const BackgroundThemeSelector: React.FC<BackgroundThemeSelectorProps> = ({
       {/* Left Arrow */}
       <IconButton style="arrowleft" buttonColour="blue" iconColour="stroked" size="small" onClick={prev} />
       
-      {/* Card */}
+      {/* Cards */}
       <div className="outline-[0.25rem] bg-pictonBlue p-6 rounded-xl w-120 text-center">
-        <OutlineText size="large">{options[selectedIndex].name}</OutlineText>
+        <OutlineText size="large">{cardData[selectedIndex].name}</OutlineText>
       </div>
 
       {/* Right Arrow */}

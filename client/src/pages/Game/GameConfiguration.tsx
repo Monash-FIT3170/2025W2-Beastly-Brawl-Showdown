@@ -5,7 +5,6 @@ import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import { IconButton } from "../../components/buttons/IconButton";
-import { Slider } from "../../components/sliders/Slider";
 import { CardWithHeader } from "../../components/cards/CardWithHeader";
 import GameModeSelector from "../../components/selectors/GameModeSelector";
 import BackgroundThemeSelector from "../../components/selectors/BackgroundThemeSelector";
@@ -19,8 +18,9 @@ export const GameConfiguration = () => {
   // Use selectedBackgroundThemeIndex to retrieve currently background theme.
   const [selectedBackgroundThemeIndex, setSelectedBackgroundThemeIndex] = useState(0);
 
-  // Use selectedSliderValue to retrieve currently selected number of rounds.
-  const [selectedSliderValue, setSelectedSliderValue] = useState(3);
+  // Use selectedSliderValue to retrieve the current value of a visible slider.
+  const defaultSliderValue = 1;
+  const [selectedSliderValue, setSelectedSliderValue] = useState(defaultSliderValue);
 
   // Called on 'Host Lobby' button press
   const createGame = (mode: GameModeIdentifier) => {
@@ -30,21 +30,24 @@ export const GameConfiguration = () => {
     console.log("Game session created");
   };
 
-  // Define the title and description of each game mode.
-  const gameModeOptions = [
-    { 
-      title: "Battle Royale", 
-      description: "Fight until only one player remains standing!", 
+  // Define the data for each game mode card.
+  const gameModeCardData = [
+    {
+      title: "Battle Royale",
+      description: "Fight until only one player remains standing!",
       mode: GameModeIdentifier.BATTLE_ROYALE
     },
     { 
-      title: "Scored Tournament", 
-      description: "Earn more points than your opponents over multiple rounds!", 
-      mode: GameModeIdentifier.SCORING
+      title: "Scored Tournament",
+      description: "Earn more points than your opponents over multiple rounds!",
+      mode: GameModeIdentifier.SCORING,
+      sliderText: "Round Count:",
+      sliderMin: 1,
+      sliderMax: 5
     }
   ];
 
-  // Define the name of each background theme
+  // Define the name of each background theme.
   const backgroundThemeOptions = [
     {
       name: "Forest",
@@ -62,8 +65,6 @@ export const GameConfiguration = () => {
       name: "Desert",
     }
   ];
-
-  const sliderDisabled = gameModeOptions[selectedGameModeIndex].title === "Battle Royale";
 
   // Received when Game Session is created. Takes user to 'Host Lobby' Page
   socket.on("new-game", ({ code }) => {
@@ -95,22 +96,26 @@ export const GameConfiguration = () => {
         <CardWithHeader headerText="GAME SETTINGS" headerColor="golden" cardColor="opaqueWhite">
           <div className="flex flex-col items-center justify-center w-3/4 h-3/4 lg:space-y-5 sm:space-y-30">
             <div className="flex flex-row items-center justify-center h-7/16">
-              <GameModeSelector options={gameModeOptions} selectedIndex={selectedGameModeIndex} setSelectedIndex={setSelectedGameModeIndex}/>
-            </div>
-            <div className="flex flex-row items-center justify-center h-1/16">
-              <OutlineText size="large">Round Count:</OutlineText>
-            </div>
-            <div className="flex flex-row items-center justify-center h-3/16">
-              <Slider max={5} min= {1} selectedValue={selectedSliderValue} setSelectedValue={setSelectedSliderValue} isDisabled = {sliderDisabled}/>
+              <GameModeSelector
+                cardData={gameModeCardData}
+                selectedIndex={selectedGameModeIndex}
+                setSelectedIndex={setSelectedGameModeIndex}
+                selectedSliderValue={selectedSliderValue}
+                setSelectedSliderValue={setSelectedSliderValue}
+              />
             </div>
             <div className="flex flex-row items-center justify-center h-1/16">
               <OutlineText size="large">Background Theme</OutlineText>
             </div>
             <div className="flex flex-row items-center justify-center h-7/16">
-              <BackgroundThemeSelector options={backgroundThemeOptions} selectedIndex={selectedBackgroundThemeIndex} setSelectedIndex={setSelectedBackgroundThemeIndex}/>
+              <BackgroundThemeSelector
+                cardData={backgroundThemeOptions}
+                selectedIndex={selectedBackgroundThemeIndex}
+                setSelectedIndex={setSelectedBackgroundThemeIndex}
+              />
             </div>
             <div className="flex flex-row items-center justify-center h-5/16">
-              <ButtonGeneric color="ronchi" size="medium" onClick={() => createGame(gameModeOptions[selectedGameModeIndex].mode)}>
+              <ButtonGeneric color="ronchi" size="medium" onClick={() => createGame(gameModeCardData[selectedGameModeIndex].mode)}>
                 <OutlineTextResizable size="medium">CREATE GAME</OutlineTextResizable>
               </ButtonGeneric>
             </div>
