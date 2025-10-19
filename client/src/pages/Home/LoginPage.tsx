@@ -118,10 +118,10 @@ export const LoginPage = () => {
             <div className="flex justify-center my-6">
               <ButtonGeneric
                 color="ronchi"
-                size="battle"
+                size="medium"
                 onClick={() => handleSubmit()}
               >
-                <OutlineText size="medium-battle-text">
+                <OutlineText size="choice-text">
                   {mode === "login" ? "LOG IN" : "REGISTER"}
                 </OutlineText>
               </ButtonGeneric>
