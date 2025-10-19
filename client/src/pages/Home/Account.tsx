@@ -48,7 +48,7 @@ const ProfileEditForm = ({
   setEditing: (editing: boolean) => void;
   isMobile: boolean;
 }) => (
-  <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] flex flex-col gap-4 sm:gap-6 border-2 border-black max-w-[800px] w-full">
+  <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] flex flex-col gap-4 sm:gap-6 outline-consistent max-w-[800px] w-full">
     <div className="text-center">
       <OutlineText size={isMobile ? "large" : "large"}>Profile</OutlineText>
     </div>
@@ -121,7 +121,7 @@ const ProfileView = ({
   Logout: () => void;
 }) => (
   <>
-    <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black max-w-[800px] w-full relative ">
+    <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] outline-consistent max-w-[800px] w-full relative ">
       <div className="text-center mb-4">
         <OutlineText size={isMobile ? "large" : "large"}>Profile</OutlineText>
       </div>
@@ -157,7 +157,7 @@ const ProfileView = ({
       </div>
     )}
 
-    <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black max-w-[800px] w-full mt-4 ">
+    <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] outline-consistent max-w-[800px] w-full mt-4 ">
       <div className="text-center mb-4">
         <OutlineText size={isMobile ? "large" : "large"}>Stats</OutlineText>
       </div>

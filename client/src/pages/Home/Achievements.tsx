@@ -49,7 +49,7 @@ export const Achievements = () => {
       </BaseCard>
 
       <div
-        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black w-full max-w-[900px] flex flex-col items-center"
+        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] outline-consistent w-full max-w-[900px] flex flex-col items-center"
         style={{ height: "500px" }}
       >
         <div className="w-full overflow-y-auto flex flex-col gap-4">
@@ -90,7 +90,7 @@ export const Achievements = () => {
       </BaseCard>
 
       <div
-        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black w-full flex flex-col items-center"
+        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] outline-consistent w-full flex flex-col items-center"
         style={{ height: "1300px" }}
       >
         <div className="w-full overflow-y-auto flex flex-col gap-4">
