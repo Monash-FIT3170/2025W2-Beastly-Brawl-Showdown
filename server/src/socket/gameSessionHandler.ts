@@ -19,7 +19,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     //TODO: move this to a separate function if we have more multiplayer modes.
     if (data.mode === GameModeIdentifier.SCORING) {
       session = new GameSession(socket.id, {
-        mode: new ScoringTournament({ rounds: data.selectedValue }),
+        mode: new ScoringTournament({ rounds: data.selectedSliderValue }),
       });
     } else {
       session = new GameSession(socket.id, { mode: new BattleRoyale() });
