@@ -27,7 +27,13 @@ const BackgroundThemeSelector: React.FC<BackgroundThemeSelectorProps> = ({
   return (
     <div className="flex items-center justify-center h-full w-full space-x-4">
       {/* Left Arrow */}
-      <IconButton style="arrowleft" buttonColour="blue" iconColour="stroked" size="small" onClick={prev} />
+      <IconButton
+        style="arrowleft"
+        buttonColour="blue"
+        iconColour="black"
+        size="small"
+        onClick={prev}
+      />
       
       {/* Cards */}
       <div className="outline-[0.25rem] bg-peach p-2 rounded-xl w-120 text-center">
@@ -35,7 +41,13 @@ const BackgroundThemeSelector: React.FC<BackgroundThemeSelectorProps> = ({
       </div>
 
       {/* Right Arrow */}
-      <IconButton style="arrowright" buttonColour="blue" iconColour="stroked" size="small" onClick={next} />
+      <IconButton
+        style="arrowright"
+        buttonColour="blue"
+        iconColour="black"
+        size="small"
+        onClick={next}
+      />
     </div>
   );
 };

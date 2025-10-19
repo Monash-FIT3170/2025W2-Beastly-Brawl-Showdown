@@ -105,7 +105,7 @@ export const GameConfiguration = () => {
               />
             </div>
             <div className="flex flex-row items-center justify-center h-1/16">
-              <OutlineText size="large">Background Theme</OutlineText>
+              <OutlineText size="medium">Background Theme</OutlineText>
             </div>
             <div className="flex flex-row items-center justify-center h-7/16">
               <BackgroundThemeSelector

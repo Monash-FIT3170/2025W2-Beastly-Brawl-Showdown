@@ -41,7 +41,13 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({
   return (
     <div className="flex items-center justify-center h-full w-full space-x-4">
       {/* Left Arrow */}
-      <IconButton style="arrowleft" buttonColour="blue" iconColour="stroked" size="small" onClick={prev} />
+      <IconButton
+        style="triangleleft"
+        buttonColour="blue"
+        iconColour="black"
+        size="medium"
+        onClick={prev}
+      />
 
       {/* Cards */}
       {plainCardModes.includes(cardData[selectedIndex].mode) ? (
@@ -60,7 +66,13 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({
       }
 
       {/* Right Arrow */}
-      <IconButton style="arrowright" buttonColour="blue" iconColour="stroked" size="small" onClick={next} />
+      <IconButton
+        style="triangleright"
+        buttonColour="blue"
+        iconColour="black"
+        size="medium"
+        onClick={next}
+      />
     </div>
   );
 };

@@ -8,6 +8,8 @@ interface IconProps {
     | "arrowright"
     | "arrowup"
     | "arrowdown"
+    | "triangleleft"
+    | "triangleright"
     | "x"
     | "bars"
     | "info"
