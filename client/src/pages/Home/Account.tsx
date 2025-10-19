@@ -50,10 +50,10 @@ const ProfileEditForm = ({
 }) => (
   <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] flex flex-col gap-4 sm:gap-6 border-2 border-black max-w-[800px] w-full">
     <div className="text-center">
-      <OutlineText size="large">Profile</OutlineText>
+      <OutlineText size={isMobile ? "large" : "large"}>Profile</OutlineText>
     </div>
 
-    <OutlineText size="medium">Username:</OutlineText>
+    <OutlineText size={isMobile ? "medium" : "medium"}>Username:</OutlineText>
     <InputBox
       id="username"
       value={formData?.username ?? ""}
@@ -64,7 +64,7 @@ const ProfileEditForm = ({
       placeholder="Enter New Username"
     />
 
-    <OutlineText size="medium">Email:</OutlineText>
+    <OutlineText size={isMobile ? "medium" : "medium"}>Email:</OutlineText>
     <InputBox
       id="email"
       type="email"
@@ -76,7 +76,7 @@ const ProfileEditForm = ({
       placeholder="Enter New Email"
     />
 
-    <OutlineText size="medium">Password:</OutlineText>
+    <OutlineText size={isMobile ? "medium" : "medium"}>Password:</OutlineText>
     <InputBox
       id="password"
       type="password"
@@ -123,30 +123,42 @@ const ProfileView = ({
   <>
     <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black max-w-[800px] w-full relative ">
       <div className="text-center mb-4">
-        <OutlineText size="large">Profile</OutlineText>
+        <OutlineText size={isMobile ? "large" : "large"}>Profile</OutlineText>
       </div>
-      <OutlineText size="medium">Username: {userData?.username}</OutlineText>
-      <OutlineText size="medium">Email: {userData?.email}</OutlineText>
+      <OutlineText size={isMobile ? "medium" : "medium"}>
+        Username: {userData?.username}
+      </OutlineText>
+      <OutlineText size={isMobile ? "medium" : "medium"}>
+        Email: {userData?.email}
+      </OutlineText>
 
-      <div className="absolute bottom-4 right-4">
-        <ButtonGeneric
-          color="blue"
-          size={isMobile ? "battle" : "medium"}
-          onClick={startEditing}
-        >
+      {/* Only show the edit button on desktop */}
+      {!isMobile && (
+        <div className="absolute bottom-4 right-4">
+          <ButtonGeneric color="blue" size="medium" onClick={startEditing}>
+            Edit Profile
+          </ButtonGeneric>
+        </div>
+      )}
+    </div>
+
+    {/* Mobile-only Edit Profile button */}
+    {isMobile && (
+      <div className="block lg:hidden mt-2">
+        <ButtonGeneric color="blue" size="battle" onClick={startEditing}>
           Edit Profile
         </ButtonGeneric>
       </div>
-    </div>
+    )}
 
     <div className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black max-w-[800px] w-full mt-4 ">
       <div className="text-center mb-4">
-        <OutlineText size="large">Stats</OutlineText>
+        <OutlineText size={isMobile ? "large" : "large"}>Stats</OutlineText>
       </div>
-      <OutlineText size="medium">
+      <OutlineText size={isMobile ? "medium" : "medium"}>
         Games Played: {userData?.stats?.numGamesPlayed ?? 0}
       </OutlineText>
-      <OutlineText size="medium">
+      <OutlineText size={isMobile ? "medium" : "medium"}>
         Games Won: {userData?.stats?.numGamesWon ?? 0}
       </OutlineText>
     </div>
@@ -187,8 +199,10 @@ export const Account = () => {
     return () => socket.off("userData", handler);
   }, []);
 
+  // -----------------------------
+  // FIXED: Keep input focus while editing
   const startEditing = () => {
-    setFormData({ ...userData, username: "", email: "", password: "" });
+    setFormData({ ...userData }); // preserve existing values
     setEditing(true);
   };
 
@@ -223,7 +237,7 @@ export const Account = () => {
         />
       </div>
 
-      <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] relative -top-12 items-center">
+      <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] relative -top-12 items-center gap-6">
         <BaseCard color="peach" width={isMobile ? 50 : 70} height={8}>
           <OutlineText size={isMobile ? "large" : "extraLarge"}>
             MY ACCOUNT
