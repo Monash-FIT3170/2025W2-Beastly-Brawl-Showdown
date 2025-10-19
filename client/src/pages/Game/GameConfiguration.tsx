@@ -10,6 +10,7 @@ import GameModeSelector from "../../components/selectors/GameModeSelector";
 import BackgroundThemeSelector from "../../components/selectors/BackgroundThemeSelector";
 import { OutlineTextResizable } from "../../components/texts/ResizableOutlineText";
 import { setSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const GameConfiguration = () => {
   // Use selectedGameModeIndex to retrieve currently selected mode.
@@ -74,15 +75,24 @@ export const GameConfiguration = () => {
 
   return (
     <div className="relative w-screen min-h-screen">
-      <div
-        className="fixed inset-0 -z-10"
-        style={{
-          backgroundImage: `url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/${backgroundThemeOptions[selectedBackgroundThemeIndex].name.toUpperCase()}.jpg')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat"
-        }}
-      />
+      {/* AnimatePresence handles background transitions */}
+      <AnimatePresence>
+        <motion.div
+          key={selectedBackgroundThemeIndex}  // Ensures re-render on level changes
+          className="fixed inset-0 -z-10"
+          style={{
+            backgroundImage: `url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/${backgroundThemeOptions[selectedBackgroundThemeIndex].name.toUpperCase()}.jpg')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat"
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.7 }}
+        />
+      </AnimatePresence>
+
       <div className="flex flex-col items-center justify-center min-h-screen w-full px-4 py-6 sm:px-8 sm:py-10 lg:px-16 lg:py-14">
         <div className="absolute top-4 left-4 z-50">
           <IconButton
