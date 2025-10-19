@@ -6,7 +6,7 @@ import { Status } from "./status";
 export class SwampsCalm extends EndStatus {
   //TODO: pick a statustype..
   constructor(countdown: number=6) {
-      super("Swamp's Calm", 
+      super("Swamps Calm", 
         "A gentle stillness from the swamp's magic that slowly heals your wounds.", 
         countdown, 
         StatusType.BUFF);

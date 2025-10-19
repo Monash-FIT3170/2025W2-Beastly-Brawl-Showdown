@@ -26,6 +26,6 @@ export class RedCrystal extends Equipment {
   }
 
   protected getImageString(): string {
-    return "Red_CRYSTAL";
+    return "RED_CRYSTAL";
   }
 }

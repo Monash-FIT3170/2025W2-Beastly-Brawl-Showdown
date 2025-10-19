@@ -581,7 +581,7 @@
       {
         "id": "glow_posion",
         "type": "CONSUMABLE",
-        "consumableId": "glow_of_insite"
+        "consumableId": "glow_of_insight"
       },
       {
         "id": "lost",
@@ -625,6 +625,7 @@
       },
       {
         "id": "swamps_guidance",
+        "result": ["You feel a light force pushing you out of the loop."],
         "type": "STATUS",
         "statusId": ["swamps_guidance", 2]
       },

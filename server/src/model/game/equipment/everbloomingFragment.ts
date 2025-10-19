@@ -32,6 +32,6 @@ export class EverbloomingFragment extends Equipment {
   }
 
   protected getImageString(): string {
-    return "PURPLE CRYSTAL";
+    return "EVERBLOOMING_FRAGMENT";
   }
 }

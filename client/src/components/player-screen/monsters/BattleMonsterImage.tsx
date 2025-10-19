@@ -74,7 +74,7 @@ function getMonsterImage(
 function getOverlay(overlay: string): string {
   return (
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
-    overlay.toUpperCase().replace(" ", "_") +
+    overlay.toUpperCase().replace(/\s+/g, "_") +
     ".png"
   );
 }
@@ -159,7 +159,7 @@ function getShieldAnimation(animations: string[]): [string, string] {
       animation = "animate-" + a;
       image =
         "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
-        a.toUpperCase().replace("-", "_") +
+        a.toUpperCase().replace(/\s+/g, "_") +
         ".png";
       return [animation, image];
     }

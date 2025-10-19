@@ -5,7 +5,7 @@ import { StartStatus } from "./startStatus";
 export class SwampsGuidance extends StartStatus {
   constructor(countDown: number) {
     super(
-      "Swamp's Guidance",
+      "Swamps Guidance",
       "The fog moves when you do, like it's shielding you (+3 AC).",
       countDown,
       StatusType.BUFF

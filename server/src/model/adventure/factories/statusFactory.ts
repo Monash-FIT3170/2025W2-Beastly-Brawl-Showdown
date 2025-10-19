@@ -15,6 +15,7 @@ import { CroakOfStrengthBuff } from "../../game/status/croakOfStrengthBuff";
 import { SwampsGuidance } from "../../game/status/swampsGuidance";
 import { Regeneration } from "../../game/status/regeneration";
 import { SandyEyes } from "../../game/status/sandyEyes";
+import { Resurrection } from "../../game/status/resurrection";
 
 export interface StatusInfo {
   statusId: string;
@@ -38,6 +39,7 @@ const statusFactory: Record<string, (d: number) => Status> = {
   swamps_guidance: (d) => new SwampsGuidance(d),
   regeneration: (d) => new Regeneration(d),
   sandy_eyes: (d) => new SandyEyes(d),
+  resurrection: (d) => new Resurrection(d),
 };
 
 export function createStatus(id: string, duration: number): Status {

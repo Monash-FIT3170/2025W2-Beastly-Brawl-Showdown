@@ -26,6 +26,6 @@ export class WitherbindBracelet extends Equipment {
   }
 
   protected getImageString(): string {
-    return "WITHERBIND_BRACELET";
+    return "WITHERBIND_BRACELETE";
   }
 }

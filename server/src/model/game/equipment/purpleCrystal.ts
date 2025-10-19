@@ -26,6 +26,6 @@ export class PurpleCrystal extends Equipment {
   }
 
   protected getImageString(): string {
-    return "PURPLE CRYSTAL";
+    return "PURPLE_CRYSTAL";
   }
 }

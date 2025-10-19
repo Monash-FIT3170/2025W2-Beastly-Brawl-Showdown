@@ -31,7 +31,7 @@ export class Resurrection extends EndStatus {
 
     const roll = Math.random();
 
-    if (roll < 300 && player.getHealth() == 0) {
+    if (roll < 30 && player.getHealth() == 0) {
       resurrect.used = true;
       const monster = player.getMonster();
       const maxHp = monster ? monster.getMaxHealth() : 0;

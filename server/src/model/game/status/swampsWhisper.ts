@@ -5,7 +5,7 @@ import { StartStatus } from "./startStatus";
 export class SwampsWhisper extends StartStatus {
   constructor(countDown: number) {
     super(
-      "Swamp's Whisper",
+      "Swamps Whisper",
       "Your thoughts drift like mist. Your crit hit rate reduces.",
       countDown,
       StatusType.DEBUFF

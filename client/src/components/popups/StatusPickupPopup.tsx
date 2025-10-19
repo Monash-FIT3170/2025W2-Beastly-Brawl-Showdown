@@ -44,7 +44,7 @@ export const StatusPickupPopup = ({
   };
 
   const path = `https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
-    .replace(" ", "_")
+    .replace(/\s+/g, "_")   
     .toUpperCase()}.png`;
 
   if (showingStatus) {
