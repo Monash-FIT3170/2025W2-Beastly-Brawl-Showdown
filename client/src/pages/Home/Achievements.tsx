@@ -127,7 +127,7 @@ export const Achievements = () => {
             style="arrowleft"
             iconColour="black"
             buttonColour="red"
-            size="large"
+            size="medium"
             onClick={() => FlowRouter.go("/Account")}
           />
         </div>
