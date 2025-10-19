@@ -22,13 +22,13 @@ export const GameModeCardSlider = ({
   setSelectedSliderValue
 }: GameModeCardSliderProps) => {
   return (
-    <div className="outline-[0.25rem] bg-peach p-6 rounded-xl w-120 h-full text-center">
+    <div className="outline-[0.25rem] bg-peach p-6 rounded-xl w-120 h-65 text-center">
       <OutlineText size="large">{cardData.title}</OutlineText>
       <BlackText size="medium">{cardData.description}</BlackText>
-      <div className="flex flex-row items-center justify-center h-1/16 pt-3">
+      <div className="flex flex-row items-center justify-center h-1/16 pt-5">
         <OutlineText size="medium">{sliderText}</OutlineText>
       </div>
-      <div className="flex flex-row items-center justify-center h-3/16">
+      <div className="flex flex-row items-center justify-center h-3/16 pt-10">
         <Slider max={sliderMax} min= {sliderMin} selectedValue={selectedSliderValue} setSelectedValue={setSelectedSliderValue} />
       </div>
     </div>
