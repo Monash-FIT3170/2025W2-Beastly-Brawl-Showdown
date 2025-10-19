@@ -5,6 +5,7 @@ import socket from "../../socket";
 import { IconButton } from "../../components/buttons/IconButton";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { BaseCard } from "../../components/cards/BaseCard";
+import { BlackText } from "../../components/texts/BlackText";
 import { OutlineText } from "../../components/texts/OutlineText";
 
 interface AchievementSchema {
@@ -65,11 +66,11 @@ export const Achievements = () => {
               <OutlineText size="medium" className="text-center">
                 {ach.hidden ? "Hidden Achievement" : ach.name}
               </OutlineText>
-              <OutlineText size="tiny" className="text-center">
+              <BlackText size="tiny" className="text-center">
                 {ach.hidden
                   ? "Unlock achievement to see"
                   : `${ach.progress} / ${ach.goal}`}
-              </OutlineText>
+              </BlackText>
             </BaseCard>
           ))}
         </div>
