@@ -134,39 +134,40 @@ export const LoginPage = () => {
 
             {/* Toggle mode */}
             <div className="text-center mt-3">
-              <div className="flex justify-center mt-3">
-                <div className="text-center text-sm md:text-base lg:text-lg break-words max-w-full">
-                  {mode === "login" ? (
-                    <>
-                      Don't have an account?{" "}
-                      <span
-                        onClick={() => {
-                          setMessage("");
-                          setMode("register");
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
-                        className="underline cursor-pointer text-red-600"
-                      >
-                        Register
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      Already have an account?{" "}
-                      <span
-                        onClick={() => {
-                          setMessage("");
-                          setMode("login");
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
-                        className="underline cursor-pointer text-red-600"
-                      >
-                        Log in
-                      </span>
-                    </>
-                  )}
-                </div>
-              </div>
+              <OutlineText
+                size="choice-text"
+                className="break-words max-w-full"
+              >
+                {mode === "login" ? (
+                  <>
+                    Don't have an account?{" "}
+                    <span
+                      onClick={() => {
+                        setMessage("");
+                        setMode("register");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="underline cursor-pointer text-red-600"
+                    >
+                      Register
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Already have an account?{" "}
+                    <span
+                      onClick={() => {
+                        setMessage("");
+                        setMode("login");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="underline cursor-pointer text-red-600"
+                    >
+                      Log in
+                    </span>
+                  </>
+                )}
+              </OutlineText>
             </div>
           </form>
         </div>
