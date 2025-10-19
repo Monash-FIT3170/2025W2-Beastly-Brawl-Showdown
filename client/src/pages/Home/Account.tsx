@@ -136,7 +136,10 @@ const ProfileView = ({
       {!isMobile && (
         <div className="absolute bottom-4 right-4">
           <ButtonGeneric color="blue" size="medium" onClick={startEditing}>
-            Edit Profile
+            <OutlineText size={isMobile ? "battle" : "medium"}>
+              {" "}
+              EDIT PROFILE{" "}
+            </OutlineText>
           </ButtonGeneric>
         </div>
       )}
@@ -146,7 +149,10 @@ const ProfileView = ({
     {isMobile && (
       <div className="block lg:hidden mt-2">
         <ButtonGeneric color="blue" size="battle" onClick={startEditing}>
-          Edit Profile
+          <OutlineText size={isMobile ? "battle" : "medium"}>
+            {" "}
+            EDIT PROFILE{" "}
+          </OutlineText>
         </ButtonGeneric>
       </div>
     )}
@@ -169,14 +175,20 @@ const ProfileView = ({
         size={isMobile ? "battle" : "large"}
         onClick={() => FlowRouter.go("/achievements")}
       >
-        Achievements
+        <OutlineText size={isMobile ? "battle" : "medium"}>
+          {" "}
+          ACHIEVEMENTS{" "}
+        </OutlineText>
       </ButtonGeneric>
       <ButtonGeneric
         color="red"
         size={isMobile ? "battle" : "large"}
         onClick={Logout}
       >
-        Logout
+        <OutlineText size={isMobile ? "battle" : "medium"}>
+          {" "}
+          LOGOUT{" "}
+        </OutlineText>
       </ButtonGeneric>
     </div>
   </>
