@@ -3,6 +3,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
+import { OutlineTextRed } from "../../components/texts/OutlineTextRed";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { GenericIcon } from "../../components/icons/GenericIcon";
@@ -129,7 +130,9 @@ export const LoginPage = () => {
 
             {/* Message */}
             <div className="w-full text-center">
-              <OutlineText size="choice-text">{message}</OutlineText>
+              <OutlineTextRed size="choice-text" color="red">
+                {message}
+              </OutlineTextRed>
             </div>
 
             {/* Toggle mode */}
