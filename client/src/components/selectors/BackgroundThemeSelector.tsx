@@ -30,7 +30,7 @@ const BackgroundThemeSelector: React.FC<BackgroundThemeSelectorProps> = ({
       <IconButton style="arrowleft" buttonColour="blue" iconColour="stroked" size="small" onClick={prev} />
       
       {/* Cards */}
-      <div className="outline-[0.25rem] bg-pictonBlue p-6 rounded-xl w-120 text-center">
+      <div className="outline-[0.25rem] bg-peach p-2 rounded-xl w-120 text-center">
         <OutlineText size="large">{cardData[selectedIndex].name}</OutlineText>
       </div>
 

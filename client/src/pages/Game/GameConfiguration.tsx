@@ -41,7 +41,7 @@ export const GameConfiguration = () => {
       title: "Scored Tournament",
       description: "Earn more points than your opponents over multiple rounds!",
       mode: GameModeIdentifier.SCORING,
-      sliderText: "Round Count:",
+      sliderText: "Round Count",
       sliderMin: 1,
       sliderMax: 5
     }
@@ -93,7 +93,7 @@ export const GameConfiguration = () => {
             onClick={() => FlowRouter.go("/")}
           />
         </div>
-        <CardWithHeader headerText="GAME SETTINGS" headerColor="golden" cardColor="opaqueWhite">
+        <CardWithHeader headerText="GAME SETTINGS" headerColor="ronchi" cardColor="opaqueWhite">
           <div className="flex flex-col items-center justify-center w-3/4 h-3/4 lg:space-y-5 sm:space-y-30">
             <div className="flex flex-row items-center justify-center h-7/16">
               <GameModeSelector

@@ -3,14 +3,14 @@ import { OutlineText } from "../../components/texts/OutlineText";
 
 interface CardWithHeaderProps {
   headerText: string;
-  headerColor: "golden";
+  headerColor: "ronchi";
   cardColor: "opaqueWhite";
   children?: ReactNode;
 }
 
 export const CardWithHeader = ({ headerText, headerColor, cardColor, children }: CardWithHeaderProps) => {
   const colorToDisplay = {
-    golden: "bg-goldenRod",
+    ronchi: "bg-ronchi",
     opaqueWhite: "bg-white/60",
   };
 
