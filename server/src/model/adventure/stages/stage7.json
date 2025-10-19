@@ -160,39 +160,39 @@
     "id": "BIGGER GANG HIDEOUT",
     "level": [0, 3],
     "description": "It's a bigger gang hideout oh noooooo",
-    "background": "CAVE",
+    "background": "ARCTIC",
     "outcomes": [
       {
         "id": "initial",
         "type": "DIALOGUE",
         "result": [
-          "You come across an endlessly deep chasm.",
-          "The only way across is a worn down rope bridge.",
-          "You see something glimmering on the other side.",
-          "The gap is too large to jump."
+          "AYO It's a GANG.",
+          "They got some swag, but at the same time,",
+          "They allegedly possess illegal sporks.",
+          "Hypothetically."
         ],
-        "next": "bridge_choice"
+        "next": "gang_choice"
       },
       {
-        "id": "bridge_choice",
-        "result": ["Do you try to cross...?"],
+        "id": "gang_choice",
+        "result": ["It's time to do A THING!!!!"],
         "type": "CHOICE",
         "options": [
           {
             "id": "cross",
-            "text": "Cross",
-            "next": "cross_random"
+            "text": "Steal Their Stuff!",
+            "next": "gang_random"
           },
           {
             "id": "ignore",
-            "text": "Ignore",
+            "text": "Be Boring!",
             "next": "ignore_outcome"
           }
         ]
       },
       {
-        "id": "cross_random",
-        "result": ["You cross"],
+        "id": "gang_random",
+        "result": ["You break in and allgedly steal their hypothetical stuff"],
         "type": "RANDOM",
         "options": [
           {
@@ -210,10 +210,9 @@
       {
         "id": "bridge_crossed",
         "result": [
-          "You put one foot after another, carefully moving forward.",
-          "The old wooden planks look like they could give out any second.",
-          "Before you know it, you're on the other side.",
-          "You find the source of the glimmering."
+          "You 'negotiate' with the gang. Allegedly.",
+          "Hypothetically, they all instantly combust in the face of your unbeatable SPORK-FU.",
+          "As you hypothetically look through their alleged goods, you hypothetically find..."
         ],
         "type": "DIALOGUE",
         "next": "bridge_reward"
@@ -227,9 +226,10 @@
         "id": "bridge_broke",
         "type": "DIALOGUE",
         "result": [
-          "You put one foot after another, carefully moving forward.",
-          "The rot on the planks does not give you confidence",
-          "You hear a snap and instinctively grab the rope."
+          "You 'negotiate' with the gang. Allegedly.",
+          "Allegedly, they all opened fire on you.",
+          "You are hypothetically forced to escape with alleged wounds.",
+          "Allegedly."
         ],
         "next": "bridge_injury"
       },
@@ -237,7 +237,7 @@
         "id": "bridge_injury",
         "type": "STAT_CHANGE",
         "statChange": ["health", -5],
-        "result": ["You smack into the side of the cliff!"],
+        "result": ["THEY TOOK BOTH YO KNEECAPSYOOOO"],
         "next": "resolution"
       },
       {
