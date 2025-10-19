@@ -31,7 +31,7 @@ export const LoginPage = () => {
       setMessage(data.message);
       if (data.success) {
         setMode("login");
-        setMessage("Registration successful! Please log in.");
+        setMessage("Registration successful!");
       }
     };
 
@@ -128,7 +128,9 @@ export const LoginPage = () => {
             </div>
 
             {/* Message */}
-            {message && <p className="text-red-600 text-center">{message}</p>}
+            <div className="w-full text-center">
+              <OutlineText size="choice-text">{message}</OutlineText>
+            </div>
 
             {/* Toggle mode */}
             <div className="text-center mt-3">
