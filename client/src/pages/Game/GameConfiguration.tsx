@@ -20,7 +20,7 @@ export const GameConfiguration = () => {
   const [selectedBackgroundThemeIndex, setSelectedBackgroundThemeIndex] = useState(0);
 
   // Use selectedSliderValue to retrieve the current value of a visible slider.
-  const defaultSliderValue = 1;
+  const defaultSliderValue = 3;
   const [selectedSliderValue, setSelectedSliderValue] = useState(defaultSliderValue);
 
   // Called on 'Host Lobby' button press
