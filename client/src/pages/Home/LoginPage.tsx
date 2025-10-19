@@ -60,7 +60,7 @@ export const LoginPage = () => {
         {/* Top-Left return button */}
         <div className="absolute top-15 left-15 z-20">
           <IconButton
-            style="x"
+            style="arrowleft"
             buttonColour="red"
             iconColour="stroked"
             size="small"
