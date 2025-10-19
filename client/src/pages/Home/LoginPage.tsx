@@ -147,7 +147,7 @@ export const LoginPage = () => {
                         setMode("register");
                         window.scrollTo({ top: 0, behavior: "smooth" });
                       }}
-                      className="underline cursor-pointer text-red-600"
+                      className="underline cursor-pointer text-outline-red"
                     >
                       Register
                     </span>
