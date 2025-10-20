@@ -40,6 +40,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
   const [viewingEnemyInfo, setViewingEnemyInfo] = useState<Boolean>(false);
   const [isSpectating, setIsSpectating] = useState<boolean>(false);
+  const [finalScreen, setFinalScreen] = useState<boolean>(true);
   const [gameMode, setGameMode] = useState<GameModeIdentifier>(
     GameModeIdentifier.SCORING
   );
@@ -70,23 +71,27 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setTimer(time);
     });
 
-    socket.on("battle_end", ({ result, winners, mode, gameCode }) => {
-      setWaitForConclusion(false);
-      setGameMode(mode);
-      setGameCode(gameCode);
-      console.log(result, winners, mode);
-      if (result === "draw") {
-        setWinner("Draw");
-      } else if (result === "concluded") {
-        setWinner(winners[0]);
+    socket.on(
+      "battle_end",
+      ({ result, winners, mode, gameCode, finalScreen }) => {
+        setWaitForConclusion(false);
+        setGameMode(mode);
+        setGameCode(gameCode);
+        setFinalScreen(finalScreen);
+        console.log(result, winners, mode);
+        if (result === "draw") {
+          setWinner("Draw");
+        } else if (result === "concluded") {
+          setWinner(winners[0]);
+        }
+        console.log("Winner: ", winner);
+        if (battleState?.yourPlayer.name === winner) {
+          socket.emit("updateWin");
+        } else {
+          socket.emit("updateLoss");
+        }
       }
-      console.log("Winner: ", winner);
-      if (battleState?.yourPlayer.name === winner) {
-        socket.emit("updateWin");
-      } else {
-        socket.emit("updateLoss");
-      }
-    });
+    );
 
     // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
     // to handle all types of animations triggered by actions
@@ -231,11 +236,19 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         ) : */}
         {winner ? (
           winner === "Draw" ? (
-            <DrawScreen mode={gameMode} gameCode={gameCode} />
+            <DrawScreen
+              mode={gameMode}
+              gameCode={gameCode}
+              finalScreen={finalScreen}
+            />
           ) : battleState?.yourPlayer.name === winner ? (
             <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
           ) : (
-            <LoserScreen mode={gameMode} gameCode={gameCode} />
+            <LoserScreen
+              mode={gameMode}
+              gameCode={gameCode}
+              finalScreen={finalScreen}
+            />
           )
         ) : (
           <>

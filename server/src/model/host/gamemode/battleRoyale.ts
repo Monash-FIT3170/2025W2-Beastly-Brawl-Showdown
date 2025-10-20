@@ -128,6 +128,7 @@ export class BattleRoyale implements IGameMode {
         winners: [winner.getName()],
         mode: this.name,
         gameCode: session.getGameCode().toString(),
+        finalScreen: session.isSessionConcluded(),
       });
     }
 
@@ -160,6 +161,7 @@ export class BattleRoyale implements IGameMode {
         winners: [],
         mode: this.name,
         gameCode: session.getGameCode().toString(),
+        finalScreen: session.isSessionConcluded(),
       });
     }
 
@@ -440,6 +442,7 @@ export class BattleRoyale implements IGameMode {
                 winners: [finalWinner.name],
                 mode: this.name,
                 gameCode: session.getGameCode().toString(),
+                finalScreen: true,
               });
             }
           } else {
@@ -449,6 +452,7 @@ export class BattleRoyale implements IGameMode {
                 winners: [],
                 mode: this.name,
                 gameCode: session.getGameCode().toString(),
+                finalScreen: true,
               });
             }
           }

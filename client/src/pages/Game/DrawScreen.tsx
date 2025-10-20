@@ -7,10 +7,15 @@ import React, { useEffect, useState } from "react";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 interface DrawScreenProps {
   mode: GameModeIdentifier;
+  finalScreen?: boolean;
   gameCode?: string;
 }
 //
-const DrawScreen: React.FC<DrawScreenProps> = ({ mode, gameCode }) => {
+const DrawScreen: React.FC<DrawScreenProps> = ({
+  mode,
+  gameCode,
+  finalScreen = true,
+}) => {
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
     // UPDATE: add pop up when kicked
@@ -41,7 +46,7 @@ const DrawScreen: React.FC<DrawScreenProps> = ({ mode, gameCode }) => {
           alt={`GRAVE image`}
         />
 
-        {mode === GameModeIdentifier.BATTLE_ROYALE && (
+        {mode === GameModeIdentifier.BATTLE_ROYALE && !finalScreen && (
           <ButtonGeneric color="red" size="medium" onClick={() => spectate()}>
             <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
               <div>

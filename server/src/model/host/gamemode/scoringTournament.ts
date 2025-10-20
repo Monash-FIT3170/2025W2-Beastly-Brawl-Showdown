@@ -176,6 +176,7 @@ export class ScoringTournament implements IGameMode {
                 winners: [playerName],
                 mode: this.name,
                 gameCode: session.getGameCode().toString(),
+                finalScreen: true,
               });
             }
           } else {
@@ -186,6 +187,7 @@ export class ScoringTournament implements IGameMode {
                 winners: [],
                 mode: this.name,
                 gameCode: session.getGameCode().toString(),
+                finalScreen: true,
               });
             }
           }
