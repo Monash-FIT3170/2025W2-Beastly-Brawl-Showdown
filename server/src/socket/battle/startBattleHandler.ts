@@ -91,7 +91,7 @@ export default function proceedBattleTurn(
       });
 
       let actions = playerToSpectate.getMonster().getPossibleActionStates();
-      io.to(playerToSpectate.getId()).emit("possible_actions", actions);
+      io.to(spectator.getId()).emit("possible_actions", actions);
     });
   }
 
@@ -211,7 +211,7 @@ export default function proceedBattleTurn(
             let actions = playerToSpectate
               .getMonster()
               .getPossibleActionStates();
-            io.to(playerToSpectate.getId()).emit("possible_actions", actions);
+            io.to(spectator.getId()).emit("possible_actions", actions);
           });
         }
 

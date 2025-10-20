@@ -98,6 +98,7 @@ export class BattleRoyale implements IGameMode {
     }
 
     for (let spectator of battle.getSpectators()) {
+      io.sockets.sockets.get(spectator.getId())?.join(battle.getId());
       io.sockets.sockets
         .get(spectator.getId())
         ?.emit("battle-started", battle.getId());
