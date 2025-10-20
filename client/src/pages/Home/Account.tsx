@@ -60,7 +60,7 @@ const ProfileEditForm = ({
       onChange={(e) =>
         setFormData((prev) => ({ ...prev!, username: e.target.value }))
       }
-      maxLength={50}
+      maxLength={8}
       placeholder="Enter New Username"
     />
 
@@ -76,17 +76,7 @@ const ProfileEditForm = ({
       placeholder="Enter New Email"
     />
 
-    <OutlineText size={isMobile ? "medium" : "medium"}>Password:</OutlineText>
-    <InputBox
-      id="password"
-      type="password"
-      value={formData?.password ?? ""}
-      onChange={(e) =>
-        setFormData((prev) => ({ ...prev!, password: e.target.value }))
-      }
-      maxLength={50}
-      placeholder="Enter New Password"
-    />
+
 
     <div className="flex flex-col sm:flex-row gap-5 justify-center mt-4">
       <ButtonGeneric

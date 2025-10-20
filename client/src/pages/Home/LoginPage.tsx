@@ -100,7 +100,7 @@ export const LoginPage = () => {
                 <InputBox
                   value={username}
                   placeholder="Username"
-                  maxLength={50}
+                  maxLength={8}
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </label>
