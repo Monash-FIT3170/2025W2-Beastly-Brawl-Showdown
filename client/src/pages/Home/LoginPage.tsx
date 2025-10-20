@@ -24,7 +24,10 @@ export const LoginPage = () => {
       setMessage(data.message);
       if (data.success) {
         socket.emit("syncAchievements");
-        FlowRouter.go("/Account"); // Redirect to account Page on success
+        setTimeout(() => {
+          socket.emit("fetchUserData"); // preload data
+          FlowRouter.go("/Account");
+        }, 300);
       }
     };
 
