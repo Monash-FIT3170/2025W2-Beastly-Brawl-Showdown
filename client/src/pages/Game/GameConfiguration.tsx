@@ -64,6 +64,12 @@ export const GameConfiguration = () => {
     },
     {
       name: "Desert",
+    },
+    {
+      name: "Colosseum",
+    },
+    {
+      name: "Endless",
     }
   ];
 
