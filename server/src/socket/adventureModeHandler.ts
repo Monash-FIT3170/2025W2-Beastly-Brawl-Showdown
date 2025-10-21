@@ -575,6 +575,7 @@ export function loadNextStory(
     });
     const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
     stageData = eligibleNodes[randomNode];
+    console.log("THIS IS BEING HIT", stageData.background);
     if (!stageData.background) {
       socket.emit("adventure_background", null);
     } else {

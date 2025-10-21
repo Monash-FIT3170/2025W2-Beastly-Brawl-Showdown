@@ -255,7 +255,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       socket.off("adventure_consumable");
       socket.off("adenture_background");
     };
-  });
+  }, []);
 
   return (
     <>
