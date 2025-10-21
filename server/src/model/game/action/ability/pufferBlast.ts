@@ -24,7 +24,6 @@ export class PufferBlast extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     actingPlayer.incAbilitiesUsed(1);
-    let damage: number = 0;
     this.incCurrentUse(-1);
 
     var hitFishes = 0;
