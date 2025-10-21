@@ -297,6 +297,7 @@ export default function proceedBattleTurn(
                 //Handler after a battle ended
                 gameSession.onBattleEnded(winners[0], battle, io, socket);
               }
+
               //Emit to host one last time before shutting down the handler
               gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
               io.to(gameSession.getHost()).emit("game-session-state", {
