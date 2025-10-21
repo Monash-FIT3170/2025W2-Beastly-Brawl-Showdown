@@ -652,7 +652,7 @@
       {
         "id": "initial",
         "result": [
-          "You spot a cool oasis ahead — palm trees and shimmering water.",
+          "You spot a cool oasis ahead, palm trees and shimmering water.",
           "Your throat aches for relief..."
         ],
         "type": "DIALOGUE",
