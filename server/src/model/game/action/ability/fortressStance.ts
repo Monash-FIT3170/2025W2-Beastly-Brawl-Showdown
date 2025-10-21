@@ -22,6 +22,7 @@ export class FortressStanceAbilityAction extends Action {
   public prepare(actingPlayer: Player, affectedPlayer: Player): void {}
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    actingPlayer.incAbilitiesUsed(1)
     this.incCurrentUse(-1);
 
     // Increase the AC of the player

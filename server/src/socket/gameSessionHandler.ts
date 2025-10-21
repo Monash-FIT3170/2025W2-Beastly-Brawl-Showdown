@@ -291,13 +291,36 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
         //Get all players to join a common game session socket room
         io.sockets.sockets.get(player.getId())?.join(`game-${gameCodeN}`);
       }
-      io.to(battle.getId()).emit("battle_started", battle.getId());
+      io.to(battle.getId()).emit("battle-started", battle.getId());
       proceedBattleTurn(io, socket, session, battle);
     }
   });
 
   // Starting a recently added battle
-  socket.on("start-new-battle", ({ gameCode }) => {
+  socket.on("initiator-new-battle", ({ gameCode }) => {
+    const gameCodeN = Number(gameCode);
+    const session = activeGameSessions.get(gameCodeN);
+    const battle = session?.getBattles().getFrontItem();
+    console.log("[INITIATOR: starting new battle...");
+
+    if (!session) {
+      // If session of given game code doesnt exist
+      console.log(`Request failed. Invalid Code`);
+      return;
+    }
+    if (!battle) {
+      console.log(`Request failed. Invalid Battle`);
+      return;
+    }
+
+    for (const player of battle.getPlayers()) {
+      player.prepareForNextBattle();
+    }
+    socket.emit("battle-started", battle.getId());
+    proceedBattleTurn(io, socket, session, battle);
+  });
+
+  socket.on("opponent-new-battle", ({ gameCode }) => {
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
     const battle = session?.getBattles().getFrontItem();
@@ -311,8 +334,11 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Request failed. Invalid Battle`);
       return;
     }
-    socket.emit("battle_started", battle.getId());
-    proceedBattleTurn(io, socket, session, battle);
+
+    for (const player of battle.getPlayers()) {
+      player.prepareForNextBattle();
+    }
+    socket.emit("battle-started", battle.getId());
   });
 
   // Close game session
@@ -321,6 +347,18 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     const gameCodeN = Number(gameCode);
     const session = activeGameSessions.get(gameCodeN);
 
+    session.closeAllBattles(); //close all the ongoing battles in the current game session (host)
+
+    //Notify all players that the host is closed
+    //      socketToKick.leave(`game-${gameCodeN}`);
+
+    io.to(`game-${gameCodeN}`).emit("host-closed");
+    // session
+    //   ?.getBattles()
+    //   .getItems()
+    //   .forEach((curBattle) => {
+    //     io.to(curBattle.getId()).emit("host-closed");
+    //   });
     if (!session) {
       // If session of given game code doesn't exist
       console.log(`Cancel Request failed. Invalid Code`);
@@ -336,9 +374,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
         io.to(curBattle.getId()).emit("host-closed");
       });
 
-    io.to(`game-${gameCodeN}`).emit("close-warning", {
-      message: "Current game session is closing.",
-    });
+    // io.to(`game-${gameCodeN}`).emit("close-warning", {
+    //   message: "Current game session is closing.",
+    // });
 
     // Timeout to allow the message to send before closure
     setTimeout(() => {
@@ -385,6 +423,23 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     } else {
       console.log(`Failed to retrieve selected background theme for game code ${gameCode}`);
       socket.emit("selected-background-theme", { selectedBackgroundTheme: null });
+    }
+  });
+
+  // Get final winner
+  socket.on("get-final-winner", ({ gameCode }) => {
+    const gameCodeN = Number(gameCode);
+    const session = activeGameSessions.get(gameCodeN);
+    const finalWinner = session?.getFinalWinner();
+
+    if (finalWinner) {
+      console.log(
+        `Successfully retrieved final winner for game code ${gameCode}`
+      );
+      socket.emit("final-winner-response", { finalWinner });
+    } else {
+      console.log(`Failed to retrieve final winner for game code ${gameCode}`);
+      socket.emit("final-winner-response", { finalWinner: null });
     }
   });
 };

@@ -13,20 +13,23 @@ interface FinalResultsBattleRoyaleProps {
   gameCode?: string;
 }
 
-export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleProps) => {
-  const [finalWinner, setFinalWinner] = useState<PlayerState | null | undefined>(undefined);  // null means there is no final winner (i.e., draws)
+export const FinalResultsBattleRoyale = ({
+  gameCode,
+}: FinalResultsBattleRoyaleProps) => {
+  const [finalWinner, setFinalWinner] = useState<
+    PlayerState | null | undefined
+  >(undefined); // null means there is no final winner (i.e., draws)
 
   useEffect(() => {
-    if (!socket)
-      return;
+    if (!socket) return;
 
-    socket.emit("request-final-results", { gameCode });
-    socket.on("final-results", ({ finalResults }) => {
-      setFinalWinner(finalResults.finalWinner);
+    socket.emit("get-final-winner", { gameCode });
+    socket.on("final-winner-response", ({ finalWinner }) => {
+      setFinalWinner(finalWinner);
     });
 
     return () => {
-      socket.off("final-results");
+      socket.off("final-winner-response");
     };
   }, [gameCode]);
 
@@ -35,14 +38,16 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
     console.log("Waiting for winner to be fetched...");
     return (
       <div>
-        <OutlineText size="large">
-          Loading final results...
-        </OutlineText>
+        <OutlineText size="large">Loading final results...</OutlineText>
       </div>
     );
   }
 
-  console.log(`Winner fetched: ${finalWinner ? finalWinner.name : "There is no final winner"}`);
+  console.log(
+    `Winner fetched: ${
+      finalWinner ? finalWinner.name : "There is no final winner"
+    }`
+  );
 
   // Button handler for restarting a new lobby
   const renderConfigPage = () => {
@@ -81,9 +86,7 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
         {finalWinner ? (
           <>
             <div className="mb-2 text-center">
-              <OutlineText size="large">
-                {finalWinner.name}
-              </OutlineText>
+              <OutlineText size="large">{finalWinner.name}</OutlineText>
               <OutlineText size="medium">
                 {finalWinner.monster?.name}
               </OutlineText>
@@ -124,14 +127,10 @@ export const FinalResultsBattleRoyale = ({ gameCode }: FinalResultsBattleRoyaleP
 
       <div className="flex flex-row items-center justify-center h-1/2 space-x-[5rem]">
         <ButtonGeneric color="ronchi" size="medium" onClick={renderConfigPage}>
-          <OutlineText size="medium">
-            NEW LOBBY
-          </OutlineText>
+          <OutlineText size="medium">NEW LOBBY</OutlineText>
         </ButtonGeneric>
         <ButtonGeneric color="red" size="medium" onClick={exitToHome}>
-          <OutlineText size="medium">
-            EXIT TO HOME
-          </OutlineText>
+          <OutlineText size="medium">EXIT TO HOME</OutlineText>
         </ButtonGeneric>
       </div>
     </BackgroundThemePage>
