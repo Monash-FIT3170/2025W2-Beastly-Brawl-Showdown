@@ -1,47 +1,58 @@
 // audioManager.ts
 // Place in client/ or imports/ depending on your project layout.
 
-let bgm: HTMLAudioElement | null = null;
+let currentBGM: HTMLAudioElement | null = null;
 
-let currentTrack = "";
-let bgmInitialized = false;
+let currentTrack = ""; 
 const sfxCache: Record<string, HTMLAudioElement> = {};
 
 
 
 let bgmEnabled = false; 
-
+export function initBGM() {
+  const storedPref = localStorage.getItem("bgmEnabled");
+  bgmEnabled = storedPref === "true";
+}
 export function playBGM(path: string) {
-  // Create global audio instance once
-  if (!bgm) {
-    bgm = new Audio(path);
-    bgm.loop = true;
-    bgm.volume = 0.5;
+  // Skip if music is disabled
+  if (!bgmEnabled) return;
 
-    const storedPref = localStorage.getItem("bgmEnabled");
-    bgmEnabled = storedPref === "true";
+  // If same track is already playing, skip restart
+  if (currentTrack === path && currentBGM) return;
 
-    // Try to auto-play if preference says on
-    if (bgmEnabled) {
-      bgm.play().catch(() => {
-        console.warn("Autoplay blocked — waiting for toggle.");
-      });
-    }
+  // Fade out existing music
+  if (currentBGM) {
+    const fading = currentBGM;
+    const fadeOut = setInterval(() => {
+      if (fading.volume > 0.05) {
+        fading.volume -= 0.05;
+      } else {
+        fading.pause();
+        clearInterval(fadeOut);
+      }
+    }, 100);
   }
+
+  // Load and play new track
+  const bgm = new Audio(path);
+  bgm.loop = true;
+  bgm.volume = 0.5;
+  currentBGM = bgm;
+  currentTrack = path;
+
+  bgm.play().catch((err) => {
+    console.warn("Play blocked:", err);
+  });
 }
 
 export function toggleBGM(): boolean {
   bgmEnabled = !bgmEnabled;
   localStorage.setItem("bgmEnabled", String(bgmEnabled));
 
-  if (!bgm) return bgmEnabled;
-
-  if (bgmEnabled) {
-    bgm.play().catch((err) => {
-      console.warn("Play failed:", err);
-    });
-  } else {
-    bgm.pause();
+  if (bgmEnabled && currentBGM) {
+    currentBGM.play().catch(console.error);
+  } else if (!bgmEnabled && currentBGM) {
+    currentBGM.pause();
   }
 
   return bgmEnabled;
@@ -50,6 +61,15 @@ export function toggleBGM(): boolean {
 export function isBGMEnabled(): boolean {
   const stored = localStorage.getItem("bgmEnabled");
   return stored === "true";
+}
+export function stopBGM() {
+  if (currentBGM) {
+    currentBGM.pause();
+    currentBGM.currentTime = 0;
+  }
+}
+export function getCurrentBGM(): string {
+  return currentTrack;
 }
 
 export const playSFX = (name: string, volume = 1.0) => {

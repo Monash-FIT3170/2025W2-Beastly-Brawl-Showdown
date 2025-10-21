@@ -7,7 +7,7 @@ import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { LoginPopup } from "./Login";
 import { IconButton } from "../../components/buttons/IconButton";
-import { isBGMEnabled, playBGM,toggleBGM } from "../../audioManager";
+import { isBGMEnabled, playBGM,toggleBGM,initBGM } from "../../audioManager";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { userInfo } from "os";
 
@@ -33,7 +33,6 @@ export const Home = () => {
   }, []);
 
   const createGame = () => {
-    //this is not used?
     socket.emit("create-game", {});
     console.log("Game session created");
   };
@@ -42,9 +41,14 @@ export const Home = () => {
     const codeString = code.toString();
     FlowRouter.go(`/host/${codeString}`);
   });
-  useEffect(() => {
+useEffect(() => {
+  initBGM();
+
+  // Only auto-play once when user interacts (first visit)
+  if (isBGMEnabled()) {
     playBGM("/music/Beastly_brawl_menu_screen_music.mp3");
-  }, []);
+  }
+}, []);
 
   const handleToggleMusic = () => {
     const enabled = toggleBGM();
@@ -61,9 +65,7 @@ export const Home = () => {
     FlowRouter.go("/join");
   };
 
-  const renderAdventure = () => {
-    FlowRouter.go("/adventure/level-select");
-  };
+
 
   const handleLoginSuccess = () => {
     setShowLogin(false);
@@ -75,7 +77,7 @@ export const Home = () => {
     console.log("Exit login");
   };
 
-  // Called on 'Adventure' button press
+
   const handleAdventure = () => {
     if (loggedInUser) {
       renderAdventure();

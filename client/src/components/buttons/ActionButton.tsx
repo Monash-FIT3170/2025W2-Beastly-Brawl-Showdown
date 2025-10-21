@@ -1,6 +1,7 @@
 import React from "react";
 import { ButtonGeneric } from "./ButtonGeneric";
 import { OutlineText } from "../texts/OutlineText";
+import { isBGMEnabled, playBGM,toggleBGM,initBGM,playSFX } from "../../audioManager";
 import {
   ActionState,
   ActionIdentifier,
@@ -41,6 +42,9 @@ const ActionButton: React.FC<ActionButtonProps> = ({
 
   const actionClicked = () => {
     if (isDisabled) return;
+    if (actionState.id === ActionIdentifier.DEFEND) {
+      playSFX("sword");
+    }
     // Do the action stuff
     socket.emit("action_selected", {
       action: actionState,
