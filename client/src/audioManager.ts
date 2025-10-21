@@ -9,67 +9,48 @@ const sfxCache: Record<string, HTMLAudioElement> = {};
 
 
 let bgmEnabled = false; 
+
+let bgm: HTMLAudioElement | null = null;
+
+
 export function initBGM() {
-  const storedPref = localStorage.getItem("bgmEnabled");
-  bgmEnabled = storedPref === "true";
+  if (!bgm) {
+    bgm = new Audio("/music/Beastly_brawl_menu_screen_music.mp3");
+    bgm.loop = true;
+    bgm.volume = 0.5;
+  }
 }
-export function playBGM(path: string) {
-  // Skip if music is disabled
-  if (!bgmEnabled) return;
 
-  // If same track is already playing, skip restart
-  if (currentTrack === path && currentBGM) return;
+export function playBGM(src?: string) {
+  initBGM();
 
-  // Fade out existing music
-  if (currentBGM) {
-    const fading = currentBGM;
-    const fadeOut = setInterval(() => {
-      if (fading.volume > 0.05) {
-        fading.volume -= 0.05;
-      } else {
-        fading.pause();
-        clearInterval(fadeOut);
-      }
-    }, 100);
+  if (src && bgm?.src !== window.location.origin + src) {
+    bgm.src = src;
   }
 
-  // Load and play new track
-  const bgm = new Audio(path);
-  bgm.loop = true;
-  bgm.volume = 0.5;
-  currentBGM = bgm;
-  currentTrack = path;
-
-  bgm.play().catch((err) => {
-    console.warn("Play blocked:", err);
-  });
+  if (bgmEnabled && bgm) {
+    bgm.play().catch((err) => console.warn("BGM play blocked:", err));
+  }
 }
 
-export function toggleBGM(): boolean {
+export function stopBGM() {
+  if (bgm) {
+    bgm.pause();
+  }
+}
+
+export function toggleBGM() {
   bgmEnabled = !bgmEnabled;
-  localStorage.setItem("bgmEnabled", String(bgmEnabled));
-
-  if (bgmEnabled && currentBGM) {
-    currentBGM.play().catch(console.error);
-  } else if (!bgmEnabled && currentBGM) {
-    currentBGM.pause();
+  if (bgmEnabled) {
+    playBGM();
+  } else {
+    stopBGM();
   }
-
   return bgmEnabled;
 }
 
-export function isBGMEnabled(): boolean {
-  const stored = localStorage.getItem("bgmEnabled");
-  return stored === "true";
-}
-export function stopBGM() {
-  if (currentBGM) {
-    currentBGM.pause();
-    currentBGM.currentTime = 0;
-  }
-}
-export function getCurrentBGM(): string {
-  return currentTrack;
+export function isBGMEnabled() {
+  return bgmEnabled;
 }
 
 export const playSFX = (name: string, volume = 1.0) => {
