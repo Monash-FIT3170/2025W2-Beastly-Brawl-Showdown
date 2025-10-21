@@ -159,7 +159,7 @@ function getShieldAnimation(animations: string[]): [string, string] {
       animation = "animate-" + a;
       image =
         "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/animation/" +
-        a.toUpperCase().replace(/\s+/g, "_") +
+        a.toUpperCase().replace("-", "_") +
         ".png";
       return [animation, image];
     }
