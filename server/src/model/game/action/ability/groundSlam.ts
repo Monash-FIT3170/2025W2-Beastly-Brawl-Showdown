@@ -54,7 +54,7 @@ export class GroundSlamAbilityAction extends Action {
         success: true,
       },
       damageDealt: {
-        damage: 3
+        damage: this.damage
       }
     };
   }
