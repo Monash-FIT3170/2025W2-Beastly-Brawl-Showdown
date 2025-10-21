@@ -34,4 +34,6 @@ export interface PlayerState {
   mostDamageDealt: number;
   successfulBlocks: number;
   criticalHitsDealt: number;
+
+  animations: string[];
 }

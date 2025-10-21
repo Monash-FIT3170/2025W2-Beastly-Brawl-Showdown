@@ -1,6 +1,7 @@
 import { Action } from "../action";
 import { Player } from "../../player";
 import { ActionIdentifier, ActionResult } from "/types/single/actionState";
+import { Poison } from "../../status/poison";
 
 export class PufferBlast extends Action {
   constructor() {
@@ -10,7 +11,6 @@ export class PufferBlast extends Action {
       "Launch three spiky pufferfish at your foe. Each has a 50% chance to hit, dealing 2 damage per pop.",
       1
     );
-    this.setDodgeable(false);
   }
 
   // Clear the opponent's actions
@@ -19,52 +19,59 @@ export class PufferBlast extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "Puffer_Blast_Animation";
+    return "ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
-    actingPlayer.incAbilitiesUsed(1)
+    actingPlayer.incAbilitiesUsed(1);
     let damage: number = 0;
     this.incCurrentUse(-1);
 
     var hitFishes = 0;
     var hitDamage = 0;
+    var poisonStacks = 0;
     // Each fish has a 50% chance to hit
     for (let i = 0; i < 3; i++) {
       if (Math.random() < 0.5) {
         hitFishes++;
         hitDamage += 2; // Each fish deals 2 damage
+        if (Math.random() < 0.5) {
+          poisonStacks++;
+        }
       }
     }
     // Apply damage to the affected player
     affectedPlayer.incHealth(-hitDamage);
-    damage = hitDamage
+    for (let i = 0; i < poisonStacks; i++) {
+      affectedPlayer.addStatus(new Poison(3));
+    }
     this.damage = hitDamage;
 
     // Add logs
-    actingPlayer.addLog(
-      `You used ${this.getName()}. ${hitFishes} fish hit inflicting ${hitDamage}.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}. ${hitFishes} fish hit inflicting ${hitDamage}.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage.`
+    // );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage to ${affectedPlayer.getName()}.`
+      `${actingPlayer.getName()} used ${this.getName()}, dealing ${hitDamage} damage to ${affectedPlayer.getName()} and poisoning them ${poisonStacks} times.`
     );
 
     if (hitDamage > 0) {
       this.executeBattleEffect(actingPlayer, affectedPlayer, true);
+      affectedPlayer.addAnimation("damage");
     } else {
       this.executeBattleEffect(actingPlayer, affectedPlayer, false);
     }
 
     return {
-      appliedStatus:{
-        success: false
+      appliedStatus: {
+        success: false,
       },
       damageDealt: {
-        damage: damage
-      }
+        damage: this.damage,
+      },
+    };
   }
-}
 }

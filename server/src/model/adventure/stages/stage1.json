@@ -121,7 +121,7 @@
       {
         "id": "surprise_visitor_cont",
         "type": "STATUS",
-        "statusId": ["stunned", 1],
+        "statusId": ["stunned", 0],
         "result": ["You're awoken by a snarling wolf."],
         "next": "wolf_fight_test"
       },

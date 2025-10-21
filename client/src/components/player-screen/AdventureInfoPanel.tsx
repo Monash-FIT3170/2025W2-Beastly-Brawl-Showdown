@@ -17,9 +17,6 @@ export const AdventureInfoPanel: React.FC<AdventureInfoPanelProps> = ({
   level,
   stage,
 }) => {
-  //TODO: figure out why this disappears on occasion....
-  //todo: make status icons bigger for mobile
-
   return (
     <>
       <div
@@ -27,7 +24,6 @@ export const AdventureInfoPanel: React.FC<AdventureInfoPanelProps> = ({
       bg-[#ffe9af]
       flex flex-col gap-2
       box-border
-      border
       border-4
       border-[#3d2f4f]
       rounded-bl-[20px]
