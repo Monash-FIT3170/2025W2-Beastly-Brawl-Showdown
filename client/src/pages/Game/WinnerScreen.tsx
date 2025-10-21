@@ -59,7 +59,7 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
         backgroundRepeat: "no-repeat"
       }}
     >
-      <div className="fixed inset-0 flex flex-col items-center justify-center bg-ronchi/60">
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-white/60">
         <GenericHeader color="blue">
           <OutlineText size="extraLarge">VICTORY!</OutlineText>
         </GenericHeader>

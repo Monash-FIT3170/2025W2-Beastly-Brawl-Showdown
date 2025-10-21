@@ -168,7 +168,7 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
       </PopupClean>
     )}
 
-    <div className="bg-peach/60 lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">
+    <div className="bg-white/60 lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">
       {/* Title - Using OutlineText styling as text sizing needs to be modified */}
       <div className="bg-pictonBlue outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center p-4 mt-[-3rem]">
         <p className="text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-[Jua] text-outline text-center">

@@ -22,7 +22,7 @@ export const BackgroundThemePage = ({children}: PageProps) => {
           backgroundRepeat: "no-repeat"
         }}
       >
-        <div className="bg-goldenRod/60 h-full outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col justify-around items-center">
+        <div className="bg-white/60 h-full outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col justify-around items-center">
           {children}
         </div>
       </div>
