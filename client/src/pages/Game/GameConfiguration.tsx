@@ -51,25 +51,25 @@ export const GameConfiguration = () => {
   // Define the name of each background theme.
   const backgroundThemeOptions = [
     {
-      name: "Forest",
+      name: "Forest"
     },
     {
-      name: "Basalt",
+      name: "Basalt"
     },
     {
-      name: "Arctic",
+      name: "Arctic"
     },
     {
-      name: "Marsh",
+      name: "Marsh"
     },
     {
-      name: "Desert",
+      name: "Desert"
     },
     {
-      name: "Colosseum",
+      name: "Colosseum"
     },
     {
-      name: "Endless",
+      name: "Endless"
     }
   ];
 
