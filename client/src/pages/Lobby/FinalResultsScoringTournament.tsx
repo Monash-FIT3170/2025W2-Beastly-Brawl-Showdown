@@ -49,13 +49,13 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
 
   // Button handler for restarting a new lobby
   const renderConfigPage = () => {
-    socket.emit("cancel-game", { gameCode });
+    // socket.emit("cancel-game", { gameCode });
     FlowRouter.go("/host/choose-mode");
   };
 
   // Button handler for exiting to home
   const exitToHome = () => {
-    socket.emit("cancel-game", { gameCode });
+    // socket.emit("cancel-game", { gameCode });
     FlowRouter.go("/");
   };
 

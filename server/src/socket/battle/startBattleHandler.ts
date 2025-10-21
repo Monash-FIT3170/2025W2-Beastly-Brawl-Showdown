@@ -21,6 +21,7 @@ export default function proceedBattleTurn(
   battle.clearBattleLogs();
   battle.incTurn();
 
+  console.log("[BATTLE INFO]:", battle);
   let playersInBattle = battle.getPlayers();
 
   //check if end of battle
@@ -82,7 +83,9 @@ export default function proceedBattleTurn(
       // Check each player in battle has a selected action
       playersInBattle.forEach((player) => {
         if (player.getActions().length === 0) {
+          console.log("[BEFORE ADDING]:", player.getActions());
           player.addAction(new NullAction());
+          console.log("[AFTER ADDING]:", player.getActions());
         }
 
         if (player.getNoNullAction() === Player.roundToCheck) {
@@ -217,12 +220,7 @@ export default function proceedBattleTurn(
           );
 
           //Handle logic after actions are executed (see GameMode)
-          gameSession.onActionExecuted(
-            player1.getId(),
-            p1_result,
-            player2.getId(),
-            p2_result
-          );
+          gameSession.onActionExecuted(player1, p1_result, player2, p2_result);
 
           // Emit the result of the battle state after the turn is complete
           playersInBattle.forEach((player) => {
@@ -293,10 +291,26 @@ export default function proceedBattleTurn(
               if (winners?.length == 0) {
                 //Handler after a battle ended
                 gameSession.onBattleEnded(null, battle, io, socket);
+
+                //if battle is over, the array length is guaranteed to be either 0 or 1
+                io.to(battle.getId()).emit("battle_end", {
+                  result: "draw",
+                  winners: winners.map((player) => player.getName()),
+                });
               } else {
                 //Handler after a battle ended
                 gameSession.onBattleEnded(winners[0], battle, io, socket);
+
+                const winningPlayer = winners[0];
+                console.log(
+                  `Player ${winningPlayer.getName()} added to the Waiting Queue`
+                );
+                io.to(battle.getId()).emit("battle_end", {
+                  result: "concluded",
+                  winners: winners.map((player) => player.getName()),
+                });
               }
+
               //Emit to host one last time before shutting down the handler
               gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
               io.to(gameSession.getHost()).emit("game-session-state", {
@@ -308,7 +322,7 @@ export default function proceedBattleTurn(
 
               if (gameSession.areBattlesConcluded()) {
                 //Handler after all battles have ended
-                gameSession.onBattlesEnded(io, socket);
+                // gameSession.onBattlesEnded(io, socket);
 
                 console.log(`Only one player remains.`);
 
