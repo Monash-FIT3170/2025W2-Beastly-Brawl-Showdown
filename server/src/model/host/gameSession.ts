@@ -37,6 +37,7 @@ export default class GameSession {
   private monsters: Array<String>;
   private botInLobby: boolean = false; // whether has been added to this session or not
   private finalResults: GameSessionFinalResults;
+  private selectedBackgroundTheme: string = "";
   private finalWinner: PlayerState | null = null;
 
   // Initialise sample data
@@ -505,5 +506,13 @@ export default class GameSession {
 
   public isGameModeFinished(): boolean {
     return this.mode.isGameModeFinished();
+  }
+
+  public setSelectedBackgroundTheme(selectedBackgroundTheme: string): void {
+    this.selectedBackgroundTheme = selectedBackgroundTheme;
+  }
+
+  public getSelectedBackgroundTheme(): string {
+    return this.selectedBackgroundTheme;
   }
 }
