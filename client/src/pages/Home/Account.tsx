@@ -76,22 +76,23 @@ const ProfileEditForm = ({
       placeholder="Enter New Email"
     />
 
-
-
     <div className="flex flex-col sm:flex-row gap-5 justify-center mt-4">
       <ButtonGeneric
         color="blue"
         size={isMobile ? "battle" : "medium"}
         onClick={handleSave}
       >
-        Save
+        <OutlineText size={isMobile ? "battle" : "medium"}> SAVE </OutlineText>{" "}
       </ButtonGeneric>
       <ButtonGeneric
         color="red"
         size={isMobile ? "battle" : "medium"}
         onClick={() => setEditing(false)}
       >
-        Cancel
+        <OutlineText size={isMobile ? "battle" : "medium"}>
+          {" "}
+          CANCEL{" "}
+        </OutlineText>{" "}
       </ButtonGeneric>
     </div>
   </div>
