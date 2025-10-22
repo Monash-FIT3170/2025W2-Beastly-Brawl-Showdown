@@ -253,10 +253,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       socket.off("roll_dice");
       socket.off("adventure_equipment");
       socket.off("adventure_consumable");
-      socket.off("adenture_background");
+      socket.off("adventure_background");
       socket.off("adventure_status");
     };
-  }, []);
+  });
 
   return (
     <>
