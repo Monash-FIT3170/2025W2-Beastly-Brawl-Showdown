@@ -14,7 +14,7 @@ export class InfinityAbility extends StartStatus {
 
   public startingEffect(player: Player): void {
     player.getActions().forEach((a) => {
-      a.incCurrentUse(a.getMaxUse() - a.getCurrentUse());
+      a.resetUse();
     });
   }
 

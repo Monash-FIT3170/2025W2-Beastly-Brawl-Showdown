@@ -272,6 +272,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             attackState={playerState.attackState}
             onClose={() => setViewingInfo(false)}
             opponent={false}
+            biome={background}
           ></MonsterInfoPopup>
         )}
         {viewingEnemyInfo && (
@@ -280,6 +281,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             attackState={battleState.opponentPlayer.attackState}
             onClose={() => setViewingEnemyInfo(false)}
             opponent={true}
+            biome={background}
           ></MonsterInfoPopup>
         )}
         {viewingInventory && (

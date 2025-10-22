@@ -207,6 +207,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             playerState={battleState.yourPlayer}
             attackState={battleState.yourPlayer.attackState}
             onClose={() => setViewingInfo(false)}
+            biome={backgroundLocation}
           ></MonsterInfoPopup>
         )}
         {viewingEnemyInfo && (
@@ -214,6 +215,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
             playerState={battleState.opponentPlayer}
             attackState={battleState.opponentPlayer.attackState}
             onClose={() => setViewingEnemyInfo(false)}
+            biome={backgroundLocation}
           ></MonsterInfoPopup>
         )}
         {/* Winner display if battle is over */}

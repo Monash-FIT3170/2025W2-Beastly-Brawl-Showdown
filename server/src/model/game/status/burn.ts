@@ -5,7 +5,12 @@ import { StatusType } from "/types/single/statusType";
 
 export class Burn extends EndStatus {
   constructor(countdown: number = 5) {
-    super("Burn", "TO DO.", countdown, StatusType.DEBUFF);
+    super(
+      "Burn",
+      "Take damage equal to status counter.",
+      countdown,
+      StatusType.DEBUFF
+    );
   }
 
   public endingEffect(player: Player): void {
