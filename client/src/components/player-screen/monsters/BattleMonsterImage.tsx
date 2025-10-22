@@ -88,6 +88,7 @@ const ABILITY_TUNING: Partial<
   [MonsterIdentifier.FURIOUS_FLIPPER]: { scale: 1.65, x: -60, y: 60 },
   [MonsterIdentifier.POISON_POGO]: { scale: 1.05, x: 0, y: 0 },
   [MonsterIdentifier.ROCKY_RHINO]: { scale: 1.5, x: 0, y: 60 },
+  [MonsterIdentifier.CINDER_TAIL]: { scale: 1.3, x: 0, y: 30 },
 };
 
 const DEFAULT_TUNING = { scale: 1, x: 0, y: 0 };
