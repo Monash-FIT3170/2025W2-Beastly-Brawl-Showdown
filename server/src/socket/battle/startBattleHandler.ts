@@ -196,6 +196,10 @@ export default function proceedBattleTurn(
       setTimeout(() => {
         if (player1DiceRoll > 0) {
           io.to(player1.getId()).emit("roll_dice", player1DiceRoll);
+
+          spectatorsInBattle.forEach((spectator) => {
+            io.to(spectator.getId()).emit("roll_dice", player1DiceRoll);
+          });
         }
         if (player2DiceRoll > 0) {
           io.to(player2.getId()).emit("roll_dice", player2DiceRoll);
