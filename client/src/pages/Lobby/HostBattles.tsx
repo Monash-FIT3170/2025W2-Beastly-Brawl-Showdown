@@ -11,11 +11,13 @@ import { PlayerStats } from "../../types/data";
 import { IconButton } from "../../components/buttons/IconButton";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { OutlineText } from "../../components/texts/OutlineText";
+import { OutlineTextResizable } from "../../components/texts/ResizableOutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import ScoringLeaderboard from "../../components/match-summary/ScoringLeaderboard";
+import { removeSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -23,7 +25,7 @@ interface HostBattlesProps {
 
 const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
   const code = gameCode; // Currently unused, used for potential page changes
-  const [gameMode, setGameMode] = useState<GameModeIdentifier|null>(null);
+  const [gameMode, setGameMode] = useState<GameModeIdentifier | null>(null);
   const [gameSession, setGameSession] = useState<GameSessionState>();
   const [playerStats, setPlayerStats] = useState<PlayerStats>();
   const [exit, setExit] = useState<Boolean>();
@@ -52,7 +54,8 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       blockDataMap[playerName] =
         (blockDataMap[playerName] || 0) + successBlocks;
       damageDataMap[playerName] =
-        battle.opponentPlayerMonster.maxHealth - secondPlayerState.currentHealth;
+        battle.opponentPlayerMonster.maxHealth -
+        secondPlayerState.currentHealth;
 
       // Opponent player stats
       blockDataMap[secondPlayerName] =
@@ -73,13 +76,22 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     return { blockData, damageData };
   };
 
-    // deletes game session
-    const closeGame = () => {
-      // UPDATE: popup asking if they are sure before returning to home
-      socket.emit("cancel-game", { gameCode: code });
-      // return to home
-      FlowRouter.go("/");
-    };
+  // deletes game session
+  const closeGame = () => {
+    // UPDATE: popup asking if they are sure before returning to home
+    socket.emit("cancel-game", { gameCode: code });
+    // return to home
+    FlowRouter.go("/");
+  };
+
+  // Take host to 'Final Results' page for either battle royale or scoring tournament mode
+  const showFinalResults = () => {
+    if (gameSession.mode === GameModeIdentifier.BATTLE_ROYALE) {
+      FlowRouter.go(`/final-results-battle-royale/${code}`);
+    } else {
+      FlowRouter.go(`/final-results-scoring-tournament/${code}`);
+    }
+  };
 
   useEffect(() => {
     {
@@ -105,15 +117,14 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     });
 
     socket.on("host-wait-next-round", () => {
-      setWaitNextRound(true)
-    })
+      setWaitNextRound(true);
+    });
 
     socket.on("host-prepare-next-round", () => {
-      console.log("[PREPARENEXROUND]: test"),
-      setWaitNextRound(false),
-      setPrepareNextRound(true)
-    }
-    )
+      console.log("[PREPARE_NEXT_ROUND]: test"),
+        setWaitNextRound(false),
+        setPrepareNextRound(true);
+    });
 
     return () => {
       {
@@ -122,32 +133,33 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
       }
       // socket.off("most_chosen_monster");
       socket.off("game-session-state");
-      socket.off("host-wait-next-round")
-      socket.off("host-prepare-next-round")
+      socket.off("host-wait-next-round");
+      socket.off("host-prepare-next-round");
     };
   }, []);
 
-    useEffect(() => {
-    if (!hostPrepareNextRound){return}
+  useEffect(() => {
+    if (!hostPrepareNextRound) {
+      return;
+    }
 
-    //Countdown 
+    //Countdown
     const countdown = setInterval(() => {
       setTime((prev) => prev - 1);
     }, 1000); //1 second per interval
 
     //Remove the popup
-    const timeout = setTimeout(() =>{
-      socket.emit("start-next-battle")
-      setPrepareNextRound(false)
-      setTime(5)
-    }, 5000) // 5 seconds before user get directed to home page
-    
+    const timeout = setTimeout(() => {
+      socket.emit("start-next-battle");
+      setPrepareNextRound(false);
+      setTime(5);
+    }, 5000); // 5 seconds before user get directed to home page
+
     return () => {
       clearInterval(countdown); // interval cleanup
       clearTimeout(timeout); //timeout cleanup
-    }
-    
-  }, [hostPrepareNextRound])
+    };
+  }, [hostPrepareNextRound]);
 
   useEffect(() => {
     const handleGameMode = (mode: GameModeIdentifier) => {
@@ -180,36 +192,56 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
         overflow: "auto",
       }}
     >
-        {hostPrepareNextRound && (
+      {hostPrepareNextRound && (
         <PopupClean>
           <div className="flex flex-col justify-around">
-          <BlackText size = 'large'>ALL PLAYERS ARE READY</BlackText>
-          <BlackText size = 'large'>NEXT ROUND STARTS IN {time} SECONDS</BlackText>
+            <BlackText size="large">ALL PLAYERS ARE READY</BlackText>
+            <BlackText size="large">
+              NEXT ROUND STARTS IN {time} SECONDS
+            </BlackText>
           </div>
-        </PopupClean>)}
+        </PopupClean>
+      )}
 
-        {hostWaitNextRound && (
+      {hostWaitNextRound && (
         <PopupClean>
           <div className="flex flex-col justify-around">
-          <BlackText size = 'large'>ROUND {gameSession.metadata.round} HAS ENDED</BlackText>
-          <BlackText size = 'large'>WAITING FOR PLAYERS FOR NEXT ROUND...</BlackText>
+            <BlackText size="large">
+              ROUND {gameSession.metadata.round} HAS ENDED
+            </BlackText>
+            <BlackText size="large">
+              WAITING FOR PLAYERS FOR NEXT ROUND...
+            </BlackText>
           </div>
-        </PopupClean>)}
+        </PopupClean>
+      )}
 
-        {exit && (
+      {exit && (
         <PopupClean>
           <div className="flex flex-col justify-around">
-          <OutlineText size = 'extraLarge'>QUIT GAME?</OutlineText>
-          <BlackText size = 'large'>THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY</BlackText>
-          <BlackText size = 'large'>DO YOU WANT TO CONTINUE OR END THE GAME</BlackText>
-          <div className="flex flex-row justify-between items-center">
-            <ButtonGeneric size = 'large' color = 'red' onClick={() => setExit(false)}>BACK</ButtonGeneric>
-            <ButtonGeneric size="large" color="blue" onClick={closeGame}>CONFIRM</ButtonGeneric>
+            <OutlineText size="extraLarge">QUIT GAME?</OutlineText>
+            <BlackText size="large">
+              THIS WILL END ALL END ALL ONGOING BATTLES AND CLOSE THE LOBBY
+            </BlackText>
+            <BlackText size="large">
+              DO YOU WANT TO CONTINUE OR END THE GAME
+            </BlackText>
+            <div className="flex flex-row justify-between items-center">
+              <ButtonGeneric
+                size="large"
+                color="red"
+                onClick={() => setExit(false)}
+              >
+                BACK
+              </ButtonGeneric>
+              <ButtonGeneric size="large" color="blue" onClick={closeGame}>
+                CONFIRM
+              </ButtonGeneric>
+            </div>
           </div>
-          </div>
-        </PopupClean>)}
+        </PopupClean>
+      )}
       {gameSession && playerStats ? (
-        
         <div>
           <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
             <IconButton
@@ -244,24 +276,36 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
 
             {/* Middle Panel */}
             <div style={{ height: "100%", overflow: "auto" }}>
-              <MiddlePanel gameSession={gameSession} gameMode={gameMode}/>
+              <MiddlePanel gameSession={gameSession} gameMode={gameMode} />
             </div>
 
             {/* Right Panel */}
             <div
               style={{ minWidth: "260px", height: "100%", overflow: "auto" }}
             >
-              {gameSession.mode == GameModeIdentifier.SCORING ? 
-                <ScoringLeaderboard metadata={gameSession.metadata}/> :
-                <RightPanel battleStates={gameSession.battleStates} /> 
-              }
+              {gameSession.mode == GameModeIdentifier.SCORING ? (
+                <ScoringLeaderboard metadata={gameSession.metadata} />
+              ) : (
+                <RightPanel battleStates={gameSession.battleStates} />
+              )}
             </div>
+          </div>
+          <div style={{ position: "absolute", top: "1.5rem", right: "1.5rem" }}>
+            <ButtonGeneric
+              size="medium"
+              color="blue"
+              isDisabled={!gameSession.isGameModeFinished}
+              onClick={showFinalResults}
+            >
+              <OutlineTextResizable size="small">
+                SHOW FINAL RESULTS
+              </OutlineTextResizable>
+            </ButtonGeneric>
           </div>
         </div>
       ) : null}
     </div>
   );
 };
-
 
 export default HostBattles;

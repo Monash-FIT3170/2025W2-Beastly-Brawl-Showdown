@@ -12,13 +12,7 @@ export class ConsumeAction extends Action {
   private consumable: Consumable;
 
   constructor(consumable: Consumable) {
-    super(
-      ActionIdentifier.CONSUME,
-      "Consume",
-      "Use given consumable!",
-      1,
-      false
-    );
+    super(ActionIdentifier.CONSUME, "Consume", "Use given consumable!", 1);
     this.consumable = consumable;
   }
 
@@ -45,7 +39,7 @@ export class ConsumeAction extends Action {
       `${actingPlayer.getName()} used ${this.consumable.getName()} from their backpack!
       }.`
     );
-    actingPlayer.addBattleLog(
+    actingPlayer.addLog(
       `${actingPlayer.getName()} used ${this.consumable.getName()} from their backpack!`
     );
 
@@ -57,7 +51,6 @@ export class ConsumeAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    console.error("Consume Action Animation Unimplemented");
-    return "consume";
+    return this.consumable.getAnimationString();
   }
 }

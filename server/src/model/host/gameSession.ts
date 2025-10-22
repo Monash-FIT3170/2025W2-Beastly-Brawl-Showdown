@@ -2,7 +2,11 @@ import { Player } from "../game/player";
 import Queue from "../../utils/queue";
 import { Battle } from "../game/battle";
 import { battles } from "../../../main";
-import { GameSessionState,GameSessionStateMetaData } from "/types/composite/gameSessionState";
+import {
+  GameSessionState,
+  GameSessionStateMetaData,
+  GameSessionFinalResults,
+} from "/types/composite/gameSessionState";
 import { Monster } from "../game/monster/monster";
 import { GameSessionData } from "/types/other/gameSessionData";
 import { BattlePhase } from "../../../../types/composite/battleState";
@@ -32,6 +36,8 @@ export default class GameSession {
   private mode: IGameMode;
   private monsters: Array<String>;
   private botInLobby: boolean = false; // whether has been added to this session or not
+  private finalResults: GameSessionFinalResults;
+  private selectedBackgroundTheme: string = "";
   private finalWinner: PlayerState | null = null;
 
   // Initialise sample data
@@ -39,16 +45,17 @@ export default class GameSession {
     mostChosenMonster: { monster: null, percentagePick: "0" },
   };
 
-  
-
-  constructor(hostID: string, addition: {mode: IGameMode, presetGameCode?: number}) {
+  constructor(
+    hostID: string,
+    addition: { mode: IGameMode; presetGameCode?: number }
+  ) {
     this.hostUID = hostID;
     // POST-MVP: increase max players and battles
     this.players = new Queue<Player>(this.player_max);
     this.waitQueue = new Queue<Player>(4);
     this.battles = new Queue<Battle>(this.battle_max);
     // this.monsters = ["RockyRhino","PouncingBandit","CinderTail"];
-    this.mode = addition.mode
+    this.mode = addition.mode;
 
     if (addition.presetGameCode !== undefined) {
       // Use preset game code if provided
@@ -57,7 +64,7 @@ export default class GameSession {
       // Generate a new game code
       this.gameCode = this.generateGameCode();
     }
-    this.mode = addition.mode
+    this.mode = addition.mode;
   }
 
   // Generate game code
@@ -76,20 +83,20 @@ export default class GameSession {
     });
   }
 
-  public getBotInLobby():boolean {
-    return this.botInLobby
+  public getBotInLobby(): boolean {
+    return this.botInLobby;
   }
 
-  public setBotInLobby(hasBot: boolean): void{
-    this.botInLobby = hasBot
+  public setBotInLobby(hasBot: boolean): void {
+    this.botInLobby = hasBot;
   }
 
   //Get the actual number of players (bot is excluded)
-  public getEffectivePlayer(): number{
-    if (this.botInLobby){
-      return this.players.getItems().length -1
+  public getEffectivePlayer(): number {
+    if (this.botInLobby) {
+      return this.players.getItems().length - 1;
     }
-    return this.players.getItems().length
+    return this.players.getItems().length;
   }
 
   // Getters and setters
@@ -120,20 +127,20 @@ export default class GameSession {
   public getPlayers() {
     return this.players;
   }
-  public getMonsters(){
+  public getMonsters() {
     return this.monsters;
   }
 
-  public clearBattles(){
+  public clearBattles() {
     this.battles = new Queue<Battle>(this.battle_max);
   }
 
-  public getRound():number{
+  public getRound(): number {
     return this.round;
   }
 
-  public setRound(newRound:number): void{
-    this.round = newRound
+  public setRound(newRound: number): void {
+    this.round = newRound;
   }
 
   public getWaitQueue() {
@@ -308,12 +315,12 @@ export default class GameSession {
 
     this.players.enqueue(botPlayer);
 
-    const battle = new Battle(battleId, oddPlayer, botPlayer, this.hostUID)
+    const battle = new Battle(battleId, oddPlayer, botPlayer, this.hostUID);
 
     battles.set(battleId, battle);
-    this.battles.enqueue(battle)
+    this.battles.enqueue(battle);
 
-    this.botInLobby = true
+    this.botInLobby = true;
     return oddPlayer;
   }
   public calculateMostChosenMonster() {
@@ -384,8 +391,8 @@ export default class GameSession {
       }
     }
 
-    console.log("[CURRENT MODE]: ", this.mode.name)
-    let metadata = this.mode.getMetadata()
+    console.log("[CURRENT MODE]: ", this.mode.name);
+    let metadata = this.mode.getMetadata();
 
     return {
       id: this.gameCode.toString(),
@@ -397,7 +404,8 @@ export default class GameSession {
       totalPlayers: totalPlayers,
       remainingPlayers: remainingPlayers,
       waitingPlayers: this.getPlayersNotInBattle(),
-      metadata: this.getMetadata()
+      metadata: this.getMetadata(),
+      isGameModeFinished: this.isGameModeFinished(),
     };
   }
 
@@ -409,16 +417,32 @@ export default class GameSession {
     return playerStates;
   }
 
-  public initGame(io: Server, socket: Socket):void {
-    return this.mode.init(this, io, socket)
+  public initGame(io: Server, socket: Socket): void {
+    return this.mode.init(this, io, socket);
   }
 
-  public onActionExecuted(player1Id:string,  player1Result: ActionResult, player2Id: string, player2Result:ActionResult):void {
-    return this.mode.onActionExecuted(this, player1Id, player1Result, player2Id, player2Result);
+  public onActionExecuted(
+    player1: Player,
+    player1Result: ActionResult,
+    player2: Player,
+    player2Result: ActionResult
+  ): void {
+    return this.mode.onActionExecuted(
+      this,
+      player1,
+      player1Result,
+      player2,
+      player2Result
+    );
   }
 
-  public onBattleEnded(winner: Player | null,battle: Battle, io: Server, socket: Socket): void {
-    return this.mode.onBattleEnded(this, battle ,winner, io,socket);
+  public onBattleEnded(
+    winner: Player | null,
+    battle: Battle,
+    io: Server,
+    socket: Socket
+  ): void {
+    return this.mode.onBattleEnded(this, battle, winner, io, socket);
   }
 
   public onBattlesEnded(io: Server, socket: Socket): void {
@@ -455,11 +479,31 @@ export default class GameSession {
     return this.finalWinner;
   }
 
+  public setFinalResults(finalResults: GameSessionFinalResults): void {
+    this.finalResults = finalResults;
+  }
+
+  public getFinalResults(): GameSessionFinalResults {
+    return this.finalResults;
+  }
+
   public getMode(): GameModeIdentifier {
     return this.mode.name;
   }
 
-  public getMetadata(): GameSessionStateMetaData{
-    return this.mode.getMetadata()
+  public getMetadata(): GameSessionStateMetaData {
+    return this.mode.getMetadata();
+  }
+
+  public isGameModeFinished(): boolean {
+    return this.mode.isGameModeFinished();
+  }
+
+  public setSelectedBackgroundTheme(selectedBackgroundTheme: string): void {
+    this.selectedBackgroundTheme = selectedBackgroundTheme;
+  }
+
+  public getSelectedBackgroundTheme(): string {
+    return this.selectedBackgroundTheme;
   }
 }

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
-import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { NameCard } from "../../components/cards/NameCard";
 import { BaseCard } from "../../components/cards/BaseCard";
@@ -13,6 +12,8 @@ import { PlayerState } from "/types/single/playerState";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { BlackText } from "../../components/texts/BlackText";
 import { Meteor } from "meteor/meteor";
+import { BackgroundThemePage } from "../../components/pagelayouts/BackgroundThemePage";
+import { removeSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 // Defines code for the game session
 interface HostLobbyProps {
@@ -88,12 +89,13 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
   const closeGame = () => {
     // UPDATE: popup asking if they are sure before returning to game setup screen
     socket.emit("cancel-game", { gameCode: code });
+    removeSelectedBackgroundTheme();
     // return game setup screen
     FlowRouter.go("/host/choose-mode");
   };
 
   return (
-    <BlankPage>
+    <BackgroundThemePage>
       {/* Responsive header section */}
       <div className="flex flex-row h-1/5 w-full items-center justify-between px-4 pt-4">
         {/* POPUPS */}
@@ -377,7 +379,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
       {/* Debugging button to print socket ID */}
       {/*<button onClick={() => console.log(socket.id)}>Print SocketID</button>*/}
-    </BlankPage>
+    </BackgroundThemePage>
   );
 };
 

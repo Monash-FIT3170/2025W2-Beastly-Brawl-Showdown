@@ -14,11 +14,19 @@ import LevelSelect from "./src/pages/Adventure/LevelSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
-import { MonsterIdentifier } from "/types/single/monsterState";
+import { MonsterIdentifier } from "../types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
+import { FinalResultsScoringTournament } from "./src/pages/Lobby/FinalResultsScoringTournament";
+import { FinalResultsBattleRoyale } from "./src/pages/Lobby/FinalResultsBattleRoyale";
+import { Test } from "./src/pages/AnimationTesting/Testing";
 import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
+import { AttackPage } from "./src/pages/AnimationTesting/Attack";
+import { DamagePage } from "./src/pages/AnimationTesting/Damage";
+import { DefendPage } from "./src/pages/AnimationTesting/Defend";
+import { WikiPage } from "./src/pages/Wiki/WikiPage";
+import { WikiIndex } from "./src/pages/Wiki/WikiIndex";
 import SeasonalEventHome from "./src/pages/Seasonal_Event/SeasonalEventHome";
 import SeasonalEventMonsterSelect from "./src/pages/Seasonal_Event/SeasonalEventMonsterSelect";
 import SeasonalEventBattle from "./src/pages/Seasonal_Event/SeasonalEventBattle";
@@ -30,11 +38,57 @@ function mount(Component: React.FC) {
   }
 }
 
+// FlowRouter.route("/test", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(Test);
+//   },
+// });
+
+// FlowRouter.route("/attack", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(AttackPage);
+//   },
+// });
+
+// FlowRouter.route("/damage", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(DamagePage);
+//   },
+// });
+
+// FlowRouter.route("/defend", {
+//   name: "Test",
+//   action() {
+//     document.title = "Animation Testing";
+//     mount(DefendPage);
+//   },
+// });
+
 FlowRouter.route("/", {
   name: "Home",
   action() {
     document.title = "Beastly Brawl Showdown";
     mount(Home);
+  },
+});
+
+FlowRouter.route("/wiki", {
+  name: "WikiIndex",
+  action() {
+    mount(WikiIndex);
+  },
+});
+
+FlowRouter.route("/wiki/:slug", {
+  name: "WikiPage",
+  action(params: any) {
+    mount(() => <WikiPage pageName={params.slug as WikiPageIdentifier} />);
   },
 });
 
@@ -94,14 +148,6 @@ FlowRouter.route("/leaderboard", {
   },
 });
 
-FlowRouter.route("/help", {
-  name: "Help",
-  action() {
-    document.title = "Help | Beastly Brawl Showdown";
-    mount(() => <BlankPage />);
-  },
-});
-
 FlowRouter.route("/dev-notes", {
   name: "Dev Notes",
   action() {
@@ -132,6 +178,23 @@ FlowRouter.route("/battles/:code?", {
     mount(() => <MatchSummary gameCode={params.code} />);
   },
 });
+
+FlowRouter.route("/final-results-battle-royale/:code?", {
+  name: "FinalResultsBattleRoyale",
+  action(params) {
+    document.title = "Final Results | Beastly Brawl Showdown";
+    mount(() => <FinalResultsBattleRoyale gameCode={params.code} />);
+  },
+});
+
+FlowRouter.route("/final-results-scoring-tournament/:code?", {
+  name: "FinalResultsScoringTournament",
+  action(params) {
+    document.title = "Final Results | Beastly Brawl Showdown";
+    mount(() => <FinalResultsScoringTournament gameCode={params.code} />);
+  },
+});
+
 
 FlowRouter.route("/seasonal-event/:eventId?", {
   name: "SeasonalEventHome",
