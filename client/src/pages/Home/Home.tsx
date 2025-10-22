@@ -187,7 +187,7 @@ useEffect(() => {
               iconColour="black"
               buttonColour="blue"
               size="medium"
-              onClick={() => FlowRouter.go("/help")}
+              onClick={() => FlowRouter.go("/wiki")}
             />
             <IconButton
               style="leaderboard"
@@ -205,7 +205,7 @@ useEffect(() => {
             />
           </div>
         </div>
-        {/* </div> */}
+        
       </div>
 
       {showLogin && (

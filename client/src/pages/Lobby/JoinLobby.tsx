@@ -34,6 +34,7 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
 
   // Listen for the "join-accept" event from the server
   socket.on("join-accept", ({ gameSessionId }) => {
+    socket.emit("request-selected-background-theme", { gameCode: gameSessionId });
     console.log(gameSessionId);
     FlowRouter.go(`/session/${gameSessionId}`);
   });
@@ -81,7 +82,7 @@ const JoinLobby: React.FC<JoinLobbyProps> = ({ gameCode }) => {
                 color="red"
                 onClick={() => setErrors([])}
               >
-                BACK
+                <p className="text-outline text-blackCurrant">BACK</p>
               </ButtonGeneric>
             </div>
           </div>

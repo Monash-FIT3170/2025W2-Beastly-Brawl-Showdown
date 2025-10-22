@@ -25,6 +25,7 @@ import { PopupClean } from "../../components/popups/PopupClean";
 import { IconButton } from "../../components/buttons/IconButton";
 import { Popup } from "../../components/popups/Popup";
 import { ArchetypePopup } from "../../components/popups/ArchetypePopup";
+import { removeSelectedBackgroundTheme, setSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface MonsterSelectProps {
   setScreen: (screen: Screens) => void;
@@ -76,12 +77,23 @@ export const MonsterSelect: React.FC<MonsterSelectProps> = ({ setScreen }) => {
   useEffect(() => {
     socket.on("kick-warning", ({ message }) => {
       //UPDATE: ADD POP-UP "You've been disconnected from game session."
+      removeSelectedBackgroundTheme();
       console.log(message);
       setExitPopup(true);
     });
 
     return () => {
       socket.off("kick-warning");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("selected-background-theme", ({ selectedBackgroundTheme }) => {
+      setSelectedBackgroundTheme(selectedBackgroundTheme);
+    });
+
+    return () => {
+      socket.off("selected-background-theme");
     };
   }, []);
 
@@ -270,6 +282,27 @@ export const MonsterSelect: React.FC<MonsterSelectProps> = ({ setScreen }) => {
             </PopupClean>
           )}
           <div
+            className="
+              fixed inset-0 z-50
+              flex items-center justify-center
+              bg-white/30 backdrop-blur-md
+              p-4
+              overflow-y-auto 
+            "
+          >
+            <div
+              className={`
+                ${colorLoader[selectedMonster.archetypeId]}
+                border-[3px] border-blackCurrant rounded-[20px]
+                w-full max-w-[90rem]
+                max-h-[90dvh]
+                box-border
+                flex flex-col items-center
+                overflow-y-auto 
+                min-w-0
+              `}
+            >
+          {/* <div
             className={`flex  
             justify-around border-[4px] 
             border-blackCurrant w-min h-min rounded-xl
@@ -287,16 +320,16 @@ export const MonsterSelect: React.FC<MonsterSelectProps> = ({ setScreen }) => {
             flex
             flex-col
             items-center`}
-          >
-            <div className="pt-[2dvh]" />
+          > */}
+            <div className="pt-4" />
             <BaseCard
               color="goldenRod"
-              className="flex flex-col justify-around sm:w-[80dvw] lg:w:[90dvw] h-min"
+              className="flex flex-col justify-around sm:w-[55rem] lg:w-[80rem] h-min"
             >
               <MonsterImage
                 name={selectedMonster.id}
-                className="sm:size-[30dvw]
-                            lg:size-[10dvw]"
+                className="sm:size-[20rem]
+                            lg:size-[10rem]"
               />
               <div className="w-[100%] flex items-center flex-col">
                 <div className="bg-ronchi border-[4px] pr-[0.5rem] pl-[0.5rem] rounded-tl-xl rounded-tr-xl border-b-0 border-blackCurrant w-min text-nowrap">
@@ -334,7 +367,7 @@ export const MonsterSelect: React.FC<MonsterSelectProps> = ({ setScreen }) => {
                 </BaseCard>
               </div>
 
-              <div className="flex flex-col items-center justify-start">
+              <div className="mt-[1rem] flex flex-col items-center justify-start">
                 <p className="text-outline font-[Jua] sm:text-[4rem] md:text-[2rem] lg:text[2rem]">
                   SPECIAL ABILITIES
                 </p>
@@ -389,6 +422,7 @@ export const MonsterSelect: React.FC<MonsterSelectProps> = ({ setScreen }) => {
               </ButtonGeneric>
             </div>
           </div>
+        </div>
         </div>
       )}
     </div>
