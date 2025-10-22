@@ -34,6 +34,7 @@ import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
 import { PristineKey } from "../model/game/storyItem/PristineKey";
 import { createStatus } from "../model/adventure/factories/statusFactory";
 import { LakeCurse } from "../model/game/status/lakeCurse";
+import { OozingBlade } from "../model/game/equipment/oozingBlade";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -158,18 +159,11 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     if (!adventure) return;
 
     const player = adventure.getPlayer();
-    const equipmentList = player.getEquipment();
 
-    // Remove the equipment at the selected index
-    if (removeIndex >= 0 && removeIndex < equipmentList.length) {
-      equipmentList.splice(removeIndex, 1);
-
-      // Reconstruct the Equipment instance using your factory
-      // newEquipment should have an id property
-      if (newEquipment && newEquipment.id) {
-        const newEquipInstance = createEquipment(newEquipment.id);
-        equipmentList.splice(removeIndex, 0, newEquipInstance);
-      }
+    player.removeEquipmentAt(removeIndex);
+    if (newEquipment && newEquipment.id) {
+      const newEquipInstance = createEquipment(newEquipment.id);
+      player.giveEquipment(newEquipInstance);
     }
 
     // Send updated player state to client
