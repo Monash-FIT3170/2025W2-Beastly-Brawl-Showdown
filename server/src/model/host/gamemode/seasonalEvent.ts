@@ -12,34 +12,67 @@ import proceedBattleTurn from "../../../socket/battle/startBattleHandler";
 import Queue from "../../../utils/queue";
 
 export class SeasonalEvent implements IGameMode {
+
     public name = GameModeIdentifier.SEASONAL_EVENT as const;
     private io: Server | null = null;
-    private round = 1;
     private playerFinished: number = 0;
     private score: Number = 0;
-    private players: Queue<Player>;
-    private battles: Queue<Battle>;
+    private remainingPlayers: Player[] = [];
+    private gameModeFinished = false;
 
   public init(session: GameSession, io: Server, socket: Socket): void {
     this.io = io;
     this.score = 0;
   }
 
-  public getPlayers(): Queue<Player> {
-    return this.players;
+  public getPlayers(): Player[] {
+    return this.remainingPlayers;
   }
 
   public addPlayer(player: Player): void {
-    this.players.enqueue(player);
+    this.remainingPlayers.push(player);
   }
 
-  onActionExecuted(sesion: GameSession, player1Id: string, player1Result: ActionResult, player2Id: string, player2Result: ActionResult): void {
-        if (player1Result.appliedStatus.success){
-            this.score = 0;
-        }
+  public isGameModeFinished(): boolean {
+    return this.gameModeFinished;
+  }
 
-        console.log("Score: ", this.score)
+  onActionExecuted(
+    sesion: GameSession,
+    player1: Player,
+    player1Result: ActionResult,
+    player2: Player,
+    player2Result: ActionResult
+  ): void {
+    if (player1Result.damageDealt != null) {
+      if (player1Result.damageDealt.damage > player1.getMostDamageDealt()) {
+        player1.setMostDamageDelt(player1Result.damageDealt.damage);
+      }
     }
+
+    if (player2Result.damageDealt != null) {
+      if (player2Result.damageDealt.damage > player2.getMostDamageDealt()) {
+        player2.setMostDamageDelt(player2Result.damageDealt.damage);
+      }
+    }
+
+    console.log("[ACTION RESULT]:", player1Result);
+    console.log("[ACTION RESULT]:", player2Result);
+
+    if (
+      player1Result.usedAbility != null &&
+      player1Result.usedAbility.isAbility == true
+    ) {
+      player1.incAbilitiesUsed(1);
+    }
+
+    if (
+      player2Result.usedAbility != null &&
+      player2Result.usedAbility.isAbility == true
+    ) {
+      player2.incAbilitiesUsed(1);
+    }
+  }
   
     //Update the scoreboard
     //TODO: Add Player to waiting room 
@@ -51,10 +84,45 @@ export class SeasonalEvent implements IGameMode {
             const maxHp = winner.getMonster()?.getMaxHealth()
   
         console.log("[GAME ENDED]")
-  
-        io.to(battle.getId()).emit("battle-closed", {gameCode : session.getGameCode().toString()})
 
+        // Case 1: There is a winner
+    if (winner) {
+
+      winner.incBattleWon(1);
+      let loser = battle
+        .getPlayers()
+        .filter((player) => player.getId() != winner.getId())[0];
+      this.eliminatePlayer(loser);
+
+      io.to(battle.getId()).emit("battle_end", {
+        result: "concluded",
+        winners: [winner.getName()],
+      });
+      
     }
+
+    // Case 2: It is a draw - there are no winners
+    else {
+      io.to(battle.getId()).emit("battle_end", {
+        result: "draw",
+        winners: [],
+      });
+    }
+        io.to(battle.getId()).emit("battle-closed", {gameCode : session.getGameCode().toString()})
+    }
+
+  private eliminatePlayer(player: Player): void {
+    let playerIndex = this.remainingPlayers.findIndex(
+      (p) => p.getId() == player.getId()
+    );
+    if (playerIndex != -1) {
+      this.remainingPlayers.splice(playerIndex, 1);
+    } else {
+      console.log(
+        `[ERROR]: Could not find player with name '${player.getName()}' in array.`
+      );
+    }
+  }
   
     //All battles have been concluded, redo the pairing for the next round
     onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
@@ -62,39 +130,12 @@ export class SeasonalEvent implements IGameMode {
             //TODO: end session logic here
             return
         }
-  
-        console.log("proceed to bext battle")
-        socket.emit("host-prepare-next-round")
-  
-        const handleNextBattle = () => {
-        this.playerFinished = 0;
-        session.clearBattles();
-        this.round += 1;
-        session.createMatches();
-  
-        for (const battle of session.getBattles().getItems()) {
-            for (const player of battle.getPlayers()) {
-            player.prepareForNextBattle();
-            const playerSocket = io.sockets.sockets.get(player.getId());
-            playerSocket?.join(battle.getId());
-            }
-  
-            io.to(battle.getId()).emit("battle_started", battle.getId());
-            proceedBattleTurn(io, socket, session, battle);
         }
   
-        socket.off("start-next-battle", handleNextBattle);
-        };
-  
-        socket.on("start-next-battle", handleNextBattle);
-  
-        // setTimeout(() => {
-  
-        // }, 10000)
-  
-            
-        }
-  
+    public isSessionConcluded(session: GameSession): boolean {
+      return false;
+    }
+
     //Provide metadata of scoring tournament
     getMetadata(): GameSessionStateMetaData {
         return {
@@ -102,53 +143,4 @@ export class SeasonalEvent implements IGameMode {
         }
     }
     
-  
-    //Check whether the game session has ended
-    // isSessionConcluded(session: GameSession): boolean {
-    //     return this.round == this.config.rounds
-    // }
 }
-
-// export abstract class SeasonalEvent {
-//     private id: UUID;
-//     private name: string;
-//     private monster: Monster;
-//     private description: string;
-//     private player: Player | undefined;
-//     private battle: Battle | undefined;
-
-//     constructor (
-//         id: UUID,
-//         name: string,
-//         monster: Monster,
-//         description: string,
-//         player: Player
-//     ) {
-//         this.id = id;
-//         this.name = name;
-//         this.monster = monster;
-//         this.description = description;
-//         this.player = player;
-//     }
-
-//     public getId(): String | undefined {
-//         return this.id;
-//     }
-
-//     public getPlayer(): Player | undefined {
-//         return this.player;
-//     }
-
-//     public getMonster(): Monster | undefined {
-//         return this.monster;
-//     }
-
-//     public getBattle(): Battle | undefined {
-//         return this.battle;
-//     }
-
-//     public setBattle(battle: Battle): void {
-//         this.battle = battle;
-//     }
-
-// }

@@ -91,11 +91,20 @@ export const SeasonalEventModeHandler = (io: Server, socket: Socket) => {
 
       console.log(`SEASONALEVENT: New Battle (${battle.getId()}) for ${socket.id} (Player Count: ${battle.getPlayers().length})`);
 
+      for (const player of battle.getPlayers()) {
+        io.sockets.sockets.get(player.getId())?.join(battle.getId());
+        //Get all players to join a common game session socket room
+        io.sockets.sockets.get(player.getId())?.join(`game-${gameCodeN}`);
+      }
+
       socket.emit("start_event_battle", battle.getId());
 
       
 
       const session = activeGameSessions.get(gameCodeN);
+
+
+
       proceedBattleTurn(io, socket, session!, battle);
 
       }

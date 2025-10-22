@@ -61,16 +61,12 @@ const SeasonalEventBattle: React.FC<SeasonalEventBattleProps> = ({ battleId }) =
   const event = eventMap[observedEvent] ?? SeasonalEventIdentifier.SPOOK_GARDEN;
   const monster = monsterMap[observedEvent] ?? MonsterIdentifier.JACKEDOLANTERN;
 
-  var backgroundLocation = "FOREST"; //TODO: change this to be based off level/monster?
   const backgroundString = `url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/${getBiomeString(
     MonsterIdentifier.JACKEDOLANTERN
   )}.jpg')`;
-  // var backgroundString =
-  //   "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
-  //   backgroundLocation +
-  //   ".jpg')";
 
   useEffect(() => {
+    socket.removeAllListeners("host-closed");
     socket.on("battle_state", (data) => {
       console.log("[BATTLESTATE]: ", data.battle);
       console.log("[METADATA]: ", data.metadata);
@@ -164,15 +160,8 @@ const SeasonalEventBattle: React.FC<SeasonalEventBattleProps> = ({ battleId }) =
       setTime((prev) => prev - 1);
     }, 1000); //1 second per interval
 
-    //Redirect after countdown is finished
-    const timeout = setTimeout(() => {
-      FlowRouter.go(`/session/${gameCode}`);
-      setTime(-1);
-    }, 5000); // 5 seconds before user get directed to home page
-
     return () => {
       clearInterval(countdown); // interval cleanup
-      clearTimeout(timeout); //timeout cleanup
     };
   }, [isBattleClosed]);
 
@@ -182,46 +171,6 @@ const SeasonalEventBattle: React.FC<SeasonalEventBattleProps> = ({ battleId }) =
 
   return (
     <>
-      {waitForConclusion && (
-        <PopupClean>
-          <div className="flex flex-col justify-around">
-            <OutlineText size="extraLarge">LAST ROUND COMPLETED</OutlineText>
-            <BlackText size="large">
-              YOU HAVE FINISHED YOUR LAST BATTLE!
-            </BlackText>
-            <BlackText size="large">
-              WAITING FOR OTHER PLAYERS TO FINISH THEIR BATTLES...
-            </BlackText>
-          </div>
-        </PopupClean>
-      )}
-
-      {isSessionCancelled && (
-        <PopupClean>
-          <div className="flex flex-col justify-around">
-            <OutlineText size="extraLarge">CANCELLED SESSION</OutlineText>
-            <BlackText size="large">
-              YOUR GAME SESSION HAS BEEN CANCELLED
-            </BlackText>
-            <BlackText size="large">
-              YOU WILL BE DIRECTED BACK TO THE HOME PAGE IN {time} SECONDS
-            </BlackText>
-          </div>
-        </PopupClean>
-      )}
-
-      {isBattleClosed && (
-        <PopupClean>
-          <div className="flex flex-col justify-around">
-            <OutlineText size="extraLarge">BATTLE CLOSED</OutlineText>
-            <BlackText size="large">BATTLE HAS ENDED</BlackText>
-            <BlackText size="large">
-              YOU WILL BE DIRECTED BACK TO THE WAITING ROOM IN {time} SECONDS
-            </BlackText>
-          </div>
-        </PopupClean>
-      )}
-
       <div
         className="inset-0 w-screen h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
@@ -264,8 +213,7 @@ const SeasonalEventBattle: React.FC<SeasonalEventBattleProps> = ({ battleId }) =
                   />
                 </div>
                 {/* Buttons */}
-                {/* TODO: test button placement */}
-                {/* <div className="flex w-full justify-between px-8">
+                <div className="flex w-full justify-between px-8">
                   <div className="flex lg:gap-5 sm:gap-10">
                     <IconButton
                       style="info"
@@ -285,7 +233,7 @@ const SeasonalEventBattle: React.FC<SeasonalEventBattleProps> = ({ battleId }) =
                       onClick={() => setViewingEnemyInfo(true)}
                     />
                   </div>
-                </div> */}
+                </div>
 
                 <div className="flex flex-col h-3/4 w-full items-center justify-around">
                   <BattleMonsterPanel
