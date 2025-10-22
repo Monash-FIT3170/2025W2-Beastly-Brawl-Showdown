@@ -1,4 +1,5 @@
 import { StatusType } from "../../../../../types/single/statusType";
+import { Action } from "../action/action";
 import { Player } from "../player";
 import { StartStatus } from "./startStatus";
 
@@ -13,8 +14,9 @@ export class InfinityAbility extends StartStatus {
   }
 
   public startingEffect(player: Player): void {
-    player.getActions().forEach((a) => {
-      a.resetUse();
+    const actions: Action[] = player.getMonster()?.getPossibleActions()!;
+    actions.forEach((action) => {
+      action.resetUse();
     });
   }
 
