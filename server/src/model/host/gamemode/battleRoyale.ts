@@ -101,6 +101,9 @@ export class BattleRoyale implements IGameMode {
       io.sockets.sockets.get(spectator.getId())?.join(battle.getId());
       io.sockets.sockets
         .get(spectator.getId())
+        ?.join(`${battle.getId()}-spectators`);
+      io.sockets.sockets
+        .get(spectator.getId())
         ?.emit("battle-started", battle.getId());
     }
   }
@@ -123,11 +126,17 @@ export class BattleRoyale implements IGameMode {
       winner.addPotentialSpectators([...loser.getPotentialSpectators(), loser]);
       this.eliminatePlayer(loser);
 
-      io.to(battle.getId()).emit("battle_end", {
+      io.to(`${battle.getId()}-players`).emit("battle_end", {
         result: "concluded",
         winners: [winner.getName()],
         mode: this.name,
         gameCode: session.getGameCode().toString(),
+        finalScreen: session.isSessionConcluded(),
+      });
+
+      io.to(`${battle.getId()}-spectators`).emit("spectator_battle_end", {
+        gameCode: session.getGameCode().toString(),
+        mode: this.name,
         finalScreen: session.isSessionConcluded(),
       });
     }
@@ -156,11 +165,17 @@ export class BattleRoyale implements IGameMode {
         ]);
       }
 
-      io.to(battle.getId()).emit("battle_end", {
+      io.to(`${battle.getId()}-players`).emit("battle_end", {
         result: "draw",
         winners: [],
         mode: this.name,
         gameCode: session.getGameCode().toString(),
+        finalScreen: session.isSessionConcluded(),
+      });
+
+      io.to(`${battle.getId()}-spectators`).emit("spectator_battle_end", {
+        gameCode: session.getGameCode().toString(),
+        mode: this.name,
         finalScreen: session.isSessionConcluded(),
       });
     }
@@ -236,6 +251,9 @@ export class BattleRoyale implements IGameMode {
             console.log(`Connecting to ${socket.id}`);
             for (const player of battle.getPlayers()) {
               io.sockets.sockets.get(player.getId())?.join(battle.getId());
+              io.sockets.sockets
+                .get(player.getId())
+                ?.join(`${battle.getId()}-players`);
             }
             console.log(`Check to start battle ${battle.getId()}`);
             console.log(
@@ -305,6 +323,9 @@ export class BattleRoyale implements IGameMode {
                     io.sockets.sockets
                       .get(player.getId())
                       ?.join(battle.getId());
+                    io.sockets.sockets
+                      .get(player.getId())
+                      ?.join(`${battle.getId()}-players`);
                     if (player.isBotPlayer()) {
                       hasBot = true;
                     }

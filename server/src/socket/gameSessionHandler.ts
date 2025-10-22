@@ -298,6 +298,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     for (const battle of session.getBattles().getItems()) {
       for (const player of battle.getPlayers()) {
         io.sockets.sockets.get(player.getId())?.join(battle.getId());
+        io.sockets.sockets
+          .get(player.getId())
+          ?.join(`${battle.getId()}-players`);
         //Get all players to join a common game session socket room
         io.sockets.sockets.get(player.getId())?.join(`game-${gameCodeN}`);
       }

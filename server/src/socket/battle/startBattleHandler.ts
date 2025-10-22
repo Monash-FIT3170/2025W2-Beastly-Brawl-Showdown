@@ -5,6 +5,7 @@ import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
 import { ActionRandomiser } from "../../model/game/actionRandomiser";
 import { Player } from "../../model/game/player";
+import { ActionResult } from "../../../../types/single/actionState";
 
 export default function proceedBattleTurn(
   io: Server,
@@ -27,11 +28,17 @@ export default function proceedBattleTurn(
     const winners = battle.getWinners();
     if (winners.length == 0) {
       //if battle is over, the array length is guaranteed to be either 0 or 1
-      io.to(battle.getId()).emit("battle_end", {
+      io.to(`${battle.getId()}-players`).emit("battle_end", {
         result: "draw",
         winners: winners.map((player) => player.getName()),
         mode: gameSession.getMode(),
         gameCode: gameSession.getGameCode().toString(),
+        finalScreen: gameSession.isSessionConcluded(),
+      });
+
+      io.to(`${battle.getId()}-spectators`).emit("spectator_battle_end", {
+        gameCode: gameSession.getGameCode().toString(),
+        mode: gameSession.getMode(),
         finalScreen: gameSession.isSessionConcluded(),
       });
     } else {
@@ -39,11 +46,17 @@ export default function proceedBattleTurn(
       console.log(
         `Player ${winningPlayer.getName()} added to the Waiting Queue`
       );
-      io.to(battle.getId()).emit("battle_end", {
+      io.to(`${battle.getId()}-players`).emit("battle_end", {
         result: "concluded",
         winners: winners.map((player) => player.getName()),
         mode: gameSession.getMode(),
         gameCode: gameSession.getGameCode().toString(),
+        finalScreen: gameSession.isSessionConcluded(),
+      });
+
+      io.to(`${battle.getId()}-spectators`).emit("spectator_battle_end", {
+        gameCode: gameSession.getGameCode().toString(),
+        mode: gameSession.getMode(),
         finalScreen: gameSession.isSessionConcluded(),
       });
     }
@@ -210,8 +223,22 @@ export default function proceedBattleTurn(
           player1.clearAnimations();
           player2.clearAnimations();
 
-          let p1_result;
-          let p2_result;
+          const defaultActionResult: ActionResult = {
+            appliedStatus: {
+              success: false,
+            },
+            damageDealt: {
+              damage: 0,
+              message: "",
+            },
+            usedAbility: {
+              isAbility: false,
+              message: "",
+            },
+          };
+
+          let p1_result: ActionResult = { ...defaultActionResult };
+          let p2_result: ActionResult = { ...defaultActionResult };
 
           // Execute method
           player1.getActions().forEach((action) => {
@@ -352,13 +379,22 @@ export default function proceedBattleTurn(
                 //Handler after a battle ended
                 gameSession.onBattleEnded(null, battle, io, socket);
                 //if battle is over, the array length is guaranteed to be either 0 or 1
-                io.to(battle.getId()).emit("battle_end", {
+                io.to(`${battle.getId()}-players`).emit("battle_end", {
                   result: "draw",
                   winners: winners.map((player) => player.getName()),
                   mode: gameSession.getMode(),
                   gameCode: gameSession.getGameCode().toString(),
                   finalScreen: gameSession.isSessionConcluded(),
                 });
+
+                io.to(`${battle.getId()}-spectators`).emit(
+                  "spectator_battle_end",
+                  {
+                    gameCode: gameSession.getGameCode().toString(),
+                    mode: gameSession.getMode(),
+                    finalScreen: gameSession.isSessionConcluded(),
+                  }
+                );
               } else {
                 //Handler after a battle ended
                 gameSession.onBattleEnded(winners[0], battle, io, socket);
@@ -367,13 +403,22 @@ export default function proceedBattleTurn(
                 console.log(
                   `Player ${winningPlayer.getName()} added to the Waiting Queue`
                 );
-                io.to(battle.getId()).emit("battle_end", {
+                io.to(`${battle.getId()}-players`).emit("battle_end", {
                   result: "concluded",
                   winners: winners.map((player) => player.getName()),
                   mode: gameSession.getMode(),
                   gameCode: gameSession.getGameCode().toString(),
                   finalScreen: gameSession.isSessionConcluded(),
                 });
+
+                io.to(`${battle.getId()}-spectators`).emit(
+                  "spectator_battle_end",
+                  {
+                    gameCode: gameSession.getGameCode().toString(),
+                    mode: gameSession.getMode(),
+                    finalScreen: gameSession.isSessionConcluded(),
+                  }
+                );
               }
 
               //Emit to host one last time before shutting down the handler

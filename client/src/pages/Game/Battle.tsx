@@ -71,6 +71,16 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setTimer(time);
     });
 
+    socket.on("spectator_battle_end", ({ gameCode, mode, finalScreen }) => {
+      if (!finalScreen) {
+        FlowRouter.go(`/session/${gameCode}`, {}, { fromBattle: "true" });
+      } else {
+        setGameMode(mode);
+        setFinalScreen(finalScreen);
+        setWinner("SPECTATOR_LOSS");
+      }
+    });
+
     socket.on(
       "battle_end",
       ({ result, winners, mode, gameCode, finalScreen }) => {
