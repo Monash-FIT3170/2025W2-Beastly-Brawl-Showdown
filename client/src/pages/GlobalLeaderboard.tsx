@@ -63,9 +63,9 @@ export const GlobalLeaderboard = () => {
   const sortLabel = sortLabels[currentIndex] || "Unknown";
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-pastelYellow to-pastelPink">
-      {/* Back button - top left corner */}
-      <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6 absolute">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-pastelYellow to-pastelPink relative">
+      {/* Back button - Desktop view */}
+      <div className="hidden lg:block absolute top-4 left-4">
         <IconButton
           style="arrowleft"
           iconColour="black"
@@ -76,8 +76,18 @@ export const GlobalLeaderboard = () => {
       </div>
 
       {/* Main content */}
-      <div className="flex flex-col items-center justify-start pt-24 p-8">
-        {/* Title */}
+      <div className="flex flex-col items-center justify-start p-8 lg:pt-24">
+        {/* Back button - mobile only */}
+        <div className="block lg:hidden w-full max-w-4xl mb-4">
+          <IconButton
+            style="arrowleft"
+            iconColour="black"
+            buttonColour="red"
+            size="medium"
+            onClick={() => FlowRouter.go("/")}
+          />
+        </div>
+
         <div className="bg-purple-400 border-4 border-blackCurrant rounded-xl px-12 py-4 mb-8">
           <h1 className="text-outline text-[4rem] font-[Jua]">
             GLOBAL LEADERBOARD
