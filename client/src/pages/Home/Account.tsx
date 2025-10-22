@@ -26,7 +26,6 @@ interface PlayerAccountSchema {
   _id: string;
   email?: string;
   username?: string;
-  password?: string;
   stats?: {
     numGamesPlayed?: number;
     numGamesWon?: number;
@@ -217,14 +216,14 @@ export const Account = () => {
   const handleSave = () => {
     if (formData) {
       const updatedUser = {
-        ...userData,
         username: formData.username || userData?.username,
         email: formData.email || userData?.email,
-        password: formData.password || null,
       };
       socket.emit("updatePlayer", updatedUser);
-      setUserData(updatedUser);
-      setEditing(false);
+      socket.once("playerUpdated", (serverUser) => {
+        setUserData(serverUser);
+        setEditing(false);
+      });
     }
   };
 

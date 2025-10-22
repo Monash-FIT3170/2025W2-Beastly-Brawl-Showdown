@@ -109,7 +109,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
   socket.on("updatePlayer", async (updates) => {
     const user = playerAccounts.get(socket.id);
 
-    if (!user || !user.email) {
+    if (!user) {
       console.error(`No logged-in player found for socket ${socket.id}`);
       return;
     }
@@ -120,7 +120,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
       await updatePlayerAccount(user._id, updates);
       Object.assign(user, updates);
       playerAccounts.set(socket.id, user);
-      console.log(`Player ${user.username} updated successfully.`);
+      socket.emit("playerUpdated", user);
     } catch (error: any) {
       console.error(`Error updating player ${user.username}: ${error.message}`);
     }
