@@ -44,6 +44,11 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     if (isDisabled) return;
     if (actionState.id === ActionIdentifier.DEFEND) {
       playSFX("sword");
+    } else if (actionState.id === ActionIdentifier.ATTACK){
+      playSFX("attack");
+    }
+    else {
+      playSFX("special");
     }
     // Do the action stuff
     socket.emit("action_selected", {
