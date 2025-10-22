@@ -3,12 +3,8 @@ import { Battle } from "../../model/game/battle";
 import { NullAction } from "../../model/game/action/null";
 import GameSession from "../../model/host/gameSession";
 import { BattlePhase } from "../../../../types/composite/battleState";
-import { AttackAction } from "../../model/game/action/attack";
-import { ActionIdentifier, ActionResult } from "/types/single/actionState";
-import { TipTheScalesAbilityAction } from "../../model/game/action/ability/tipTheScales";
 import { ActionRandomiser } from "../../model/game/actionRandomiser";
 import { Player } from "../../model/game/player";
-import { exec } from "child_process";
 
 export default function proceedBattleTurn(
   io: Server,
@@ -34,7 +30,7 @@ export default function proceedBattleTurn(
       io.to(battle.getId()).emit("battle_end", {
         result: "draw",
         winners: winners.map((player) => player.getName()),
-        mode: gameSession.getMode().name,
+        mode: gameSession.getMode(),
         gameCode: gameSession.getGameCode().toString(),
         finalScreen: gameSession.isSessionConcluded(),
       });
@@ -46,7 +42,7 @@ export default function proceedBattleTurn(
       io.to(battle.getId()).emit("battle_end", {
         result: "concluded",
         winners: winners.map((player) => player.getName()),
-        mode: gameSession.getMode().name,
+        mode: gameSession.getMode(),
         gameCode: gameSession.getGameCode().toString(),
         finalScreen: gameSession.isSessionConcluded(),
       });
@@ -184,12 +180,12 @@ export default function proceedBattleTurn(
         opp: player1.getAnimations().filter((a) => a != ""),
       });
       spectatorsInBattle.forEach((spectator) => {
-        io.to(player1.getId()).emit("update_animation", {
-        phase: "prepare",
-        player: player1.getAnimations().filter((a) => a != ""),
-        opp: player2.getAnimations().filter((a) => a != ""),
+        io.to(spectator.getId()).emit("update_animation", {
+          phase: "prepare",
+          player: player1.getAnimations().filter((a) => a != ""),
+          opp: player2.getAnimations().filter((a) => a != ""),
+        });
       });
-      
 
       //TIME OUT CONSTANTS
       const prepareTimeOut = 1000; // -> between prepare animation and roll animation
@@ -267,11 +263,6 @@ export default function proceedBattleTurn(
               metadata: gameSession.getMetadata(),
               isSpectating: true,
             });
-
-            let actions = player1
-              .getMonster()
-              .getPossibleActionStates();
-            io.to(spectator.getId()).emit("possible_actions", actions);
           });
 
           io.to(player1.getId()).emit("update_animation", {
@@ -284,30 +275,85 @@ export default function proceedBattleTurn(
             player: player2.getAnimations().filter((a) => a != ""),
             opp: player1.getAnimations().filter((a) => a != ""),
           });
+
           spectatorsInBattle.forEach((spectator) => {
-            io.to(player1.getId()).emit("update_animation", {
-            phase: "execute",
-            player: player1.getAnimations().filter((a) => a != ""),
-            opp: player2.getAnimations().filter((a) => a != ""),
+            io.to(spectator.getId()).emit("update_animation", {
+              phase: "execute",
+              player: player1.getAnimations().filter((a) => a != ""),
+              opp: player2.getAnimations().filter((a) => a != ""),
+            });
           });
 
-        // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
-        playersInBattle.forEach((player) => {
-          player.resetStats();
-          player.resetActions();
-          player.getMonster()?.removeTemporaryActions();
-        });
+          // After results of actions are sent to the client, and client has updated its UI, need to reset the stats of player back to Monster
+          playersInBattle.forEach((p) => {
+            p.clearAnimations();
+            p.resetStats();
+            p.resetActions();
+            p.getMonster()?.removeTemporaryActions();
+            p.tickStatuses();
+            p.startStatusEffects();
+            p.setStartStatusAnimations();
+          });
+
+          // Emit the result of the battle state after the turn is complete
+          playersInBattle.forEach((player) => {
+            if (!player.isBotPlayer()) {
+              // Only emit the battle state of human player
+              io.to(player.getId()).emit("battle_state", {
+                battle: battle.getBattleState(player.getId()),
+                metadata: gameSession.getMetadata(),
+              });
+            }
+          });
+
+          spectatorsInBattle.forEach((spectator) => {
+            io.to(spectator.getId()).emit("battle_state", {
+              battle: battle.getBattleState(player1.getId()),
+              metadata: gameSession.getMetadata(),
+              isSpectating: true,
+            });
+          });
+
+          // TODO: ONLY update the current battle to be more memory efficient...
+          //Players' states after the turn ends
+          gameSession.setCurrentPhase(BattlePhase.EXECUTE_ACTION);
+          io.to(gameSession.getHost()).emit("game-session-state", {
+            session: gameSession.getGameSessionState(),
+          });
+
+          //TIMEOUT BETWEEN EXECUTE AND DEFAULT
+          setTimeout(() => {
+            io.to(player1.getId()).emit("update_animation", {
+              phase: "default",
+              player: player1.getAnimations(),
+              opp: player2.getAnimations(),
+            });
+            io.to(player2.getId()).emit("update_animation", {
+              phase: "default",
+              player: player2.getAnimations(),
+              opp: player1.getAnimations(),
+            });
+
+            spectatorsInBattle.forEach((spectator) => {
+              io.to(spectator.getId()).emit("update_animation", {
+                phase: "default",
+                player: player1.getAnimations(),
+                opp: player2.getAnimations(),
+              });
+            });
 
             if (battle.isBattleOver()) {
               const winners = battle.getWinners();
               if (winners?.length == 0) {
                 //Handler after a battle ended
                 gameSession.onBattleEnded(null, battle, io, socket);
-
                 //if battle is over, the array length is guaranteed to be either 0 or 1
                 io.to(battle.getId()).emit("battle_end", {
                   result: "draw",
                   winners: winners.map((player) => player.getName()),
+                  mode: gameSession.getMode(),
+                  gameCode: gameSession.getGameCode().toString(),
+                  finalScreen: gameSession.isSessionConcluded(),
                 });
               } else {
                 //Handler after a battle ended
@@ -320,6 +366,9 @@ export default function proceedBattleTurn(
                 io.to(battle.getId()).emit("battle_end", {
                   result: "concluded",
                   winners: winners.map((player) => player.getName()),
+                  mode: gameSession.getMode(),
+                  gameCode: gameSession.getGameCode().toString(),
+                  finalScreen: gameSession.isSessionConcluded(),
                 });
               }
 
