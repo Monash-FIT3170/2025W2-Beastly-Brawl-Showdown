@@ -11,6 +11,7 @@ import { waitingScreenDataHandler } from "./src/socket/battle/waitingScreenDataH
 import { adventureModeHandler } from "./src/socket/adventureModeHandler";
 import { Adventure } from "./src/model/game/adventure";
 import { adventureTurnHandler } from "./src/socket/adventureTurnHandler";
+import { SeasonalEventModeHandler } from "./src/socket/seasonalEventModeHandler";
 import { LogBool } from "./src/socket/backend/loginHandler";
 export const players = new Map<string, Player>();
 export const battles = new Map<string, Battle>();
@@ -33,12 +34,11 @@ import {
   PlayerAccountSchema,
   createDefaultPlayerAccountSchema,
 } from "./src/database/dbManager";
-import { SeasonalEvent } from "./src/model/seasonal_event/seasonalEvent";
+import { SeasonalEvent } from "./src/model/host/gamemode/seasonalEvent";
 export const playerAccounts = new Map<string, PlayerAccountSchema>();
 
 // Helper function that
 export const activeAdventures = new Map<string, Adventure>();
-export const activeEvents = new Map<string, SeasonalEvent>();
 
 Meteor.startup(async () => {
   // Initialise socket
@@ -91,6 +91,7 @@ Meteor.startup(async () => {
     waitingScreenDataHandler(io, socket);
     LogBool(io, socket);
     adventureModeHandler(io, socket);
+    SeasonalEventModeHandler(io, socket);
     adventureTurnHandler(io, socket);
 
     socket.on("disconnect", (reason) => {

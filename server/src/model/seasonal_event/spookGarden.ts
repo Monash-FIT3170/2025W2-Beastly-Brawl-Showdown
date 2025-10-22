@@ -1,17 +1,38 @@
-import { JackedOLantern } from "../game/monster/jackedOLantern";
-import { SeasonalEvent } from "./seasonalEvent";
 import { SeasonalEventIdentifier } from "../../../../types/single/seasonalEventState";
 import { Player } from "../game/player";
+import { MonsterIdentifier } from "../../../../types/single/monsterState";
 
-export class SpookGarden extends SeasonalEvent {
-    constructor(player: Player) {
-        super(
-            SeasonalEventIdentifier.SPOOK_GARDEN,
-            "Spook Garden",
-            // Temporarily RockyRhino, but will be a new monster called Jacked o' Lantern
-            new JackedOLantern(),
-            "Fight a buff pumpkin monster in the yearly Halloween event.",
-            player
-        )
+export class SpookGarden {
+
+    private id: SeasonalEventIdentifier;
+    private name: String;
+    private description: String;
+    private monster: MonsterIdentifier;
+
+
+    constructor() {
+
+            this.id = SeasonalEventIdentifier.SPOOK_GARDEN,
+            this.name = "Spook Garden",
+            this.description = "Fight a buff pumpkin monster in the yearly Halloween event.",
+            this.monster = MonsterIdentifier.JACKEDOLANTERN;
     }
+
+
+    public getId() {
+        return this.id
+    }
+
+    public getName() {
+        return this.name
+    }
+
+    public getDescription() {
+        return this.description
+    }
+
+    public getMonster() {
+        return this.monster
+    }
+
 }

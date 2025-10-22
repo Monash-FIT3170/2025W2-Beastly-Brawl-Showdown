@@ -5,6 +5,7 @@ import { Screens } from "../../screens";
 import {
   ArchetypeIdentifier,
   ArchetypeInfo,
+  MonsterIdentifier,
   MonsterState,
 } from "../../../../types/single/monsterState";
 import {
@@ -26,9 +27,11 @@ import { IconButton } from "../../components/buttons/IconButton";
 import { Popup } from "../../components/popups/Popup";
 import { ArchetypePopup } from "../../components/popups/ArchetypePopup";
 
-interface SeasonalEventMonsterSelectProps {}
+interface SeasonalEventMonsterSelectProps {
+  eventMonster: MonsterIdentifier
+}
 
-export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProps> = ({}) => {
+export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProps> = ({ eventMonster }) => {
   const [monsters, setMonsters] = useState<MonsterState[]>([]);
   const [archetypes, setArchetypes] = useState<ArchetypeInfo[]>([]);
   const [selectedMonster, setSelectedMonster] = useState<MonsterState | null>(
@@ -38,6 +41,8 @@ export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProp
     useState<ArchetypeInfo | null>(null);
   const [abilities, setAbilities] = useState<ActionState[]>([]);
   const [exitPopup, setExitPopup] = useState<Boolean>();
+
+  const eventMonsterID = eventMonster;
 
   const colorLoader: Record<string, string> = {
     [ArchetypeIdentifier.ATTACKER]: "bg-attacker",
@@ -115,6 +120,7 @@ export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProp
 
       socket.emit("event_monster_selected", {
         monsterID: selectedMonster.id,
+        eventMonsterID: eventMonsterID
       });
 
       console.log(
@@ -122,6 +128,11 @@ export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProp
       );
     }
   };
+
+  socket.on("start_event_battle", (battleId: String) => {
+    // FlowRouter.go(`/seasonal-event/battle/${battleId}`);
+    FlowRouter.go(`/seasonal-event/battle/${battleId}`);
+  });
 
   const handleCancelSelection = () => {
     setSelectedMonster(null);

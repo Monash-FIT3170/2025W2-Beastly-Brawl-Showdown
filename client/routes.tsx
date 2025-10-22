@@ -21,6 +21,7 @@ import { BlankPage } from "./src/components/pagelayouts/BlankPage";
 import { AdventureSelectMode } from "./src/pages/Adventure/AdventureSelectMode";
 import SeasonalEventHome from "./src/pages/Seasonal_Event/SeasonalEventHome";
 import SeasonalEventMonsterSelect from "./src/pages/Seasonal_Event/SeasonalEventMonsterSelect";
+import SeasonalEventBattle from "./src/pages/Seasonal_Event/SeasonalEventBattle";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -132,19 +133,27 @@ FlowRouter.route("/battles/:code?", {
   },
 });
 
-FlowRouter.route("/seasonal-event", {
+FlowRouter.route("/seasonal-event/:eventId?", {
   name: "SeasonalEventHome",
-  action() {
+  action(params) {
     document.title = "Home - Seasonal Event | Beastly Brawl Showdown";
-    mount(SeasonalEventHome);
+    mount(() => <SeasonalEventHome eventId={params.eventId} />);
   },
 });
 
-FlowRouter.route("/seasonal-event/monster-select", {
-  name: "MonsterSelect",
-  action() {
+FlowRouter.route("/seasonal-event/:eventId?/monster-select", {
+  name: "SeasonalEventMonsterSelect",
+  action(params) {
     document.title = "Monster Select - Seasonal Event | Beastly Brawl Showdown";
-    mount(SeasonalEventMonsterSelect);
+    mount(() => <SeasonalEventMonsterSelect eventMonster={params.eventId} />);
+  },
+});
+
+FlowRouter.route("/seasonal-event/battle/:battleId?", {
+  name: "SeasonalEventBattle",
+  action(params) {
+    document.title = "Battle - Seasonal Event | Beastly Brawl Showdown";
+    mount(() => <SeasonalEventBattle battleId={params.battleId} />);
   },
 });
 

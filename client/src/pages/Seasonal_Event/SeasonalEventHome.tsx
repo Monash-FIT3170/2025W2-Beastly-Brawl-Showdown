@@ -13,17 +13,19 @@ import { BaseCard } from "../../components/cards/BaseCard";
 import { eventMeta } from "../../data/eventMeta";
 import { monsterMeta } from "../../data/monsterMeta";
 
-interface SeasonalEventHomeProps {}
+interface SeasonalEventHomeProps {
+  eventId: SeasonalEventIdentifier
+}
 
-const SeasonalEventHome: React.FC<SeasonalEventHomeProps> = () => {
+const SeasonalEventHome: React.FC<SeasonalEventHomeProps> = ({ eventId }) => {
 const [observedEvent, setObservedEvent] = useState<number>(10);
 
   // Seasonal Event → Monster mapping
   const eventMap: Record<number, SeasonalEventIdentifier> = {
-    10: SeasonalEventIdentifier.SPOOK_GARDEN
+    9: SeasonalEventIdentifier.SPOOK_GARDEN
   };
   const monsterMap: Record<number, MonsterIdentifier> = {
-    10: MonsterIdentifier.JACKEDOLANTERN
+    9: MonsterIdentifier.JACKEDOLANTERN
   };
 
   // Resolve event and monster data
@@ -46,8 +48,8 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
   )}.jpg')`;
 
   const renderEventMonsterSelect = () => {
-    socket.emit("event_selected", { event: event });
-    FlowRouter.go("/seasonal-event/monster-select");
+    socket.emit("event_selected", { monsterId: monster });
+    FlowRouter.go(`/seasonal-event/${eventId}/monster-select`);
   };
 
   return (

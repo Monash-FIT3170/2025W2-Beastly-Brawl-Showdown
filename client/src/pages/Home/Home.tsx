@@ -11,6 +11,7 @@ import { IconButton } from "../../components/buttons/IconButton";
 import { BlackText } from "../../components/texts/BlackText";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { userInfo } from "os";
+import { SeasonalEventIdentifier } from "../../../../types/single/seasonalEventState";
 
 export const Home = () => {
   // Called on 'Host Lobby' button press
@@ -84,7 +85,9 @@ export const Home = () => {
   };
 
   const renderSeasonalEvent = () => {
-    FlowRouter.go("/seasonal-event");
+    const currentMonth = new Date().getMonth();
+    const currentEvent = seasonalEventMap.get(currentMonth)?.toString();
+    FlowRouter.go(`/seasonal-event/${currentEvent}`);
   };
 
   return (
@@ -226,3 +229,7 @@ export const Home = () => {
     </BlankPage>
   );
 };
+
+const seasonalEventMap = new Map([
+  [9, SeasonalEventIdentifier.SPOOK_GARDEN]
+]);
