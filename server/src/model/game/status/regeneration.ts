@@ -9,6 +9,7 @@ export class Regeneration extends EndStatus {
   }
 
   public endingEffect(player: Player): void {
+    if (player.getHealth() <= 0) return;
     player.incHealth(1);
     console.log(`${player.getName()} -1 Health: Poison Tick`);
     // player.addLog(`You have been poisoned, -1 HP.`)
