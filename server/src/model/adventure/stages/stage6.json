@@ -474,33 +474,40 @@
     "outcomes": [
       {
         "id": "initial",
-        "result": ["UPDATE"],
+        "result": [
+          "You return to the scorching dunes. The air feels heavier this time.",
+          "The sand shifts uneasily, as though remembering your last battle.",
+          "*A faint gurgling rises from beneath the sand...*"
+        ],
         "type": "DIALOGUE",
         "next": "slime_dialogue_1"
       },
       {
         "id": "slime_dialogue_1",
-        "result": ["UPDATE"],
+        "result": ["\"Ssslshhh... you again...\" it hisses before attacking!"],
         "type": "DIALOGUE",
-        "enemyId": ["slime", "DUSTY SLIME"],
+        "enemyId": ["slime", "DUSTIER SLIME"],
         "next": "fight_1"
       },
       {
         "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": ["slime", "DUSTY SLIME"],
+        "enemyId": ["slime", "DUSTIER SLIME"],
         "next": "fight_win"
       },
       {
         "id": "fight_win",
-        "result": ["UPDATE"],
+        "result": [
+          "The enhanced slime bursts apart, scattering molten dust across the dunes.",
+          "Among the remains, you notice something half-buried glinting under the sun."
+        ],
         "type": "DIALOGUE",
-        "next": "reward"
+        "next": "slime_stench"
       },
       {
-        "id": "reward",
-        "type": "LOOT_POOL",
-        "lootPoolId": "desert_pool"
+        "id": "slime_stench",
+        "type": "EQUIPMENT",
+        "equipmentId": "sticky_die"
       }
     ]
   },
@@ -638,7 +645,6 @@
           "You hear furious shouting echoing from deep inside the fiery caverns.",
           "You follow the sound of shouting and sizzling until you find two dragons standing over bubbling vents.",
           "They're waving spoons and spatulas, arguing so loudly that your eardrums ache."
-
         ],
         "type": "DIALOGUE",
         "next": "dragon1"
@@ -672,9 +678,7 @@
       },
       {
         "id": "choice",
-        "result": [
-          "WHat do you do?"
-        ],
+        "result": ["WHat do you do?"],
         "type": "CHOICE",
         "options": [
           {
@@ -718,7 +722,7 @@
       },
       {
         "id": "burn",
-        "type": "STATUS", 
+        "type": "STATUS",
         "statusId": ["burning_rage", 3],
         "result": [
           "But you can now burn your opponent with your firery breath."
@@ -749,10 +753,7 @@
         "id": "burn_bad",
         "type": "STATUS",
         "statusId": ["burn", 3],
-        "result": [
-          "Your feel hot...",
-          "fire's burnning inside you."
-        ],
+        "result": ["Your feel hot...", "fire's burnning inside you."],
         "next": "escape"
       },
       {
@@ -769,9 +770,7 @@
         "id": "burp_power",
         "type": "STATUS",
         "statusId": ["hiccup_of_doom_buff", 3],
-        "result":[
-          "You gained the status hiccup of doom."
-        ],
+        "result": ["You gained the status hiccup of doom."],
         "next": "opinion"
       },
       {
@@ -786,9 +785,7 @@
       {
         "id": "choose_opinion",
         "type": "CHOICE",
-        "result": [
-          "Who do you pick?"
-        ],
+        "result": ["Who do you pick?"],
         "options": [
           {
             "id": "first_dragon",
@@ -804,7 +801,7 @@
       },
       {
         "id": "first_happy",
-        "result":[
+        "result": [
           "The dragon laughs, \"Finally! Someone with taste!\"",
           "\"Here, take this... A little present from the greatest chief in this land.\""
         ],
@@ -883,7 +880,6 @@
         "type": "LOOT_POOL",
         "lootPoolId": "scavenger_pool"
       }
-
     ]
   }
 ]

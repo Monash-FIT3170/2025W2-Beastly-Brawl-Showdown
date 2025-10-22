@@ -10,9 +10,9 @@ export class GroundSlamAbilityAction extends Action {
       ActionIdentifier.GROUND_SLAM,
       "Ground Slam",
       "Stomp the earth with brutal force. Deal 3 damage and leave your opponent stunned, unable to act next turn.",
-      20
+      2
     );
-    this.damage = 30;
+    this.damage = 3;
   }
 
   // Clear the opponent's actions
@@ -25,7 +25,7 @@ export class GroundSlamAbilityAction extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
-    actingPlayer.incAbilitiesUsed(1)
+    actingPlayer.incAbilitiesUsed(1);
     this.incCurrentUse(-1);
 
     // Deal 3 damage + Stun
@@ -54,8 +54,8 @@ export class GroundSlamAbilityAction extends Action {
         success: true,
       },
       damageDealt: {
-        damage: this.damage
-      }
+        damage: this.damage,
+      },
     };
   }
 }

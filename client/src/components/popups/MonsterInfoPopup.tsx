@@ -25,6 +25,7 @@ export interface MonsterInfoPopupProp {
   playerState: PlayerState | null | undefined;
   attackState: AttackState | null | undefined;
   opponent?: Boolean;
+  biome: string;
   onClose?: () => void;
 }
 
@@ -32,6 +33,7 @@ export const MonsterInfoPopup = ({
   playerState,
   attackState,
   opponent,
+  biome,
   onClose,
 }: MonsterInfoPopupProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
@@ -59,9 +61,14 @@ export const MonsterInfoPopup = ({
     setCurrentAbilities(Array.from(uniqueActions.values()));
     console.log(playerState);
   }, [playerState?.monster?.possibleActions]);
+
+  const monsterId =
+    playerState?.monster?.id === "SLIME"
+      ? `${playerState.monster.id}_${biome.toUpperCase()}`
+      : playerState?.monster?.id;
   const monsterImgPath =
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
-    playerState?.monster?.id +
+    monsterId +
     ".png";
 
   var playerName = `${playerState?.name}'s ${playerState?.monster?.name}`;

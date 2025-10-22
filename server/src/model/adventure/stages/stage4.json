@@ -226,7 +226,7 @@
   {
     "id": "desert_ruins",
     "level": [5],
-    "description": "Stage 43 — Discover ancient ruins half-buried in sand.",
+    "description": "Stage 4 — Discover ancient ruins half-buried in sand.",
     "outcomes": [
       {
         "id": "initial",

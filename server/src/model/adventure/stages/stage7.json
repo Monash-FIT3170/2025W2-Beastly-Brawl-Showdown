@@ -726,7 +726,7 @@
         "result": [
           "Your serpent amulet begins to glow faintly...",
           "A voice hisses through the wind:",
-          "\"Sssseeker of wisdom... prove your calm in the storm.\""
+          "\"Sssseeker of wisdom... prove your calm in the ssstorm.\""
         ],
         "type": "DIALOGUE",
         "next": "gift"
@@ -734,12 +734,23 @@
       {
         "id": "gift",
         "result": [
-          "You feel energy flow through your body — your reflexes sharpen.",
+          "You drop the amulet in the sand.",
           "The amulet crumbles into dust."
         ],
         "type": "CONSUMABLE",
-        "consumableId": "dune_dust"
+        "consumableId": "dune_dust",
+        "next": "stat_reward"
       },
+      {
+        "id": "stat_reward",
+        "type": "STATUS",
+        "statusId": ["affliction_touch", 20],
+        "result": [
+          "The desert inflicts you with a dark energy...",
+          "Something has changed within you."
+        ]
+      },
+
       {
         "id": "leave",
         "result": [
