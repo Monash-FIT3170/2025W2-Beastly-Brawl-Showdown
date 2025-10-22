@@ -6,6 +6,7 @@ import {
   AttackState,
 } from "/types/single/actionState";
 import socket from "../../socket";
+import { Shield } from "../status/shield";
 
 export class AttackAction extends Action {
   private attackBonus: number;
@@ -23,7 +24,7 @@ export class AttackAction extends Action {
     diceMin: number = 1,
     diceMax: number = 20
   ) {
-    super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity);
+    super(ActionIdentifier.ATTACK, "Attack", "Attack an enemy", Infinity, true);
     this.attackBonus = attackBonus;
     this.diceMin = diceMin;
     this.diceMax = diceMax;
@@ -72,13 +73,16 @@ export class AttackAction extends Action {
 
   // relies on prepare() method being called to roll the dice first.
   public prepareAnimation(): string | [string, number] {
-    return ["roll_dice", this.d20];
+    return ["attack", this.d20];
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
-    let damage: number = 0;
+    // Check if defender has a shield
+    const shield = affectedPlayer.getStatusByName("Shield") as Shield;
+    let shieldBroken = false;
+    let damageDealt = 0;
+
     // Attack is calculated by adding dice roll and attack bonus.
-    // If this exceeds the opponent's armour class, the attack is successful and we decrement their health by 5.
     if (this.attackHit >= affectedPlayer.getArmourClassStat()) {
       console.log(
         `${actingPlayer.getName()}'s attack successful | Attack exceeds opponents armour: (${affectedPlayer.getArmourClassStat()} < ${
@@ -87,64 +91,110 @@ export class AttackAction extends Action {
       );
 
       // Check for a critical hit
-      // Calculate the crit range as a percentage of the dice roll range
-      // Set the crit range starting from the maximum dice value and going down
-      // Check if the dice roll is within the crit range
-      // E.g. normal d20 roll is 1-20, with a crit rate of 10%, you need to roll 19 or 20 to crit
-      let tmpDamage = this.damage;
-      damage = this.damage
+      let critDamage = this.damage * 2;
       const isCrit =
         this.d20 >
         this.diceMax - Math.floor((this.rollRange * this.critRate) / 100);
-      if (isCrit) {
-        this.damage *= 2; // Double the damage on a crit
-        damage *= 2
-        actingPlayer.incCriticalHitsDealt(1)
+
+      if (shield) {
+        // Shield is present - check if attack can break it
+        if (this.attackHit >= shield.getShieldStrength()) {
+          // Attack is strong enough to break shield
+          affectedPlayer.removeStatus(shield);
+          shield.breakShield();
+          shieldBroken = true;
+          affectedPlayer.addAnimation("shield-broken");
+
+          if (isCrit) {
+            // Critical hit breaks shield AND deals damage
+            affectedPlayer.incHealth(-this.damage);
+            damageDealt = this.damage;
+            affectedPlayer.addAnimation("crit");
+            affectedPlayer.addAnimation("damage");
+            // actingPlayer.addLog(
+            //   `Critical hit! You broke ${affectedPlayer.getName()}'s shield and dealt ${
+            //     this.damage
+            //   } damage!`
+            // );
+            // affectedPlayer.addLog(
+            //   `Critical hit! ${actingPlayer.getName()} broke your shield and dealt ${
+            //     this.damage
+            //   } damage!`
+            // );
+          } else {
+            // Normal hit only breaks shield
+            // actingPlayer.addLog(
+            //   `You broke ${affectedPlayer.getName()}'s shield!`
+            // );
+            // affectedPlayer.addLog(
+            //   `${actingPlayer.getName()} broke your shield!`
+            // );
+          }
+        } else {
+          // Attack hits but not strong enough to break shield
+          // actingPlayer.addLog(
+          //   `Your attack hit ${affectedPlayer.getName()}'s shield but wasn't strong enough to break it!`
+          // );
+          // affectedPlayer.addLog(
+          //   `${actingPlayer.getName()}'s attack hit your shield but didn't break it!`
+          // );
+          affectedPlayer.addAnimation("shield-crack");
+        }
+      } else {
+        // No shield - normal damage calculation
+        if (isCrit) {
+          affectedPlayer.addAnimation("crit");
+          affectedPlayer.addAnimation("damage");
+          affectedPlayer.incHealth(-critDamage);
+          damageDealt = critDamage;
+        } else {
+          affectedPlayer.addAnimation("damage");
+          affectedPlayer.incHealth(-this.damage);
+          damageDealt = this.damage;
+        }
+
+        // actingPlayer.addLog(
+        //   `${
+        //     isCrit ? "Critical hit! " : ""
+        //   }You attacked ${affectedPlayer.getName()}, dealing ${damageDealt} damage.`
+        // );
+        // affectedPlayer.addLog(
+        //   `${
+        //     isCrit ? "Critical hit! " : ""
+        //   }${actingPlayer.getName()} attacked you, dealing ${damageDealt} damage.`
+        // );
       }
-      affectedPlayer.incHealth(-this.damage);
 
-      // Log successful attack
-      actingPlayer.addLog(
-        `${
-          isCrit ? "Critical hit! " : ""
-        }You attacked ${affectedPlayer.getName()}, dealing ${
-          this.damage
-        } damage.`
-      );
-
-      affectedPlayer.addLog(
-        `${
-          isCrit ? "Critical hit! " : ""
-        }${actingPlayer.getName()} attacked you, dealing ${this.damage} damage.`
-      );
-
+      // Battle log for successful hit
       actingPlayer.addBattleLog(
-        `${
-          isCrit ? "Critical hit! " : ""
-        }${actingPlayer.getName()} attacked ${affectedPlayer.getName()}, dealing ${
-          this.damage
-        } damage.`
+        shieldBroken
+          ? `${actingPlayer.getName()} broke ${affectedPlayer.getName()}'s shield${
+              damageDealt > 0 ? ` and dealt ${damageDealt} damage` : ""
+            }!`
+          : damageDealt > 0
+          ? `${
+              isCrit ? "Critical hit! " : ""
+            }${actingPlayer.getName()} attacked ${affectedPlayer.getName()}, dealing ${damageDealt} damage.`
+          : `${actingPlayer.getName()}'s attack was blocked by ${affectedPlayer.getName()}'s shield.`
       );
 
       // Increment successful hit for front end
       actingPlayer.incSuccessfulHit(1);
       this.executeBattleEffect(actingPlayer, affectedPlayer, true);
     } else {
-      // Log failed attack
-      actingPlayer.addLog(
-        `You attacked ${affectedPlayer.getName()} and failed to hit. `
-      );
-
-      affectedPlayer.addLog(
-        `${actingPlayer.getName()} tried to attacked and failed to hit.`
-      );
-
+      // Attack missed entirely
+      // actingPlayer.addLog(
+      //   `You attacked ${affectedPlayer.getName()} and failed to hit.`
+      // );
+      // affectedPlayer.addLog(
+      //   `${actingPlayer.getName()} tried to attack and failed to hit.`
+      // );
       affectedPlayer.addBattleLog(
-        `${affectedPlayer.getName()} has successfully blocked an attack`
+        `${affectedPlayer.getName()} has successfully avoided an attack`
       );
-      // Increment successful block for front end
-      affectedPlayer.incSuccessfulBlock(1);
 
+      affectedPlayer.incSuccessfulBlock(1);
+      affectedPlayer.addAnimation("miss");
       this.executeBattleEffect(actingPlayer, affectedPlayer, false);
     }
 
@@ -153,8 +203,8 @@ export class AttackAction extends Action {
         success: false,
       },
       damageDealt: {
-        damage: damage
-      }
+        damage: damageDealt,
+      },
     };
   }
 

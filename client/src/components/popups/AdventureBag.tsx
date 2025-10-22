@@ -62,7 +62,6 @@ export const AdventureBagPopup = ({
       consumable: consumable,
       playerId: socket.id,
     });
-    //TODO: INITIATE NEXT TURN...?
     const actionState = {
       name: ActionIdentifier.CONSUME,
     };

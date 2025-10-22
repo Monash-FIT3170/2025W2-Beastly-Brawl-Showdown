@@ -21,26 +21,29 @@ export class GroundSlamAbilityAction extends Action {
   }
 
   public prepareAnimation(): string | [string, number] {
-    return "Ground_Slam_Animation";
+    return "ability";
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
-    actingPlayer.incAbilitiesUsed(1)
+    actingPlayer.incAbilitiesUsed(1);
     this.incCurrentUse(-1);
 
     // Deal 3 damage + Stun
-    affectedPlayer.incHealth(-3);
-    affectedPlayer.addStatus(new Stun(1));
+    affectedPlayer.incHealth(-this.damage);
+    affectedPlayer.addStatus(new Stun(2));
+    affectedPlayer.addAnimation("damage");
 
     // Add logs
-    actingPlayer.addLog(
-      `You used ${this.getName()}, dealing 3 damage and stunning ${affectedPlayer.getName()} for 1 turn.`
-    );
-    affectedPlayer.addLog(
-      `${actingPlayer.getName()} used ${this.getName()}, dealing 3 damage and stunning you for 1 turn.`
-    );
+    // actingPlayer.addLog(
+    //   `You used ${this.getName()}, dealing 3 damage and stunning ${affectedPlayer.getName()} for 1 turn.`
+    // );
+    // affectedPlayer.addLog(
+    //   `${actingPlayer.getName()} used ${this.getName()}, dealing 3 damage and stunning you for 1 turn.`
+    // );
     affectedPlayer.addBattleLog(
-      `${actingPlayer.getName()} used ${this.getName()}, dealing 3 damage and stunning ${affectedPlayer.getName()} for 1 turn.`
+      `${actingPlayer.getName()} used ${this.getName()}, dealing ${
+        this.damage
+      } damage and stunning ${affectedPlayer.getName()} for 1 turn.`
     );
 
     this.executeBattleEffect(actingPlayer, affectedPlayer, true);
@@ -51,8 +54,8 @@ export class GroundSlamAbilityAction extends Action {
         success: true,
       },
       damageDealt: {
-        damage: 3
-      }
+        damage: this.damage,
+      },
     };
   }
 }

@@ -39,7 +39,7 @@ export class ScoringTournament implements IGameMode {
 
   //TODO: calculate bonus points for the previous turn
   onActionExecuted(
-    sesion: GameSession,
+    session: GameSession,
     player1: Player,
     player1Result: ActionResult,
     player2: Player,
@@ -262,7 +262,7 @@ export class ScoringTournament implements IGameMode {
       return;
     }
 
-    console.log("proceed to bext battle");
+    console.log("proceed to next battle");
     socket.emit("host-prepare-next-round");
 
     const handleNextBattle = () => {

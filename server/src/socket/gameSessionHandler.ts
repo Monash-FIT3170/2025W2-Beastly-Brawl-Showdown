@@ -375,6 +375,15 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Cancel Request failed. Invalid Code`);
       return;
     }
+    session.closeAllBattles(); //close all the ongoing battles in the current game session (host)
+
+    //Notify all players that the host is closed
+    session
+      ?.getBattles()
+      .getItems()
+      .forEach((curBattle) => {
+        io.to(curBattle.getId()).emit("host-closed");
+      });
 
     // io.to(`game-${gameCodeN}`).emit("close-warning", {
     //   message: "Current game session is closing.",

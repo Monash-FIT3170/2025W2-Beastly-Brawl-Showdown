@@ -21,7 +21,7 @@ export interface IGameMode {
     battle: Battle,
     io: Server,
     socket: Socket
-  ): void; //handle logic when a (single) battle starts
+  ): void;
   onBattleEnded(
     session: GameSession,
     battle: Battle,
