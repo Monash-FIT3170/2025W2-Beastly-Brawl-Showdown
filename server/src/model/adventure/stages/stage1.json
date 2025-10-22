@@ -152,7 +152,7 @@
       },
       {
         "id": "slime_dialogue_1",
-        "result": ["bloob bloob", "BLOB!"],
+        "result": ["blob blob", "BLOB!"],
         "type": "DIALOGUE",
         "enemyId": ["slime", "SWAMP SLIME"],
         "next": "fight_1"

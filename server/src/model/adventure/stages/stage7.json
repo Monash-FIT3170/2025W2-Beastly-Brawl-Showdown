@@ -425,6 +425,7 @@
         "id": "witch_encounter",
         "result": [
           "Back again huh? The swamp didn't chew you up yet?",
+          "You face the witch again, still swirling that same suspicious stew from before.",
           "You smell like frog sweat. I like that.",
           "So, what brings you here, little wanderer?"
         ],
@@ -458,7 +459,7 @@
           },
           {
             "id": "lost_option",
-            "text": "Tell her your lost",
+            "text": "Tell her your lost.",
             "next": "lost"
           },
           {
@@ -635,7 +636,7 @@
           "The fog twists around you, shaping itself into a faint trail of light.",
           "You walk toward it, hoping it's the way out.",
           "But after a few turns, you stop. Everything around you became more and more famillier.",
-          "\"Hi again!\" the witch cracles.",
+          "\"Hi again!\" the witch crackles.",
           "\"You've gone in a perfect circle! What brings you back again?\""
         ],
         "type": "DIALOGUE",
@@ -674,11 +675,11 @@
       {
         "id": "ignore",
         "result": [
-          "You turn away, stepping past her cauldron as if she's invisible",
+          "You turn away, stepping past her cauldron as if she's invisible.",
           "\"How rude!\" her voice sharpens.",
           "\"Don't have manners, do you? Fine, I'll teach you manners.\"",
           "The mud erupts. A huge slime rolls out, wobbling beside her.",
-          "\"Meet Bloop! He's terrible at cleaning, but wonderful at teaching manners.\""
+          "\"Meet Blop! He's terrible at cleaning, but wonderful at teaching manners.\""
         ],
         "type": "DIALOGUE",
         "next": "swamp_slime_4"
@@ -693,7 +694,7 @@
         "id": "fight_win",
         "result": [
           "The slime lets out one last sad gurgle before collapsing into a puddle.",
-          "\"Ugh, fine! You win. Bloop was still in training anyway.\" said the with while vanishing before your eyes."
+          "\"Ugh, fine! You win. Blop was still in training anyway.\" said the with while vanishing before your eyes."
         ],
         "type": "DIALOGUE"
       }

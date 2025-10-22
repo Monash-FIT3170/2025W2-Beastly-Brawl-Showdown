@@ -11,6 +11,7 @@ export class SlimyHeart extends Equipment {
 
   public equip(player: Player): void {
     player.getMonster()?.incMaxHealth(this.strength);
+    player.incHealth(this.strength);
   }
   public unequip(player: Player): void {
     player.getMonster()?.incMaxHealth(-this.strength);

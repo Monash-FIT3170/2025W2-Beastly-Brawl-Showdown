@@ -175,7 +175,7 @@
         "id": "initial",
         "result": [
           "You come across a large pond. The surface lies calm and silent.",
-          "Suddenly, the ground trembles beneath you",
+          "Suddenly, the ground trembles beneath you.",
           "Bubbles rise from the water as something big and blue stirs beneath the pond.",
           "A giant blue frog bursts out, blinking slowly with a blank, emotionless stare that says it's strong... but not smart."
         ],
@@ -210,7 +210,7 @@
         "id": "win_narration",
         "result": [
           "With a panicked croak, it spins around and bounds away crashing through the reeds and vanishing deep into the woods.",
-          "A slick pool of glowing purple venom remains",
+          "A slick pool of glowing purple venom remains.",
           "You carefully bottle it before it fades away."
         ],
         "type": "DIALOGUE",

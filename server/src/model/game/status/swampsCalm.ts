@@ -14,7 +14,7 @@ export class SwampsCalm extends EndStatus {
   
     public endingEffect(player: Player): void {
       player.incHealth(2);
-      console.log(`${player.getName()} is heald by 2HP`);
+      console.log(`${player.getName()} is healed by 2HP`);
       // player.addLog(`You have been poisoned, -1 HP.`)
     }
   

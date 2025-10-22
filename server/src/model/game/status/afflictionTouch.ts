@@ -19,7 +19,7 @@ export class AfflictionTouch extends BattleEffect {
   constructor(countdown: number = Infinity) {
     super(
       "Affliction Touch",
-      "Basic attacks have a chance to inflict poison, burn or curse",
+      "Basic attacks, inflicts either poison, burn or curse",
       countdown,
       StatusType.BUFF
     );

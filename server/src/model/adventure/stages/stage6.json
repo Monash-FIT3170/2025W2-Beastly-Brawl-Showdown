@@ -435,8 +435,8 @@
       {
         "id": "slime_dialogue",
         "result": [
-          "It jiggles once... then twice... and lets out a deep blob",
-          "BlOOP! Blurrp! bloorb!",
+          "It jiggles once... then twice... and lets out a deep blob.",
+          "BLOP! Blurrp! bloorb!",
           "The massive slime jiggles proudly, as if daring you to hit it."
         ],
         "type": "DIALOGUE",
@@ -713,7 +713,7 @@
         "id": "burn_HP",
         "type": "STAT_CHANGE",
         "statChange": ["health", -2],
-        "result": ["Your throat burns and loss 2 HP"],
+        "result": ["Your throat burns and lose 2 HP"],
         "next": "burn"
       },
       {
@@ -729,7 +729,7 @@
         "id": "escape",
         "type": "DIALOGUE",
         "result": [
-          "You complemented his cooking and thanked him for his unique cuisine while slowly slipping away.",
+          "You complimented his cooking and thanked him for his unique cuisine while slowly slipping away.",
           "The first dragon is still boasting, and the second is rolling his eyes.",
           "Before they start arguing again, you make your escape, lips still tingling from the taste of stew."
         ]
@@ -792,12 +792,12 @@
         "options": [
           {
             "id": "first_dragon",
-            "text": "Complement the first dragon.",
+            "text": "Compliment the first dragon.",
             "next": "first_happy"
           },
           {
             "id": "second_dragon",
-            "text": "Complement the second dragon.",
+            "text": "Compliment the second dragon.",
             "next": "second_happy"
           }
         ]

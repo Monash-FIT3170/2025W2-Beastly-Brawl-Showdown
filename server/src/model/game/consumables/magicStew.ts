@@ -36,7 +36,7 @@ export class MagicStew extends Consumable {
     } else {
       // bad effect
       player.incHealth(-5);
-      actingLog = "You gulp the stew. Your stomach grumbles! You loss 5HP.";
+      actingLog = "You gulp the stew. Your stomach grumbles! You lose 5HP.";
       // player.addLog("You gulp the stew. Your stomach grumbles! You loss 5HP.");
     }
 

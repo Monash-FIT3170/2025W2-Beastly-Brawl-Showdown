@@ -144,7 +144,7 @@
       {
         "id": "initial",
         "result": [
-          "You continues your journey through the swamp and sees someone infront of you.",
+          "You continues your journey through the swamp and see someone infront of you.",
           "A witch stirs her bubbling cauldron, purple smoke hissing into the mist. She turns to you, grinning.",
           "Heeheehee! A traveler in my swamp? You're braver than you look.",
           "What would you like? A bottle of my stew, or a riddle for a reward?"
@@ -159,7 +159,7 @@
         "options": [
           {
             "id": "riddle",
-            "text": "Give me a riddle.",
+            "text": "Give me a riddle",
             "next": "witch_riddle"
           },
           {
@@ -236,7 +236,7 @@
         "type": "STATUS",
         "statusId": ["poisoned", 5],
         "result": [
-          "\"Blulaflu!\" the witch shouts",
+          "\"Blulaflu!\" the witch shouts.",
           "A green mist clings to your skin and seeps into your lungs.",
           "You've been poisoned."
         ]
@@ -246,7 +246,7 @@
         "type": "STAT_CHANGE",
         "statChange": ["health", 5],
         "result": [
-          "A golden mist surrounds you as the witch says \"Akula Palusha!\"",
+          "A golden mist surrounds you as the witch says \"Akula Palusha!\".",
           "You feel warmth bloom in your chest. You HP increased by 5."
         ]
       },
@@ -254,7 +254,7 @@
         "id": "stew_result",
         "result": [
           "Heeheehee! A wise choice, or a foolish one?",
-          "Be careful now. One sip may heal, another may harm... but isn't that the fun?"
+          "Be careful now. One sip may heal, another may harm... but isn't that fun?"
         ],
         "type": "CONSUMABLE",
         "consumableId": "magic_stew"

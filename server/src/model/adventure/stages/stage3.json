@@ -950,7 +950,7 @@
         "id": "bite_HP",
         "type": "STAT_CHANGE",
         "statChange": ["health", -5],
-        "result": ["You loss 5 HP"]
+        "result": ["You lose 5 HP"]
       },
       {
         "id": "yell",

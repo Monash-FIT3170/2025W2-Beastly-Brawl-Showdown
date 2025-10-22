@@ -6,7 +6,7 @@ import { Stun } from "../status/stun";
 export class SparklingFriend extends Consumable {
   constructor() {
     const description =
-      "The firefly you saved from the purple slime. Call on it to burst with bright blue light blinding and stunning your enemy for 2 rounds.";
+      "The fire fly you saved from the purple slime. Call on it to burst with bright blue light blinding and stunning your enemy for 2 rounds.";
     super("Sparkling Friend", description, ConsumableType.ENEMY_INFLICT);
   }
 
