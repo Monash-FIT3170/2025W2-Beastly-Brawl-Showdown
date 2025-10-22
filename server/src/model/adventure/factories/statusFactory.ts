@@ -16,6 +16,7 @@ import { SwampsGuidance } from "../../game/status/swampsGuidance";
 import { Regeneration } from "../../game/status/regeneration";
 import { SandyEyes } from "../../game/status/sandyEyes";
 import { Resurrection } from "../../game/status/resurrection";
+import { AfflictionTouch } from "../../game/status/afflictionTouch";
 
 export interface StatusInfo {
   statusId: string;
@@ -40,6 +41,7 @@ const statusFactory: Record<string, (d: number) => Status> = {
   regeneration: (d) => new Regeneration(d),
   sandy_eyes: (d) => new SandyEyes(d),
   resurrection: (d) => new Resurrection(d),
+  affliction_touch: (d) => new AfflictionTouch(d),
 };
 
 export function createStatus(id: string, duration: number): Status {

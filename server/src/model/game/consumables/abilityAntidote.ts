@@ -12,9 +12,12 @@ export class AbilityAntidote extends Consumable {
 
   public consume(player: Player): [string, string] {
     // Replenish all abilities (actions) to max uses
-    player.getActions().forEach((action) => {
-      action.incCurrentUse(action.getMaxUse() - action.getCurrentUse());
-    });
+    player
+      .getMonster()!
+      .getPossibleActions()
+      .forEach((action) => {
+        action.incCurrentUse(action.getMaxUse() - action.getCurrentUse());
+      });
 
     let actingLog = `You used Ability Antidote! All abilities replenished.`;
     let affectedLog = `${player.getName()} used Ability Antidote! Replenishing all their abilities.`;
