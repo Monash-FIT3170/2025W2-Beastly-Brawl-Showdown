@@ -20,6 +20,7 @@ export class FeralStrikeAbilityAction extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    actingPlayer.incAbilitiesUsed(1)
     //Nothing happens here
     return {
       appliedStatus: {

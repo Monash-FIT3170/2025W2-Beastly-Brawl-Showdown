@@ -203,6 +203,9 @@ export class AttackAction extends Action {
       appliedStatus: {
         success: false,
       },
+      damageDealt: {
+        damage: damageDealt,
+      },
     };
   }
 

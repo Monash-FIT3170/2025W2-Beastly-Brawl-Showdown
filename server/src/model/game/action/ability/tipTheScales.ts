@@ -44,6 +44,7 @@ export class TipTheScalesAbilityAction extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    actingPlayer.incAbilitiesUsed(1)
     this.incCurrentUse(-1);
 
     // Log actions

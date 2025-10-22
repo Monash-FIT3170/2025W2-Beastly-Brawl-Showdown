@@ -23,6 +23,7 @@ export const waitingScreenDataHandler = (io: Server, socket: Socket) => {
         // Emit the result back to the client
         io.to(socket.id).emit("waiting_screen_data", {
             monsterName: monster,
+            playerState: player.getPlayerState()
         });
     }); 
 

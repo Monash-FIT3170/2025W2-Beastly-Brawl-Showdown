@@ -51,6 +51,10 @@ export abstract class Action {
     return this.maxUse;
   }
 
+  public resetUse(): void{
+    this.currentUse = this.maxUse
+  }
+  
   public getDamage(): number {
     return this.damage;
   }

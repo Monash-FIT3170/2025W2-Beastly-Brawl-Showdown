@@ -38,7 +38,14 @@ export class Player {
 
   private playerAccount: PlayerAccountSchema | null;
   private noNullAction: number = 0;
-  static roundToCheck: number = 5; //change the value here
+  static roundToCheck: number = 5; // TODO: CHANGE THIS BACK TO 5 AFTER TESTING
+
+  //have to store the player's stats here since PlayerState interface does not allow variable initialisation
+  //which will be then passed to the PlayerState on request
+  private battleWon: number = 0;
+  private abilitiesUsed: number = 0;
+  private mostDamageDealt: number = 0;
+  private criticalHitsDealt: number = 0;
 
   private animations: string[] = [];
 
@@ -116,6 +123,7 @@ export class Player {
       this.currentArmourClassStat = this.monster.getArmourClass();
       this.statuses = [];
       this.noNullAction = 0;
+      this.monster.getPossibleActions().forEach((action) => action.resetUse());
     }
   }
 
@@ -421,6 +429,37 @@ export class Player {
     this.equipment = [];
   }
 
+  public getBattleWon(): number {
+    return this.battleWon;
+  }
+
+  public incBattleWon(num: number): void {
+    this.battleWon += num;
+  }
+
+  public getAbilitiesUsed(): number {
+    return this.abilitiesUsed;
+  }
+
+  public incAbilitiesUsed(num: number): void {
+    this.abilitiesUsed += num;
+  }
+
+  public getMostDamageDealt(): number {
+    return this.mostDamageDealt;
+  }
+
+  public setMostDamageDelt(num: number): void {
+    this.mostDamageDealt = num;
+  }
+
+  public getCriticalHitsDealt(): number {
+    return this.criticalHitsDealt;
+  }
+
+  public incCriticalHitsDealt(num: number): void {
+    this.criticalHitsDealt += num;
+  }
   //ANIMATION METHODS:
 
   public clearAnimations(): void {
@@ -510,6 +549,11 @@ export class Player {
       consumables: this.consumables.map((c) => c.getState()),
       storyItems: this.storyItems.map((c) => c.getState()),
       attackState: this.getMonster()?.getAttackAction().getAttackState()!,
+      battleWon: this.getBattleWon(),
+      abilitiesUsed: this.getAbilitiesUsed(),
+      mostDamageDealt: this.getMostDamageDealt(),
+      successfulBlocks: this.getSuccessfulBlock(),
+      criticalHitsDealt: this.getCriticalHitsDealt(),
       animations: this.animations,
     };
   }

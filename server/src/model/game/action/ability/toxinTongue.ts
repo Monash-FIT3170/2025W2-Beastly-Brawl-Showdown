@@ -23,6 +23,7 @@ export class ToxinTongue extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    actingPlayer.incAbilitiesUsed(1)
     this.incCurrentUse(-1);
     var numberOfTurns = 5;
 
