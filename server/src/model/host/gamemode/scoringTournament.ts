@@ -9,7 +9,11 @@ import { GameModeIdentifier } from "/types/single/gameMode";
 import { ScoringConfig } from "/types/single/scoringConfig";
 import proceedBattleTurn from "/server/src/socket/battle/startBattleHandler";
 import { ActionResult } from "/types/single/actionState";
-import { BonusSystem, defaultBonus, StreakIdentifier } from "/types/single/playerScore";
+import {
+  BonusSystem,
+  defaultBonus,
+  StreakIdentifier,
+} from "/types/single/playerScore";
 import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { PlayerState } from "../../../../../types/single/playerState";
 
@@ -34,23 +38,49 @@ export class ScoringTournament implements IGameMode {
   }
 
   //TODO: calculate bonus points for the previous turn
-  public onActionExecuted(
-    sesion: GameSession,
-    player1Id: string,
+  onActionExecuted(
+    session: GameSession,
+    player1: Player,
     player1Result: ActionResult,
-    player2Id: string,
+    player2: Player,
     player2Result: ActionResult
   ): void {
     if (player1Result.appliedStatus.success) {
-      this.board.setScore(player1Id, {
+      this.board.setScore(player1.getId(), {
         bonuses: this.bonus.debuff,
       });
     }
 
     if (player2Result.appliedStatus.success) {
-      this.board.setScore(player2Id, {
+      this.board.setScore(player2.getId(), {
         bonuses: this.bonus.debuff,
       });
+    }
+
+    if (player1Result.damageDealt != null) {
+      if (player1Result.damageDealt.damage > player1.getMostDamageDealt()) {
+        player1.setMostDamageDelt(player1Result.damageDealt.damage);
+      }
+    }
+
+    if (player2Result.damageDealt != null) {
+      if (player2Result.damageDealt.damage > player2.getMostDamageDealt()) {
+        player2.setMostDamageDelt(player2Result.damageDealt.damage);
+      }
+    }
+
+    if (
+      player1Result.usedAbility != null &&
+      player1Result.usedAbility.isAbility == true
+    ) {
+      player1.incAbilitiesUsed(1);
+    }
+
+    if (
+      player2Result.usedAbility != null &&
+      player2Result.usedAbility.isAbility == true
+    ) {
+      player2.incAbilitiesUsed(1);
     }
     console.log("Scoreboard: ", this.board.showBoard());
   }
@@ -81,6 +111,8 @@ export class ScoringTournament implements IGameMode {
           bonuses: this.bonus.finishedWithHpAbove.bonus,
         });
       }
+
+      winner.incBattleWon(1);
     }
 
     //Calculate score for the previous battle
@@ -205,13 +237,17 @@ export class ScoringTournament implements IGameMode {
   }
 
   //All battles have been concluded, redo the pairing for the next round
-  public onBattlesEnded(session: GameSession, io: Server, socket: Socket): void {
+  public onBattlesEnded(
+    session: GameSession,
+    io: Server,
+    socket: Socket
+  ): void {
     if (this.isSessionConcluded(session)) {
       //TODO: end session logic here
       return;
     }
 
-    console.log("proceed to bext battle");
+    console.log("proceed to next battle");
     socket.emit("host-prepare-next-round");
 
     const handleNextBattle = () => {
@@ -227,7 +263,7 @@ export class ScoringTournament implements IGameMode {
           playerSocket?.join(battle.getId());
         }
 
-        io.to(battle.getId()).emit("battle_started", battle.getId());
+        io.to(battle.getId()).emit("battle-started", battle.getId());
         proceedBattleTurn(io, socket, session, battle);
       }
 

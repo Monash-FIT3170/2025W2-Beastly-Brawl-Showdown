@@ -22,6 +22,7 @@ export class FlameLashAbilityAction extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    actingPlayer.incAbilitiesUsed(1);
     this.incCurrentUse(-1);
     affectedPlayer.addAnimation("damage");
     const shield = affectedPlayer.getStatusByName("Shield");
@@ -58,6 +59,9 @@ export class FlameLashAbilityAction extends Action {
     return {
       appliedStatus: {
         success: false,
+      },
+      damageDealt: {
+        damage: this.damage,
       },
     };
   }
