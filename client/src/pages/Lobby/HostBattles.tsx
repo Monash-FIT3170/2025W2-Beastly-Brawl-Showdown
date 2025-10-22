@@ -17,11 +17,7 @@ import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import ScoringLeaderboard from "../../components/match-summary/ScoringLeaderboard";
-<<<<<<< HEAD
 import { isBGMEnabled, playBGM,toggleBGM,initBGM } from "../../audioManager";
-=======
-import { removeSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
->>>>>>> main
 
 interface HostBattlesProps {
   gameCode?: string;
