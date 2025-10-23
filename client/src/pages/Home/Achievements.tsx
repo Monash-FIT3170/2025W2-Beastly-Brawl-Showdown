@@ -57,7 +57,7 @@ export const Achievements = () => {
           {achievements.map((ach) => (
             <BaseCard
               key={ach._id}
-              color={ach.status ? "springLeaves" : "peach"}
+              color={ach.status ? "pictonBlue" : "peach"}
               width={53}
               height={5}
               className="cursor-pointer flex flex-col justify-center items-center p-2 hover:shadow-lg hover:border-yellow-400 transition-all"
