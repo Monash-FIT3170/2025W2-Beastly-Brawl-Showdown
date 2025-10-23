@@ -51,17 +51,17 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
     ? actualMonsterDescription
     : "You haven't reached this part of your journey yet. Keep adventuring to unlock more levels!";
 
-  // useEffect(() => {
-  //   socket.emit("request_unlocked_levels");
+  useEffect(() => {
+    socket.emit("request_unlocked_levels");
 
-  //   socket.on("unlocked_levels", (levels: number[]) => {
-  //     setUnlockedLevels(levels);
-  //   });
+    socket.on("unlocked_levels", (levels: number[]) => {
+      setUnlockedLevels(levels);
+    });
 
-  //   return () => {
-  //     socket.off("request_unlocked_levels");
-  //   };
-  // }, []);
+    return () => {
+      socket.off("request_unlocked_levels");
+    };
+  }, []);
 
   // Monster image (coloured or silhouette if locked)
   const monsterImage = unlockedLevels.includes(observedLevel)
