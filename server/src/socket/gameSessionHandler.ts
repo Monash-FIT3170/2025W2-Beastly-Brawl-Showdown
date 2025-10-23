@@ -375,13 +375,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     //Notify all players that the host is closed
     //      socketToKick.leave(`game-${gameCodeN}`);
 
-    io.to(`game-${gameCodeN}`).emit("host-closed");
-    // session
-    //   ?.getBattles()
-    //   .getItems()
-    //   .forEach((curBattle) => {
-    //     io.to(curBattle.getId()).emit("host-closed");
-    //   });
     if (!session) {
       // If session of given game code doesn't exist
       console.log(`Cancel Request failed. Invalid Code`);
@@ -389,17 +382,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
     session.closeAllBattles(); //close all the ongoing battles in the current game session (host)
 
-    //Notify all players that the host is closed
-    session
-      ?.getBattles()
-      .getItems()
-      .forEach((curBattle) => {
-        io.to(curBattle.getId()).emit("host-closed");
-      });
-
-    // io.to(`game-${gameCodeN}`).emit("close-warning", {
-    //   message: "Current game session is closing.",
-    // });
+    io.to(`game-${gameCodeN}`).emit("host-closed");
 
     // Timeout to allow the message to send before closure
     setTimeout(() => {
@@ -441,11 +424,17 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     const selectedBackgroundTheme = session?.getSelectedBackgroundTheme();
 
     if (selectedBackgroundTheme) {
-      console.log(`Successfully retrieved selected background theme (${selectedBackgroundTheme}) for game code ${gameCode}`);
+      console.log(
+        `Successfully retrieved selected background theme (${selectedBackgroundTheme}) for game code ${gameCode}`
+      );
       socket.emit("selected-background-theme", { selectedBackgroundTheme });
     } else {
-      console.log(`Failed to retrieve selected background theme for game code ${gameCode}`);
-      socket.emit("selected-background-theme", { selectedBackgroundTheme: null });
+      console.log(
+        `Failed to retrieve selected background theme for game code ${gameCode}`
+      );
+      socket.emit("selected-background-theme", {
+        selectedBackgroundTheme: null,
+      });
     }
   });
 
