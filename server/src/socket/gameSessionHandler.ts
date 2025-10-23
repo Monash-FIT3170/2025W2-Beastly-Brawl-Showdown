@@ -190,6 +190,14 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       console.log(`Player not in map.`);
     }
 
+    if (players.get(userID)?.isSpectating()) {
+      players.get(userID)?.setIsSpectating(false);
+    }
+
+    if (players.get(userID)?.isInSpectatingRoom()) {
+      players.get(userID)?.setInSpectatingRoom(false);
+    }
+
     console.log(`Leave request for Code: ${gameCode}, User ID: ${userID}`);
     const gameCodeN = Number(gameCode);
 

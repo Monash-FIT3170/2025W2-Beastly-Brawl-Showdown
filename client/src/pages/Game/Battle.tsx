@@ -20,10 +20,16 @@ import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import { getSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
+import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
 }
+
+const leave = () => {
+  socket.emit("leave-game", { userID: socket.id });
+  FlowRouter.go("/");
+};
 
 const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [battleState, setBattleState] = useState<BattleState | null>(null);
@@ -227,6 +233,15 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         className="inset-0 w-screen h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
+        {isSpectating && (
+          <div className="absolute top-4 right-4 z-50">
+            <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
+                  <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+                      <OutlineText size="medium">EXIT</OutlineText>
+                  </div>
+            </ButtonGeneric>
+          </div>
+        )}
         {viewingInfo && (
           <MonsterInfoPopup
             playerState={battleState.yourPlayer}
