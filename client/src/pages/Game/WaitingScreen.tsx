@@ -7,6 +7,7 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { Screens } from "../../screens";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { BlackText } from "../../components/texts/BlackText";
+import { getSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 import { PlayerState } from "/types/single/playerState";
 import WinnerScreen from "./WinnerScreen";
 
@@ -35,6 +36,12 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
   const [hasWon, setHasWon] = useState<Boolean>(false);
   const [player, setPlayer] = useState<PlayerState | null>(null);
   const [role, setRole] = useState<string>("");
+
+  var backgroundLocation = getSelectedBackgroundTheme().toUpperCase();
+  var backgroundString =
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
+    backgroundLocation +
+    ".jpg')";
 
   // Listen for battle start event + send req to server for player's detail
   useEffect(() => {
@@ -211,7 +218,14 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
   }, []);
 
   return (
-    <>
+    <div
+      style={{
+        backgroundImage: backgroundString,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat"
+      }}
+    >
       {isBattleFound && (
         <PopupClean>
           <div className="flex flex-col justify-around">
@@ -236,7 +250,7 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
         </PopupClean>
       )}
 
-      <div className="bg-peach lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">
+      <div className="bg-white/60 lg:p-[1.25rem] sm:p-[3rem] h-screen w-min-screen overflow-hidden flex flex-col justify-around">
         {/* Title - Using OutlineText styling as text sizing needs to be modified */}
         <div className="bg-pictonBlue outline-blackCurrant lg:outline-[0.25rem] sm:outline-[0.75rem] rounded-2xl flex flex-col items-center justify-center p-4 mt-[-3rem]">
           <p className="text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-[Jua] text-outline text-center">
@@ -345,7 +359,7 @@ const WaitingScreen: React.FC<WaitingScreenProps> = ({ setScreen }) => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

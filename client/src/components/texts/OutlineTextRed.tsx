@@ -13,10 +13,10 @@ interface OutlineTextProps {
     | "monsterSelect"
     | "inventory";
   children?: ReactNode;
-  color?: string; // Optional color class
+  color?: string; // add optional color prop
 }
 
-export const OutlineText = ({ children, size, color }: OutlineTextProps) => {
+export const OutlineTextRed = ({ children, size, color }: OutlineTextProps) => {
   const sizeLoader: Record<string, string> = {
     tiny: "text-[2rem] lg:text-[1.5rem]",
     small: "text-[1.5rem] lg:text-[2rem]",
@@ -31,7 +31,7 @@ export const OutlineText = ({ children, size, color }: OutlineTextProps) => {
   };
 
   return (
-    <p className={`${sizeLoader[size]} font-[Jua] text-outline ${color || ""}`}>
+    <p className={`${sizeLoader[size]} font-[Jua] text-outline-red`}>
       {children}
     </p>
   );
