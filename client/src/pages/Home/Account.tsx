@@ -239,7 +239,7 @@ export const Account = () => {
         />
       </div>
 
-      <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] relative -top-6 items-center gap-6">
+      <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] relative -top-6 items-center gap-6 overflow-auto">
         <BaseCard color="peach" width={isMobile ? 50 : 70} height={8}>
           <OutlineText size={isMobile ? "large" : "extraLarge"}>
             MY ACCOUNT

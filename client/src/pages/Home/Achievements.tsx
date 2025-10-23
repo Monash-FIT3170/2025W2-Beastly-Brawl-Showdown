@@ -121,7 +121,7 @@ export const Achievements = () => {
 
   return (
     <BlankPage>
-      <div className="flex flex-col w-full p-4">
+      <div className="flex flex-col w-full p-4 overflow-auto">
         {/* Back button */}
         <div className="flex flex-row w-full mb-4">
           <IconButton
