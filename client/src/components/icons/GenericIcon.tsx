@@ -6,6 +6,8 @@ interface IconProps {
     | "arrowright"
     | "arrowup"
     | "arrowdown"
+    | "triangleleft"
+    | "triangleright"
     | "x"
     | "bars"
     | "info"
@@ -26,6 +28,8 @@ export const GenericIcon = ({ style, colour, size }: IconProps) => {
     arrowright: "M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3",
     arrowup: "M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18",
     arrowdown: "M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3",
+    triangleleft: "M4.06705 14.246C2.22419 13.3251 2.22352 10.6951 4.0659 9.77331L17.8737 2.86548C19.5357 2.03413 21.492 3.2425 21.4924 5.10088L21.496 18.9104C21.4962 20.7687 19.5407 21.9773 17.8784 21.1467L4.06705 14.246Z",
+    triangleright: "M19.9437 14.2372C21.7865 13.3163 21.7872 10.6873 19.9448 9.76549L6.13411 2.85571C4.47219 2.02422 2.51613 3.2319 2.51537 5.09014L2.51184 18.9036C2.51159 20.7619 4.46706 21.9705 6.12943 21.1399L19.9437 14.2372Z",
     x: "M6 18 18 6M6 6l12 12",
     bars: "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5",
     info: "m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z",
@@ -82,7 +86,7 @@ export const GenericIcon = ({ style, colour, size }: IconProps) => {
       viewBox="0 0 24 24"
     >
       <path
-        fill="none"
+        fill={style.startsWith("triangle") ? "#403245" : "none"}
         stroke="#403245"
         strokeWidth={widths[style]}
         strokeLinecap="round"

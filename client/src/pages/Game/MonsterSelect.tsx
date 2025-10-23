@@ -25,6 +25,7 @@ import { PopupClean } from "../../components/popups/PopupClean";
 import { IconButton } from "../../components/buttons/IconButton";
 import { Popup } from "../../components/popups/Popup";
 import { ArchetypePopup } from "../../components/popups/ArchetypePopup";
+import { removeSelectedBackgroundTheme, setSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface MonsterSelectProps {
   setScreen: (screen: Screens) => void;
@@ -76,12 +77,23 @@ export const MonsterSelect: React.FC<MonsterSelectProps> = ({ setScreen }) => {
   useEffect(() => {
     socket.on("kick-warning", ({ message }) => {
       //UPDATE: ADD POP-UP "You've been disconnected from game session."
+      removeSelectedBackgroundTheme();
       console.log(message);
       setExitPopup(true);
     });
 
     return () => {
       socket.off("kick-warning");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("selected-background-theme", ({ selectedBackgroundTheme }) => {
+      setSelectedBackgroundTheme(selectedBackgroundTheme);
+    });
+
+    return () => {
+      socket.off("selected-background-theme");
     };
   }, []);
 
