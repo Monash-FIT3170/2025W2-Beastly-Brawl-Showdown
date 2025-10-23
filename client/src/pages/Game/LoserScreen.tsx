@@ -60,23 +60,25 @@ const LoserScreen: React.FC<LoserScreenProps> = ({
             src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
             alt={`GRAVE image`}
           />
-          {mode === GameModeIdentifier.BATTLE_ROYALE && !finalScreen && (
-            <ButtonGeneric color="red" size="medium" onClick={() => spectate()}>
+          <div className="flex flex-row gap-4"> {/* Add this container div */}
+            {mode === GameModeIdentifier.BATTLE_ROYALE && !finalScreen && (
+              <ButtonGeneric color="red" size="medium" onClick={() => spectate()}>
+                <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+                  <div>
+                    <OutlineText size="medium">SPECTATE</OutlineText>
+                  </div>
+                </div>
+              </ButtonGeneric>
+            )}
+
+            <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
               <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
                 <div>
-                  <OutlineText size="medium">SPECTATE</OutlineText>
+                  <OutlineText size="medium">EXIT LOBBY</OutlineText>
                 </div>
               </div>
             </ButtonGeneric>
-          )}
-
-          <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
-            <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
-              <div>
-                <OutlineText size="medium">EXIT LOBBY</OutlineText>
-              </div>
-            </div>
-          </ButtonGeneric>
+          </div>
         </div>
       </div>
     </div>

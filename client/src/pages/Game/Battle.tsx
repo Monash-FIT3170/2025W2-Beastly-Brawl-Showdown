@@ -235,12 +235,16 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         style={{ backgroundImage: backgroundString }}
       >
         {isSpectating && (
-          <div className="absolute top-4 right-4 z-50">
-            <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
-              <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
-                <OutlineText size="medium">EXIT</OutlineText>
-              </div>
-            </ButtonGeneric>
+          <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10 w-full flex justify-between">
+            <div className="flex lg:gap-5 sm:gap-10">
+              <IconButton
+                style="arrowleft"
+                iconColour="black"
+                buttonColour="red"
+                size="small"
+                onClick={() => leave()}
+              />
+            </div>
           </div>
         )}
         {viewingInfo && (
