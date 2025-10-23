@@ -17,8 +17,16 @@ export const monsterMap = new Map([
   [MonsterIdentifier.CHARMER_COBRA, () => new CharmerCobra()],
 ]);
 
+export const monsterBossMap = new Map([
+  [MonsterIdentifier.JACKED_O_LANTERN, () => new JackedOLantern()]
+]);
+
 export function getMonster(monsterID: MonsterIdentifier) {
   const createMonster = monsterMap.get(monsterID);
+  if (!createMonster) {
+    const createMonster = monsterBossMap.get(monsterID);
+    return createMonster ? createMonster() : null;
+  }
   return createMonster ? createMonster() : null;
 }
 
@@ -48,5 +56,5 @@ export const levelMap: Record<number, MonsterIdentifier> = {
   3: MonsterIdentifier.FURIOUS_FLIPPER,
   4: MonsterIdentifier.POISON_POGO,
   5: MonsterIdentifier.CHARMER_COBRA,
-  1009: MonsterIdentifier.JACKEDOLANTERN,
+  1009: MonsterIdentifier.JACKED_O_LANTERN,
 };

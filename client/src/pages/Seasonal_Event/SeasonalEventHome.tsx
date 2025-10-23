@@ -25,12 +25,12 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
     9: SeasonalEventIdentifier.SPOOK_GARDEN
   };
   const monsterMap: Record<number, MonsterIdentifier> = {
-    9: MonsterIdentifier.JACKEDOLANTERN
+    9: MonsterIdentifier.JACKED_O_LANTERN
   };
 
   // Resolve event and monster data
   const event = eventMap[observedEvent] ?? SeasonalEventIdentifier.SPOOK_GARDEN;
-  const monster = monsterMap[observedEvent] ?? MonsterIdentifier.JACKEDOLANTERN;
+  const monster = monsterMap[observedEvent] ?? MonsterIdentifier.JACKED_O_LANTERN;
 
   const { name: eventName, description: eventDescription } =
     eventMeta[event];
@@ -132,7 +132,7 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
 };
 
 const biomeMap = new Map([
-  [MonsterIdentifier.JACKEDOLANTERN, () => "MARSH"]
+  [MonsterIdentifier.JACKED_O_LANTERN, () => "MARSH"]
 ]);
 
 export function getBiomeString(monsterID: MonsterIdentifier) {

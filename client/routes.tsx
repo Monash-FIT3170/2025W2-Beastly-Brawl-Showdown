@@ -30,6 +30,7 @@ import { WikiIndex } from "./src/pages/Wiki/WikiIndex";
 import SeasonalEventHome from "./src/pages/Seasonal_Event/SeasonalEventHome";
 import SeasonalEventMonsterSelect from "./src/pages/Seasonal_Event/SeasonalEventMonsterSelect";
 import SeasonalEventBattle from "./src/pages/Seasonal_Event/SeasonalEventBattle";
+import SeasonalEventWin from "./src/pages/Seasonal_Event/SeasonalEventWin";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -252,7 +253,7 @@ const adventureLevelMonsters = [
   MonsterIdentifier.FURIOUS_FLIPPER,
   MonsterIdentifier.CHARMER_COBRA,
   MonsterIdentifier.POISON_POGO,
-  MonsterIdentifier.JACKEDOLANTERN
+  MonsterIdentifier.JACKED_O_LANTERN
 ];
 
 //create flow router for each level
@@ -271,6 +272,14 @@ FlowRouter.route("/adventure/win/:monsterId", {
   action() {
     document.title = "Victory! - Adventure Mode | Beastly Brawl Showdown";
     mount(AdventureWin);
+  },
+});
+
+FlowRouter.route("/seasonal-event/win/:monsterId", {
+  name: "seasonal-event.win",
+  action() {
+    document.title = "Victory! - Seasonal Event | Beastly Brawl Showdown";
+    mount(SeasonalEventWin);
   },
 });
 

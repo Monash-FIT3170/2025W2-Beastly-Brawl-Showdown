@@ -55,14 +55,14 @@ const SeasonalEventBattle: React.FC<SeasonalEventBattleProps> = ({ battleId }) =
     10: SeasonalEventIdentifier.SPOOK_GARDEN
   };
   const monsterMap: Record<number, MonsterIdentifier> = {
-    10: MonsterIdentifier.JACKEDOLANTERN
+    10: MonsterIdentifier.JACKED_O_LANTERN
   };
 
   const event = eventMap[observedEvent] ?? SeasonalEventIdentifier.SPOOK_GARDEN;
-  const monster = monsterMap[observedEvent] ?? MonsterIdentifier.JACKEDOLANTERN;
+  const monster = monsterMap[observedEvent] ?? MonsterIdentifier.JACKED_O_LANTERN;
 
   const backgroundString = `url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/${getBiomeString(
-    MonsterIdentifier.JACKEDOLANTERN
+    MonsterIdentifier.JACKED_O_LANTERN
   )}.jpg')`;
 
   useEffect(() => {
@@ -286,7 +286,7 @@ const SeasonalEventBattle: React.FC<SeasonalEventBattleProps> = ({ battleId }) =
 };
 
 const biomeMap = new Map([
-  [MonsterIdentifier.JACKEDOLANTERN, () => "MARSH"]
+  [MonsterIdentifier.JACKED_O_LANTERN, () => "MARSH"]
 ]);
 
 export function getBiomeString(monsterID: MonsterIdentifier) {

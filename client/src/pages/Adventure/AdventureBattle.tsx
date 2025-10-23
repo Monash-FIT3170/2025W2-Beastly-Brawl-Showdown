@@ -114,6 +114,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     };
   }, [stage]);
 
+    useEffect(() => {
+    const onEventWin = ({ monsterId }: { monsterId: string }) => {
+      FlowRouter.go(`/seasonal-event/win/${monsterId}`);
+    };
+    socket.on("event_win", onEventWin);
+    return () => {
+      socket.off("event_win", onEventWin);
+    };
+  }, [stage]);
+
   useEffect(() => {
     const onAdventureDefeat = () => {
       FlowRouter.go("/adventure/defeat");
@@ -669,7 +679,7 @@ const biomeMap = new Map([
   [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
   [MonsterIdentifier.POISON_POGO, () => "MARSH"],
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
-  [MonsterIdentifier.JACKEDOLANTERN, () => "MARSH"]
+  [MonsterIdentifier.JACKED_O_LANTERN, () => "MARSH"]
 ]);
 
 export function getBiomeString(monsterID: MonsterIdentifier) {

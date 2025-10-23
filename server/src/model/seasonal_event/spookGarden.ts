@@ -15,7 +15,7 @@ export class SpookGarden {
             this.id = SeasonalEventIdentifier.SPOOK_GARDEN,
             this.name = "Spook Garden",
             this.description = "Fight a buff pumpkin monster in the yearly Halloween event.",
-            this.monster = MonsterIdentifier.JACKEDOLANTERN;
+            this.monster = MonsterIdentifier.JACKED_O_LANTERN;
     }
 
 

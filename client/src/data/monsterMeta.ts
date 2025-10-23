@@ -31,7 +31,7 @@ export const monsterMeta: Record<MonsterIdentifier, MonsterMeta> = {
     description:
       "Explore the Desert Dunes where melodies carry far. A serpent waits to hypnotise intruders.",
   },
-  [MonsterIdentifier.JACKEDOLANTERN]: {
+  [MonsterIdentifier.JACKED_O_LANTERN]: {
     name: "Jacked o' Lantern",
     description:
       "The raid boss of The Spook Garden Event. A large pumpkin with arms and legs to devour its prey.",

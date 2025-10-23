@@ -497,30 +497,35 @@ export function loadNextStory(
       console.log("Adventure complete, emitting adventure_win", {
         monsterId: enemy,
       });
-      io.to(socket.id).emit("adventure_win", { monsterId: enemy });
-      //unlock monster
-      const user = playerAccounts.get(socket.id);
-      console.log(
-        `${user?.username} has unlocked ${adventure.getLevelMonster()}`
-      );
-      var adventureProgression = user?.adventureProgression;
-      if (adventureProgression) {
-        adventureProgression.unlockedMonsters[adventure.getLevelMonster()] =
-          true;
-        adventureProgression.unlockedLevels.push(adventure.getLevel() + 1);
-        updatePlayerAccount(user?._id, {
-          adventureProgression: adventureProgression,
-        });
-        console.log(
-          `${
-            user?.username
-          } has unlocked ${adventure.getLevelMonster()} and level ${
-            adventure.getLevel() + 1
-          }`
-        );
-      } else {
-        console.error(`Failed to update ${user?._id}'s unlocked monsters.`);
+      if (adventure.getLevelMonster() == MonsterIdentifier.JACKED_O_LANTERN) {
+        io.to(socket.id).emit("event_win", { monsterId: enemy });
       }
+      else {
+        io.to(socket.id).emit("adventure_win", { monsterId: enemy });
+        //unlock monster
+        const user = playerAccounts.get(socket.id);
+        console.log(
+          `${user?.username} has unlocked ${adventure.getLevelMonster()}`
+        );
+        var adventureProgression = user?.adventureProgression;
+        if (adventureProgression) {
+          adventureProgression.unlockedMonsters[adventure.getLevelMonster()] =
+            true;
+          adventureProgression.unlockedLevels.push(adventure.getLevel() + 1);
+          updatePlayerAccount(user?._id, {
+            adventureProgression: adventureProgression,
+          });
+          console.log(
+            `${
+              user?.username
+            } has unlocked ${adventure.getLevelMonster()} and level ${
+              adventure.getLevel() + 1
+            }`
+          );
+        } else {
+          console.error(`Failed to update ${user?._id}'s unlocked monsters.`);
+        }
+        }
     }
     const loadNodes = loadStage(stage % 8);
     const eligibleNodes = loadNodes.filter((node) => {
