@@ -130,7 +130,6 @@ export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProp
   };
 
   socket.on("start_event_battle", (battleId: String) => {
-    // FlowRouter.go(`/seasonal-event/battle/${battleId}`);
     FlowRouter.go(`/seasonal-event/battle/${battleId}`);
   });
 

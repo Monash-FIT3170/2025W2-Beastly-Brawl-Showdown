@@ -13,16 +13,32 @@ import { unwatchFile } from "fs";
 export const SeasonalEventModeHandler = (io: Server, socket: Socket) => {
 
   socket.on("event_selected", async ({ monsterId }) => {
+    const playingEvent = new GameSession(socket.id, {mode: new SeasonalEvent()});
+
+    while (activeGameSessions.has(playingEvent.getGameCode())) {
+      console.log("Game session already exists. Generating new code...");
+      playingEvent.generateGameCode();
+    }
+
     const player = new Player(socket.id, "Event Boss Slayer", null); // TODO: Use real player name
+
+    const addResult = playingEvent.addPlayer(player);
+    if (!addResult.success) {
+        // Join request rejected
+        console.log(`Player ${name} rejected from ${playingEvent.getGameCode()}`);
+        socket.emit("join-reject", [addResult.reason || "Unable to join."]);
+        return;
+      }
+    player.updateGameCode(playingEvent.getGameCode())
+
     players.set(socket.id, player);
 
-    const playingEvent = new GameSession(socket.id, {mode: new SeasonalEvent()});
+    socket.join(`game-${playingEvent.getGameCode()}`);
+
+    activeGameSessions.set(playingEvent.getGameCode(), playingEvent);
 
     console.log(`Added Session ${playingEvent.getMode()} (${playingEvent.getGameCode()})`);
 
-    playingEvent.addPlayer(player);
-    player.updateGameCode(playingEvent.getGameCode())
-    activeGameSessions.set(playingEvent.getGameCode(), playingEvent);
     console.log(`SEASONALEVENT: Event  Selected for ${socket.id} and added player ${player.getName()} to ${player.getGameCode()}`);
   });
 
@@ -89,7 +105,7 @@ export const SeasonalEventModeHandler = (io: Server, socket: Socket) => {
 
       battles.set(socket.id, battle);
 
-      console.log(`SEASONALEVENT: New Battle (${battle.getId()}) for ${socket.id} (Player Count: ${battle.getPlayers().length})`);
+      console.log(`SEASONALEVENT: New Battle (${battle.getId()}) for ${socket.id} with player ${playerCode.getId()}`);
 
       for (const player of battle.getPlayers()) {
         io.sockets.sockets.get(player.getId())?.join(battle.getId());
@@ -99,11 +115,7 @@ export const SeasonalEventModeHandler = (io: Server, socket: Socket) => {
 
       socket.emit("start_event_battle", battle.getId());
 
-      
-
       const session = activeGameSessions.get(gameCodeN);
-
-
 
       proceedBattleTurn(io, socket, session!, battle);
 
