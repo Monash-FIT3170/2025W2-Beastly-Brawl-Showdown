@@ -252,6 +252,7 @@ const adventureLevelMonsters = [
   MonsterIdentifier.FURIOUS_FLIPPER,
   MonsterIdentifier.CHARMER_COBRA,
   MonsterIdentifier.POISON_POGO,
+  MonsterIdentifier.JACKEDOLANTERN
 ];
 
 //create flow router for each level

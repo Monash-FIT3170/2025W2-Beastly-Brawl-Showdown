@@ -26,6 +26,7 @@ import { PopupClean } from "../../components/popups/PopupClean";
 import { IconButton } from "../../components/buttons/IconButton";
 import { Popup } from "../../components/popups/Popup";
 import { ArchetypePopup } from "../../components/popups/ArchetypePopup";
+import { SeasonalEventIdentifier } from "../../../../types/single/seasonalEventState";
 
 interface SeasonalEventMonsterSelectProps {
   eventMonster: MonsterIdentifier
@@ -120,7 +121,7 @@ export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProp
 
       socket.emit("event_monster_selected", {
         monsterID: selectedMonster.id,
-        eventMonsterID: eventMonsterID
+        eventMonsterID: eventMonsterID.toUpperCase()
       });
 
       console.log(
@@ -129,8 +130,10 @@ export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProp
     }
   };
 
-  socket.on("start_event_battle", (battleId: String) => {
-    FlowRouter.go(`/seasonal-event/battle/${battleId}`);
+  socket.on("start_event", (levelMonster: MonsterIdentifier) => {
+    console.log("START EVENT", event);
+
+    FlowRouter.go(`/adventure/adventure-${levelMonster.toLowerCase()}`);
   });
 
   const handleCancelSelection = () => {

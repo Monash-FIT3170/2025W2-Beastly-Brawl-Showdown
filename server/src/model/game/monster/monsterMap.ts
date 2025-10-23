@@ -48,4 +48,5 @@ export const levelMap: Record<number, MonsterIdentifier> = {
   3: MonsterIdentifier.FURIOUS_FLIPPER,
   4: MonsterIdentifier.POISON_POGO,
   5: MonsterIdentifier.CHARMER_COBRA,
+  1009: MonsterIdentifier.JACKEDOLANTERN,
 };

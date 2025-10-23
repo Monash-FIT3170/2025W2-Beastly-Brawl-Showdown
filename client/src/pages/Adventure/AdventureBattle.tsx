@@ -669,6 +669,7 @@ const biomeMap = new Map([
   [MonsterIdentifier.FURIOUS_FLIPPER, () => "ARCTIC"],
   [MonsterIdentifier.POISON_POGO, () => "MARSH"],
   [MonsterIdentifier.CHARMER_COBRA, () => "DESERT"],
+  [MonsterIdentifier.JACKEDOLANTERN, () => "MARSH"]
 ]);
 
 export function getBiomeString(monsterID: MonsterIdentifier) {

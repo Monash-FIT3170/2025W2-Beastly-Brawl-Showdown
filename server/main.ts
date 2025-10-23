@@ -34,7 +34,7 @@ import {
   PlayerAccountSchema,
   createDefaultPlayerAccountSchema,
 } from "./src/database/dbManager";
-import { SeasonalEvent } from "./src/model/host/gamemode/seasonalEvent";
+import { SeasonalEvent } from "./src/model/seasonal_event/seasonalEvent";
 export const playerAccounts = new Map<string, PlayerAccountSchema>();
 
 // Helper function that

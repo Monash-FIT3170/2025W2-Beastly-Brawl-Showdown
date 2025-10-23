@@ -87,7 +87,7 @@ export const Home = () => {
   const renderSeasonalEvent = () => {
     const currentMonth = new Date().getMonth();
     const currentEvent = seasonalEventMap.get(currentMonth)?.toString();
-    FlowRouter.go(`/seasonal-event/${currentEvent}`);
+    FlowRouter.go(`/seasonal-event/${currentEvent!.toLowerCase()}`);
   };
 
   return (

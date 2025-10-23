@@ -1,19 +1,18 @@
 import { Server, Socket } from "socket.io";
-import { Battle } from "../../game/battle";
-import { Player } from "../../game/player";
-import { battles } from "../../../../main";
-import GameSession from "../gameSession";
-import { IGameMode } from "./gameMode";
-import { GameModeIdentifier } from "/types/single/gameMode";
-import { PlayerState } from "../../../../../types/single/playerState";
-import { GameSessionStateMetaData } from "../../../../../types/composite/gameSessionState";
-import { ActionResult } from "../../../../../types/single/actionState";
-import proceedBattleTurn from "../../../socket/battle/startBattleHandler";
-import Queue from "../../../utils/queue";
+import { Battle } from "../game/battle";
+import { Player } from "../game/player";
+import { battles } from "../../../main";
+import GameSession from "../host/gameSession";
+import { IGameMode } from "../host/gamemode/gameMode";
+import { PlayerState } from "../../../../types/single/playerState";
+import { GameSessionStateMetaData } from "../../../../types/composite/gameSessionState";
+import { ActionResult } from "../../../../types/single/actionState";
+import proceedBattleTurn from "../../socket/battle/startBattleHandler";
+import Queue from "../../utils/queue";
 
-export class SeasonalEvent implements IGameMode {
+export class SeasonalEvent {
 
-    public name = GameModeIdentifier.SEASONAL_EVENT as const;
+    public name = String;
     private io: Server | null = null;
     private playerFinished: number = 0;
     private score: Number = 0;
