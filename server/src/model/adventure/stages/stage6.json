@@ -105,14 +105,780 @@
     ]
   },
   {
-    "id": "slime_1",
-    "level": [0],
-    "description": "Stage 1, player fights slime 1.",
+    "id": "ember",
+    "level": [2],
+    "description": "Basalt Cliffs Stage 6, player finds embers.",
     "outcomes": [
       {
         "id": "initial",
-        "result": ["This is stage 6"],
+        "result": [
+          "After defeating the slime, you keep trekking. Hoping to find something cool.",
+          "You find a pile of cooling embers that faintly tremble. It's the remains of an ember slime, flickering but almost gone.",
+          "It hurts you to see its glow struggling in its final moments."
+        ],
+        "type": "DIALOGUE",
+        "next": "other_dialogue"
+      },
+      {
+        "id": "other_dialogue",
+        "result": ["What should you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "blow",
+            "text": "Softly blow on the ember.",
+            "next": "blow_random"
+          },
+          {
+            "id": "feed",
+            "text": "Feed the ember firewood.",
+            "next": "feed_firewood"
+          },
+          {
+            "id": "snuff",
+            "text": "Put it out of its misery.",
+            "next": "revive_failure"
+          }
+        ]
+      },
+      {
+        "id": "blow_random",
+        "result": ["You kneel and blow gently upon the ember."],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 30,
+            "next": "blow_success"
+          },
+          {
+            "id": "failure",
+            "chance": 70,
+            "next": "blow_failure"
+          }
+        ]
+      },
+      {
+        "id": "blow_success",
+        "type": "DIALOGUE",
+        "result": [
+          "Your breath stirs the fading glow. The ember flares brightly, growing into a tiny flame... it worked!"
+        ],
+        "next": "revive_success"
+      },
+      {
+        "id": "blow_failure",
+        "type": "DIALOGUE",
+        "result": ["You blow and you blow, but the ember only grows colder."],
+        "next": "revive_failure"
+      },
+      {
+        "id": "feed_firewood",
+        "type": "DIALOGUE",
+        "result": [
+          "You glance around, desparate to find fuel for the dying slime.",
+          "You can hear the bubble of a lava pool, maybe there's something in there?",
+          "Further ahead, there's jagged rocks with something wedged between them. You think its firewood.",
+          "But if there's nothing... maybe use the basalt instead?"
+        ],
+        "next": "feed_options"
+      },
+      {
+        "id": "feed_options",
+        "result": ["What do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "pool",
+            "text": "Check out the cooling lava pool.",
+            "next": "pool_next"
+          },
+          {
+            "id": "search",
+            "text": "Search the rocks.",
+            "next": "search_next"
+          },
+          {
+            "id": "rocks",
+            "text": "Pile basalt rocks around it.",
+            "next": "rocks_next"
+          }
+        ]
+      },
+      {
+        "id": "pool_next",
+        "result": [
+          "Now that you're at the lava pool you feel silly. There's no way wood would survive here."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 70,
+            "next": "pool_success"
+          },
+          {
+            "id": "failure",
+            "chance": 30,
+            "next": "pool_failure"
+          }
+        ]
+      },
+      {
+        "id": "pool_failure",
+        "type": "DIALOGUE",
+        "result": [
+          "Now that you're at the lava pool you feel silly. There's no way wood would survive here.",
+          "You solemnly walk back to the ember, maybe you'll find something on your way back. Though there was nothing on your way here either.",
+          "Returning to the ember you see its soft glow is even softer."
+        ],
+        "next": "revive_failure"
+      },
+      {
+        "id": "pool_success",
+        "type": "DIALOGUE",
+        "result": [
+          "Now that you're at the lava pool you feel silly. There's no way wood would survive here.",
+          "Wait...! Maybe you're not dumb? There's something laying just on the edge of the pool.",
+          "It's firewood! You rush back to the ember, placing the wood gently around it.",
+          "You watch as its light catches onto the pieces of wood, then pwooOOSH! It flares back to life."
+        ],
+        "next": "revive_success"
+      },
+      {
+        "id": "search_next",
+        "type": "DIALOGUE",
+        "result": [
+          "You scramble across the jagged terrain, scanning every crevice",
+          "Between two basalt spikes you spot blackened wood fragments, remnants of a burnt tree.",
+          "You gather what you can and run back."
+        ],
+        "next": "search_hurt"
+      },
+      {
+        "id": "search_hurt",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": ["You trip on the uneven terrain, losing 2 HP"],
+        "next": "search_continue"
+      },
+      {
+        "id": "search_continue",
+        "type": "DIALOGUE",
+        "result": [
+          "You get back up again, it's only a scratch. The ember is more important.",
+          "You place the burnt wood gently around the ember, it catches alight instantly!"
+        ],
+        "next": "revive_success"
+      },
+
+      {
+        "id": "rocks_next",
+        "type": "DIALOGUE",
+        "result": [
+          "You stack small basalt rocks around the ember, hoping it's good enough.",
+          "The rocks smother the last flicker of flame. Oh."
+        ],
+        "next": "revive_failure"
+      },
+      {
+        "id": "revive_success",
+        "type": "DIALOGUE",
+        "result": [
+          "The lively flame reshapes into a small fire slime.",
+          "It bounces around joyfully, sparks dancing in the air.",
+          "Though you feel happy, you were expecting a reward.",
+          "It senses your greed, but its still thankful."
+        ],
+        "next": "revive_dialogue"
+      },
+      {
+        "id": "revive_dialogue",
+        "type": "DIALOGUE",
+        "result": ["⸜(｡˃ ᵕ ˂ )⸝♡"],
+        "enemyId": ["slime", "LITTLE EMBER"],
+        "next": "revive_success_status"
+      },
+      {
+        "id": "revive_success_status",
+        "type": "STATUS",
+        "result": ["The slime blesses you."],
+        "statusId": ["slime_boost", 5],
+        "next": "revive_success_random"
+      },
+      {
+        "id": "revive_success_random",
+        "result": [
+          "The slime continues to bounce around, and bounce, and oh? It's gone.",
+          "Wait.. it left something behind. Is this another gift? Or an accident? You don't care."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "item2",
+            "chance": 80,
+            "next": "root"
+          },
+          {
+            "id": "item3",
+            "chance": 20,
+            "next": "scale"
+          }
+        ]
+      },
+      {
+        "id": "revive_failure",
+        "result": [
+          "The ember shudders once, then fades to ash.",
+          "You feel cold.",
+          "As you stare solemnly at where the ember once was, you notice something."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "item1",
+            "chance": 50,
+            "next": "scorch"
+          },
+          {
+            "id": "item2",
+            "chance": 50,
+            "next": "coal"
+          }
+        ]
+      },
+      {
+        "id": "scorch",
+        "type": "CONSUMABLE",
+        "consumableId": "scorch_powder"
+      },
+      {
+        "id": "coal",
+        "type": "CONSUMABLE",
+        "consumableId": "coal"
+      },
+      {
+        "id": "root",
+        "type": "CONSUMABLE",
+        "consumableId": "charred_root"
+      },
+      {
+        "id": "scale",
+        "type": "STORY_ITEM",
+        "consumableId": "dragon_scale"
+      }
+    ]
+  },
+  {
+    "id": "tax slime",
+    "level": [3],
+    "description": "OH SNAP TIS A TAX SLIME",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "So there you were minding your own stinky business.",
+          "WHEN suddenly, a slime wearing a hypothetical business suit emerges from a hypothetical trash can!"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue"
+      },
+      {
+        "id": "slime_dialogue",
+        "result": [
+          "IT IS I! THE TAX SLIME!",
+          "YOU HAVEN'T PAID YOUR TAXES!",
+          "WE TAKE TAX FRAUD FAR TOO SERIOUSLY! PREPARE TO hypothetically DIE!!!!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "THE TAX SLIME"],
+        "next": "slime_fight"
+      },
+      {
+        "id": "slime_fight",
+        "type": "FIGHT",
+        "enemyId": ["slime", "TAX SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "type": "DIALOGUE",
+        "result": [
+          "OUUUGGGHHHHH WHYYYYYYYY",
+          "HOW COULD YOU DO THIS TO MEEEEE",
+          "I HAD A WIFE AND THREE CHILDREN",
+          "As the life allegedly dies from his eyes, you manage to successfully steal his wallet. GGWP"
+        ],
+        "next": "slime_reward_pool"
+      },
+      {
+        "id": "slime_reward_pool",
+        "type": "LOOT_POOL",
+        "lootPoolId": "ice_slime_pool"
+      }
+    ]
+  },
+  {
+    "id": "level_4_slime3",
+    "level": [0, 4],
+    "description": "level4_slime3_encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "A loud SLOSH echos nearby, something heavy just droped into the muck.",
+          "The ground trembles as a huge, wobbling mass jumps into view."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue"
+      },
+      {
+        "id": "slime_dialogue",
+        "result": [
+          "It jiggles once... then twice... and lets out a deep blob.",
+          "BLOP! Blurrp! bloorb!",
+          "The massive slime jiggles proudly, as if daring you to hit it."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "BIG SLIME"],
+        "next": "slime_fight"
+      },
+      {
+        "id": "slime_fight",
+        "type": "FIGHT",
+        "enemyId": ["slime", "BIG SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "type": "DIALOGUE",
+        "result": [
+          "The slime trembles and slowly collapses into a sagging heap of jelly.",
+          "Inside the collapsing blob, you spot countless shiny things glimmering faintly.",
+          "With a hesitant breath, you close your eyes and shove your hand into the sticky jelly",
+          "You manage to pull something free before you lose your nerve."
+        ],
+        "next": "slime_reward_pool"
+      },
+      {
+        "id": "slime_reward_pool",
+        "type": "LOOT_POOL",
+        "lootPoolId": "swamp_slime_pool"
+      }
+    ]
+  },
+  {
+    "id": "desert_slime_2",
+    "level": [5],
+    "description": "Stage 5 - slime 2 encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You return to the scorching dunes. The air feels heavier this time.",
+          "The sand shifts uneasily, as though remembering your last battle.",
+          "*A faint gurgling rises from beneath the sand...*"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["\"Ssslshhh... you again...\" it hisses before attacking!"],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "DUSTIER SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "DUSTIER SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "The enhanced slime bursts apart, scattering molten dust across the dunes.",
+          "Among the remains, you notice something half-buried glinting under the sun."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_stench"
+      },
+      {
+        "id": "slime_stench",
+        "type": "EQUIPMENT",
+        "equipmentId": "sticky_die"
+      }
+    ]
+  },
+  {
+    "id": "bandits",
+    "level": [0],
+    "description": "gang of bandits attack",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "It's been a long time since you last saw anyone.",
+          "You hear a twig snap in the distance.",
+          "Three bandits come out from the trees."
+        ],
+        "type": "DIALOGUE",
+        "next": "bandit_leader"
+      },
+      {
+        "id": "bandit_leader",
+        "result": [
+          "You're either gonna have to part with a bit of that health, by choice or we'll take all of it forcefully."
+        ],
+        "type": "DIALOGUE",
+        "next": "bandit_choice",
+        "enemyId": ["rocky_rhino", "BANDIT LEADER"]
+      },
+      {
+        "id": "bandit_choice",
+        "result": ["Do you..."],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "attack",
+            "text": "Attack The Leader",
+            "next": "leader_attack"
+          },
+          {
+            "id": "give_in",
+            "text": "Surrender 10 health",
+            "next": "give_health_pre"
+          }
+        ]
+      },
+      {
+        "id": "leader_attack",
+        "result": [
+          "Before the leader can react, you charge head first at him."
+        ],
+        "type": "DIALOGUE",
+        "next": "leader_battle"
+      },
+      {
+        "id": "leader_battle",
+        "type": "FIGHT",
+        "enemyId": ["rocky_rhino", "BANDIT LEADER"],
+        "next": "leader_win"
+      },
+      {
+        "id": "leader_win",
+        "result": [
+          "The leader is knocked out.",
+          "You glare at the now frightened thugs."
+        ],
+        "type": "DIALOGUE",
+        "next": "thug_reaction"
+      },
+      {
+        "id": "thug_reaction",
+        "result": ["Hey pal I don't want any trouble!"],
+        "type": "DIALOGUE",
+        "next": "other_thug_reaction",
+        "enemyId": ["poison_pogo", "BANDIT THUG"]
+      },
+      {
+        "id": "other_thug_reaction",
+        "result": [
+          "Yeah look just take what's in my pockets and we'll get out of here."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["charmer_cobra", "BANDIT THUG"],
+        "next": "bandit_reward"
+      },
+      {
+        "id": "bandit_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool",
+        "next": "bandit_conclusion"
+      },
+      {
+        "id": "bandit_conclusion",
+        "result": ["The thugs grab their leader and run away"],
         "type": "DIALOGUE"
+      },
+      {
+        "id": "give_health_pre",
+        "result": ["Begrudgingly, you hand over 10 health"],
+        "type": "DIALOGUE",
+        "next": "give_health"
+      },
+      {
+        "id": "give_health",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -10],
+        "result": ["You feel weaker"],
+        "next": "leader_reaction"
+      },
+      {
+        "id": "leader_reaction",
+        "result": ["Smart move pal."],
+        "type": "DIALOGUE",
+        "next": "bandit_leave",
+        "enemyId": ["rocky_rhino", "BANDIT LEADER"]
+      },
+      {
+        "id": "bandit_leave",
+        "result": [
+          "The bandits return to the shadows.",
+          "You wonder if you would've been better off fighting them."
+        ],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "vocano_cooking",
+    "level": [0],
+    "description": "two_dragon_cooking",
+    "background": "BASALT",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You walked into the burning mountain overlooking a bubbling river of lava.",
+          "You hear furious shouting echoing from deep inside the fiery caverns.",
+          "You follow the sound of shouting and sizzling until you find two dragons standing over bubbling vents.",
+          "They're waving spoons and spatulas, arguing so loudly that your eardrums ache."
+        ],
+        "type": "DIALOGUE",
+        "next": "dragon1"
+      },
+      {
+        "id": "dragon1",
+        "result": [
+          "\"Mine's clearly the best!\" argues the red dragon, slamming his tail against the ground."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["cinder_tail", "VOCANIA"],
+        "next": "dragon2"
+      },
+      {
+        "id": "dragon2",
+        "result": [
+          "\"Yours tastes like a burnt pebble!\" shouts the other, another red dragon puffing smoke."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["cinder_tail", "LARVAL"],
+        "next": "spot_you"
+      },
+      {
+        "id": "spot_you",
+        "result": [
+          "When they spot you, their eyes light up. \"Perfect! A taster!\"",
+          "\"Perfect timing, traveler! Tell us whose cooking is the best chief in this land!\""
+        ],
+        "type": "DIALOGUE",
+        "next": "choice"
+      },
+      {
+        "id": "choice",
+        "result": ["WHat do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "taste_first",
+            "text": "Taste the first dragon's stew.",
+            "next": "first_stew"
+          },
+          {
+            "id": "taste_second",
+            "text": "Taste the second dragon's stew.",
+            "next": "second_stew"
+          },
+          {
+            "id": "no",
+            "text": "Refuse and leave",
+            "next": "refuse"
+          },
+          {
+            "id": "taste_both",
+            "text": "Try both",
+            "next": "both"
+          }
+        ]
+      },
+      {
+        "id": "first_stew",
+        "result": [
+          "You took a small sip of the first dragon's stew. While he stares at you with confidence.",
+          "It's smoky, rich and immediately sets your tongue on fire.",
+          "The dragon grins proudly as you cough smoke."
+        ],
+        "type": "DIALOGUE",
+        "next": "burn_HP"
+      },
+      {
+        "id": "burn_HP",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": ["Your throat burns and lose 2 HP"],
+        "next": "burn"
+      },
+      {
+        "id": "burn",
+        "type": "STATUS",
+        "statusId": ["burning_rage", 3],
+        "result": [
+          "But you can now burn your opponent with your firery breath."
+        ],
+        "next": "escape"
+      },
+      {
+        "id": "escape",
+        "type": "DIALOGUE",
+        "result": [
+          "You complimented his cooking and thanked him for his unique cuisine while slowly slipping away.",
+          "The first dragon is still boasting, and the second is rolling his eyes.",
+          "Before they start arguing again, you make your escape, lips still tingling from the taste of stew."
+        ]
+      },
+      {
+        "id": "second_stew",
+        "result": [
+          "You try the second stew, it smells sweet, like caramelized rock.",
+          "As it flows down your throat, your stomach twists, then rumbles.",
+          "Heat spreads through your whole body. You feel lightheaded, like you've swallowed a small volcano.",
+          "The black dragon grins. \"Refined, isn't it? It warms up your whole body.\""
+        ],
+        "type": "DIALOGUE",
+        "next": "burn_bad"
+      },
+      {
+        "id": "burn_bad",
+        "type": "STATUS",
+        "statusId": ["burn", 3],
+        "result": ["Your feel hot...", "fire's burnning inside you."],
+        "next": "escape"
+      },
+      {
+        "id": "both",
+        "result": [
+          "You bravely take a spoonful from both bowls at once.",
+          "The stews react together, sweet, smoky, and painfully spicy.",
+          "A volcano seems to erupt in your stomach, but somehow, you feel stronger from it."
+        ],
+        "type": "DIALOGUE",
+        "next": "burp_power"
+      },
+      {
+        "id": "burp_power",
+        "type": "STATUS",
+        "statusId": ["hiccup_of_doom_buff", 3],
+        "result": ["You gained the status hiccup of doom."],
+        "next": "opinion"
+      },
+      {
+        "id": "opinion",
+        "result": [
+          "Both dragons stares at you waiting for your response.",
+          "\"Well?\" they both lean in close.\"Which one is better\" they ask in perfect union."
+        ],
+        "type": "DIALOGUE",
+        "next": "choose_opinion"
+      },
+      {
+        "id": "choose_opinion",
+        "type": "CHOICE",
+        "result": ["Who do you pick?"],
+        "options": [
+          {
+            "id": "first_dragon",
+            "text": "Compliment the first dragon.",
+            "next": "first_happy"
+          },
+          {
+            "id": "second_dragon",
+            "text": "Compliment the second dragon.",
+            "next": "second_happy"
+          }
+        ]
+      },
+      {
+        "id": "first_happy",
+        "result": [
+          "The dragon laughs, \"Finally! Someone with taste!\"",
+          "\"Here, take this... A little present from the greatest chief in this land.\""
+        ],
+        "enemyId": ["cinder_tail", "VOCANIA"],
+        "type": "DIALOGUE",
+        "next": "first_reward"
+      },
+      {
+        "id": "first_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      },
+      {
+        "id": "second_happy",
+        "result": [
+          "The second dragon gives a satisfied snort.",
+          "\"Finally! Someone who appreciates true spice!\"",
+          "He scoops up a ladle of his bubbling stew and carefully pours it into a thick glass bottle.",
+          "Here, if you like it so much, I'll give you more..."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["cinder_tail", "LARVAL"],
+        "next": "magic_stew"
+      },
+      {
+        "id": "magic_stew",
+        "type": "CONSUMABLE",
+        "consumableId": "magic_stew"
+      },
+      {
+        "id": "refuse",
+        "result": [
+          "You try to refuse politely, saying you're full.",
+          "Both chefs gasp in offense.",
+          "\"Full? No one leaves a dragon's feast untasted!\"they roar together in anger.",
+          "They toss aside their spoons, smoke curling from their nostrils.",
+          "You're about to regret your life choices."
+        ],
+        "type": "DIALOGUE",
+        "next": "battle1"
+      },
+      {
+        "id": "battle1",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "VOCANIA"],
+        "next": "battle2_start"
+      },
+      {
+        "id": "battle2_start",
+        "type": "DIALOGUE",
+        "result": [
+          "The first dragon backs up while the second rushes toward you.",
+          "Prepare for the second round!"
+        ],
+        "next": "battle2"
+      },
+      {
+        "id": "battle2",
+        "type": "FIGHT",
+        "enemyId": ["cinder_tail", "LARVAL"],
+        "next": "end_battle"
+      },
+      {
+        "id": "end_battle",
+        "result": [
+          "As the smoke clears, both dragons lie slumped against the lava vents, exhausted and steaming.",
+          "\"Fine... maybe you just weren't ready for true flavor,\" mutters the first one.",
+          "\"Come back when your stomach is braver,\" adds the second dragon, faintly amused.",
+          "You leave the cavern smelling of chili and victory."
+        ],
+        "type": "DIALOGUE",
+        "next": "battle_reward"
+      },
+      {
+        "id": "battle_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool"
       }
     ]
   }

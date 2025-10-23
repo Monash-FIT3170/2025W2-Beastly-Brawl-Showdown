@@ -1,27 +1,27 @@
 import { Player } from "../player";
+import { TitanSlayer } from "../status/titanSlayer";
 import { Equipment } from "./equipment";
 
-export class FightersBandana extends Equipment {
+export class MeekHelmet extends Equipment {
+  titanSlayer = new TitanSlayer(Infinity);
   constructor() {
     super(
-      "Fighters Bandana",
-      "Allows the user to hone their focus, increasing their critical hit rate."
+      "Meek Helmet",
+      "A plain helmet. Holding it makes you feel unstoppable."
     );
   }
 
   public equip(player: Player): void {
     //TODO: implement
-    const attack = player.getMonster()?.getAttackAction();
-    attack?.incrementCritRate(this.strength);
+    player.addStatus(this.titanSlayer);
   }
 
   public unequip(player: Player): void {
-    const attack = player.getMonster()?.getAttackAction();
-    attack?.incrementCritRate(-this.strength);
+    player.removeStatus(this.titanSlayer);
   }
 
   public getStatDescription(): string {
-    return "+" + this.strength + "% Critical Hit Rate";
+    return "Attacks to foes with greater health deal double damage.";
   }
 
   public calculateStrength(stage: number): void {
@@ -30,6 +30,6 @@ export class FightersBandana extends Equipment {
   }
 
   protected getImageString(): string {
-    return "FIGHTERS_BANDANA";
+    return "MEEK_HELMET";
   }
 }

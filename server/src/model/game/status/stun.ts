@@ -9,7 +9,6 @@ export class Stun extends StartStatus {
   constructor(countDown: number) {
     super("Stun", "Monster is unable to attack", countDown, StatusType.DEBUFF);
   }
-
   public startingEffect(player: Player): void {
     const temporaryActions = [];
     temporaryActions.push(new NullAction("Stunned", ActionIdentifier.STUNNED));

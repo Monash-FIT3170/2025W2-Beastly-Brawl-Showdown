@@ -20,8 +20,8 @@ export const ConsumablePopup = ({
   onConsume,
   isDisabled,
   backText = "BACK",
-  consumeText = "CONSUME",
-  confirmText = "Are you sure you want to consume this?",
+  consumeText = "USE",
+  confirmText = "Are you sure you want to use this?",
 }: ConsumableProp) => {
   const popupLayout = `z-100  items-center
         justify-center

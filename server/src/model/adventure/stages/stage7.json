@@ -1,8 +1,9 @@
 [
   {
     "id": "berry_bush",
-    "level": [1],
+    "level": [0, 1],
     "description": "Berry bushes",
+    "background": "FOREST",
     "outcomes": [
       {
         "id": "initial",
@@ -59,8 +60,9 @@
   },
   {
     "id": "rope_bridge",
-    "level": [1],
+    "level": [0, 1],
     "description": "Rope Bridge",
+    "background": "FOREST",
     "outcomes": [
       {
         "id": "initial",
@@ -155,9 +157,616 @@
     ]
   },
   {
+    "id": "BIGGER GANG HIDEOUT",
+    "level": [0, 3],
+    "description": "It's a bigger gang hideout oh noooooo",
+    "background": "ARCTIC",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": [
+          "AYO It's a GANG.",
+          "They got some swag, but at the same time,",
+          "They allegedly possess illegal sporks.",
+          "Hypothetically."
+        ],
+        "next": "gang_choice"
+      },
+      {
+        "id": "gang_choice",
+        "result": ["It's time to do A THING!!!!"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "cross",
+            "text": "Steal Their Stuff!",
+            "next": "gang_random"
+          },
+          {
+            "id": "ignore",
+            "text": "Be Boring!",
+            "next": "ignore_outcome"
+          }
+        ]
+      },
+      {
+        "id": "gang_random",
+        "result": ["You break in and allgedly steal their hypothetical stuff"],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 50,
+            "next": "bridge_crossed"
+          },
+          {
+            "id": "failure",
+            "chance": 50,
+            "next": "bridge_broke"
+          }
+        ]
+      },
+      {
+        "id": "bridge_crossed",
+        "result": [
+          "You 'negotiate' with the gang. Allegedly.",
+          "Hypothetically, they all instantly combust in the face of your unbeatable SPORK-FU.",
+          "As you hypothetically look through their alleged goods, you hypothetically find..."
+        ],
+        "type": "DIALOGUE",
+        "next": "bridge_reward"
+      },
+      {
+        "id": "bridge_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion"
+      },
+      {
+        "id": "bridge_broke",
+        "type": "DIALOGUE",
+        "result": [
+          "You 'negotiate' with the gang. Allegedly.",
+          "Allegedly, they all opened fire on you.",
+          "You are hypothetically forced to escape with alleged wounds.",
+          "Allegedly."
+        ],
+        "next": "bridge_injury"
+      },
+      {
+        "id": "bridge_injury",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": ["THEY TOOK BOTH YO KNEECAPSYOOOO"],
+        "next": "resolution"
+      },
+      {
+        "id": "resolution",
+        "result": ["It hurts, but you can muster the strength to climb out."],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "ignore_outcome",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide that nothing on the other side is worth the risk and adventure onwards."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "forge",
+    "level": [2],
+    "description": "Stage 7, player finds the forge.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Continuing on with your journey, you make your way further through the hot basalt cliffs.",
+          "You see a crumbling structure. Half buried in black rock, half glowing with veins of molten metal.",
+          "It looks like a forge, you decide to head towards it. Perhaps there's some loot to find.."
+        ],
+        "type": "DIALOGUE",
+        "next": "check_scale"
+      },
+      {
+        "id": "check_scale",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "has_scale",
+            "prerequisite": ["Dragon Scale"],
+            "next": "scale_dialogue"
+          },
+          {
+            "id": "no_item",
+            "next": "lame_dialogue"
+          }
+        ]
+      },
+      {
+        "id": "scale_dialogue",
+        "type": "DIALOGUE",
+        "result": [
+          "The forge awakens as you approach, the flames roaring back to life.",
+          "Your backpack starts to heat up, as if something inside is responding back to the forge.",
+          "A hole burns out of your backpack, and something falls out."
+        ],
+        "next": "scale_choice"
+      },
+      {
+        "id": "scale_choice",
+        "result": ["It's the dragon scale."],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "scale_give",
+            "text": "Give it to the forge.",
+            "next": "use_forge",
+            "cost": ["Dragon Scale"]
+          },
+          {
+            "id": "scale_leave",
+            "text": "Put it back in your backpack.",
+            "next": "reject_forge"
+          }
+        ]
+      },
+      {
+        "id": "use_forge",
+        "type": "DIALOGUE",
+        "result": [
+          "You pick up the dragon scale that dropped on the floor.",
+          "It burns in your hands, disintegrating into nothing.",
+          "The forge starts roaring at you!! The flames almost engulf you..",
+          "'MAKE YOUR CHOICE'",
+          "Is the forge speaking to you...?"
+        ],
+        "next": "pick_forge"
+      },
+      {
+        "id": "pick_forge",
+        "result": ["Make your choice."],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "item_1",
+            "text": "Infinite abilities.",
+            "next": "infinite"
+          },
+          {
+            "id": "item_2",
+            "text": "Extreme damage.",
+            "next": "damage"
+          },
+          {
+            "id": "item_3",
+            "text": "Burning fire.",
+            "next": "fire"
+          }
+        ]
+      },
+      {
+        "id": "infinite",
+        "type": "STATUS",
+        "result": ["You feel unlimited."],
+        "statusId": ["infinite_ability", 5]
+      },
+      {
+        "id": "damage",
+        "type": "EQUIPMENT",
+        "equipmentId": "blazing_gauntlets"
+      },
+      {
+        "id": "fire",
+        "type": "STATUS",
+        "result": ["You feel angry."],
+        "statusId": ["burning_rage", 5]
+      },
+      {
+        "id": "reject_forge",
+        "type": "DIALOGUE",
+        "result": [
+          "You place the scale back in your backpack.",
+          "It feels as though you've just missed out on something special.",
+          "This forge isn't like others, but for now it remains silent."
+        ],
+        "next": "loot_forge"
+      },
+      {
+        "id": "lame_dialogue",
+        "type": "DIALOGUE",
+        "result": [
+          "You peer into the forge. The flames inside are cold and lifeless, the great anvil cracked with age.",
+          "It feels as though the place is waiting... for something you do not possess."
+        ],
+        "next": "loot_forge"
+      },
+      {
+        "id": "loot_forge",
+        "type": "DIALOGUE",
+        "result": [
+          "You look around, for something worth taking.",
+          "There seems to be something behind the fire.."
+        ],
+        "next": "get_burnt"
+      },
+      {
+        "id": "get_burnt",
+        "type": "STATUS",
+        "result": ["The fire tinges at your arms as you grab the item."],
+        "statusId": ["burn", 2],
+        "next": "loot_drop"
+      },
+      {
+        "id": "loot_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      }
+    ]
+  },
+  {
+    "id": "witch_again",
+    "level": [4],
+    "description": "witch_reunion",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "The swamp feels endless...",
+          "Each step sinks into the same patch of mud you swore you left behind.",
+          "You're starting to wonder if the swamp is walking you instead.",
+          "Just as your boots start to sink again, a familiar laugh ripples through the mist."
+        ],
+        "type": "DIALOGUE",
+        "next": "witch_encounter"
+      },
+      {
+        "id": "witch_encounter",
+        "result": [
+          "Back again huh? The swamp didn't chew you up yet?",
+          "You face the witch again, still swirling that same suspicious stew from before.",
+          "You smell like frog sweat. I like that.",
+          "So, what brings you here, little wanderer?"
+        ],
+        "type": "DIALOGUE",
+        "next": "check_lotus"
+      },
+      {
+        "id": "check_lotus",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "have_lotus",
+            "prerequisite": ["Everblooming Lotus"],
+            "next": "have_lotus_choice"
+          },
+          {
+            "id": "no_lotus",
+            "next": "no_lotus_choice"
+          }
+        ]
+      },
+      {
+        "id": "have_lotus_choice",
+        "result": ["What would you like to do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "new_stew_option",
+            "text": "Ask for another stew.",
+            "next": "new_stew"
+          },
+          {
+            "id": "lost_option",
+            "text": "Tell her your lost.",
+            "next": "lost"
+          },
+          {
+            "id": "lotus_option",
+            "text": "Ask about the lotus.",
+            "cost": ["Everblooming Lotus"],
+            "next": "lotus"
+          },
+          {
+            "id": "ignore_option",
+            "text": "Ignore her and leave.",
+            "next": "ignore"
+          }
+        ]
+      },
+      {
+        "id": "no_lotus_choice",
+        "result": ["What would you like to do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "new_stew_option",
+            "text": "Ask for another stew.",
+            "next": "new_stew"
+          },
+          {
+            "id": "lost_option",
+            "text": "Tell her your lost",
+            "next": "lost"
+          },
+          {
+            "id": "ignore_option",
+            "text": "Ignore her and leave.",
+            "next": "ignore"
+          }
+        ]
+      },
+      {
+        "id": "new_stew",
+        "result": [
+          "Hungry, are we? Fine, fine, I've been working on new flavors!",
+          "She claps her hands and suddenly, dozens of bottles pop into existence, spinning around her in mid-air.",
+          "Go on then, Pick your poison! Each one's perfectly safe... probably."
+        ],
+        "type": "DIALOGUE",
+        "next": "pick_stew"
+      },
+      {
+        "id": "pick_stew",
+        "type": "CHOICE",
+        "result": ["Pick your poison."],
+        "options": [
+          {
+            "id": "blue",
+            "text": "Blue bottle",
+            "next": "blue_stew"
+          },
+          {
+            "id": "brown",
+            "text": "Brown bottle",
+            "next": "brown_stew"
+          },
+          {
+            "id": "purple",
+            "text": "Purple bottle",
+            "next": "purple_stew"
+          },
+          {
+            "id": "yellow",
+            "text": "Yellow bottle",
+            "next": "yellow_stew"
+          }
+        ]
+      },
+      {
+        "id": "blue_stew",
+        "result": [
+          "You accept the bright blue brew. It smells... questionable."
+        ],
+        "type": "DIALOGUE",
+        "next": "burp_posion"
+      },
+      {
+        "id": "burp_posion",
+        "type": "CONSUMABLE",
+        "consumableId": "burp_of_power"
+      },
+      {
+        "id": "brown_stew",
+        "result": ["You accept the mud brown brew. It smells... questionable."],
+        "type": "DIALOGUE",
+        "next": "croak_posion"
+      },
+      {
+        "id": "croak_posion",
+        "type": "CONSUMABLE",
+        "consumableId": "croak_of_strength"
+      },
+      {
+        "id": "purple_stew",
+        "result": [
+          "You accept the deep purple brew. It smells... questionable."
+        ],
+        "type": "DIALOGUE",
+        "next": "hiccup_posion"
+      },
+      {
+        "id": "hiccup_posion",
+        "type": "CONSUMABLE",
+        "consumableId": "hiccup_of_doom"
+      },
+      {
+        "id": "yellow_stew",
+        "result": [
+          "You accept the glowing yellow brew. It smells... questionable."
+        ],
+        "type": "DIALOGUE",
+        "next": "glow_posion"
+      },
+      {
+        "id": "glow_posion",
+        "type": "CONSUMABLE",
+        "consumableId": "glow_of_insight"
+      },
+      {
+        "id": "lost",
+        "type": "DIALOGUE",
+        "result": [
+          "Lost? You're in my swamp, no one's ever \"found\" here.",
+          "Fine, fine. I'll point you somewhere... though the swamp might have other plans.",
+          "She waves her spoon and the fog swirls into varying shapes."
+        ],
+        "next": "lost_result"
+      },
+      {
+        "id": "lost_result",
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "swamp_good",
+            "chance": 40,
+            "next": "guidance"
+          },
+          {
+            "id": "swamp_neutral",
+            "chance": 30,
+            "next": "neutral"
+          },
+          {
+            "id": "swamp_bad",
+            "chance": 30,
+            "next": "whisper"
+          }
+        ]
+      },
+      {
+        "id": "guidance",
+        "result": [
+          "The fog shifts, curling around your legs and forming a faint, winding path.",
+          "Looks like the swamp likes you..."
+        ],
+        "type": "DIALOGUE",
+        "next": "swamps_guidance"
+      },
+      {
+        "id": "swamps_guidance",
+        "result": ["You feel a light force pushing you out of the loop."],
+        "type": "STATUS",
+        "statusId": ["swamps_guidance", 2]
+      },
+      {
+        "id": "neutral",
+        "result": [
+          "The fog twists around you, shaping itself into a faint trail of light.",
+          "You walk toward it, hoping it's the way out.",
+          "But after a few turns, you stop. Everything around you became more and more famillier.",
+          "\"Hi again!\" the witch crackles.",
+          "\"You've gone in a perfect circle! What brings you back again?\""
+        ],
+        "type": "DIALOGUE",
+        "next": "check_lotus"
+      },
+      {
+        "id": "whisper",
+        "result": [
+          "The mist thickens instead. Soft murmurs echo all around, words you can't quite understand."
+        ],
+        "type": "DIALOGUE",
+        "next": "swamps_whisper"
+      },
+      {
+        "id": "swamps_whisper",
+        "result": ["Your thoughts grow heavy."],
+        "type": "STATUS",
+        "statusId": ["swamps_whisper", 2]
+      },
+      {
+        "id": "lotus",
+        "result": [
+          "\"Ahh, so you did keep it. Not many would. Care to see what it truly does?\" She smirks, flicking her fingers.",
+          "The lotus flew to the witches' hand and the petals begins to harden.",
+          "\"There,\" the witch murmurs, \"An Everbloom Fragment\"",
+          "\"Hold it close. It'll sharpen your strikes and if you're lucky, maybe it'll bring you back.\""
+        ],
+        "type": "DIALOGUE",
+        "next": "everblooming_fragment"
+      },
+      {
+        "id": "everblooming_fragment",
+        "type": "EQUIPMENT",
+        "equipmentId": "everblooming_fragment"
+      },
+      {
+        "id": "ignore",
+        "result": [
+          "You turn away, stepping past her cauldron as if she's invisible.",
+          "\"How rude!\" her voice sharpens.",
+          "\"Don't have manners, do you? Fine, I'll teach you manners.\"",
+          "The mud erupts. A huge slime rolls out, wobbling beside her.",
+          "\"Meet Blop! He's terrible at cleaning, but wonderful at teaching manners.\""
+        ],
+        "type": "DIALOGUE",
+        "next": "swamp_slime_4"
+      },
+      {
+        "id": "swamp_slime_4",
+        "type": "FIGHT",
+        "enemyId": ["slime", "WITCH SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "The slime lets out one last sad gurgle before collapsing into a puddle.",
+          "\"Ugh, fine! You win. Blop was still in training anyway.\" said the with while vanishing before your eyes."
+        ],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+  {
+    "id": "serpent_echo",
+    "level": [5],
+    "description": "Stage 7 — Ancient whisper triggered by the Serpent Amulet.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": ["The desert hums with unseen energy."],
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "have_amulet",
+            "prerequisite": ["Serpent Amulet"],
+            "next": "serpent_voice"
+          },
+          {
+            "id": "no_amulet",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "serpent_voice",
+        "result": [
+          "Your serpent amulet begins to glow faintly...",
+          "A voice hisses through the wind:",
+          "\"Sssseeker of wisdom... prove your calm in the ssstorm.\""
+        ],
+        "type": "DIALOGUE",
+        "next": "gift"
+      },
+      {
+        "id": "gift",
+        "result": [
+          "You drop the amulet in the sand.",
+          "The amulet crumbles into dust."
+        ],
+        "type": "CONSUMABLE",
+        "consumableId": "dune_dust",
+        "next": "stat_reward"
+      },
+      {
+        "id": "stat_reward",
+        "type": "STATUS",
+        "statusId": ["affliction_touch", 20],
+        "result": [
+          "The desert inflicts you with a dark energy...",
+          "Something has changed within you."
+        ]
+      },
+
+      {
+        "id": "leave",
+        "result": [
+          "Nothing seems to happen.",
+          "You feel like you're missing something..."
+        ],
+        "type": "DIALOGUE"
+      }
+    ]
+  },
+
+  {
     "id": "stage7_grand_colosseum",
     "level": [0],
     "description": "Stage 7, player finds the grand colosseum",
+    "background": "COLOSSEUM",
     "outcomes": [
       {
         "id": "initial",
@@ -228,13 +837,13 @@
         "id": "pre_fight",
         "type": "DIALOGUE",
         "result": ["You don't stand a chance."],
-        "enemyId": ["poison_pogo", "Colosseum Pogo"],
+        "enemyId": ["poison_pogo", "COLOSSEUM POGO"],
         "next": "battle_1"
       },
       {
         "id": "battle_1",
         "type": "FIGHT",
-        "enemyId": ["poison_pogo", "Colosseum Pogo"],
+        "enemyId": ["poison_pogo", "COLOSSEUM POGO"],
         "next": "battle_1_win"
       },
       {
@@ -250,13 +859,13 @@
         "id": "battle_2_pre",
         "type": "DIALOGUE",
         "result": ["Are you starting to sweat?"],
-        "enemyId": ["rocky_rhino", "Colosseum Rhino"],
+        "enemyId": ["rocky_rhino", "COLOSSEUM RHINO"],
         "next": "battle_2"
       },
       {
         "id": "battle_2",
         "type": "FIGHT",
-        "enemyId": ["rocky_rhino", "Colosseum Rhino"],
+        "enemyId": ["rocky_rhino", "COLOSSEUM RHINO"],
         "scalling": 2,
         "next": "battle_2_win"
       },
@@ -273,13 +882,13 @@
         "id": "battle_3_pre",
         "type": "DIALOGUE",
         "result": ["This is the end of your run."],
-        "enemyId": ["furious_flipper", "Colosseum Penguin"],
+        "enemyId": ["furious_flipper", "COLOSSEUM PENGUIN"],
         "next": "battle_3"
       },
       {
         "id": "battle_3",
         "type": "FIGHT",
-        "enemyId": ["furious_flipper", "Colosseum Penguin"],
+        "enemyId": ["furious_flipper", "COLOSSEUM PENGUIN"],
         "scaling": 3,
         "next": "battle_3_win"
       },
@@ -296,13 +905,13 @@
         "id": "battle_4_pre",
         "type": "DIALOGUE",
         "result": ["I won't let you past me"],
-        "enemyId": ["pouncing_bandit", "Colosseum Wolf"],
+        "enemyId": ["pouncing_bandit", "COLOSSEUM WOLF"],
         "next": "battle_4"
       },
       {
         "id": "battle_4",
         "type": "FIGHT",
-        "enemyId": ["pouncing_bandit", "Colosseum Wolf"],
+        "enemyId": ["pouncing_bandit", "COLOSSEUM WOLF"],
         "scaling": 4,
         "next": "battle_4_win"
       },
@@ -319,13 +928,13 @@
         "id": "battle_5_pre",
         "type": "DIALOGUE",
         "result": ["Good Luck"],
-        "enemyId": ["cinder_tail", "Colosseum Champion"],
+        "enemyId": ["cinder_tail", "COLOSSEUM CHAMPION"],
         "next": "battle_5"
       },
       {
         "id": "battle_5",
         "type": "FIGHT",
-        "enemyId": ["cinder_tail", "Colosseum Champion"],
+        "enemyId": ["cinder_tail", "COLOSSEUM CHAMPION"],
         "scaling": 5,
         "next": "battle_5_win"
       },
@@ -347,8 +956,7 @@
       {
         "id": "regular_prize_pre",
         "result": [
-          "Oh, and please take this as a reward for your achievements here.",
-          "OOZING BLADE IS A PLACEHOLDER"
+          "Oh, and please take this as a reward for your achievements here."
         ],
         "type": "DIALOGUE",
         "next": "regular_prize"
@@ -356,7 +964,7 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "colosseum_crown"
       },
       {
         "id": "deny_entry",
@@ -375,6 +983,215 @@
         "id": "leave",
         "type": "DIALOGUE",
         "result": ["You turn down the challenge and continue onwards."]
+      }
+    ]
+  },
+  {
+    "id": "stage1_captured_prisoner",
+    "level": [0],
+    "description": "Stage 1, player finds a prisoner",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You see a faint glow in the distance.",
+          "As you approach, you notice a guard by a firepit, with a prisoner sitting upright in a cage.",
+          "The prisoner notices you and suddenly becomes alert.",
+          "They motion towards the lock on their cage and a key on the guard's waist.",
+          "The guard still hasn't noticed you yet."
+        ],
+        "type": "DIALOGUE",
+        "next": "guard_choice"
+      },
+      {
+        "id": "guard_choice",
+        "type": "CHOICE",
+        "result": ["Do you...?"],
+        "options": [
+          {
+            "id": "attack",
+            "text": "Attack The Guard",
+            "next": "attack"
+          },
+          {
+            "id": "stealth",
+            "text": "Try To Steal The Key Unnoticed",
+            "next": "stealth_random"
+          }
+        ]
+      },
+      {
+        "id": "attack",
+        "type": "DIALOGUE",
+        "result": ["You rush the guard and catch them unaware."],
+        "next": "guard_battle"
+      },
+      {
+        "id": "stealth_random",
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "successful_pickpocket",
+            "chance": 50,
+            "next": "good_lift"
+          },
+          {
+            "id": "no_luck",
+            "chance": 50,
+            "next": "bad_lift"
+          }
+        ]
+      },
+      {
+        "id": "bad_lift",
+        "type": "DIALOGUE",
+        "result": [
+          "You slowly approach, trying not to make a sound.",
+          "Before you can even reach the guard, a twig snaps.",
+          "The guard springs to action."
+        ],
+        "next": "guard_battle"
+      },
+      {
+        "id": "guard_battle",
+        "type": "FIGHT",
+        "enemyId": ["poison_pogo", "GUARD"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "type": "DIALOGUE",
+        "result": [
+          "The guard slumps over.",
+          "You take the key from their waist."
+        ],
+        "next": "receive_key"
+      },
+      {
+        "id": "good_lift",
+        "type": "DIALOGUE",
+        "result": [
+          "You slowly approach, trying not to make a sound.",
+          "The guard appears to be dozing off.",
+          "You carefully lift the key from the guard's belt."
+        ],
+        "next": "receive_key"
+      },
+      {
+        "id": "receive_key",
+        "type": "STORY_ITEM",
+        "storyItemId": "pristine_key",
+        "next": "approach_prisoner"
+      },
+      {
+        "id": "approach_prisoner",
+        "type": "DIALOGUE",
+        "result": ["You make your way over to the prisoner's cage."],
+        "next": "additional_key_check"
+      },
+      {
+        "id": "additional_key_check",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "took_key",
+            "prerequisite": ["Pristine Key"],
+            "next": "choose_unlock"
+          },
+          {
+            "id": "left_key",
+            "next": "confusion"
+          }
+        ]
+      },
+      {
+        "id": "choose_unlock",
+        "type": "CHOICE",
+        "result": ["Do you...?"],
+        "options": [
+          {
+            "id": "free",
+            "text": "Free The Prisoner",
+            "next": "free_prisoner",
+            "cost": ["Pristine Key"]
+          },
+          {
+            "id": "ignore",
+            "text": "Leave Them Locked Up",
+            "next": "leave_prisoner"
+          }
+        ]
+      },
+      {
+        "id": "free_prisoner",
+        "type": "DIALOGUE",
+        "result": ["The lock springs open, and the prisoner walks out."],
+        "next": "prisoner_dialogue"
+      },
+      {
+        "id": "prisoner_dialogue",
+        "type": "DIALOGUE",
+        "result": [
+          "Thank you so much for saving me!",
+          "I don't have much to give you, but I am quite proficcient in healing magic.",
+          "Please accept this blessing."
+        ],
+        "enemyId": ["charmer_cobra", "PRISONER"],
+        "next": "prisoner_heal"
+      },
+      {
+        "id": "prisoner_heal",
+        "type": "STAT_CHANGE",
+        "result": ["You feel a warmth spread over your body."],
+        "statChange": ["health", 15],
+        "next": "prisoner_regen"
+      },
+      {
+        "id": "prisoner_regen",
+        "type": "STATUS",
+        "statusId": ["regeneration", 15],
+        "result": ["The magic lingers."],
+        "next": "prisoner_happy_conclusion"
+      },
+      {
+        "id": "prisoner_happy_conclusion",
+        "type": "DIALOGUE",
+        "result": [
+          "I have many more brothers and sisters who I believe are suffering similar fates!",
+          "Please free them if you see them."
+        ],
+        "enemyId": ["charmer_cobra", "PRISONER"]
+      },
+      {
+        "id": "leave_prisoner",
+        "type": "DIALOGUE",
+        "result": [
+          "The prisoner looks on in horror as you start to walk away.",
+          "You hear them slowly start to mutter.",
+          "Before you can make out what they're saying you double over in pain."
+        ],
+        "next": "prisoner_curse"
+      },
+      {
+        "id": "prisoner_curse",
+        "type": "STATUS",
+        "statusId": ["lake_curse", 5],
+        "result": ["You have been cursed."],
+        "next": "prisoner_sad_conclusion"
+      },
+      {
+        "id": "prisoner_sad_conclusion",
+        "type": "DIALOGUE",
+        "result": ["You ran away before anything else can happen."]
+      },
+      {
+        "id": "confusion",
+        "type": "DIALOGUE",
+        "result": [
+          "The prisoner looks on in confusion.",
+          "They watched you approach the guard, yet they notice you don't have a key.",
+          "You see hope drain from their eyes as you turn around to continue your journey."
+        ]
       }
     ]
   }

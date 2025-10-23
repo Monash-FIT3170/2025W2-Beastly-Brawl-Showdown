@@ -8,8 +8,6 @@ export class Poison extends EndStatus {
     super("Poison", "Lose 1 HP.", countdown, StatusType.DEBUFF);
   }
 
-  public effect(player: Player): void {}
-
   public endingEffect(player: Player): void {
     player.incHealth(-1);
     console.log(`${player.getName()} -1 Health: Poison Tick`);

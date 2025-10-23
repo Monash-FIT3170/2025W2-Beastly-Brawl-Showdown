@@ -21,8 +21,6 @@ export class LifeFang extends Equipment {
   }
 
   public calculateStrength(stage: number): void {
-    //TODO: update formula - currently strength = playerHealth
-
     this.strength = stage;
   }
 

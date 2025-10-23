@@ -16,35 +16,6 @@ export class LakeCurse extends StartStatus {
     );
   }
 
-  public effect(player: Player): void {
-    const actionCopy = [...player.getMonster()?.getPossibleActions()!];
-
-    let temporaryActions: Action[] = [];
-
-    actionCopy.forEach((action) => {
-      if (action.getCurrentUse() > 0) {
-        const lakeOverride = Math.floor(Math.random() * 4);
-        if (lakeOverride === 0) {
-          temporaryActions = [
-            ...temporaryActions,
-            new NullAction("Cursed", ActionIdentifier.LAKE_CURSE),
-          ];
-          console.log("Override", temporaryActions);
-        } else {
-          temporaryActions = [...temporaryActions, action];
-          console.log("Not override", temporaryActions);
-        }
-      } else {
-        temporaryActions = [...temporaryActions, action];
-      }
-    });
-
-    player.getMonster()?.setTemporaryActions(temporaryActions);
-    console.log(
-      `${player.getName()} is cursed!. Their actions may be restricted.`
-    );
-  }
-
   public startingEffect(player: Player): void {
     const actionCopy = [...player.getMonster()?.getPossibleActions()!];
 

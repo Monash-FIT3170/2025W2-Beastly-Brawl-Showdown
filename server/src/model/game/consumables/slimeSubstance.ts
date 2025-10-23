@@ -13,12 +13,18 @@ export class SlimeSubstance extends Consumable {
   public getStatDescription(): string {
     return "Get Slime Boost status for 3 turns.";
   }
-  public consume(player: Player): void {
+  public consume(player: Player): [string, string] {
     //TODO: decide appropriate time for status
     player.addStatus(new SlimeBoost(3));
-    player.addLog(
-      `You consumed the slimy substance, it seems to have gifted you the natural Slime Boost`
-    );
+    // player.addLog(
+    //   `You consumed the slimy substance, it seems to have gifted you the natural Slime Boost`
+    // );
+
+    let actingLog = `You consumed the slimy substance, it seems to have gifted you the natural Slime Boost`;
+    let affectedLog = `${player.getName()} used ${
+      this.name
+    } from their backpack!`;
+    return [actingLog, affectedLog];
   }
   protected getImageString(): string {
     return "SLIME_SUBSTANCE";

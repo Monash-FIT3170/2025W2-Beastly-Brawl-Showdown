@@ -11,7 +11,7 @@ import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
 import Rules from "./src/pages/Game/Rules";
 import MatchSummary from "./src/pages/Host View/MatchSummary";
-import LevelSelect from "./src/pages/Adventure/LevelSelect";
+import AdventureLevelSelect from "./src/pages/Adventure/AdventureLevelSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
@@ -210,7 +210,7 @@ FlowRouter.route("/final-results-scoring-tournament/:code?", {
 });
 
 FlowRouter.route("/adventure/mode-select", {
-  name: "LevelSelect",
+  name: "ModeSelect",
   action() {
     document.title = "Mode Select - Adventure Mode | Beastly Brawl Showdown";
     mount(AdventureSelectMode);
@@ -221,7 +221,7 @@ FlowRouter.route("/adventure/level-select", {
   name: "LevelSelect",
   action() {
     document.title = "Level Select - Adventure Mode | Beastly Brawl Showdown";
-    mount(LevelSelect);
+    mount(AdventureLevelSelect);
   },
 });
 

@@ -300,6 +300,10 @@ export class Player {
     return this.statuses.find((status) => status.getName() === name);
   }
 
+  public clearStatuses() {
+    this.statuses = [];
+  }
+
   //HIT/BLOCK METHODS:
   public getSuccessfulHit() {
     return this.successfulHit;
@@ -405,6 +409,18 @@ export class Player {
     if (i !== -1) {
       this.equipment.splice(i, 1);
     }
+    equip.unequip(this);
+    this.resetStats();
+  }
+
+  public removeEquipmentAt(index: number): void {
+    if (index < 0 || index >= this.equipment.length) {
+      console.error(`Invalid equipment index: ${index}`);
+      return;
+    }
+
+    const equip = this.equipment[index];
+    this.equipment.splice(index, 1);
     equip.unequip(this);
     this.resetStats();
   }

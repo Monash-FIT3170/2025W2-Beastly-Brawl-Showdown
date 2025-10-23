@@ -56,7 +56,7 @@ export const BattleHeader: React.FC<BattleHeaderProps> = ({
           {battleState.yourPlayer.statuses.map((status) => (
             <img
               className=" size-[30px] object-contain rounded-md block"
-              src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase()}.png`}
+              src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name.toUpperCase().replace(/\s+/g, "_")   }.png`}
               alt={`${status.name.toUpperCase()} image`}
             />
           ))}

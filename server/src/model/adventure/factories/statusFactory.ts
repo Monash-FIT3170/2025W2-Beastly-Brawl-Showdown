@@ -4,22 +4,24 @@ import { Stun } from "../../game/status/stun";
 import { LakeCurse } from "../../game/status/lakeCurse";
 import { LakeBlessing } from "../../game/status/lakeBlessing";
 import { SlimeBoost } from "../../game/status/slimeBoost";
+import { Burn } from "../../game/status/burn";
+import { InfinityAbility } from "../../game/status/infinityAbility";
+import { BurningRage } from "../../game/status/burningRage";
+import { SwampsCalm } from "../../game/status/swampsCalm";
+import { SwampsWhisper } from "../../game/status/swampsWhisper";
+import { GlowOfInsightBuff } from "../../game/status/glowOfInsightBuff";
+import { HiccupOfDoomBuff } from "../../game/status/hiccupOfDoomBuff";
+import { CroakOfStrengthBuff } from "../../game/status/croakOfStrengthBuff";
+import { SwampsGuidance } from "../../game/status/swampsGuidance";
+import { Regeneration } from "../../game/status/regeneration";
+import { SandyEyes } from "../../game/status/sandyEyes";
+import { Resurrection } from "../../game/status/resurrection";
+import { AfflictionTouch } from "../../game/status/afflictionTouch";
 
 export interface StatusInfo {
   statusId: string;
   duration: number;
 }
-/**
-const statusFactory: Record<string, (duration) => Status> = {
-  stunned: () => new Stun(2),
-  poisoned: () => new Poison(5),
-  lake_curse_mini: () => new LakeCurse(3),
-  lake_curse: () => new LakeCurse(10),
-  lake_blessing: () => new LakeBlessing(30),
-  lake_blessing_mini: () => new LakeBlessing(10),
-  grandma_blessing: () => new SlimeBoost(10),
-};
- */
 
 const statusFactory: Record<string, (d: number) => Status> = {
   stunned: (d) => new Stun(d),
@@ -27,6 +29,19 @@ const statusFactory: Record<string, (d: number) => Status> = {
   lake_curse: (d) => new LakeCurse(d),
   lake_blessing: (d) => new LakeBlessing(d),
   slime_boost: (d) => new SlimeBoost(d),
+  burn: (d) => new Burn(d),
+  infinite_ability: (d) => new InfinityAbility(d),
+  burning_rage: (d) => new BurningRage(d),
+  swamps_calm: (d) => new SwampsCalm(d),
+  swamps_whisper: (d) => new SwampsWhisper(d),
+  croak_of_strength_buff: (d) => new CroakOfStrengthBuff(d),
+  hiccup_of_doom_buff: (d) => new HiccupOfDoomBuff(d),
+  glow_of_insight_buff: (d) => new GlowOfInsightBuff(d),
+  swamps_guidance: (d) => new SwampsGuidance(d),
+  regeneration: (d) => new Regeneration(d),
+  sandy_eyes: (d) => new SandyEyes(d),
+  resurrection: (d) => new Resurrection(d),
+  affliction_touch: (d) => new AfflictionTouch(d),
 };
 
 export function createStatus(id: string, duration: number): Status {
