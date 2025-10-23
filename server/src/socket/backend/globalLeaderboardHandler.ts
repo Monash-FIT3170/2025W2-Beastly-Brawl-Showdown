@@ -1,7 +1,7 @@
 // responsible for handling global leaderboard requests
 
 import { Server, Socket } from "socket.io";
-import { getTopPlayersByWins, getTopPlayersByNumGamesPlayed, getTopPlayersByRaidScore } from "../../database/dbManager";
+import { getTopPlayersByWins, getTopPlayersByNumGamesPlayed, getTopPlayersByRaidScore, getTopPlayersByEndlessScore } from "../../database/dbManager";
 
 export const globalLeaderboardHandler = (io: Server, socket: Socket) => {
   socket.on("fetchGlobalLeaderboard", async () => {
@@ -11,9 +11,10 @@ export const globalLeaderboardHandler = (io: Server, socket: Socket) => {
       const topPlayersByWins = await getTopPlayersByWins(5);
       const topPlayersByNumGamesPlayed = await getTopPlayersByNumGamesPlayed(5);
       const topPlayersByRaidScore = await getTopPlayersByRaidScore(5);
+      const topPlayersByEndlessScore = await getTopPlayersByEndlessScore(5);
 
       // Emit to client (GlobalLeaderboard)
-      socket.emit("globalLeaderboardData", { success: true, data: [topPlayersByWins, topPlayersByNumGamesPlayed, topPlayersByRaidScore] });
+      socket.emit("globalLeaderboardData", { success: true, data: [topPlayersByWins, topPlayersByNumGamesPlayed, topPlayersByRaidScore, topPlayersByEndlessScore] });
 
     } catch (error) {
       console.error("Error fetching global leaderboard:", error);

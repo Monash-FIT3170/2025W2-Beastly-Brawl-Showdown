@@ -379,6 +379,33 @@ export async function getTopPlayersByNumGamesPlayed(_limit: number) {
   }
 }
 
+// Retrieves the top N players sorted by endless score (stage reached) (adventureProgression.stage)
+export async function getTopPlayersByEndlessScore(_limit: number) {
+  try {
+    // Get the top players sorted by adventureProgression.stage in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'adventureProgression.stage': -1 }, limit: _limit }
+    ).fetch();
+
+    console.log('Top Players by Endless Score:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.adventureProgression && player.adventureProgression.stage !== undefined);
+
+    // Return player name, endless score (called score for consistency)
+    return validPlayers.map(player => ({
+      username: player.username,
+      score: player.adventureProgression.stage
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players by endless score: ${error.message}`);
+    return [];
+  }
+}
+
+
 // Retrieves the top N players sorted by raid score
 export async function getTopPlayersByRaidScore(_limit: number) {
   try {
