@@ -70,9 +70,12 @@ export const characterSelectHandler = (io: Server, socket: Socket) => {
     const user = playerAccounts.get(socket.id);
     const unlockedMonsters = user?.adventureProgression.unlockedMonsters;
     if (unlockedMonsters) {
-      const monsters = Array.from(monsterMap.entries())
-        .filter(([monster]) => unlockedMonsters[monster])
-        .map(([_, createMonster]) => createMonster().getMonsterState());
+      // const monsters = Array.from(monsterMap.entries())
+      //   .filter(([monster]) => unlockedMonsters[monster])
+      //   .map(([_, createMonster]) => createMonster().getMonsterState());
+      const monsters = Array.from(monsterMap.values()).map((createMonster) =>
+        createMonster().getMonsterState()
+      );
       socket.emit("adventure_monster_list", monsters);
     } else {
       console.error(`${user?.username} Unlocked Monsters does not exist`);
