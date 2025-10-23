@@ -235,7 +235,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         style={{ backgroundImage: backgroundString }}
       >
         {isSpectating && !winner && (
-          <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10 w-full flex justify-between">
+          <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] sm:pt-[16rem] fixed pl-[3rem] pointer-events-auto z-10 w-full flex justify-between">
             <div className="flex lg:gap-5 sm:gap-10">
               <IconButton
                 style="arrowleft"
