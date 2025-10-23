@@ -31,6 +31,7 @@ import SeasonalEventHome from "./src/pages/Seasonal_Event/SeasonalEventHome";
 import SeasonalEventMonsterSelect from "./src/pages/Seasonal_Event/SeasonalEventMonsterSelect";
 import SeasonalEventBattle from "./src/pages/Seasonal_Event/SeasonalEventBattle";
 import SeasonalEventWin from "./src/pages/Seasonal_Event/SeasonalEventWin";
+import SeasonalEventDefeated from "./src/pages/Seasonal_Event/SeasonalEventDefeated";
 
 function mount(Component: React.FC) {
   const container = document.getElementById("react-target");
@@ -197,7 +198,7 @@ FlowRouter.route("/final-results-scoring-tournament/:code?", {
 });
 
 
-FlowRouter.route("/seasonal-event/:eventId?", {
+FlowRouter.route("/seasonal-event/home/:eventId?", {
   name: "SeasonalEventHome",
   action(params) {
     document.title = "Home - Seasonal Event | Beastly Brawl Showdown";
@@ -210,14 +211,6 @@ FlowRouter.route("/seasonal-event/:eventId?/monster-select", {
   action(params) {
     document.title = "Monster Select - Seasonal Event | Beastly Brawl Showdown";
     mount(() => <SeasonalEventMonsterSelect eventMonster={params.eventId} />);
-  },
-});
-
-FlowRouter.route("/seasonal-event/battle/:battleId?", {
-  name: "SeasonalEventBattle",
-  action(params) {
-    document.title = "Battle - Seasonal Event | Beastly Brawl Showdown";
-    mount(() => <SeasonalEventBattle battleId={params.battleId} />);
   },
 });
 
@@ -267,6 +260,17 @@ adventureLevelMonsters.forEach((monster) => {
   });
 });
 
+// Do the same as above for Events
+adventureLevelMonsters.forEach((monster) => {
+  FlowRouter.route(`/seasonal-event/boss-${monster}`, {
+    name: "AdventureBattle",
+    action() {
+      document.title = "Event - Seasonal Event | Beastly Brawl Showdown";
+      mount(() => <SeasonalEventBattle levelMonster={monster} />);
+    },
+  });
+});
+
 FlowRouter.route("/adventure/win/:monsterId", {
   name: "adventure.win",
   action() {
@@ -288,6 +292,14 @@ FlowRouter.route("/adventure/defeat", {
   action() {
     document.title = "Defeat! - Adventure Mode | Beastly Brawl Showdown";
     mount(AdventureDefeated);
+  },
+});
+
+FlowRouter.route("/seasonal-event/defeat", {
+  name: "AdventureDefeat",
+  action() {
+    document.title = "Defeat! - Adventure Mode | Beastly Brawl Showdown";
+    mount(SeasonalEventDefeated);
   },
 });
 

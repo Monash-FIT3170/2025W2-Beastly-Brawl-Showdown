@@ -131,9 +131,10 @@ export const SeasonalEventMonsterSelect: React.FC<SeasonalEventMonsterSelectProp
   };
 
   socket.on("start_event", (levelMonster: MonsterIdentifier) => {
-    console.log("START EVENT", event);
+    console.log("START EVENT", levelMonster);
 
-    FlowRouter.go(`/adventure/adventure-${levelMonster.toLowerCase()}`);
+    // FlowRouter.go(`/adventure/adventure-${levelMonster.toLowerCase()}`);
+    FlowRouter.go(`/seasonal-event/boss-${levelMonster.toLowerCase()}`);
   });
 
   const handleCancelSelection = () => {

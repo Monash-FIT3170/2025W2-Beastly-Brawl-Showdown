@@ -32,7 +32,7 @@ const SeasonalEventWin: React.FC = () => {
 
   const leave = () => {
     socket.emit("leave-game", { userID: socket.id });
-    FlowRouter.go("/seasonal-event");
+    FlowRouter.go("/");
   };
 
   const colorLoader: Record<string, string> = {
