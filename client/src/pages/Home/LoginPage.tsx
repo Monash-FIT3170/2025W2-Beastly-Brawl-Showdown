@@ -3,6 +3,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
+import { OutlineTextRed } from "../../components/texts/OutlineTextRed";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { GenericIcon } from "../../components/icons/GenericIcon";
@@ -17,13 +18,16 @@ export const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
-
+  //
   useEffect(() => {
     const loginListener = (data: { success: boolean; message: string }) => {
       setMessage(data.message);
       if (data.success) {
         socket.emit("syncAchievements");
-        FlowRouter.go("/Account"); // Redirect to account Page on success
+        setTimeout(() => {
+          socket.emit("fetchUserData"); // preload data
+          FlowRouter.go("/Account");
+        }, 300);
       }
     };
 
@@ -31,7 +35,7 @@ export const LoginPage = () => {
       setMessage(data.message);
       if (data.success) {
         setMode("login");
-        setMessage("Registration successful! Please log in.");
+        setMessage("Registration successful!");
       }
     };
 
@@ -60,7 +64,7 @@ export const LoginPage = () => {
         {/* Top-Left return button */}
         <div className="absolute top-15 left-15 z-20">
           <IconButton
-            style="x"
+            style="arrowleft"
             buttonColour="red"
             iconColour="stroked"
             size="small"
@@ -96,7 +100,7 @@ export const LoginPage = () => {
                 <InputBox
                   value={username}
                   placeholder="Username"
-                  maxLength={50}
+                  maxLength={8}
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </label>
@@ -118,53 +122,58 @@ export const LoginPage = () => {
             <div className="flex justify-center my-6">
               <ButtonGeneric
                 color="ronchi"
-                size="battle"
+                size="medium"
                 onClick={() => handleSubmit()}
               >
-                <OutlineText size="medium-battle-text">
+                <OutlineText size="choice-text">
                   {mode === "login" ? "LOG IN" : "REGISTER"}
                 </OutlineText>
               </ButtonGeneric>
             </div>
 
             {/* Message */}
-            {message && <p className="text-red-600 text-center">{message}</p>}
+            <div className="w-full text-center">
+              <OutlineTextRed size="choice-text" color="red">
+                {message}
+              </OutlineTextRed>
+            </div>
 
             {/* Toggle mode */}
             <div className="text-center mt-3">
-              <div className="flex justify-center mt-3">
-                <div className="text-center text-sm md:text-base lg:text-lg break-words max-w-full">
-                  {mode === "login" ? (
-                    <>
-                      Don't have an account?{" "}
-                      <span
-                        onClick={() => {
-                          setMessage("");
-                          setMode("register");
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
-                        className="underline cursor-pointer text-red-600"
-                      >
-                        Register
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      Already have an account?{" "}
-                      <span
-                        onClick={() => {
-                          setMessage("");
-                          setMode("login");
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
-                        className="underline cursor-pointer text-red-600"
-                      >
-                        Log in
-                      </span>
-                    </>
-                  )}
-                </div>
-              </div>
+              <OutlineText
+                size="choice-text"
+                className="break-words max-w-full"
+              >
+                {mode === "login" ? (
+                  <>
+                    Don't have an account?{" "}
+                    <span
+                      onClick={() => {
+                        setMessage("");
+                        setMode("register");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="underline cursor-pointer text-outline-red"
+                    >
+                      Register
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Already have an account?{" "}
+                    <span
+                      onClick={() => {
+                        setMessage("");
+                        setMode("login");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="underline cursor-pointer text-red-600"
+                    >
+                      Log in
+                    </span>
+                  </>
+                )}
+              </OutlineText>
             </div>
           </form>
         </div>

@@ -6,6 +6,7 @@ import { GenericHeader } from "../../components/cards/GenericHeader";
 import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { MonsterState } from "/types/single/monsterState";
+import { getSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface WinningScreenProps {
   playerMonster: MonsterState | null;
@@ -24,6 +25,12 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
     socket.emit("leave-game", { userID: socket.id });
     FlowRouter.go("/");
   };
+
+  var backgroundLocation = getSelectedBackgroundTheme().toUpperCase();
+  var backgroundString =
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
+    backgroundLocation +
+    ".jpg')";
 
   if (!playerMonster) {
     return (
@@ -45,26 +52,35 @@ const WinnerScreen: React.FC<WinningScreenProps> = ({ playerMonster }) => {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-ronchi">
-      <GenericHeader color="blue">
-        <OutlineText size="extraLarge">VICTORY!</OutlineText>
-      </GenericHeader>
-      <div className="bg-peach flex items-center flex flex-col justify-around border-[4px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
-        <OutlineText size="large">YOU WON!</OutlineText>
+    <div
+      style={{
+        backgroundImage: backgroundString,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat"
+      }}
+    >
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-white/60">
+        <GenericHeader color="blue">
+          <OutlineText size="extraLarge">VICTORY!</OutlineText>
+        </GenericHeader>
+        <div className="bg-peach flex items-center flex flex-col justify-around border-[4px] border-blackCurrant w-[90%] h-[75%] rounded-xl mt-[10%] xl:mt-[8%] xl: space-y-0 pl-[10%] pr-[10%] pt-[2%] text-center">
+          <OutlineText size="large">YOU WON!</OutlineText>
 
-        <img
-          className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]"
-          src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/${playerMonster.id}_WIN.png`}
-          alt={`${playerMonster.id}_WIN image`}
-        />
+          <img
+            className="w-[40rem] h-[40rem] xl:w-[20rem] xl:h-[20rem]"
+            src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/${playerMonster.id}_WIN.png`}
+            alt={`${playerMonster.id}_WIN image`}
+          />
 
-        <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
-          <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
-            <div>
-              <OutlineText size="medium">EXIT LOBBY</OutlineText>
+          <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
+            <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+              <div>
+                <OutlineText size="medium">EXIT LOBBY</OutlineText>
+              </div>
             </div>
-          </div>
-        </ButtonGeneric>
+          </ButtonGeneric>
+        </div>
       </div>
     </div>
   );

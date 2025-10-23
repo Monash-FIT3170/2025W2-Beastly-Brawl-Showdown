@@ -54,9 +54,12 @@ export class AlluringLullaby extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
+    let damage: number = 0;
+    actingPlayer.incAbilitiesUsed(1)
     this.incCurrentUse(-1);
     const hasAttack = this.checkEnemyAction(this.affectedPlayerActions);
     if (hasAttack) {
+      damage = this.damage;
       affectedPlayer.incHealth(-this.damage); //TODO: can they ever crit themselves?
 
       // Add logs
@@ -89,6 +92,9 @@ export class AlluringLullaby extends Action {
     return {
       appliedStatus: {
         success: false,
+      },
+      damageDealt: {
+        damage: damage,
       },
     };
   }

@@ -10,7 +10,6 @@ import { Achievements } from "../../database/achievementList";
 
 export const achievementHandler = (io: Server, socket: Socket) => {
   socket.on("updateAchievement", async (achievementId, check?) => {
-    console.log(`test`);
     const user = playerAccounts.get(socket.id);
 
     const achievement = user?.achievements.find(

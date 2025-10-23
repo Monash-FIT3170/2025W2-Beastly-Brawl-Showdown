@@ -3,12 +3,13 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
-import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { BaseCard } from "../../components/cards/BaseCard";
 import socket from "../../socket";
 import { ScoringRankBar } from "../../components/bars/ScoringRankBar";
 import { PlayerState } from "../../../../types/single/playerState";
 import { PlayerScore } from "../../../../types/single/playerScore";
+import { BackgroundThemePage } from "../../components/pagelayouts/BackgroundThemePage";
+import { removeSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
 
 interface FinalResultsScoringTournamentProps {
   gameCode?: string;
@@ -49,13 +50,13 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
 
   // Button handler for restarting a new lobby
   const renderConfigPage = () => {
-    socket.emit("cancel-game", { gameCode });
+    // socket.emit("cancel-game", { gameCode });
     FlowRouter.go("/host/choose-mode");
   };
 
   // Button handler for exiting to home
   const exitToHome = () => {
-    socket.emit("cancel-game", { gameCode });
+    // socket.emit("cancel-game", { gameCode });
     FlowRouter.go("/");
   };
 
@@ -99,7 +100,7 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
   }
 
   return (
-    <BlankPage>
+    <BackgroundThemePage>
       <div className="flex lg:flex-row lg:h-1/4 sm:flex-col w-full">
         <div className="flex flex-row w-1/8 sm:h-1/2">
           <div className="lg:ml-2 lg:mt-2 sm:ml-6 sm:mt-6">
@@ -153,6 +154,6 @@ export const FinalResultsScoringTournament = ({ gameCode }: FinalResultsScoringT
           </OutlineText>
         </ButtonGeneric>
       </div>
-    </BlankPage>
+    </BackgroundThemePage>
   );
 };

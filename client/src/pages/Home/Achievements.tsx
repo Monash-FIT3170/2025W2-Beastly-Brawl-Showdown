@@ -5,6 +5,7 @@ import socket from "../../socket";
 import { IconButton } from "../../components/buttons/IconButton";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
 import { BaseCard } from "../../components/cards/BaseCard";
+import { BlackText } from "../../components/texts/BlackText";
 import { OutlineText } from "../../components/texts/OutlineText";
 
 interface AchievementSchema {
@@ -49,14 +50,14 @@ export const Achievements = () => {
       </BaseCard>
 
       <div
-        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black w-full max-w-[900px] flex flex-col items-center"
+        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] outline-consistent w-full max-w-[900px] flex flex-col items-center"
         style={{ height: "500px" }}
       >
         <div className="w-full overflow-y-auto flex flex-col gap-4">
           {achievements.map((ach) => (
             <BaseCard
               key={ach._id}
-              color="peach"
+              color={ach.status ? "pictonBlue" : "peach"}
               width={53}
               height={5}
               className="cursor-pointer flex flex-col justify-center items-center p-2 hover:shadow-lg hover:border-yellow-400 transition-all"
@@ -65,11 +66,11 @@ export const Achievements = () => {
               <OutlineText size="medium" className="text-center">
                 {ach.hidden ? "Hidden Achievement" : ach.name}
               </OutlineText>
-              <OutlineText size="tiny" className="text-center">
+              <BlackText size="tiny" className="text-center">
                 {ach.hidden
                   ? "Unlock achievement to see"
                   : `${ach.progress} / ${ach.goal}`}
-              </OutlineText>
+              </BlackText>
             </BaseCard>
           ))}
         </div>
@@ -90,8 +91,8 @@ export const Achievements = () => {
       </BaseCard>
 
       <div
-        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] border-2 border-black w-full flex flex-col items-center"
-        style={{ height: "1600px" }}
+        className="p-4 sm:p-6 rounded-2xl shadow bg-[#EDAF55] outline-consistent w-full flex flex-col items-center"
+        style={{ height: "1300px" }}
       >
         <div className="w-full overflow-y-auto flex flex-col gap-4">
           {achievements.map((ach) => (
@@ -120,14 +121,14 @@ export const Achievements = () => {
 
   return (
     <BlankPage>
-      <div className="flex flex-col w-full p-4">
+      <div className="flex flex-col w-full p-4 overflow-auto">
         {/* Back button */}
         <div className="flex flex-row w-full mb-4">
           <IconButton
             style="arrowleft"
             iconColour="black"
             buttonColour="red"
-            size="large"
+            size="medium"
             onClick={() => FlowRouter.go("/Account")}
           />
         </div>

@@ -30,6 +30,15 @@ const ach1 = createAchievementSchema(
   undefined,
   100
 );
+
+const ach4 = createAchievementSchema(
+  "First Achievement",
+  "Find the Achievement's Page",
+  undefined,
+  1,
+  1,
+  true
+);
 const ach2 = createAchievementSchema(
   "Defeat the wolf",
   "Defeat the wolf",
@@ -40,7 +49,7 @@ const ach2 = createAchievementSchema(
   true
 );
 
-// Example using objective, would be to follow the above pattern and have an objectives list which maps a enum colour to a boolean
+// Example - using objective, would be to follow the above pattern and have an objectives list which maps a enum colour to a boolean
 //What this lets you do is when you call updateAchievement you putin the secondary input which is for updating the object this lets
 //you create achievements like see all slime varients etc
 
@@ -53,10 +62,10 @@ const ach3 = createAchievementSchema(
   "Defeat All Monster Types",
   "Defeat All Monster Types",
   list,
+  undefined,
   Object.keys(list).length,
-  100,
   undefined,
   true
 );
 //Add all created Achievements into this
-export const Achievements: AchievementSchema[] = [ach1, ach2, ach3];
+export const Achievements: AchievementSchema[] = [ach1, ach2, ach3, ach4];
