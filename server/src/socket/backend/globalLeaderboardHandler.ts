@@ -8,10 +8,10 @@ export const globalLeaderboardHandler = (io: Server, socket: Socket) => {
     try {
       // Leaderboard will get top 5 for now ... Can increase later
       // Fetch from database the top players 
-      const topPlayersByWins = await getTopPlayersByWins(5);
-      const topPlayersByNumGamesPlayed = await getTopPlayersByNumGamesPlayed(5);
-      const topPlayersByRaidScore = await getTopPlayersByRaidScore(5);
-      const topPlayersByEndlessScore = await getTopPlayersByEndlessScore(5);
+      const topPlayersByWins = await getTopPlayersByWins(10);
+      const topPlayersByNumGamesPlayed = await getTopPlayersByNumGamesPlayed(10);
+      const topPlayersByRaidScore = await getTopPlayersByRaidScore(10);
+      const topPlayersByEndlessScore = await getTopPlayersByEndlessScore(10);
 
       // Emit to client (GlobalLeaderboard)
       socket.emit("globalLeaderboardData", { success: true, data: [topPlayersByWins, topPlayersByNumGamesPlayed, topPlayersByRaidScore, topPlayersByEndlessScore] });
