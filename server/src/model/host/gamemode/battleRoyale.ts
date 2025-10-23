@@ -81,6 +81,33 @@ export class BattleRoyale implements IGameMode {
     return false;
   }
 
+  public onTurnStarted(
+    session: GameSession,
+    battle: Battle,
+    io: Server,
+    socket: Socket
+  ): void {
+    // Loop through the potential spectators of each player and check if they are spectating. If they are, add them to the battle spectator list
+    for (let player of battle.getPlayers()) {
+      let potentialSpectators = player.getPotentialSpectators();
+      for (let spectator of potentialSpectators) {
+        if (spectator.isSpectating() && !spectator.isInSpectatingRoom()) {
+          battle.addSpectator(spectator);
+
+          io.sockets.sockets.get(spectator.getId())?.join(battle.getId());
+          io.sockets.sockets
+            .get(spectator.getId())
+            ?.join(`${battle.getId()}-spectators`);
+          io.sockets.sockets
+            .get(spectator.getId())
+            ?.emit("battle-started", battle.getId());
+
+          spectator.setInSpectatingRoom(true);
+        }
+      }
+    }
+  }
+
   public onBattleStarted(
     session: GameSession,
     battle: Battle,
@@ -105,6 +132,7 @@ export class BattleRoyale implements IGameMode {
       io.sockets.sockets
         .get(spectator.getId())
         ?.emit("battle-started", battle.getId());
+      spectator.setInSpectatingRoom(true);
     }
   }
 

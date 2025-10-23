@@ -51,6 +51,7 @@ export class Player {
 
   private potentialSpectators: Player[] = [];
   private spectating: boolean = false;
+  private inSpectatingRoom: boolean = false;
 
   constructor(
     id: string,
@@ -517,6 +518,14 @@ export class Player {
 
   public setIsSpectating(value: boolean): void {
     this.spectating = value;
+  }
+
+  public isInSpectatingRoom(): boolean {
+    return this.inSpectatingRoom;
+  }
+
+  public setInSpectatingRoom(value: boolean): void {
+    this.inSpectatingRoom = value;
   }
 
   public getPotentialSpectators(): Player[] {

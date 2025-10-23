@@ -22,6 +22,12 @@ export interface IGameMode {
     io: Server,
     socket: Socket
   ): void;
+  onTurnStarted(
+    session: GameSession,
+    battle: Battle,
+    io: Server,
+    socket: Socket
+  ): void;
   onBattleEnded(
     session: GameSession,
     battle: Battle,

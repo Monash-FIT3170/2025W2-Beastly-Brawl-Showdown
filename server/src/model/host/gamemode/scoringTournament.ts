@@ -94,6 +94,14 @@ export class ScoringTournament implements IGameMode {
     //nothing to do here for scoring tournament
   }
 
+  public onTurnStarted(
+    session: GameSession,
+    battle: Battle,
+    io: Server,
+    socket: Socket
+  ): void {
+    //nothing to do here for scoring tournament
+  }
   //Update the scoreboard
   //TODO: Add Player to waiting room
   public onBattleEnded(

@@ -13,6 +13,8 @@ export default function proceedBattleTurn(
   gameSession: GameSession,
   battle: Battle
 ) {
+  gameSession.onTurnStarted(gameSession, battle, io, socket);
+
   // TODO: Set a property in the battle instance to object it is in the 10 sec waiting stage (for the host match summary page)
   let timer = 10;
   battle.clearBattleLogs();
