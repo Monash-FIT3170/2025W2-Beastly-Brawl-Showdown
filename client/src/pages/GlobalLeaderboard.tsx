@@ -98,7 +98,7 @@ export const GlobalLeaderboard = () => {
         {/* Sort Toggle Button */}
         <div className="mb-6">
           <ButtonGeneric size="battle" color="blue" onClick={toggleSortBy}>
-            <OutlineText size="medium">
+            <OutlineText size="midsmall">
               SORT BY: {sortLabel}
             </OutlineText>
           </ButtonGeneric>
