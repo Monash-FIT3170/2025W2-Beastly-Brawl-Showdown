@@ -13,7 +13,7 @@ export class CinderTail extends Monster {
       new FlameLashAbilityAction(),
       25,
       2,
-      14
+      11
     );
   }
 }

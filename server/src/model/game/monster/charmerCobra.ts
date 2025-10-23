@@ -14,7 +14,7 @@ export class CharmerCobra extends Monster {
       new AlluringLullaby(),
       30,
       2,
-      14
+      12
     );
   }
 }
