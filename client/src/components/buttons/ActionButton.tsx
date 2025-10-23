@@ -64,6 +64,14 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       action: actionState,
       playerId: socket.id,
     });
+    if (actionState.id === ActionIdentifier.DEFEND) {
+      playSFX("sword");
+    } else if (actionState.id === ActionIdentifier.ATTACK){
+      playSFX("attack");
+    }
+    else {
+      playSFX("special");
+    }
   };
 
   const image = `

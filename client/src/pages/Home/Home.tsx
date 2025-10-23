@@ -96,7 +96,8 @@ useEffect(() => {
         <div className="flex flex-row w-full sm:items-end lg:items-center justify-around">
           <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
         </div>
-        <div className="absolute top-4 left-4 z-50">
+        <div className="absolute top-[3rem] left-[3rem]">
+
         <ButtonGeneric
           onClick={handleToggleMusic}
           color="ronchi"
