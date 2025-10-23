@@ -125,16 +125,6 @@ const SeasonalEventBattle: React.FC<SeasonalEventBattleProps> = ({ levelMonster 
     };
   }, [stage]);
 
-  // useEffect(() => {
-  //   const onAdventureDefeat = () => {
-  //     FlowRouter.go("/adventure/defeat");
-  //   };
-  //   socket.on("adventure_defeat", onAdventureDefeat);
-  //   return () => {
-  //     socket.off("adventure_defeat", onAdventureDefeat);
-  //   };
-  // });
-
     useEffect(() => {
     const onSeasonalEventDefeat = () => {
       FlowRouter.go("/seasonal-event/defeat");

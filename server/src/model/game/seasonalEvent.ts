@@ -18,7 +18,7 @@ export class SeasonalEvent {
     this.player = player;
     this.level = level;
     this.levelMonster = levelMap[level];
-    this.stage = 0;
+    this.stage = 7;
     this.playerMonster = player.getMonster();
     this.currentStory = null;
   }
@@ -42,10 +42,6 @@ export class SeasonalEvent {
 
   public getStage(): number {
     return this.stage;
-  }
-
-  public setEventAdventure(): void {
-    this.stage = 7;
   }
 
   public incrementStage(): void {

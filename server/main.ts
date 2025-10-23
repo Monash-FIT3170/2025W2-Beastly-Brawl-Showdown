@@ -35,6 +35,7 @@ import {
   createDefaultPlayerAccountSchema,
 } from "./src/database/dbManager";
 import { SeasonalEvent } from "./src/model/game/seasonalEvent";
+import { seasonalEventTurnHandler } from "./src/socket/seasonalEventTurnHandler";
 export const playerAccounts = new Map<string, PlayerAccountSchema>();
 
 // Helper function that
@@ -95,6 +96,7 @@ Meteor.startup(async () => {
     adventureModeHandler(io, socket);
     SeasonalEventModeHandler(io, socket);
     adventureTurnHandler(io, socket);
+    seasonalEventTurnHandler(io, socket);
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);

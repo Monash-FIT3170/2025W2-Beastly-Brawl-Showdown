@@ -12,7 +12,7 @@ export class JackedOLantern extends Monster {
       "The raid boss of The Spook Garden Event. A large pumpkin with arms and legs to devour its prey.",
       new Attacker(),
       new GroundSlamAbilityAction(),
-      40,
+      33,
       4,
       10
     );

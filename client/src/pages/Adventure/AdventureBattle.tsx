@@ -114,16 +114,6 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     };
   }, [stage]);
 
-    useEffect(() => {
-    const onEventWin = ({ monsterId }: { monsterId: string }) => {
-      FlowRouter.go(`/seasonal-event/win/${monsterId}`);
-    };
-    socket.on("event_win", onEventWin);
-    return () => {
-      socket.off("event_win", onEventWin);
-    };
-  }, [stage]);
-
   useEffect(() => {
     const onAdventureDefeat = () => {
       FlowRouter.go("/adventure/defeat");
