@@ -80,11 +80,11 @@ export const SeasonalEventModeHandler = (io: Server, socket: Socket) => {
           return;
         }
   
-  
         playerCode?.setMonster(playerMonster);
 
         console.log(`Set ${playerMonster.getName()} for player ${playerCode?.getName()}`);
 
+      // Create the bot for the event monster
       const bot = new Player(
         bossMonster.getId(),
         "The Event Boss",
@@ -109,7 +109,7 @@ export const SeasonalEventModeHandler = (io: Server, socket: Socket) => {
 
       for (const player of battle.getPlayers()) {
         io.sockets.sockets.get(player.getId())?.join(battle.getId());
-        //Get all players to join a common game session socket room
+        //Get both players to join a common game session socket room
         io.sockets.sockets.get(player.getId())?.join(`game-${gameCodeN}`);
       }
 

@@ -82,7 +82,7 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
             onClick={() => FlowRouter.go("/")}
           />
 
-          {/* “CLASSIC” header */}
+          {/* Header for the title of the Current Event */}
           <BaseCard color="peach" width={40} height={8}>
             <OutlineText size="extraLarge">{eventName}</OutlineText>
           </BaseCard>
@@ -109,7 +109,7 @@ const [observedEvent, setObservedEvent] = useState<number>(10);
         </div>
         {/* Navigation (fixed to bottom) */}
         <div className="fixed bottom-25 left-1/2 -translate-x-1/5 grid grid-cols-3 items-center w-[70%] lg:max-w-md z-40">
-            {/* Explore Button (centered) */}
+            {/* Enter Button (centered) */}
             <div className="flex justify-center">
             <ButtonGeneric
                 color="ronchi"
