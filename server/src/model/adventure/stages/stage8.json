@@ -294,8 +294,7 @@
         "id": "wolf_fight",
         "type": "FIGHT",
         "enemyId": ["pouncing_bandit", "WOLF"],
-        "next": "victory",
-        "scaling": 3
+        "next": "victory"
       },
       {
         "id": "victory",
@@ -323,8 +322,7 @@
         "id": "rhino_fight",
         "type": "FIGHT",
         "enemyId": ["rocky_rhino", "RHINO"],
-        "next": "victory",
-        "scaling": 3
+        "next": "victory"
       },
       {
         "id": "victory",
@@ -352,8 +350,7 @@
         "id": "dragon_fight",
         "type": "FIGHT",
         "enemyId": ["cinder_tail", "DRAGON"],
-        "next": "victory",
-        "scaling": 3
+        "next": "victory"
       },
       {
         "id": "victory",
