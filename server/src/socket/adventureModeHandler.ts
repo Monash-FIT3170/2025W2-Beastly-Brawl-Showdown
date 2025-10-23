@@ -214,6 +214,9 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
         const oldRecord = adventureProgression.stage;
         if (adventure.getStage() > oldRecord) {
           adventureProgression.stage = adventure.getStage();
+          updatePlayerAccount(user!._id, {
+            adventureProgression: adventureProgression,
+          });
         }
       } else {
         console.error(`ADV: Failed to load ${user?._id}'s endless record.`);
