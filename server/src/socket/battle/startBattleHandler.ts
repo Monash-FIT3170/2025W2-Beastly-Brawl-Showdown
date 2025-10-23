@@ -93,8 +93,13 @@ export default function proceedBattleTurn(
   let player2 = playersInBattle[1];
 
   spectatorsInBattle.forEach((spectator) => {
-    const isSpecPlayer1 = player1.getPotentialSpectators().includes(spectator);
-    const playerToSpectate = isSpecPlayer1 ? player1 : player2;
+    const currentlySpectating = spectator.getCurrentlySpectating();
+
+    let playerToSpectate = player1;
+
+    if (currentlySpectating?.getId() === player2.getId()) {
+      playerToSpectate = player2;
+    }
 
     io.to(spectator.getId()).emit("battle_state", {
       battle: battle.getBattleState(playerToSpectate.getId()),
@@ -198,10 +203,20 @@ export default function proceedBattleTurn(
         opp: player1.getAnimations().filter((a) => a != ""),
       });
       spectatorsInBattle.forEach((spectator) => {
+        const currentlySpectating = spectator.getCurrentlySpectating();
+
+        let playerToSpectate = player1;
+        let opponentToSpectate = player2;
+
+        if (currentlySpectating?.getId() === player2.getId()) {
+          playerToSpectate = player2;
+          opponentToSpectate = player1;
+        }
+
         io.to(spectator.getId()).emit("update_animation", {
           phase: "prepare",
-          player: player1.getAnimations().filter((a) => a != ""),
-          opp: player2.getAnimations().filter((a) => a != ""),
+          player: playerToSpectate.getAnimations().filter((a) => a != ""),
+          opp: opponentToSpectate.getAnimations().filter((a) => a != ""),
         });
       });
 
@@ -216,7 +231,15 @@ export default function proceedBattleTurn(
           io.to(player1.getId()).emit("roll_dice", player1DiceRoll);
 
           spectatorsInBattle.forEach((spectator) => {
-            io.to(spectator.getId()).emit("roll_dice", player1DiceRoll);
+            const currentlySpectating = spectator.getCurrentlySpectating();
+
+            let playerDiceRoll = player1DiceRoll;
+
+            if (currentlySpectating?.getId() === player2.getId()) {
+              playerDiceRoll = player2DiceRoll;
+            }
+
+            io.to(spectator.getId()).emit("roll_dice", playerDiceRoll);
           });
         }
         if (player2DiceRoll > 0) {
@@ -294,8 +317,13 @@ export default function proceedBattleTurn(
           });
 
           spectatorsInBattle.forEach((spectator) => {
-            const isSpecPlayer1 = player1.getPotentialSpectators().includes(spectator);
-            const playerToSpectate = isSpecPlayer1 ? player1 : player2;
+            const currentlySpectating = spectator.getCurrentlySpectating();
+
+            let playerToSpectate = player1;
+
+            if (currentlySpectating?.getId() === player2.getId()) {
+              playerToSpectate = player2;
+            }
 
             io.to(spectator.getId()).emit("battle_state", {
               battle: battle.getBattleState(playerToSpectate.getId()),
@@ -316,10 +344,20 @@ export default function proceedBattleTurn(
           });
 
           spectatorsInBattle.forEach((spectator) => {
+            const currentlySpectating = spectator.getCurrentlySpectating();
+
+            let playerToSpectate = player1;
+            let opponentToSpectate = player2;
+
+            if (currentlySpectating?.getId() === player2.getId()) {
+              playerToSpectate = player2;
+              opponentToSpectate = player1;
+            }
+
             io.to(spectator.getId()).emit("update_animation", {
               phase: "execute",
-              player: player1.getAnimations().filter((a) => a != ""),
-              opp: player2.getAnimations().filter((a) => a != ""),
+              player: playerToSpectate.getAnimations().filter((a) => a != ""),
+              opp: opponentToSpectate.getAnimations().filter((a) => a != ""),
             });
           });
 
@@ -346,8 +384,16 @@ export default function proceedBattleTurn(
           });
 
           spectatorsInBattle.forEach((spectator) => {
+            const currentlySpectating = spectator.getCurrentlySpectating();
+
+            let playerToSpectate = player1;
+
+            if (currentlySpectating?.getId() === player2.getId()) {
+              playerToSpectate = player2;
+            }
+
             io.to(spectator.getId()).emit("battle_state", {
-              battle: battle.getBattleState(player1.getId()),
+              battle: battle.getBattleState(playerToSpectate.getId()),
               metadata: gameSession.getMetadata(),
               isSpectating: true,
             });
@@ -374,10 +420,20 @@ export default function proceedBattleTurn(
             });
 
             spectatorsInBattle.forEach((spectator) => {
+              const currentlySpectating = spectator.getCurrentlySpectating();
+
+              let playerToSpectate = player1;
+              let opponentToSpectate = player2;
+
+              if (currentlySpectating?.getId() === player2.getId()) {
+                playerToSpectate = player2;
+                opponentToSpectate = player1;
+              }
+
               io.to(spectator.getId()).emit("update_animation", {
                 phase: "default",
-                player: player1.getAnimations(),
-                opp: player2.getAnimations(),
+                player: playerToSpectate.getAnimations(),
+                opp: opponentToSpectate.getAnimations(),
               });
             });
 

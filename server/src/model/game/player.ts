@@ -52,6 +52,7 @@ export class Player {
   private potentialSpectators: Player[] = [];
   private spectating: boolean = false;
   private inSpectatingRoom: boolean = false;
+  private currentlySpectating: Player | null = null;
 
   constructor(
     id: string,
@@ -510,6 +511,14 @@ export class Player {
 
   public clearStoryItems(): void {
     this.storyItems = [];
+  }
+
+  public getCurrentlySpectating(): Player | null {
+    return this.currentlySpectating;
+  }
+
+  public setCurrentlySpectating(player: Player | null): void {
+    this.currentlySpectating = player;
   }
 
   public isSpectating(): boolean {

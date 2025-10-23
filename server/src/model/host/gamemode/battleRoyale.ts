@@ -8,6 +8,7 @@ import { GameModeIdentifier } from "/types/single/gameMode";
 import { PlayerState } from "/types/single/playerState";
 import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { ActionResult } from "../../../../../types/single/actionState";
+import { spec } from "node:test/reporters";
 
 export class BattleRoyale implements IGameMode {
   public name = GameModeIdentifier.BATTLE_ROYALE as const;
@@ -93,6 +94,7 @@ export class BattleRoyale implements IGameMode {
       for (let spectator of potentialSpectators) {
         if (spectator.isSpectating() && !spectator.isInSpectatingRoom()) {
           battle.addSpectator(spectator);
+          spectator.setCurrentlySpectating(player);
 
           io.sockets.sockets.get(spectator.getId())?.join(battle.getId());
           io.sockets.sockets
@@ -120,6 +122,7 @@ export class BattleRoyale implements IGameMode {
       for (let spectator of potentialSpectators) {
         if (spectator.isSpectating()) {
           battle.addSpectator(spectator);
+          spectator.setCurrentlySpectating(player);
         }
       }
     }
@@ -218,6 +221,10 @@ export class BattleRoyale implements IGameMode {
     );
 
     battle.clearSpectators();
+
+    for (let spectator of battle.getSpectators()) {
+      spectator.setCurrentlySpectating(null);
+    }
 
     this.onBattlesEnded(session, io, socket);
     console.log(
