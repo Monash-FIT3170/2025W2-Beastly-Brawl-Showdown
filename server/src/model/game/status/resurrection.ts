@@ -20,25 +20,26 @@ export class Resurrection extends EndStatus {
   }
 
   public endingEffect(player: Player): boolean {
-    //not working, need fix
+
     const resurrect = player
       .getStatuses()
       .find((s) => s.getName() === "Resurection") as Resurrection | undefined;
 
-    if (!resurrect || resurrect.isUsed()) {
-      return false;
-    }
+    // if (!resurrect || resurrect.isUsed()) {
+    //   return false;
+    // }
 
     const roll = Math.random();
 
-    if (roll < 30 && player.getHealth() == 0) {
-      resurrect.used = true;
+    if (roll < 0.3 && player.getHealth() == 0) {
+      // resurrect.used = true;
       const monster = player.getMonster();
       const maxHp = monster ? monster.getMaxHealth() : 0;
       const newHp = Math.max(1, Math.ceil(maxHp * 0.5));
 
-      player.setHealth(newHp);
+      player.incHealth(newHp);
 
+      player.removeStatus(this)
       // Flavor logs
       player.addLog(
         "The Everbloom Fragment pulses, petals bloom in light as you return to life!"
