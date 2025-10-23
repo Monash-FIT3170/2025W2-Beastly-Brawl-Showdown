@@ -78,7 +78,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       <ButtonGeneric
         color={colorLoader[actionState.id] ?? "purple"}
         size="battle"
-        isDisabled={isDisabled}
+        isDisabled={finalIsDisabled}
         onClick={
           battleId === "ADVENTURE"
             ? adventureClicked
