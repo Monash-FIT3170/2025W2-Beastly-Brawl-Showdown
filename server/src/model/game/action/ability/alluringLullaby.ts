@@ -55,7 +55,7 @@ export class AlluringLullaby extends Action {
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
     let damage: number = 0;
-    actingPlayer.incAbilitiesUsed(1)
+    actingPlayer.incAbilitiesUsed(1);
     this.incCurrentUse(-1);
     const hasAttack = this.checkEnemyAction(this.affectedPlayerActions);
     if (hasAttack) {

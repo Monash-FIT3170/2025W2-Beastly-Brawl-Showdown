@@ -18,11 +18,18 @@ import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { IconButton } from "../../components/buttons/IconButton";
 import { LeavePopup } from "../../components/popups/AdventureLeavePopup";
 import { MonsterInfoPopup } from "../../components/popups/MonsterInfoPopup";
+import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import { getSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
+import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 
 interface BattleProps {
   battleId: string | null; // Add battleId as a prop
 }
+
+const leave = () => {
+  socket.emit("leave-game", { userID: socket.id });
+  FlowRouter.go("/");
+};
 
 const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [battleState, setBattleState] = useState<BattleState | null>(null);
@@ -39,6 +46,11 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
   const [waitForConclusion, setWaitForConclusion] = useState<boolean>(false);
   const [viewingInfo, setViewingInfo] = useState<Boolean>(false);
   const [viewingEnemyInfo, setViewingEnemyInfo] = useState<Boolean>(false);
+  const [isSpectating, setIsSpectating] = useState<boolean>(false);
+  const [finalScreen, setFinalScreen] = useState<boolean>(true);
+  const [gameMode, setGameMode] = useState<GameModeIdentifier>(
+    GameModeIdentifier.SCORING
+  );
 
   var backgroundLocation = getSelectedBackgroundTheme().toUpperCase();
   var backgroundString =
@@ -51,8 +63,10 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
     socket.on("battle_state", (data) => {
       console.log("[BATTLESTATE]: ", data.battle);
       console.log("[METADATA]: ", data.metadata);
+      console.log("[ISSPECTATING]: ", data.isSpectating);
       setBattleState(data.battle);
       setMetadata(data.metadata);
+      setIsSpectating(data.isSpectating);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -64,22 +78,38 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       setTimer(time);
     });
 
-    socket.on("battle_end", ({ result, winners }) => {
-      setWaitForConclusion(false);
-      console.log(result, winners);
-      if (result === "draw") {
-        setWinner("Draw");
-      } else if (result === "concluded") {
-        setWinner(winners[0]);
-      }
-      console.log("Winner: ", winner);
-      if (battleState?.yourPlayer.name === winner) {
-        socket.emit("updateAchievement", "Can't stop winning");
-        socket.emit("updateWin");
+    socket.on("spectator_battle_end", ({ gameCode, mode, finalScreen }) => {
+      if (!finalScreen) {
+        FlowRouter.go(`/session/${gameCode}`, {}, { fromBattle: "true" });
       } else {
-        socket.emit("updateLoss");
+        setGameMode(mode);
+        setFinalScreen(finalScreen);
+        setWinner("SPECTATOR_LOSS");
       }
     });
+
+    socket.on(
+      "battle_end",
+      ({ result, winners, mode, gameCode, finalScreen }) => {
+        setWaitForConclusion(false);
+        setGameMode(mode);
+        setGameCode(gameCode);
+        setFinalScreen(finalScreen);
+        console.log(result, winners, mode);
+        if (result === "draw") {
+          setWinner("Draw");
+        } else if (result === "concluded") {
+          setWinner(winners[0]);
+        }
+        console.log("Winner: ", winner);
+        if (battleState?.yourPlayer.name === winner) {
+          socket.emit("updateAchievement", "Can't stop winning");
+          socket.emit("updateWin");
+        } else {
+          socket.emit("updateLoss");
+        }
+      }
+    );
 
     // TODO: For future, this should handle socket message 'handle_animation' and pass in an animation identifier
     // to handle all types of animations triggered by actions
@@ -204,6 +234,19 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         className="inset-0 w-screen h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
+        {isSpectating && !winner && (
+          <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] sm:pt-[16rem] fixed pl-[3rem] pointer-events-auto z-10 w-full flex justify-between">
+            <div className="flex lg:gap-5 sm:gap-10">
+              <IconButton
+                style="arrowleft"
+                iconColour="black"
+                buttonColour="red"
+                size="small"
+                onClick={() => leave()}
+              />
+            </div>
+          </div>
+        )}
         {viewingInfo && (
           <MonsterInfoPopup
             playerState={battleState.yourPlayer}
@@ -226,11 +269,19 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         ) : */}
         {winner ? (
           winner === "Draw" ? (
-            <DrawScreen />
+            <DrawScreen
+              mode={gameMode}
+              gameCode={gameCode}
+              finalScreen={finalScreen}
+            />
           ) : battleState?.yourPlayer.name === winner ? (
             <WinnerScreen playerMonster={battleState?.yourPlayer.monster} />
           ) : (
-            <LoserScreen />
+            <LoserScreen
+              mode={gameMode}
+              gameCode={gameCode}
+              finalScreen={finalScreen}
+            />
           )
         ) : (
           <>
@@ -307,6 +358,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
                 <BattleFooter
                   possibleActions={possibleActions}
                   battleId={battleId}
+                  isSpectating={isSpectating}
                 />
               )}
             </div>

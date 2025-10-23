@@ -85,6 +85,23 @@ export class ScoringTournament implements IGameMode {
     console.log("Scoreboard: ", this.board.showBoard());
   }
 
+  public onBattleStarted(
+    session: GameSession,
+    battle: Battle,
+    io: Server,
+    socket: Socket
+  ): void {
+    //nothing to do here for scoring tournament
+  }
+
+  public onTurnStarted(
+    session: GameSession,
+    battle: Battle,
+    io: Server,
+    socket: Socket
+  ): void {
+    //nothing to do here for scoring tournament
+  }
   //Update the scoreboard
   //TODO: Add Player to waiting room
   public onBattleEnded(
@@ -165,6 +182,9 @@ export class ScoringTournament implements IGameMode {
               io.sockets.sockets.get(player.getId())?.emit("battle_end", {
                 result: "concluded",
                 winners: [playerName],
+                mode: this.name,
+                gameCode: session.getGameCode().toString(),
+                finalScreen: true,
               });
             }
           } else {
@@ -173,6 +193,9 @@ export class ScoringTournament implements IGameMode {
               io.sockets.sockets.get(player.getId())?.emit("battle_end", {
                 result: "draw",
                 winners: [],
+                mode: this.name,
+                gameCode: session.getGameCode().toString(),
+                finalScreen: true,
               });
             }
           }

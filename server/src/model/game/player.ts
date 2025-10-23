@@ -49,6 +49,11 @@ export class Player {
 
   private animations: string[] = [];
 
+  private potentialSpectators: Player[] = [];
+  private spectating: boolean = false;
+  private inSpectatingRoom: boolean = false;
+  private currentlySpectating: Player | null = null;
+
   constructor(
     id: string,
     name: string,
@@ -522,6 +527,38 @@ export class Player {
 
   public clearStoryItems(): void {
     this.storyItems = [];
+  }
+
+  public getCurrentlySpectating(): Player | null {
+    return this.currentlySpectating;
+  }
+
+  public setCurrentlySpectating(player: Player | null): void {
+    this.currentlySpectating = player;
+  }
+
+  public isSpectating(): boolean {
+    return this.spectating;
+  }
+
+  public setIsSpectating(value: boolean): void {
+    this.spectating = value;
+  }
+
+  public isInSpectatingRoom(): boolean {
+    return this.inSpectatingRoom;
+  }
+
+  public setInSpectatingRoom(value: boolean): void {
+    this.inSpectatingRoom = value;
+  }
+
+  public getPotentialSpectators(): Player[] {
+    return this.potentialSpectators;
+  }
+
+  public addPotentialSpectators(players: Player[]): void {
+    this.potentialSpectators.push(...players);
   }
 
   //PLAYER STATE:

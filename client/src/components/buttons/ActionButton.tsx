@@ -14,6 +14,7 @@ interface ActionButtonProps {
   battleId: string;
   isActive: boolean;
   onClick: () => void;
+  isDisabled?: boolean;
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({
@@ -21,6 +22,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   battleId,
   isActive,
   onClick,
+  isDisabled = false,
 }) => {
   const imagePath =
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/action/" +
@@ -37,10 +39,10 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   };
 
   // Check if we still have available uses
-  const isDisabled = availableUses == 0;
+  const finalIsDisabled = isDisabled || availableUses === 0;
 
   const actionClicked = () => {
-    if (isDisabled) return;
+    if (finalIsDisabled) return;
     // Do the action stuff
     socket.emit("action_selected", {
       action: actionState,
@@ -69,7 +71,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       <ButtonGeneric
         color={colorLoader[actionState.id] ?? "purple"}
         size="battle"
-        isDisabled={isDisabled}
+        isDisabled={finalIsDisabled}
         onClick={battleId === "ADVENTURE" ? adventureClicked : actionClicked}
         isPassive={isPassive}
       >
