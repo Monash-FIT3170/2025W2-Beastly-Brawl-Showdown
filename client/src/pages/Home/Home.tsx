@@ -137,9 +137,9 @@ useEffect(() => {
           )}
           {!loggedInUser ? (
             <ButtonGeneric
-              color="ronchi"
-              size="squaremedium"
-              onClick={() => setShowLogin(true)}
+              color={"ronchi"}
+              size={"squaremedium"}
+              onClick={() => FlowRouter.go("/login")}
             >
               <div className="flex flex-col text-center">
                 <OutlineText size="tiny">LOG</OutlineText>
@@ -208,13 +208,6 @@ useEffect(() => {
         </div>
         
       </div>
-
-      {showLogin && (
-        <LoginPopup
-          onLoginSuccess={handleLoginSuccess}
-          setExitPopup={handleExitLogin}
-        />
-      )}
     </BlankPage>
   );
 };

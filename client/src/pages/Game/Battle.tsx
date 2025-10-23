@@ -74,6 +74,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
       }
       console.log("Winner: ", winner);
       if (battleState?.yourPlayer.name === winner) {
+        socket.emit("updateAchievement", "Can't stop winning");
         socket.emit("updateWin");
       } else {
         socket.emit("updateLoss");
