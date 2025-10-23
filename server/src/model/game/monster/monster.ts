@@ -164,10 +164,9 @@ export abstract class Monster {
       // console.log("PVE SCALING DEBUG: ATK BONUS SCALED", this.attackBonus);
     } else {
       this.maxHealth = this.startingHealth = Math.ceil(
-        stage +
-          stage * (Math.floor(Math.random() * 2) + 1) +
-          Math.floor(stage / 10) * Math.floor(stage / 10)
+        stage + stage * (Math.floor(Math.random() * 2 + 1) * 0.5)
       );
+
       this.attackBonus = this.startingAttackBonus = Math.ceil(
         this.attackBonus + stage * 0.75
       );
