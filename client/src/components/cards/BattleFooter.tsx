@@ -2,6 +2,8 @@ import React, { useRef, useState, useLayoutEffect } from "react";
 import ActionButton from "../buttons/ActionButton";
 import { ActionState } from "/types/single/actionState";
 import socket from "../../socket";
+import { BaseCard } from "./BaseCard";
+import { OutlineText } from "../texts/OutlineText";
 
 interface BattleFooterProp {
   possibleActions: ActionState[];

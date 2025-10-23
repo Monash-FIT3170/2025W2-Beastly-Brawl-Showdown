@@ -1,0 +1,45 @@
+[
+  {
+    "id": "Final Encounter",
+    "level": [1000],
+    "description": "the final encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Not many people have the courage to walk through The Spook Garden.",
+          "Trees as old as the night, and a thick stench passing through those that dare to come here, shivering them like ghosts.",
+          "What keeps everyone out is The Jacked o' Lantern."
+        ],
+        "type": "DIALOGUE",
+        "next": "stranger_dialogue"
+      },
+      {
+        "id": "stranger_dialogue",
+        "result": [
+          "Leave if you value your life.",
+          "Because no one who enters can leave The Spook Garden."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["jacked_o_lantern", "The Event Boss"],
+        "next": "stranger_fight"
+      },
+      {
+        "id": "stranger_fight",
+        "type": "FIGHT",
+        "enemyId": ["jacked_o_lantern", "The Event Boss"],
+        "next": "victory"
+      },
+      {
+        "id": "victory",
+        "type": "DIALOGUE",
+        "result": [
+          "You've brought me down. This won't happen again.",
+          "So you have ten seconds to leave before I bask in The Spook Garden and heal up like this fight never happened.",
+          "10... 9... 8... 7..."
+        ],
+        "enemyId": ["jacked_o_lantern", "The Event Boss"]
+      }
+    ]
+  }
+]

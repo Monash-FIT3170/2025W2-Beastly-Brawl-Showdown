@@ -9,6 +9,7 @@ export enum MonsterIdentifier {
   POISON_POGO = "POISON_POGO",
   CHARMER_COBRA = "CHARMER_COBRA",
   SLIME = "SLIME",
+  JACKED_O_LANTERN = "JACKED_O_LANTERN",
 }
 
 export enum ArchetypeIdentifier {

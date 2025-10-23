@@ -48,8 +48,6 @@ export interface AdventureProgressionSchema {
 
 }
 
-
-
 export interface AchievementSchema {
   _id: string;
   name: string;
@@ -60,8 +58,6 @@ export interface AchievementSchema {
   objectives: Record<string, boolean|number>;
   hidden: boolean
 }
-
-
 
 // Collections
 export const PlayersCollection = new Mongo.Collection('players');
@@ -100,8 +96,6 @@ export async function verifyPassword(inputPassword: string, hashedPassword: stri
     throw error; 
   }
 }
-
-
 
 /** Helper functions that ... 
  * retrieves information/data locally 

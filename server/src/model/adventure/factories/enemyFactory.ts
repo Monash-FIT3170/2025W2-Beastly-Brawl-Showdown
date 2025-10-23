@@ -1,6 +1,7 @@
 import { CharmerCobra } from "../../game/monster/charmerCobra";
 import { CinderTail } from "../../game/monster/cinderTail";
 import { FuriousFlipper } from "../../game/monster/furiousFlipper";
+import { JackedOLantern } from "../../game/monster/jackedOLantern";
 import { PoisonPogo } from "../../game/monster/poisonPogo";
 import { PouncingBandit } from "../../game/monster/pouncingBandit";
 import { RockyRhino } from "../../game/monster/rockyRhino";
@@ -16,6 +17,7 @@ const enemyFactory: Record<string, (n: string) => any> = {
   poison_pogo: (n) => new PoisonPogo(n),
   charmer_cobra: (n) => new CharmerCobra(n),
   furious_flipper: (n) => new FuriousFlipper(n),
+  jacked_o_lantern: (n) => new JackedOLantern(n)
 };
 
 export function createEnemy(id: string, name: string) {

@@ -6,6 +6,7 @@ import stage5 from "./stages/stage5.json";
 import stage6 from "./stages/stage6.json";
 import stage7 from "./stages/stage7.json";
 import stage8 from "./stages/stage8.json";
+import seasonalEvents from "./stages/seasonalEvents.json";
 
 export function loadStage(stageNumber: number) {
   if (stageNumber === 1) {
@@ -25,6 +26,8 @@ export function loadStage(stageNumber: number) {
     return stage7;
   } else if (stageNumber === 8) {
     return stage8;
+  } else if (stageNumber === 1000) {
+    return seasonalEvents;
   } else {
     return stage8;
   }

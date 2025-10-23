@@ -4,7 +4,9 @@ import { FuriousFlipper } from "./furiousFlipper";
 import { PoisonPogo } from "./poisonPogo";
 import { PouncingBandit } from "./pouncingBandit";
 import { RockyRhino } from "./rockyRhino";
+import { JackedOLantern } from "./jackedOLantern";
 import { MonsterIdentifier } from "/types/single/monsterState";
+import { SeasonalEventIdentifier } from "../../../../../types/single/seasonalEventState";
 
 export const monsterMap = new Map([
   [MonsterIdentifier.ROCKY_RHINO, () => new RockyRhino()],
@@ -15,8 +17,25 @@ export const monsterMap = new Map([
   [MonsterIdentifier.CHARMER_COBRA, () => new CharmerCobra()],
 ]);
 
+export const monsterBossMap = new Map([
+  [MonsterIdentifier.JACKED_O_LANTERN, () => new JackedOLantern()]
+]);
+
 export function getMonster(monsterID: MonsterIdentifier) {
   const createMonster = monsterMap.get(monsterID);
+  if (!createMonster) {
+    const createMonster = monsterBossMap.get(monsterID);
+    return createMonster ? createMonster() : null;
+  }
+  return createMonster ? createMonster() : null;
+}
+
+export const eventMonsterMap = new Map([
+  [SeasonalEventIdentifier.SPOOK_GARDEN, () => new JackedOLantern()]
+]);
+
+export function getEventMonster(eventID: SeasonalEventIdentifier) {
+  const createMonster = eventMonsterMap.get(eventID);
   return createMonster ? createMonster() : null;
 }
 
@@ -37,4 +56,5 @@ export const levelMap: Record<number, MonsterIdentifier> = {
   3: MonsterIdentifier.FURIOUS_FLIPPER,
   4: MonsterIdentifier.POISON_POGO,
   5: MonsterIdentifier.CHARMER_COBRA,
+  1009: MonsterIdentifier.JACKED_O_LANTERN,
 };
