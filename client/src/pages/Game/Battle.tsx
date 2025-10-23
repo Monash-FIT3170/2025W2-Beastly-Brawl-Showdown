@@ -234,7 +234,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         className="inset-0 w-screen h-screen bg-cover bg-center overscroll-contain"
         style={{ backgroundImage: backgroundString }}
       >
-        {isSpectating && (
+        {isSpectating && !winner && (
           <div className="xl:pt-[2rem] xl:pl-[2rem] pt-[3rem] fixed pl-[3rem] pointer-events-auto z-10 w-full flex justify-between">
             <div className="flex lg:gap-5 sm:gap-10">
               <IconButton
