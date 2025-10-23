@@ -13,7 +13,7 @@ export class RockyRhino extends Monster {
       new GroundSlamAbilityAction(),
       30,
       1,
-      16
+      12
     );
   }
 }

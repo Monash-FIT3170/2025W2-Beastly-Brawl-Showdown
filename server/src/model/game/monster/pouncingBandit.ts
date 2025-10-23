@@ -13,7 +13,7 @@ export class PouncingBandit extends Monster {
       new ShadowLeapAbilityAction(),
       20,
       4,
-      12
+      10
     );
   }
 }

@@ -13,7 +13,7 @@ export class FuriousFlipper extends Monster {
       new PufferBlast(),
       23,
       3,
-      12
+      11
     );
   }
 }
