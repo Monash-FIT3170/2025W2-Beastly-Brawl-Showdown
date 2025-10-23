@@ -29,8 +29,8 @@ export default class GameSession {
   private battles: Queue<Battle>;
   private gameCode: number;
   private round: number = 1; // Round number
-  private player_max: number = 64; // Max 64 players
-  private battle_max: number = 32; // Max 32 battles
+  private player_max: number = 16; // Max 16 players
+  private battle_max: number = 8; // Max 8 battles
   private currentPhase: BattlePhase = BattlePhase.CHOOSE_ACTION;
   // private monsters: Array<String>;
   private mode: IGameMode;

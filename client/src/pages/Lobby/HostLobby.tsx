@@ -109,10 +109,12 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
                 ALL BATTLES.
               </BlackText>
               <div className="mt-[1rem]">
-                <BlackText size="large">ARE YOU SURE YOU WANT TO EXIT?</BlackText>
+                <BlackText size="large">
+                  ARE YOU SURE YOU WANT TO EXIT?
+                </BlackText>
               </div>
               {/* <div className="flex flex-row justify-between items-center"> */}
-               <div className="justify-center items-center flex lg:gap-[5rem] sm:gap-10 pb-[1rem] mt-[1rem]">
+              <div className="justify-center items-center flex lg:gap-[5rem] sm:gap-10 pb-[1rem] mt-[1rem]">
                 <ButtonGeneric
                   size="large"
                   color="blue"
@@ -375,7 +377,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
         <div className="mb-20">
           <BaseCard color="peach" width={16} height={4}>
-            <OutlineText size="medium">PLAYERS: {playerCount}/64</OutlineText>
+            <OutlineText size="medium">PLAYERS: {playerCount}/16</OutlineText>
           </BaseCard>
         </div>
       </div>
