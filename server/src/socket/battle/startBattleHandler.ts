@@ -93,13 +93,16 @@ export default function proceedBattleTurn(
   let player2 = playersInBattle[1];
 
   spectatorsInBattle.forEach((spectator) => {
+    const isSpecPlayer1 = player1.getPotentialSpectators().includes(spectator);
+    const playerToSpectate = isSpecPlayer1 ? player1 : player2;
+
     io.to(spectator.getId()).emit("battle_state", {
-      battle: battle.getBattleState(player1.getId()),
+      battle: battle.getBattleState(playerToSpectate.getId()),
       metadata: gameSession.getMetadata(),
       isSpectating: true,
     });
 
-    let actions = player1.getMonster().getPossibleActionStates();
+    let actions = playerToSpectate.getMonster().getPossibleActionStates();
     io.to(spectator.getId()).emit("possible_actions", actions);
   });
 
@@ -291,8 +294,11 @@ export default function proceedBattleTurn(
           });
 
           spectatorsInBattle.forEach((spectator) => {
+            const isSpecPlayer1 = player1.getPotentialSpectators().includes(spectator);
+            const playerToSpectate = isSpecPlayer1 ? player1 : player2;
+
             io.to(spectator.getId()).emit("battle_state", {
-              battle: battle.getBattleState(player1.getId()),
+              battle: battle.getBattleState(playerToSpectate.getId()),
               metadata: gameSession.getMetadata(),
               isSpectating: true,
             });
