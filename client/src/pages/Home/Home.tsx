@@ -111,7 +111,7 @@ export const Home = () => {
             <ButtonGeneric
               color={"ronchi"}
               size={"squaremedium"}
-              onClick={() => setShowLogin(true)}
+              onClick={() => FlowRouter.go("/login")}
             >
               <div className="flex flex-col ">
                 <OutlineText size={"tiny"}>LOG</OutlineText>
@@ -175,13 +175,6 @@ export const Home = () => {
         </div>
         
       </div>
-
-      {showLogin && (
-        <LoginPopup
-          onLoginSuccess={handleLoginSuccess}
-          setExitPopup={handleExitLogin}
-        />
-      )}
     </BlankPage>
   );
 };
