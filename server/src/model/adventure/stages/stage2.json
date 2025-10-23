@@ -50,6 +50,7 @@
     "id": "ember_slime_2",
     "level": [0, 2],
     "description": "Stage 2, player fights slime 2.",
+    "background": "BASALT",
     "outcomes": [
       {
         "id": "initial",
