@@ -29,7 +29,7 @@ export const GlobalLeaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[][]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const sortLabels = ["Wins", "Games Played", "Raid Score"];
+  const sortLabels = ["Wins", "Games Played", "Raid Score", "Endless Score"];
 
   // Use the GlobalLeaderboardHandler to fetch and display the leaderboard
   useEffect(() => {
@@ -43,6 +43,7 @@ export const GlobalLeaderboard = () => {
         console.log('batch0',data.data[0])
         console.log('batch1', data.data[1])
         console.log('batch2 RAID', data.data[2])
+        console.log('batch3 ENDLESS', data.data[3])
       } else {
         console.error("Failed to fetch leaderboard:", data.message);
       }
@@ -118,7 +119,11 @@ export const GlobalLeaderboard = () => {
               );
             })
           ) : (
-            <p className="text-center text-gray-500">No leaderboard data available.</p>
+            <p className="text-center text-gray-500">
+              <OutlineText size="medium">
+                No data available.
+              </OutlineText>
+            </p>
           )}
         </div>
       </div>
