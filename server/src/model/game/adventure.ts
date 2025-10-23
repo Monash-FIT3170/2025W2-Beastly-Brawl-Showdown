@@ -44,6 +44,10 @@ export class Adventure {
     return this.stage;
   }
 
+  public setEventAdventure(): void {
+    this.stage = 7;
+  }
+
   public incrementStage(): void {
     this.stage += 1;
   }

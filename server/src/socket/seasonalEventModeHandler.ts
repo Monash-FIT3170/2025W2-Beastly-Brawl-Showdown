@@ -22,7 +22,9 @@ export const SeasonalEventModeHandler = (io: Server, socket: Socket) => {
     players.set(socket.id, player);
     
     const level = new Date().getMonth() + 1000;
+    // const level = 1; // Uncomment for testing purposes with the general basis of it
     const adventure = new Adventure(player, level);
+    adventure.setEventAdventure();
     // Track which outcome we're on
     adventure.currentOutcomeId = "initial";
     activeAdventures.set(socket.id, adventure);
@@ -57,6 +59,10 @@ export const SeasonalEventModeHandler = (io: Server, socket: Socket) => {
           });
           return;
         }
+
+        const player = adventure.getPlayer();
+        player.setMonster(playerMonster);
+
       }
     );
 
