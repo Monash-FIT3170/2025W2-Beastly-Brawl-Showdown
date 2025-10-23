@@ -8,7 +8,7 @@ export const WikiTutorialPage = () => {
 
     const abilities = "• The goal of the game is to defeat your opponent by reducing their health points (HP) to zero. You can do this by using your monster's set of abilities to hurt your opponent and protect yourself.\n• Using an attack on an enemy will make a dice roll. If the roll plus your Attack Bonus is equal to or higher than the enemy's Armor Class (AC), the attack will hit and deal 5 points of damage. If the roll is lower than the enemy's AC, the attack will miss and deal no damage.\n• Alternatively, you can use a defend to increase your AC by 5 for a turn, making it harder for your opponent to hit you.\n• In addition to attack and defend, each monster has 2 unique abilities with more advanced effects. Check the monster's ability descriptions for more information."
 
-    const annotatedImage = "/assets/BeastlyBrawlAnnotated.png";
+    const annotatedImage = "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/misc/TUTORIAL.png";
     return (
 
         <div className="flex flex-col w-full h-full space-y-[1rem] overflow-y-scroll justify-start items-center m-[2rem]">

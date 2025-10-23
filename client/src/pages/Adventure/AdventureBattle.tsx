@@ -33,6 +33,9 @@ import { ConsumableState } from "/types/single/itemState";
 import { EquipmentPickupPopup } from "../../components/popups/EquipmentPickupPopup";
 import { StoryItem } from "../../../../server/src/model/game/storyItem/storyItem";
 import { StoryItemPickupPopup } from "../../components/popups/StoryItemPickupPopup";
+import { Status } from "../../../../server/src/model/game/status/status";
+import { StatusPickupPopup } from "../../components/popups/StatusPickupPopup";
+import { EquipmentInventoryFullPopup } from "../../components/popups/EquipmentInventoryFullPopup";
 
 interface AdventureProps {
   //so i am adding this without actually knowing why just trust the process
@@ -42,13 +45,10 @@ interface AdventureProps {
 const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   const battleId = "ADVENTURE";
   var backgroundLocation = getBiomeString(levelMonster); //TODO: change this to be based off level/monster?
-  var backgroundString =
-    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
-    backgroundLocation +
-    ".jpg')";
 
   //ADVENTURE PAGE:
   const [dialogue, setDialogue] = useState<string[] | null>([]);
+  const [background, setBackground] = useState<string>(backgroundLocation);
   const [currentEnemy, setCurrentEnemy] = useState<MonsterState | null>(null);
   const [stage, setStage] = useState<number>(1);
 
@@ -77,16 +77,23 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
   );
   const [incomingEquipment, setIncomingEquipment] =
     useState<EquipmentState | null>(null);
+  const [isReplacingEquipment, setIsReplacingEquipment] = useState(false);
   const [question, setQuestion] = useState<string[] | null>(null);
   const [choices, setChoices] = useState<option[] | null>(null);
 
   const [statChange, setStatChange] = useState<string[] | null>(null);
   const [statusResult, setStatusResult] = useState<string[] | null>(null);
+  const [receivingStatus, setReceivingStatus] = useState<Status | null>(null);
   const [hasNewInventoryItem, setHasNewInventoryItem] = useState(false);
 
   //DICE
   const [showDiceModal, setShowDiceModal] = useState(false); // show dice modal | TODO: For future, use action animation ID instead of boolean to trigger animations
   const [diceValue, setDiceValue] = useState<number>(0); // result of dice
+
+  var backgroundString =
+    "url('https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/background/" +
+    background +
+    ".jpg')";
 
   const handleChoiceSelect = (
     choiceId: string,
@@ -184,6 +191,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         setEquipmentInventoryFull(false);
         setIncomingEquipment(null);
         setCurrentEquipment([]);
+        setIsReplacingEquipment(false);
       }
     });
 
@@ -191,6 +199,21 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       console.log("Received adventure_consumable:", data);
       setReceivingConsumable(data.consumable);
       setConsumableId(data.consumableId);
+    });
+
+    socket.on("adventure_status", (data) => {
+      console.log("Received adventure_status:", data);
+      setStatusResult(data.messages);
+      setReceivingStatus(data.status);
+    });
+
+    socket.on("adventure_background", (data) => {
+      console.log("Adventure background changing", data);
+      if (!data) {
+        setBackground(backgroundLocation);
+      } else {
+        setBackground(data);
+      }
     });
 
     socket.on("adventure_storyItem", (data) => {
@@ -208,6 +231,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
     socket.on("adventure_equipment_full", (data) => {
       setCurrentEquipment(data.currentEquipment); // array of 3 equipment that player has
       setIncomingEquipment(data.incomingEquipment); // a new equipment item
+      setEquipmentInventoryFull(true);
     });
 
     socket.on("possible_actions", (actions: ActionState[]) => {
@@ -229,6 +253,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       socket.off("roll_dice");
       socket.off("adventure_equipment");
       socket.off("adventure_consumable");
+      socket.off("adventure_background");
+      socket.off("adventure_status");
     };
   });
 
@@ -245,6 +271,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             playerState={playerState}
             attackState={playerState.attackState}
             onClose={() => setViewingInfo(false)}
+            opponent={false}
+            biome={background}
           ></MonsterInfoPopup>
         )}
         {viewingEnemyInfo && (
@@ -252,6 +280,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             playerState={battleState.opponentPlayer}
             attackState={battleState.opponentPlayer.attackState}
             onClose={() => setViewingEnemyInfo(false)}
+            opponent={true}
+            biome={background}
           ></MonsterInfoPopup>
         )}
         {viewingInventory && (
@@ -301,7 +331,8 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
         )}
         {receivingEquipment &&
           !equipmentInventoryFull &&
-          !incomingEquipment && (
+          !incomingEquipment &&
+          !isReplacingEquipment && (
             <EquipmentPickupPopup
               equipment={receivingEquipment}
               onEquip={() => {
@@ -321,80 +352,33 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           )}
         {equipmentInventoryFull && incomingEquipment && (
-          <PopupClean>
-            <div className="flex flex-col items-center gap-4">
-              <OutlineText size="large">YOUR BAG IS TOO HEAVY!</OutlineText>
-              <OutlineText size="medium">REMOVE AN ITEM!</OutlineText>
-              <div className="grid grid-flow-row h-full w-full auto-rows-auto gap-2 my-4">
-                {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className="flex items-center bg-gray-100 rounded p-2"
-                  >
-                    <div className="flex-1">
-                      {currentEquipment[i] ? (
-                        <EquipmentCard
-                          equipment={currentEquipment[i]}
-                          onClick={() => {}} // Optional: show details if you want
-                        />
-                      ) : (
-                        <span className="text-gray-400">Empty Slot</span>
-                      )}
-                    </div>
-                    {currentEquipment[i] && (
-                      <ButtonGeneric
-                        color="red"
-                        size="small"
-                        onClick={() => {
-                          setEquipmentInventoryFull(false);
-                          setIncomingEquipment(null);
-                          setCurrentEquipment([]);
-                          setReceivingEquipment(null);
-                          socket.emit("adventure_replace_equipment", {
-                            removeIndex: i,
-                            newEquipment: incomingEquipment,
-                          });
-                        }}
-                      >
-                        🗑️
-                      </ButtonGeneric>
-                    )}
-                  </div>
-                ))}
-                {/* Incoming equipment */}
-                <div className="flex items-center bg-yellow-100 rounded p-2">
-                  <div className="flex-1">
-                    <EquipmentCard
-                      equipment={incomingEquipment}
-                      onClick={() => {}} // Optional: show details if you want
-                    />
-                  </div>
-                  <ButtonGeneric
-                    color="red"
-                    size="small"
-                    onClick={() => {
-                      // Reject the new equipment
-                      setEquipmentInventoryFull(false);
-                      setIncomingEquipment(null);
-                      setCurrentEquipment([]);
-                      setReceivingEquipment(null);
-                      socket.emit("adventure_next", { stage });
-                    }}
-                  >
-                    🗑️
-                  </ButtonGeneric>
-                </div>
-              </div>
-            </div>
-          </PopupClean>
+          <EquipmentInventoryFullPopup
+            currentEquipment={currentEquipment}
+            incomingEquipment={incomingEquipment}
+            onReplaceEquipment={(removeIndex) => {
+              setEquipmentInventoryFull(false);
+              setIncomingEquipment(null);
+              setCurrentEquipment([]);
+              setReceivingEquipment(null);
+              setIsReplacingEquipment(true);
+              socket.emit("adventure_replace_equipment", {
+                removeIndex,
+                newEquipment: incomingEquipment,
+              });
+            }}
+            onRejectIncoming={() => {
+              setEquipmentInventoryFull(false);
+              setIncomingEquipment(null);
+              setCurrentEquipment([]);
+              setReceivingEquipment(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
         )}
         {dialogue && (
           <>
             {currentEnemy && (
-              <MonsterDisplay
-                biomeString={getBiomeString(levelMonster)}
-                monster={currentEnemy}
-              />
+              <MonsterDisplay biomeString={background} monster={currentEnemy} />
             )}
             <DialogueBox
               monster={currentEnemy ?? undefined}
@@ -418,27 +402,16 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
             />
           </div>
         )}
-
-        {statusResult && (
-          <div>
-            <PopupClean>
-              <div className="flex flex-col justify-around items-center">
-                <OutlineText size="extraLarge">{statusResult}</OutlineText>
-                <div className="flex flex-row justify-between items-center">
-                  <ButtonGeneric
-                    size="large"
-                    color="blue"
-                    onClick={() => {
-                      setStatusResult(null);
-                      socket.emit("adventure_next", { stage });
-                    }}
-                  >
-                    CONFIRM
-                  </ButtonGeneric>
-                </div>
-              </div>
-            </PopupClean>
-          </div>
+        {statusResult && receivingStatus && (
+          <StatusPickupPopup
+            messages={statusResult}
+            status={receivingStatus}
+            onComplete={() => {
+              setStatusResult(null);
+              setReceivingStatus(null);
+              socket.emit("adventure_next", { stage });
+            }}
+          />
         )}
         {choices && (
           <>
@@ -620,10 +593,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
               </div>
             </div>
 
-            <BattleMonsterPanel
-              battleState={battleState}
-              biome={backgroundLocation}
-            />
+            <BattleMonsterPanel battleState={battleState} biome={background} />
 
             <div
               className=" h-screen flex flex-col items-center justify-center content-center mt-[60%] xl:mt-[15%]"
@@ -663,6 +633,7 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
 };
 
 const biomeMap = new Map([
+  [MonsterIdentifier.ENDLESS, () => "ENDLESS"],
   [MonsterIdentifier.ROCKY_RHINO, () => "FOREST"],
   [MonsterIdentifier.POUNCING_BANDIT, () => "FOREST"],
   [MonsterIdentifier.CINDER_TAIL, () => "BASALT"],

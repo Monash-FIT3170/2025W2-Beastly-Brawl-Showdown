@@ -2,6 +2,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Home } from "./src/pages/Home/Home";
+import { LoginPage } from "./src/pages/Home/LoginPage";
 import HostLobby from "./src/pages/Lobby/HostLobby";
 import JoinLobby from "./src/pages/Lobby/JoinLobby";
 import PathNotFound from "./src/pages/Home/PathNotFound";
@@ -10,7 +11,7 @@ import Battle from "./src/pages/Game/Battle";
 import { Game } from "./src/pages/Lobby/Game";
 import Rules from "./src/pages/Game/Rules";
 import MatchSummary from "./src/pages/Host View/MatchSummary";
-import LevelSelect from "./src/pages/Adventure/LevelSelect";
+import AdventureLevelSelect from "./src/pages/Adventure/AdventureLevelSelect";
 import AdventureBattle from "./src/pages/Adventure/AdventureBattle";
 import AdventureDefeated from "./src/pages/Adventure/Defeated";
 import AdventureWin from "./src/pages/Adventure/AdventureWin";
@@ -18,6 +19,8 @@ import { MonsterIdentifier } from "../types/single/monsterState";
 import { Account } from "./src/pages/Home/Account";
 import AdventureMonsterSelect from "./src/pages/Adventure/AdventureMonsterSelect";
 import { BlankPage } from "./src/components/pagelayouts/BlankPage";
+import { Achievements } from "./src/pages/Home/Achievements";
+import { GlobalLeaderboard } from "./src/pages/GlobalLeaderboard";
 import { FinalResultsScoringTournament } from "./src/pages/Lobby/FinalResultsScoringTournament";
 import { FinalResultsBattleRoyale } from "./src/pages/Lobby/FinalResultsBattleRoyale";
 import { Test } from "./src/pages/AnimationTesting/Testing";
@@ -102,6 +105,20 @@ FlowRouter.route("/host", {
   },
 });
 
+FlowRouter.route("/login", {
+  name: "LoginPage",
+  action() {
+    mount(LoginPage);
+  },
+});
+
+FlowRouter.route("/achievements", {
+  name: "Achievements",
+  action() {
+    mount(Achievements);
+  },
+});
+
 FlowRouter.route("/host/choose-mode", {
   name: "GameConfiguration",
   action() {
@@ -146,7 +163,7 @@ FlowRouter.route("/leaderboard", {
   name: "Leaderboard",
   action() {
     document.title = "Leaderboard | Beastly Brawl Showdown";
-    mount(() => <BlankPage />);
+    mount(() => <GlobalLeaderboard />);
   },
 });
 
@@ -215,7 +232,7 @@ FlowRouter.route("/seasonal-event/:eventId?/monster-select", {
 });
 
 FlowRouter.route("/adventure/mode-select", {
-  name: "LevelSelect",
+  name: "ModeSelect",
   action() {
     document.title = "Mode Select - Adventure Mode | Beastly Brawl Showdown";
     mount(AdventureSelectMode);
@@ -226,7 +243,7 @@ FlowRouter.route("/adventure/level-select", {
   name: "LevelSelect",
   action() {
     document.title = "Level Select - Adventure Mode | Beastly Brawl Showdown";
-    mount(LevelSelect);
+    mount(AdventureLevelSelect);
   },
 });
 

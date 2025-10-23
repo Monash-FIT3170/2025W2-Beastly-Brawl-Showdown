@@ -17,6 +17,7 @@ export const LeavePopup = ({ open, onClose }: LeavePopupProp) => {
 
   const leave = () => {
     socket.emit("leave-game", { userID: socket.id });
+    socket.emit("update-best");
     FlowRouter.go("/adventure/mode-select");
   };
 

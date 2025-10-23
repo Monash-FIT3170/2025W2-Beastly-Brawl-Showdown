@@ -5,8 +5,18 @@ import { OutlineText } from "../../components/texts/OutlineText";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import React, { useEffect, useState } from "react";
 import { getSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
-
-const DrawScreen: React.FC = () => {
+import { GameModeIdentifier } from "../../../../types/single/gameMode";
+interface DrawScreenProps {
+  mode: GameModeIdentifier;
+  finalScreen?: boolean;
+  gameCode?: string;
+}
+//
+const DrawScreen: React.FC<DrawScreenProps> = ({
+  mode,
+  gameCode,
+  finalScreen = true,
+}) => {
   socket.on("kick-warning", ({ message }) => {
     console.log(message);
     // UPDATE: add pop up when kicked
@@ -16,6 +26,11 @@ const DrawScreen: React.FC = () => {
   const leave = () => {
     socket.emit("leave-game", { userID: socket.id });
     FlowRouter.go("/");
+  };
+
+  const spectate = () => {
+    socket.emit("spectate-game", { userID: socket.id });
+    FlowRouter.go(`/session/${gameCode}`, {}, { fromBattle: "true" });
   };
 
   var backgroundLocation = getSelectedBackgroundTheme().toUpperCase();
@@ -30,7 +45,7 @@ const DrawScreen: React.FC = () => {
         backgroundImage: backgroundString,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat"
+        backgroundRepeat: "no-repeat",
       }}
     >
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-white/60">
@@ -45,6 +60,16 @@ const DrawScreen: React.FC = () => {
             src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/ending/GRAVE.png`}
             alt={`GRAVE image`}
           />
+
+          {mode === GameModeIdentifier.BATTLE_ROYALE && !finalScreen && (
+            <ButtonGeneric color="red" size="medium" onClick={() => spectate()}>
+              <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+                <div>
+                  <OutlineText size="medium">SPECTATE</OutlineText>
+                </div>
+              </div>
+            </ButtonGeneric>
+          )}
 
           <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
             <div className="flex flex-row items-center justify-around w-full h-full space-x-3">

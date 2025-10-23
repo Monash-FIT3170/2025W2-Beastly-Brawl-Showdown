@@ -8,11 +8,13 @@ import { OutlineText } from "../texts/OutlineText";
 interface BattleFooterProp {
   possibleActions: ActionState[];
   battleId: string | null;
+  isSpectating?: boolean;
 }
 
 export const BattleFooter = ({
   possibleActions,
   battleId,
+  isSpectating = false,
 }: BattleFooterProp) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -69,6 +71,7 @@ export const BattleFooter = ({
                 battleId={battleId!}
                 isActive={activeIndex === index}
                 onClick={() => setActiveIndex(index)}
+                isDisabled={isSpectating}
               />
             </div>
           ))}

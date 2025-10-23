@@ -38,7 +38,7 @@ export const GenericHeader = ({ children, color }: HeaderProps) => {
         inset-x-0
         fixed
         top-0
-        `;
+        z-20`;
 
   return <div className={`${header}`}>{children}</div>;
 };

@@ -5,6 +5,7 @@ import { PouncingBandit } from '../model/game/monster/pouncingBandit';
 import { CharmerCobra } from '../model/game/monster/charmerCobra';
 import { PoisonPogo } from '../model/game/monster/poisonPogo';
 import { FuriousFlipper } from '../model/game/monster/furiousFlipper';
+import {Achievements} from "./achievementList"
 
 import bcrypt from 'bcrypt';
 
@@ -32,6 +33,7 @@ export interface PlayerAccountSchema {
 // Schema for the Player's monsters stats customization
 export interface PlayerMonsterStatSchema {
   monsterId: string,
+  monsterName: string,
   maxHealth: number,
   attackBonus: number,
   armourClass: number
@@ -42,13 +44,9 @@ export interface AdventureProgressionSchema {
   unlockedMonsters: Record<string, boolean>, // e.g  {'ROCKY_RHINO': true, 'CINDER_TAIL': false, 'POUNCING_BANDIT': false},
   unlockedLevels: number[], 
   stage: number,
-  achievements: string[],
   savedGameState: {} 
 
 }
-
-
-
 
 export interface AchievementSchema {
   _id: string;
@@ -99,8 +97,6 @@ export async function verifyPassword(inputPassword: string, hashedPassword: stri
   }
 }
 
-
-
 /** Helper functions that ... 
  * retrieves information/data locally 
  * creates new instances of monsters or players
@@ -108,11 +104,12 @@ export async function verifyPassword(inputPassword: string, hashedPassword: stri
 const monsterList: <Monster>[] = [new RockyRhino(), new CinderTail(), new PouncingBandit(), new PoisonPogo(), new CharmerCobra(), new FuriousFlipper()];
 
 // Gets default stats of monsters
-function getBaseMonsterStats(monsterId: string): { maxHealth: number, attackBonus: number, armourClass: number } {
+function getBaseMonsterStats(monsterId: string): { name:string, maxHealth: number, attackBonus: number, armourClass: number } {
   const monster = monsterList.find(m => m.getId() === monsterId);
   if (!monster) {throw new Error(`Monster with id ${monsterId} not found.`);}
 
   return {
+    name: monster.getName(),
     maxHealth: monster.getMaxHealth(),
     attackBonus: monster.getAttackBonus(),
     armourClass: monster.getArmourClass(),
@@ -124,6 +121,7 @@ function createPlayerMonsterStatSchema(monsterId: string,): PlayerMonsterStatSch
   const baseStats = getBaseMonsterStats(monsterId);
   return {
     monsterId,
+    monsterName: baseStats.name,
     maxHealth: baseStats.maxHealth,
     attackBonus: baseStats.attackBonus,
     armourClass: baseStats.armourClass,
@@ -162,9 +160,9 @@ export function createDefaultPlayerAccountSchema(): PlayerAccountSchema {
       },
       unlockedLevels: [1],
       stage: 1,
-      achievements: [],
       savedGameState: {},
-    }
+    },
+    achievements: Achievements
   };
 }
 
@@ -219,9 +217,9 @@ export async function insertNewPlayerAccount(email: string, username: string, pa
         },
         unlockedLevels: [1],
         stage: 1,
-        achievements: [],
         savedGameState: {},
-      }
+      },
+      achievements: Achievements
     };
 
     // Insert the new player into the collection
@@ -291,8 +289,10 @@ export async function updatePlayerAccount(
 
     // If a new password is provided, hash it
     if (updates.password) {
-      updates.password = await hashPassword(updates.password);
-    }
+  updates.password = await hashPassword(updates.password);
+  } else {
+    delete updates.password; // make sure no null/undefined overwrites existing password
+  }
 
     // Merge existing player data with updates to ensure all required fields stay filled
     const mergedPlayer: PlayerAccountSchema = {
@@ -320,3 +320,108 @@ export async function updatePlayerAccount(
   }
 }
 
+
+// Retrieves the top N players sorted by number of games won
+export async function getTopPlayersByWins(_limit: number) {
+  try {
+    // Get the top players sorted by numGamesWon in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'stats.numGamesWon': -1 }, limit: _limit }
+    ).fetch();
+
+    console.log('Top Players:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.stats && player.stats.numGamesWon !== undefined);
+
+    // Return player name, numGamesWon
+    return validPlayers.map(player => ({
+      username: player.username,
+      score: player.stats.numGamesWon,
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players: ${error.message}`);
+    return [];
+  }
+}
+
+// Retrieves the top N players sorted by number of games played
+export async function getTopPlayersByNumGamesPlayed(_limit: number) {
+  try {
+    // Get the top players sorted by numGamesPlayed in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'stats.numGamesPlayed': -1 }, limit: _limit }
+    ).fetch();
+
+    console.log('Top Players by Games Played:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.stats && player.stats.numGamesPlayed !== undefined);
+
+    // Return player name, numGamesPlayed (called score for consistency)
+    return validPlayers.map(player => ({
+      username: player.username,
+      score: player.stats.numGamesPlayed
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players by games played: ${error.message}`);
+    return [];
+  }
+}
+
+// Retrieves the top N players sorted by endless score (stage reached) (adventureProgression.stage)
+export async function getTopPlayersByEndlessScore(_limit: number) {
+  try {
+    // Get the top players sorted by adventureProgression.stage in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'adventureProgression.stage': -1 }, limit: _limit }
+    ).fetch();
+
+    console.log('Top Players by Endless Score:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.adventureProgression && player.adventureProgression.stage !== undefined);
+
+    // Return player name, endless score (called score for consistency)
+    return validPlayers.map(player => ({
+      username: player.username,
+      score: player.adventureProgression.stage
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players by endless score: ${error.message}`);
+    return [];
+  }
+}
+
+
+// Retrieves the top N players sorted by raid score
+export async function getTopPlayersByRaidScore(_limit: number) {
+  try {
+    // Get the top players sorted by raidScore in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'stats.raidScore': -1 }, limit: _limit }
+    ).fetch();
+
+    console.log('Top Players by Raid Score:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.stats && player.stats.raidScore !== undefined);
+
+    // Return player name, raidScore (called score for consistency)
+    return validPlayers.map(player => ({
+      username: player.username,
+      score: player.stats.raidScore
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players by raid score: ${error.message}`);
+    return [];
+  }
+}

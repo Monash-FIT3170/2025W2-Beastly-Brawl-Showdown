@@ -28,7 +28,7 @@ export const ColourfulStatText = ({
   if (stat === "HP") {
     return (
       <p className={`${sizeLoader[size]} font-[Jua] text-outline ${className}`}>
-        {statVal} {stat}
+        {statVal}/{monsterStat} {stat}
       </p>
     );
   }

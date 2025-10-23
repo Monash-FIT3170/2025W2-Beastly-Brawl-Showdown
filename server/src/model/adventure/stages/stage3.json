@@ -103,9 +103,480 @@
     ]
   },
   {
+    "id": "falling_basalt",
+    "level": [0, 2],
+    "description": "Falling Basalt",
+    "background": "BASALT",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": [
+          "The ground rumbles beneath your feet...",
+          "Cracks split along the cliffside.",
+          "Chunks of basalt break loose and start tumbling right for you!",
+          "You have only a moment to react.."
+        ],
+        "next": "basalt_choice"
+      },
+      {
+        "id": "basalt_choice",
+        "result": ["What do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "left",
+            "text": "Dodge to the left",
+            "next": "dodge_random"
+          },
+          {
+            "id": "right",
+            "text": "Dodge to the right",
+            "next": "dodge_random"
+          },
+          {
+            "id": "brace",
+            "text": "Brace for the damage",
+            "next": "brace_next"
+          }
+        ]
+      },
+      {
+        "id": "dodge_random",
+        "result": ["You move as quickly as you can."],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 50,
+            "next": "dodge_success"
+          },
+          {
+            "id": "failure",
+            "chance": 50,
+            "next": "dodge_fail"
+          }
+        ]
+      },
+      {
+        "id": "dodge_success",
+        "result": [
+          "KRRRSHH!",
+          "Basalt crashes down where you once stood.",
+          "Your heart races, but you're unharmed."
+        ],
+        "type": "DIALOGUE",
+        "next": "dodge_reward"
+      },
+      {
+        "id": "dodge_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "mini_health_potion"
+      },
+      {
+        "id": "dodge_fail",
+        "type": "DIALOGUE",
+        "result": [
+          "SKKKRRAACK!",
+          "You move too late.",
+          "Stone slams into you with crushing force."
+        ],
+        "next": "dodge_injury"
+      },
+      {
+        "id": "dodge_injury",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": ["Yeowch!! -5 HP"]
+      },
+      {
+        "id": "brace_next",
+        "type": "DIALOGUE",
+        "result": [
+          "You plant your feet and shield yourself.",
+          "KRRSHHHHHH!",
+          "The basalt smashes into you, rattling your bones.",
+          "The hit hurts, but your stance softened the blow."
+        ],
+        "next": "brace_injury"
+      },
+      {
+        "id": "brace_injury",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": ["Ouch... -2 HP"]
+      }
+    ]
+  },
+  {
+    "id": "abandoned_camp",
+    "level": [2],
+    "description": "Stage 3, player finds an abandoned camp.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Amid the basalt cliffs, you spot an abandoned campsite.",
+          "Charred logs lie half buried in ash, the air tinged with sulfur.",
+          "You can tell no one is coming back to this place."
+        ],
+        "type": "DIALOGUE",
+        "next": "camp_choice"
+      },
+      {
+        "id": "camp_choice",
+        "result": ["What do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "search",
+            "text": "Search the camp for loot.",
+            "next": "search_random"
+          },
+          {
+            "id": "rest",
+            "text": "Rest briefly by the dead campfire.",
+            "next": "rest_random"
+          }
+        ]
+      },
+      {
+        "id": "search_random",
+        "result": [
+          "You scour the abandoned campsite, eyes out for anything of value."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 20,
+            "next": "search_success"
+          },
+          {
+            "id": "failure",
+            "chance": 80,
+            "next": "search_failure"
+          }
+        ]
+      },
+      {
+        "id": "search_success",
+        "result": [
+          "Among the logs, you find something half buried in soot.",
+          "A glimmer of fortune in this forgotten place."
+        ],
+        "type": "DIALOGUE",
+        "next": "search_reward"
+      },
+      {
+        "id": "search_failure",
+        "result": [
+          "You reach into the rubble.. eek! The stone is hotter than it looks!"
+        ],
+        "type": "DIALOGUE",
+        "next": "search_burn"
+      },
+      {
+        "id": "search_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "cinder_pool"
+      },
+      {
+        "id": "search_burn",
+        "type": "STATUS",
+        "result": ["A burst of heat scorches your hand."],
+        "statusId": ["burn", 3]
+      },
+      {
+        "id": "rest_random",
+        "result": [
+          "You settle by the firepit, letting your tired body sink into the warmth."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 70,
+            "next": "rest_success"
+          },
+          {
+            "id": "failure",
+            "chance": 30,
+            "next": "rest_failure"
+          }
+        ]
+      },
+      {
+        "id": "rest_success",
+        "result": [
+          "For a moment, the cliffs feel calm.",
+          "The rest clears your mind and you feel reset."
+        ],
+        "type": "DIALOGUE",
+        "next": "rest_reward"
+      },
+      {
+        "id": "rest_failure",
+        "result": [
+          "You close your eyes, just for a moment...",
+          "A loud hiss wakes you up! An ember slime is staring you down.",
+          "It crackles and lunges as you quickly scramble to your feet."
+        ],
+        "type": "DIALOGUE",
+        "next": "rest_fight"
+      },
+      {
+        "id": "rest_reward",
+        "result": ["Your abilities replenish."],
+        "type": "STATUS",
+        "statusId": ["infinite_ability", 2]
+      },
+      {
+        "id": "rest_fight",
+        "type": "FIGHT",
+        "enemyId": ["slime", "EMBER SLIME"]
+      }
+    ]
+  },
+  {
+    "id": "rival_mob",
+    "level": [3],
+    "description": "Stage 3, the player stumbles on a RIVAL MOB GANG",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "As you continue to wander the frozen wastes, you come across...",
+          "A RIVAL MOB GANG!",
+          "Think fast! The gang isn't exactly going to let you hang around!"
+        ],
+        "type": "DIALOGUE",
+        "next": "mob_gang_choice"
+      },
+      {
+        "id": "mob_gang_choice",
+        "result": ["What do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "search",
+            "text": "Bust a cap in their afts.",
+            "next": "mob_gang_driveby"
+          },
+          {
+            "id": "rest",
+            "text": "Pretend to be one of them.",
+            "next": "mob_rest_random"
+          }
+        ]
+      },
+      {
+        "id": "mob_gang_driveby",
+        "result": [
+          "You draw your hypothetical weapon and hypothetically shoot at them"
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 50,
+            "next": "driveby_success"
+          },
+          {
+            "id": "failure",
+            "chance": 50,
+            "next": "driveby_failure"
+          }
+        ]
+      },
+      {
+        "id": "driveby_success",
+        "result": [
+          "You successfully succeed in hypothetically shooting up the entire gang.",
+          "Allegedly, you also hypothetically make off with some random hypothetical stuff they had.",
+          "Hypothetically."
+        ],
+        "type": "DIALOGUE",
+        "next": "driveby_reward"
+      },
+      {
+        "id": "driveby_failure",
+        "result": ["OH SNAP ONE OF THEM HAD A FLAME THROWER", "ABORT ABORT"],
+        "type": "DIALOGUE",
+        "next": "driveby_burn"
+      },
+      {
+        "id": "driveby_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "ice_pool"
+      },
+      {
+        "id": "driveby_burn",
+        "type": "STATUS",
+        "result": ["Damn, that flamethrower guy got you really bad!"],
+        "statusId": ["burn", 3]
+      },
+      {
+        "id": "mob_rest_random",
+        "result": [
+          "They suspect nothing, they let you in.",
+          "You decide to take this opportunity to sleep on the comfiest bed in their camp.",
+          "By that I mean the boss's bed."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "success",
+            "chance": 70,
+            "next": "mob_rest_success"
+          },
+          {
+            "id": "failure",
+            "chance": 30,
+            "next": "mob_rest_failure"
+          }
+        ]
+      },
+      {
+        "id": "mob_rest_success",
+        "result": [
+          "It was the best sleep you ever had.",
+          "You wake up totally refreshed,",
+          "And ready to hypothetically cap more hypothetical kneecaps.",
+          "Allegedly."
+        ],
+        "type": "DIALOGUE",
+        "next": "mob_rest_reward"
+      },
+      {
+        "id": "mob_rest_failure",
+        "result": [
+          "It was the best sleep you ever had.",
+          "Unfortunately, THE BOSS himself returns.",
+          "He loves his bed. You must hypothetically cap his kneecaps now."
+        ],
+        "type": "DIALOGUE",
+        "next": "mob_rest_fight"
+      },
+      {
+        "id": "mob_rest_reward",
+        "result": ["Your abilities replenish."],
+        "type": "STATUS",
+        "statusId": ["infinite_ability", 2]
+      },
+      {
+        "id": "mob_rest_fight",
+        "type": "FIGHT",
+        "enemyId": ["slime", "ICE SLIME"]
+      }
+    ]
+  },
+
+  {
+    "id": "swamp_slime_2",
+    "level": [0, 4],
+    "description": "Swamp slime 2 encounter",
+    "background": "MARSH",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "As you walk deeper into the swamp, your foot sinks into a sticky puddle of mud.",
+          "The puddle bubbles... not mud at all!",
+          "A slime rises, oozing up your leg and dragging you off balance!"
+        ],
+        "type": "DIALOGUE",
+        "next": "swamp_slime_2_dialogue"
+      },
+      {
+        "id": "swamp_slime_2_dialogue",
+        "result": ["Gloooorp... shluuurrp... splaaat!", "Stickyyy!"],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "STICKY SLIME"],
+        "next": "swamp_slime_2_battle"
+      },
+      {
+        "id": "swamp_slime_2_battle",
+        "type": "FIGHT",
+        "enemyId": ["slime", "STICKY SLIME"],
+        "next": "swamp_slime_2_win"
+      },
+      {
+        "id": "swamp_slime_2_win",
+        "type": "DIALOGUE",
+        "result": [
+          "The slime shudders, collapsing back into a pool of mud.",
+          "In the silence, something remains...",
+          "A strange crystalized heart, shining with the swamp's strange energy."
+        ],
+        "next": "reward_slimy_heart"
+      },
+      {
+        "id": "reward_slimy_heart",
+        "type": "EQUIPMENT",
+        "equipmentId": "slimy_heart"
+      }
+    ]
+  },
+  {
+    "id": "desert_first_encounter",
+    "level": [5],
+    "description": "Stage 5 miniboss",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "As you walk away from the off-putting merchant, you notice a dust devil form around you.",
+          "You hear a faint hissing sound.",
+          "A cobra emerges from the swirling sand, its hood flared and eyes locked on you."
+        ],
+        "type": "DIALOGUE",
+        "next": "pre_fight_dialogue"
+      },
+      {
+        "id": "pre_fight_dialogue",
+        "result": [
+          "Sssso you think you can ignore me, ssstranger?",
+          "I am Cobrina, the dessssert charmer!",
+          "Prepare to be sssslain!"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["charmer_cobra", "COBRINA"],
+        "next": "stranger_fight"
+      },
+      {
+        "id": "stranger_fight",
+        "type": "FIGHT",
+        "enemyId": ["charmer_cobra", "COBRINA"],
+        "next": "victory"
+      },
+      {
+        "id": "victory",
+        "type": "DIALOGUE",
+        "result": ["I'll ssssee you ssssoon..."],
+        "enemyId": ["charmer_cobra", "COBRINA"],
+        "next": "victory_2"
+      },
+      {
+        "id": "victory_2",
+        "type": "DIALOGUE",
+        "result": [
+          "Cobrina slithers away into the desert, leaving behind a small pile of treasure."
+        ],
+        "next": "mini_boss_reward"
+      },
+      {
+        "id": "mini_boss_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "desert_pool"
+      }
+    ]
+  },
+  {
     "id": "stage3_titan",
     "level": [0],
     "description": "Stage 3, player finds the coliseum of slimes",
+    "background": "COLOSSEUM",
     "outcomes": [
       {
         "id": "initial",
@@ -153,13 +624,13 @@
         "id": "pre_fight",
         "type": "DIALOGUE",
         "result": ["*Thud* *Thud* *Thud*", "I WAS PROMISED A CHALLENGE"],
-        "enemyId": ["cinder_tail", "Colosseum Titan"],
+        "enemyId": ["cinder_tail", "COLOSSEUM TITAN"],
         "next": "titan_battle"
       },
       {
         "id": "titan_battle",
         "type": "FIGHT",
-        "enemyId": ["cinder_tail", "Colosseum Titan"],
+        "enemyId": ["cinder_tail", "COLOSSEUM TITAN"],
         "scaling": 2,
         "next": "titan_win"
       },
@@ -183,8 +654,7 @@
       {
         "id": "regular_prize_pre",
         "result": [
-          "Oh, and please take this armour as a reward for your victory here",
-          "OOZING BLADE IS A PLACEHOLDER"
+          "Oh, and please take this helmet as a reward for your victory here"
         ],
         "type": "DIALOGUE",
         "next": "regular_prize"
@@ -192,12 +662,139 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "meek_helmet"
       },
       {
         "id": "leave",
         "type": "DIALOGUE",
         "result": ["You turn down the challenge and continue onwards."]
+      }
+    ]
+  },
+  {
+    "id": "hole",
+    "level": [0],
+    "description": "player come across a hole in the ground",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Theres a hole in the ground. It's perfectly circle. No noise, no smell... just a hole."
+        ],
+        "type": "DIALOGUE",
+        "next": "hole_choice"
+      },
+      {
+        "id": "hole_choice",
+        "result": ["What do you do?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "choice_rock",
+            "text": "Drop in a rock.",
+            "next": "drop_rock"
+          },
+          {
+            "id": "choice_hand",
+            "text": "Stick your hand in.",
+            "next": "stick_hand"
+          },
+          {
+            "id": "choice_yell",
+            "text": "Yell into it.",
+            "next": "yell"
+          },
+          {
+            "id": "choice_leave",
+            "text": "Do nothing and leave.",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "drop_rock",
+        "result": [
+          "You grabed a rock next to you and droped it into the hole.",
+          "You waited....",
+          "Waited....",
+          "Nothing happened. You have simply wasted your time."
+        ],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "stick_hand",
+        "result": ["You take a deep breath and stick your hand into the hole."],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "good",
+            "chance": 50,
+            "next": "reward"
+          },
+          {
+            "id": "bad",
+            "chance": 50,
+            "next": "bite"
+          }
+        ]
+      },
+      {
+        "id": "reward",
+        "result": [
+          "Your fingers brush against something smooth and hard.",
+          "You grabed it and pulled it out."
+        ],
+        "type": "DIALOGUE",
+        "next": "hole_loot_pool"
+      },
+      {
+        "id": "hole_loot_pool",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool"
+      },
+      {
+        "id": "bite",
+        "result": [
+          "Something moved inside.",
+          "Before you can react, sharp teeth clamp down on your fingers!",
+          "You yelp and yank your hand back.",
+          "A mysterious laughter rises from deep inside the hole..."
+        ],
+        "type": "DIALOGUE",
+        "next": "bite_HP"
+      },
+      {
+        "id": "bite_HP",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -5],
+        "result": ["You lose 5 HP"]
+      },
+      {
+        "id": "yell",
+        "result": [
+          "You take a deep breath and yell into the hole as loud as you can.",
+          "Your voice echos down and bounces back to you even louder like a bomb exploding in your ear.",
+          "Pain shoots through your head and the world starts to spin around you.",
+          "You stumble backward, dizzy and disoriented."
+        ],
+        "type": "DIALOGUE",
+        "next": "yell_status"
+      },
+      {
+        "id": "yell_status",
+        "type": "STATUS",
+        "result": ["You will be stunned for 1 round."],
+        "statusId": ["stunned", 1]
+      },
+      {
+        "id": "leave",
+        "result": [
+          "You decided it's best not to mess with mysterious holes today.",
+          "As you walk away, you hear a faint whisper:",
+          "\"coward...\"",
+          "You walk faster."
+        ],
+        "type": "DIALOGUE"
       }
     ]
   }

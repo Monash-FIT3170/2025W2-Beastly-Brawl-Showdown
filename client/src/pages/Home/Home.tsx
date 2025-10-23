@@ -127,10 +127,12 @@ export const Home = () => {
           {seasonalEventPopup && (
             <PopupClean>
               <div className="flex flex-col justify-around">
-                <OutlineText size="extraLarge">Play Seasonal Event?</OutlineText>
+                <OutlineText size="extraLarge">
+                  Play Seasonal Event?
+                </OutlineText>
                 <BlackText size="large">
-                  YOU ARE NOT LOGGED IN. YOU CAN PLAY THE SEASONAL EVENT, 
-                  BUT YOUR SCORE WON'T BE RECORDED ON THE LEADERBOARD.
+                  YOU ARE NOT LOGGED IN. YOU CAN PLAY THE SEASONAL EVENT, BUT
+                  YOUR SCORE WON'T BE RECORDED ON THE LEADERBOARD.
                 </BlackText>
                 <div className="flex flex-row justify-center gap-[2rem] pt-[2rem] items-center">
                   <ButtonGeneric
@@ -155,7 +157,7 @@ export const Home = () => {
             <ButtonGeneric
               color={"ronchi"}
               size={"squaremedium"}
-              onClick={() => setShowLogin(true)}
+              onClick={() => FlowRouter.go("/login")}
             >
               <div className="flex flex-col ">
                 <OutlineText size={"tiny"}>LOG</OutlineText>
@@ -189,7 +191,11 @@ export const Home = () => {
           <ButtonGeneric color="ronchi" size="large" onClick={handleAdventure}>
             <OutlineText size="large">ADVENTURE</OutlineText>
           </ButtonGeneric>
-          <ButtonGeneric color="ronchi" size="large" onClick={handleSeasonalEvent}>
+          <ButtonGeneric
+            color="ronchi"
+            size="large"
+            onClick={handleSeasonalEvent}
+          >
             <OutlineText size="large">EVENTS</OutlineText>
           </ButtonGeneric>
 
@@ -217,19 +223,9 @@ export const Home = () => {
             />
           </div>
         </div>
-        
       </div>
-
-      {showLogin && (
-        <LoginPopup
-          onLoginSuccess={handleLoginSuccess}
-          setExitPopup={handleExitLogin}
-        />
-      )}
     </BlankPage>
   );
 };
 
-const seasonalEventMap = new Map([
-  [9, SeasonalEventIdentifier.SPOOK_GARDEN]
-]);
+const seasonalEventMap = new Map([[9, SeasonalEventIdentifier.SPOOK_GARDEN]]);

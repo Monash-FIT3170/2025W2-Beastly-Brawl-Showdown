@@ -23,7 +23,7 @@ export class MagicShield extends Equipment {
 
   public calculateStrength(stage: number): void {
     // TODO: update formula for endless - needs playtesting with monster scaling
-    this.strength = Math.min(stage * 0.5, 20);
+    this.strength = Math.min(stage * 0.5, 10);
   }
 
   protected getImageString(): string {

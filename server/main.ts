@@ -1,6 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { actionSelectedHandler } from "./src/socket/battle/actionSelectedHandler";
 import { characterSelectHandler } from "./src/socket/battle/characterSelectHandler";
+import { achievementHandler } from "./src/socket/backend/achievementHandler";
+import { globalLeaderboardHandler } from "./src/socket/backend/globalLeaderboardHandler";
 import http, { get } from "node:http";
 import { Server } from "socket.io";
 import { Player } from "./src/model/game/player";
@@ -97,6 +99,8 @@ Meteor.startup(async () => {
     SeasonalEventModeHandler(io, socket);
     adventureTurnHandler(io, socket);
     seasonalEventTurnHandler(io, socket);
+    achievementHandler(io, socket);
+    globalLeaderboardHandler(io, socket);
 
     socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id} (${reason})`);

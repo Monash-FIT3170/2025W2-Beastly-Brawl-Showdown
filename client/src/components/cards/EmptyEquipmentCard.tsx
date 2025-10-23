@@ -11,7 +11,7 @@ export const EmptyEquipmentCard = ({}) => {
     border-blackCurrant
     rounded-2xl
     w-[40rem]
-    xl:w-[30rem]
+    xl:w-[40rem]
     p-[1rem]
     justify-center
     items-center

@@ -8,6 +8,7 @@ import { GameModeIdentifier } from "/types/single/gameMode";
 import { PlayerState } from "/types/single/playerState";
 import { GameSessionStateMetaData } from "/types/composite/gameSessionState";
 import { ActionResult } from "../../../../../types/single/actionState";
+import { spec } from "node:test/reporters";
 
 export class BattleRoyale implements IGameMode {
   public name = GameModeIdentifier.BATTLE_ROYALE as const;
@@ -81,6 +82,63 @@ export class BattleRoyale implements IGameMode {
     return false;
   }
 
+  public onTurnStarted(
+    session: GameSession,
+    battle: Battle,
+    io: Server,
+    socket: Socket
+  ): void {
+    // Loop through the potential spectators of each player and check if they are spectating. If they are, add them to the battle spectator list
+    for (let player of battle.getPlayers()) {
+      let potentialSpectators = player.getPotentialSpectators();
+      for (let spectator of potentialSpectators) {
+        if (spectator.isSpectating() && !spectator.isInSpectatingRoom()) {
+          battle.addSpectator(spectator);
+          spectator.setCurrentlySpectating(player);
+
+          io.sockets.sockets.get(spectator.getId())?.join(battle.getId());
+          io.sockets.sockets
+            .get(spectator.getId())
+            ?.join(`${battle.getId()}-spectators`);
+          io.sockets.sockets
+            .get(spectator.getId())
+            ?.emit("battle-started", battle.getId());
+
+          spectator.setInSpectatingRoom(true);
+        }
+      }
+    }
+  }
+
+  public onBattleStarted(
+    session: GameSession,
+    battle: Battle,
+    io: Server,
+    socket: Socket
+  ): void {
+    // Loop through the potential spectators of each player and check if they are spectating. If they are, add them to the battle spectator list
+    for (let player of battle.getPlayers()) {
+      let potentialSpectators = player.getPotentialSpectators();
+      for (let spectator of potentialSpectators) {
+        if (spectator.isSpectating()) {
+          battle.addSpectator(spectator);
+          spectator.setCurrentlySpectating(player);
+        }
+      }
+    }
+
+    for (let spectator of battle.getSpectators()) {
+      io.sockets.sockets.get(spectator.getId())?.join(battle.getId());
+      io.sockets.sockets
+        .get(spectator.getId())
+        ?.join(`${battle.getId()}-spectators`);
+      io.sockets.sockets
+        .get(spectator.getId())
+        ?.emit("battle-started", battle.getId());
+      spectator.setInSpectatingRoom(true);
+    }
+  }
+
   public onBattleEnded(
     session: GameSession,
     battle: Battle,
@@ -94,13 +152,24 @@ export class BattleRoyale implements IGameMode {
       let loser = battle
         .getPlayers()
         .filter((player) => player.getId() != winner.getId())[0];
+
+      // If a battle is won, add the losers potential spectators to the winners potential spectators list
+      winner.addPotentialSpectators([...loser.getPotentialSpectators(), loser]);
       this.eliminatePlayer(loser);
 
-      io.to(battle.getId()).emit("battle_end", {
+      io.to(`${battle.getId()}-players`).emit("battle_end", {
         result: "concluded",
         winners: [winner.getName()],
+        mode: this.name,
+        gameCode: session.getGameCode().toString(),
+        finalScreen: session.isSessionConcluded(),
       });
-      
+
+      io.to(`${battle.getId()}-spectators`).emit("spectator_battle_end", {
+        gameCode: session.getGameCode().toString(),
+        mode: this.name,
+        finalScreen: session.isSessionConcluded(),
+      });
     }
 
     // Case 2: It is a draw - there are no winners
@@ -110,9 +179,35 @@ export class BattleRoyale implements IGameMode {
       let player2 = battle.getPlayers()[1];
       this.eliminatePlayer(player2);
 
-      io.to(battle.getId()).emit("battle_end", {
+      // If it is a draw,  assign the potential spectators of both players to a random remaining player
+      if (this.remainingPlayers.length > 0) {
+        let randomPlayer =
+          this.remainingPlayers[
+            Math.floor(Math.random() * this.remainingPlayers.length)
+          ];
+        randomPlayer.addPotentialSpectators([
+          ...player1.getPotentialSpectators(),
+          player1,
+        ]);
+
+        randomPlayer.addPotentialSpectators([
+          ...player2.getPotentialSpectators(),
+          player2,
+        ]);
+      }
+
+      io.to(`${battle.getId()}-players`).emit("battle_end", {
         result: "draw",
         winners: [],
+        mode: this.name,
+        gameCode: session.getGameCode().toString(),
+        finalScreen: session.isSessionConcluded(),
+      });
+
+      io.to(`${battle.getId()}-spectators`).emit("spectator_battle_end", {
+        gameCode: session.getGameCode().toString(),
+        mode: this.name,
+        finalScreen: session.isSessionConcluded(),
       });
     }
 
@@ -125,15 +220,21 @@ export class BattleRoyale implements IGameMode {
       this.remainingPlayers.map((player) => player.getName())
     );
 
+    battle.clearSpectators();
+
+    for (let spectator of battle.getSpectators()) {
+      spectator.setCurrentlySpectating(null);
+    }
+
     this.onBattlesEnded(session, io, socket);
     console.log(
       "[IS SESSION ENDED]:",
       this.isSessionConcluded(session),
       this.eliminatedPlayers.length
     );
-    
-    if (this.isSessionConcluded(session)){
-      return
+
+    if (this.isSessionConcluded(session)) {
+      return;
     }
 
     if (winner != null && !this.isSessionConcluded(session)) {
@@ -185,9 +286,16 @@ export class BattleRoyale implements IGameMode {
             console.log(`Connecting to ${socket.id}`);
             for (const player of battle.getPlayers()) {
               io.sockets.sockets.get(player.getId())?.join(battle.getId());
+              io.sockets.sockets
+                .get(player.getId())
+                ?.join(`${battle.getId()}-players`);
             }
             console.log(`Check to start battle ${battle.getId()}`);
-            console.log('[CASE 1]:', player1Indexed.getId(),player2Indexed.getId())
+            console.log(
+              "[CASE 1]:",
+              player1Indexed.getId(),
+              player2Indexed.getId()
+            );
             io.sockets.sockets
               .get(player1Indexed.getId())
               ?.emit("battle-found", {
@@ -250,12 +358,15 @@ export class BattleRoyale implements IGameMode {
                     io.sockets.sockets
                       .get(player.getId())
                       ?.join(battle.getId());
-                    if (player.isBotPlayer()){
-                      hasBot = true
+                    io.sockets.sockets
+                      .get(player.getId())
+                      ?.join(`${battle.getId()}-players`);
+                    if (player.isBotPlayer()) {
+                      hasBot = true;
                     }
                   }
                   console.log(`Check to start battle ${battle.getId()}`);
-                  if (hasBot == true){
+                  if (hasBot == true) {
                     io.sockets.sockets
                       .get(player1Indexed.getId())
                       ?.emit("battle-found", {
@@ -385,6 +496,9 @@ export class BattleRoyale implements IGameMode {
               io.sockets.sockets.get(player.getId())?.emit("battle_end", {
                 result: "concluded",
                 winners: [finalWinner.name],
+                mode: this.name,
+                gameCode: session.getGameCode().toString(),
+                finalScreen: true,
               });
             }
           } else {
@@ -392,6 +506,9 @@ export class BattleRoyale implements IGameMode {
               io.sockets.sockets.get(player.getId())?.emit("battle_end", {
                 result: "draw",
                 winners: [],
+                mode: this.name,
+                gameCode: session.getGameCode().toString(),
+                finalScreen: true,
               });
             }
           }

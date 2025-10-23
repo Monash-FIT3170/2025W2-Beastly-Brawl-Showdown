@@ -3,10 +3,26 @@ import {
   getPlayerData,
   updatePlayerAccount,
   verifyPassword,
+  createDefaultPlayerAccountSchema,
 } from "../../database/dbManager";
 import { playerAccounts } from "../../../main";
 
 export const loginHandler = (io: Server, socket: Socket) => {
+  socket.on("logout", async () => {
+    const user = playerAccounts.get(socket.id);
+    try {
+      await updatePlayerAccount(user._id, { online: false });
+      user.online = false;
+      playerAccounts.set(socket.id, createDefaultPlayerAccountSchema());
+      console.log(
+        `logout Successful: Player account updated for socket ID: ${socket.id} `
+      );
+    } catch (err) {
+      console.error(`Failed to mark user ${user.email} offline:`, err);
+    }
+    socket.emit("logoutSuccessful");
+  });
+
   socket.on("login", async (data) => {
     const { email, password } = data;
     if (!email || !password) {
@@ -93,7 +109,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
   socket.on("updatePlayer", async (updates) => {
     const user = playerAccounts.get(socket.id);
 
-    if (!user || !user.email) {
+    if (!user) {
       console.error(`No logged-in player found for socket ${socket.id}`);
       return;
     }
@@ -104,7 +120,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
       await updatePlayerAccount(user._id, updates);
       Object.assign(user, updates);
       playerAccounts.set(socket.id, user);
-      console.log(`Player ${user.username} updated successfully.`);
+      socket.emit("playerUpdated", user);
     } catch (error: any) {
       console.error(`Error updating player ${user.username}: ${error.message}`);
     }
@@ -128,7 +144,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
       await updatePlayerAccount(user._id, updates);
       Object.assign(user, updates);
       playerAccounts.set(socket.id, user);
-      console.log(`Player ${user.username} updated successfully.`);
+      console.log(`Player ${user.username} updated successfully for win.`);
     } catch (error: any) {
       console.error(`Error updating player ${user.username}: ${error.message}`);
     }
@@ -162,7 +178,7 @@ export const accountHandler = (io: Server, socket: Socket) => {
 export const startChecker = (io: Server, socket: Socket) => {
   socket.on("check-login", async () => {
     const user = playerAccounts.get(socket.id);
-    const check = user?.username !== "Default";
+    const check = user?.username !== "Guest";
     socket.emit("login-status", { loggedIn: Boolean(check) });
   });
 };

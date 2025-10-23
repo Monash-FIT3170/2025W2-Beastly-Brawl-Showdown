@@ -1,4 +1,4 @@
-9import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { PopupClean } from "./PopupClean";
 import { ChoicePopup } from "./ChoicePopup";
 import socket from "../../socket";
@@ -24,20 +24,26 @@ import { StatusButton } from "../buttons/StatusButton";
 export interface MonsterInfoPopupProp {
   playerState: PlayerState | null | undefined;
   attackState: AttackState | null | undefined;
+  opponent?: Boolean;
+  biome: string;
   onClose?: () => void;
 }
 
 export const MonsterInfoPopup = ({
   playerState,
   attackState,
+  opponent,
+  biome,
   onClose,
 }: MonsterInfoPopupProp) => {
   const [viewingTab, setViewingTab] = useState<number>(0);
   const [currentAbilities, setCurrentAbilities] = useState<ActionState[]>([]);
   const currentlyViewing = ["MONSTER STATS", "CURRENT STATUSES"];
 
+  const nameLabelColour = opponent ? `wyvernred` : `pictonBlue`;
+
   useEffect(() => {
-    console.log(attackState)
+    console.log(attackState);
     //REMOVES ATTACK/DEFEND AND ANY DUPLICATE ABILITIES
     const uniqueActions = new Map<
       ActionIdentifier,
@@ -53,11 +59,16 @@ export const MonsterInfoPopup = ({
     }
 
     setCurrentAbilities(Array.from(uniqueActions.values()));
-    console.log(playerState)
+    console.log(playerState);
   }, [playerState?.monster?.possibleActions]);
+
+  const monsterId =
+    playerState?.monster?.id === "SLIME"
+      ? `${playerState.monster.id}_${biome.toUpperCase()}`
+      : playerState?.monster?.id;
   const monsterImgPath =
     "https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/character/" +
-    playerState?.monster?.id +
+    monsterId +
     ".png";
 
   var playerName = `${playerState?.name}'s ${playerState?.monster?.name}`;
@@ -69,10 +80,10 @@ export const MonsterInfoPopup = ({
   return (
     <PopupAdventure colour="goldenRod">
       <div className=" flex items-center flex-col outline-offset-0 relative gap-2 w-full h-full">
-        <div className="mt-[1rem] xl:mt-[0.5rem] bg-pictonBlue outline-blackCurrant lg:outline-[0.2rem] sm:outline-[0.3rem] rounded-2xl flex flex-col px-[1rem] items-center justify-center">
-          <OutlineText size="choice-text">
-            {playerName}
-          </OutlineText>
+        <div
+          className={`mt-[1rem] xl:mt-[0.5rem] bg-${nameLabelColour} outline-blackCurrant lg:outline-[0.2rem] sm:outline-[0.3rem] rounded-2xl flex flex-col px-[1rem] items-center justify-center`}
+        >
+          <OutlineText size="choice-text">{playerName}</OutlineText>
         </div>
         <img className="sm:size-[30vw] lg:size-[20vh]" src={monsterImgPath} />
         <div
@@ -115,7 +126,6 @@ export const MonsterInfoPopup = ({
                   stat="HP"
                   statVal={playerState?.currentHealth!}
                   monsterStat={playerState.monster.startingHP}
-
                 ></StatInfoIcon>
                 <StatInfoIcon
                   stat="ATK+"
@@ -179,7 +189,9 @@ export const MonsterInfoPopup = ({
                   <div className="items-center justify-center xl:mt-[4rem] mt-[6rem] absolute ">
                     {/* <BlackText size="medium">You are normal...</BlackText> */}
                     {/* <OutlineText size="medium">You are normal...</OutlineText> */}
-                    <BlackText size="medium">{playerState?.monster?.name} feels perfectly fine!!</BlackText>
+                    <BlackText size="medium">
+                      {playerState?.monster?.name} feels perfectly fine!!
+                    </BlackText>
                   </div>
                 )}
                 <div className="xl:mt-[1rem] mt-[2rem] grid grid-cols-3 gap-y-[2.5rem] gap-x-[3rem] xl:gap-y-[0.5rem] xl:gap-x-[3rem] items-center justify-center">

@@ -7,7 +7,7 @@ export class LakeBlessing extends Status {
   constructor(countdown: number = 20) {
     super(
       "Lake Blessing",
-      "If the blessing is active resurrect on death",
+      "While below 50% health, gain 5 AC",
       countdown,
       StatusType.BUFF
     );

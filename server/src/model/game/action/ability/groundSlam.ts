@@ -25,7 +25,7 @@ export class GroundSlamAbilityAction extends Action {
   }
 
   public execute(actingPlayer: Player, affectedPlayer: Player): ActionResult {
-    actingPlayer.incAbilitiesUsed(1)
+    actingPlayer.incAbilitiesUsed(1);
     this.incCurrentUse(-1);
 
     // Deal 3 damage + Stun
@@ -54,8 +54,8 @@ export class GroundSlamAbilityAction extends Action {
         success: true,
       },
       damageDealt: {
-        damage: this.damage
-      }
+        damage: this.damage,
+      },
     };
   }
 }

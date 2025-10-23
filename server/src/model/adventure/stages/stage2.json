@@ -47,6 +47,342 @@
     ]
   },
   {
+    "id": "ember_slime_2",
+    "level": [0, 2],
+    "description": "Stage 2, player fights slime 2.",
+    "background": "BASALT",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "The basalt path narrows, rivers of lava bubbling on either side.",
+          "A molten shape rises from the cliff's edge.",
+          "It's a magma slime blocking your way."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["grrr... hisss... pop...", "s i z z l e."],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "MAGMA SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "MAGMA SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "You are victorious once again.",
+          "Its body cracks apart, cooling into shards of obsidian.",
+          "You search the fragments, finding something buried within..."
+        ],
+        "type": "DIALOGUE",
+        "next": "ember_drop"
+      },
+      {
+        "id": "ember_drop",
+        "type": "EQUIPMENT",
+        "equipmentId": "basalt_shield"
+      }
+    ]
+  },
+  {
+    "id": "ice_slime_2",
+    "level": [3],
+    "description": "Ice Stage 2, player fights slime 2.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "It's bitingly cold.",
+          "Another very cold object rolls out of the snow and ice.",
+          "It's an even bigger ice slime!"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["*ice slime sounds*", "sploosh"],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "ICE SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "ICE SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "You are victorious once again.",
+          "Its body cracks apart, before exploding into shards of hardened water.",
+          "You search the soggy fragments, finding something buried within..."
+        ],
+        "type": "DIALOGUE",
+        "next": "ice_drop"
+      },
+      {
+        "id": "ice_drop",
+        "type": "EQUIPMENT",
+        "equipmentId": "basalt_shield"
+      }
+    ]
+  },
+  {
+    "id": "witch_encounter_1",
+    "level": [4],
+    "description": "Stage 2 first witch encounter ",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You continues your journey through the swamp and see someone infront of you.",
+          "A witch stirs her bubbling cauldron, purple smoke hissing into the mist. She turns to you, grinning.",
+          "Heeheehee! A traveler in my swamp? You're braver than you look.",
+          "What would you like? A bottle of my stew, or a riddle for a reward?"
+        ],
+        "type": "DIALOGUE",
+        "next": "witch_choice"
+      },
+      {
+        "id": "witch_choice",
+        "result": ["What would you like from the witch?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "riddle",
+            "text": "Give me a riddle",
+            "next": "witch_riddle"
+          },
+          {
+            "id": "drink_stew",
+            "text": "Take the stew",
+            "next": "stew_result"
+          }
+        ]
+      },
+      {
+        "id": "witch_riddle",
+        "result": [
+          "I sit in the swamp, I sing in the rain. I leap without wings, I croak without pain.",
+          "What am I?"
+        ],
+        "type": "DIALOGUE",
+        "next": "answer_riddle"
+      },
+      {
+        "id": "answer_riddle",
+        "result": ["Choose your answer."],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "answer_frog",
+            "text": "A frog!",
+            "next": "riddle_frog"
+          },
+          {
+            "id": "answer_bird",
+            "text": "A bird!",
+            "next": "riddle_bird"
+          },
+          {
+            "id": "answer_me",
+            "text": "ME!",
+            "next": "riddle_me"
+          }
+        ]
+      },
+      {
+        "id": "riddle_frog",
+        "type": "DIALOGUE",
+        "result": [
+          "Yes! Yes! A frog! You've got some brains.",
+          "Take this, the Everblooming Lotus.",
+          "Next time we cross paths, you'll see why it's more than just a flower."
+        ],
+        "next": "lotus_reward"
+      },
+      {
+        "id": "riddle_bird",
+        "type": "DIALOGUE",
+        "result": ["WHAT?! BIRD?? A bird in my swamp??", "You foolish mouse."],
+        "next": "witch_curse"
+      },
+      {
+        "id": "riddle_me",
+        "result": [
+          "HAHA! Do you croak? Ha ha ha! Wrong wrong wrong...",
+          "But you made me laugh.",
+          "Here, I'll help you alittle."
+        ],
+        "type": "DIALOGUE",
+        "next": "witch_reward"
+      },
+      {
+        "id": "lotus_reward",
+        "type": "STORY_ITEM",
+        "storyItemId": "everblooming_lotus"
+      },
+      {
+        "id": "witch_curse",
+        "type": "STATUS",
+        "statusId": ["poisoned", 5],
+        "result": [
+          "\"Blulaflu!\" the witch shouts.",
+          "A green mist clings to your skin and seeps into your lungs.",
+          "You've been poisoned."
+        ]
+      },
+      {
+        "id": "witch_reward",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", 5],
+        "result": [
+          "A golden mist surrounds you as the witch says \"Akula Palusha!\".",
+          "You feel warmth bloom in your chest. You HP increased by 5."
+        ]
+      },
+      {
+        "id": "stew_result",
+        "result": [
+          "Heeheehee! A wise choice, or a foolish one?",
+          "Be careful now. One sip may heal, another may harm... but isn't that fun?"
+        ],
+        "type": "CONSUMABLE",
+        "consumableId": "magic_stew"
+      }
+    ]
+  },
+  {
+    "id": "desert_merchant",
+    "level": [5],
+    "description": "Stage 2, player encounters a desert merchant.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "As you slowly make your way through the desert, you spot a figure under a faded awning.",
+          "As you approach, you see a weary merchant sitting on a crate, polishing a collection of trinkets and artifacts.",
+          "\"Greetings, traveler! Care to browse my wares?\" he asks with a hopeful smile.",
+          "\"But I must warn you, it may cost you your health...\""
+        ],
+        "type": "DIALOGUE",
+        "next": "desert_merchant_choice"
+      },
+      {
+        "id": "desert_merchant_choice",
+        "result": ["What do you do with the merchant?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "trade",
+            "text": "Trade health for an item",
+            "next": "trade_lose_hp"
+          },
+          {
+            "id": "haggle",
+            "text": "Attempt to haggle",
+            "next": "haggle_random"
+          },
+          {
+            "id": "snoop",
+            "text": "Sneak a look at the guarded crate",
+            "next": "snoop_random"
+          }
+        ]
+      },
+      {
+        "id": "trade_lose_hp",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -4],
+        "result": [
+          "The merchant grins. \"A fair price.\"",
+          "You feel a sharp sting as he pricks your finger and draws power from you."
+        ],
+        "next": "trade_reward"
+      },
+      {
+        "id": "trade_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "desert_pool"
+      },
+      {
+        "id": "haggle_random",
+        "type": "RANDOM",
+        "result": ["You bargain with spirited words."],
+        "options": [
+          { "id": "success", "chance": 50, "next": "haggle_win" },
+          { "id": "fail", "chance": 50, "next": "haggle_lose" }
+        ]
+      },
+      {
+        "id": "haggle_win",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "result": [
+          "The merchant nods appreciatively. \"A clever deal!\"",
+          "You feel a slight sting as he pricks your finger and draws a small amount of power from you."
+        ],
+        "next": "haggle_reward"
+      },
+      {
+        "id": "haggle_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "desert_pool"
+      },
+      {
+        "id": "haggle_lose",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -3],
+        "result": [
+          "The merchant snarls and kicks sand into your face.",
+          "\"No deals for fools!\" you hear as you stagger away.",
+          "You lost 3 HP."
+        ]
+      },
+      {
+        "id": "snoop_random",
+        "type": "RANDOM",
+        "result": ["You sneak toward the crate."],
+        "options": [
+          { "id": "antidote", "chance": 70, "next": "find_antidote" },
+          { "id": "trap", "chance": 30, "next": "trigger_trap" }
+        ]
+      },
+      {
+        "id": "find_antidote",
+        "result": [
+          "While the merchant wasn't looking, you managed to grab a strange vial from the crate."
+        ],
+        "type": "DIALOGUE",
+        "next": "get_antidote"
+      },
+      {
+        "id": "get_antidote",
+        "type": "CONSUMABLE",
+        "consumableId": "ability_antidote"
+      },
+      {
+        "id": "trigger_trap",
+        "type": "STATUS",
+        "statusId": ["poisoned", 3],
+        "result": [
+          "A spring-loaded poison dart strikes you in the arm!",
+          "You feel unwell..."
+        ]
+      }
+    ]
+  },
+  {
     "id": "stage2_waterfall",
     "level": [0],
     "description": "Stage 2, player finds a waterfall",
@@ -56,8 +392,8 @@
         "result": [
           "You hear a thundering roar in the distance.",
           "As you get closer, a waterfall comes into view.",
-          "You see someone deep in medidation as you appraoch.",
-          "They seem to twitch as you get closer"
+          "You see someone deep in meditation as you approach.",
+          "They seem to twitch as you get closer."
         ],
         "type": "DIALOGUE",
         "next": "waterfall_meditator"
@@ -69,7 +405,7 @@
           "If you seek what lies beyond the waterfall you must prove your worth with a show of strength."
         ],
         "type": "DIALOGUE",
-        "enemyId": ["charmer_cobra", "Martial Artist"],
+        "enemyId": ["charmer_cobra", "MARTIAL ARTIST"],
         "next": "martial_artist_choice"
       },
       {
@@ -98,7 +434,7 @@
       {
         "id": "martial_artist_battle",
         "type": "FIGHT",
-        "enemyId": ["charmer_cobra", "Martial Artist"],
+        "enemyId": ["charmer_cobra", "MARTIAL ARTIST"],
         "next": "martial_artist_win"
       },
       {
@@ -108,7 +444,7 @@
           "Go behind the waterfall and make your choice."
         ],
         "type": "DIALOGUE",
-        "enemyId": ["charmer_cobra", "Martial Artist"],
+        "enemyId": ["charmer_cobra", "MARTIAL ARTIST"],
         "next": "behind_water"
       },
       {
@@ -120,7 +456,7 @@
       {
         "id": "martial_artist_choice_reward",
         "type": "CHOICE",
-        "result": ["What Do You Take"],
+        "result": ["What Do You Take?"],
         "options": [
           {
             "id": "bandana",
@@ -137,17 +473,239 @@
       {
         "id": "black_belt",
         "type": "EQUIPMENT",
-        "equipmentId": "blackBelt"
+        "equipmentId": "black_belt"
       },
       {
         "id": "bandana_reward",
         "type": "EQUIPMENT",
-        "equipmentId": "fightersBandana"
+        "equipmentId": "fighters_bandana"
       },
       {
         "id": "leave",
         "type": "DIALOGUE",
         "result": ["You turn down the challenge and continue onwards."]
+      }
+    ]
+  },
+  {
+    "id": "stage2_penguin_guarding",
+    "level": [0],
+    "description": "Stage 2, player finds a waterfall",
+    "background": "ARCTIC",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": ["You come across a penguin standing over something shiny."],
+        "next": "penguin_encounter"
+      },
+      {
+        "id": "penguin_encounter",
+        "type": "DIALOGUE",
+        "result": ["Back off I found it first!"],
+        "next": "penguin_fight",
+        "enemyId": ["furious_flipper", "GUARDIAN PENGUIN"]
+      },
+      {
+        "id": "penguin_fight",
+        "type": "FIGHT",
+        "enemyId": ["furious_flipper", "GUARDIAN PENGUIN"],
+        "next": "penguin_defeat"
+      },
+      {
+        "id": "penguin_defeat",
+        "type": "DIALOGUE",
+        "result": ["Take it. I didn't have any use for it anyway."],
+        "next": "penguin_reward",
+        "enemyId": ["furious_flipper", "GUARDIAN PENGUIN"]
+      },
+      {
+        "id": "penguin_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool"
+      }
+    ]
+  },
+  {
+    "id": "slime_merge",
+    "level": [0],
+    "description": "player encounters 2 slimes that merge",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": [
+          "You venture deeper and deeper into a cave.",
+          "You start to doubt the tip you received about a hidden treasure.",
+          "Deep in thought, you come to a fork in the path."
+        ],
+        "next": "fork_decision"
+      },
+      {
+        "id": "fork_decision",
+        "result": ["Left or Right"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "left",
+            "text": "Left",
+            "next": "left_path"
+          },
+          {
+            "id": "right",
+            "text": "Right",
+            "next": "right_path"
+          }
+        ]
+      },
+      {
+        "id": "left_path",
+        "type": "DIALOGUE",
+        "result": [
+          "You veer left.",
+          "Just as you're starting to doubt yourself, you trip over something.",
+          "You turn around to found what is presumably the caves treasure."
+        ],
+        "next": "cave_treasure"
+      },
+      {
+        "id": "cave_treasure",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool",
+        "next": "left_conclusion"
+      },
+      {
+        "id": "left_conclusion",
+        "type": "DIALOGUE",
+        "result": [
+          "Slightly disappointed, you take your treasure and return to the entrance of the cave"
+        ]
+      },
+      {
+        "id": "right_path",
+        "type": "DIALOGUE",
+        "result": [
+          "You veer right.",
+          "Just as you're starting to doubt yourself, you feel something sticky drip on you.",
+          "You look up to see two slimes looking down at you from the roof.",
+          "They seem eager to attack"
+        ],
+        "next": "slime_stare"
+      },
+      {
+        "id": "slime_stare",
+        "type": "DIALOGUE",
+        "result": ["..."],
+        "enemyId": ["slime", "CAVE SLIME"],
+        "next": "slime_attack"
+      },
+      {
+        "id": "slime_attack",
+        "type": "DIALOGUE",
+        "result": [
+          "The slimes drop down from the roof.",
+          "Before you can react, they start fusing together.",
+          "You stare in horror, as what was once two relatively simple foes, is now a towering monstrosity."
+        ],
+        "next": "big_slime_fight"
+      },
+      {
+        "id": "big_slime_fight",
+        "type": "FIGHT",
+        "enemyId": ["slime", "CAVE SLIME"],
+        "scaling": 2,
+        "next": "battle_conclusion"
+      },
+      {
+        "id": "battle_conclusion",
+        "type": "DIALOGUE",
+        "result": ["You're exhausted but the enormous slime is no more"],
+        "next": "slime_reward"
+      },
+      {
+        "id": "slime_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "slime_pool",
+        "next": "right_chest"
+      },
+      {
+        "id": "right_chest",
+        "type": "DIALOGUE",
+        "result": [
+          "You continue onwards down the cave.",
+          "Pretty soon you come upon a chest."
+        ],
+        "next": "key_evaluation"
+      },
+      {
+        "id": "key_evaluation",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "have_key",
+            "prerequisite": ["Pristine Key"],
+            "next": "key_choice"
+          },
+          {
+            "id": "no_key",
+            "next": "leave_cave"
+          }
+        ]
+      },
+      {
+        "id": "key_choice",
+        "result": [
+          "The pristine key in your backpack looks like a perfect fit."
+        ],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "use_key",
+            "text": "Unlock The Chest",
+            "next": "chest_reward_pre",
+            "cost": ["Pristine Key"]
+          },
+          {
+            "id": "save_key",
+            "text": "Save The Key",
+            "next": "chest_locked"
+          }
+        ]
+      },
+      {
+        "id": "chest_reward_pre",
+        "type": "DIALOGUE",
+        "result": ["The chest springs open to reveal its contents."],
+        "next": "chest_reward"
+      },
+      {
+        "id": "chest_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "pristine_treasure_pool",
+        "next": "happy_leave"
+      },
+      {
+        "id": "happy_leave",
+        "type": "DIALOGUE",
+        "result": ["Satisfied with your reward, you leave the cave."]
+      },
+      {
+        "id": "chest_locked",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide it would be best to save the key for later.",
+          "Realising this must be the rumoured treasure of the save you decide there is nothing left for you.",
+          "You leave the cave."
+        ]
+      },
+      {
+        "id": "leave_cave",
+        "type": "DIALOGUE",
+        "result": [
+          "This must be the rumoured treasure of the save.",
+          "With no way to open it, there is nothing here for you.",
+          "You turn around and leave the cave."
+        ]
       }
     ]
   }

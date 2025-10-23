@@ -8,6 +8,7 @@ import { ActionRandomiser } from "../model/game/actionRandomiser";
 import { ActionIdentifier } from "../../../types/single/actionState";
 import { Action } from "../model/game/action/action";
 import { Player } from "../model/game/player";
+import { updatePlayerAccount } from "../database/dbManager";
 
 //function to show status at begining of turn 1 in a batle
 function showDefaultStatusAnimations(
@@ -47,14 +48,14 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
       var actionToAdd: Action | undefined = undefined;
       player?.clearLogs();
 
-      //show status at begining of turn 1 battle 
+      //show status at begining of turn 1 battle
       let players = battle?.getPlayers();
 
       if (!players) {
         console.error(`ADV: battle players empty ${players}`);
-      } else{
-        if (battle?.getTurn() === 0){
-          showDefaultStatusAnimations(io, players[0], players[1])
+      } else {
+        if (battle?.getTurn() === 0) {
+          showDefaultStatusAnimations(io, players[0], players[1]);
         }
       }
 
@@ -164,8 +165,6 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
           opp: player1.getAnimations().filter((a) => a != ""),
         });
 
-        
-
         //TIME OUT CONSTANTS
         const prepareTimeOut = 1000; // -> between prepare animation and roll animation
         const rollTimeOut = 2000; // -> between prepare/roll and execute animation
@@ -270,7 +269,6 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                 opp: player1.getAnimations(),
               });
 
-
               //check if battle is over
               if (battle?.isBattleOver()) {
                 const winners = battle
@@ -326,6 +324,9 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
                         const oldRecord = adventureProgression.stage;
                         if (adventure.getStage() > oldRecord) {
                           adventureProgression.stage = adventure.getStage();
+                          updatePlayerAccount(user._id, {
+                            adventureProgression: adventureProgression,
+                          });
                         }
                       } else {
                         console.error(
@@ -342,7 +343,7 @@ export const adventureTurnHandler = (io: Server, socket: Socket) => {
               } else {
                 //if battle not over - prepare next turn
                 let actions = player?.getMonster()?.getPossibleActionStates();
-                io.to(playerId).emit("possible_actions", actions);  
+                io.to(playerId).emit("possible_actions", actions);
                 battle?.incTurn();
               }
             }, executeTimeOut);

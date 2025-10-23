@@ -1,3 +1,4 @@
+import { AttackAction } from "../action/attack";
 import { Player } from "../player";
 import { Equipment } from "./equipment";
 
@@ -10,19 +11,17 @@ export class PufferPrickle extends Equipment {
   }
 
   public equip(player: Player): void {
-    //TODO: implement
-    console.error("Equip Not Implemented - Puffer Prickle");
+    player.getMonster()?.getAttackAction().incrementCritRate(this.strength);
   }
   public unequip(player: Player): void {
-    console.error("Un-Equip Not Implemented - Puffer Prickle");
+    player.getMonster()?.getAttackAction().incrementCritRate(-this.strength);
   }
   public getStatDescription(): string {
     return "+" + this.strength + "% Critical Hit Chance";
   }
 
   public calculateStrength(stage: number): void {
-    //TODO: update formula - currently strength = stage
-    this.strength = stage * 3;
+    this.strength = Math.min(stage * 3, 50);
   }
 
   protected getImageString(): string {
