@@ -23,9 +23,20 @@ import { SlimeBoost } from "../model/game/status/slimeBoost";
 import { Equipment } from "../model/game/equipment/equipment";
 import { updatePlayerAccount } from "../database/dbManager";
 import { createStoryItem } from "../model/adventure/factories/storyItemFactory";
-import { FightersBandana } from "../model/game/equipment/fightersBandana";
+import { FightersBandana } from "../model/game/equipment/fightersBracelets";
 import { BlackBelt } from "../model/game/equipment/blackBelt";
+import { Consumable } from "../model/game/consumables/consumable";
+import { AfflictionGloves } from "../model/game/equipment/afflictionGloves";
+import { RegenerationAmulet } from "../model/game/equipment/regenerationAmulet";
+import { MeekHelmet } from "../model/game/equipment/meekHelmet";
+import { ColosseumCrown } from "../model/game/equipment/colosseumCrown";
+import { BlazingGauntlets } from "../model/game/equipment/blazingGauntlets";
+import { PristineKey } from "../model/game/storyItem/PristineKey";
+import { createStatus } from "../model/adventure/factories/statusFactory";
 import { LakeCurse } from "../model/game/status/lakeCurse";
+import { OozingBlade } from "../model/game/equipment/oozingBlade";
+import { AbilityAntidote } from "../model/game/consumables/abilityAntidote";
+import { PercentageHealthPotion } from "../model/game/consumables/healthPotion";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -76,6 +87,10 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
+      if (adventure.getLevel() === 0) {
+        player.giveConsumable(new AbilityAntidote());
+      }
+      // player.addStatus(new SlimeBoost(3));
       //progressAdventure(io, socket, adventure, adventure.getStage());
     }
   );
@@ -149,18 +164,11 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     if (!adventure) return;
 
     const player = adventure.getPlayer();
-    const equipmentList = player.getEquipment();
 
-    // Remove the equipment at the selected index
-    if (removeIndex >= 0 && removeIndex < equipmentList.length) {
-      equipmentList.splice(removeIndex, 1);
-
-      // Reconstruct the Equipment instance using your factory
-      // newEquipment should have an id property
-      if (newEquipment && newEquipment.id) {
-        const newEquipInstance = createEquipment(newEquipment.id);
-        equipmentList.splice(removeIndex, 0, newEquipInstance);
-      }
+    player.removeEquipmentAt(removeIndex);
+    if (newEquipment && newEquipment.id) {
+      const newEquipInstance = createEquipment(newEquipment.id);
+      player.giveEquipment(newEquipInstance);
     }
 
     // Send updated player state to client
@@ -195,6 +203,27 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     }
   });
 
+  socket.on("update-best", () => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+
+    if (adventure?.getLevel() === 0) {
+      const user = playerAccounts.get(socket.id);
+      var adventureProgression = user?.adventureProgression;
+      if (adventureProgression) {
+        const oldRecord = adventureProgression.stage;
+        if (adventure.getStage() > oldRecord) {
+          adventureProgression.stage = adventure.getStage();
+          updatePlayerAccount(user!._id, {
+            adventureProgression: adventureProgression,
+          });
+        }
+      } else {
+        console.error(`ADV: Failed to load ${user?._id}'s endless record.`);
+      }
+    }
+  });
+
   socket.on("adventure_take_storyItem", ({ storyItemId, stage }) => {
     const adventure = activeAdventures.get(socket.id);
     if (!adventure) return;
@@ -217,6 +246,29 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     }
   });
 
+  socket.on("adventure_take_status", ({ statusId, stage }) => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+    const player = adventure.getPlayer();
+
+    if (statusId) {
+      // Apply the status to the player
+      const status = createStatus(statusId); // You'll need this factory function
+      player.addStatus(status);
+
+      const lastOutcome = loadNextStory(io, adventure, socket);
+
+      if (lastOutcome && lastOutcome.next) {
+        adventure.currentOutcomeId = lastOutcome.next;
+        adventure.pastEncounters.push(adventure.currentOutcomeId);
+      } else {
+        adventure.currentOutcomeId = "";
+      }
+
+      progressAdventure(io, socket, adventure, stage);
+    }
+  });
+
   socket.on("adventure_prereq_choice", ({ itemNames }) => {
     const adventure = activeAdventures.get(socket.id);
     if (!adventure) return;
@@ -230,7 +282,7 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
   socket.on("monster_request", ({ id }) => {
     const monster = getMonster(id);
     if (monster) {
-      socket.emit("monster_response", monster);
+      socket.emit("monster_response", monster.getMonsterState());
     } else {
       socket.emit("adventure_unlock_error", { message: "Monster not found" });
     }
@@ -304,9 +356,15 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           true
         ); // Eventually use bot class
         if (resolved.scaling) {
-          resolved.enemy?.pveScaling(adventure.getStage() * resolved.scaling);
+          resolved.enemy?.pveScaling(
+            adventure.getStage() * resolved.scaling,
+            adventure.getLevel()
+          );
         } else {
-          resolved.enemy?.pveScaling(adventure.getStage());
+          resolved.enemy?.pveScaling(
+            adventure.getStage(),
+            adventure.getLevel()
+          );
         }
 
         bot.setMonster(resolved.enemy!);
@@ -413,8 +471,11 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           socket.emit("adventure_defeat");
         }
       } else if (resolved.type === "EQUIPMENT") {
+        const loot = resolved.equipment;
+        loot.calculateStrength(adventure.getStage());
+        // console.error("DEBUG: equipment", loot);
         socket.emit("adventure_equipment", {
-          equipment: resolved.equipment?.getState() || "Unknown equipment",
+          equipment: loot.getState() || "Unknown equipment",
           equipmentId: resolved.equipmentId || "unknown_equipment",
         });
       } else if (resolved.type === "PREREQUISITE") {
@@ -443,34 +504,45 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       } else if (resolved.type === "STATUS") {
         // Handle status
         adventure.getPlayer().addStatus(resolved.status!);
-        console.log(resolved.statusId);
-        socket.emit("adventure_state", {
-          type: "status",
-          result: resolved.result,
-          next: resolved.next,
-          stage: adventure.getStage(),
-          player: adventure.getPlayer().getPlayerState(),
+        // console.log(resolved.statusId);
+        // socket.emit("adventure_state", {
+        //   type: "status",
+        //   result: resolved.result,
+        //   next: resolved.next,
+        //   stage: adventure.getStage(),
+        //   player: adventure.getPlayer().getPlayerState(),
+        // });
+        socket.emit("adventure_status", {
+          messages: resolved.result || [],
+          status: resolved.status!,
         });
       } else if (resolved.type === "LOOT_POOL") {
         if (resolved.randomLoot() instanceof Equipment) {
+          const loot = resolved.randomLoot();
+          loot.calculateStrength(adventure.getStage());
+          // console.error("DEBUG: random loot equipment", loot);
           socket.emit("adventure_equipment", {
-            equipment: resolved.randomLoot()?.getState() || "Unknown equipment",
+            equipment: loot.getState() || "Unknown equipment",
             equipmentId: resolved.lootId || "unknown_equipment",
           });
-        } else {
+        } else if (resolved.randomLoot() instanceof Consumable) {
           socket.emit("adventure_consumable", {
             consumable:
               resolved.randomLoot()?.getState() || "Unknown Consumable",
             consumableId: resolved.lootId || "unknown_consumable",
           });
+        } else {
+          socket.emit("adventure_storyItem", {
+            storyItem: resolved.randomLoot()?.getState() || "Unkown Story Item",
+            storyItemId: resolved.lootId || "unknown_story_item",
+          });
         }
       } else if (resolved.type === "STORY_ITEM") {
         console.log(resolved);
         socket.emit("adventure_storyItem", {
-          storyItem: resolved.storyItem?.getState() || "Unknown story item",
-          storyItemId: resolved.storyItemId || "unknown_storyItem",
+          storyItem: resolved.storyItem?.getState() || "Unknown Story Item",
+          storyItemId: resolved.storyItemId || "unknown_story_item",
         });
-        console.log(resolved);
       }
     } catch (err) {
       console.error("Adventure stage load error:", err);
@@ -498,29 +570,29 @@ export function loadNextStory(
         monsterId: enemy,
       });
       io.to(socket.id).emit("adventure_win", { monsterId: enemy });
-      //unlock monster
-      const user = playerAccounts.get(socket.id);
-      console.log(
-        `${user?.username} has unlocked ${adventure.getLevelMonster()}`
-      );
-      var adventureProgression = user?.adventureProgression;
-      if (adventureProgression) {
-        adventureProgression.unlockedMonsters[adventure.getLevelMonster()] =
-          true;
-        adventureProgression.unlockedLevels.push(adventure.getLevel() + 1);
-        updatePlayerAccount(user?._id, {
-          adventureProgression: adventureProgression,
-        });
+        //unlock monster
+        const user = playerAccounts.get(socket.id);
         console.log(
-          `${
-            user?.username
-          } has unlocked ${adventure.getLevelMonster()} and level ${
-            adventure.getLevel() + 1
-          }`
+          `${user?.username} has unlocked ${adventure.getLevelMonster()}`
         );
-      } else {
-        console.error(`Failed to update ${user?._id}'s unlocked monsters.`);
-      }
+        var adventureProgression = user?.adventureProgression;
+        if (adventureProgression) {
+          adventureProgression.unlockedMonsters[adventure.getLevelMonster()] =
+            true;
+          adventureProgression.unlockedLevels.push(adventure.getLevel() + 1);
+          updatePlayerAccount(user?._id, {
+            adventureProgression: adventureProgression,
+          });
+          console.log(
+            `${
+              user?.username
+            } has unlocked ${adventure.getLevelMonster()} and level ${
+              adventure.getLevel() + 1
+            }`
+          );
+        } else {
+          console.error(`Failed to update ${user?._id}'s unlocked monsters.`);
+        }
     }
     const loadNodes = loadStage(stage % 8);
     const eligibleNodes = loadNodes.filter((node) => {
@@ -529,6 +601,12 @@ export function loadNextStory(
     });
     const randomNode = Math.floor(Math.random() * eligibleNodes?.length);
     stageData = eligibleNodes[randomNode];
+    console.log("THIS IS BEING HIT", stageData.background);
+    if (!stageData.background) {
+      socket.emit("adventure_background", null);
+    } else {
+      socket.emit("adventure_background", stageData.background);
+    }
     adventure.currentStory = stageData;
   }
   const outcome = stageData?.outcomes.find(

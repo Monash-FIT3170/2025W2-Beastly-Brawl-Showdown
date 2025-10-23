@@ -2,15 +2,19 @@ import React, { useRef, useState, useLayoutEffect } from "react";
 import ActionButton from "../buttons/ActionButton";
 import { ActionState } from "/types/single/actionState";
 import socket from "../../socket";
+import { BaseCard } from "./BaseCard";
+import { OutlineText } from "../texts/OutlineText";
 
 interface BattleFooterProp {
   possibleActions: ActionState[];
   battleId: string | null;
+  isSpectating?: boolean;
 }
 
 export const BattleFooter = ({
   possibleActions,
   battleId,
+  isSpectating = false,
 }: BattleFooterProp) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -67,6 +71,7 @@ export const BattleFooter = ({
                 battleId={battleId!}
                 isActive={activeIndex === index}
                 onClick={() => setActiveIndex(index)}
+                isDisabled={isSpectating}
               />
             </div>
           ))}

@@ -54,6 +54,8 @@ export const ButtonGeneric = ({
     adventure:
       "lg:w-[12rem] sm:w-[16rem] lg:h-[3.75rem] sm:h-[8rem] px-[1.5rem] py-[0.75rem]",
     backpack: "lg:w-[8rem] lg:h-[8rem] sm:w-[16rem] sm:h-[16rem]",
+    halfCard:
+    "w-[40rem] h-[9rem] px-[1.5rem] py-[1rem] text-[2.5rem] xl:w-[16rem] xl:h-[6rem]",
   };
 
   // NOTE: might not be in main rn, not used

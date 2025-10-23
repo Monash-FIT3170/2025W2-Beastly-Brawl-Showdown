@@ -1,8 +1,9 @@
 [
   {
     "id": "obstructing_lake",
-    "level": [1],
+    "level": [0, 1],
     "description": "A large lake",
+    "background": "FOREST",
     "outcomes": [
       {
         "id": "initial",
@@ -141,9 +142,202 @@
     ]
   },
   {
+    "id": "casino_gaming",
+    "level": [3],
+    "description": "LETS GO GAMBLING!!!",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "AIN'T NO WAY ITS A WHOLE CASINO WOAAAAAA",
+          "Ignore the logistics of there being a casino in the middle of nowhere."
+        ],
+        "type": "DIALOGUE",
+        "next": "choice_1"
+      },
+      {
+        "id": "choice_1",
+        "result": ["Do you..?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "eat_casino",
+            "text": "am hongry monch monch",
+            "next": "eat_casino_random"
+          },
+          {
+            "id": "gamblecore",
+            "text": "LET'S GO GAMBLING!!!!",
+            "next": "gamblecore_random"
+          },
+          {
+            "id": "ignore",
+            "text": "LET'S BE FINANCIALLY RESPONSIBLE!!!",
+            "next": "no_investigation"
+          }
+        ]
+      },
+      {
+        "id": "eat_casino_random",
+        "result": [
+          "You go up to the vending machine and buy something at random.",
+          "This is because you can't read."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "power",
+            "chance": 50,
+            "next": "eat_casino_power"
+          },
+          {
+            "id": "curse",
+            "chance": 50,
+            "next": "eat_casino_curse"
+          }
+        ]
+      },
+      {
+        "id": "gamblecore_random",
+        "result": ["YOU GAMBLE!!!!!"],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "power",
+            "chance": 10,
+            "next": "gamble_power"
+          },
+          {
+            "id": "curse",
+            "chance": 90,
+            "next": "gamble_curse"
+          }
+        ]
+      },
+      {
+        "id": "eat_casino_power",
+        "type": "DIALOGUE",
+        "result": [
+          "You eat the suspicious food",
+          "It actually didn't kill you!"
+        ],
+        "next": "drink_reward"
+      },
+      {
+        "id": "drink_reward",
+        "type": "STATUS",
+        "result": ["Somehow it came from a lake or something idk"],
+        "statusId": ["lake_blessing", 3]
+      },
+      {
+        "id": "eat_casino_curse",
+        "type": "DIALOGUE",
+        "result": [
+          "You eat the suspicious food",
+          "But it was secretly EVIL FOOD!!!!!!!"
+        ],
+        "next": "drink_punishment"
+      },
+      {
+        "id": "drink_punishment",
+        "type": "STATUS",
+        "result": ["THE EVIL FOOD CAME FROM A LAKE OR SOMETHING IDK"],
+        "statusId": ["lake_curse", 3]
+      },
+      {
+        "id": "gamble_power",
+        "type": "DIALOGUE",
+        "result": [
+          "YOU GAMBLE!!!!!",
+          "WOW YOU HIT A JACKPOT OR  SOMETHING",
+          "RULE NUMBER 1, ALWAYS GAMBLE"
+        ],
+        "next": "gamble_reward"
+      },
+      {
+        "id": "gamble_reward",
+        "result": ["hey you wanna see something funny?"],
+        "type": "STATUS",
+        "statusId": ["lake_blessing", 99]
+      },
+      {
+        "id": "gamble_curse",
+        "type": "DIALOGUE",
+        "result": [
+          "YOU GAMBLE!!!!!",
+          "ERRRRT! AW DANGIT!",
+          "YOU PROLLY SHOULDN'T HAVE GAMBLED!!!!"
+        ],
+        "next": "gamble_punishment"
+      },
+      {
+        "id": "gamble_punishment",
+        "type": "STATUS",
+        "result": [
+          "you are forced to sell your soul to accounting to make up gambling debts"
+        ],
+        "statusId": ["lake_curse", 10]
+      },
+      {
+        "id": "no_investigation",
+        "type": "DIALOGUE",
+        "result": [
+          "okay mister responsible geez try to live a little smh my head"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ember_slime_3",
+    "level": [2],
+    "description": "Stage 5, player fights slime 3.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Between the large walls of basalt you spot a cavern, you go inside, because why not?",
+          "The cavern opens into a vast chamber, lava crashes from the cliffs above.",
+          "From the lava, a towering shape arises.",
+          "It's an inferno slime, its body blazing like a wildfire."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["i will win.", "b u r n."],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "INFERNO SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "INFERNO SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "Somehow, you survive the inferno's wrath.",
+          "Its blaze collapses, leaving scorched stone and glowing embers.",
+          "Amid the smoldering remains, you spot something pulsing with heat..."
+        ],
+        "type": "DIALOGUE",
+        "next": "ember_drop"
+      },
+      {
+        "id": "ember_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      }
+    ]
+  },
+  {
     "id": "cursed_lake",
-    "level": [1],
+    "level": [0, 1],
     "description": "Cursed lake encounter",
+    "background": "FOREST",
     "outcomes": [
       {
         "id": "initial",
@@ -282,9 +476,242 @@
     ]
   },
   {
+    "id": "ember_slime_3",
+    "level": [2],
+    "description": "Stage 5, player fights slime 3.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "Between the large walls of basalt you spot a cavern, you go inside, because why not?",
+          "The cavern opens into a vast chamber, lava crashes from the cliffs above.",
+          "From the lava, a towering shape arises.",
+          "It's an inferno slime, its body blazing like a wildfire."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["i will win.", "b u r n."],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "INFERNO SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "INFERNO SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "Somehow, you survive the inferno's wrath.",
+          "Its blaze collapses, leaving scorched stone and glowing embers.",
+          "Amid the smoldering remains, you spot something pulsing with heat..."
+        ],
+        "type": "DIALOGUE",
+        "next": "ember_drop"
+      },
+      {
+        "id": "ember_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      }
+    ]
+  },
+  {
+    "id": "frog_trail",
+    "level": [0, 4],
+    "description": "choice two paths",
+    "background": "MARSH",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You continue deeper into the swamp until the path splits in two.",
+          "One path slopes deeper into the swamp, where the mist thickens and the silence feels heavier with every step.",
+          "The other path is a mess of flattened reeds, deep footprints, and slime everywhere.",
+          "It's clear the frog ran that way."
+        ],
+        "type": "DIALOGUE",
+        "next": "path_choice"
+      },
+      {
+        "id": "path_choice",
+        "result": ["You want to continue your journey. Do you..?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "choose_follow_frog",
+            "text": "Follow the frog.",
+            "next": "follow_frog"
+          },
+          {
+            "id": "choose_not_follow",
+            "text": "Do not follow.",
+            "next": "not_follow"
+          }
+        ]
+      },
+      {
+        "id": "follow_frog",
+        "result": [
+          "You follow the slime trail deeper into the swamp.The air thickens, heavy with damp heat.",
+          "Your steps slow as a strange calm seeps into your body.",
+          "Your eyelids grow heavy. You feel sleepy..."
+        ],
+        "type": "DIALOGUE",
+        "next": "follow_random"
+      },
+      {
+        "id": "follow_random",
+        "result": [
+          "You follow the slime trail deeper into the swamp.The air thickens, heavy with damp heat.",
+          "Your steps slow as a strange calm seeps into your body.",
+          "Your eyelids grow heavy. You feel sleepy..."
+        ],
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "sleep",
+            "chance": 80,
+            "next": "swamps_whisper"
+          },
+          {
+            "id": "bracelet_reward",
+            "chance": 20,
+            "next": "witherbindBracelet_prick"
+          }
+        ]
+      },
+      {
+        "id": "swamps_whisper_dialogue",
+        "type": "DIALOGUE",
+        "result": [
+          "You shake your head, fighting the urge to close your eyes.",
+          "The world tilts, colors softening into a blur of green and blue.",
+          "You fall forward into the mud, asleep before you even hit the ground."
+        ],
+        "next": "swamps_whisper"
+      },
+      {
+        "id": "swamps_whisper",
+        "type": "STATUS",
+        "result": [
+          "You wake confused and unfocused.",
+          " The swamp's whisper still echoes in your mind, but your journey must continue."
+        ],
+        "statusId": ["swamps_whisper", 5]
+      },
+      {
+        "id": "witherbindBracelet_prick",
+        "result": [
+          "You stumble, almost falling asleep mid-step.",
+          "A sharp prick wakes you, a thorny bracelet woven from swamp vines lies half-buried in the mud."
+        ],
+        "type": "DIALOGUE",
+        "next": "prick"
+      },
+      {
+        "id": "prick",
+        "result": ["Your HP droped by 2"],
+        "type": "STAT_CHANGE",
+        "statChange": ["health", -2],
+        "next": "witherbindBracelet"
+      },
+      {
+        "id": "witherbindBracelet",
+        "type": "EQUIPMENT",
+        "result": ["You have found the Witherbind Bracelet."],
+        "equipmentId": "witherbind_bracelet"
+      },
+      {
+        "id": "not_follow",
+        "result": [
+          "The swamp quiets as you stay on the safe path. The mist settles and a rare peace surrounds you.",
+          "A gentle green glow swirls around you. The swamp itself seems to shield you."
+        ],
+        "type": "DIALOGUE",
+        "next": "swamps_calm"
+      },
+      {
+        "id": "swamps_calm",
+        "type": "STATUS",
+        "result": ["You feel calm."],
+        "statusId": ["swamps_calm", 5]
+      }
+    ]
+  },
+  {
+    "id": "mirage_camp",
+    "level": [5],
+    "description": "Stage 5 — You stumble upon an oasis that may not be real.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You spot a cool oasis ahead, palm trees and shimmering water.",
+          "Your throat aches for relief..."
+        ],
+        "type": "DIALOGUE",
+        "next": "mirage_choice"
+      },
+      {
+        "id": "mirage_choice",
+        "result": ["Do you trust the oasis?"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "drink",
+            "text": "Drink from the oasis",
+            "next": "mirage_random"
+          },
+          { "id": "ignore", "text": "Ignore and move on", "next": "safe_pass" }
+        ]
+      },
+      {
+        "id": "mirage_random",
+        "type": "RANDOM",
+        "options": [
+          { "id": "heal", "chance": 60, "next": "mirage_heal" },
+          { "id": "poison", "chance": 40, "next": "mirage_confusion" }
+        ]
+      },
+      {
+        "id": "mirage_heal",
+        "type": "STAT_CHANGE",
+        "statChange": ["health", 4],
+        "result": [
+          "The water is real! Cool and refreshing, your body feels lighter.",
+          "+4 HP."
+        ]
+      },
+      {
+        "id": "mirage_confusion",
+        "type": "STATUS",
+        "statusId": ["sandy_eyes", 3],
+        "result": [
+          "You realise that the oasis was a mirage.",
+          "Your vision blurs, and you feel disoriented."
+        ]
+      },
+      {
+        "id": "safe_pass",
+        "type": "DIALOGUE",
+        "result": [
+          "You walk past the oasis. It flickers, vanishing in the heat haze."
+        ]
+      }
+    ]
+  },
+
+  {
     "id": "stage5_stamina",
     "level": [0],
     "description": "Stage 5, player finds the colosseum of stamina",
+    "background": "COLOSSEUM",
     "outcomes": [
       {
         "id": "initial",
@@ -350,13 +777,13 @@
         "result": [
           "A slime comes out into the ring, with a ferocity in its eyes."
         ],
-        "enemyId": ["slime", "Colosseum Slime"],
+        "enemyId": ["slime", "COLOSSEUM SLIME"],
         "next": "slime_battle"
       },
       {
         "id": "slime_battle",
         "type": "FIGHT",
-        "enemyId": ["slime", "Colosseum Slime"],
+        "enemyId": ["slime", "COLOSSEUM SLIME"],
         "next": "slime_win"
       },
       {
@@ -394,8 +821,7 @@
       {
         "id": "regular_prize_pre",
         "result": [
-          "Oh, and please take this ring as a reward for your victory here",
-          "OOZING BLADE IS A PLACEHOLDER"
+          "Oh, and please take this amulet as a reward for your victory here"
         ],
         "type": "DIALOGUE",
         "next": "regular_prize"
@@ -403,12 +829,166 @@
       {
         "id": "regular_prize",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "regeneration_amulet"
       },
       {
         "id": "leave",
         "type": "DIALOGUE",
         "result": ["You turn down the challenge and continue onwards."]
+      }
+    ]
+  },
+  {
+    "id": "stage1_firepit",
+    "level": [0],
+    "description": "Stage 1, player finds a campfire",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You come across an abandoned campsite.",
+          "There is a firepit in the centre of everything.",
+          "It's still warm.",
+          "Whatever happened here was recent, and had people running scared."
+        ],
+        "type": "DIALOGUE",
+        "next": "firepit_choice"
+      },
+      {
+        "id": "firepit_choice",
+        "type": "CHOICE",
+        "result": ["Do you...?"],
+        "options": [
+          {
+            "id": "rest",
+            "text": "Rest",
+            "next": "rest"
+          },
+          {
+            "id": "loot",
+            "text": "Loot",
+            "next": "loot"
+          },
+          {
+            "id": "leave",
+            "text": "Leave",
+            "next": "leave"
+          }
+        ]
+      },
+      {
+        "id": "rest",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide to get some rest by what's left of the campfire.",
+          "You close your eyes and drift off to sleep"
+        ],
+        "next": "rest_random"
+      },
+      {
+        "id": "rest_random",
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "good_sleep",
+            "chance": 50,
+            "next": "good_sleep_cont"
+          },
+          {
+            "id": "surprise_visitor",
+            "chance": 50,
+            "next": "surprise_visitor_cont"
+          }
+        ]
+      },
+      {
+        "id": "good_sleep_cont",
+        "type": "STAT_CHANGE",
+        "result": ["You get a good sleep."],
+        "statChange": ["health", 10],
+        "next": "good_sleep_resolution"
+      },
+      {
+        "id": "good_sleep_resolution",
+        "type": "DIALOGUE",
+        "result": ["Feeling well rested you continue onwards."]
+      },
+      {
+        "id": "surprise_visitor_cont",
+        "type": "STATUS",
+        "statusId": ["stunned", 1],
+        "result": ["You're awoken by a snarling wolf."],
+        "next": "wolf_fight_test"
+      },
+      {
+        "id": "wolf_fight_test",
+        "type": "DIALOGUE",
+        "result": ["Still drowzy you get ready to fight."],
+        "next": "wolf_fight"
+      },
+      {
+        "id": "wolf_fight",
+        "type": "FIGHT",
+        "enemyId": ["pouncing_bandit", "WOLF"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "type": "DIALOGUE",
+        "result": [
+          "Still annoyed at your rest being cut short you continue onwards."
+        ]
+      },
+      {
+        "id": "loot",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide to look through the tents to see if you can find any supplies."
+        ],
+        "next": "loot_random"
+      },
+      {
+        "id": "loot_random",
+        "type": "RANDOM",
+        "options": [
+          {
+            "id": "successful_find",
+            "chance": 90,
+            "next": "successful_find_cont"
+          },
+          {
+            "id": "no_luck",
+            "chance": 10,
+            "next": "no_luck_cont"
+          }
+        ]
+      },
+      {
+        "id": "successful_find_cont",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool",
+        "next": "successful_find_end"
+      },
+      {
+        "id": "successful_find_end",
+        "type": "DIALOGUE",
+        "result": ["Satisfied with your find you continue onwards."]
+      },
+      {
+        "id": "no_luck_cont",
+        "type": "DIALOGUE",
+        "result": [
+          "It feels like you've looked through the whole campsite but you don't find anything.",
+          "Disheartened, you continue onwards."
+        ]
+      },
+      {
+        "id": "leave",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide you want no part of what happened here.",
+          "You continue onwards."
+        ]
       }
     ]
   }

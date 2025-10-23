@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "start": "dotenv -- meteor run --settings settings.dev.json",
+    "debug": "dotenv -- meteor run --inspect --settings settings.dev.json",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
@@ -16,6 +17,7 @@
     "@types/socket.io-client": "^1.4.36",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^6.0.0",
+    "dependency": "^0.0.1",
     "dotenv-cli": "^10.0.0",
     "framer-motion": "^12.23.22",
     "meteor-node-stubs": "^1.2.24",

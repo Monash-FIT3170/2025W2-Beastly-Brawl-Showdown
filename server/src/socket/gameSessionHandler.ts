@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { activeGameSessions, players } from "../../main";
+import { activeGameSessions, battles, players } from "../../main";
 import { Player } from "../model/game/player";
 import GameSession from "../model/host/gameSession";
 import proceedBattleTurn from "./battle/startBattleHandler";
@@ -7,7 +7,6 @@ import { ScoringTournament } from "../model/host/gamemode/scoringTournament";
 import { BattleRoyale } from "../model/host/gamemode/battleRoyale";
 import { playerAccounts } from "../../main";
 import { GameModeIdentifier } from "/types/single/gameMode";
-import { BattleRoyale } from "../model/host/gamemode/battleRoyale";
 
 export const gameSessionHandler = (io: Server, socket: Socket) => {
   // Create game session
@@ -171,11 +170,24 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     socket.join(`game-${gameCodeN}`);
   });
 
-  // Leave request
-  socket.on("leave-game", ({ userID = socket.id }) => {
-    const gameCode = players.get(userID)?.getGameCode();
+  socket.on("spectate-game", ({ userID = socket.id }) => {
     //debugging
     if (!players.get(userID)) {
+      console.log(`Player not in map.`);
+    }
+
+    const player = players.get(userID);
+
+    player?.setIsSpectating(true);
+  });
+
+  // Leave request
+  socket.on("leave-game", ({ userID = socket.id }) => {
+    const player = players.get(userID);
+    const gameCode = player?.getGameCode();
+
+    //debugging
+    if (!player) {
       console.log(`Player not in map.`);
     }
 
@@ -200,11 +212,30 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       message: "You are being removed from the game session.",
     });
 
+    if (
+      player != null &&
+      (player?.isSpectating() ||
+        player?.isInSpectatingRoom() ||
+        player?.getCurrentlySpectating() !== null)
+    ) {
+      player.setIsSpectating(false);
+      player.setCurrentlySpectating(null);
+      player.setInSpectatingRoom(false);
+
+      for (const battle of session.getBattles().getItems()) {
+        if (battle.getSpectators().includes(player)) {
+          battle.removeSpectator(player);
+          socketToKick.leave(battle.getId());
+          socketToKick.leave(`${battle.getId()}-spectators`);
+        }
+      }
+    }
+
     // Timeout to allow message to send before kick
     setTimeout(() => {
       socketToKick.leave(`game-${gameCodeN}`);
       session.removePlayer(userID);
-      players.get(userID)?.updateGameCode(0);
+      player?.updateGameCode(0);
 
       console.log(`Removed player ${userID} from game session ${gameCode}`);
 
@@ -288,6 +319,9 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     for (const battle of session.getBattles().getItems()) {
       for (const player of battle.getPlayers()) {
         io.sockets.sockets.get(player.getId())?.join(battle.getId());
+        io.sockets.sockets
+          .get(player.getId())
+          ?.join(`${battle.getId()}-players`);
         //Get all players to join a common game session socket room
         io.sockets.sockets.get(player.getId())?.join(`game-${gameCodeN}`);
       }
@@ -317,6 +351,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       player.prepareForNextBattle();
     }
     socket.emit("battle-started", battle.getId());
+    session.onBattleStarted(session, battle, io, socket);
     proceedBattleTurn(io, socket, session, battle);
   });
 
@@ -352,13 +387,6 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     //Notify all players that the host is closed
     //      socketToKick.leave(`game-${gameCodeN}`);
 
-    io.to(`game-${gameCodeN}`).emit("host-closed");
-    // session
-    //   ?.getBattles()
-    //   .getItems()
-    //   .forEach((curBattle) => {
-    //     io.to(curBattle.getId()).emit("host-closed");
-    //   });
     if (!session) {
       // If session of given game code doesn't exist
       console.log(`Cancel Request failed. Invalid Code`);
@@ -366,17 +394,7 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     }
     session.closeAllBattles(); //close all the ongoing battles in the current game session (host)
 
-    //Notify all players that the host is closed
-    session
-      ?.getBattles()
-      .getItems()
-      .forEach((curBattle) => {
-        io.to(curBattle.getId()).emit("host-closed");
-      });
-
-    // io.to(`game-${gameCodeN}`).emit("close-warning", {
-    //   message: "Current game session is closing.",
-    // });
+    io.to(`game-${gameCodeN}`).emit("host-closed");
 
     // Timeout to allow the message to send before closure
     setTimeout(() => {
@@ -418,11 +436,17 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
     const selectedBackgroundTheme = session?.getSelectedBackgroundTheme();
 
     if (selectedBackgroundTheme) {
-      console.log(`Successfully retrieved selected background theme (${selectedBackgroundTheme}) for game code ${gameCode}`);
+      console.log(
+        `Successfully retrieved selected background theme (${selectedBackgroundTheme}) for game code ${gameCode}`
+      );
       socket.emit("selected-background-theme", { selectedBackgroundTheme });
     } else {
-      console.log(`Failed to retrieve selected background theme for game code ${gameCode}`);
-      socket.emit("selected-background-theme", { selectedBackgroundTheme: null });
+      console.log(
+        `Failed to retrieve selected background theme for game code ${gameCode}`
+      );
+      socket.emit("selected-background-theme", {
+        selectedBackgroundTheme: null,
+      });
     }
   });
 

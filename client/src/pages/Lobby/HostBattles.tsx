@@ -109,7 +109,7 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     // });
 
     socket.on("game-session-state", ({ session }) => {
-      console.log("sessionData:", session);
+      //console.log("sessionData:", session);
       setGameSession(session);
 
       const stats = extractPlayerStatistics(session.battleStates);

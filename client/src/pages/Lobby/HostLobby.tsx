@@ -104,22 +104,27 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
         {exitPopup && (
           <PopupClean>
             <div className="flex flex-col justify-around">
-              <OutlineText size="extraLarge">Exit Game?</OutlineText>
+              <OutlineText size="extraLarge">EXIT GAME?</OutlineText>
               <BlackText size="large">
                 THIS WILL CANCEL THE GAME SESSION, REMOVING ALL PLAYERS, AND END
                 ALL BATTLES.
               </BlackText>
-              <BlackText size="large">ARE YOU SURE YOU WANT TO EXIT?</BlackText>
-              <div className="flex flex-row justify-between items-center">
+              <div className="mt-[1rem]">
+                <BlackText size="large">
+                  ARE YOU SURE YOU WANT TO EXIT?
+                </BlackText>
+              </div>
+              {/* <div className="flex flex-row justify-between items-center"> */}
+              <div className="justify-center items-center flex lg:gap-[5rem] sm:gap-10 pb-[1rem] mt-[1rem]">
                 <ButtonGeneric
                   size="large"
                   color="blue"
                   onClick={() => setExitPopup(false)}
                 >
-                  CANCEL
+                  <OutlineText size={"small"}>CANCEL</OutlineText>
                 </ButtonGeneric>
                 <ButtonGeneric size="large" color="red" onClick={closeGame}>
-                  EXIT
+                  <OutlineText size={"small"}>EXIT</OutlineText>
                 </ButtonGeneric>
               </div>
             </div>
@@ -226,7 +231,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
         <LogoResizable className="h-full w-1/11"></LogoResizable>
 
-        {exitPopup && (
+        {/* {exitPopup && (
           <PopupClean>
             <div className="flex flex-col justify-around">
               <OutlineText size="extraLarge">QUIT GAME?</OutlineText>
@@ -250,7 +255,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
               </div>
             </div>
           </PopupClean>
-        )}
+        )} */}
 
         {errors && errors.length > 0 && (
           <PopupClean>
@@ -373,7 +378,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
 
         <div className="mb-20">
           <BaseCard color="peach" width={16} height={4}>
-            <OutlineText size="medium">PLAYERS: {playerCount}/64</OutlineText>
+            <OutlineText size="medium">PLAYERS: {playerCount}/16</OutlineText>
           </BaseCard>
         </div>
       </div>

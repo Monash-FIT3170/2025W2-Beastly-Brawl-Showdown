@@ -22,6 +22,8 @@ export interface PlayerAccountSchema {
   stats: {
     numGamesPlayed: number;
     numGamesWon: number;
+    raidScore: number; // Waiting on team cobra 
+    endlessScore: number; // Waiting for team... to do it
   }
   achievements: AchievementSchema[];
   monstersStat: PlayerMonsterStatSchema[]; 
@@ -46,8 +48,6 @@ export interface AdventureProgressionSchema {
 
 }
 
-
-
 export interface AchievementSchema {
   _id: string;
   name: string;
@@ -58,8 +58,6 @@ export interface AchievementSchema {
   objectives: Record<string, boolean|number>;
   hidden: boolean
 }
-
-
 
 // Collections
 export const PlayersCollection = new Mongo.Collection('players');
@@ -98,8 +96,6 @@ export async function verifyPassword(inputPassword: string, hashedPassword: stri
     throw error; 
   }
 }
-
-
 
 /** Helper functions that ... 
  * retrieves information/data locally 
@@ -326,7 +322,6 @@ export async function updatePlayerAccount(
 
 
 // Retrieves the top N players sorted by number of games won
-
 export async function getTopPlayersByWins(_limit: number) {
   try {
     // Get the top players sorted by numGamesWon in descending order
@@ -340,15 +335,93 @@ export async function getTopPlayersByWins(_limit: number) {
     // Filter out documents with missing or invalid stats (just in case)
     const validPlayers = topPlayers.filter(player => player.stats && player.stats.numGamesWon !== undefined);
 
-    // Return player name, numGamesWon, numGamesPlayed
+    // Return player name, numGamesWon
     return validPlayers.map(player => ({
       username: player.username,
-      numGamesWon: player.stats.numGamesWon,
-      numGamesPlayed: player.stats.numGamesPlayed
+      score: player.stats.numGamesWon,
     }));
 
   } catch (error) {
     console.error(`Error fetching top players: ${error.message}`);
+    return [];
+  }
+}
+
+// Retrieves the top N players sorted by number of games played
+export async function getTopPlayersByNumGamesPlayed(_limit: number) {
+  try {
+    // Get the top players sorted by numGamesPlayed in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'stats.numGamesPlayed': -1 }, limit: _limit }
+    ).fetch();
+
+    console.log('Top Players by Games Played:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.stats && player.stats.numGamesPlayed !== undefined);
+
+    // Return player name, numGamesPlayed (called score for consistency)
+    return validPlayers.map(player => ({
+      username: player.username,
+      score: player.stats.numGamesPlayed
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players by games played: ${error.message}`);
+    return [];
+  }
+}
+
+// Retrieves the top N players sorted by endless score (stage reached) (adventureProgression.stage)
+export async function getTopPlayersByEndlessScore(_limit: number) {
+  try {
+    // Get the top players sorted by adventureProgression.stage in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'adventureProgression.stage': -1 }, limit: _limit }
+    ).fetch();
+
+    console.log('Top Players by Endless Score:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.adventureProgression && player.adventureProgression.stage !== undefined);
+
+    // Return player name, endless score (called score for consistency)
+    return validPlayers.map(player => ({
+      username: player.username,
+      score: player.adventureProgression.stage
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players by endless score: ${error.message}`);
+    return [];
+  }
+}
+
+
+// Retrieves the top N players sorted by raid score
+export async function getTopPlayersByRaidScore(_limit: number) {
+  try {
+    // Get the top players sorted by raidScore in descending order
+    const topPlayers = await PlayersCollection.find(
+      {}, 
+      { sort: { 'stats.raidScore': -1 }, limit: _limit }
+    ).fetch();
+
+    console.log('Top Players by Raid Score:', topPlayers);
+
+    // Filter out documents with missing or invalid stats (just in case)
+    const validPlayers = topPlayers.filter(player => player.stats && player.stats.raidScore !== undefined);
+
+    // Return player name, raidScore (called score for consistency)
+    return validPlayers.map(player => ({
+      username: player.username,
+      score: player.stats.raidScore
+    }));
+
+  } catch (error) {
+    console.error(`Error fetching top players by raid score: ${error.message}`);
     return [];
   }
 }

@@ -5,6 +5,7 @@ import { BattleState } from "/types/composite/battleState"; // Adjust the path b
 export class Battle {
   private id: UUID;
   private players: Map<string, Player> = new Map();
+  private spectators: Player[] = [];
 
   private gameSessionId: string;
 
@@ -44,6 +45,25 @@ export class Battle {
 
   public incTurn(): void {
     this.turn++;
+  }
+
+  public getSpectators(): Player[] {
+    return this.spectators;
+  }
+  
+  public addSpectator(player: Player): void {
+    this.spectators.push(player);
+  }
+
+  public removeSpectator(player: Player): void {
+    this.spectators = this.spectators.filter(
+      (spectator) => spectator.getId() !== player.getId()
+    );
+  }
+
+
+  public clearSpectators(): void {
+    this.spectators = [];
   }
 
   public clearBattleLogs(): void {

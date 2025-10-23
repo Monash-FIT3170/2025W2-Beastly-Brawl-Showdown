@@ -3,14 +3,22 @@ import { MaladyBadge } from "../../game/storyItem/maladyBadge";
 import { SlimeBaby } from "../../game/storyItem/slimeBaby";
 import { StaminaBadge } from "../../game/storyItem/staminaBadge";
 import { StoryItem } from "../../game/storyItem/storyItem";
+import { EverbloomingLotus } from "../../game/storyItem/everbloomingLotus";
+import { DragonScale } from "../../game/storyItem/dragonScale";
 import { TitanicBadge } from "../../game/storyItem/titanicBadge";
+import { PristineKey } from "../../game/storyItem/PristineKey";
+import { SerpentAmulet } from "../../game/storyItem/serpentAmulet";
 
 const StoryItemFactory: Record<string, () => StoryItem> = {
   slime_baby: () => new SlimeBaby(),
+  everblooming_lotus: () => new EverbloomingLotus(),
+  dragon_scale: () => new DragonScale(),
   titanic_badge: () => new TitanicBadge(),
   malady_badge: () => new MaladyBadge(),
   stamina_badge: () => new StaminaBadge(),
   grand_badge: () => new GrandBadge(),
+  pristine_key: () => new PristineKey(),
+  serpent_amulet: () => new SerpentAmulet(),
 };
 
 export function createStoryItem(id: string): StoryItem {

@@ -10,6 +10,7 @@ import { IconButton } from "../../components/buttons/IconButton";
 import { isBGMEnabled, playBGM,toggleBGM,initBGM } from "../../audioManager";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { userInfo } from "os";
+import { SeasonalEventIdentifier } from "../../../../types/single/seasonalEventState";
 
 
 export const Home = () => {
@@ -18,6 +19,7 @@ export const Home = () => {
   const [adventurePopup, setAdventurePopup] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [seasonalEventPopup, setSeasonalEventPopup] = useState(false);
 
   useEffect(() => {
     socket.emit("check-login");
@@ -90,6 +92,21 @@ useEffect(() => {
     FlowRouter.go("/adventure/mode-select");
   };
 
+  // Called on 'Event' button press
+  const handleSeasonalEvent = () => {
+    if (loggedInUser) {
+      renderSeasonalEvent();
+    } else {
+      setSeasonalEventPopup(true);
+    }
+  };
+
+  const renderSeasonalEvent = () => {
+    const currentMonth = new Date().getMonth();
+    const currentEvent = seasonalEventMap.get(currentMonth)?.toString();
+    FlowRouter.go(`/seasonal-event/home/${currentEvent!.toLowerCase()}`);
+  };
+
   return (
     <BlankPage>
       <div className="flex flex-col h-screen lg:p-[1rem] p-[2rem] overflow-auto">
@@ -128,6 +145,35 @@ useEffect(() => {
                     size="medium"
                     color="blue"
                     onClick={renderAdventure}
+                  >
+                    <OutlineText size="choice-text"> CONTINUE </OutlineText>
+                  </ButtonGeneric>
+                </div>
+              </div>
+            </PopupClean>
+          )}
+          {seasonalEventPopup && (
+            <PopupClean>
+              <div className="flex flex-col justify-around">
+                <OutlineText size="extraLarge">
+                  Play Seasonal Event?
+                </OutlineText>
+                <BlackText size="large">
+                  YOU ARE NOT LOGGED IN. YOU CAN PLAY THE SEASONAL EVENT, BUT
+                  YOUR SCORE WON'T BE RECORDED ON THE LEADERBOARD.
+                </BlackText>
+                <div className="flex flex-row justify-center gap-[2rem] pt-[2rem] items-center">
+                  <ButtonGeneric
+                    size="medium"
+                    color="red"
+                    onClick={() => setSeasonalEventPopup(false)}
+                  >
+                    <OutlineText size="choice-text"> BACK </OutlineText>
+                  </ButtonGeneric>
+                  <ButtonGeneric
+                    size="medium"
+                    color="blue"
+                    onClick={renderSeasonalEvent}
                   >
                     <OutlineText size="choice-text"> CONTINUE </OutlineText>
                   </ButtonGeneric>
@@ -178,7 +224,11 @@ useEffect(() => {
         <ButtonGeneric color="ronchi" size="large" onClick={handleAdventure}>
             <OutlineText size="large">ADVENTURE</OutlineText>
           </ButtonGeneric>
-          <ButtonGeneric color="ronchi" size="large">
+          <ButtonGeneric
+            color="ronchi"
+            size="large"
+            onClick={handleSeasonalEvent}
+          >
             <OutlineText size="large">EVENTS</OutlineText>
           </ButtonGeneric>
 
@@ -206,9 +256,9 @@ useEffect(() => {
             />
           </div>
         </div>
-        
       </div>
     </BlankPage>
   );
 };
 
+const seasonalEventMap = new Map([[9, SeasonalEventIdentifier.SPOOK_GARDEN]]);

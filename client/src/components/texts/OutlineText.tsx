@@ -6,6 +6,7 @@ interface OutlineTextProps {
     | "small"
     | "midsmall"
     | "medium"
+    | "mediumLarge"
     | "medium-battle-text"
     | "choice-text"
     | "large"
@@ -22,6 +23,7 @@ export const OutlineText = ({ children, size, color }: OutlineTextProps) => {
     small: "text-[1.5rem] lg:text-[2rem]",
     midsmall: "text-[2rem] lg:text-small",
     medium: "text-[3rem] lg:text-medium",
+    mediumLarge: "text-[3.5rem] lg:text-[3.75rem]",
     "medium-battle-text": "text-[2rem] lg:text-medium-battle-text",
     "choice-text": "text-[4rem] lg:text-large",
     large: "text-[4rem] lg:text-large sm:text-largemobile",

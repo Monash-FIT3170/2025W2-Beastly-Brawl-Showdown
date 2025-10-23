@@ -17,12 +17,17 @@ export const EquipmentCard = ({ equipment, onClick }: EquipmentProps) => {
     border border-[4px] border-blackCurrant
     rounded-2xl
     w-[40rem]
-    xl:w-[30rem]
+    xl:w-[40rem]
     p-[1rem]
     justify-center
     items-center
     lg:h-[8rem]
-    
+    cursor-pointer
+    transition-transform
+    duration-200
+    ease-in-out 
+    hover:scale-102 
+    hover:shadow-lg
     "
     >
       <div className="grid grid-cols-[1fr_4fr] gap-4 w-full p-2 justify-center items-center">

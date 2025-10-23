@@ -4,7 +4,7 @@ import { GroundSlamAbilityAction } from "../action/ability/groundSlam";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
 export class RockyRhino extends Monster {
-  constructor(name = "Rocky Rhino") {
+  constructor(name: string = "Rocky Rhino") {
     super(
       MonsterIdentifier.ROCKY_RHINO,
       name,
@@ -13,7 +13,7 @@ export class RockyRhino extends Monster {
       new GroundSlamAbilityAction(),
       30,
       1,
-      16
+      12
     );
   }
 }

@@ -54,7 +54,7 @@ export const AdventureBattleHeader: React.FC<AdventureBattleHeaderProps> = ({
             <img
               className=" size-[4.5rem] xl:size-[2.5rem] object-contain rounded-md inline-block"
               src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
-                .replace(" ", "_")
+                .replace(/\s+/g, "_")   
                 .toUpperCase()}.png`}
               alt={`${status.name.toUpperCase()} image`}
             />
@@ -99,7 +99,7 @@ export const AdventureBattleHeader: React.FC<AdventureBattleHeaderProps> = ({
             <img
               className=" size-[4.5rem] xl:size-[2.5rem] object-contain rounded-md inline-block"
               src={`https://spaces-bbs.syd1.cdn.digitaloceanspaces.com/assets/status/${status.name
-                .replace(" ", "_")
+                .replace(/\s+/g, "_")   
                 .toUpperCase()}.png`}
               alt={`${status.name.toUpperCase()} image`}
             />

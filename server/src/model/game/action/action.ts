@@ -22,7 +22,7 @@ export abstract class Action {
     name: string,
     description: string,
     maxUse: number,
-    dodgeable: boolean = true
+    dodgeable: boolean = false
   ) {
     this.id = id;
     this.name = name;
@@ -51,10 +51,10 @@ export abstract class Action {
     return this.maxUse;
   }
 
-  public resetUse(): void{
-    this.currentUse = this.maxUse
+  public resetUse(): void {
+    this.currentUse = this.maxUse;
   }
-  
+
   public getDamage(): number {
     return this.damage;
   }

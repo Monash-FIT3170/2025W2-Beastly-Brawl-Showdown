@@ -14,14 +14,18 @@ export class PercentageHealthPotion extends Consumable {
     this.percent = percent;
   }
 
-  public consume(player: Player): void {
+  public consume(player: Player): [string, string] {
     const healAmount = Math.ceil(
       player.getMonster()!.getMaxHealth() * this.percent
     );
     player.incHealth(healAmount);
-    player.addLog(
-      `You consumed the Health Potion gaining a delicious ${healAmount} HP`
-    );
+    // player.addLog(
+    //   `You consumed the Health Potion gaining a delicious ${healAmount} HP`
+    // );
+
+    let actingLog = `You consumed the Health Potion gaining a delicious ${healAmount} HP`;
+    let affectedLog = `${player.getName()} used a Health Potion healing ${healAmount} HP`;
+    return [actingLog, affectedLog];
   }
 
   public getStatDescription(): string {

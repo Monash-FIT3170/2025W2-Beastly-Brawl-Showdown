@@ -49,6 +49,11 @@ export class Player {
 
   private animations: string[] = [];
 
+  private potentialSpectators: Player[] = [];
+  private spectating: boolean = false;
+  private inSpectatingRoom: boolean = false;
+  private currentlySpectating: Player | null = null;
+
   constructor(
     id: string,
     name: string,
@@ -300,6 +305,10 @@ export class Player {
     return this.statuses.find((status) => status.getName() === name);
   }
 
+  public clearStatuses() {
+    this.statuses = [];
+  }
+
   //HIT/BLOCK METHODS:
   public getSuccessfulHit() {
     return this.successfulHit;
@@ -409,6 +418,18 @@ export class Player {
     this.resetStats();
   }
 
+  public removeEquipmentAt(index: number): void {
+    if (index < 0 || index >= this.equipment.length) {
+      console.error(`Invalid equipment index: ${index}`);
+      return;
+    }
+
+    const equip = this.equipment[index];
+    this.equipment.splice(index, 1);
+    equip.unequip(this);
+    this.resetStats();
+  }
+
   public clearEquipment(): void {
     this.equipment = [];
   }
@@ -506,6 +527,38 @@ export class Player {
 
   public clearStoryItems(): void {
     this.storyItems = [];
+  }
+
+  public getCurrentlySpectating(): Player | null {
+    return this.currentlySpectating;
+  }
+
+  public setCurrentlySpectating(player: Player | null): void {
+    this.currentlySpectating = player;
+  }
+
+  public isSpectating(): boolean {
+    return this.spectating;
+  }
+
+  public setIsSpectating(value: boolean): void {
+    this.spectating = value;
+  }
+
+  public isInSpectatingRoom(): boolean {
+    return this.inSpectatingRoom;
+  }
+
+  public setInSpectatingRoom(value: boolean): void {
+    this.inSpectatingRoom = value;
+  }
+
+  public getPotentialSpectators(): Player[] {
+    return this.potentialSpectators;
+  }
+
+  public addPotentialSpectators(players: Player[]): void {
+    this.potentialSpectators.push(...players);
   }
 
   //PLAYER STATE:

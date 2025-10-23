@@ -1,7 +1,7 @@
 [
   {
-    "id": "slime_1",
-    "level": [1],
+    "id": "green_slime",
+    "level": [0, 1],
     "description": "Stage 1, player fights slime 1.",
     "outcomes": [
       {
@@ -31,7 +31,7 @@
         "result": [
           "You defeated the slime!",
           "You hear something clatter on the ground.",
-          "It's green and slimy to the touch."
+          "Its green and slimy to the touch."
         ],
         "type": "DIALOGUE",
         "next": "slime_stench"
@@ -39,160 +39,405 @@
       {
         "id": "slime_stench",
         "type": "EQUIPMENT",
-        "equipmentId": "oozingBlade"
+        "equipmentId": "oozing_blade"
       }
     ]
   },
   {
-    "id": "stage1_firepit",
-    "level": [0],
-    "description": "Stage 1, player finds a campfire",
+    "id": "ember_slime",
+    "level": [2],
+    "description": "Stage 1, player fights fire slime.",
     "outcomes": [
       {
         "id": "initial",
         "result": [
-          "You come across an abandoned campsite.",
-          "There is a firepit in the centre of everything.",
-          "It's still warm.",
-          "Whatever happened here was recent, and had people running scared."
+          "The air is thick with heat as you enter a new area filled with bubbling lava and volcanic basalt.",
+          "In the distance, a fire drifts closer.",
+          "It's an ember slime charging towards you."
         ],
         "type": "DIALOGUE",
-        "next": "firepit_choice"
+        "next": "slime_dialogue_1"
       },
       {
-        "id": "firepit_choice",
-        "type": "CHOICE",
-        "result": ["Do you...?"],
-        "options": [
-          {
-            "id": "rest",
-            "text": "Rest",
-            "next": "rest"
-          },
-          {
-            "id": "loot",
-            "text": "Loot",
-            "next": "loot"
-          },
-          {
-            "id": "leave",
-            "text": "Leave",
-            "next": "leave"
-          }
-        ]
-      },
-      {
-        "id": "rest",
+        "id": "slime_dialogue_1",
+        "result": ["hsss.. crack... fwooosh..", "c r a c k l e."],
         "type": "DIALOGUE",
-        "result": [
-          "You decide to get some rest by what's left of the campfire.",
-          "You close your eyes and drift off to sleep"
-        ],
-        "next": "rest_random"
+        "enemyId": ["slime", "EMBER SLIME"],
+        "next": "fight_1"
       },
       {
-        "id": "rest_random",
-        "type": "RANDOM",
-        "options": [
-          {
-            "id": "good_sleep",
-            "chance": 50,
-            "next": "good_sleep_cont"
-          },
-          {
-            "id": "surprise_visitor",
-            "chance": 50,
-            "next": "surprise_visitor_cont"
-          }
-        ]
-      },
-      {
-        "id": "good_sleep_cont",
-        "type": "STAT_CHANGE",
-        "result": ["You get a good sleep."],
-        "statChange": ["health", 10],
-        "next": "good_sleep_resolution"
-      },
-      {
-        "id": "good_sleep_resolution",
-        "type": "DIALOGUE",
-        "result": ["Feeling well rested you continue onwards."]
-      },
-      {
-        "id": "surprise_visitor_cont",
-        "type": "STATUS",
-        "statusId": ["stunned", 0],
-        "result": ["You're awoken by a snarling wolf."],
-        "next": "wolf_fight_test"
-      },
-      {
-        "id": "wolf_fight_test",
-        "type": "DIALOGUE",
-        "result": ["Still drowzy you get ready to fight."],
-        "next": "wolf_fight"
-      },
-      {
-        "id": "wolf_fight",
+        "id": "fight_1",
         "type": "FIGHT",
-        "enemyId": ["pouncing_bandit", "wolf"],
+        "enemyId": ["slime", "EMBER SLIME"],
         "next": "fight_win"
       },
       {
         "id": "fight_win",
-        "type": "DIALOGUE",
         "result": [
-          "Still annoyed at your rest being cut short you continue onwards."
-        ]
-      },
-      {
-        "id": "loot",
-        "type": "DIALOGUE",
-        "result": [
-          "You decide to look through the tents to see if you can find any supplies."
+          "You defeated the slime!",
+          "Its flames fade to smoke as a pile of ash remains.",
+          "You sift through the pile, something glimmers inside..."
         ],
-        "next": "loot_random"
+        "type": "DIALOGUE",
+        "next": "ember_drop"
       },
       {
-        "id": "loot_random",
-        "type": "RANDOM",
+        "id": "ember_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "fire_pool"
+      }
+    ]
+  },
+  {
+    "id": "ice_slime",
+    "level": [3],
+    "description": "Stage 1, player fights Ice slime.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "OH SNAP OH BALLERS",
+          "ITS AN ICE THINGY",
+          "THERE IS AN ICE SLIME COMING TOWARDS YOU"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["ICE SLIME SOUNDS", "ICE NOISES"],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "ICE SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "ICE SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "You defeated the slime!",
+          "It inexplicably violently explodes.",
+          "It turned into a puddle of water with a thing in it!"
+        ],
+        "type": "DIALOGUE",
+        "next": "ice_drop"
+      },
+      {
+        "id": "ice_drop",
+        "type": "LOOT_POOL",
+        "lootPoolId": "ice_pool"
+      }
+    ]
+  },
+  {
+    "id": "purple_slime",
+    "level": [4],
+    "description": "Stage 1, player fights purple slime.",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You step into the wetland. A sweet-rot smell clings to the purple fog.",
+          "A low croak rolls through the trees... then fades.",
+          "Something oozes into view",
+          "A purple jelly with a tiny, flickering light trapped at its core.",
+          "It quivers and springs toward you!"
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": ["blob blob", "BLOB!"],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "SWAMP SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "SWAMP SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "The purple slime collapses into a slimy puddle.",
+          "The trapped light wriggles free then settles on your hand.",
+          "The fog thins a little in its glow.",
+          "Far off, a deep croak rolls through the fog. The swamp is watching. . ."
+        ],
+        "type": "DIALOGUE",
+        "next": "fire_fly_reward"
+      },
+      {
+        "id": "fire_fly_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "sparkling_friend"
+      }
+    ]
+  },
+  {
+    "id": "desert_slime",
+    "level": [0, 5],
+    "description": "Stage 1 desert encounter",
+    "background": "DESERT",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "The desert sun beats down on you mercilessly.",
+          "A dune of sand rises up before you, and atop it sits a sand-coated creature."
+        ],
+        "type": "DIALOGUE",
+        "next": "slime_dialogue_1"
+      },
+      {
+        "id": "slime_dialogue_1",
+        "result": [
+          "Ssslshh... *it hisses like a snake*",
+          "*it lunges at you!*"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["slime", "DUSTY SLIME"],
+        "next": "fight_1"
+      },
+      {
+        "id": "fight_1",
+        "type": "FIGHT",
+        "enemyId": ["slime", "DUSTY SLIME"],
+        "next": "fight_win"
+      },
+      {
+        "id": "fight_win",
+        "result": [
+          "The slime collapses into a puddle of glittering dust.",
+          "You see something metallic shimmering in the sand..."
+        ],
+        "type": "DIALOGUE",
+        "next": "reward"
+      },
+      {
+        "id": "reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "slime_pool"
+      }
+    ]
+  },
+  {
+    "id": "Thief_encounter",
+    "level": [0],
+    "description": "Stage 1 endless bridge encounter",
+    "outcomes": [
+      {
+        "id": "initial",
+        "result": [
+          "You hear yelling in the distance.",
+          "You see two guards chasing someone."
+        ],
+        "type": "DIALOGUE",
+        "next": "guard_yell"
+      },
+      {
+        "id": "guard_yell",
+        "result": ["HEY STOP!", "THIEF!", "GET BACK HERE"],
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "next": "thief_encounter"
+      },
+      {
+        "id": "thief_encounter",
+        "result": [
+          "Please you have to help me!",
+          "I stole some potions.",
+          "I promise to make it worth your while if you help me out."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["rocky_rhino", "THIEF"],
+        "next": "thief_choice"
+      },
+      {
+        "id": "thief_choice",
+        "result": ["Do you...?"],
+        "type": "CHOICE",
         "options": [
           {
-            "id": "successful_find",
-            "chance": 90,
-            "next": "successful_find_cont"
+            "id": "help",
+            "text": "Help The Thief",
+            "next": "help_thief"
           },
           {
-            "id": "no_luck",
-            "chance": 10,
-            "next": "no_luck_cont"
+            "id": "stop",
+            "text": "Stop The Thief",
+            "next": "stop_thief"
           }
         ]
       },
       {
-        "id": "successful_find_cont",
-        "type": "LOOT_POOL",
-        "lootPoolId": "scavenger_pool",
-        "next": "successful_find_end"
-      },
-      {
-        "id": "successful_find_end",
-        "type": "DIALOGUE",
-        "result": ["Satisfied with your find you continue onwards."]
-      },
-      {
-        "id": "no_luck_cont",
+        "id": "help_thief",
         "type": "DIALOGUE",
         "result": [
-          "It feels like you've looked through the whole campsite but you don't find anything.",
-          "Disheartened, you continue onwards."
-        ]
+          "You move yourself in between the thief and the approaching guards.",
+          "They notice your defensive stance."
+        ],
+        "next": "guard_catchup"
       },
       {
-        "id": "leave",
+        "id": "guard_catchup",
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "result": [
+          "We just want the thief.",
+          "Aiding a criminal will get you in a lot of trouble."
+        ],
+        "next": "battle_ready"
+      },
+      {
+        "id": "battle_ready",
+        "type": "DIALOGUE",
+        "result": ["You prepare for battle"],
+        "next": "guard_fight"
+      },
+      {
+        "id": "guard_fight",
+        "type": "FIGHT",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "next": "fight_captain_win"
+      },
+      {
+        "id": "fight_captain_win",
+        "result": ["S...Sir, are you okay"],
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD TRAINEE"],
+        "next": "trainee_turn"
+      },
+      {
+        "id": "trainee_turn",
+        "result": ["The trainee turns, with determination to face you."],
+        "type": "DIALOGUE",
+        "next": "trainee_anger"
+      },
+      {
+        "id": "trainee_anger",
+        "result": [
+          "I'll finish what my teacher started, you won't get away with this."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD TRAINEE"],
+        "next": "trainee_fight"
+      },
+      {
+        "id": "trainee_fight",
+        "type": "FIGHT",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "next": "trainee_fight_win"
+      },
+      {
+        "id": "trainee_fight_win",
+        "result": ["The trainee turns, slumps to the ground."],
+        "type": "DIALOGUE",
+        "next": "thief_happy"
+      },
+      {
+        "id": "thief_happy",
+        "result": [
+          "Thank you!",
+          "I owe you my freedom.",
+          "As promised here's a little something for helping me"
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["rocky_rhino", "THIEF"],
+        "next": "trainee_potion"
+      },
+      {
+        "id": "trainee_potion",
+        "type": "CONSUMABLE",
+        "consumableId": "super_health_potion",
+        "next": "thief_pre_key"
+      },
+      {
+        "id": "thief_pre_key",
+        "result": [
+          "Oh and I was saving this to get myself out of a bind.",
+          "But I think you should take this."
+        ],
+        "type": "DIALOGUE",
+        "enemyId": ["rocky_rhino", "THIEF"],
+        "next": "thief_give_key"
+      },
+      {
+        "id": "thief_give_key",
+        "type": "STORY_ITEM",
+        "storyItemId": "pristine_key",
+        "next": "help_final"
+      },
+      {
+        "id": "help_final",
+        "result": ["You part ways with the thief and continue your journey."],
+        "type": "DIALOGUE"
+      },
+      {
+        "id": "stop_thief",
+        "result": ["You attack the thief."],
+        "type": "DIALOGUE",
+        "next": "thief_battle"
+      },
+      {
+        "id": "thief_battle",
+        "type": "FIGHT",
+        "enemyId": ["rocky_rhino", "THIEF"],
+        "next": "thief_battle_win"
+      },
+      {
+        "id": "thief_battle_win",
+        "type": "DIALOGUE",
+        "result": ["The thief falls to the ground, unconscious."],
+        "next": "guard_good"
+      },
+      {
+        "id": "guard_good",
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "result": [
+          "Great work citizen.",
+          "Shopkeepers have been complaining about this guy for the past few months.",
+          "Let me give you something for your trouble."
+        ],
+        "next": "guard_help_reward"
+      },
+      {
+        "id": "guard_help_reward",
+        "type": "CONSUMABLE",
+        "consumableId": "large_health_potion",
+        "next": "guard_happy_final"
+      },
+      {
+        "id": "guard_happy_final",
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD CAPTAIN"],
+        "result": [
+          "Alright rookie.",
+          "Help me get this criminal back to town."
+        ],
+        "next": "rookie_response"
+      },
+      {
+        "id": "rookie_response",
+        "type": "DIALOGUE",
+        "enemyId": ["poison_pogo", "GUARD TRAINEE"],
+        "result": ["Y..Yes Sir", "Right away sir."],
+        "next": "encounter_final"
+      },
+      {
+        "id": "encounter_final",
         "type": "DIALOGUE",
         "result": [
-          "You decide you want no part of what happened here.",
-          "You continue onwards."
+          "The guards carry the prisoner away.",
+          "You continue on your journey."
         ]
       }
     ]
