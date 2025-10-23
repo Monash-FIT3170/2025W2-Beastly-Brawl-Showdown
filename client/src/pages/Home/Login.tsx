@@ -10,21 +10,16 @@ export function LoginPopup({
   setExitPopup,
 }: {
   onLoginSuccess: () => void;
-  setExitPopup: (value: boolean) => void; // type it properly
+  setExitPopup: (value: boolean) => void;
 }) {
   const [mode, setMode] = useState<"login" | "register">("login");
 
-  // Shared fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // Register-only field
   const [username, setUsername] = useState("");
-
   const [message, setMessage] = useState("");
 
-  const Exit = () => {
-    setExitPopup();
-  };
+  const Exit = () => setExitPopup(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,15 +33,12 @@ export function LoginPopup({
   useEffect(() => {
     const loginListener = (data: { success: boolean; message: string }) => {
       setMessage(data.message);
-      if (data.success) {
-        onLoginSuccess();
-      }
+      if (data.success) onLoginSuccess();
     };
 
     const registerListener = (data: { success: boolean; message: string }) => {
       setMessage(data.message);
       if (data.success) {
-        // After successful registration, switch back to login mode
         setMode("login");
         setMessage("Registration successful! Please log in.");
       }
@@ -64,72 +56,83 @@ export function LoginPopup({
 
   return (
     <PopupClean>
-      <div style={{ position: "absolute", top: "50px", left: "100px" }}>
-        <ButtonGeneric
-          color="red"
-          size="small"
-          onClick={() => {
-            Exit();
-          }}
-        >
-          <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+      <div className="relative p-4 flex flex-col gap-4">
+        {/* Close button inside the box */}
+        <div className="absolute -top-20 -right-12">
+          <ButtonGeneric color="red" size="small" onClick={Exit}>
             <GenericIcon style="x" colour="stroked" />
-          </div>
-        </ButtonGeneric>
+          </ButtonGeneric>
+        </div>
+
+        {/* Title added here */}
+        <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 ">
+          <OutlineText size="extraLarge">
+            {mode === "login" ? "Sign In" : "Sign Up"}
+          </OutlineText>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8">
+          <label className="flex flex-col gap-1">
+            <OutlineText size="medium">Email:</OutlineText>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="p-2 rounded border"
+            />
+          </label>
+
+          {mode === "register" && (
+            <label className="flex flex-col gap-1">
+              <OutlineText size="medium">Username:</OutlineText>
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                className="p-2 rounded border"
+              />
+            </label>
+          )}
+
+          <label className="flex flex-col gap-1">
+            <OutlineText size="medium">Password:</OutlineText>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="p-2 rounded border"
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="bg-blackCurrant text-white py-2 rounded"
+          >
+            {mode === "login" ? "Log In" : "Register"}
+          </button>
+
+          {message && <p className="text-red-600">{message}</p>}
+
+          <button
+            type="button"
+            onClick={() => {
+              setMessage("");
+              setMode(mode === "login" ? "register" : "login");
+            }}
+            className="mt-2 underline text-sm"
+          >
+            {mode === "login"
+              ? "Don't have an account? Register here"
+              : "Already have an account? Log in here"}
+          </button>
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="p-2 rounded border"
-        />
-
-        {mode === "register" && (
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="p-2 rounded border"
-          />
-        )}
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="p-2 rounded border"
-        />
-
-        <button
-          type="submit"
-          className="bg-blackCurrant text-white py-2 rounded"
-        >
-          {mode === "login" ? "Log In" : "Register"}
-        </button>
-
-        {message && <p className="text-red-600">{message}</p>}
-
-        <button
-          type="button"
-          onClick={() => {
-            setMessage("");
-            setMode(mode === "login" ? "register" : "login");
-          }}
-          className="mt-2 underline text-sm"
-        >
-          {mode === "login"
-            ? "Don't have an account? Register here"
-            : "Already have an account? Log in here"}
-        </button>
-      </form>
     </PopupClean>
   );
 }

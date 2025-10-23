@@ -103,6 +103,7 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         }
         console.log("Winner: ", winner);
         if (battleState?.yourPlayer.name === winner) {
+          socket.emit("updateAchievement", "Can't stop winning");
           socket.emit("updateWin");
         } else {
           socket.emit("updateLoss");
@@ -236,9 +237,9 @@ const Battle: React.FC<BattleProps> = ({ battleId }) => {
         {isSpectating && (
           <div className="absolute top-4 right-4 z-50">
             <ButtonGeneric color="red" size="medium" onClick={() => leave()}>
-                  <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
-                      <OutlineText size="medium">EXIT</OutlineText>
-                  </div>
+              <div className="flex flex-row items-center justify-around w-full h-full space-x-3">
+                <OutlineText size="medium">EXIT</OutlineText>
+              </div>
             </ButtonGeneric>
           </div>
         )}
