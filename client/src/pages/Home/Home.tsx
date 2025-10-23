@@ -178,3 +178,4 @@ export const Home = () => {
     </BlankPage>
   );
 };
+
