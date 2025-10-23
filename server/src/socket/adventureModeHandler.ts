@@ -203,6 +203,24 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
     }
   });
 
+  socket.on("update-best", () => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+
+    if (adventure?.getLevel() === 0) {
+      const user = playerAccounts.get(socket.id);
+      var adventureProgression = user?.adventureProgression;
+      if (adventureProgression) {
+        const oldRecord = adventureProgression.stage;
+        if (adventure.getStage() > oldRecord) {
+          adventureProgression.stage = adventure.getStage();
+        }
+      } else {
+        console.error(`ADV: Failed to load ${user?._id}'s endless record.`);
+      }
+    }
+  });
+
   socket.on("adventure_take_storyItem", ({ storyItemId, stage }) => {
     const adventure = activeAdventures.get(socket.id);
     if (!adventure) return;

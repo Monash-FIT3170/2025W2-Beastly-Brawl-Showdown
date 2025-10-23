@@ -18,9 +18,7 @@ const LevelSelect: React.FC<LevelSelectProps> = () => {
   const [observedLevel, setObservedLevel] = useState<number>(1);
   // const UNLOCKED_LEVELS = [0];
   // UPDATE: Set back to just level 1 unlocked
-  const [unlockedLevels, setUnlockedLevels] = useState<number[]>([
-    1, 2, 3, 4, 5,
-  ]);
+  const [unlockedLevels, setUnlockedLevels] = useState<number[]>([1]);
 
   // Level → Monster mapping
   const levelMap: Record<number, MonsterIdentifier> = {
