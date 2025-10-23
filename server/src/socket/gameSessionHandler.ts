@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { activeGameSessions, players } from "../../main";
+import { activeGameSessions, battles, players } from "../../main";
 import { Player } from "../model/game/player";
 import GameSession from "../model/host/gameSession";
 import proceedBattleTurn from "./battle/startBattleHandler";
@@ -184,18 +184,12 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
 
   // Leave request
   socket.on("leave-game", ({ userID = socket.id }) => {
-    const gameCode = players.get(userID)?.getGameCode();
+    const player = players.get(userID);
+    const gameCode = player?.getGameCode();
+
     //debugging
-    if (!players.get(userID)) {
+    if (!player) {
       console.log(`Player not in map.`);
-    }
-
-    if (players.get(userID)?.isSpectating()) {
-      players.get(userID)?.setIsSpectating(false);
-    }
-
-    if (players.get(userID)?.isInSpectatingRoom()) {
-      players.get(userID)?.setInSpectatingRoom(false);
     }
 
     console.log(`Leave request for Code: ${gameCode}, User ID: ${userID}`);
@@ -219,11 +213,30 @@ export const gameSessionHandler = (io: Server, socket: Socket) => {
       message: "You are being removed from the game session.",
     });
 
+    if (
+      player != null &&
+      (player?.isSpectating() ||
+        player?.isInSpectatingRoom() ||
+        player?.getCurrentlySpectating() !== null)
+    ) {
+      player.setIsSpectating(false);
+      player.setCurrentlySpectating(null);
+      player.setInSpectatingRoom(false);
+
+      for (const battle of session.getBattles().getItems()) {
+        if (battle.getSpectators().includes(player)) {
+          battle.removeSpectator(player);
+          socketToKick.leave(battle.getId());
+          socketToKick.leave(`${battle.getId()}-spectators`);
+        }
+      }
+    }
+
     // Timeout to allow message to send before kick
     setTimeout(() => {
       socketToKick.leave(`game-${gameCodeN}`);
       session.removePlayer(userID);
-      players.get(userID)?.updateGameCode(0);
+      player?.updateGameCode(0);
 
       console.log(`Removed player ${userID} from game session ${gameCode}`);
 

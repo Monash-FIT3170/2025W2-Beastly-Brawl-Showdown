@@ -55,6 +55,12 @@ export class Battle {
     this.spectators.push(player);
   }
 
+  public removeSpectator(player: Player): void {
+    this.spectators = this.spectators.filter(
+      (spectator) => spectator.getId() !== player.getId()
+    );
+  }
+
 
   public clearSpectators(): void {
     this.spectators = [];
