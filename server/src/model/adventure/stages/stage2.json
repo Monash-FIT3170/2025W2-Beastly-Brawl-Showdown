@@ -48,8 +48,9 @@
   },
   {
     "id": "ember_slime_2",
-    "level": [2],
+    "level": [0, 2],
     "description": "Stage 2, player fights slime 2.",
+    "background": "BASALT",
     "outcomes": [
       {
         "id": "initial",
@@ -99,7 +100,7 @@
       {
         "id": "initial",
         "result": [
-          "It's bitingly cold.", 
+          "It's bitingly cold.",
           "Another very cold object rolls out of the snow and ice.",
           "It's an even bigger ice slime!"
         ],
@@ -391,8 +392,8 @@
         "result": [
           "You hear a thundering roar in the distance.",
           "As you get closer, a waterfall comes into view.",
-          "You see someone deep in medidation as you appraoch.",
-          "They seem to twitch as you get closer"
+          "You see someone deep in meditation as you approach.",
+          "They seem to twitch as you get closer."
         ],
         "type": "DIALOGUE",
         "next": "waterfall_meditator"
@@ -455,7 +456,7 @@
       {
         "id": "martial_artist_choice_reward",
         "type": "CHOICE",
-        "result": ["What Do You Take"],
+        "result": ["What Do You Take?"],
         "options": [
           {
             "id": "bandana",
@@ -522,6 +523,189 @@
         "id": "penguin_reward",
         "type": "LOOT_POOL",
         "lootPoolId": "scavenger_pool"
+      }
+    ]
+  },
+  {
+    "id": "slime_merge",
+    "level": [0],
+    "description": "player encounters 2 slimes that merge",
+    "outcomes": [
+      {
+        "id": "initial",
+        "type": "DIALOGUE",
+        "result": [
+          "You venture deeper and deeper into a cave.",
+          "You start to doubt the tip you received about a hidden treasure.",
+          "Deep in thought, you come to a fork in the path."
+        ],
+        "next": "fork_decision"
+      },
+      {
+        "id": "fork_decision",
+        "result": ["Left or Right"],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "left",
+            "text": "Left",
+            "next": "left_path"
+          },
+          {
+            "id": "right",
+            "text": "Right",
+            "next": "right_path"
+          }
+        ]
+      },
+      {
+        "id": "left_path",
+        "type": "DIALOGUE",
+        "result": [
+          "You veer left.",
+          "Just as you're starting to doubt yourself, you trip over something.",
+          "You turn around to found what is presumably the caves treasure."
+        ],
+        "next": "cave_treasure"
+      },
+      {
+        "id": "cave_treasure",
+        "type": "LOOT_POOL",
+        "lootPoolId": "scavenger_pool",
+        "next": "left_conclusion"
+      },
+      {
+        "id": "left_conclusion",
+        "type": "DIALOGUE",
+        "result": [
+          "Slightly disappointed, you take your treasure and return to the entrance of the cave"
+        ]
+      },
+      {
+        "id": "right_path",
+        "type": "DIALOGUE",
+        "result": [
+          "You veer right.",
+          "Just as you're starting to doubt yourself, you feel something sticky drip on you.",
+          "You look up to see two slimes looking down at you from the roof.",
+          "They seem eager to attack"
+        ],
+        "next": "slime_stare"
+      },
+      {
+        "id": "slime_stare",
+        "type": "DIALOGUE",
+        "result": ["..."],
+        "enemyId": ["slime", "CAVE SLIME"],
+        "next": "slime_attack"
+      },
+      {
+        "id": "slime_attack",
+        "type": "DIALOGUE",
+        "result": [
+          "The slimes drop down from the roof.",
+          "Before you can react, they start fusing together.",
+          "You stare in horror, as what was once two relatively simple foes, is now a towering monstrosity."
+        ],
+        "next": "big_slime_fight"
+      },
+      {
+        "id": "big_slime_fight",
+        "type": "FIGHT",
+        "enemyId": ["slime", "CAVE SLIME"],
+        "scaling": 2,
+        "next": "battle_conclusion"
+      },
+      {
+        "id": "battle_conclusion",
+        "type": "DIALOGUE",
+        "result": ["You're exhausted but the enormous slime is no more"],
+        "next": "slime_reward"
+      },
+      {
+        "id": "slime_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "slime_pool",
+        "next": "right_chest"
+      },
+      {
+        "id": "right_chest",
+        "type": "DIALOGUE",
+        "result": [
+          "You continue onwards down the cave.",
+          "Pretty soon you come upon a chest."
+        ],
+        "next": "key_evaluation"
+      },
+      {
+        "id": "key_evaluation",
+        "type": "PREREQUISITE",
+        "options": [
+          {
+            "id": "have_key",
+            "prerequisite": ["Pristine Key"],
+            "next": "key_choice"
+          },
+          {
+            "id": "no_key",
+            "next": "leave_cave"
+          }
+        ]
+      },
+      {
+        "id": "key_choice",
+        "result": [
+          "The pristine key in your backpack looks like a perfect fit."
+        ],
+        "type": "CHOICE",
+        "options": [
+          {
+            "id": "use_key",
+            "text": "Unlock The Chest",
+            "next": "chest_reward_pre",
+            "cost": ["Pristine Key"]
+          },
+          {
+            "id": "save_key",
+            "text": "Save The Key",
+            "next": "chest_locked"
+          }
+        ]
+      },
+      {
+        "id": "chest_reward_pre",
+        "type": "DIALOGUE",
+        "result": ["The chest springs open to reveal its contents."],
+        "next": "chest_reward"
+      },
+      {
+        "id": "chest_reward",
+        "type": "LOOT_POOL",
+        "lootPoolId": "pristine_treasure_pool",
+        "next": "happy_leave"
+      },
+      {
+        "id": "happy_leave",
+        "type": "DIALOGUE",
+        "result": ["Satisfied with your reward, you leave the cave."]
+      },
+      {
+        "id": "chest_locked",
+        "type": "DIALOGUE",
+        "result": [
+          "You decide it would be best to save the key for later.",
+          "Realising this must be the rumoured treasure of the save you decide there is nothing left for you.",
+          "You leave the cave."
+        ]
+      },
+      {
+        "id": "leave_cave",
+        "type": "DIALOGUE",
+        "result": [
+          "This must be the rumoured treasure of the save.",
+          "With no way to open it, there is nothing here for you.",
+          "You turn around and leave the cave."
+        ]
       }
     ]
   }

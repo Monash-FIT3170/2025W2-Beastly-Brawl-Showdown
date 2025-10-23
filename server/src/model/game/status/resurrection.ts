@@ -58,7 +58,7 @@ export class Resurrection extends EndStatus {
   }
 
   public updateLogs(player: Player): void {
-    player.addLog("You have been blessed, resurrection is possible!");
+    // player.addLog("You have been blessed, resurrection is possible!");
   }
 
   public expire(): void {

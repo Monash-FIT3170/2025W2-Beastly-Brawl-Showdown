@@ -35,6 +35,8 @@ import { PristineKey } from "../model/game/storyItem/PristineKey";
 import { createStatus } from "../model/adventure/factories/statusFactory";
 import { LakeCurse } from "../model/game/status/lakeCurse";
 import { OozingBlade } from "../model/game/equipment/oozingBlade";
+import { AbilityAntidote } from "../model/game/consumables/abilityAntidote";
+import { PercentageHealthPotion } from "../model/game/consumables/healthPotion";
 
 export const adventureModeHandler = (io: Server, socket: Socket) => {
   // Monster selection and adventure start
@@ -85,6 +87,9 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
 
       const player = adventure.getPlayer();
       player.setMonster(monster);
+      if (adventure.getLevel() === 0) {
+        player.giveConsumable(new AbilityAntidote());
+      }
       // player.addStatus(new SlimeBoost(3));
       //progressAdventure(io, socket, adventure, adventure.getStage());
     }
@@ -195,6 +200,24 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
       }
 
       progressAdventure(io, socket, adventure, stage);
+    }
+  });
+
+  socket.on("update-best", () => {
+    const adventure = activeAdventures.get(socket.id);
+    if (!adventure) return;
+
+    if (adventure?.getLevel() === 0) {
+      const user = playerAccounts.get(socket.id);
+      var adventureProgression = user?.adventureProgression;
+      if (adventureProgression) {
+        const oldRecord = adventureProgression.stage;
+        if (adventure.getStage() > oldRecord) {
+          adventureProgression.stage = adventure.getStage();
+        }
+      } else {
+        console.error(`ADV: Failed to load ${user?._id}'s endless record.`);
+      }
     }
   });
 
@@ -330,9 +353,15 @@ export const adventureModeHandler = (io: Server, socket: Socket) => {
           true
         ); // Eventually use bot class
         if (resolved.scaling) {
-          resolved.enemy?.pveScaling(adventure.getStage() * resolved.scaling);
+          resolved.enemy?.pveScaling(
+            adventure.getStage() * resolved.scaling,
+            adventure.getLevel()
+          );
         } else {
-          resolved.enemy?.pveScaling(adventure.getStage());
+          resolved.enemy?.pveScaling(
+            adventure.getStage(),
+            adventure.getLevel()
+          );
         }
 
         bot.setMonster(resolved.enemy!);
