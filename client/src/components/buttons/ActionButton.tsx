@@ -57,6 +57,13 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     });
   };
 
+    const seasonEventClicked = () => {
+    socket.emit("event_action", {
+      action: actionState,
+      playerId: socket.id,
+    });
+  };
+
   const image = `
         w-[30%]
         h-[auto%]
@@ -70,7 +77,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
         color={colorLoader[actionState.id] ?? "purple"}
         size="battle"
         isDisabled={isDisabled}
-        onClick={battleId === "ADVENTURE" ? adventureClicked : actionClicked}
+        onClick={battleId === "ADVENTURE" ? adventureClicked : battleId === "SEASONALEVENT" ? seasonEventClicked : actionClicked}
         isPassive={isPassive}
       >
         <div className="w-[50%] h-auto leading-[0.8]">

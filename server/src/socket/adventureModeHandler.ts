@@ -497,11 +497,7 @@ export function loadNextStory(
       console.log("Adventure complete, emitting adventure_win", {
         monsterId: enemy,
       });
-      if (adventure.getLevelMonster() == MonsterIdentifier.JACKED_O_LANTERN) {
-        io.to(socket.id).emit("event_win", { monsterId: enemy });
-      }
-      else {
-        io.to(socket.id).emit("adventure_win", { monsterId: enemy });
+      io.to(socket.id).emit("adventure_win", { monsterId: enemy });
         //unlock monster
         const user = playerAccounts.get(socket.id);
         console.log(
@@ -524,7 +520,6 @@ export function loadNextStory(
           );
         } else {
           console.error(`Failed to update ${user?._id}'s unlocked monsters.`);
-        }
         }
     }
     const loadNodes = loadStage(stage % 8);

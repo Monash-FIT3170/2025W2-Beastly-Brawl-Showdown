@@ -263,7 +263,7 @@ adventureLevelMonsters.forEach((monster) => {
 // Do the same as above for Events
 adventureLevelMonsters.forEach((monster) => {
   FlowRouter.route(`/seasonal-event/boss-${monster}`, {
-    name: "AdventureBattle",
+    name: "SeasonalEventBattle",
     action() {
       document.title = "Event - Seasonal Event | Beastly Brawl Showdown";
       mount(() => <SeasonalEventBattle levelMonster={monster} />);

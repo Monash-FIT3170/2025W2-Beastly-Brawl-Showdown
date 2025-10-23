@@ -4,7 +4,7 @@ import { Player } from "./player";
 import { storyStruct } from "/types/composite/storyTypes";
 import { MonsterIdentifier } from "/types/single/monsterState";
 
-export class Adventure {
+export class SeasonalEvent {
   private player: Player;
   private level: number;
   private levelMonster: MonsterIdentifier;
@@ -42,6 +42,10 @@ export class Adventure {
 
   public getStage(): number {
     return this.stage;
+  }
+
+  public setEventAdventure(): void {
+    this.stage = 7;
   }
 
   public incrementStage(): void {
