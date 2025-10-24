@@ -61,6 +61,7 @@ const HostLobby: React.FC<HostLobbyProps> = ({ gameCode }) => {
     };
   }, []);
 
+
   // BUTTON FUNCTIONS:
   // remove player from game
   const kickPlayer = (playerID: string) => {

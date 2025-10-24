@@ -33,6 +33,7 @@ import { ConsumableState } from "/types/single/itemState";
 import { EquipmentPickupPopup } from "../../components/popups/EquipmentPickupPopup";
 import { StoryItem } from "../../../../server/src/model/game/storyItem/storyItem";
 import { StoryItemPickupPopup } from "../../components/popups/StoryItemPickupPopup";
+import { isBGMEnabled, playBGM,toggleBGM,initBGM } from "../../audioManager";
 import { Status } from "../../../../server/src/model/game/status/status";
 import { StatusPickupPopup } from "../../components/popups/StatusPickupPopup";
 import { EquipmentInventoryFullPopup } from "../../components/popups/EquipmentInventoryFullPopup";
@@ -141,6 +142,10 @@ const AdventureBattle: React.FC<AdventureProps> = ({ levelMonster }) => {
       setPlayerState(battleState.yourPlayer);
     }
   }, [battleState]);
+  useEffect(() => {
+    playBGM("/music/Beastly_Brawl_Battle.wav");
+  
+    }, []);
 
   useEffect(() => {
     console.log("---ADV: Adventure State Updated---");

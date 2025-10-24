@@ -1,35 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import socket from "../../socket";
 import { ButtonGeneric } from "../../components/buttons/ButtonGeneric";
 import { OutlineText } from "../../components/texts/OutlineText";
 import LogoResizable from "../../components/logos/LogoResizable";
 import { BlankPage } from "../../components/pagelayouts/BlankPage";
-import { ButtonResizableText } from "../../components/buttons/ButtonResizableText";
 import { LoginPopup } from "./Login";
 import { IconButton } from "../../components/buttons/IconButton";
-import { BlackText } from "../../components/texts/BlackText";
+import { isBGMEnabled, playBGM,toggleBGM,initBGM } from "../../audioManager";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { userInfo } from "os";
 import { SeasonalEventIdentifier } from "../../../../types/single/seasonalEventState";
+import { BlackText } from "../../components/texts/BlackText";
+
 
 export const Home = () => {
-  // Called on 'Host Lobby' button press
-  const renderConfigPage = () => {
-    FlowRouter.go("/host/choose-mode");
-  };
   const [showLogin, setShowLogin] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(false);
   const [adventurePopup, setAdventurePopup] = useState(false);
+  const [musicOn, setMusicOn] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [seasonalEventPopup, setSeasonalEventPopup] = useState(false);
 
   useEffect(() => {
     socket.emit("check-login");
 
-    const handleLoginStatus = ({ loggedIn }) => {
+    const handleLoginStatus = ({ loggedIn }: { loggedIn: boolean }) => {
       setLoggedInUser(loggedIn);
     };
-
     socket.on("login-status", handleLoginStatus);
 
     return () => {
@@ -38,7 +36,6 @@ export const Home = () => {
   }, []);
 
   const createGame = () => {
-    //this is not used?
     socket.emit("create-game", {});
     console.log("Game session created");
   };
@@ -47,12 +44,33 @@ export const Home = () => {
     const codeString = code.toString();
     FlowRouter.go(`/host/${codeString}`);
   });
+useEffect(() => {
+  initBGM();
+
+  // Only auto-play once when user interacts (first visit)
+  if (isBGMEnabled()) {
+    playBGM("/music/Beastly_brawl_menu_screen_music.mp3");
+  }
+}, []);
+
+  const handleToggleMusic = () => {
+    const enabled = toggleBGM();
+    setMusicOn(enabled);
+  };
+
+  const renderConfigPage = () => {
+
+    FlowRouter.go("/host/choose-mode");
+  };
 
   const renderJoinLobby = () => {
+;
     FlowRouter.go("/join");
   };
 
-  const handleLoginSuccess = (username: string) => {
+
+
+  const handleLoginSuccess = () => {
     setShowLogin(false);
     setLoggedInUser(true);
   };
@@ -62,7 +80,7 @@ export const Home = () => {
     console.log("Exit login");
   };
 
-  // Called on 'Adventure' button press
+
   const handleAdventure = () => {
     if (loggedInUser) {
       renderAdventure();
@@ -96,7 +114,18 @@ export const Home = () => {
         <div className="flex flex-row w-full sm:items-end lg:items-center justify-around">
           <LogoResizable className="lg:w-1/4 sm:h-3/4 lg:h-full" />
         </div>
-        <div className="absolute lg:top-[3rem] lg:right-[3rem] top-[5rem] right-[5rem] items-center justify-center">
+        <div className="absolute top-[3rem] left-[3rem]">
+
+        <ButtonGeneric
+          onClick={handleToggleMusic}
+          color="ronchi"
+          size="square"
+        >
+          {isBGMEnabled() == true ? "🔊"  : "🔇"}
+        </ButtonGeneric>
+      </div>
+
+      <div className="absolute lg:top-[3rem] lg:right-[3rem] top-[5rem] right-[5rem]">
           {adventurePopup && (
             <PopupClean>
               <div className="flex flex-col justify-around">
@@ -159,9 +188,9 @@ export const Home = () => {
               size={"squaremedium"}
               onClick={() => FlowRouter.go("/login")}
             >
-              <div className="flex flex-col ">
-                <OutlineText size={"tiny"}>LOG</OutlineText>
-                <OutlineText size={"tiny"}>IN</OutlineText>
+              <div className="flex flex-col text-center">
+                <OutlineText size="tiny">LOG</OutlineText>
+                <OutlineText size="tiny">IN</OutlineText>
               </div>
             </ButtonGeneric>
           ) : (
@@ -174,13 +203,17 @@ export const Home = () => {
             />
           )}
         </div>
+
+      {/* Logo */}
         {/* <div className="flex flex-col items-center justify-center w-1/2 h-1/2 lg:space-y-5 sm:space-y-30"> */}
-        <div className="flex flex-col lg:space-y-[1rem] space-y-[3rem] items-center flex-grow justify-center ">
+  
+      {/* Buttons */}
+      <div className="flex flex-col lg:space-y-[1rem] space-y-[3rem] items-center flex-grow justify-center ">
           <ButtonGeneric
             color="ronchi"
             size="large"
             onClick={renderConfigPage}
-            mobileHidden={"true"}
+            mobileHidden="true"
           >
             <OutlineText size="large">HOST GAME</OutlineText>
           </ButtonGeneric>
@@ -188,7 +221,8 @@ export const Home = () => {
           <ButtonGeneric color="ronchi" size="large" onClick={renderJoinLobby}>
             <OutlineText size="large">JOIN GAME</OutlineText>
           </ButtonGeneric>
-          <ButtonGeneric color="ronchi" size="large" onClick={handleAdventure}>
+  
+        <ButtonGeneric color="ronchi" size="large" onClick={handleAdventure}>
             <OutlineText size="large">ADVENTURE</OutlineText>
           </ButtonGeneric>
           <ButtonGeneric

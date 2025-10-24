@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { playBGM, playSFX } from "../../audioManager"
 
 export interface ButtonGenericProps {
   color:
@@ -112,7 +113,7 @@ export const ButtonGeneric = ({
       hover:scale-103
       hover:shadow-md
 		`}
-      onClick={onClick}
+    onClick={onClick ? () => { playSFX("click"); onClick(); } : undefined }
     >
       {children}
     </button>

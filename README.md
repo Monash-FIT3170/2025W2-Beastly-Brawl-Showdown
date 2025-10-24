@@ -437,7 +437,7 @@ MAJOR.MINOR.PATCH
 ### Primary Contact
 
 **Product Owner:** Riordan Alfredo  
-📧 Riordan.Alfredo@monash.edu
+📧 riordan.alfredo1@monash.edu
 
 ### Alternative Contacts
 

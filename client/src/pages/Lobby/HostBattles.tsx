@@ -17,7 +17,7 @@ import { BlackText } from "../../components/texts/BlackText";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { GameModeIdentifier } from "../../../../types/single/gameMode";
 import ScoringLeaderboard from "../../components/match-summary/ScoringLeaderboard";
-import { removeSelectedBackgroundTheme } from "../../selectedBackgroundTheme";
+import { isBGMEnabled, playBGM,toggleBGM,initBGM } from "../../audioManager";
 
 interface HostBattlesProps {
   gameCode?: string;
@@ -174,6 +174,11 @@ const HostBattles: React.FC<HostBattlesProps> = ({ gameCode }) => {
     return () => {
       socket.off("game-mode", handleGameMode);
     };
+  }, []);
+useEffect(() => {
+  // Switch to intense fight music
+  playBGM("/music/Beastly_Brawl_Battle.wav");
+
   }, []);
 
   return (
