@@ -17,7 +17,7 @@ export function initBGM() {
   if (!bgm) {
     bgm = new Audio("/music/Beastly_brawl_menu_screen_music.mp3");
     bgm.loop = true;
-    bgm.volume = 0.5;
+    bgm.volume = 0.4;
   }
 }
 
