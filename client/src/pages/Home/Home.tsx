@@ -11,6 +11,7 @@ import { isBGMEnabled, playBGM,toggleBGM,initBGM } from "../../audioManager";
 import { PopupClean } from "../../components/popups/PopupClean";
 import { userInfo } from "os";
 import { SeasonalEventIdentifier } from "../../../../types/single/seasonalEventState";
+import { BlackText } from "../../components/texts/BlackText";
 
 
 export const Home = () => {
